@@ -1,0 +1,2461 @@
+{
+  "scope": "CPU metric recomputation of unchanged original-scene paired motion7754, 20 states x 3 routes x 4 executors; no new simulation",
+  "definition": "Euclidean distance between before.eef_xyz_m + action_xyz * 0.05 m and after.eef_xyz_m, identical for all executors; maximum and RMS across the actual controls. This is a one-control commanded-position residual, not distance to a timed reference or task success.",
+  "translation_action_scale_m": 0.05,
+  "summary": {
+    "legacy_move": {
+      "n": 60,
+      "max_one_step_command_residual_m": {
+        "median": 0.03572653363474683,
+        "p90": 0.03693144740986105,
+        "max": 0.0370358305142425
+      },
+      "rms_one_step_command_residual_m": {
+        "median": 0.021731535408969466,
+        "p90": 0.022172858929916203,
+        "max": 0.02242111298698842
+      }
+    },
+    "legacy_move_to": {
+      "n": 60,
+      "max_one_step_command_residual_m": {
+        "median": 0.035319096098727486,
+        "p90": 0.03641334665689062,
+        "max": 0.03650195894204649
+      },
+      "rms_one_step_command_residual_m": {
+        "median": 0.021622050040257385,
+        "p90": 0.022301164941576076,
+        "max": 0.02233195407702468
+      }
+    },
+    "smooth_k1": {
+      "n": 60,
+      "max_one_step_command_residual_m": {
+        "median": 0.025024701161273075,
+        "p90": 0.032278865677197593,
+        "max": 0.03274586320359303
+      },
+      "rms_one_step_command_residual_m": {
+        "median": 0.012737399784714975,
+        "p90": 0.0145420758385453,
+        "max": 0.014750504581859222
+      }
+    },
+    "smooth_k4": {
+      "n": 60,
+      "max_one_step_command_residual_m": {
+        "median": 0.020416335615567667,
+        "p90": 0.022313180083822364,
+        "max": 0.022636266099826916
+      },
+      "rms_one_step_command_residual_m": {
+        "median": 0.011187106088938876,
+        "p90": 0.011430124823891703,
+        "max": 0.011583190559764176
+      }
+    }
+  },
+  "rows": [
+    {
+      "seed": 0,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03572831281997439,
+      "rms_one_step_command_residual_m": 0.021708430316376114,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence0_legacy_move.json",
+      "raw_sha256": "d664deafb688b4e43a9b38762f2c52238dd28d92a9b7e2d10ea4a8db8e64074d"
+    },
+    {
+      "seed": 0,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03531974599350509,
+      "rms_one_step_command_residual_m": 0.021598668483022474,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence0_legacy_move_to.json",
+      "raw_sha256": "162df56444c30e1c938a92636571e996e34b6b2f454b9a77f6d1a20750fabc33"
+    },
+    {
+      "seed": 0,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.02493873442241767,
+      "rms_one_step_command_residual_m": 0.012532989222811727,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence0_smooth_k1.json",
+      "raw_sha256": "59f21d174cb798c1c96185325e0db8ffb44fe1626cac8154068d06dd5143ca16"
+    },
+    {
+      "seed": 0,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020304738685666863,
+      "rms_one_step_command_residual_m": 0.01104607223988544,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence0_smooth_k4.json",
+      "raw_sha256": "aea56596e16d920d0de0bb877c1f6635e35b8046851b79373e158d0c967ae23d"
+    },
+    {
+      "seed": 0,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03687956350902788,
+      "rms_one_step_command_residual_m": 0.022161159311714827,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence1_legacy_move.json",
+      "raw_sha256": "6ebfdb97d030f130f82ab4310b9f1451c212b327071df23ded7e4dbdafb1bb5a"
+    },
+    {
+      "seed": 0,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03635865061707411,
+      "rms_one_step_command_residual_m": 0.022326347796658416,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence1_legacy_move_to.json",
+      "raw_sha256": "af9219b6f0ee004729d095612a3b12c8a6f032c68ec323e461c0d8fb106f71fd"
+    },
+    {
+      "seed": 0,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02393010724930045,
+      "rms_one_step_command_residual_m": 0.012770259305711953,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence1_smooth_k1.json",
+      "raw_sha256": "982a6fe749219bb555a1ff8bc828072eb2114136226731cfa2d8f4ffe2a3057b"
+    },
+    {
+      "seed": 0,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.020048458786590742,
+      "rms_one_step_command_residual_m": 0.01119985737355625,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence1_smooth_k4.json",
+      "raw_sha256": "27b51ad4ac4f542d5dd507944cf6a2ebf7a88089e9fba399a1adb3a01a4897cd"
+    },
+    {
+      "seed": 0,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035237047709048466,
+      "rms_one_step_command_residual_m": 0.02011429178307282,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence2_legacy_move.json",
+      "raw_sha256": "f93be912f1db5b27a8490907b1bb3eaf1267afaf4ed7198255981a3ec898d07b"
+    },
+    {
+      "seed": 0,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506319594568456,
+      "rms_one_step_command_residual_m": 0.02004352486539283,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence2_legacy_move_to.json",
+      "raw_sha256": "626f2ce61750b210ba0913c266a3cfd2bbdff681c171b715c46a06157d1f76c7"
+    },
+    {
+      "seed": 0,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 130,
+      "max_one_step_command_residual_m": 0.03169007055501991,
+      "rms_one_step_command_residual_m": 0.01439200703571831,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence2_smooth_k1.json",
+      "raw_sha256": "3a316a1b60d10274f544fed70733dc4978e5e1416d94898c39ab51fe2e97c561"
+    },
+    {
+      "seed": 0,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.021895184623100916,
+      "rms_one_step_command_residual_m": 0.011307110675060622,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed0_sequence2_smooth_k4.json",
+      "raw_sha256": "6fd6b6184c37eef193bfcf5cad0d004c218a239feb1fc956e4c0c5c4474e131f"
+    },
+    {
+      "seed": 10,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03570406301363699,
+      "rms_one_step_command_residual_m": 0.021723142084663583,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence0_legacy_move.json",
+      "raw_sha256": "a113120d6e77e1adac1a7bccee5661e417336378a492f6721bc8b350307ff94a"
+    },
+    {
+      "seed": 10,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03529654140689337,
+      "rms_one_step_command_residual_m": 0.02161336083990906,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence0_legacy_move_to.json",
+      "raw_sha256": "d5690478d780c6f3db59d22c7633500b03c047cf17d66bbf6e58259df50eb6a3"
+    },
+    {
+      "seed": 10,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025042748641945677,
+      "rms_one_step_command_residual_m": 0.012564755509617246,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence0_smooth_k1.json",
+      "raw_sha256": "925504fb7759efa22fb5b462045a5e6dbfe55d39866174b628e75885ad3ad76a"
+    },
+    {
+      "seed": 10,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020382758045472002,
+      "rms_one_step_command_residual_m": 0.011062858246268724,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence0_smooth_k4.json",
+      "raw_sha256": "60e088a7bc3765c3e46f6fb8dbb38e694e700eda8c30f520f5969ce2b22601f3"
+    },
+    {
+      "seed": 10,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03691384093516688,
+      "rms_one_step_command_residual_m": 0.022116616296106822,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence1_legacy_move.json",
+      "raw_sha256": "673fb1423874a42055762c8d11262c70d9bfabb721e6c963d41d07376511eddd"
+    },
+    {
+      "seed": 10,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.036391708363972465,
+      "rms_one_step_command_residual_m": 0.02228477958780364,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence1_legacy_move_to.json",
+      "raw_sha256": "78a44ea85c09bdab954002823c00d1c5a81420709400761ea5be28796748e46b"
+    },
+    {
+      "seed": 10,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02392781560472604,
+      "rms_one_step_command_residual_m": 0.01273793180471421,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence1_smooth_k1.json",
+      "raw_sha256": "2382fc2feebd567bdcd95d7ccf7db1f810d8ea8a67da3b6abc370aeb435ac949"
+    },
+    {
+      "seed": 10,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019985659304961954,
+      "rms_one_step_command_residual_m": 0.011172005255294023,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence1_smooth_k4.json",
+      "raw_sha256": "1910f11e28d913550cdd148a39e57a9eb03cb7dd28c3cccd1d03278c3eeaf4eb"
+    },
+    {
+      "seed": 10,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03523425573680386,
+      "rms_one_step_command_residual_m": 0.020117539136211234,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence2_legacy_move.json",
+      "raw_sha256": "e75620099f6e34811380bea850990dfa202f5ea07b53379ab183a060f63d88e9"
+    },
+    {
+      "seed": 10,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506160072333555,
+      "rms_one_step_command_residual_m": 0.020046951031755977,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence2_legacy_move_to.json",
+      "raw_sha256": "ab2a449fbeb1b21053ef9d879ac75643cc4626951da9b675e84ce91ed933c335"
+    },
+    {
+      "seed": 10,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 130,
+      "max_one_step_command_residual_m": 0.0317397982849999,
+      "rms_one_step_command_residual_m": 0.014385299913613933,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence2_smooth_k1.json",
+      "raw_sha256": "288aa0827d8ebb4689dfb47819872be411e87399a3cb9d087f7dbd4996dfd77a"
+    },
+    {
+      "seed": 10,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.021929428241836003,
+      "rms_one_step_command_residual_m": 0.01131752242675765,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed10_sequence2_smooth_k4.json",
+      "raw_sha256": "dead7ecd93023160147349262f3eed53b04d4b69fa30ac2c28156119490664a0"
+    },
+    {
+      "seed": 11,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03570618587813436,
+      "rms_one_step_command_residual_m": 0.021760315242680517,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence0_legacy_move.json",
+      "raw_sha256": "ae0c1cc709e7778451acf83cd3a61e787a51cb3e079b716a7116c3e935281ca5"
+    },
+    {
+      "seed": 11,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03530303423827062,
+      "rms_one_step_command_residual_m": 0.021650655574801465,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence0_legacy_move_to.json",
+      "raw_sha256": "df916664184d2149ac83753eea6ba49ca0b8cd95e85d3df38d0096e4113d7ff0"
+    },
+    {
+      "seed": 11,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025103505925048113,
+      "rms_one_step_command_residual_m": 0.01262353544412984,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence0_smooth_k1.json",
+      "raw_sha256": "682fa33708f9239159bb2ae23401e9d24e2729720fd76d8e56ded1fdf8e9539d"
+    },
+    {
+      "seed": 11,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020528648346666362,
+      "rms_one_step_command_residual_m": 0.011098330011032607,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence0_smooth_k4.json",
+      "raw_sha256": "a333c95bf434918b979e83ef4f19d49b658ebeab0a543ab833590ece70b6afbc"
+    },
+    {
+      "seed": 11,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.0370358305142425,
+      "rms_one_step_command_residual_m": 0.022126024212267108,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence1_legacy_move.json",
+      "raw_sha256": "c4658bb44495a81ae866b3f1ddc2ea2514151836827bd5b33832adfc9566bd9c"
+    },
+    {
+      "seed": 11,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03650195894204649,
+      "rms_one_step_command_residual_m": 0.022292058725993345,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence1_legacy_move_to.json",
+      "raw_sha256": "b2ec3af1ad35dbce48329f726bbdf9f2f12d0a85d17a535ae3578894ecfed164"
+    },
+    {
+      "seed": 11,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02370383824113731,
+      "rms_one_step_command_residual_m": 0.012669073592547864,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence1_smooth_k1.json",
+      "raw_sha256": "fcfa941dbaba69ad04a24a6d7dd5e0aa04bdb776049f745b5c1e7654e7d6c599"
+    },
+    {
+      "seed": 11,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019792388007414105,
+      "rms_one_step_command_residual_m": 0.011156242726246546,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence1_smooth_k4.json",
+      "raw_sha256": "0940561fd2551d4755d5bf188713fe48f55ce99e2e3b9ce903d4eaf16998630a"
+    },
+    {
+      "seed": 11,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03523321754231925,
+      "rms_one_step_command_residual_m": 0.020138780598394843,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence2_legacy_move.json",
+      "raw_sha256": "688d580fa48ec8a29d33f3a97968c84f1fcb3144203472fd545492d2d4d2efcc"
+    },
+    {
+      "seed": 11,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506193823487474,
+      "rms_one_step_command_residual_m": 0.02006836571304716,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence2_legacy_move_to.json",
+      "raw_sha256": "3bbe558624b0b1355e9bc038a056d5a90cbc5d8bfdbb505b56f989ead87fdded"
+    },
+    {
+      "seed": 11,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.03211413139585949,
+      "rms_one_step_command_residual_m": 0.014482969170058115,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence2_smooth_k1.json",
+      "raw_sha256": "6d7edfa4579dc0b4c127e529406e4254eb885974b16053bcad329fe853f17e82"
+    },
+    {
+      "seed": 11,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022143416118728713,
+      "rms_one_step_command_residual_m": 0.011374551620429347,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed11_sequence2_smooth_k4.json",
+      "raw_sha256": "cef4367164b364f7320f14e97cc3a54651039d821da949d92677aeef0884dd97"
+    },
+    {
+      "seed": 12,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03572475444951926,
+      "rms_one_step_command_residual_m": 0.021738244752196937,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence0_legacy_move.json",
+      "raw_sha256": "a5c44935c3964cde6343bc4c3026996b7c1e93019b9d2dd48d7afcad6bec196e"
+    },
+    {
+      "seed": 12,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03531844620394988,
+      "rms_one_step_command_residual_m": 0.021628484510365562,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence0_legacy_move_to.json",
+      "raw_sha256": "c803ed35916093a29a1624139c5d2439cae400b336197ac64fb02e8313f1e798"
+    },
+    {
+      "seed": 12,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025061901129548182,
+      "rms_one_step_command_residual_m": 0.012585983225156309,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence0_smooth_k1.json",
+      "raw_sha256": "e7d763058bc2fe832c0f4cb4e69eddeecbf98dcc65cadad2a08a4c6aa3392cab"
+    },
+    {
+      "seed": 12,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020450167547391474,
+      "rms_one_step_command_residual_m": 0.01108243344549639,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence0_smooth_k4.json",
+      "raw_sha256": "6ab83bc6c03a2029123557325dfe3e04a1796d7d9a0622f89ba1da3fd025d15a"
+    },
+    {
+      "seed": 12,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03691412534462004,
+      "rms_one_step_command_residual_m": 0.022141706996557167,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence1_legacy_move.json",
+      "raw_sha256": "3cefdcf187a642c603caff2b21582adca5b32f6b6c541d30665675ae97181e1a"
+    },
+    {
+      "seed": 12,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03639038383742295,
+      "rms_one_step_command_residual_m": 0.022308231868401425,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence1_legacy_move_to.json",
+      "raw_sha256": "71cf5f64ef20ec915271d1b341bafebfd97b8219f01c6cef50394b0f4f5b6316"
+    },
+    {
+      "seed": 12,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.023925186638361906,
+      "rms_one_step_command_residual_m": 0.012736867764715741,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence1_smooth_k1.json",
+      "raw_sha256": "dd37069d8f599fbf48593e3472bafc9cb5093c4298213cf0a133965234b0aa27"
+    },
+    {
+      "seed": 12,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019972293571173284,
+      "rms_one_step_command_residual_m": 0.011181392895628018,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence1_smooth_k4.json",
+      "raw_sha256": "2974b1ee7c9f979d0eb9cc0b69f2e0360f3279dcc14d53b03241c000893eb09b"
+    },
+    {
+      "seed": 12,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035235071862627726,
+      "rms_one_step_command_residual_m": 0.020151315475088277,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence2_legacy_move.json",
+      "raw_sha256": "6a941f423277d84b5123e59f45a74ebdbf2a8003aeef13e00e736295c6321dcd"
+    },
+    {
+      "seed": 12,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506169254470918,
+      "rms_one_step_command_residual_m": 0.02008042808413126,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence2_legacy_move_to.json",
+      "raw_sha256": "41cb11100a68575f570a97b5bb7e70a3a135496213d6a94c97651119b7a1ed09"
+    },
+    {
+      "seed": 12,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.03229165464085521,
+      "rms_one_step_command_residual_m": 0.014533978949012207,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence2_smooth_k1.json",
+      "raw_sha256": "71d7f5ef1d836205c37c52be73a52b2abcb0f7fb89f060f08e8d8b4b608f5cfd"
+    },
+    {
+      "seed": 12,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022308268320869146,
+      "rms_one_step_command_residual_m": 0.011428527285524947,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed12_sequence2_smooth_k4.json",
+      "raw_sha256": "d037f373fb803f9e532db3d5ca8128c51da4a6ad3dfdaeb313cf1ef640c88e38"
+    },
+    {
+      "seed": 13,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03574222577911645,
+      "rms_one_step_command_residual_m": 0.021711696753887372,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence0_legacy_move.json",
+      "raw_sha256": "f26d42ef9429c1aa82f16b772f7e1f26074ebaad8e790c4970e432b2dec4b573"
+    },
+    {
+      "seed": 13,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03533269859381107,
+      "rms_one_step_command_residual_m": 0.021601868268180096,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence0_legacy_move_to.json",
+      "raw_sha256": "eb50503c323768885c0c20a992262182523a2c25062b2d023f6fdaff614ad453"
+    },
+    {
+      "seed": 13,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.024964606284820258,
+      "rms_one_step_command_residual_m": 0.012543878661959452,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence0_smooth_k1.json",
+      "raw_sha256": "42ef437e42e928b6fae61f170a42671141197c889e0dfb00c10b26b7c13807e1"
+    },
+    {
+      "seed": 13,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.02033084873528013,
+      "rms_one_step_command_residual_m": 0.011053221084157261,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence0_smooth_k4.json",
+      "raw_sha256": "66139da15d1cfee9689cee852e2a30203af6013317642497fd5cb830266f4741"
+    },
+    {
+      "seed": 13,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.036860317117118464,
+      "rms_one_step_command_residual_m": 0.02216380440651796,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence1_legacy_move.json",
+      "raw_sha256": "7e695c573109c47f8a24254f94024ced245f1fd9dacc48b8188660ef76e66743"
+    },
+    {
+      "seed": 13,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03634014361398126,
+      "rms_one_step_command_residual_m": 0.022329697158732446,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence1_legacy_move_to.json",
+      "raw_sha256": "648f0c8bed5da22233bcfacdca2e1f5f94f1962ebc355c48335b3010897c9692"
+    },
+    {
+      "seed": 13,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.023960991451272163,
+      "rms_one_step_command_residual_m": 0.012776890280415867,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence1_smooth_k1.json",
+      "raw_sha256": "1542554b2523f2b8ef7fedc86bff5e55d3cff43c529fcbe5bbd3f71b246c1c81"
+    },
+    {
+      "seed": 13,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.020059971169285228,
+      "rms_one_step_command_residual_m": 0.011204163614151785,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence1_smooth_k4.json",
+      "raw_sha256": "8e01fe91b71ccdf748e7aa652097348a6dc82098ade8ff37955e37027ad26105"
+    },
+    {
+      "seed": 13,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03523536056427954,
+      "rms_one_step_command_residual_m": 0.02012643325737118,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence2_legacy_move.json",
+      "raw_sha256": "d7fb4951c7c9cd3c33c0fa0bdcf6e85b1b6ec84e8d648adde91160d38486fe7f"
+    },
+    {
+      "seed": 13,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.0350607176938025,
+      "rms_one_step_command_residual_m": 0.020055591742805683,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence2_legacy_move_to.json",
+      "raw_sha256": "155279d4861aa2c0143a8914e872dd29087a3fe024ca0f0cae9e230fa9d21b88"
+    },
+    {
+      "seed": 13,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.031979304572573135,
+      "rms_one_step_command_residual_m": 0.014434635430602177,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence2_smooth_k1.json",
+      "raw_sha256": "3d2cfeb07a47be3ab24226e0c44e10394e511fd7ee7b396b33fc015e893be67a"
+    },
+    {
+      "seed": 13,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022084712841828055,
+      "rms_one_step_command_residual_m": 0.011359387989811153,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed13_sequence2_smooth_k4.json",
+      "raw_sha256": "64c04f8adf4998256ce33115bc641618932ef08016a160d980bf73c8082095a7"
+    },
+    {
+      "seed": 14,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03575120302152784,
+      "rms_one_step_command_residual_m": 0.021718522528186252,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence0_legacy_move.json",
+      "raw_sha256": "537624b29324d88aff5169c2c20ab50cce502e69a5365fe6849910e3d246c661"
+    },
+    {
+      "seed": 14,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03534226118776991,
+      "rms_one_step_command_residual_m": 0.021608937664395114,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence0_legacy_move_to.json",
+      "raw_sha256": "64e5e6a2c00f048762bce8b719608d94fc423dacbedcce645d1f830d495b0a73"
+    },
+    {
+      "seed": 14,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.024936546699546435,
+      "rms_one_step_command_residual_m": 0.012565932065890323,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence0_smooth_k1.json",
+      "raw_sha256": "133d878fb1602bf413f89a2da1cb222935198b3613bbf2150cc9948b36ded00a"
+    },
+    {
+      "seed": 14,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020361309924472274,
+      "rms_one_step_command_residual_m": 0.011064765308190118,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence0_smooth_k4.json",
+      "raw_sha256": "6db706222d9a25b1837886a8bf62b827f1fd7178cd98b175fd3c98c037ec1ce7"
+    },
+    {
+      "seed": 14,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03690095514396125,
+      "rms_one_step_command_residual_m": 0.02217258831133078,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence1_legacy_move.json",
+      "raw_sha256": "1485ec6536b6d8989da946d94002b7d3542798279991186590c1931d6276b4c1"
+    },
+    {
+      "seed": 14,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03635932261710255,
+      "rms_one_step_command_residual_m": 0.022101881528645843,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence1_legacy_move_to.json",
+      "raw_sha256": "b8c5c5dd7fb4a678443a6806d3b12369fb73f4f55bb439a4b05f6f537b384cbf"
+    },
+    {
+      "seed": 14,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02378840800985494,
+      "rms_one_step_command_residual_m": 0.01275051125537349,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence1_smooth_k1.json",
+      "raw_sha256": "8c9003c7e70ac2fee15f42d9d6610e0b29acddb7ca0ed2a6dfa9497b19ab755c"
+    },
+    {
+      "seed": 14,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.01995773222909555,
+      "rms_one_step_command_residual_m": 0.011206533353565314,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence1_smooth_k4.json",
+      "raw_sha256": "334513cf586f318e60c21af43238c1644aa36605049985b73e7fc6a6595789ce"
+    },
+    {
+      "seed": 14,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03524306739836973,
+      "rms_one_step_command_residual_m": 0.020118940267436197,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence2_legacy_move.json",
+      "raw_sha256": "29e071426928c75014728e6219849e4c9a5c2a3bdb68605f063fd84cb79f48a7"
+    },
+    {
+      "seed": 14,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506762039632361,
+      "rms_one_step_command_residual_m": 0.020048497441207555,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence2_legacy_move_to.json",
+      "raw_sha256": "96678f1825f40cd0456d6e46a6f27c9f224a050fbb3137942e1b8eeff34b543c"
+    },
+    {
+      "seed": 14,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.03184523369396946,
+      "rms_one_step_command_residual_m": 0.014436466799653137,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence2_smooth_k1.json",
+      "raw_sha256": "50fd6c1c582628ea98fd2d5b19bebf84855a87755c7c7fdf4796eebb816416ba"
+    },
+    {
+      "seed": 14,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022035448888331186,
+      "rms_one_step_command_residual_m": 0.011349435311448306,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed14_sequence2_smooth_k4.json",
+      "raw_sha256": "36adfa3c70194f6923e9f1088e0ed328fcd2193811357816c7d42c32e991c7b3"
+    },
+    {
+      "seed": 15,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035715789446708154,
+      "rms_one_step_command_residual_m": 0.02175660508675855,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence0_legacy_move.json",
+      "raw_sha256": "bd4e5d675a28db062c790bf986ad81df68a44a9a1696d57ba3ff73a41251858f"
+    },
+    {
+      "seed": 15,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03531105951571389,
+      "rms_one_step_command_residual_m": 0.02164641332359322,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence0_legacy_move_to.json",
+      "raw_sha256": "a9c04d356a85e2edc16e98cc926a41125b1b0790541f5119202f9058e85eb454"
+    },
+    {
+      "seed": 15,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025102401902641673,
+      "rms_one_step_command_residual_m": 0.012605013239706373,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence0_smooth_k1.json",
+      "raw_sha256": "30513b0674b848e59cbde32e13db23c5bd5d3e27dd505b37d0b4d1d1249a145c"
+    },
+    {
+      "seed": 15,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020503238735947813,
+      "rms_one_step_command_residual_m": 0.0110938668304636,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence0_smooth_k4.json",
+      "raw_sha256": "8f228930b07fc7bd19941f3182d15d1cbe622fbd98f0059f460009d10d2948f4"
+    },
+    {
+      "seed": 15,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.036958493010786825,
+      "rms_one_step_command_residual_m": 0.02213442585208469,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence1_legacy_move.json",
+      "raw_sha256": "45743dc8ba4beace19b50313472cb8fd2534b8cc21862a64aa97a347a565cf9f"
+    },
+    {
+      "seed": 15,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03641429260869205,
+      "rms_one_step_command_residual_m": 0.02230037972748437,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence1_legacy_move_to.json",
+      "raw_sha256": "23107ec45f352f0f1f2fd94d9b19af94b22ed63fbc0ec485141ab047c15e2fc8"
+    },
+    {
+      "seed": 15,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.023924345931820048,
+      "rms_one_step_command_residual_m": 0.0127158623856456,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence1_smooth_k1.json",
+      "raw_sha256": "ec5f9431a624282e629567334e0f0a8f279453d0bd30d9ae0b475df315a6ae76"
+    },
+    {
+      "seed": 15,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.01992815885042503,
+      "rms_one_step_command_residual_m": 0.011167151858962172,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence1_smooth_k4.json",
+      "raw_sha256": "89ea5ccc8ec5044b88a0759e97880620a6be95887a96ca08eec57e7eee47cc5e"
+    },
+    {
+      "seed": 15,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03522953061835401,
+      "rms_one_step_command_residual_m": 0.020168434187498474,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence2_legacy_move.json",
+      "raw_sha256": "ee5bc8d97b2539bdb6aa5ca4230a3ca04ac30faa59ca2765bbb81f7b46a6ad4a"
+    },
+    {
+      "seed": 15,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03505708801895196,
+      "rms_one_step_command_residual_m": 0.020097397405727246,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence2_legacy_move_to.json",
+      "raw_sha256": "fbdc00006526c7adb853f51e796ba1f76bf5ca5ebc359b8866adb3aabf189217"
+    },
+    {
+      "seed": 15,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.03240521277586217,
+      "rms_one_step_command_residual_m": 0.014566870415461413,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence2_smooth_k1.json",
+      "raw_sha256": "3eca371c5b4a370382dbb2c6e1aa640c98902ba537038362e0b90506b1dee718"
+    },
+    {
+      "seed": 15,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022403291382529344,
+      "rms_one_step_command_residual_m": 0.011457931548115766,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed15_sequence2_smooth_k4.json",
+      "raw_sha256": "6bdb6a2910202822ab801991b26300c82029c6f998b84b4e370e15d77c87880b"
+    },
+    {
+      "seed": 16,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035758261584408625,
+      "rms_one_step_command_residual_m": 0.021760497243276573,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence0_legacy_move.json",
+      "raw_sha256": "3b9260aa5b7410c3cf9274791a13aa7e43a7ce841cc37118cfbfb46d44df663e"
+    },
+    {
+      "seed": 16,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03535111651349295,
+      "rms_one_step_command_residual_m": 0.021650883115051516,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence0_legacy_move_to.json",
+      "raw_sha256": "0b856a7c2896c001b8c1198b24ff03e7e9ed653f01352b9d9f1607057551d031"
+    },
+    {
+      "seed": 16,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 92,
+      "max_one_step_command_residual_m": 0.02502347245007807,
+      "rms_one_step_command_residual_m": 0.012590286115380158,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence0_smooth_k1.json",
+      "raw_sha256": "3caf214a09a3d95b057eac67143de592ca04b787106023e5ea72a1f3d176a90c"
+    },
+    {
+      "seed": 16,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.02053464148881001,
+      "rms_one_step_command_residual_m": 0.011114119828656548,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence0_smooth_k4.json",
+      "raw_sha256": "f80babb4bbad0c2be8f8dc8be986831233b5520f6db94880cdfc60dc3ce3bc46"
+    },
+    {
+      "seed": 16,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03694826502314049,
+      "rms_one_step_command_residual_m": 0.02217683378387648,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence1_legacy_move.json",
+      "raw_sha256": "23a507e1a151563c8d14260ee8124467a739a2f7c471ee1bfdb637b57654d157"
+    },
+    {
+      "seed": 16,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03638462127346369,
+      "rms_one_step_command_residual_m": 0.022104659914962816,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence1_legacy_move_to.json",
+      "raw_sha256": "65066106ed9108be31f568490cd5cf38538d251238ec522a2044635a88554dd6"
+    },
+    {
+      "seed": 16,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02374572730816878,
+      "rms_one_step_command_residual_m": 0.012724740957920781,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence1_smooth_k1.json",
+      "raw_sha256": "2b5a9044adcd7f23da7e062bdd181d5b23bcf467af98fb529766e5ee6b02e434"
+    },
+    {
+      "seed": 16,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019915048326763225,
+      "rms_one_step_command_residual_m": 0.011199324672508507,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence1_smooth_k4.json",
+      "raw_sha256": "0a66cbb3b21119470ca1bf6e47d54e116fc1e64c23e92d12c61560f309d6e997"
+    },
+    {
+      "seed": 16,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03524907531434089,
+      "rms_one_step_command_residual_m": 0.020179087836787724,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence2_legacy_move.json",
+      "raw_sha256": "387209c6b1350c0be0a5a9b1a5ad37aca3ade534e4b87e9e93cd1df70d8f489f"
+    },
+    {
+      "seed": 16,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035073408769979615,
+      "rms_one_step_command_residual_m": 0.020108385362154237,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence2_legacy_move_to.json",
+      "raw_sha256": "689a458f5dbd5dff7bc2a8094ff786d269ee67750f46b8e10cfd1da7e2064260"
+    },
+    {
+      "seed": 16,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 132,
+      "max_one_step_command_residual_m": 0.03274586320359303,
+      "rms_one_step_command_residual_m": 0.014750504581859222,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence2_smooth_k1.json",
+      "raw_sha256": "40b752a7ea60ab24a2ede34f5b385f84748f225f68b2614b382786f7bc1bfdf1"
+    },
+    {
+      "seed": 16,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022636266099826916,
+      "rms_one_step_command_residual_m": 0.011583190559764176,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed16_sequence2_smooth_k4.json",
+      "raw_sha256": "d14fd11e542056fff7f030f75673793869c0157f7c8d137858991238011edd3e"
+    },
+    {
+      "seed": 17,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03567216740126091,
+      "rms_one_step_command_residual_m": 0.021754653790403273,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence0_legacy_move.json",
+      "raw_sha256": "31d92c26d1dd350d9daf873ada8aadf47a13c73ceefdd321f5235ab5b417d97f"
+    },
+    {
+      "seed": 17,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03526938307207653,
+      "rms_one_step_command_residual_m": 0.021644624403103125,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence0_legacy_move_to.json",
+      "raw_sha256": "108d6154680449447cb1e13a98ced2b805d7d17f32c88462bf179c4a2e3a2149"
+    },
+    {
+      "seed": 17,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025152708056394413,
+      "rms_one_step_command_residual_m": 0.012598037382467935,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence0_smooth_k1.json",
+      "raw_sha256": "c2950a67341b70ab32142b0b8d724666985a6c73a0a665069bde4e8119c1d287"
+    },
+    {
+      "seed": 17,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.02048563412383003,
+      "rms_one_step_command_residual_m": 0.01108298448720093,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence0_smooth_k4.json",
+      "raw_sha256": "216731f0688a9cf65a591eca9afdd705da3866385a65d1e71931f37b86e6d5f6"
+    },
+    {
+      "seed": 17,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03678412932451975,
+      "rms_one_step_command_residual_m": 0.022381517445357546,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence1_legacy_move.json",
+      "raw_sha256": "381f55574563abec69b63117fd66c962e8ee8e768b7ba00d5501428f802852b3"
+    },
+    {
+      "seed": 17,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.036457072582938864,
+      "rms_one_step_command_residual_m": 0.022255794181378394,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence1_legacy_move_to.json",
+      "raw_sha256": "edff821d8263411a137e306baddebf798072c789cf744e6176307b6e9f88bf1d"
+    },
+    {
+      "seed": 17,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02391509749168789,
+      "rms_one_step_command_residual_m": 0.012683609156236753,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence1_smooth_k1.json",
+      "raw_sha256": "eef018172e2c76c90e8793343460dfed710e1aa35cf706a5e0adbce9ead2e8cf"
+    },
+    {
+      "seed": 17,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.01988580801072715,
+      "rms_one_step_command_residual_m": 0.01113668308583716,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence1_smooth_k4.json",
+      "raw_sha256": "f228b009b7ed2be79dd6ae38faff0aa97777d98fd02101bf4962817e76fdadbb"
+    },
+    {
+      "seed": 17,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03522541806643245,
+      "rms_one_step_command_residual_m": 0.020137471317107854,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence2_legacy_move.json",
+      "raw_sha256": "9d34d4e1b3101006b86c48aecc9b0aa1328877b09bf92da2e8b0988439765e37"
+    },
+    {
+      "seed": 17,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.0350556952691254,
+      "rms_one_step_command_residual_m": 0.02006666444044522,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence2_legacy_move_to.json",
+      "raw_sha256": "cece6a1faded22d9dbf246d6d5afc325b8fddcffbb721c4db8dded69184ff90f"
+    },
+    {
+      "seed": 17,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 130,
+      "max_one_step_command_residual_m": 0.031799217055938425,
+      "rms_one_step_command_residual_m": 0.014389301663349277,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence2_smooth_k1.json",
+      "raw_sha256": "abe1b6f043f213aa464253d1a0b3c3f1f3168b1f9bbf83f6ef5c20cbb066756d"
+    },
+    {
+      "seed": 17,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.02200437294395446,
+      "rms_one_step_command_residual_m": 0.01133267996391622,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed17_sequence2_smooth_k4.json",
+      "raw_sha256": "64e8a4f53b31ad54165c8c31f3f1ad630beb799ef23fdedd01d60f2ce7cf08ca"
+    },
+    {
+      "seed": 18,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035750421559902074,
+      "rms_one_step_command_residual_m": 0.021714121649595367,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence0_legacy_move.json",
+      "raw_sha256": "ee968e65f9ddf034d4781922b1ea951c432f1985d4ece81a5bc00aa20cbc77dc"
+    },
+    {
+      "seed": 18,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03534130831794739,
+      "rms_one_step_command_residual_m": 0.021604414668232215,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence0_legacy_move_to.json",
+      "raw_sha256": "2a892ec141820d0e73c79381ab635f644dbe7c5d19e89266f55ac9a10aff588c"
+    },
+    {
+      "seed": 18,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.024935923734263295,
+      "rms_one_step_command_residual_m": 0.012555935061096583,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence0_smooth_k1.json",
+      "raw_sha256": "c9cba534a0f32f97b8f5c483276e251825dc2b9d26e147e108c2b1243cf90ef4"
+    },
+    {
+      "seed": 18,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.02034384400393656,
+      "rms_one_step_command_residual_m": 0.011059737892589998,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence0_smooth_k4.json",
+      "raw_sha256": "b315442ac7917208807515686998cf69541d3af52463833870a2e515031789f6"
+    },
+    {
+      "seed": 18,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03687936204135149,
+      "rms_one_step_command_residual_m": 0.022175294497184996,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence1_legacy_move.json",
+      "raw_sha256": "e3847550dc8318040ce6033aa02dd820613997d441c30b409aca57790b71273a"
+    },
+    {
+      "seed": 18,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.036335449268680216,
+      "rms_one_step_command_residual_m": 0.02210405772266253,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence1_legacy_move_to.json",
+      "raw_sha256": "d043cc5d58bc2bbdec5e0f7bec2ebefb029f7b51b8d13597223a5f73c97750b5"
+    },
+    {
+      "seed": 18,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.023861620147714764,
+      "rms_one_step_command_residual_m": 0.012765304470788136,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence1_smooth_k1.json",
+      "raw_sha256": "05bd26058702ac60ec54538cd931b4136b9b2aae374234ae489e45677be52af5"
+    },
+    {
+      "seed": 18,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.020007720337037963,
+      "rms_one_step_command_residual_m": 0.011209912201508972,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence1_smooth_k4.json",
+      "raw_sha256": "8e5d02037341de0e181f7b5eb5f3ef369896138fa651d314da759006c2befa1e"
+    },
+    {
+      "seed": 18,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035243553188799896,
+      "rms_one_step_command_residual_m": 0.02012331747090758,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence2_legacy_move.json",
+      "raw_sha256": "a99415c6912517d64e0df3b6e62e04b376b8de6fae92f498032ce616b8c0fd0e"
+    },
+    {
+      "seed": 18,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035068020554242345,
+      "rms_one_step_command_residual_m": 0.0200527033417004,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence2_legacy_move_to.json",
+      "raw_sha256": "f56da80345fa9524cbeafaf0dc727938fe52edd589b43a5f4c4c4de86e600cef"
+    },
+    {
+      "seed": 18,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.0320152573536186,
+      "rms_one_step_command_residual_m": 0.014464056532527325,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence2_smooth_k1.json",
+      "raw_sha256": "882b52ffd48d9481c47d9d12ee07fadd956215e8204e9d08060b6292d3de5a6d"
+    },
+    {
+      "seed": 18,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022074138894857976,
+      "rms_one_step_command_residual_m": 0.011359515799762165,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed18_sequence2_smooth_k4.json",
+      "raw_sha256": "a7b05692a0bc985cfb1b2f1806678cb9ee4f34462ab5590cb343b635207cf309"
+    },
+    {
+      "seed": 19,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03570814907606583,
+      "rms_one_step_command_residual_m": 0.02175415522641319,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence0_legacy_move.json",
+      "raw_sha256": "ccb943dbf219fc29fa27739b5dd8ea96bc578153736cb31d983b4eaab37be6f8"
+    },
+    {
+      "seed": 19,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03530285708804718,
+      "rms_one_step_command_residual_m": 0.021644396473878502,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence0_legacy_move_to.json",
+      "raw_sha256": "ca7f4a6afc935e82e27613446423e73e1a2e9ece5c1d09b3d78c2c9793ca4afc"
+    },
+    {
+      "seed": 19,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.02512174486746583,
+      "rms_one_step_command_residual_m": 0.012612112267927798,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence0_smooth_k1.json",
+      "raw_sha256": "6f6ac8b7d99b748cd682d72d794f5f7c071d9e8107b4b7fddc18d5aac94df4e7"
+    },
+    {
+      "seed": 19,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020515269789692946,
+      "rms_one_step_command_residual_m": 0.011097434625108715,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence0_smooth_k4.json",
+      "raw_sha256": "c9e5e9e95a200c9a08b7bde0127f753cec61c0f0ad0bd28e6bfbe3549e1c3f2a"
+    },
+    {
+      "seed": 19,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03696971025230349,
+      "rms_one_step_command_residual_m": 0.02213013176779547,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence1_legacy_move.json",
+      "raw_sha256": "ca8aed49b5b42de944d64ea603daf1f696329200d939c312533d8a04c77a6c07"
+    },
+    {
+      "seed": 19,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03642505775967862,
+      "rms_one_step_command_residual_m": 0.02229486515675057,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence1_legacy_move_to.json",
+      "raw_sha256": "f8e5ee4ec495c0542fb961e61f822df325b21c951e95eccfdc7ede05547a0101"
+    },
+    {
+      "seed": 19,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02386634961069451,
+      "rms_one_step_command_residual_m": 0.012710258093045521,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence1_smooth_k1.json",
+      "raw_sha256": "a08460f68650f635b8b94643cb925be14825622d714c408d95fda7312a2201be"
+    },
+    {
+      "seed": 19,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019906683030472893,
+      "rms_one_step_command_residual_m": 0.01116678737894643,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence1_smooth_k4.json",
+      "raw_sha256": "cb7c468106b6d551e5cf25db4aa5e44188171a4e17acfc7715c3959fb5c4f440"
+    },
+    {
+      "seed": 19,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03523099525885813,
+      "rms_one_step_command_residual_m": 0.02015836745460742,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence2_legacy_move.json",
+      "raw_sha256": "94ac92072493f6d957e7126ddc9160e6e320a87a6b1e6f731ff62cab5507cdff"
+    },
+    {
+      "seed": 19,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035058332984405624,
+      "rms_one_step_command_residual_m": 0.02008759442673512,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence2_legacy_move_to.json",
+      "raw_sha256": "8d2bb7afa982d5deebc308c78d46db8e69a90b3f82eb80cbb37a98692fd0b25d"
+    },
+    {
+      "seed": 19,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.03237545138002349,
+      "rms_one_step_command_residual_m": 0.01456392801156218,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence2_smooth_k1.json",
+      "raw_sha256": "7ead9d58c69a8c03896aa738b5b6235edadd61d531e7e3944ba92bb6d555a853"
+    },
+    {
+      "seed": 19,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.02235778887191483,
+      "rms_one_step_command_residual_m": 0.011444502669192502,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed19_sequence2_smooth_k4.json",
+      "raw_sha256": "f0dec46f558ace0899251b26c3206063d97614e76f60ed135a42a9bbf26c5730"
+    },
+    {
+      "seed": 1,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03574704179511106,
+      "rms_one_step_command_residual_m": 0.021705660356525817,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence0_legacy_move.json",
+      "raw_sha256": "5bc5b8e9db3877ddfa6a0abf6c4bfeb77a6b5ed1bd0bac29afc0e38c1157d97c"
+    },
+    {
+      "seed": 1,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035336768742056504,
+      "rms_one_step_command_residual_m": 0.02159585208792497,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence0_legacy_move_to.json",
+      "raw_sha256": "79c61fb2fd0267777feb59d007a85f535aeec81ff3c87e7a4fc231a4fd730140"
+    },
+    {
+      "seed": 1,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.024941759280204454,
+      "rms_one_step_command_residual_m": 0.01253166999955441,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence0_smooth_k1.json",
+      "raw_sha256": "550d338c197bc8b1b7f6f4111604fb3e05a420becb3e8381efe0eb1839c8ee34"
+    },
+    {
+      "seed": 1,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020303232813407276,
+      "rms_one_step_command_residual_m": 0.011049491780666018,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence0_smooth_k4.json",
+      "raw_sha256": "750164a9b85975538c35a95308e51740637a40086a096a1ef62e4b04ab516435"
+    },
+    {
+      "seed": 1,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.036826505472006034,
+      "rms_one_step_command_residual_m": 0.022166844733078395,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence1_legacy_move.json",
+      "raw_sha256": "bb831a0dcd85afe9f00083b62a9ddbf86868ed77e2302d9846f66af3be1ee383"
+    },
+    {
+      "seed": 1,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03630010556211545,
+      "rms_one_step_command_residual_m": 0.02233195407702468,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence1_legacy_move_to.json",
+      "raw_sha256": "5951eea0d1bc93e219fa90223ecf72e12e15ecf7c586a8824d85dde71d1075e0"
+    },
+    {
+      "seed": 1,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.024029726514372116,
+      "rms_one_step_command_residual_m": 0.01279810554704304,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence1_smooth_k1.json",
+      "raw_sha256": "264cfda23a2c1ce43662c966b7fd0a9f32c25c2835d9ed102c1fcbc6efb005d8"
+    },
+    {
+      "seed": 1,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.020113405635091407,
+      "rms_one_step_command_residual_m": 0.011211370028536803,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence1_smooth_k4.json",
+      "raw_sha256": "3213218a61cecf52d305f40c74b59934fa3501e37d98b23f1ebba9cae34efced"
+    },
+    {
+      "seed": 1,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03523197588438459,
+      "rms_one_step_command_residual_m": 0.020132426712344543,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence2_legacy_move.json",
+      "raw_sha256": "d66ba67d85537ddc71bfd71f5b57bbc3c15ac9679d992c29d1e0ec095ba1ab49"
+    },
+    {
+      "seed": 1,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035056868368976875,
+      "rms_one_step_command_residual_m": 0.020061447001908213,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence2_legacy_move_to.json",
+      "raw_sha256": "6fa8bc040c1ab4b4fd17c1b165323d388ca2537abc10efc3b8b837e240385ac0"
+    },
+    {
+      "seed": 1,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.03204735465235344,
+      "rms_one_step_command_residual_m": 0.014452890332820111,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence2_smooth_k1.json",
+      "raw_sha256": "cdae07bd53ede33309ead6ab308ab4b98a825b9e2d3d4b8cee13e55259a595e4"
+    },
+    {
+      "seed": 1,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022148582501862104,
+      "rms_one_step_command_residual_m": 0.011380563957627397,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed1_sequence2_smooth_k4.json",
+      "raw_sha256": "052912faf0b215c6ab86d46cd8c79992fa798ed1a13224b5cf97cfd0b71cb05a"
+    },
+    {
+      "seed": 2,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03577570828356884,
+      "rms_one_step_command_residual_m": 0.0217261776545155,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence0_legacy_move.json",
+      "raw_sha256": "42caab4bac0bfe5a144f9beb8c2c307b4975ef8388890de3a39f125087e95bab"
+    },
+    {
+      "seed": 2,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035367704212270715,
+      "rms_one_step_command_residual_m": 0.021616691964636118,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence0_legacy_move_to.json",
+      "raw_sha256": "31474510d39aff1ed75c7bf5800c56e449291e77b5bb9edc433ba38ff069a550"
+    },
+    {
+      "seed": 2,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.02493048613101744,
+      "rms_one_step_command_residual_m": 0.012581745616156029,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence0_smooth_k1.json",
+      "raw_sha256": "dc0204dfad53d13323ee711ae42ba6e337d1f2c58d2931d683131cc99d0d744b"
+    },
+    {
+      "seed": 2,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020385682490492642,
+      "rms_one_step_command_residual_m": 0.011075574879524958,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence0_smooth_k4.json",
+      "raw_sha256": "aca9e282c84f690072d54bcef0f821f4243343be1283b7f2eddc5a464398fe8d"
+    },
+    {
+      "seed": 2,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03688144988432964,
+      "rms_one_step_command_residual_m": 0.022192783547792267,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence1_legacy_move.json",
+      "raw_sha256": "a6be79cb2d8171d14db4fc4ba06c2de51a0a8316b1616b1eba743e8b4373c870"
+    },
+    {
+      "seed": 2,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.036340844849399624,
+      "rms_one_step_command_residual_m": 0.022121958822295368,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence1_legacy_move_to.json",
+      "raw_sha256": "a8c91300def9bbeada7fcde75cc750255b997e5d4d0617d4b722c15fc8a1b718"
+    },
+    {
+      "seed": 2,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.023858863947954452,
+      "rms_one_step_command_residual_m": 0.012767586692199169,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence1_smooth_k1.json",
+      "raw_sha256": "dc15572a8338ee88b43d351efa7b9504579a11b7e71b50cd0a501e58c22cc1bb"
+    },
+    {
+      "seed": 2,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.01999386453015763,
+      "rms_one_step_command_residual_m": 0.011221493412010258,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence1_smooth_k4.json",
+      "raw_sha256": "2844cf9f20bb4247c5f7f0d10edd0ae2614a872183af58a4a0e52232a681aa3c"
+    },
+    {
+      "seed": 2,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035248845569763744,
+      "rms_one_step_command_residual_m": 0.020148747559990465,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence2_legacy_move.json",
+      "raw_sha256": "d8339e5345f2389b66d4b21e2957a47849569066dfd130eb94d5f04f62943a4c"
+    },
+    {
+      "seed": 2,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035072547465503756,
+      "rms_one_step_command_residual_m": 0.020078057288979476,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence2_legacy_move_to.json",
+      "raw_sha256": "5e165971c88ed3b4793f71bab8d9d730fe0c3f3562920adcbf73ffc4e60c82b8"
+    },
+    {
+      "seed": 2,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 132,
+      "max_one_step_command_residual_m": 0.03227744468123563,
+      "rms_one_step_command_residual_m": 0.014556251723367207,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence2_smooth_k1.json",
+      "raw_sha256": "9da3cf55b87ed38d7653996f74dee63487f0c8e6e5ca07bb582cfa38c829ab81"
+    },
+    {
+      "seed": 2,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.02235738595040131,
+      "rms_one_step_command_residual_m": 0.011462089543255767,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed2_sequence2_smooth_k4.json",
+      "raw_sha256": "15e55093e58885d0f45225fd8e32452b33f77948a7bb905cbdf9b1b6b459c617"
+    },
+    {
+      "seed": 3,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03569759357274582,
+      "rms_one_step_command_residual_m": 0.021717096289771424,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence0_legacy_move.json",
+      "raw_sha256": "094cf4400cd965a68b1ff4f18e78bc95001cb687fd79f7cd54e7bd2bf030e81e"
+    },
+    {
+      "seed": 3,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03529085267010817,
+      "rms_one_step_command_residual_m": 0.02160695101595673,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence0_legacy_move_to.json",
+      "raw_sha256": "883e822b03d7550fa24a086420b2f75244db1a77143166781daad80082727ba5"
+    },
+    {
+      "seed": 3,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025025643420005784,
+      "rms_one_step_command_residual_m": 0.012537285881384004,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence0_smooth_k1.json",
+      "raw_sha256": "43f651d95e743e1e793a20d99b335261b4757bfe16521d563661ab114738c4af"
+    },
+    {
+      "seed": 3,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020335852877527077,
+      "rms_one_step_command_residual_m": 0.011050029064334966,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence0_smooth_k4.json",
+      "raw_sha256": "a70425a7d27219b5671eff42f3597ab09e456e19b34501343fe34aaeed1fb2aa"
+    },
+    {
+      "seed": 3,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.036682187319599775,
+      "rms_one_step_command_residual_m": 0.02242111298698842,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence1_legacy_move.json",
+      "raw_sha256": "be6818558f55da83c958beb50938240fbf5063e931b36835d185deb7a3ac2263"
+    },
+    {
+      "seed": 3,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.036360580543122765,
+      "rms_one_step_command_residual_m": 0.02229517047713481,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence1_legacy_move_to.json",
+      "raw_sha256": "208e78e203b5ffff205269437e3ea942d2f564eb51e303b9ba83a4fd3897f59c"
+    },
+    {
+      "seed": 3,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.024045778578431452,
+      "rms_one_step_command_residual_m": 0.012760490348258985,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence1_smooth_k1.json",
+      "raw_sha256": "7a3d4f0fb4f8abd41dda9a0b8c71fb76f23d688ee2910a289a3a270ac5892138"
+    },
+    {
+      "seed": 3,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.02006223064758594,
+      "rms_one_step_command_residual_m": 0.011176691955932204,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence1_smooth_k4.json",
+      "raw_sha256": "1875507c7c461ef4ba87bc7bf3c822dadcffbea54f3832b55ad6c253bb3913a5"
+    },
+    {
+      "seed": 3,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035233366158455015,
+      "rms_one_step_command_residual_m": 0.02012359061752461,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence2_legacy_move.json",
+      "raw_sha256": "a99aadfd764019c09cdcf24fd135f81a85c812551e820bf674901ca317256522"
+    },
+    {
+      "seed": 3,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506125914868432,
+      "rms_one_step_command_residual_m": 0.020052511173290898,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence2_legacy_move_to.json",
+      "raw_sha256": "e0bd07b748dc305528b2cbce9ad6a481231bc8e28449d1b568d0c4d6f6717cc5"
+    },
+    {
+      "seed": 3,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 130,
+      "max_one_step_command_residual_m": 0.03169175801901104,
+      "rms_one_step_command_residual_m": 0.014363480609392989,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence2_smooth_k1.json",
+      "raw_sha256": "d3abf68bf1459bac0077c4deb19534747061918fb10506961e8ed1f449f26f01"
+    },
+    {
+      "seed": 3,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.02193444669591822,
+      "rms_one_step_command_residual_m": 0.011314804996325489,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed3_sequence2_smooth_k4.json",
+      "raw_sha256": "ab8f74319677261f9d9404e0fb4783074c21274e9d385221b2dc6fb48b7edc36"
+    },
+    {
+      "seed": 4,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03569392253984952,
+      "rms_one_step_command_residual_m": 0.021756503332317483,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence0_legacy_move.json",
+      "raw_sha256": "4493a97a4a79601ada0402fd6af95cc9352932727008d34b74eb534190fe0809"
+    },
+    {
+      "seed": 4,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035289506565155296,
+      "rms_one_step_command_residual_m": 0.021646573496102967,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence0_legacy_move_to.json",
+      "raw_sha256": "e0304fee14d49c0a47c07647a877ecb032340a822855d6675fab831a09e9741f"
+    },
+    {
+      "seed": 4,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.02513361881436823,
+      "rms_one_step_command_residual_m": 0.012612865783427137,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence0_smooth_k1.json",
+      "raw_sha256": "082d83f7fcd7be290059aa6b589260d92f69a5e5ead1df69e39158b0a96e1ce6"
+    },
+    {
+      "seed": 4,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020514977555319683,
+      "rms_one_step_command_residual_m": 0.011095856339371568,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence0_smooth_k4.json",
+      "raw_sha256": "10ed1ec29d4fbde9bc9797d474cbcd7f5ad59165c4fff9c03d7d85f10113d882"
+    },
+    {
+      "seed": 4,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03676360164499999,
+      "rms_one_step_command_residual_m": 0.022391389207790248,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence1_legacy_move.json",
+      "raw_sha256": "bdbd5ddd54c5fcdf7bfe392bfb856aa8462ec9e529125393272da7193e48612d"
+    },
+    {
+      "seed": 4,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03643842319239738,
+      "rms_one_step_command_residual_m": 0.022265353400013285,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence1_legacy_move_to.json",
+      "raw_sha256": "a1afd67184bd5edfe8b4b848177998cae3487749f4b33575f4dac7fe886cb4aa"
+    },
+    {
+      "seed": 4,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02387605206802055,
+      "rms_one_step_command_residual_m": 0.012692051792432846,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence1_smooth_k1.json",
+      "raw_sha256": "e3c353752db3abe4190d7df014a72d4feed013db9eb2bdf0332999d7087ed200"
+    },
+    {
+      "seed": 4,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.0198838989407455,
+      "rms_one_step_command_residual_m": 0.011148529845825636,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence1_smooth_k4.json",
+      "raw_sha256": "31911f165c6ade11815aa5f3fa85348437f95da3c9847121b4b202ffcba913b8"
+    },
+    {
+      "seed": 4,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03522960204651043,
+      "rms_one_step_command_residual_m": 0.02014917856392453,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence2_legacy_move.json",
+      "raw_sha256": "0bee6ab411cb12e7482aa4b858384427e1b6fb3b4e583fa77a1e128021cb1ccb"
+    },
+    {
+      "seed": 4,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03505802408157041,
+      "rms_one_step_command_residual_m": 0.020078557233743254,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence2_legacy_move_to.json",
+      "raw_sha256": "72ef2f807e4d1bfe0510514656b4017619d290718bbf61cee85a6c974f09411a"
+    },
+    {
+      "seed": 4,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.03209929038803892,
+      "rms_one_step_command_residual_m": 0.014444005337455249,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence2_smooth_k1.json",
+      "raw_sha256": "acd6f9f62aba5269baa0bf98138a0597adfa293392ca76560caa8c14562e912c"
+    },
+    {
+      "seed": 4,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022197818377394957,
+      "rms_one_step_command_residual_m": 0.011391999225954259,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed4_sequence2_smooth_k4.json",
+      "raw_sha256": "418e1ac42c3cea094f5b443b11a0198010dd5e3049618677ffe1ba5362963b75"
+    },
+    {
+      "seed": 5,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035729184358847955,
+      "rms_one_step_command_residual_m": 0.0217664940427527,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence0_legacy_move.json",
+      "raw_sha256": "c0d85de0291db0c8fd9743d08a091841481463d4f4726f6e20181d29e06a437d"
+    },
+    {
+      "seed": 5,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03532359967667549,
+      "rms_one_step_command_residual_m": 0.021657048456857526,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence0_legacy_move_to.json",
+      "raw_sha256": "a235ef53db0cbf6f02b5b0751659b44e0123e58b434b2f970c4cc9161d68ff81"
+    },
+    {
+      "seed": 5,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025120510576800703,
+      "rms_one_step_command_residual_m": 0.012650667608598851,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence0_smooth_k1.json",
+      "raw_sha256": "a50677fd6901262e031a6c06c73ce4192dac1d8a31535481fdb0dd9884508d96"
+    },
+    {
+      "seed": 5,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020584842763571063,
+      "rms_one_step_command_residual_m": 0.011121616908400888,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence0_smooth_k4.json",
+      "raw_sha256": "23caf73ea85a90b59fce23ba564e0795d584d368c3970142be062b777af99175"
+    },
+    {
+      "seed": 5,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03697173726513657,
+      "rms_one_step_command_residual_m": 0.022134794060843548,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence1_legacy_move.json",
+      "raw_sha256": "1007ed72b1098d996d676ca95655a29e29588942c02fd67380a0f57be3bfcd56"
+    },
+    {
+      "seed": 5,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.0364132415511349,
+      "rms_one_step_command_residual_m": 0.022063923434680503,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence1_legacy_move_to.json",
+      "raw_sha256": "e5f762f83d0dc812b885252a4afb0f5fa601d9b2e888f95c58afe3d931128dcd"
+    },
+    {
+      "seed": 5,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.0237420389526723,
+      "rms_one_step_command_residual_m": 0.012696141042015935,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence1_smooth_k1.json",
+      "raw_sha256": "cfabb6c8ae672ba4436cf8445e7ee758fc166bc22c8ef0bb78d546c3c58b75e4"
+    },
+    {
+      "seed": 5,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019834982186998203,
+      "rms_one_step_command_residual_m": 0.011173159210629462,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence1_smooth_k4.json",
+      "raw_sha256": "ca6557bb54a69ff9c4ccf5f4b582a6f0ed72c51d0afc41d13e33975c4388eaf2"
+    },
+    {
+      "seed": 5,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035241211726432145,
+      "rms_one_step_command_residual_m": 0.020171037283170767,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence2_legacy_move.json",
+      "raw_sha256": "277469e6c6ac6709d94029a39dbc2d5fe09486080233af6be9f8839248de9edb"
+    },
+    {
+      "seed": 5,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506682626548195,
+      "rms_one_step_command_residual_m": 0.020100589260309065,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence2_legacy_move_to.json",
+      "raw_sha256": "7ee43e5946203f54381cd2e3baee1e070ada3a296b0911d5b41c55eb94e6cfc4"
+    },
+    {
+      "seed": 5,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 132,
+      "max_one_step_command_residual_m": 0.03256998742280039,
+      "rms_one_step_command_residual_m": 0.01465745669144744,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence2_smooth_k1.json",
+      "raw_sha256": "994c6c87b536cfc0966ed8847f946fade760f4f6623b15f3ecf85bb04d8eefb7"
+    },
+    {
+      "seed": 5,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.02257138184972601,
+      "rms_one_step_command_residual_m": 0.011539515054406065,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed5_sequence2_smooth_k4.json",
+      "raw_sha256": "6e8c41ec5e285e2cc908ac33dd120152fd2fdc40c122ed86899e10e96ec3eb75"
+    },
+    {
+      "seed": 6,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035714744751004314,
+      "rms_one_step_command_residual_m": 0.02176322459360948,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence0_legacy_move.json",
+      "raw_sha256": "9bb68aeefbd585515c0ef0c1dafac9ea1d647d4a6c226369393f264cec4796e1"
+    },
+    {
+      "seed": 6,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03531010228220858,
+      "rms_one_step_command_residual_m": 0.02165328505164642,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence0_legacy_move_to.json",
+      "raw_sha256": "31d6f452a9b31cbea796d9f5d32f9435f97d09d6e54af34a5ea369496a1a2a28"
+    },
+    {
+      "seed": 6,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025142182191679498,
+      "rms_one_step_command_residual_m": 0.012626506852718355,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence0_smooth_k1.json",
+      "raw_sha256": "fb090f8280a1b900de1c20c2545098f940438f8ca7e1697db4656c9466d23af2"
+    },
+    {
+      "seed": 6,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.02054860599950162,
+      "rms_one_step_command_residual_m": 0.01110667269196587,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence0_smooth_k4.json",
+      "raw_sha256": "7a4757a86f06a057b3afe560dfbb992bc80c376a37f0af12b50d3e5c61bec35c"
+    },
+    {
+      "seed": 6,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.036963941280245334,
+      "rms_one_step_command_residual_m": 0.022133575954757605,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence1_legacy_move.json",
+      "raw_sha256": "a10581f5169f3457a8bd0580478c88c1f654c36fef7487f93c59cc0a8948d2fb"
+    },
+    {
+      "seed": 6,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03641714198995742,
+      "rms_one_step_command_residual_m": 0.02229879768088274,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence1_legacy_move_to.json",
+      "raw_sha256": "bc3fd9636fcdd91ba68d117f57ac1e9222b09a016f2d2658553be007a24c19c6"
+    },
+    {
+      "seed": 6,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.02391036418592311,
+      "rms_one_step_command_residual_m": 0.012711079473705382,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence1_smooth_k1.json",
+      "raw_sha256": "39023b2bc9c86c5372fc8721be7c42d99aeb9b38ca02f8dfa7977b92b03d2be1"
+    },
+    {
+      "seed": 6,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019910824239642,
+      "rms_one_step_command_residual_m": 0.011166283696399066,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence1_smooth_k4.json",
+      "raw_sha256": "fde60faa385a39d7bcdfd8c91ea5740f883640bf948c9e5424d49255efdf4297"
+    },
+    {
+      "seed": 6,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 63,
+      "max_one_step_command_residual_m": 0.035229108972658296,
+      "rms_one_step_command_residual_m": 0.020042984483477237,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence2_legacy_move.json",
+      "raw_sha256": "aa0f2ecb7672837347a2666df22cf9f71f2cd78750e11199e165dd13561123b1"
+    },
+    {
+      "seed": 6,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035056464021484976,
+      "rms_one_step_command_residual_m": 0.020109584170087128,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence2_legacy_move_to.json",
+      "raw_sha256": "ea4f1cc4211e600b9e1b6d69f93714dde26cb0b59ec59d12c4de3abace5b48f1"
+    },
+    {
+      "seed": 6,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.032683615501446085,
+      "rms_one_step_command_residual_m": 0.014679837436353723,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence2_smooth_k1.json",
+      "raw_sha256": "b022dc782a665f43ad52562ce7f802d6627b20cd164919b394952a85445fd08e"
+    },
+    {
+      "seed": 6,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022572285269263526,
+      "rms_one_step_command_residual_m": 0.011522261623531958,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed6_sequence2_smooth_k4.json",
+      "raw_sha256": "250cdc2e85cdf9f19b346df5a77bb6432c5106cfee7a5c19ff09cac55d99a09c"
+    },
+    {
+      "seed": 7,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.0357436558194102,
+      "rms_one_step_command_residual_m": 0.021736893163423435,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence0_legacy_move.json",
+      "raw_sha256": "ec6e493036520eeb8377b5cfe6c6f16aa0d83fa39fcbabda1f583ba30d3370fe"
+    },
+    {
+      "seed": 7,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03533682918490554,
+      "rms_one_step_command_residual_m": 0.021627408115878648,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence0_legacy_move_to.json",
+      "raw_sha256": "0ea58be27c27ddf0f7e8e27a5569471719f395534e6cc022a1342208cba49ad4"
+    },
+    {
+      "seed": 7,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.025023758902540362,
+      "rms_one_step_command_residual_m": 0.012598572223513476,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence0_smooth_k1.json",
+      "raw_sha256": "20f7ea5e63cefef9cdf387432459a62e414828b1adaac0ef0e15031032800161"
+    },
+    {
+      "seed": 7,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.020446988740642692,
+      "rms_one_step_command_residual_m": 0.011083304416784963,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence0_smooth_k4.json",
+      "raw_sha256": "31d465c2628005141195e8a3381f6e922b1fbebc9f73c19da3ad07563a53ae7a"
+    },
+    {
+      "seed": 7,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03692957878616333,
+      "rms_one_step_command_residual_m": 0.022162917391684283,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence1_legacy_move.json",
+      "raw_sha256": "6af7a10581725a2c15b2be2107f1b1aa1ce0f4422808021b49618bd6af0bf018"
+    },
+    {
+      "seed": 7,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03638502464707528,
+      "rms_one_step_command_residual_m": 0.022092114159543156,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence1_legacy_move_to.json",
+      "raw_sha256": "9c8310b676eda141fb94079cd4b03edc3103404f4d1a302f4c509270be667854"
+    },
+    {
+      "seed": 7,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.023789399061572954,
+      "rms_one_step_command_residual_m": 0.012730175652307352,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence1_smooth_k1.json",
+      "raw_sha256": "c7a886eb45f73a4c18a38ff2495d71a4a04ed2d5ac9fc0c5f024eac72104eca4"
+    },
+    {
+      "seed": 7,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019916848244470115,
+      "rms_one_step_command_residual_m": 0.011192819282249732,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence1_smooth_k4.json",
+      "raw_sha256": "a3faaa37d712fb6e17efd768f9e8b92a4620dd307e2ebcfc622eaea71418cbb6"
+    },
+    {
+      "seed": 7,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.035237671815059816,
+      "rms_one_step_command_residual_m": 0.020139131571319645,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence2_legacy_move.json",
+      "raw_sha256": "e9fa42c8bf6eba2c8b704e0f37b58a2177183c8def70d2dcba60d970c208c3db"
+    },
+    {
+      "seed": 7,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506320523257125,
+      "rms_one_step_command_residual_m": 0.02006853584757772,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence2_legacy_move_to.json",
+      "raw_sha256": "19938690123915c8c854afa8d828fa4520f7ff2359a84eceaa61d551897d301a"
+    },
+    {
+      "seed": 7,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 131,
+      "max_one_step_command_residual_m": 0.0321337280803081,
+      "rms_one_step_command_residual_m": 0.014540500740231756,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence2_smooth_k1.json",
+      "raw_sha256": "a76e33678e94d2ee02c2b73b9036c33a6662b5e1f890f4c52dbcadb0bedf41d2"
+    },
+    {
+      "seed": 7,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.02225489794394009,
+      "rms_one_step_command_residual_m": 0.011416226342768994,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed7_sequence2_smooth_k4.json",
+      "raw_sha256": "4a257651d0fb0f5edb484e4c60551bbccb8d45e73534135a85efddffcb3d3a77"
+    },
+    {
+      "seed": 8,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03571922487296663,
+      "rms_one_step_command_residual_m": 0.021699870194629895,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence0_legacy_move.json",
+      "raw_sha256": "b03a636edecc02e4afae43a125b733525ef22b5a20af4abce26090d224846976"
+    },
+    {
+      "seed": 8,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03531057492835835,
+      "rms_one_step_command_residual_m": 0.021590021335466485,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence0_legacy_move_to.json",
+      "raw_sha256": "319d5cd9a49c41cbf95a00f20b7efb86f16e101e25d377b0981f5645deaa2b5d"
+    },
+    {
+      "seed": 8,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.02494209324268775,
+      "rms_one_step_command_residual_m": 0.012511573409779793,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence0_smooth_k1.json",
+      "raw_sha256": "a4040bf844d51a18556c41a0f89ab876309a7cb7ba3a34bf9514c487664bf491"
+    },
+    {
+      "seed": 8,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.0202634205471068,
+      "rms_one_step_command_residual_m": 0.011032730875691945,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence0_smooth_k4.json",
+      "raw_sha256": "1543cde0837f2a7e575e4dc872d0ff1639585c7b54ce5fe687601b8be1a0df2a"
+    },
+    {
+      "seed": 8,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.036868791500540704,
+      "rms_one_step_command_residual_m": 0.02214217113480291,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence1_legacy_move.json",
+      "raw_sha256": "0a748f7381edf02bec91dfa224f22bfd442d13f5acf280ca21835f98e91f5df1"
+    },
+    {
+      "seed": 8,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.036349988204560583,
+      "rms_one_step_command_residual_m": 0.02230944878273152,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence1_legacy_move_to.json",
+      "raw_sha256": "bc1282c6773750f1f0bb44498a12ca0a15d58ad2cd02a4c2aec14566f9ee1b11"
+    },
+    {
+      "seed": 8,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.024005974787317794,
+      "rms_one_step_command_residual_m": 0.012777241016370046,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence1_smooth_k1.json",
+      "raw_sha256": "5b4d9f38abc754a23f30a282364b6622625b1cbe8ba2f56f3129f3fe237fb164"
+    },
+    {
+      "seed": 8,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.020088149540644817,
+      "rms_one_step_command_residual_m": 0.011193455158857534,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence1_smooth_k4.json",
+      "raw_sha256": "bfc0187aa56442a5945ab7664165bf72ae1bbbb1530221e8b571205e68ff2dd8"
+    },
+    {
+      "seed": 8,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03523283328179365,
+      "rms_one_step_command_residual_m": 0.020101538909859946,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence2_legacy_move.json",
+      "raw_sha256": "381e7a5c515230f21f7f50f507db1461c1283fe8471ce593621230397ff8ea83"
+    },
+    {
+      "seed": 8,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.0350597243113615,
+      "rms_one_step_command_residual_m": 0.020030880969903617,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence2_legacy_move_to.json",
+      "raw_sha256": "1485e3ceb187e1bcf50df01df4aa5e3b8b4e54d450b00951bb88e1e5cf9c2404"
+    },
+    {
+      "seed": 8,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 130,
+      "max_one_step_command_residual_m": 0.03143058989717021,
+      "rms_one_step_command_residual_m": 0.01430257752296865,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence2_smooth_k1.json",
+      "raw_sha256": "168d4be4f52715163eea7d07ebd31337872f42760dff93f246d0d4d9425c2040"
+    },
+    {
+      "seed": 8,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.02174647205484311,
+      "rms_one_step_command_residual_m": 0.011268094497664742,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed8_sequence2_smooth_k4.json",
+      "raw_sha256": "b40098b213ad23b9e6d556ebdbd352578693259941c6db26a09142ac62bf512b"
+    },
+    {
+      "seed": 9,
+      "sequence": 0,
+      "method": "legacy_move",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.035739959719475765,
+      "rms_one_step_command_residual_m": 0.02172002119283368,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence0_legacy_move.json",
+      "raw_sha256": "d30f3a3fbc6831c4675100b953025f8c4ac4e2eb44c64c6315f870c58dfc5549"
+    },
+    {
+      "seed": 9,
+      "sequence": 0,
+      "method": "legacy_move_to",
+      "controls": 38,
+      "max_one_step_command_residual_m": 0.03533082951598522,
+      "rms_one_step_command_residual_m": 0.021610231908261036,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence0_legacy_move_to.json",
+      "raw_sha256": "1fb319a3d3e4e8600f3a3a30cf03478f9e03f3706274dd16a07006cde53530dd"
+    },
+    {
+      "seed": 9,
+      "sequence": 0,
+      "method": "smooth_k1",
+      "controls": 91,
+      "max_one_step_command_residual_m": 0.02495069512113825,
+      "rms_one_step_command_residual_m": 0.012552627606993206,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence0_smooth_k1.json",
+      "raw_sha256": "d4f060083699dc123de5d46bd28798b196aa0b3338daf101c49518d2af8c26ae"
+    },
+    {
+      "seed": 9,
+      "sequence": 0,
+      "method": "smooth_k4",
+      "controls": 86,
+      "max_one_step_command_residual_m": 0.0203595576398081,
+      "rms_one_step_command_residual_m": 0.011063241711181702,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence0_smooth_k4.json",
+      "raw_sha256": "e77b9592a6def0d768aff70865080225d95a7feb8ceb1360441762f09261a78b"
+    },
+    {
+      "seed": 9,
+      "sequence": 1,
+      "method": "legacy_move",
+      "controls": 42,
+      "max_one_step_command_residual_m": 0.03688459056468713,
+      "rms_one_step_command_residual_m": 0.022153375841466063,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence1_legacy_move.json",
+      "raw_sha256": "0986d69087f106e650add0a7fe989456b5cd3c976a68d4015c0083ca8043c611"
+    },
+    {
+      "seed": 9,
+      "sequence": 1,
+      "method": "legacy_move_to",
+      "controls": 41,
+      "max_one_step_command_residual_m": 0.03637178489304768,
+      "rms_one_step_command_residual_m": 0.02232061164446629,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence1_legacy_move_to.json",
+      "raw_sha256": "cf3165f413d3b35c99ba41c82fb95b84a4463238c6e9b04045a356c2edf2d1ec"
+    },
+    {
+      "seed": 9,
+      "sequence": 1,
+      "method": "smooth_k1",
+      "controls": 97,
+      "max_one_step_command_residual_m": 0.023870449159384414,
+      "rms_one_step_command_residual_m": 0.012752354053131784,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence1_smooth_k1.json",
+      "raw_sha256": "db5130eaf99cd96cdbe33afe2d85715fc5e52b21259b5c03b633a9f064aae437"
+    },
+    {
+      "seed": 9,
+      "sequence": 1,
+      "method": "smooth_k4",
+      "controls": 95,
+      "max_one_step_command_residual_m": 0.019993341235553044,
+      "rms_one_step_command_residual_m": 0.011196413688123828,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence1_smooth_k4.json",
+      "raw_sha256": "90da1363889f1c7635994c5034c4a5078bca1413fec2d0a1bf7366fb72090689"
+    },
+    {
+      "seed": 9,
+      "sequence": 2,
+      "method": "legacy_move",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03524008667760357,
+      "rms_one_step_command_residual_m": 0.020125263775141344,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence2_legacy_move.json",
+      "raw_sha256": "fc4a1923042ec054493ae8182969aba8e47053c4eb2d7153a22a84cf48f8d3b1"
+    },
+    {
+      "seed": 9,
+      "sequence": 2,
+      "method": "legacy_move_to",
+      "controls": 62,
+      "max_one_step_command_residual_m": 0.03506532415992692,
+      "rms_one_step_command_residual_m": 0.020054541174750307,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence2_legacy_move_to.json",
+      "raw_sha256": "bc1cdda8bcbd4cd64123b254ad903a8109d58b587476f80121f13eb231ad2c0b"
+    },
+    {
+      "seed": 9,
+      "sequence": 2,
+      "method": "smooth_k1",
+      "controls": 130,
+      "max_one_step_command_residual_m": 0.03191417867607985,
+      "rms_one_step_command_residual_m": 0.014465924888155313,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence2_smooth_k1.json",
+      "raw_sha256": "a16f3b6968f70b4578181197e35c0347c6cfbdeecf18b82012362a7120a3b05e"
+    },
+    {
+      "seed": 9,
+      "sequence": 2,
+      "method": "smooth_k4",
+      "controls": 126,
+      "max_one_step_command_residual_m": 0.022031625910689242,
+      "rms_one_step_command_residual_m": 0.011349705235091913,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/motion_20261017/job7754/seed9_sequence2_smooth_k4.json",
+      "raw_sha256": "3866fa44f447a5c74e4f30e425d0189742d269fa722a658e815796f60e798b1a"
+    }
+  ]
+}
