@@ -1407,6 +1407,14 @@ class MeasuredSkillAdapter:
         self.refresh()
         if skill == 'observe':
             self.committed_grasps.clear()
+            if (parameters['mode'] == 'wrist_scan' and self.held is None
+                    and np.linalg.norm(np.asarray(self.robot()['eef_xyz_m'])-before['eef_xyz_m'])
+                    > self.config.endpoint_tolerance_m):
+                # A measured scan withdrawal breaks unverified surface
+                # contact. Do not let the next nudge act on its old identity
+                # while the hand is now above the object.
+                self.active = None
+                self.grasp_reference = None
         if skill == 'set_gripper' and parameters.get('mode') == 'close' and self.active:
             if self.active in self.committed_grasps:
                 self.committed_grasps[self.active]['contact_robot'] = measured_robot(self.p)

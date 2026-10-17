@@ -977,6 +977,24 @@ def test_rejected_wrist_scan_is_a_failure(adapter):
     assert receipt["steps_used"] == 0
 
 
+@pytest.mark.parametrize('mode,held,blocked,retained', [
+    ('wrist_scan', None, False, False), ('wrist_scan', 'e1', False, True),
+    ('refresh', None, False, True), ('wrist_scan', None, True, True)])
+def test_scan_withdrawal_clears_only_unverified_contact(adapter, mode, held, blocked, retained):
+    adapter.active, adapter.held = 'e1', held
+    adapter.grasp_reference = (adapter.scene.entities['e1'], np.zeros(3))
+    request = adapter.request(k=1)
+    if blocked:
+        adapter._cloud_and_ik = lambda *args, **kwargs: lambda poses: {
+            'passed': False, 'reason': 'measured_sweep_collision'}
+    scan = next(c for c in request['candidates'] if c['skill'] == 'observe'
+        and c['parameters']['mode'] == mode)
+    adapter.execute(request, decision(request, [scan['id']]))
+    assert (adapter.active == 'e1') is retained
+    assert (adapter.grasp_reference is not None) is retained
+    assert adapter.held == held
+
+
 def test_wrist_scan_reference_endpoint_does_not_imply_measured_arrival(adapter, monkeypatch):
     request = adapter.request(k=1)
     monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion.run', lambda *args, **kwargs: {
