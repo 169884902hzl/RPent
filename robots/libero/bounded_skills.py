@@ -341,6 +341,23 @@ class MeasuredSkillAdapter:
                 completed, evidence = complete_crossview_boundary(world, mask, other_world, other_mask, metadata)
                 samples[camera] = world[completed]
                 next(row for row in records if row['camera'] == camera)['crossview'] = evidence
+        entity = self.scene.entities.get(anchor_id)
+        if entity is not None and entity.part_of and samples:
+            # The independent fixture band may be segmented in only one
+            # view. Recover current pixels of that measured surface in the
+            # other view, never pixels inferred from the part's bounds alone.
+            current_samples = [points for camera, points in samples.items()
+                if views[camera].get('source_step') == self.ex.toolkit._state.latest_step]
+            if current_samples:
+                surface = np.concatenate(current_samples)
+                for camera in ('agentview', 'wrist'):
+                    if camera in samples:
+                        continue
+                    world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
+                    completed, evidence = complete_contact_surface(world, surface)
+                    samples[camera] = world[completed]
+                    records.append({'camera': camera, 'source_step': self.ex.toolkit._state.latest_step,
+                        'source': 'current_rgbd_matches_current_measured_fixture_band', **evidence})
         result = np.concatenate(list(samples.values())) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
         if anchor_id == self.held and self.payload_reference is not None and self._base_geometry is not None:
             from robots.libero.bounded_payload import (

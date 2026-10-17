@@ -1007,14 +1007,57 @@ class MeasuredScene:
                     self.fixture_front_axes[parent.id] = front
             if self.microwave_door_cloud_v6 and parent.name == "microwave":
                 parts = self._measure_microwave_door(parent, camera)
+                raw_parts, raw_views = {}, {}
             else:
                 parts = fixture_parts(parent, points, front, calibrated_front=self.fixture_front_geometry_v1)
+                # Preserve original per-camera pixels for the same measured
+                # bands. Fused centroids cannot identify current pixels for
+                # contact/obstacle separation in the bounded executor.
+                raw_views = {}
+                for measured_parent in (parent, *attached):
+                    for view, sample in self.measurement_clouds_by_view.get(measured_parent.id, {}).items():
+                        if sample.get('source_step') == state.latest_step:
+                            raw_views.setdefault(view, []).append(np.asarray(sample['xyz_world']).reshape(-1, 3))
+                raw_views = {view: np.concatenate(clouds) for view, clouds in raw_views.items() if clouds}
+                raw_parts = {}
+                if raw_views:
+                    fixture_parts(parent, np.concatenate(list(raw_views.values())), front,
+                        calibrated_front=self.fixture_front_geometry_v1, measured_clouds=raw_parts)
+                for drawer in attached:
+                    # An independently segmented drawer includes its rim;
+                    # cutting it at the generic front band's roof exclusion
+                    # would leave that same moving rim as a static obstacle.
+                    matches = [part for part in parts if part['name'].endswith('drawer')
+                        and part['lower'][2] <= drawer.xyz[2] <= part['upper'][2]]
+                    if len(matches) == 1 and matches[0]['name'] in raw_parts:
+                        current = [np.asarray(sample['xyz_world']).reshape(-1, 3)
+                            for sample in self.measurement_clouds_by_view.get(drawer.id, {}).values()
+                            if sample.get('source_step') == state.latest_step]
+                        if current:
+                            name = matches[0]['name']
+                            raw_parts[name] = np.concatenate([raw_parts[name], *current])
+                self.fixture_measurement_evidence[parent.id]['part_pixel_measurements'] = {}
             for measured in parts:
                 old = next((e for e in self.entities.values()
                             if e.name == measured["name"] and e.part_of == parent.id), None)
                 eid = old.id if old else self._ids.pop()
                 self.entities[eid] = Entity(eid, **measured, part_of=parent.id,
                                             source_step=source_step)
+                self.measurement_clouds_by_view.pop(eid, None)
+                self.measurement_clouds.pop(eid, None)
+                if measured['name'] in raw_parts:
+                    from scipy.spatial import cKDTree
+                    cloud = raw_parts[measured['name']]
+                    tree = cKDTree(cloud)
+                    views = {view: samples[tree.query(samples,
+                        distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6]
+                        for view, samples in raw_views.items()}
+                    views = {view: samples for view, samples in views.items() if len(samples)}
+                    self.measurement_clouds[eid] = cloud
+                    self.cache_independent_views(self.entities[eid], views)
+                    self.fixture_measurement_evidence[parent.id]['part_pixel_measurements'][eid] = {
+                        'basis': 'current_segmented_fixture_band_raw_pixels/1-dev',
+                        'source_step': source_step, 'points_by_camera': {v: len(p) for v, p in views.items()}}
         if self.microwave_instance_geometry_v4 and self.microwave_door_cloud_v6:
             self._consolidate_microwave_parents(instance_masks, camera)
 

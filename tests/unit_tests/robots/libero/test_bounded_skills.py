@@ -233,6 +233,25 @@ def test_current_handle_pixels_are_contact_members_but_stale_samples_are_not(ada
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+def test_derived_part_recovers_other_view_surface_but_not_neighbour(adapter):
+    part = Entity('e2', 'cabinet top drawer', (.1, .1, .9), (.08, .08, .88), (.12, .12, .92),
+        True, 3, part_of='e1', geometry='measured_front_band')
+    adapter.scene.entities[part.id] = part
+    y, x = np.mgrid[:8, :20]
+    primary = np.stack([x*.0005, y*.0005, np.ones_like(x)], axis=-1)
+    secondary = primary.copy()
+    secondary[..., 2] += .0008
+    secondary[:, 12:, 2] += .003
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=3,
+        load=lambda name: primary if name.startswith('agentview') else secondary))
+    adapter.scene.measurement_clouds_by_view = {part.id: {'agentview': {
+        'xyz_world': primary.reshape(-1, 3), 'source_step': 3}}}
+    pixels = adapter._instance_pixels(part.id)
+    assert np.any(np.all(pixels == secondary[4, 5], axis=1))
+    assert not np.any(np.all(pixels == secondary[4, 16], axis=1))
+    assert adapter.instance_boundary_evidence[part.id][-1]['private_pose_used'] is False
+
+
 def test_contacted_handle_recovers_current_surface_but_keeps_adjacent_obstacle(adapter, tmp_path):
     from robots.libero.bounded_motion import measured_robot
 

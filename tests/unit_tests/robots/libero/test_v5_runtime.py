@@ -657,6 +657,47 @@ def test_fixture_support_does_not_collect_other_objects_inside_its_bounds(tmp_pa
     assert evidence["point_selection"] == "segmented_instance_clouds_rgbd/2-dev"
 
 
+def test_derived_drawer_keeps_current_raw_pixels_and_excludes_stale_view(tmp_path):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+
+    def save(name, points, step):
+        np.savez_compressed(tmp_path/name, points)
+        return tmp_path/name
+    state = SimpleNamespace(latest_step=0, save=save,
+        artifact_path=lambda name, step: tmp_path/name,
+        load=lambda _: {'extrinsic_cam2world': np.eye(4)})
+    scene = MeasuredScene(SimpleNamespace(_state=state), None, 0, furniture_parts_v1=True)
+    parent = Entity('e0', 'cabinet', (0., 0., 1.), (-.12, -.08, .9), (.12, .08, 1.11))
+    raw = np.array([(x, .08, z) for x in np.linspace(-.1, .1, 20)
+        for z in np.linspace(1.045, 1.095, 20)])
+    scene.entities = {parent.id: parent}
+    scene.measurement_clouds[parent.id] = raw[::7]+[.0001, 0., 0.]
+    scene.cache_independent_views(parent, {'agentview': raw, 'wrist': raw+[0., -.02, 0.]})
+    scene.measurement_clouds_by_view[parent.id]['wrist']['source_step'] = -1
+    scene.refresh_fixture_parts(raw.reshape(20, 20, 3), {parent.id: np.ones((20, 20), bool)})
+    part = next(e for e in scene.entities.values() if e.name == 'cabinet top drawer')
+    views = scene.measurement_clouds_by_view[part.id]
+    assert set(views) == {'agentview'}
+    np.testing.assert_array_equal(views['agentview']['xyz_world'], raw)
+    assert views['agentview']['source_step'] == 0
+    assert scene.fixture_measurement_evidence[parent.id]['part_pixel_measurements'][part.id][
+        'points_by_camera'] == {'agentview': 400}
+    # A separately segmented drawer's upper rim remains part of it even
+    # above the generic band's 1 cm roof exclusion.
+    scene.fixture_drawer_clouds_v2 = True
+    rim = np.array([(x, .08, z) for x in np.linspace(-.1, .1, 20)
+        for z in np.linspace(1.045, 1.105, 20)])
+    drawer = Entity('e00', 'drawer', (0., .08, 1.07), (-.1, .08, 1.045), (.1, .08, 1.105), True, 0)
+    scene.entities[drawer.id] = drawer
+    scene.measurement_clouds[drawer.id] = rim
+    scene.cache_independent_views(drawer, {'agentview': rim})
+    scene.refresh_fixture_parts(raw.reshape(20, 20, 3), {
+        parent.id: np.ones((20, 20), bool), drawer.id: np.ones((20, 20), bool)})
+    assert scene.measurement_clouds_by_view[part.id]['agentview']['xyz_world'][:, 2].max() == 1.105
+
+
 @pytest.mark.parametrize("enabled", [False, True])
 def test_measured_mug_rim_can_precede_handle_without_forcing_wrist_yaw(monkeypatch, enabled):
     import numpy as np

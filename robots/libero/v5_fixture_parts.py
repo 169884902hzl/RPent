@@ -592,7 +592,8 @@ def measured_stove_control_pose(points, parent: Entity, camera_xyz):
     return pose, evidence
 
 
-def fixture_parts(parent: Entity, points, front_axis, *, calibrated_front=False) -> list[dict]:
+def fixture_parts(parent: Entity, points, front_axis, *, calibrated_front=False,
+                  measured_clouds=None) -> list[dict]:
     """Return measured bands, leaving an occluded/empty band absent.
 
     Drawer names denote geometric bands of a cabinet front. This does not
@@ -642,4 +643,6 @@ def fixture_parts(parent: Entity, points, front_axis, *, calibrated_front=False)
         lower, upper = np.quantile(cloud, (.02, .98), axis=0)
         result.append({"name": name, "xyz": tuple(np.median(cloud, axis=0)),
                        "lower": tuple(lower), "upper": tuple(upper), "geometry": geometry})
+        if measured_clouds is not None:
+            measured_clouds[name] = cloud
     return result
