@@ -39,6 +39,22 @@ def test_current_contact_boundary_remeasures_handle_edge_but_keeps_a_depth_jump(
     assert evidence['private_pose_used'] is False
 
 
+def test_sparse_planar_corner_uses_measured_tangents_without_bridging_a_straight_gap():
+    from robots.libero.v5_grasp_geometry import complete_planar_boundary
+
+    y, x = np.mgrid[:9, :9]
+    world = np.stack([x*.005, y*.005, np.full(x.shape, .9)], axis=-1)
+    mask = (x+y) < 8
+    assert not complete_planar_boundary(world, mask)[0][4, 4]
+    completed, evidence = complete_planar_boundary(world, mask, measured_tangent_spacing=True)
+    assert completed[4, 4]
+    assert evidence['spacing_source'] == 'measured_two_axis_pixel_tangents'
+    # One image axis cannot support the same extrapolation across a gap.
+    assert not complete_planar_boundary(world, x < 4, measured_tangent_spacing=True)[0][:, 4:].any()
+    world[4, 4, 2] += .004
+    assert not complete_planar_boundary(world, mask, measured_tangent_spacing=True)[0][4, 4]
+
+
 def test_planar_boundary_keeps_offset_surface_and_only_completes_one_ring():
     from robots.libero.v5_grasp_geometry import complete_planar_boundary
 

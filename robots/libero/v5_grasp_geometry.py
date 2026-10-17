@@ -8,7 +8,8 @@ import numpy as np
 VERSION = 'public-grasp-geometry/1-dev'
 
 
-def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.001):
+def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.001,
+                             measured_tangent_spacing=False):
     """Recover one omitted edge pixel on a measured local two-axis surface."""
     from scipy.ndimage import binary_dilation
 
@@ -19,7 +20,25 @@ def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.00
     for y, x in zip(*np.nonzero(ring)):
         ys, xs = slice(max(0, y-3), y+4), slice(max(0, x-3), x+4)
         local = world[ys, xs][mask[ys, xs] & valid[ys, xs]]
-        if len(local) < 6 or np.linalg.norm(local-world[y, x], axis=1).min() > max_step_m:
+        if len(local) < 6:
+            continue
+        spacing = max_step_m
+        if measured_tangent_spacing:
+            # A grazing view samples a continuous plane more sparsely.
+            # Two independent image axes must each have two interior
+            # samples; a line or straight mask edge cannot bridge a gap.
+            axes_supported, steps = set(), []
+            for dy, dx in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+                yy, xx, y2, x2 = y+dy, x+dx, y+2*dy, x+2*dx
+                if (0 <= yy < world.shape[0] and 0 <= xx < world.shape[1]
+                        and 0 <= y2 < world.shape[0] and 0 <= x2 < world.shape[1]
+                        and mask[yy, xx] and mask[y2, x2]
+                        and valid[yy, xx] and valid[y2, x2]):
+                    axes_supported.add(bool(dy))
+                    steps.append(float(np.linalg.norm(world[yy, xx]-world[y2, x2])))
+            if len(axes_supported) == 2:
+                spacing = max(spacing, 2*max(steps))
+        if np.linalg.norm(local-world[y, x], axis=1).min() > spacing:
             continue
         centre = local.mean(axis=0)
         _, spread, axes = np.linalg.svd(local-centre, full_matrices=False)
@@ -31,9 +50,13 @@ def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.00
             continue
         result[y, x] = True
         added += 1
-    return result, {'version': 'public-local-plane-instance-boundary/1-dev',
+    return result, {'version': ('public-local-plane-instance-boundary/2-dev'
+                               if measured_tangent_spacing else 'public-local-plane-instance-boundary/1-dev'),
         'candidate_pixels': int(ring.sum()), 'added_pixels': added,
-        'max_step_m': max_step_m, 'max_residual_m': max_residual_m,
+        'max_step_m': None if measured_tangent_spacing else max_step_m,
+        'minimum_step_limit_m': max_step_m, 'max_residual_m': max_residual_m,
+        'tangent_span_multiplier': 2 if measured_tangent_spacing else None,
+        'spacing_source': 'measured_two_axis_pixel_tangents' if measured_tangent_spacing else 'fixed_metric_limit',
         'source': 'current_instance_mask_and_same_view_local_rgbd_plane',
         'private_target_pose_used': False}
 

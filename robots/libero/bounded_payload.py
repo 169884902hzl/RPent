@@ -106,7 +106,8 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         # seed the next tangent extension. Include that stage in convergence;
         # a final plane pass alone left its newly supported edge as an obstacle.
         if not directional_added:
-            extended, _ = complete_planar_boundary(bounded_world, current)
+            extended, _ = complete_planar_boundary(bounded_world, current,
+                measured_tangent_spacing=surface_extent is not None)
             extended = keep_stationary(extended)
             planar_added = int((extended & ~current).sum())
             current = extended
