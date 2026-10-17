@@ -2,20 +2,20 @@
 from __future__ import annotations
 
 import argparse
-import cProfile
 import copy
-from collections import Counter
-from contextlib import contextmanager
+import cProfile
 import hashlib
 import inspect
 import json
 import os
-from pathlib import Path
 import random
 import re
 import subprocess
 import time
 import traceback
+from collections import Counter
+from contextlib import contextmanager
+from pathlib import Path
 
 import numpy as np
 
@@ -47,7 +47,11 @@ def public_vocabulary(instruction):
     No per-scene object inventory, instance count or BDDL symbol is consumed.
     All resulting entities still require RGB-D segmentation/measurement.
     """
-    from robots.libero.v5_runtime import category, instruction_noun_phrases, scene_vocabulary
+    from robots.libero.v5_runtime import (
+        category,
+        instruction_noun_phrases,
+        scene_vocabulary,
+    )
 
     text = instruction.lower().replace('_', ' ')
     names = set(scene_vocabulary([], text))
@@ -100,10 +104,21 @@ def category_of(instruction):
     return None
 
 
+def probe_config(base, override=None):
+    """Use the registered base settings unless an explicit override is given."""
+    source = base if override is None else override
+    config = dict(source.get('budget', source))
+    if source.get('grasp_measurement_calibration') is not None:
+        from harness_v5_eval import load_grasp_measurement_calibration
+        config['grasp_measurement_calibration'], _ = load_grasp_measurement_calibration(
+            source['grasp_measurement_calibration'])
+    return config
+
+
 def build_plan(output, count, permanent_exclusions=None):
     """Fix the original task/state cohort before any policy result is read."""
-    from rlinf.envs.libero.utils import benchmark
     from libero.libero import get_libero_path
+    from rlinf.envs.libero.utils import benchmark
     expected = {"bowl_transfer", "plate_push", "box_transfer", "cup_transfer", "container",
                 "drawer_open", "drawer_close", "stove_on", "stove_off", "microwave_open", "microwave_close"}
     selected, catalog = {}, []
@@ -169,17 +184,22 @@ def services(output, *, vla=True):
 def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpoint=None,
             decision_latency_s=.9853, preparation_latency_s=0., initial_snapshot=None,
             pick_branch=False):
-    from robots.libero.toolkit import LiberoToolkit
-    from robots.libero.v5_runtime import MeasuredScene, V5Executor, category, scene_vocabulary
-    from robots.libero.bounded_skills import MeasuredSkillAdapter
     from robots.libero.bounded_oracle import BoundedOracle, NoPublicOption
+    from robots.libero.bounded_skills import MeasuredSkillAdapter
+    from robots.libero.toolkit import LiberoToolkit
     from robots.libero.v5_oracle_policy import OriginalOraclePolicy
+    from robots.libero.v5_runtime import (
+        MeasuredScene,
+        V5Executor,
+        category,
+        scene_vocabulary,
+    )
     from robots.libero.v5_state import candidates
+    from robots.libero.v5_subtasks import subtask_candidates
     from rpent.dashboard.events import NullDashboardEventSink
     from rpent.memory import MemoryManager
     from rpent.robots.components.pi05_vla_client import Pi05VLAClient
     from rpent.robots.components.sam3_client import Sam3Client
-    from robots.libero.v5_subtasks import subtask_candidates
     ep = case["episode"]
     facade, primitives = original_session(ep["suite"], ep["task"], ep["seed"], 10000)
     if initial_snapshot is not None:
@@ -466,8 +486,8 @@ def main():
         return
     if args.manifest is None or args.output is None:
         parser.error("manifest and output are required")
-    manifest = args.manifest.resolve(strict=True)
-    plan = json.loads(manifest.read_text())
+    from scripts.v5_probe_preflight import load_pinned_manifest
+    manifest, plan, base = load_pinned_manifest(args.manifest)
     cases = plan["cases"][args.shard::args.shards]
     if args.startup:
         cases = cases[:1]
@@ -485,8 +505,8 @@ def main():
     if plan.get('permanent_exclusions'):
         from scripts.bounded_state_exclusions import check_exclusions
         exclusion_report = check_exclusions(cases, plan['permanent_exclusions'])
-    config = json.loads(args.config.resolve(strict=True).read_text()) if args.config else {}
-    config = config.get("budget", config)
+    override = json.loads(args.config.resolve(strict=True).read_text()) if args.config else None
+    config = probe_config(base, override)
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)
     if exclusion_report is not None:
@@ -517,9 +537,11 @@ def main():
                     except Exception as exc:
                         result = {"case": case, "arm": arm, "status": "startup_error" if args.startup else "execution_error",
                                   "error": type(exc).__name__, "message": str(exc), "traceback": traceback.format_exc(), "training": False}
-                        ledger.write(json.dumps(result)+"\n");ledger.flush()
+                        ledger.write(json.dumps(result)+"\n")
+                        ledger.flush()
                         raise
-                    ledger.write(json.dumps(result)+"\n");ledger.flush()
+                    ledger.write(json.dumps(result)+"\n")
+                    ledger.flush()
 
 
 if __name__ == "__main__":

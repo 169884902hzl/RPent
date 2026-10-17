@@ -7,15 +7,23 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import json
 import os
-from pathlib import Path
 import pickle
+from pathlib import Path
 
 from scripts.bounded_state_exclusions import check_exclusions
-from scripts.probe_bounded_feasibility import ORIGINAL_SUITES, episode, services
+from scripts.probe_bounded_feasibility import (
+    ORIGINAL_SUITES,
+    episode,
+    probe_config,
+    services,
+)
 from scripts.probe_bounded_motion import original_session, write
-from scripts.v5_probe_preflight import pinned_file, validate_registered_states
+from scripts.v5_probe_preflight import (
+    load_pinned_manifest,
+    pinned_file,
+    validate_registered_states,
+)
 
 
 def run_pair(case, endpoints, output, config, *, session=original_session, run=episode):
@@ -56,7 +64,7 @@ def main():
     args = parser.parse_args()
     if os.environ.get('LIBERO_TYPE') != 'standard' or args.count < 1:
         parser.error('LIBERO_TYPE=standard and count>=1 required')
-    plan = json.loads(args.manifest.resolve(strict=True).read_text())
+    _, plan, base = load_pinned_manifest(args.manifest)
     if not plan.get('permanent_exclusions'):
         raise ValueError('same-state forks require a pinned permanent-state registry')
     cases = [case for case in plan['cases'] if case['category'] in
@@ -72,7 +80,7 @@ def main():
     write(output/'state_exclusion_check.json', exclusion)
     with services(output, vla=True) as endpoints:
         for case in cases:
-            run_pair(case, endpoints, output/case['name'], plan.get('budget', {}))
+            run_pair(case, endpoints, output/case['name'], probe_config(base))
 
 
 if __name__ == '__main__':

@@ -81,9 +81,29 @@ def test_bounded_queries_depend_only_on_instruction_and_static_labels():
     assert set(public_vocabulary('close the microwave')) == {'microwave', 'table'}
 
 
+def test_registered_base_calibration_reaches_probe_executor_configuration(monkeypatch):
+    from scripts.probe_bounded_feasibility import probe_config
+
+    calibration = {'opening_calibration': {'closed_empty_max_m': .0018}}
+    consumed = []
+    def load(value):
+        consumed.append(value)
+        return calibration, {'source': 'pinned_calibration'}
+    monkeypatch.setattr('harness_v5_eval.load_grasp_measurement_calibration', load)
+    config = probe_config({'budget': {'decisions': 160},
+                          'grasp_measurement_calibration': '/registered/robot_calibration.json'})
+    assert consumed == ['/registered/robot_calibration.json']
+    assert config['grasp_measurement_calibration'] is calibration
+    assert config['decisions'] == 160
+    # An explicit historical control config retains its exact settings.
+    assert probe_config({'budget': {'decisions': 160}}, {'budget': {'max_decisions': 100}}) == {
+        'max_decisions': 100}
+
+
 def test_forks_use_identical_full_snapshot_without_sharing_branch_results(tmp_path):
     import hashlib
     import pickle
+
     from scripts.probe_bounded_forks import run_pair
 
     saved = {'sim_state': [1., 2.], 'actuator_state': {'rng': [17]}, 'counters': {'steps': 0}}

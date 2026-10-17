@@ -6,27 +6,46 @@ is confined to the existing grasp-region perception code.
 """
 from __future__ import annotations
 
-import hashlib
-import json
-import math
 import copy
+import hashlib
+import math
 from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_robot, public_control
+from robots.libero.bounded_motion import (
+    MotionConfig,
+    SmoothMotion,
+    measured_robot,
+    public_control,
+)
 from robots.libero.bounded_screen import PublicRouteScreen
-from robots.libero.bounded_self_filter import gripper_visual_boxes, remove_current_gripper, remove_visual_robot
+from robots.libero.bounded_self_filter import (
+    gripper_visual_boxes,
+    remove_current_gripper,
+    remove_visual_robot,
+)
 from robots.libero.v5_geometric_grasp import panda_geometry, side_site_rotation
-from robots.libero.v5_grasp_geometry import clean_object_mask, complete_crossview_boundary, complete_instance_boundary, complete_planar_boundary
+from robots.libero.v5_grasp_geometry import (
+    clean_object_mask,
+    complete_crossview_boundary,
+    complete_instance_boundary,
+    complete_planar_boundary,
+)
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_state import fixture_actions
 from robots.libero.v5_subtasks import measured_instance_description, subtask_phrase
 from rpent.skill_package import VERSION
-from rpent.skill_package.contract import BOUNDARIES, FailureMemory, identity, selected, validate
+from rpent.skill_package.contract import (
+    BOUNDARIES,
+    FailureMemory,
+    identity,
+    selected,
+    validate,
+)
 from rpent.skill_package.vla import DevelopmentHistory, VLABudget, run_fallback
 
 MOTION_SKILLS = {"move_to", "align", "descend", "lift", "carry_to", "lower", "rotate_wrist", "nudge"}
@@ -80,6 +99,23 @@ class MeasuredSkillAdapter:
         self._proprio_sample = step, np.asarray(state["eef_xyz_m"]), velocity
         return {key: state[key] for key in ("eef_xyz_m", "eef_quat_xyzw", "gripper_opening_m")} | {
             "held_anchor_id": self.held, "velocity_m_s": velocity}
+
+    def holding_aperture(self, opening):
+        """Exclude measured empty jaws without rejecting a thin held rim.
+
+        Aperture only permits the RGB-D lift/coupling checks; it cannot prove
+        a grasp. Reuse the registered original-task robot sensor calibration.
+        """
+        calibration = getattr(self.ex, 'grasp_measurement_calibration', None)
+        if calibration is None:
+            return .005 < opening < .075, {'source': 'legacy_uncalibrated_aperture_range',
+                                          'opening_m': opening}
+        limits = calibration['opening_calibration']
+        lower = limits['closed_empty_max_m']+limits['tolerance_m']
+        upper = limits['open_empty_min_m']-limits['tolerance_m']
+        return lower < opening < upper, {'source': 'original_empty_gripper_proprioception',
+            'opening_m': opening, 'empty_closed_upper_m': lower, 'empty_open_lower_m': upper,
+            'calibration_source': calibration.get('source_report')}
 
     def refresh(self):
         self.ex.capture()
@@ -851,8 +887,10 @@ class MeasuredSkillAdapter:
                 rise = current.lower[2]-source.lower[2]
                 coupling = np.linalg.norm((np.array(current.xyz)-source.xyz)-(np.array(self.robot()["eef_xyz_m"])-eef_at_contact))
                 opening = self.robot()["gripper_opening_m"]
-                detail["public_hold"] = {"rise_m": rise, "relative_displacement_m": float(coupling), "opening_m": opening}
-                if rise >= .03 and coupling <= .015 and .005 < opening < .075:
+                aperture, aperture_evidence = self.holding_aperture(opening)
+                detail["public_hold"] = {"rise_m": rise, "relative_displacement_m": float(coupling),
+                                         "opening_m": opening, 'aperture': aperture_evidence}
+                if rise >= .03 and coupling <= .015 and aperture:
                     self.held = key
                     if payload_reference is not None:
                         self.payload_reference = payload_reference
@@ -898,22 +936,37 @@ class MeasuredSkillAdapter:
         checks = []
         self.vla_trace = []
         hold_frames = []
+        hold_verified = False
         def observe():
+            nonlocal hold_verified
             self.refresh()
             current = self.scene.entities.get(source.id)
             robot = self.robot()
             displacement = np.asarray(current.xyz)-initial.xyz if current and current.visible else np.full(3, np.nan)
             completed = False
+            hold_evidence = None
             if mode == "pick" and current and current.visible:
-                raised = current.lower[2]-initial.lower[2] >= .03 and .005 < robot["gripper_opening_m"] < .075
+                aperture, aperture_evidence = self.holding_aperture(robot['gripper_opening_m'])
+                rise = current.lower[2]-initial.lower[2]
+                raised = rise >= .03 and aperture
                 if raised:
                     hold_frames.append((np.array(current.xyz), np.array(robot["eef_xyz_m"])))
                 else:
                     hold_frames.clear()
+                    hold_verified = False
+                hold_evidence = {'rise_m': rise, 'aperture': aperture_evidence,
+                                 'relative_displacement_m': None, 'hand_displacement_m': None}
                 if len(hold_frames) >= 2:
                     obj_before, hand_before = hold_frames[-2]
-                    completed = np.linalg.norm((np.array(current.xyz)-obj_before)
-                        -(np.array(robot["eef_xyz_m"])-hand_before)) <= .015
+                    hand_delta = np.array(robot['eef_xyz_m'])-hand_before
+                    coupling = float(np.linalg.norm((np.array(current.xyz)-obj_before)-hand_delta))
+                    hold_evidence.update(relative_displacement_m=coupling,
+                        hand_displacement_m=float(np.linalg.norm(hand_delta)))
+                    hold_verified = coupling <= .015 and (hold_verified or np.linalg.norm(hand_delta) >= .005)
+                    completed = hold_verified
+            elif mode == 'pick':
+                hold_frames.clear()
+                hold_verified = False
             elif mode in {"open", "close"}:
                 from robots.libero.v5_verification import measured_fixture_endpoint
                 state = self.scene.measure_fixture_endpoint(source, name)
@@ -938,6 +991,8 @@ class MeasuredSkillAdapter:
             progress = [*displacement.tolist(), distance]
             result = {"progress_vector_m": progress, "completed": bool(completed),
                       "outside_region": distance > .6, "evidence": [self._evidence(current)] if current else []}
+            if mode == 'pick':
+                result['public_hold'] = hold_evidence
             checks.append(result)
             return result
         def prepare():

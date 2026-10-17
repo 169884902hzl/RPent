@@ -6,8 +6,7 @@ import pytest
 
 from robots.libero.bounded_skills import MeasuredSkillAdapter
 from robots.libero.v5_state import Entity
-from rpent.skill_package.contract import selected
-from rpent.skill_package.contract import validate
+from rpent.skill_package.contract import selected, validate
 from tests.unit_tests.robots.libero.test_bounded_motion import FakePrimitives
 
 
@@ -157,6 +156,7 @@ def test_no_opposition_does_not_build_full_scene_or_skip_route_checks(adapter, m
 
 def test_fixture_stages_along_measured_normal_and_uses_pad_contact_offset(adapter):
     from dataclasses import replace
+
     from scipy.spatial.transform import Rotation
 
     adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='microwave')
@@ -197,6 +197,7 @@ def test_current_handle_pixels_are_contact_members_but_stale_samples_are_not(ada
 
 def test_fixture_bar_is_clamped_across_its_measured_short_section(adapter, tmp_path):
     from dataclasses import replace
+
     from scipy.spatial.transform import Rotation
 
     rng = np.random.default_rng(16102026)
@@ -516,6 +517,46 @@ def test_vla_success_lost_during_handoff_is_not_final_success(adapter, monkeypat
     assert result['outcome'] == 'failure'
     assert result['stop_reason'] == 'completion_lost_during_handoff'
     assert adapter.held is None
+
+
+@pytest.mark.parametrize('opening,move_after_lift,expected', [
+    (.00458, True, True), (.0018, True, False), (.079, True, False), (.00458, False, False),
+])
+def test_vla_pick_uses_calibrated_aperture_and_observed_motion(
+        adapter, monkeypatch, opening, move_after_lift, expected):
+    from dataclasses import replace
+
+    adapter.allow_vla = True
+    adapter.ex.grasp_measurement_calibration = {'opening_calibration': {
+        'closed_empty_max_m': .0018488315399736166, 'tolerance_m': .000853613018989563,
+        'open_empty_min_m': .07815118134021759},
+        'source_report': {'sha256': '0'*64}}
+    original = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original(), 'robot0_gripper_qpos': [opening/2, -opening/2]}
+    def fallback(**kwargs):
+        observe = kwargs['observe']
+        assert not observe()['completed']
+        source = adapter.scene.entities['e1']
+        def lift(distance):
+            nonlocal source
+            delta = np.array([0., 0., distance])
+            source = replace(source, xyz=tuple(np.array(source.xyz)+delta),
+                lower=tuple(np.array(source.lower)+delta), upper=tuple(np.array(source.upper)+delta))
+            adapter.scene.entities['e1'] = source
+            adapter.p.env.position += delta
+        lift(.04)
+        assert not observe()['completed']
+        if move_after_lift:
+            lift(.01)
+        measured = observe()
+        assert measured['completed'] is expected
+        assert measured['public_hold']['aperture']['empty_closed_upper_m'] < .00458
+        return {'outcome': 'success' if expected else 'failure',
+                'stop_reason': 'measured_success' if expected else 'no_progress_blocks'}
+    monkeypatch.setattr('robots.libero.bounded_skills.run_fallback', fallback)
+    result = adapter.call_vla({'anchor_id': 'e1', 'mode': 'pick'})
+    assert result['post_handoff_measurement']['completed'] is expected
+    assert (adapter.held == 'e1') is expected
 
 
 def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypatch):
