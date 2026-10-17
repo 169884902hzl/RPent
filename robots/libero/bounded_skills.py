@@ -1165,20 +1165,33 @@ class MeasuredSkillAdapter:
             'lost': distance > .015}
 
     def _recheck_transport_hold(self, before, entities_before):
-        """Clear a dropped attachment using fresh public endpoint evidence."""
+        """Clear a dropped attachment using public aperture or fresh RGB-D."""
         prior_held = before.get('held_anchor_id')
         if prior_held is None or self.held != prior_held:
             return None, None
         holding = self._held_motion_evidence(entities_before.get(prior_held),
             self.scene.entities.get(prior_held), before, self.robot())
-        if holding is None or not holding['lost'] or self.p.env.terminated:
+        empty = self._empty_held_gripper(measured_robot(self.p))
+        if (not empty and (holding is None or not holding['lost'])) or self.p.env.terminated:
             return holding, None
+        if empty:
+            holding = {'bounds_co_motion': holding, 'lost': True,
+                'source': 'public_empty_gripper_during_transport',
+                'opening_m': measured_robot(self.p)['gripper_opening_m']}
         self.held = self.active = self.ex.held = None
         self.grasp_reference = self.payload_reference = self.withdrawal_contact = None
         self.committed_grasps.pop(prior_held, None)
         self._screen_cache.clear()
         self._instance_cache.clear()
         return holding, prior_held
+
+    def _empty_held_gripper(self, robot):
+        """Interrupt held-object motion when the measured jaws close empty."""
+        if self.held is None:
+            return False
+        _, evidence = self.holding_aperture(robot['gripper_opening_m'])
+        lower = evidence.get('empty_closed_upper_m', .005)
+        return robot['gripper_opening_m'] <= lower
 
     def request(self, *, k: int = 4, screen_options: bool = True):
         if k not in {1, 4}:
@@ -1487,7 +1500,8 @@ class MeasuredSkillAdapter:
             robot = {**robot, "eef_xyz_m": route[-1]["xyz_m"], "eef_quat_xyzw": route[-1]["quat_xyzw"]}
         motion = SmoothMotion(self.p, self._cloud_and_ik(), self.config)
         result = motion.run(waypoints, gripper=self.gripper_command, blend=True,
-            lookahead=lookahead, request_factory=self.snapshot_decision_context if lookahead is not None else None)
+            lookahead=lookahead, request_factory=self.snapshot_decision_context if lookahead is not None else None,
+            contact_stop=self._empty_held_gripper)
         self.refresh()
         holding, lost_held = self._recheck_transport_hold(before_group, entities_before)
         trace = result.get("trace", [])
@@ -1580,7 +1594,8 @@ class MeasuredSkillAdapter:
                 motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=skill in {"descend", "lower", "nudge"}
                     or (skill in {"lift", "rotate_wrist"} and self.active is not None)), self.config)
                 detail = motion.run(route, gripper=self.gripper_command, lookahead=lookahead,
-                    request_factory=self.snapshot_decision_context if lookahead is not None else None)
+                    request_factory=self.snapshot_decision_context if lookahead is not None else None,
+                    contact_stop=self._empty_held_gripper)
                 reason = detail["stop_reason"]
                 angular_error = (Rotation.from_quat(route[-1]["quat_xyzw"])*Rotation.from_quat(self.robot()["eef_quat_xyzw"]).inv()).magnitude()
                 detail["angular_endpoint_error_rad"] = float(angular_error)

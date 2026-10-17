@@ -266,6 +266,50 @@ def test_transport_holding_bounds_follow_rotation_instead_of_assuming_a_fixed_wo
     assert evidence['extent_gap_m'] == pytest.approx(0.) and not evidence['lost']
 
 
+@pytest.mark.parametrize('blended', [False, True])
+def test_empty_jaws_interrupt_transport_before_endpoint_even_when_payload_is_occluded(adapter, blended):
+    from dataclasses import replace
+
+    adapter.held = adapter.active = adapter.ex.held = 'e1'
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.5, .4, .9),
+        (.45, .35, .89), (.55, .45, .91), True, 0)
+    raw_obs = adapter.p.env.raw_obs
+    def measured():
+        opening = .001 if len(adapter.p.actions) >= 8 else .03
+        return {**raw_obs(), 'robot0_gripper_qpos': [opening/2, -opening/2]}
+    adapter.p.env.raw_obs = measured
+    def occluded(_):
+        adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], visible=False)
+    adapter.scene.refresh = occluded
+    request = adapter.request(k=4 if blended else 1)
+    carry = next(c for c in request['candidates'] if c['skill'] == 'carry_to'
+        and c['parameters']['target_id'] == 'e2')
+    choices = [carry]
+    if blended:
+        choices.append(next(c for c in request['candidates'] if c['skill'] == 'lower'
+            and c['parameters']['target_id'] == 'e2'))
+    receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
+    assert len(receipts) == 1
+    assert receipts[0]['stop_reason'] == 'public_hold_lost'
+    assert receipts[0]['outcome'] == 'failure' and receipts[0]['phase'] == 'contact_failure'
+    assert adapter.held is adapter.active is adapter.ex.held is None
+    result = adapter.details[-1]['execution']
+    assert result['braking']['executed']
+    assert next(i for i, row in enumerate(result['trace']) if row['braking']) == 8
+    assert result['steps_used'] < carry['consequences']['expected_steps']
+    assert not any(c['skill'] == 'carry_to' for c in adapter.request(k=1)['candidates'])
+
+
+def test_empty_jaw_stop_uses_original_sensor_calibration_and_keeps_thin_held_rim(adapter):
+    adapter.ex.grasp_measurement_calibration = {'opening_calibration': {
+        'closed_empty_max_m': .001, 'open_empty_min_m': .08, 'tolerance_m': .001}}
+    adapter.held = 'e1'
+    assert adapter._empty_held_gripper({'gripper_opening_m': .002})
+    assert not adapter._empty_held_gripper({'gripper_opening_m': .003})
+    adapter.held = None
+    assert not adapter._empty_held_gripper({'gripper_opening_m': .001})
+
+
 def test_held_alignment_uses_measured_support_normal_and_preserves_projected_closing_axis(adapter):
     from scipy.spatial.transform import Rotation
 
