@@ -183,6 +183,8 @@ class MeasuredSkillAdapter:
     def _has_anchor(self, entity):
         return entity is not None and (entity.visible
             or (entity.geometry and entity.geometry.startswith('cached_perception'))
+            or (entity.id in self.target_cache and (entity.name in {'table', 'cabinet', 'stove', 'microwave'}
+                or entity.name.startswith('area ') or entity.name.endswith('top surface')))
             or (entity.id == self.active and entity.id in self.committed_grasps))
 
     def anchors(self):
@@ -190,7 +192,8 @@ class MeasuredSkillAdapter:
         for current in self.scene.entities.values():
             if not self._has_anchor(current):
                 continue
-            cached = self.held is not None and current.id != self.held and current.id in self.target_cache
+            cached = current.id in self.target_cache and (
+                (self.held is not None and current.id != self.held) or not current.visible)
             e = self.target_cache[current.id] if cached else current
             anchors.append({"id": e.id, "label": e.name, "frame": "world",
                  "xyz_m": list(e.xyz), "size_m": (np.array(e.upper)-e.lower).tolist(),
@@ -925,6 +928,9 @@ class MeasuredSkillAdapter:
         entity = self.scene.entities.get(key)
         if key is not None and not self._has_anchor(entity):
             return None
+        if key in self.target_cache and (
+                (self.held is not None and key != self.held) or not entity.visible):
+            entity = self.target_cache[key]
         consequence = {"path_min_clearance_m": None, "collision": None, "ik_reachable": None,
                        "expected_width_m": self.plans.get(key, {}).get("width_m"),
                        "expected_gripper_opening_m": None, "expected_steps": 0,
@@ -1121,7 +1127,8 @@ class MeasuredSkillAdapter:
         right, front = self.scene.view_axes
         public_relations = []
         relation_entities = [self.target_cache.get(e.id, e)
-            if self.held is not None and e.id != self.held else e for e in self.scene.entities.values()]
+            if (self.held is not None and e.id != self.held)
+                or (not e.visible and self._has_anchor(e)) else e for e in self.scene.entities.values()]
         for row in relations(relation_entities, right_axis=right, front_axis=front):
             _, source, relation, target = row.split()
             public_relations.append({"source_id": source, "relation": relation, "target_id": target})

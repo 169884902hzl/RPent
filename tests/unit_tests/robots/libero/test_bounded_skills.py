@@ -127,6 +127,46 @@ def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
     assert next(a for a in request['anchors'] if a['id'] == 'e2')['cached'] is True
 
 
+def test_empty_hand_preserves_measured_static_target_through_occlusion(adapter):
+    from dataclasses import replace
+
+    target = Entity('e2', 'area front of stove', (.3, .1, .9),
+        (.25, .05, .89), (.35, .15, .91), True, 0)
+    adapter.scene.entities['e2'] = target
+    adapter.refresh()
+    adapter.scene.entities['e2'] = replace(target, visible=False, source_step=5)
+    # A movable source without current evidence must not acquire the static
+    # target exemption just because it has an old measurement in the cache.
+    source = adapter.scene.entities['e1']
+    adapter.scene.entities['e1'] = replace(source, visible=False)
+    request = adapter.request(k=1)
+    assert adapter.held is None
+    assert [a['id'] for a in request['anchors']] == ['e2']
+    anchor = request['anchors'][0]
+    assert anchor['cached'] and anchor['evidence'][0]['capture_step'] == 0
+    assert anchor['xyz_m'] == list(target.xyz)
+    candidate = adapter._candidate('nudge', {'anchor_id': 'e2', 'axis': 'x', 'distance_m': .01})
+    assert candidate['consequences']['evidence_ids'] == ['rgbd:0:e2']
+
+
+def test_oracle_does_not_lift_a_push_source_when_its_target_is_missing(adapter):
+    from dataclasses import replace
+
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='plate')
+    adapter.ex.instruction = 'push the plate to the front of the stove'
+    adapter.active = 'e1'
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.02, -.02]}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [['on', 'plate_1', 'main_table_stove_front_region']],
+        'satisfied': [False]}), adapter)
+    request = adapter.request(k=1)
+    assert any(c['skill'] == 'lift' for c in request['candidates'])
+    assert selected(request, oracle.choose(request))[0]['skill'] == 'observe'
+
+
 def test_held_payload_retains_target_cache_in_request_route_and_release(adapter, monkeypatch):
     from dataclasses import replace
 

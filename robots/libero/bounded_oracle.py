@@ -81,6 +81,12 @@ class BoundedOracle:
             if source is None:
                 chosen = find("observe", mode="wrist_scan") or find("observe", mode="refresh")
                 continue
+            if len(goal) == 3 and target is None:
+                # Losing a measured destination does not turn a relational
+                # task into a pick. Reobserve rather than lifting a plate
+                # being pushed merely because the stove was occluded.
+                chosen = find("observe", mode="wrist_scan") or find("observe", mode="refresh")
+                continue
             robot = request["robot"]
             xyz = np.array(robot["eef_xyz_m"])
             if ex.held == source.id and target is not None:
