@@ -16,11 +16,18 @@ class PublicRouteScreen:
 
     def __init__(self, points, geometry, pose_screen, *, opening: float = .08,
                  contact_points=None, contact_allowed: bool = False, payload_local=None,
-                 initial_pose=None):
+                 initial_pose=None, measured_scene_points=None, measured_target_points=None):
         self.points = np.asarray(points, float).reshape(-1, 3)
         self.tree = cKDTree(self.points) if len(self.points) else None
         self.geometry, self.ik, self.opening = geometry, pose_screen, opening
         self.target = np.asarray(contact_points if contact_points is not None else [], float).reshape(-1, 3)
+        # Prefix prediction must subtract instance pixels BEFORE choosing
+        # scene/target voxel representatives. Independently sampled clouds
+        # need not retain the same depth pixel from a shared voxel.
+        self.measured_scene_points = (self.points if measured_scene_points is None
+                                     else np.asarray(measured_scene_points).reshape(-1, 3))
+        self.measured_target_points = (self.target if measured_target_points is None
+                                      else np.asarray(measured_target_points).reshape(-1, 3))
         self.target_tree = cKDTree(self.target) if len(self.target) else None
         self.contact_allowed = contact_allowed
         self.payload = np.asarray(payload_local if payload_local is not None else [], float).reshape(-1, 3)

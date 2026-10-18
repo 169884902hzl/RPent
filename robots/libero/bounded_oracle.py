@@ -193,7 +193,14 @@ class BoundedOracle:
                 elif predicate in {"on", "in"}:
                     last = ex.receipts[-1] if ex.receipts else None
                     failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success'
-                    chosen = (None if failed_lift else find("lift", anchor_id=source.id)) or find("set_gripper", mode="open")
+                    chosen = None if failed_lift else find("lift", anchor_id=source.id)
+                    if chosen is None and not failed_lift:
+                        # A blocked conditional payload sweep is not a
+                        # measured failed grasp. Refresh at the contact pose
+                        # before opening, rather than closing and reopening
+                        # the same object in one predicted chunk.
+                        chosen = find('observe', mode='refresh')
+                    chosen = chosen or find("set_gripper", mode="open")
                 elif predicate in {"turnon", "turnoff", "turn_on", "turn_off"}:
                     direction = 1 if "on" in predicate else -1
                     normal = contact.get('handle_measurement', {}).get('pose', {}).get('approach_normal_xyz')

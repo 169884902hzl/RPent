@@ -292,6 +292,7 @@ class MeasuredSkillAdapter:
         # Subtract both instances in one pass, before separate_target_points
         # downsamples the remaining obstacles. Otherwise the first subtraction
         # voxelises held pixels and the second can no longer recognise them.
+        measured_scene, measured_target = scene, target
         _, scene = separate_target_points(np.concatenate([target, held_cloud]), scene)
         from robots.libero.v5_geometric_grasp import _voxel
         # A verified held instance moves with the hand. Checking its current
@@ -303,7 +304,8 @@ class MeasuredSkillAdapter:
             payload = (_voxel(held_cloud, .002)-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
         screen = PublicRouteScreen(scene, hand_geometry, ik, opening=robot["gripper_opening_m"],
             contact_points=target, contact_allowed=contact, payload_local=payload,
-            initial_pose={'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']})
+            initial_pose={'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']},
+            measured_scene_points=measured_scene, measured_target_points=measured_target)
         if self.record_public_geometry:
             name = f'bounded_screen_{anchor_id}_{int(contact)}'
             self._record_public_geometry(name+'_scene', screen.points)

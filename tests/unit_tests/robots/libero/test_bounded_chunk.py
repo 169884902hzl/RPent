@@ -148,6 +148,50 @@ def test_prediction_screens_payload_instead_of_hand_alone(adapter):
     assert adapter.held is None and not adapter.p.actions
 
 
+@pytest.mark.parametrize('obstacle', [False, True])
+def test_prefix_subtracts_raw_instance_before_independent_voxel_samples(adapter, obstacle):
+    from robots.libero.v5_geometric_grasp import _voxel
+    from robots.libero.v5_grasp_route import separate_target_points
+
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}],
+                'max_opening_m': .08}
+    adapter.geometry = geometry
+    target = np.array([[.16, .1, .9], [.161, .1, .9]])
+    neighbour = np.array([[.16, .1, .905]]) if obstacle else np.empty((0, 3))
+    # Scene and mask have different pixel orders. Sampling each first loses
+    # exact instance identity, leaving the object's second pixel as obstacle.
+    distant = np.array([[.5, .5, .5]])
+    raw_scene = np.concatenate([target[::-1], neighbour, distant])
+    class IK:
+        cache = {}
+        last_solution = None
+
+        def check(self, *_):
+            return {'solution_found': True}
+
+    def screen(anchor=None, *, contact=False):
+        pixels = target if anchor else np.empty((0, 3))
+        own, scene = separate_target_points(pixels, raw_scene)
+        return PublicRouteScreen(scene, geometry, IK(), contact_points=own,
+            measured_scene_points=raw_scene, measured_target_points=pixels,
+            contact_allowed=contact)
+
+    adapter._cloud_and_ik = screen
+    adapter.active = 'e1'
+    adapter.p.env.position[:] = [.1, .1, .9]
+    request = adapter.request(k=4)
+    close = next(c for c in request['candidates']
+                 if c['skill'] == 'set_gripper' and c['parameters']['mode'] == 'close')
+    lift = next(c for c in request['candidates'] if c['skill'] == 'lift')
+    prediction = PublicPrefixPrediction(adapter, request)
+    prediction.advance(prediction.candidate(close))
+    consequence = prediction.candidate(lift)['consequences']
+    assert consequence['collision'] is obstacle
+    current = prediction._screen('e1', contact=True)
+    np.testing.assert_array_equal(current.points, _voxel(np.concatenate([neighbour, distant])))
+    assert adapter.held is None and not adapter.p.actions
+
+
 def test_oracle_returns_prefix_specific_private_sets_without_public_labels(adapter):
     physical_grip(adapter)
     request = adapter.request(k=4)
@@ -172,6 +216,23 @@ def test_oracle_returns_prefix_specific_private_sets_without_public_labels(adapt
     first['measured_success'] = first['measured_failure'] = [first['selected']]
     with pytest.raises(ValueError, match='conflicting'):
         validate_labels(request, corrupt)
+
+
+@pytest.mark.parametrize('failed_lift', [False, True])
+def test_oracle_refreshes_blocked_lift_before_discarding_unmeasured_grasp(adapter, failed_lift):
+    physical_grip(adapter)
+    adapter.active = 'e1'
+    request = adapter.request(k=4)
+    for candidate in request['candidates']:
+        if candidate['skill'] == 'lift':
+            candidate['consequences']['collision'] = True
+    request['robot']['gripper_opening_m'] = .04
+    if failed_lift:
+        adapter.receipts = [dict(skill='lift', outcome='failure')]
+    rpc = SimpleNamespace(call=lambda *_: {'done': False, 'goals': [['on', 'box_1']], 'satisfied': [False]})
+    chosen = BoundedOracle(rpc, adapter)._choose_one(request, rpc.call())
+    assert (chosen['skill'], chosen['parameters']) == (
+        ('set_gripper', {'mode': 'open'}) if failed_lift else ('observe', {'mode': 'refresh'}))
 
 
 def test_oracle_prefix_clones_bindings_without_copying_live_rpc(adapter):
