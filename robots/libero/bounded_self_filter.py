@@ -173,12 +173,23 @@ def remove_visual_robot(points, pose_screen, *, surface_margin_m=.004):
     removed, counts = np.zeros(len(cloud), bool), {}
     for node, name, lower, upper, equations in visual_hulls(pose_screen.reference["path"]):
         pose = transforms[node]
-        local = (base-pose[:3, 3])@pose[:3, :3]
-        ids = np.flatnonzero(((local >= lower-surface_margin_m)&(local <= upper+surface_margin_m)).all(axis=1)&~removed)
+        # Transform only points inside a conservative base-frame bound of
+        # this same expanded local box. The original local-box and hull
+        # tests below still decide membership, with unchanged tolerances.
+        corners = np.array(np.meshgrid(*zip(lower-surface_margin_m,
+            upper+surface_margin_m), indexing='ij')).reshape(3, -1).T
+        corners = corners@pose[:3, :3].T+pose[:3, 3]
+        rounding = 32*np.finfo(float).eps*(1+np.max(np.abs(corners)))
+        broad = ((base >= corners.min(axis=0)-rounding)
+                 & (base <= corners.max(axis=0)+rounding)).all(axis=1)&~removed
+        ids = np.flatnonzero(broad)
+        local = (base[ids]-pose[:3, 3])@pose[:3, :3]
+        inside_box = ((local >= lower-surface_margin_m)&(local <= upper+surface_margin_m)).all(axis=1)
+        ids, local = ids[inside_box], local[inside_box]
         count = 0
-        for batch in np.array_split(ids, max(1, (len(ids)+255)//256)):
+        for batch in np.array_split(np.arange(len(ids)), max(1, (len(ids)+255)//256)):
             inside = (local[batch]@equations[:, :3].T+equations[:, 3] <= surface_margin_m).all(axis=1)
-            removed[batch[inside]] = True
+            removed[ids[batch[inside]]] = True
             count += int(inside.sum())
         counts[name] = count
     return cloud[~removed], {"source": "static_robot_visual_meshes_and_public_proprioception",
