@@ -1943,6 +1943,27 @@ def test_thin_surface_contact_is_available_without_pretending_opposition(adapter
         np.concatenate([points, points+[0., 0., .08]])) is None
 
 
+def test_thin_rim_contact_follows_measured_incline_instead_of_flat_support(adapter):
+    from scipy.spatial.transform import Rotation
+
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.002, -.002, .003],
+        'upper': [.002, .002, .005]} for name in ('leftfinger', 'rightfinger')]
+    radius, angle = np.meshgrid(np.linspace(.03, .05, 25), np.linspace(0., 2*np.pi, 120, endpoint=False))
+    points = np.stack([.1+radius.ravel()*np.cos(angle.ravel()),
+        .1+radius.ravel()*np.sin(angle.ravel()), .9+.5*(radius.ravel()-.03)], axis=-1)
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    normal = np.asarray(plan['surface_measurement']['normal_xyz'])
+    assert .8 < normal[2] < .95
+    contact = np.asarray(adapter.candidate_diagnostics[-1]['contact_xyz_m'])
+    radial = contact[:2]-[.1, .1]
+    # The observed upper face points upward and toward the rim's centre.
+    assert normal[:2]@radial < 0
+    rotation = Rotation.from_quat(plan['quat_xyzw']).as_matrix()
+    np.testing.assert_allclose(rotation[:, 2], -normal, atol=1e-12)
+    np.testing.assert_allclose(np.asarray(plan['approach_xyz_m'])-plan['xyz_m'], normal*.12)
+    assert plan['width_m'] is None
+
+
 def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
     adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
         'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]

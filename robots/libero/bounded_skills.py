@@ -1163,27 +1163,46 @@ class MeasuredSkillAdapter:
                     contacts.append(patch)
         choices = []
         for patch_index, patch in enumerate(contacts):
-            for yaw in range(0, 360, 45):
-                closing = Rotation.from_rotvec(normal*math.radians(yaw)).apply(right)
-                site = side_site_rotation(closing, -normal)
-                orientation = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix())
-                # Parallel fingers admit both wrist orientations. The shorter
-                # rotation can reach a joint limit while its symmetric pose has
-                # a continuous IK route, so screen both instead of pruning one.
-                xyz = patch-site@tip
-                entry = xyz+normal*.12
-                height = max(robot['eef_xyz_m'][2], entry[2])+.08
-                over = [{'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
-                    {'xyz_m': [*entry[:2], height], 'quat_xyzw': orientation.as_quat().tolist()},
-                    {'xyz_m': entry.tolist(), 'quat_xyzw': orientation.as_quat().tolist()},
-                    {'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist()}]
-                routes = [('over', over)] if horizontal else [('direct', over[-2:]), ('over', over)]
-                for path, route in routes:
-                    choices.append({'patch_index': patch_index, 'contact_xyz_m': patch.tolist(),
-                        'yaw_deg': yaw, 'path': path, 'xyz_m': xyz.tolist(),
-                        'quat_xyzw': orientation.as_quat().tolist(), 'approach_xyz_m': entry.tolist(), 'route': route,
-                        'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
-        choices.sort(key=lambda item: (item['patch_index'], item['wrist_change_rad'], item['yaw_deg']))
+            normals = [normal]
+            if horizontal:
+                # A thin rim can be inclined while its overall support is
+                # horizontal. Align tip contact to that measured patch;
+                # a fixed downward tip only skims its upper surface.
+                local = points[np.linalg.norm(points-patch, axis=1) <= .015]
+                if len(local) >= 8:
+                    values, axes = np.linalg.eigh(np.cov(local.T))
+                    fitted = axes[:, 0]
+                    if fitted@normal < 0:
+                        fitted = -fitted
+                    if (values[1] > 1e-8 and values[0] <= .2*values[1]
+                            and fitted@normal >= .5 and fitted@normal < .999):
+                        normals.insert(0, fitted)
+            for patch_normal in normals:
+                tangent = right-patch_normal*(right@patch_normal)
+                tangent /= np.linalg.norm(tangent)
+                for yaw in range(0, 360, 45):
+                    closing = Rotation.from_rotvec(patch_normal*math.radians(yaw)).apply(tangent)
+                    site = side_site_rotation(closing, -patch_normal)
+                    orientation = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix())
+                    # Parallel fingers admit both wrist orientations. The shorter
+                    # rotation can reach a joint limit while its symmetric pose has
+                    # a continuous IK route, so screen both instead of pruning one.
+                    xyz = patch-site@tip
+                    entry = xyz+patch_normal*.12
+                    height = max(robot['eef_xyz_m'][2], entry[2])+.08
+                    over = [{'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
+                        {'xyz_m': [*entry[:2], height], 'quat_xyzw': orientation.as_quat().tolist()},
+                        {'xyz_m': entry.tolist(), 'quat_xyzw': orientation.as_quat().tolist()},
+                        {'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist()}]
+                    routes = [('over', over)] if horizontal else [('direct', over[-2:]), ('over', over)]
+                    for path, route in routes:
+                        choices.append({'patch_index': patch_index, 'contact_xyz_m': patch.tolist(),
+                            'normal_xyz': patch_normal.tolist(),
+                            'local_normal': bool(not np.array_equal(patch_normal, normal)),
+                            'yaw_deg': yaw, 'path': path, 'xyz_m': xyz.tolist(),
+                            'quat_xyzw': orientation.as_quat().tolist(), 'approach_xyz_m': entry.tolist(), 'route': route,
+                            'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
+        choices.sort(key=lambda item: (not item['local_normal'], item['patch_index'], item['wrist_change_rad'], item['yaw_deg']))
         selected = None
         screen = self._cloud_and_ik(entity.id, contact=True)
         for option in choices:
@@ -1207,11 +1226,13 @@ class MeasuredSkillAdapter:
             'source': 'fused_rgbd_shape_and_static_finger_tip_geometry',
             'contact_xyz_m': selected['contact_xyz_m'] if selected else None,
             'contact_patches_xyz_m': [patch.tolist() for patch in contacts], 'measured_extent_m': extent.tolist(),
-            'surface_normal_xyz': normal.tolist(),
+            'surface_normal_xyz': selected['normal_xyz'] if selected else normal.tolist(),
+            'object_plane_normal_xyz': normal.tolist(),
             'grasp_verified': False, 'candidates': choices,
             'selected_yaw_deg': selected['yaw_deg'] if selected else None})
         if selected is None:
             return None
+        normal = np.asarray(selected['normal_xyz'])
         right_axis, front = map(np.asarray, self.scene.view_axes)
         directions = {'above': np.array([0., 0., 1.]), 'front': front,
                       'left': -right_axis, 'right': right_axis}
