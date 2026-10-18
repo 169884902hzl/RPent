@@ -1,5 +1,7 @@
 # Pre-lift contact identity
 
+Subsequent source/queue update: see `progress_precontact_support_20261018.md`. Source c1bc859 pair 9239_17 continues separately from the newer ec89f74 startup 9242_22. The historical measurements below retain their original sources.
+
 1. Bowl init17 fails before lift under source ff00387. Contact moves its surface while the stored precontact reference stays fixed; it is separate from the held-payload failures in init16/19.
 2. Source c1bc859 registers the reference to current clean RGB-D, with the existing 0.1 rad / 15 mm bounds, and excludes additions matching the saved non-target scene within 4 mm. No hand-motion or private-pose correction is used.
 3. Saved-state CPU comparison adds 30 current bowl pixels, removes none, and clears the lift route. Independent saved-pixel identities confirm all 30 are bowl. A rejected predecessor added 29 plate pixels; that result is retained and was never submitted to GPU.

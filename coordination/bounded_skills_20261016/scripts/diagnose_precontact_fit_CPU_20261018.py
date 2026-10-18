@@ -13,6 +13,7 @@ os.environ.update(CUDA_VISIBLE_DEVICES='', OPENBLAS_NUM_THREADS='1')
 parser = argparse.ArgumentParser()
 parser.add_argument('--source', type=Path, required=True)
 parser.add_argument('--working-adapter', type=Path, required=True)
+parser.add_argument('--working-payload', type=Path)
 parser.add_argument('--job', required=True)
 parser.add_argument('--row', type=int, default=1)
 parser.add_argument('--output', type=Path, required=True)
@@ -21,6 +22,8 @@ replay = Path(__file__).with_name('replay_precontact_surface_CPU_20261018.py')
 sys.argv = [str(replay), '--source', str(args.source), '--working-adapter',
     str(args.working_adapter), '--job', args.job, '--row', str(args.row),
     '--output', str(args.output.with_name(args.output.stem+'_replay.json'))]
+if args.working_payload:
+    sys.argv += ['--working-payload', str(args.working_payload)]
 data = runpy.run_path(str(replay), run_name='__main__')
 
 import numpy as np  # noqa: E402

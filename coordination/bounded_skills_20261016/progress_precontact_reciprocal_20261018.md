@@ -1,5 +1,7 @@
 # Pre-lift occlusion diagnosis
 
+Subsequent source/queue update: see `progress_precontact_support_20261018.md`. The queued 68573bc startup 9240_22 was superseded before execution by ec89f74 startup 9242_22; the historical measurements below retain their original sources.
+
 1. One-sided registration rotates occluded reference surfaces toward the remaining visible silhouette. Two saved can states fit rotations of0.249/0.174rad despite actual diagnostic rotations of0.0040/0.0054rad.
 2. Reciprocal correspondences restrict the correction to measured surface pairs. This is enabled only before lift; the held-payload estimator is preserved. Existing overlap, rotation, displacement and obstacle bounds remain unchanged.
 3. The final source68573bc combines reciprocal fitting with existing connected-depth completion. Saved-public CPU replay clears all three lift routes: bowl init17 and can init2/5. These are zero-control geometry checks, not physical outcomes.
