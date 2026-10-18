@@ -10,6 +10,8 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--full', action='store_true')
+parser.add_argument('--oracle-only', action='store_true',
+    help='Run only the oracle K4 arm, without the legacy-boundary comparison')
 parser.add_argument('--tag', default='chunk_v2_20261018')
 parser.add_argument('--replace-array', action='append', default=[])
 parser.add_argument('--indices', default='0-219', help='Registered original-state indices for the paired full run')
@@ -77,7 +79,9 @@ arguments = ['sbatch','--parsable','--nodelist=node02','--nice=500',
     '--array='+(args.indices+'%'+str(capacity) if args.full else str(args.startup_index)+'%1'),
     *(['--dependency='+dependency] if dependency else []),
     '--export=ALL,SOURCE='+str(source)+',SOURCE_COMMIT='+prep['source_commit']+',MANIFEST='+str(manifest)
-        +',STARTUP='+('0' if args.full else '1')+',PAIR_LEGACY='+('1' if args.full else '0'),str(launcher)]
+        +',STARTUP='+('0' if args.full else '1')
+        +',PAIR_LEGACY='+('1' if args.full and not args.oracle_only else '0')
+        +(',PROBE_ARMS=oracle_k4' if args.oracle_only else ''),str(launcher)]
 job = subprocess.check_output(arguments,text=True).strip().split(';')[0]
 receipt.write_text(json.dumps({'job': job, 'mode': mode, 'arguments': arguments,
     'source_commit': prep['source_commit'], 'snapshot': str(source),
@@ -96,7 +100,8 @@ report={'job':job,'mode':mode,'arguments':arguments,'source_commit':prep['source
     'lane':'available_node02' if args.full else 3,'aggregate_cap':aggregate_cap,
     'codex2_gpu_jobs':codex2_gpu,'startup_proof':startup_proof,'training':False,'confirmation':False,
     'indices': indices if args.full else [args.startup_index],
-    'scope':'original-task oracle upper bound and matched boundary-rule comparison; no pi05',
+    'scope':('original-task oracle K4 upper bound; no pi05' if args.oracle_only
+        else 'original-task oracle upper bound and matched boundary-rule comparison; no pi05'),
     'submission_updates_complete':True}
 receipt.write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({key:report[key] for key in ('job','mode','source_commit','snapshot','lane')}))

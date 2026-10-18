@@ -1,0 +1,89 @@
+{
+  "scope": "Private same saved state CPU oracle-choice replay; no physical recovery claim",
+  "job": "9248_7",
+  "state": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_7/microwave_open_libero_90_t35_s0_oracle_k4/private_prefix_state_0013.pkl.gz",
+    "sha256": "326638d4419995e98acd72529c9bb250f745311ab3399544381515a9dddf35ef",
+    "version": "libero-offline-prefix-label/1",
+    "request_sha256": "dbe07b90b8208963dde84f3542f3f32fba8ac6fd5b7d29f04f490aedb8a7e0ed",
+    "model_visible": false
+  },
+  "choices": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_7/microwave_open_libero_90_t35_s0_oracle_k4/choices.jsonl",
+    "sha256": "a4235c149bd97fa0e8ebb762b454c194788071e56aaee8afb2bac070cdec27e2"
+  },
+  "base_source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+  "candidate": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/scripts/recovery_oracle_candidate_20261018.py",
+    "sha256": "a350aeea4ab84b50feff746dbf2d2fd8106d80160c40c709bfb53407b66daf35"
+  },
+  "results": [
+    {
+      "arm": "baseline",
+      "error_type": "NoPublicOption",
+      "error": "upper-bound selector has no remaining public option",
+      "trace": [
+        {
+          "goal": [
+            "open",
+            "microwave_1"
+          ],
+          "source_public_id": "e98",
+          "target_public_id": null
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "candidate": {
+        "id": "af866c584b96de88",
+        "skill": "set_gripper",
+        "parameters": {
+          "mode": "open"
+        },
+        "consequences": {
+          "path_min_clearance_m": null,
+          "collision": null,
+          "ik_reachable": null,
+          "expected_width_m": null,
+          "expected_gripper_opening_m": 0.08,
+          "expected_steps": 15,
+          "screen_scope": "nonmotion",
+          "evidence_ids": []
+        },
+        "history": null,
+        "recent_failures": 0,
+        "last_failure": null,
+        "expected_receipt": [
+          {
+            "metric": "gripper_opening_m",
+            "anchor_id": null,
+            "minimum": 0.075,
+            "maximum": 0.085
+          },
+          {
+            "metric": "released",
+            "anchor_id": null,
+            "minimum": 1.0,
+            "maximum": 1.0
+          }
+        ]
+      },
+      "in_public_legal": true,
+      "trace": [
+        {
+          "goal": [
+            "open",
+            "microwave_1"
+          ],
+          "source_public_id": "e98",
+          "target_public_id": null,
+          "recovery": "open_lost_contact_before_reapproach"
+        }
+      ]
+    }
+  ],
+  "gpu_used": false,
+  "controls": 0,
+  "training": false
+}

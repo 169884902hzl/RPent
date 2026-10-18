@@ -17,7 +17,7 @@ from types import SimpleNamespace
 
 from robots.libero.bounded_chunk import PublicPrefixPrediction
 from robots.libero.bounded_motion import measured_robot
-from robots.libero.bounded_oracle import BoundedOracle, NoPublicOption
+from robots.libero.bounded_oracle import JUDGE_VERSION, BoundedOracle, NoPublicOption
 from robots.libero.bounded_skills import MeasuredSkillAdapter
 from rpent.skill_package.contract import (
     LEGALITY_VERSION,
@@ -128,7 +128,7 @@ def annotate_prefix(state, request, prefix):
         'request_sha256': state['request_sha256'], 'observation_id': request['observation_id'],
         'revision': request['revision'], 'prefix': prefix, 'legal': legal,
         'rule_acceptable': [], 'selected': None, 'measured_success': [], 'measured_failure': [],
-        'judge': 'libero-private-task-progress-rules/7', 'model_visible': False,
+        'judge': JUDGE_VERSION, 'model_visible': False,
         'physics_steps': 0, 'gpu_used': False, 'conditional_on_receipt_checks': [],
         'requires_measurement': False, 'status': 'terminal_prefix' if not legal else 'labeled'}
     if not legal:

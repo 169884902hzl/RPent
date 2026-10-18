@@ -18,6 +18,8 @@ parser.add_argument('--following-tag', default='chunk_v2_brakejoin_20261018')
 parser.add_argument('--replace-array', default='8600')
 parser.add_argument('--follow-through', action='store_true',
     help='Keep resource/accounting checks active until the following array also exits')
+parser.add_argument('--oracle-only', action='store_true',
+    help='The startup-gated priority array uses only the oracle K4 arm')
 args = parser.parse_args()
 tag = args.tag
 receipt = json.loads((base/'reports'/f'{tag}_startup_submission.json').read_text())
@@ -78,6 +80,8 @@ while True:
             raise SystemExit(1)
         command = [str(root/'.venv/bin/python'),str(base/'scripts/submit_chunk_v2_20261018.py'),
             '--tag',tag,'--full','--indices',args.indices,'--replace-array',args.replace_array]
+        if args.oracle_only:
+            command.append('--oracle-only')
         subprocess.run(command,check=True)
         continue  # Refresh the queue; these rows predate the submitted array.
     barrier = startup

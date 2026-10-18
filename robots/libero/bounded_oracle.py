@@ -20,6 +20,8 @@ from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 from robots.libero.bounded_chunk import PublicPrefixPrediction
 from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
+JUDGE_VERSION = 'libero-private-task-progress-rules/8'
+
 
 class NoPublicOption(ValueError):
     """The public package has no remaining measured recovery/goal option."""
@@ -188,7 +190,15 @@ class BoundedOracle:
                 continue
             contact = ex.plans.get(source.id)
             if contact is None:
-                chosen = find("observe", mode="wrist_scan")
+                # A failed contact can invalidate its fit while the hand
+                # stays closed at that source. Reopen before reapproaching;
+                # exhausting scans must not hide this existing public option.
+                if (ex.active == source.id and ex.held is None
+                        and request['robot']['gripper_opening_m'] < .075):
+                    chosen = find('set_gripper', mode='open')
+                    if chosen is not None:
+                        self.private_trace[-1]['recovery'] = 'open_lost_contact_before_reapproach'
+                chosen = chosen or find("observe", mode="wrist_scan")
                 continue
             if robot["gripper_opening_m"] < .075:
                 if ex.active != source.id:
@@ -339,7 +349,7 @@ class BoundedOracle:
                 raise ValueError('private oracle returned an option outside public legal_after')
             labels.append({'prefix': list(ids), 'legal': legal, 'selected': chosen['id'],
                 'rule_acceptable': [cid for cid in legal if cid in acceptable],
-                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/7',
+                'measured_success': [], 'measured_failure': [], 'judge': JUDGE_VERSION,
                 'evidence': [{'source': 'original_task_predicates_private', 'model_visible': False,
                     'initial_task_status': status,
                     'conditional_on_prefix': list(ids), 'predicted_predecessor_checks': context['assumptions'],

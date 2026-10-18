@@ -2968,6 +2968,34 @@ def test_held_anchor_and_lower_route_use_the_cleaned_current_payload(adapter):
     assert not next(a for a in adapter.anchors() if a['id'] == 'e1')['cached']
 
 
+@pytest.mark.parametrize('active,held,opening,expected', [
+    ('e1', None, .025, 'set_gripper'),
+    (None, None, .025, 'observe'),
+    ('another', None, .025, 'observe'),
+    ('e1', 'another', .025, 'observe'),
+    ('e1', None, .08, 'observe'),
+])
+def test_oracle_reopens_lost_active_contact_without_dropping_a_held_payload(
+        adapter, active, held, opening, expected):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    original_obs = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [opening/2, -opening/2]}
+    adapter.grasp_geometry = lambda _: None
+    adapter.active, adapter.held = active, held
+    request = adapter.request(k=1)
+    oracle = BoundedOracle(None, adapter)
+    oracle.binding.bind = lambda *args, **kwargs: adapter.scene.entities['e1']
+    status = {'done': False, 'goals': [['open', 'fixture_1']], 'satisfied': [False]}
+    chosen = oracle._choose_one(request, status)
+    assert chosen['skill'] == expected
+    if expected == 'set_gripper':
+        assert chosen['parameters'] == {'mode': 'open'}
+        assert oracle.private_trace[-1]['recovery'] == 'open_lost_contact_before_reapproach'
+    else:
+        assert 'recovery' not in oracle.private_trace[-1]
+
+
 def test_oracle_releases_a_payload_already_inside_a_measured_container(adapter):
     from robots.libero.bounded_oracle import BoundedOracle
 

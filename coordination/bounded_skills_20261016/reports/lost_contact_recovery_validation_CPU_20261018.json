@@ -1,0 +1,75 @@
+{
+  "scope": "CPU oracle lost-contact recovery; public request schema unchanged",
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_offline_labels.py",
+    "exit_code": 0,
+    "passed": 250,
+    "seconds": 162.96,
+    "warning": "Existing pytest unknown timeout config option"
+  },
+  "lint": [
+    {
+      "file": "robots/libero/bounded_oracle.py",
+      "baseline": {
+        "I001": 1,
+        "C408": 1
+      },
+      "current": {
+        "I001": 1,
+        "C408": 1
+      },
+      "new_findings": 0
+    },
+    {
+      "file": "robots/libero/bounded_offline_labels.py",
+      "baseline": {},
+      "current": {},
+      "new_findings": 0
+    },
+    {
+      "file": "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+      "baseline": {
+        "CPY001": 1,
+        "I001": 1,
+        "C408": 1
+      },
+      "current": {
+        "CPY001": 1,
+        "I001": 1,
+        "C408": 1
+      },
+      "new_findings": 0
+    },
+    {
+      "file": "tests/unit_tests/robots/libero/test_bounded_skills.py",
+      "baseline": {
+        "C408": 2
+      },
+      "current": {
+        "C408": 2
+      },
+      "new_findings": 0
+    }
+  ],
+  "sources": [
+    {
+      "path": "robots/libero/bounded_oracle.py",
+      "sha256": "a350aeea4ab84b50feff746dbf2d2fd8106d80160c40c709bfb53407b66daf35"
+    },
+    {
+      "path": "robots/libero/bounded_offline_labels.py",
+      "sha256": "17340c7ceddf66894c17506c9fe90c3eb818177a496a342ba893799cbd31eb6b"
+    },
+    {
+      "path": "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+      "sha256": "8a385a5e7de2a8ba995ef55228a181e1b31df2515b8286037bcfb37bd021147c"
+    },
+    {
+      "path": "tests/unit_tests/robots/libero/test_bounded_skills.py",
+      "sha256": "24b69f177ead03fbb10858aa5f4f97b6893e2e809e29a929fc3d1e0b61297c7c"
+    }
+  ],
+  "helper_py_compile_exit": 0,
+  "training": false,
+  "confirmation": false
+}
