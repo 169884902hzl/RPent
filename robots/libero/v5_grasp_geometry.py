@@ -355,30 +355,45 @@ def complete_instance_boundary(world, mask, *, rounds=3, max_step_m=.003,
     valid = np.isfinite(world).all(axis=2) & (np.linalg.norm(world, axis=2) > 1e-6)
     current = mask & valid
     added = []
+    frontier = None
     for _ in range(rounds):
         extended = np.zeros(mask.shape, dtype=bool)
         for dy, dx in ((0,1), (0,-1), (1,0), (-1,0)):
-            # Slice a candidate and the two pixels directed into the instance.
             y0, y1 = max(0,2*dy), mask.shape[0] + min(0,2*dy)
             x0, x1 = max(0,2*dx), mask.shape[1] + min(0,2*dx)
-            a = (slice(y0,y1), slice(x0,x1))
-            b = (slice(y0-dy,y1-dy), slice(x0-dx,x1-dx))
-            c = (slice(y0-2*dy,y1-2*dy), slice(x0-2*dx,x1-2*dx))
-            eligible = valid[a] & ~current[a] & current[b] & current[c]
-            ids = np.nonzero(eligible)
-            if not len(ids[0]):
+            if frontier is None:
+                a = (slice(y0,y1), slice(x0,x1))
+                b = (slice(y0-dy,y1-dy), slice(x0-dx,x1-dx))
+                c = (slice(y0-2*dy,y1-2*dy), slice(x0-2*dx,x1-2*dx))
+                ys, xs = np.nonzero(valid[a] & ~current[a] & current[b] & current[c])
+                ys, xs = ys+y0, xs+x0
+            else:
+                # Only a newly interior pixel can make a previously failed
+                # test eligible. Keep the same synchronous four directions.
+                fy, fx = frontier
+                ys, xs = np.r_[fy+dy, fy+2*dy], np.r_[fx+dx, fx+2*dx]
+                inside = (ys >= y0) & (ys < y1) & (xs >= x0) & (xs < x1)
+                ids = np.unique(ys[inside]*mask.shape[1]+xs[inside])
+                ys, xs = np.divmod(ids, mask.shape[1])
+                eligible = (valid[ys, xs] & ~current[ys, xs]
+                    & current[ys-dy, xs-dx] & current[ys-2*dy, xs-2*dx])
+                ys, xs = ys[eligible], xs[eligible]
+            if not len(ys):
                 continue
-            candidate, near, inner = world[a][ids], world[b][ids], world[c][ids]
+            candidate, near, inner = world[ys, xs], world[ys-dy, xs-dx], world[ys-2*dy, xs-2*dx]
             step = near-inner
             continuous = np.linalg.norm(candidate-(near+step),axis=1) <= max_extrapolation_error_m
             if not measured_tangent_spacing:
                 continuous &= ((np.linalg.norm(step,axis=1) <= max_step_m)
                                & (np.linalg.norm(candidate-near,axis=1) <= max_step_m))
-            extended[a][ids] |= continuous
+            extended[ys, xs] |= continuous
         added.append(int(extended.sum()))
         current |= extended
         if not extended.any():
             break
+        # Full-frame vectorization is faster on small images or dense fronts.
+        frontier = (np.nonzero(extended) if mask.size >= 65536
+            and added[-1] < mask.size//16 else None)
     return current, {'version':'public-depth-continuous-instance-boundary/1-dev',
         'source':'current_instance_mask_and_same_view_rgbd',
         'input_pixels':int(np.count_nonzero(mask)), 'added_pixels_per_round':added,

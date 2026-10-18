@@ -290,6 +290,21 @@ def test_boundary_completion_does_not_carve_nearby_disconnected_points():
     assert not completed[:,8:].any()
 
 
+def test_boundary_completion_large_front_keeps_synchronous_rounds_and_depth_jump():
+    from robots.libero.v5_grasp_geometry import complete_instance_boundary
+
+    y, x = np.mgrid[:256, :256]
+    world = np.stack((x*.004, y*.004, np.where(x < 192, .95, .90)), axis=-1)
+    mask = (x >= 100) & (x < 104)
+    completed, evidence = complete_instance_boundary(world, mask, rounds=512,
+        measured_tangent_spacing=True)
+    assert completed[:, :192].all() and not completed[:, 192:].any()
+    assert evidence['added_pixels_per_round'] == [512]*88 + [256]*12 + [0]
+    # The default spacing limit rejects the same 4 mm steps.
+    limited, detail = complete_instance_boundary(world, mask, rounds=512)
+    assert np.array_equal(limited, mask) and detail['added_pixels_per_round'] == [0]
+
+
 def test_image_connected_masks_split_at_depth_jump():
     y, x = np.mgrid[:10, :20]
     world = np.stack((x * .002, y * .002, np.where(x < 10, .9, 1.1)), axis=-1)

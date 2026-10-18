@@ -1,0 +1,86 @@
+{
+  "scope": "saved public RGB-D CPU boundary microbenchmark; seeds derived from measured table cloud",
+  "limitation": "Half-frame seed restriction is a diagnostic workload, not the original runtime invocation; no full-episode speed claim.",
+  "inputs": {
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8862_140/microwave_open_libero_90_t35_s0_oracle_k4/bounded_screen_e99_1_target.npz/07.npz": "1660796142c718e2de803b4e3b6fa4e46163ff87f73ab491563febff9fdfb6b0",
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8862_140/microwave_open_libero_90_t35_s0_oracle_k4/choices.jsonl": "a8584dc6eca63d2fafb600eacaa7c67b9145bcdd34407f8893becddcf1c385a5",
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8862_140/microwave_open_libero_90_t35_s0_oracle_k4/agentview_world_high.npz/07.npz": "b8f0d9a484e5924e1561b95a47aa5d04680ca57e53379dafa7c30e32df31a550",
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8862_140/microwave_open_libero_90_t35_s0_oracle_k4/wrist_world_high.npz/07.npz": "3ddb5d7e1f292db3b47cfc69b89b37e14ceb84b379c69201b7983ec44b874b1f"
+  },
+  "sources": {
+    "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/scripts/instance_boundary_reference_20261018.py": "aad55d7fcbf3d5d933e972ddd45e581c0def996ca1d904a1c7641faa0ab68b7d",
+    "/tmp/rd_boundary_frontier_runtime_20261018.py": "951b388ea9254ba205fd0c5c1859ea5f07b946a67360acde3a5daffebdcd31bc"
+  },
+  "results": [
+    {
+      "camera": "agentview",
+      "seed_rule": "all_measured_target_seeds",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "seed_pixels": 282422,
+      "completed_pixels": 393251,
+      "actual_rounds": 96,
+      "exact_mask_and_evidence_equal": true,
+      "output_sha256": "6f682fc654dcc363eb0e8fc0698250b801b4aa2a1e720e65ca6a8736f48f3fb4",
+      "old_s": 1.1937769642099738,
+      "candidate_s": 0.4112204061821103
+    },
+    {
+      "camera": "agentview",
+      "seed_rule": "left_half_of_measured_target_seeds",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "seed_pixels": 93786,
+      "completed_pixels": 393251,
+      "actual_rounds": 787,
+      "exact_mask_and_evidence_equal": true,
+      "output_sha256": "6f682fc654dcc363eb0e8fc0698250b801b4aa2a1e720e65ca6a8736f48f3fb4",
+      "old_s": 8.618868555873632,
+      "candidate_s": 2.7189770191907883
+    },
+    {
+      "camera": "wrist",
+      "seed_rule": "all_measured_target_seeds",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "seed_pixels": 202556,
+      "completed_pixels": 254801,
+      "actual_rounds": 8,
+      "exact_mask_and_evidence_equal": true,
+      "output_sha256": "1a9472b73f12756842254a56e4cb17d70004e2edb9280c339211e9f87336c56c",
+      "old_s": 0.14087064377963543,
+      "candidate_s": 0.10367747209966183
+    },
+    {
+      "camera": "wrist",
+      "seed_rule": "left_half_of_measured_target_seeds",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "seed_pixels": 106748,
+      "completed_pixels": 254801,
+      "actual_rounds": 559,
+      "exact_mask_and_evidence_equal": true,
+      "output_sha256": "1a9472b73f12756842254a56e4cb17d70004e2edb9280c339211e9f87336c56c",
+      "old_s": 5.972520049661398,
+      "candidate_s": 1.8094757115468383
+    }
+  ],
+  "private_truth_used": false,
+  "gpu_used": false,
+  "controls": 0,
+  "training": false,
+  "confirmation": false,
+  "script_sha256": "1abb00f082b4c4cd19c954ac204b5bb150dfff681a779b59df1a2b6669b4d895"
+}

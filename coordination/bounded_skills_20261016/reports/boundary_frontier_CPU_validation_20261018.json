@@ -1,0 +1,22 @@
+{
+  "scope": "output-preserving public RGB-D boundary performance change; not full episode acceleration",
+  "test_command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_v5_grasp_geometry.py tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_screen.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_payload.py",
+  "passed": 299,
+  "exit_code": 0,
+  "wall_s": 137.17,
+  "warnings": [
+    "local pytest-timeout plugin absent"
+  ],
+  "initial_check_error": "initial test selection included nonexistent test_bounded_skill_contract.py; corrected to actual callers",
+  "sources": {
+    "robots/libero/v5_grasp_geometry.py": "951b388ea9254ba205fd0c5c1859ea5f07b946a67360acde3a5daffebdcd31bc",
+    "tests/unit_tests/robots/libero/test_v5_grasp_geometry.py": "6058be0afe9520d77a39e64c46c81625ed15c20fc47b57f813c906a25737d642",
+    "rpent/skill_package/schema.json": "7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3"
+  },
+  "synthetic_exact_cases": 20,
+  "public_exact_cases": 4,
+  "schema_version": "bounded-skills/3",
+  "physical_validation": "no new physical run for performance patch yet; active jobs retain pinned prior snapshots",
+  "training": false,
+  "confirmation": false
+}
