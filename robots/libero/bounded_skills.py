@@ -680,8 +680,19 @@ class MeasuredSkillAdapter:
         if result.mask.shape != interior.shape or not result.mask[tuple(point)]:
             return empty, {**evidence, 'reason': 'guided_mask_does_not_match_current_seed'}
         mask = result.mask & valid
+        if (result.mask & ~valid).any():
+            # The prompt extent selects an interior seed, not the final
+            # object's silhouette. A new SAM tail must connect to already
+            # owned mask pixels through current self-filtered depth. A
+            # disconnected neighbour or the robot cannot extend the fit.
+            filtered = self._self_filtered_world(world)
+            labels, _ = depth_components(filtered,
+                result.mask & np.isfinite(filtered).all(axis=2), max_gap_m=.003)
+            supported = np.unique(labels[mask])
+            mask |= (labels >= 0) & np.isin(labels, supported)
         evidence.update(score=result.score, member_pixels=int(mask.sum()),
-            semantic_recall=float((mask & interior).sum()/interior.sum()))
+            semantic_recall=float((mask & interior).sum()/interior.sum()),
+            depth_connected_pixels_outside_prompt_extent=int((mask & ~valid).sum()))
         evidence['artifact'] = self._record_public_geometry(
             f'bounded_payload_guided_{entity.id}_{camera}', world[mask])
         return world[mask], evidence
@@ -904,7 +915,6 @@ class MeasuredSkillAdapter:
                 result = np.concatenate([result, world[completed & ~mask]])
                 records.append({'camera': camera, **evidence})
             if entity is not None and len(result):
-                lower, upper = result.min(0), result.max(0)
                 seeds = [result]
                 for camera, (world, _) in current_views.items():
                     guided, evidence = self._guided_payload_pixels(
@@ -924,7 +934,9 @@ class MeasuredSkillAdapter:
                         evidence['post_guided_boundary_completion'] = continuation
                     seeds.append(guided)
                     records.append(evidence)
-                member, evidence = complete_spatial_payload_component(scene, np.concatenate(seeds),
+                measured = np.concatenate(seeds)
+                lower, upper = measured.min(0), measured.max(0)
+                member, evidence = complete_spatial_payload_component(scene, measured,
                     self.payload_reference['scene'], lower, upper)
                 result = np.concatenate([result, scene[member]])
                 records.append(evidence)

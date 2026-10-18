@@ -19,6 +19,8 @@ parser.add_argument("--output", type=Path)
 parser.add_argument("--save-queries", action="store_true")
 parser.add_argument("--sam-report", type=Path)
 parser.add_argument("--compare-spatial-candidate", type=Path)
+parser.add_argument("--candidate-skills", type=Path)
+parser.add_argument("--screen-routes", action="store_true")
 args = parser.parse_args()
 sys.path.insert(0, str(args.source))
 
@@ -26,10 +28,19 @@ import numpy as np
 from PIL import Image
 from scipy.spatial import cKDTree
 
+from robots.libero.bounded_motion import MotionConfig, SmoothMotion
 from robots.libero.bounded_self_filter import gripper_visual_boxes
 from robots.libero.bounded_skills import MeasuredSkillAdapter
 from robots.libero.v5_geometric_grasp import panda_geometry
 from robots.libero.v5_state import Entity
+
+if args.candidate_skills:
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location('candidate_skills', args.candidate_skills)
+    candidate_skills = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(candidate_skills)
+    MeasuredSkillAdapter = candidate_skills.MeasuredSkillAdapter
 
 root = Path("/public/home/sunyihan/rpent_libero_eval")
 spatial_comparison = []
@@ -164,6 +175,10 @@ for job in args.job:
         adapter.ex.toolkit._state.load_bytes = lambda name: (
             directory/name/(f'{step:02d}'+Path(name).suffix)).read_bytes()
     instance = adapter._instance_pixels(key)
+    if args.screen_routes:
+        adapter.config = MotionConfig()
+        adapter.target_cache = {}
+        held_screen = adapter._cloud_and_ik(key, contact=True)
     np.savez_compressed(root/"coordination/bounded_skills_20261016/reports"/(job+"_saved_instance_CPU_20261018.npz"), points=instance)
     tree = cKDTree(instance)
     scene_tree = cKDTree(adapter._base_geometry[0])
@@ -185,6 +200,13 @@ for job in args.job:
             "now_in_self_filtered_scene": int((scene_distances <= 1e-6).sum()),
             "nearest_current_scene_m": scene_distances.tolist(),
             "nearest_current_member_m": distances.tolist(), "points_m": points})
+        if args.screen_routes:
+            evidence = held_screen([diagnostic['at']])
+            candidates[-1]['old_rejected_pose_screen'] = evidence
+            if diagnostic['skill'] == 'nudge':
+                route = adapter._route('nudge', diagnostic['parameters'])
+                _, _, _, evidence = SmoothMotion(adapter.p, held_screen, adapter.config).prepare(route)
+                candidates[-1]['nudge_route_screen'] = evidence
     points = np.unique([point for candidate in candidates for point in candidate['points_m']], axis=0)
     pixels = []
     for camera, artifact in row['perception_evidence'][key]['sam_mask_files'].items():
@@ -214,6 +236,11 @@ report = {"scope": "CPU saved-sensor membership diagnostic; not a physical or co
 if args.compare_spatial_candidate:
     report['spatial_comparison'] = spatial_comparison
     report['candidate_payload_sha256'] = hashlib.sha256(args.compare_spatial_candidate.read_bytes()).hexdigest()
+if args.candidate_skills:
+    report['candidate_skills_sha256'] = hashlib.sha256(args.candidate_skills.read_bytes()).hexdigest()
+if args.screen_routes:
+    report['scope'] = 'CPU saved-public-sensor membership, rejected-pose and nudge reference-route screens; zero controls'
+    report['limitation'] += ' Route screens use the saved measured robot at rest; no live feedback execution is reproduced.'
 output = args.output or root / "coordination/bounded_skills_20261016/reports/bowl_saved_membership_CPU_20261018.json"
 output.write_text(json.dumps(report, indent=2) + "\n")
 print(json.dumps({"output": str(output), "cases": [

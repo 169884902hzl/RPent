@@ -262,6 +262,35 @@ def test_payload_prompt_uses_owned_surface_without_carving_its_bounds(adapter, m
     assert evidence['reason'] == 'no_current_instance_depth_seed'
 
 
+@pytest.mark.parametrize('mode', ['connected', 'depth_gap', 'robot_gap'])
+def test_guided_mask_can_measure_a_new_tail_but_cannot_bridge_an_obstacle(adapter, monkeypatch, mode):
+    y, x = np.mgrid[:5, :7]
+    world = np.stack([.1+x*.001, .1+y*.001, np.full(x.shape, .9)], axis=-1)
+    if mode == 'depth_gap':
+        world[:, 4:, 2] += .02
+    semantic = (x >= 1) & (x <= 3) & (y >= 1) & (y <= 3)
+    current = world[semantic]
+    mask = np.ones(x.shape, bool)
+    adapter.scene.rpc = SimpleNamespace(call=lambda *args, **kwargs: {})
+    adapter.scene.calls = 0
+    adapter.ex.toolkit._state.load_bytes = lambda _: b'current-public-image'
+    if mode == 'robot_gap':
+        adapter._base_geometry = (world[x != 4], None)
+    monkeypatch.setattr('rpent.robots.components.sam3_client.Sam3Client._decode_result',
+        lambda _: SimpleNamespace(found=True, mask=mask, score=.96, reason=''))
+    points, evidence = adapter._guided_payload_pixels(
+        world, semantic, 'wrist', adapter.scene.entities['e1'], current)
+    included = np.any(np.linalg.norm(points-world[2, 5], axis=1) < 1e-9)
+    assert bool(included) is (mode == 'connected')
+    # The left tail remains depth-connected in all cases; only the right
+    # tail is separated by the measured depth or robot gap.
+    expected = world.reshape(-1, 3) if mode == 'connected' else world[x < 4]
+    np.testing.assert_array_equal(points, expected)
+    assert evidence['depth_connected_pixels_outside_prompt_extent'] == len(expected)-len(current)
+    if mode == 'robot_gap':
+        assert not np.any(np.linalg.norm(points-world[2, 4], axis=1) < 1e-9)
+
+
 def test_public_request_omits_whole_task_and_vla_disabled(adapter):
     request = adapter.request(k=4)
     assert not any(c["skill"] in {"vla_task", "call_vla"} for c in request["candidates"])
