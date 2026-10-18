@@ -15,6 +15,9 @@ jobs.update({'8137_22':'7dba5cd', '8141_20':'7dba5cd', '8142_7':'7dba5cd'})
 jobs.update({'8144_22':'9368299', **{f'8145_{i}':'9368299' for i in (0,40,60,100,180)}})
 jobs.update({f'8147_{i}':'9368299' for i in (20,21,*range(23,40))})
 jobs.update({'8156_21':'8e49152','8158_60':'bc160ff',**{f'8159_{i}':'bc160ff' for i in range(60)}})
+jobs.update({'8161_100':'cbffa78',**{f'8162_{i}':'cbffa78' for i in (80,120,180,200)},'8163_140':'cbffa78'})
+jobs.update({'8170_100':'3d71f44', **{f'8171_{i}':'3d71f44' for i in (80,120,180,200)}})
+jobs.update({f'8173_{i}':'3d71f44' for i in range(3,60)})
 rows=[]
 for j,source in jobs.items():
  p=base/('job'+j)/'episodes.jsonl'

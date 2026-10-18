@@ -1,0 +1,67 @@
+{
+  "source_commit": "cbffa78f6fc06b0275e61899b30a64656dc1e635",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_cbffa78_20261018",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_fresh_contact_20261018.json",
+    "sha256": "faf0c7fd0125333a0506021e66bcd86c5f7a2839cdd96a7547e65915c6f0912b"
+  },
+  "startup_accounting": "COMPLETED|0:0",
+  "startup_physical_request": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8160_100/drawer_open_libero_goal_t0_s0_oracle_k4/first_physical_request.json",
+    "sha256": "b4c2efb40b08334cdc7425eb7afbc2a0a1e1f46febf6381b5f16e4ecd5284b97",
+    "arm": "oracle_k4",
+    "index": 0,
+    "sim_steps": 437,
+    "source": "public_execution_budget"
+  },
+  "paired_drawer_open": {
+    "job": "8161",
+    "arguments": [
+      "sbatch",
+      "--parsable",
+      "--nodelist=node02",
+      "--nice=500",
+      "--array=100%1",
+      "--dependency=afterany:8160",
+      "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_cbffa78_20261018,SOURCE_COMMIT=cbffa78f6fc06b0275e61899b30a64656dc1e635,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_fresh_contact_20261018.json,STARTUP=0",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_cbffa78_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+    ]
+  },
+  "fixture_representatives": {
+    "job": "8162",
+    "arguments": [
+      "sbatch",
+      "--parsable",
+      "--nodelist=node02",
+      "--nice=500",
+      "--array=80,120,180,200%1",
+      "--dependency=afterany:8161",
+      "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_cbffa78_20261018,SOURCE_COMMIT=cbffa78f6fc06b0275e61899b30a64656dc1e635,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_fresh_contact_20261018.json,STARTUP=0",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_cbffa78_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+    ]
+  },
+  "microwave_open": {
+    "job": "8163",
+    "arguments": [
+      "sbatch",
+      "--parsable",
+      "--nodelist=node02",
+      "--nice=500",
+      "--array=140%1",
+      "--dependency=afterany:8117",
+      "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_cbffa78_20261018,SOURCE_COMMIT=cbffa78f6fc06b0275e61899b30a64656dc1e635,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_fresh_contact_20261018.json,STARTUP=0",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_cbffa78_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+    ]
+  },
+  "replaced_pending": [
+    [
+      "8151_140",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      ""
+    ]
+  ],
+  "replacement_reason": "replace unstarted old-source startup with current verified-source full original microwave episode",
+  "aggregate_cap": 3,
+  "scope": "original-scene oracle development,pi05 disabled;not training/confirmation;running jobs preserved"
+}

@@ -1,0 +1,46 @@
+{
+  "source_commit": "3d71f446c846f0e7bc2b1ae2816f6aab6d3ed461",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_3d71f44_20261018",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_curved_handle_20261018.json",
+    "sha256": "82ee08998a0b8b8ed6dbb9803d96dea7086e62bcd7a06badadf82f8e9ebcef43"
+  },
+  "startup_accounting": "COMPLETED|0:0",
+  "startup_physical_request": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8169_100/drawer_open_libero_goal_t0_s0_oracle_k4/first_physical_request.json",
+    "sha256": "b4c2efb40b08334cdc7425eb7afbc2a0a1e1f46febf6381b5f16e4ecd5284b97",
+    "arm": "oracle_k4",
+    "index": 0,
+    "sim_steps": 437,
+    "source": "public_execution_budget"
+  },
+  "paired_drawer_open": {
+    "job": "8170",
+    "arguments": [
+      "sbatch",
+      "--parsable",
+      "--nodelist=node02",
+      "--nice=500",
+      "--array=100%1",
+      "--dependency=afterany:8169_100",
+      "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_3d71f44_20261018,SOURCE_COMMIT=3d71f446c846f0e7bc2b1ae2816f6aab6d3ed461,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_curved_handle_20261018.json,STARTUP=0",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_3d71f44_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+    ]
+  },
+  "fixture_representatives": {
+    "job": "8171",
+    "arguments": [
+      "sbatch",
+      "--parsable",
+      "--nodelist=node02",
+      "--nice=500",
+      "--array=80,120,180,200%1",
+      "--dependency=afterany:8170",
+      "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_3d71f44_20261018,SOURCE_COMMIT=3d71f446c846f0e7bc2b1ae2816f6aab6d3ed461,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_curved_handle_20261018.json,STARTUP=0",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_3d71f44_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+    ]
+  },
+  "aggregate_cap": 3,
+  "lane": "2; two other serial lanes unchanged",
+  "scope": "full original oracle development, pi05 disabled; not confirmation or training"
+}

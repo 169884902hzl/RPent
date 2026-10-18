@@ -1,0 +1,435 @@
+{
+  "scope": "committed3d71f44 current public RGB-D membership;zero controls;no prototype patch",
+  "geometry_module_sha256": "3c38658959f6d4a6089d2fdfeb17a1c90613569203deba5c3a6313bf561ee96c",
+  "adapter_module_sha256": "c3b628abce14ecd2c025d7d90b90fc4e2c2a56d1daa43f459cb83e8cdaa34a4c",
+  "curved_blocker_distance_m": 0.0,
+  "boundary_evidence": {
+    "e54": [
+      {
+        "camera": "agentview",
+        "source": "current_rgbd_matches_contacted_handle_surface",
+        "reference_capture_step": 0,
+        "capture_step": 5,
+        "registration": {
+          "source": "current_clean_rgbd_instance_surface",
+          "accepted": false,
+          "translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rad": 0.0,
+          "max_surface_displacement_m": 0.015,
+          "max_rotation_rad": 0.1,
+          "reason": "surface_fit_not_improved"
+        },
+        "boundary": {
+          "version": "public-contact-surface-continuation/1-dev",
+          "source": "current_rgbd_continuity_within_measured_contact_extent",
+          "max_surface_residual_m": 0.001,
+          "matched_pixels": 1736,
+          "added_pixels": 555,
+          "private_pose_used": false,
+          "lower": [
+            -0.011449101689412843,
+            -0.10498289781261366,
+            1.0061647289300726
+          ],
+          "upper": [
+            0.07930798366785918,
+            -0.08250323772269157,
+            1.0248693486429574
+          ],
+          "boundary": {
+            "version": "public-depth-continuous-instance-boundary/1-dev",
+            "source": "current_instance_mask_and_same_view_rgbd",
+            "input_pixels": 1736,
+            "added_pixels_per_round": [
+              137,
+              77,
+              71,
+              63,
+              56,
+              54,
+              39,
+              22,
+              17,
+              9,
+              5,
+              2,
+              2,
+              1,
+              0
+            ],
+            "rounds": 144,
+            "max_step_m": 0.003,
+            "spacing_source": "fixed_metric_limit",
+            "max_extrapolation_error_m": 0.001,
+            "private_target_pose_used": false
+          }
+        },
+        "private_pose_used": false
+      },
+      {
+        "camera": "wrist",
+        "source": "current_rgbd_matches_contacted_handle_surface",
+        "reference_capture_step": 0,
+        "capture_step": 5,
+        "registration": {
+          "source": "current_clean_rgbd_instance_surface",
+          "accepted": false,
+          "translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rotation_rad": 0.0,
+          "max_surface_displacement_m": 0.015,
+          "max_rotation_rad": 0.1,
+          "reason": "surface_fit_not_improved"
+        },
+        "boundary": {
+          "version": "public-contact-surface-continuation/1-dev",
+          "source": "current_rgbd_continuity_within_measured_contact_extent",
+          "max_surface_residual_m": 0.001,
+          "matched_pixels": 7762,
+          "added_pixels": 19881,
+          "private_pose_used": false,
+          "lower": [
+            -0.011449101689412843,
+            -0.10498289781261366,
+            1.0061647289300726
+          ],
+          "upper": [
+            0.07930798366785918,
+            -0.08250323772269157,
+            1.0248693486429574
+          ],
+          "boundary": {
+            "version": "public-depth-continuous-instance-boundary/1-dev",
+            "source": "current_instance_mask_and_same_view_rgbd",
+            "input_pixels": 7762,
+            "added_pixels_per_round": [
+              637,
+              431,
+              340,
+              297,
+              293,
+              289,
+              286,
+              285,
+              284,
+              283,
+              281,
+              278,
+              277,
+              276,
+              274,
+              273,
+              271,
+              271,
+              269,
+              268,
+              266,
+              266,
+              264,
+              264,
+              264,
+              263,
+              261,
+              261,
+              260,
+              260,
+              259,
+              259,
+              258,
+              258,
+              257,
+              257,
+              257,
+              256,
+              256,
+              255,
+              255,
+              254,
+              254,
+              254,
+              253,
+              253,
+              252,
+              252,
+              251,
+              251,
+              250,
+              249,
+              248,
+              248,
+              248,
+              248,
+              247,
+              247,
+              246,
+              244,
+              244,
+              244,
+              243,
+              243,
+              242,
+              242,
+              241,
+              241,
+              240,
+              240,
+              239,
+              239,
+              233,
+              207,
+              110,
+              42,
+              23,
+              0
+            ],
+            "rounds": 647,
+            "max_step_m": 0.003,
+            "spacing_source": "fixed_metric_limit",
+            "max_extrapolation_error_m": 0.001,
+            "private_target_pose_used": false
+          }
+        },
+        "private_pose_used": false
+      },
+      {
+        "camera": "agentview",
+        "source": "current_rgbd_matches_other_current_contact_pixels",
+        "capture_step": 5,
+        "surface_residual_m": 0.001,
+        "matched_pixels": 2292,
+        "private_pose_used": false
+      },
+      {
+        "camera": "wrist",
+        "source": "current_rgbd_matches_other_current_contact_pixels",
+        "capture_step": 5,
+        "surface_residual_m": 0.001,
+        "matched_pixels": 27734,
+        "private_pose_used": false
+      },
+      {
+        "camera": "agentview",
+        "capture_step": 5,
+        "source": "current_rgbd_and_measured_handle_circular_sections",
+        "private_pose_used": false,
+        "max_surface_residual_m": 0.001,
+        "minimum_arc_deg": 90.0,
+        "sections": [
+          {
+            "axial_span_m": [
+              -0.024713750803732424,
+              -0.014722120991618565
+            ],
+            "radius_m": 0.007837232869556125,
+            "observed_arc_deg": 350.6148971072374,
+            "support_points": 328,
+            "matched_pixels": 357
+          },
+          {
+            "axial_span_m": [
+              -0.014694367832972316,
+              -0.004730422156115288
+            ],
+            "radius_m": 0.00851313326687893,
+            "observed_arc_deg": 152.12883626851263,
+            "support_points": 236,
+            "matched_pixels": 254
+          },
+          {
+            "axial_span_m": [
+              -0.004701188679673994,
+              0.005231475992028096
+            ],
+            "radius_m": 0.008268026249243506,
+            "observed_arc_deg": 164.4989353059863,
+            "support_points": 245,
+            "matched_pixels": 247
+          },
+          {
+            "axial_span_m": [
+              0.005308603521395595,
+              0.015221279770973954
+            ],
+            "radius_m": 0.00829625822095814,
+            "observed_arc_deg": 163.00631604242392,
+            "support_points": 245,
+            "matched_pixels": 237
+          },
+          {
+            "axial_span_m": [
+              0.015288451124282698,
+              0.02523395087185042
+            ],
+            "radius_m": 0.00824511302960442,
+            "observed_arc_deg": 162.59617866915644,
+            "support_points": 218,
+            "matched_pixels": 234
+          },
+          {
+            "axial_span_m": [
+              0.025303382067525814,
+              0.035280316763085094
+            ],
+            "radius_m": 0.00814683644611157,
+            "observed_arc_deg": 167.59293872011378,
+            "support_points": 186,
+            "matched_pixels": 228
+          },
+          {
+            "axial_span_m": [
+              0.03528647126387256,
+              0.04519210150258721
+            ],
+            "radius_m": 0.008134708103565006,
+            "observed_arc_deg": 175.28989009360922,
+            "support_points": 135,
+            "matched_pixels": 158
+          },
+          {
+            "axial_span_m": [
+              0.04548405734924722,
+              0.05520564964199812
+            ],
+            "radius_m": 0.00879923058361579,
+            "observed_arc_deg": 193.45070953386744,
+            "support_points": 80,
+            "matched_pixels": 98
+          }
+        ],
+        "matched_pixels": 1813
+      },
+      {
+        "camera": "wrist",
+        "capture_step": 5,
+        "source": "current_rgbd_and_measured_handle_circular_sections",
+        "private_pose_used": false,
+        "max_surface_residual_m": 0.001,
+        "minimum_arc_deg": 90.0,
+        "sections": [
+          {
+            "axial_span_m": [
+              -0.024713750803732424,
+              -0.014722120991618565
+            ],
+            "radius_m": 0.007837232869556125,
+            "observed_arc_deg": 350.6148971072374,
+            "support_points": 328,
+            "matched_pixels": 9721
+          },
+          {
+            "axial_span_m": [
+              -0.014694367832972316,
+              -0.004730422156115288
+            ],
+            "radius_m": 0.00851313326687893,
+            "observed_arc_deg": 152.12883626851263,
+            "support_points": 236,
+            "matched_pixels": 9733
+          },
+          {
+            "axial_span_m": [
+              -0.004701188679673994,
+              0.005231475992028096
+            ],
+            "radius_m": 0.008268026249243506,
+            "observed_arc_deg": 164.4989353059863,
+            "support_points": 245,
+            "matched_pixels": 9630
+          },
+          {
+            "axial_span_m": [
+              0.005308603521395595,
+              0.015221279770973954
+            ],
+            "radius_m": 0.00829625822095814,
+            "observed_arc_deg": 163.00631604242392,
+            "support_points": 245,
+            "matched_pixels": 9118
+          },
+          {
+            "axial_span_m": [
+              0.015288451124282698,
+              0.02523395087185042
+            ],
+            "radius_m": 0.00824511302960442,
+            "observed_arc_deg": 162.59617866915644,
+            "support_points": 218,
+            "matched_pixels": 4115
+          },
+          {
+            "axial_span_m": [
+              0.025303382067525814,
+              0.035280316763085094
+            ],
+            "radius_m": 0.00814683644611157,
+            "observed_arc_deg": 167.59293872011378,
+            "support_points": 186,
+            "matched_pixels": 374
+          },
+          {
+            "axial_span_m": [
+              0.03528647126387256,
+              0.04519210150258721
+            ],
+            "radius_m": 0.008134708103565006,
+            "observed_arc_deg": 175.28989009360922,
+            "support_points": 135,
+            "matched_pixels": 0
+          },
+          {
+            "axial_span_m": [
+              0.04548405734924722,
+              0.05520564964199812
+            ],
+            "radius_m": 0.00879923058361579,
+            "observed_arc_deg": 193.45070953386744,
+            "support_points": 80,
+            "matched_pixels": 0
+          }
+        ],
+        "matched_pixels": 42691
+      }
+    ]
+  },
+  "gpu_used": false,
+  "private_truth_used": false,
+  "training": false,
+  "row": 4,
+  "choices_sha256": "36f68ba5bf4cec85204d7940ba136a98040dc3279536eeeced381a5925f3af84",
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_3d71f44_20261018",
+  "cached_target_points": 3430,
+  "rebuilt_target_points": 3529,
+  "cached_blocker_target_distance_m": 0.006848394083279492,
+  "rebuilt_blocker_target_distance_m": 0.0,
+  "screens": [
+    {
+      "method": "cached",
+      "passed": false,
+      "reason": "measured_sweep_collision",
+      "path_min_clearance_m": 0.0,
+      "counts": {
+        "palm": 0,
+        "leftfinger": 0,
+        "leftfinger_pad": 0,
+        "rightfinger": 1,
+        "rightfinger_pad": 0
+      },
+      "target_counts": {
+        "palm": 0
+      }
+    },
+    {
+      "method": "rebuilt",
+      "passed": true,
+      "reason": "public_route_screen_passed",
+      "path_min_clearance_m": 0.003822927084417356
+    }
+  ]
+}

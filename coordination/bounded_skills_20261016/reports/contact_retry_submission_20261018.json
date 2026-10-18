@@ -1,0 +1,66 @@
+{
+  "job": "8164",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=160%1",
+    "--dependency=afterany:8163",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_c3a78f8_20261018,SOURCE_COMMIT=c3a78f82331ecd6b6a8030fcf0136c51a966f949,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_contact_retry_20261018.json,STARTUP=1",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_c3a78f8_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "c3a78f82331ecd6b6a8030fcf0136c51a966f949",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_c3a78f8_20261018",
+  "archive_sha256": "d5460718781399dde8fc3961cbbdc4564a6ee0b03b5c6fc8642bab15b2fd75b0",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_contact_retry_20261018.json",
+    "sha256": "fc48f1614cf4e90e384bc077c292e3db35651da3e7767341d678fd1b7b979c91"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_contact_retry_20261018.log"
+  },
+  "cpu_checks": 187,
+  "scope": "original plate startup,oracle pi05 disabled;not confirmation or training",
+  "aggregate_cap": 3,
+  "lane": "1,after8163;other two serial lanes unchanged",
+  "queue_before": [
+    [
+      "8163_[140%1]",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      ""
+    ],
+    [
+      "8162_[80,120,180,200%1]",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      ""
+    ],
+    [
+      "8159_[0-59%1]",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      ""
+    ],
+    [
+      "8161_100",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02"
+    ],
+    [
+      "8158_60",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02"
+    ],
+    [
+      "8117_160",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02"
+    ]
+  ]
+}

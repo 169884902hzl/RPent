@@ -1,0 +1,606 @@
+{
+  "scope": "current RGB-D membership only; temporal payload path deliberately not reconstructed",
+  "source": "bc160ff",
+  "row": 16,
+  "private_truth_used": false,
+  "gpu_used": false,
+  "training": false,
+  "choices_sha256": "605277be3fa7a3082c8a4fb27f0b9fac02e2b83a525cc3a53e78193903aeb15d",
+  "point_count": 184194,
+  "blockers": [
+    [
+      0.007634581532329321,
+      0.07543942332267761,
+      0.6850041151046753
+    ],
+    [
+      0.0107914749532938,
+      0.08394207060337067,
+      0.7108669877052307
+    ]
+  ],
+  "nearest_instance_m": [
+    0.0056602297393516954,
+    0.00768668362101384
+  ],
+  "three_dimensional_component": {
+    "scope": "CPU hypothesis only;unchanged3mm 3D continuity,current bounds,4mm prelift static veto",
+    "static_reference": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8158_60/cup_transfer_libero_10_t4_s0_oracle_k4/bounded_payload_reference_scene.npz/11.npz",
+    "current_scene_points": 1807333,
+    "bounded_nonstatic_points": 184229,
+    "one_mm_voxels": 27662,
+    "three_mm_edges": 443973,
+    "seed_points": 184194,
+    "retained_points": 184204,
+    "nearest_blocker_m": 0.0056602297393516954
+  },
+  "stages": [
+    {
+      "function": "clean_object_mask",
+      "view_nearest_blocker_m": 0.0056602297393516954,
+      "nearest_member_m": 0.0056602297393516954,
+      "member_pixels": 28754
+    },
+    {
+      "function": "complete_instance_boundary",
+      "view_nearest_blocker_m": 0.0056602297393516954,
+      "nearest_member_m": 0.0056602297393516954,
+      "member_pixels": 29216
+    },
+    {
+      "function": "complete_planar_boundary",
+      "view_nearest_blocker_m": 0.0056602297393516954,
+      "nearest_member_m": 0.0056602297393516954,
+      "member_pixels": 29297
+    },
+    {
+      "function": "complete_sparse_instance_boundary",
+      "view_nearest_blocker_m": 0.0056602297393516954,
+      "nearest_member_m": 0.0056602297393516954,
+      "member_pixels": 29219
+    },
+    {
+      "function": "clean_object_mask",
+      "view_nearest_blocker_m": 0.0056602297393516954,
+      "nearest_member_m": 0.0056602297393516954,
+      "member_pixels": 29314
+    },
+    {
+      "function": "clean_object_mask",
+      "view_nearest_blocker_m": 0.0,
+      "nearest_member_m": 0.02338080018323349,
+      "member_pixels": 152875
+    },
+    {
+      "function": "complete_instance_boundary",
+      "view_nearest_blocker_m": 0.0,
+      "nearest_member_m": 0.02338080018323349,
+      "member_pixels": 154588
+    },
+    {
+      "function": "complete_planar_boundary",
+      "view_nearest_blocker_m": 0.0,
+      "nearest_member_m": 0.02338080018323349,
+      "member_pixels": 154655
+    },
+    {
+      "function": "complete_sparse_instance_boundary",
+      "view_nearest_blocker_m": 0.0,
+      "nearest_member_m": 0.02338080018323349,
+      "member_pixels": 154626
+    },
+    {
+      "function": "clean_object_mask",
+      "view_nearest_blocker_m": 0.0,
+      "nearest_member_m": 0.023173499756754593,
+      "member_pixels": 154832
+    },
+    {
+      "function": "complete_crossview_boundary",
+      "view_nearest_blocker_m": 0.0056602297393516954,
+      "nearest_member_m": 0.0056602297393516954,
+      "member_pixels": 29314
+    },
+    {
+      "function": "clean_object_mask",
+      "view_nearest_blocker_m": 0.0056602297393516954,
+      "nearest_member_m": 0.0056602297393516954,
+      "member_pixels": 29314
+    },
+    {
+      "function": "retain_crossview_semantic_fragments",
+      "view_nearest_blocker_m": 0.0056602297393516954,
+      "nearest_member_m": 0.0056602297393516954,
+      "member_pixels": 29314
+    },
+    {
+      "function": "complete_crossview_boundary",
+      "view_nearest_blocker_m": 0.0,
+      "nearest_member_m": 0.01946051744430647,
+      "member_pixels": 154880
+    },
+    {
+      "function": "clean_object_mask",
+      "view_nearest_blocker_m": 0.0,
+      "nearest_member_m": 0.01946051744430647,
+      "member_pixels": 154880
+    },
+    {
+      "function": "retain_crossview_semantic_fragments",
+      "view_nearest_blocker_m": 0.0,
+      "nearest_member_m": 0.01946051744430647,
+      "member_pixels": 154880
+    }
+  ],
+  "boundary": {
+    "null": [],
+    "e6": [
+      {
+        "camera": "agentview",
+        "source_step": 17,
+        "held_component": {
+          "version": "public-grasp-geometry/1-dev",
+          "source": "perception",
+          "max_gap_m": 0.012,
+          "components": [
+            {
+              "label": 0,
+              "points": 28754,
+              "lower": [
+                -0.060247580707073214,
+                0.014272085800766944,
+                0.6373652505874634
+              ],
+              "upper": [
+                0.019579722583293914,
+                0.13946628361940383,
+                0.7319525039196014
+              ],
+              "stationary_prior_fraction": 0.945085901092022
+            },
+            {
+              "label": 1,
+              "points": 1,
+              "rejected": "too_few_depth_points"
+            },
+            {
+              "label": 2,
+              "points": 1,
+              "rejected": "too_few_depth_points"
+            },
+            {
+              "label": 3,
+              "points": 1,
+              "rejected": "too_few_depth_points"
+            },
+            {
+              "label": 4,
+              "points": 1,
+              "rejected": "too_few_depth_points"
+            },
+            {
+              "label": 5,
+              "points": 1,
+              "rejected": "too_few_depth_points"
+            },
+            {
+              "label": 6,
+              "points": 1,
+              "rejected": "too_few_depth_points"
+            }
+          ],
+          "selected": 0,
+          "retained_pixels": 28754,
+          "input_pixels": 28760
+        },
+        "refined_component": {
+          "version": "public-grasp-geometry/1-dev",
+          "source": "perception",
+          "max_gap_m": 0.012,
+          "components": [
+            {
+              "label": 0,
+              "points": 29314,
+              "lower": [
+                -0.06035254240036011,
+                0.01377135433256626,
+                0.6366716885566711
+              ],
+              "upper": [
+                0.019578596241772175,
+                0.13958265155553817,
+                0.7319363331794739
+              ],
+              "stationary_prior_fraction": 0.9415296445384458
+            }
+          ],
+          "selected": 0,
+          "retained_pixels": 29314,
+          "input_pixels": 29314
+        },
+        "local_plane": {
+          "version": "public-local-plane-instance-boundary/1-dev",
+          "candidate_pixels": 753,
+          "added_pixels": 81,
+          "max_step_m": 0.003,
+          "minimum_step_limit_m": 0.003,
+          "max_residual_m": 0.001,
+          "tangent_span_multiplier": null,
+          "spacing_source": "fixed_metric_limit",
+          "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+          "private_target_pose_used": false
+        },
+        "sparse_boundary": {
+          "version": "public-extent-bounded-sparse-instance/1-dev",
+          "source": "current_rgbd_mask_and_measured_pixel_tangents",
+          "added_pixels": 465,
+          "private_pose_used": false,
+          "measured_extent_m": [
+            [
+              -0.0682453066110611,
+              0.010358311235904694,
+              0.6310136914253235
+            ],
+            [
+              0.01977449096739292,
+              0.14661796391010284,
+              0.7363772988319397
+            ]
+          ],
+          "directional": {
+            "version": "public-depth-continuous-instance-boundary/1-dev",
+            "source": "current_instance_mask_and_same_view_rgbd",
+            "input_pixels": 28754,
+            "added_pixels_per_round": [
+              299,
+              72,
+              22
+            ],
+            "rounds": 3,
+            "max_step_m": null,
+            "spacing_source": "measured_two_pixel_tangent",
+            "max_extrapolation_error_m": 0.001,
+            "private_target_pose_used": false
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/2-dev",
+            "candidate_pixels": 85,
+            "added_pixels": 72,
+            "max_step_m": null,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": 2,
+            "spacing_source": "measured_two_axis_pixel_tangents",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          }
+        },
+        "connected_surface": {
+          "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+          "max_gap_m": 0.003,
+          "lower": [
+            -0.0682453066110611,
+            0.010358311235904694,
+            0.6310136914253235
+          ],
+          "upper": [
+            0.01977449096739292,
+            0.14661796391010284,
+            0.7363772988319397
+          ],
+          "added_pixels": 8
+        },
+        "version": "public-depth-continuous-instance-boundary/1-dev",
+        "source": "current_instance_mask_and_same_view_rgbd",
+        "input_pixels": 28754,
+        "added_pixels_per_round": [
+          355,
+          80,
+          27
+        ],
+        "rounds": 3,
+        "max_step_m": 0.003,
+        "spacing_source": "fixed_metric_limit",
+        "max_extrapolation_error_m": 0.001,
+        "private_target_pose_used": false,
+        "fused_extent_component": {
+          "source": "current_self_filtered_rgbd_component_within_two_current_mask_extents",
+          "max_gap_m": 0.003,
+          "lower": [
+            -0.07090839743614197,
+            0.00984943937510252,
+            0.6299135684967041
+          ],
+          "upper": [
+            0.019859157502651215,
+            0.14818395674228668,
+            0.736535906791687
+          ],
+          "added_pixels": 0
+        },
+        "crossview": {
+          "version": "public-crossview-instance-boundary/4-dev",
+          "candidate_pixels": 2,
+          "added_pixels": 0,
+          "shared_opposite_view_components": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            28,
+            29,
+            30
+          ],
+          "max_step_m": 0.003,
+          "max_depth_residual_m": 0.001,
+          "plane_supported_pixels": 0,
+          "plane_patch_pixels": 16,
+          "max_plane_residual_m": 0.001,
+          "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+          "private_target_pose_used": false,
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 29314,
+                "lower": [
+                  -0.06035254240036011,
+                  0.01377135433256626,
+                  0.6366716885566711
+                ],
+                "upper": [
+                  0.019578596241772175,
+                  0.13958265155553817,
+                  0.7319363331794739
+                ],
+                "stationary_prior_fraction": 0.9415296445384458
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 29314,
+            "input_pixels": 29314
+          },
+          "semantic_fragments": {
+            "source": "current_semantic_fragment_and_opposite_current_local_surface",
+            "candidate_pixels": 6,
+            "added_pixels": 0,
+            "patch_points": 8,
+            "max_support_distance_m": 0.003,
+            "max_plane_residual_m": 0.001,
+            "private_pose_used": false
+          }
+        }
+      },
+      {
+        "camera": "wrist",
+        "source_step": 17,
+        "held_component": {
+          "version": "public-grasp-geometry/1-dev",
+          "source": "perception",
+          "max_gap_m": 0.012,
+          "components": [
+            {
+              "label": 0,
+              "points": 152875,
+              "lower": [
+                -0.06848570495843888,
+                0.07005343168973922,
+                0.6310696268081665
+              ],
+              "upper": [
+                0.01874370023608207,
+                0.14501548826694488,
+                0.7358445239067077
+              ],
+              "stationary_prior_fraction": 1.0
+            },
+            {
+              "label": 1,
+              "points": 1,
+              "rejected": "too_few_depth_points"
+            }
+          ],
+          "selected": 0,
+          "retained_pixels": 152875,
+          "input_pixels": 152876
+        },
+        "refined_component": {
+          "version": "public-grasp-geometry/1-dev",
+          "source": "perception",
+          "max_gap_m": 0.012,
+          "components": [
+            {
+              "label": 0,
+              "points": 154832,
+              "lower": [
+                -0.06849381133913994,
+                0.06961250111460686,
+                0.6310806620121002
+              ],
+              "upper": [
+                0.018813265301287175,
+                0.1452028676867485,
+                0.7358401584625244
+              ],
+              "stationary_prior_fraction": 1.0
+            }
+          ],
+          "selected": 0,
+          "retained_pixels": 154832,
+          "input_pixels": 154832
+        },
+        "local_plane": {
+          "version": "public-local-plane-instance-boundary/1-dev",
+          "candidate_pixels": 760,
+          "added_pixels": 67,
+          "max_step_m": 0.003,
+          "minimum_step_limit_m": 0.003,
+          "max_residual_m": 0.001,
+          "tangent_span_multiplier": null,
+          "spacing_source": "fixed_metric_limit",
+          "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+          "private_target_pose_used": false
+        },
+        "sparse_boundary": {
+          "version": "public-extent-bounded-sparse-instance/1-dev",
+          "source": "current_rgbd_mask_and_measured_pixel_tangents",
+          "added_pixels": 1751,
+          "private_pose_used": false,
+          "measured_extent_m": [
+            [
+              -0.07088512927293777,
+              0.06448111683130264,
+              0.6301608681678772
+            ],
+            [
+              0.019859157502651215,
+              0.14790375530719757,
+              0.736533522605896
+            ]
+          ],
+          "directional": {
+            "version": "public-depth-continuous-instance-boundary/1-dev",
+            "source": "current_instance_mask_and_same_view_rgbd",
+            "input_pixels": 152875,
+            "added_pixels_per_round": [
+              1058,
+              516,
+              125
+            ],
+            "rounds": 3,
+            "max_step_m": null,
+            "spacing_source": "measured_two_pixel_tangent",
+            "max_extrapolation_error_m": 0.001,
+            "private_target_pose_used": false
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/2-dev",
+            "candidate_pixels": 200,
+            "added_pixels": 52,
+            "max_step_m": null,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": 2,
+            "spacing_source": "measured_two_axis_pixel_tangents",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          }
+        },
+        "connected_surface": {
+          "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+          "max_gap_m": 0.003,
+          "lower": [
+            -0.07088512927293777,
+            0.06448111683130264,
+            0.6301608681678772
+          ],
+          "upper": [
+            0.019859157502651215,
+            0.14790375530719757,
+            0.736533522605896
+          ],
+          "added_pixels": 121
+        },
+        "version": "public-depth-continuous-instance-boundary/1-dev",
+        "source": "current_instance_mask_and_same_view_rgbd",
+        "input_pixels": 152875,
+        "added_pixels_per_round": [
+          1025,
+          539,
+          149
+        ],
+        "rounds": 3,
+        "max_step_m": 0.003,
+        "spacing_source": "fixed_metric_limit",
+        "max_extrapolation_error_m": 0.001,
+        "private_target_pose_used": false,
+        "fused_extent_component": {
+          "source": "current_self_filtered_rgbd_component_within_two_current_mask_extents",
+          "max_gap_m": 0.003,
+          "lower": [
+            -0.07090839743614197,
+            0.00984943937510252,
+            0.6299135684967041
+          ],
+          "upper": [
+            0.019859157502651215,
+            0.14818395674228668,
+            0.736535906791687
+          ],
+          "added_pixels": 5
+        },
+        "crossview": {
+          "version": "public-crossview-instance-boundary/4-dev",
+          "candidate_pixels": 73,
+          "added_pixels": 43,
+          "shared_opposite_view_components": [
+            0,
+            3
+          ],
+          "max_step_m": 0.003,
+          "max_depth_residual_m": 0.001,
+          "plane_supported_pixels": 0,
+          "plane_patch_pixels": 16,
+          "max_plane_residual_m": 0.001,
+          "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+          "private_target_pose_used": false,
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 154880,
+                "lower": [
+                  -0.06849326655268669,
+                  0.06961100682616234,
+                  0.6310809004306793
+                ],
+                "upper": [
+                  0.018822568021714645,
+                  0.1452028825879097,
+                  0.7358399534225464
+                ],
+                "stationary_prior_fraction": 1.0
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 154880,
+            "input_pixels": 154880
+          },
+          "semantic_fragments": {
+            "source": "current_semantic_fragment_and_opposite_current_local_surface",
+            "candidate_pixels": 0,
+            "added_pixels": 0,
+            "patch_points": 8,
+            "max_support_distance_m": 0.003,
+            "max_plane_residual_m": 0.001,
+            "private_pose_used": false
+          }
+        }
+      }
+    ]
+  }
+}
