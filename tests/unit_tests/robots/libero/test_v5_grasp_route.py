@@ -111,7 +111,7 @@ def test_distal_pad_placement_retains_observed_flanks_and_clears_low_support():
     catalog = {row['id']: row for row in rows if not row['rejected']}
     table = np.array([[x, y, 0.] for x in np.linspace(-.08, .08, 81)
         for y in np.linspace(-.08, .08, 81)])
-    recovered = []
+    recovered, edge_recovered = [], []
     for cid, row in catalog.items():
         if not cid.endswith('_top_distal_pad'):
             continue
@@ -126,4 +126,19 @@ def test_distal_pad_placement_retains_observed_flanks_and_clears_low_support():
         after = collision_counts(table, row['xyz'], site, hand, .08, clearance_m=.004)
         if any(before.values()) and not any(after.values()):
             recovered.append(cid)
+        edge = catalog[cid+'_edge_cell']
+        np.testing.assert_allclose(np.asarray(edge['xyz'])+site@edge['pad_contact_local_xyz_m'], patch_centre)
+        # A slightly higher measured support can block the old distal
+        # placement while the additional pad-face cell remains clear.
+        old_blocked, edge_blocked = False, False
+        for opening in np.linspace(.08, 0., 9):
+            old_counts = collision_counts(table+[0., 0., .001], row['xyz'], site,
+                hand, opening, clearance_m=.004)
+            new_counts = collision_counts(table+[0., 0., .001], edge['xyz'], site,
+                hand, opening, clearance_m=.004)
+            old_blocked |= any(old_counts.values())
+            edge_blocked |= any(new_counts.values())
+        if old_blocked and not edge_blocked:
+            edge_recovered.append(cid)
     assert recovered, 'a supported distal contact must survive without deleting support pixels'
+    assert edge_recovered, 'the new pad-face cell must clear support that blocks the former sample'

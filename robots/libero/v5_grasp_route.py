@@ -7,7 +7,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation, Slerp
 
-VERSION = 'public-full-route-grasp/6-pad-contact-dev'
+VERSION = 'public-full-route-grasp/7-pad-edge-dev'
 
 
 def separate_target_points(target_points, scene_points):
@@ -56,6 +56,11 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
     pad_contacts = [('', pad_centre)]
     if distal_contact[2] > pad_centre[2]:
         pad_contacts.append(('_distal_pad', distal_contact))
+        edge_contact = pad_centre.copy()
+        # Centre a 2mm contact cell wholly inside both distal pad faces.
+        # This remains a measured pad placement, subject to the same sweep.
+        edge_contact[2] = min(b['upper'][2] for b in pads)-.001
+        pad_contacts.append(('_distal_pad_edge_cell', edge_contact))
     base_axis = math.atan2(*region['closing_axis_xy'][::-1])
     records = []
     for seed_index, seed in enumerate(region['seeds']):
