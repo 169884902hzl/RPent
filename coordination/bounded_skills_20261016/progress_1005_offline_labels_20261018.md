@@ -4,7 +4,7 @@
 2. The CPU arbitrary-prefix interface is implemented and tested. Captured measured contexts can fill model-prefix rule labels; historical simulator pickles alone cannot reconstruct every missing label faithfully.
 3. Representative microwave function profiles identify route search, cloud/IK preparation, sweep screening, and repeated segmentation/measurement as the main costs. The client profile does not isolate SAM server kernels.
 4. Candidate array order is explicitly nonsemantic. Source detailed history remains the last three receipts. Public schema/contract bytes are unchanged.
-5. Codex3 is testing the new private capture in the real launcher and continuing physical microwave recovery; Codex2 can consume hash-pinned CPU snapshots once that check completes. No training or freeze admission.
+5. Actual launcher9046 and CPU reannotation now agree at all four oracle positions; a nonoracle nudge prefix is also labeled. Codex2 can use matching new private capture contexts, with substantial CPU cost. Physical microwave recovery continues. No training or freeze admission.
 
 ## Bowl cause and matched rerun
 
@@ -67,6 +67,18 @@ The probe records `private_prefix_annotation_state` separately from its public r
 Private interface `libero-offline-prefix-label/1`; public `bounded-skills/3` and `public-request-legal/2` unchanged. Schema SHA `df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa`; contract SHA `7e898e3bd4e8f4c7a4e9951d897cc1fe682037ee35ee4d6d5cc1f52606e2f49c`.
 
 CPU validation:243tests passed in129.34s (adapter, payload, offline labels), and53tests passed in51.49s (offline labels, screen, probe resilience, chunk; overlapping sets). New interface tests check canonical oracle-path agreement, a nonoracle nudge prefix, save/load, no live IO, repeated annotation without mutation, mismatched request, invalid prefix, terminal prefix and corrupt snapshot. CLI help, scoped Ruff and diff whitespace checks pass. One pytest configuration warning remains (`timeout` is not registered in this local environment).
+
+Actual-capture validation: startup9046_120 executes305controls and saves the initial canonical microwave-close request with its private context. Offline CPU labels match online legal/rule_acceptable/selected at all four positions, with zero mismatches. A different legal nudge prefix returns33legal IDs and5acceptable IDs. No simulator, RPC or GPU is used by the annotation audit. This validates the captured-state path; it does not establish physical branch success or support incomplete historical contexts.
+
+| Prefix | CPU seconds | Legal | Acceptable |
+| --- | ---: | ---: | ---: |
+| Oracle position0 | 8.955 | 34 | 5 |
+| Oracle position1 | 30.475 | 33 | 1 |
+| Oracle position2 | 42.834 | 32 | 1 |
+| Oracle position3 | 51.006 | 31 | 1 |
+| Nonoracle nudge | 28.669 | 33 | 5 |
+
+The compressed context is101,610,674bytes. Capture and serialization add7.616s to the startup ledger. Bulk offline labeling remains expensive; the interface currently prioritizes matching the existing conditional oracle over throughput. Evidence: `reports/offline_prefix_9046_120_CPU_20261018.json`; script `scripts/audit_offline_prefix_state_CPU_20261018.py`. Runtime source remains c916ab1. The actual result has been appended and byte-verified in shared COORDINATION for Codex1/Codex2.
 
 ## Additional microwave evidence
 
