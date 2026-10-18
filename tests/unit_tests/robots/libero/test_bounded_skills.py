@@ -47,6 +47,49 @@ def decision(request, ids):
             "observation_id": request["observation_id"], "candidate_ids": ids}
 
 
+def test_precontact_instance_reference_preserves_exact_public_pixels(adapter):
+    points = np.random.default_rng(18).uniform([.08, .08, .88], [.12, .12, .92], (80, 3))
+    adapter.precontact_instance_surface_v1 = True
+    adapter.plans['e1'] = {'xyz_m': [.1, .1, .9]}
+    adapter._instance_pixels = lambda key: points
+    adapter._commit_grasp({'skill': 'move_to', 'parameters': {'anchor_id': 'e1'}})
+    saved = adapter.committed_grasps['e1']['instance_reference']
+    np.testing.assert_array_equal(saved['xyz_world'], points)
+    assert not np.shares_memory(saved['xyz_world'], points)
+    assert saved['source_step'] == 0
+
+
+@pytest.mark.parametrize('state', ['active', 'lost_identity', 'held'])
+def test_precontact_curved_instance_recovers_occluded_rim_but_keeps_other_depth(adapter, state):
+    angles = np.linspace(0., 2*np.pi, 80, endpoint=False)
+    z, angle = np.meshgrid(np.linspace(.84, .96, 40), angles, indexing='ij')
+    world = np.stack([.1+.02*np.cos(angle), .1+.02*np.sin(angle), z], axis=-1)
+    reference = world.reshape(-1, 3).copy()
+    missing = world[20, 65].copy()
+    # A different present surface inside the old bounds does not become
+    # target merely because it lies near the missing semantic boundary.
+    world[20, 66, :2] = [.1, .117]
+    other = world[20, 66].copy()
+    current = world[:, 20:55].reshape(-1, 3)
+    adapter._instance_pixels = lambda key: current
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter._base_geometry = world.reshape(-1, 3), None
+    adapter.active = 'e1'
+    if state == 'held':
+        adapter.held = 'e1'
+    if state == 'lost_identity':
+        reference += .2
+    adapter.committed_grasps['e1'] = {'plan': {}, 'instance_reference': {
+        'xyz_world': reference, 'source_step': 0}}
+    result = adapter._contact_pixels('e1')
+    assert bool((np.linalg.norm(result-missing, axis=1) < 1e-9).any()) is (state == 'active')
+    assert not (np.linalg.norm(result-other, axis=1) < 1e-9).any()
+    if state == 'active':
+        evidence = adapter.instance_boundary_evidence['e1'][-1]
+        assert evidence['reference_capture_step'] == 0 and evidence['capture_step'] == 4
+        assert evidence['private_pose_used'] is False
+
+
 @pytest.mark.parametrize('mode', ['valid', 'missing_seed', 'not_found'])
 def test_payload_point_refinement_uses_measured_interior_and_bounds(adapter, monkeypatch, mode):
     entity = adapter.scene.entities['e1']

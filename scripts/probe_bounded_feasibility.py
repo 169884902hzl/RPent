@@ -291,7 +291,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         if arm.startswith(("oracle", "model")) or arm == "call_vla":
             xml = Path(robosuite.__file__).parent/"models/assets/grippers/panda_gripper.xml"
             adapter = MeasuredSkillAdapter(executor, xml, allow_vla=arm == "call_vla",
-                record_public_geometry=True)
+                record_public_geometry=True, precontact_instance_surface_v1=config.get('precontact_instance_surface_v1', True))
             policy = None if arm.startswith("model") else BoundedOracle(rpc, adapter)
             if arm.startswith("model"):
                 from robots.libero.bounded_async import AsyncSkillDecisions, http_choice

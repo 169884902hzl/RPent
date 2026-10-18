@@ -68,7 +68,7 @@ class MeasuredSkillAdapter:
 
     def __init__(self, executor, gripper_xml: str | Path, *, allow_vla: bool = True,
                  history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
-                 record_public_geometry: bool = False):
+                 record_public_geometry: bool = False, precontact_instance_surface_v1: bool = False):
         self.ex, self.p, self.scene = executor, executor.p, executor.scene
         self.xml = Path(gripper_xml)
         self.geometry = panda_geometry(self.xml)
@@ -103,6 +103,7 @@ class MeasuredSkillAdapter:
         self.instance_boundary_evidence = {}
         self._proprio_sample = None
         self.record_public_geometry = record_public_geometry
+        self.precontact_instance_surface_v1 = precontact_instance_surface_v1
         self.public_geometry_evidence = {}
         self._last_free_chunk = None
         self.last_prefetch_adoption = None
@@ -363,6 +364,45 @@ class MeasuredSkillAdapter:
         plan = self.plans.get(anchor_id, committed.get('plan', {}))
         surface = plan.get('surface_measurement')
         entity = self.scene.entities.get(anchor_id)
+        reference = committed.get('instance_reference')
+        if (reference is not None and self.active == anchor_id and self.held is None
+                and entity is not None and entity.visible and self._base_geometry is not None):
+            cache_key = (anchor_id, 'precontact_surface')
+            if cache_key not in self._instance_cache:
+                from scipy.spatial import cKDTree
+
+                old = np.asarray(reference['xyz_world'])
+                overlap = cKDTree(old).query(pixels,
+                    distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001
+                recovered, evidence = [pixels], []
+                # A visible-surface centre can jump under finger occlusion.
+                # Require shared current depth, rather than centre proximity,
+                # before the old surface can establish contact identity.
+                if overlap.sum() >= 40:
+                    lower, upper = old.min(0)-.001, old.max(0)+.001
+                    for camera in ('agentview', 'wrist'):
+                        world = self._self_filtered_world(np.asarray(
+                            self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                        member, detail = complete_contact_surface(world, old, current_boundary=True)
+                        extent = ((world >= lower).all(axis=2) & (world <= upper).all(axis=2))
+                        recovered.append(world[member & extent])
+                        evidence.append({'camera': camera, **detail})
+                    _, axes = np.linalg.eigh(np.cov(old.T))
+                    scene = self._base_geometry[0]
+                    member, curved = complete_cylindrical_contact_surface(scene.reshape(-1, 1, 3), old, axes[:, -1])
+                    extent = ((scene >= lower).all(axis=1) & (scene <= upper).all(axis=1))
+                    recovered.append(scene[member[:, 0] & extent])
+                    evidence.append({'source': 'current_rgbd_matches_precontact_circular_sections',
+                        'fit': curved, 'axis_xyz': axes[:, -1].tolist()})
+                pixels = np.concatenate(recovered)
+                self._instance_cache[cache_key] = pixels
+                self.instance_boundary_evidence.setdefault(anchor_id, []).append({
+                    'source': 'current_rgbd_matches_exact_precontact_instance_surface',
+                    'reference_capture_step': reference['source_step'],
+                    'capture_step': self.ex.toolkit._state.latest_step,
+                    'shared_current_pixels': int(overlap.sum()), 'minimum_shared_pixels': 40,
+                    'surface_residual_m': .001, 'private_pose_used': False, 'matches': evidence})
+            pixels = self._instance_cache[cache_key]
         if (surface and 'anchor_xyz' in committed and self.active is None and entity is not None
                 and measured_robot(self.p)['gripper_opening_m'] >= .075
                 and np.linalg.norm(np.asarray(entity.xyz)-committed['anchor_xyz']) <= .01):
@@ -2037,6 +2077,16 @@ class MeasuredSkillAdapter:
             plan['contact_evidence'] = self._evidence(entity)
             self.plans[key] = plan
             self.committed_grasps[key] = {'plan': plan, 'anchor_xyz': np.array(entity.xyz)}
+            if (self.precontact_instance_surface_v1 and not entity.part_of
+                    and not fixture_actions(entity.name) and plan.get('contact_kind') != 'surface'):
+                # Keep exact measured pixels: voxel centroids can lose the
+                # millimetre-scale identity needed after jaw occlusion.
+                points = self._instance_pixels(key)
+                if len(points) >= 40:
+                    artifact = self._record_public_geometry(f'bounded_precontact_{key}_target', points)
+                    self.committed_grasps[key]['instance_reference'] = {
+                        'xyz_world': np.array(points, copy=True),
+                        'source_step': self.ex.toolkit._state.latest_step, 'artifact': artifact}
 
     def call_vla(self, parameters):
         if not self.allow_vla:
