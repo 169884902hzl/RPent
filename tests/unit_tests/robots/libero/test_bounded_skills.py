@@ -47,6 +47,39 @@ def decision(request, ids):
             "observation_id": request["observation_id"], "candidate_ids": ids}
 
 
+@pytest.mark.parametrize('mode', ['refresh', 'blocked_scan', 'withdrawal'])
+def test_observation_keeps_contact_until_the_hand_actually_withdraws(adapter, monkeypatch, mode):
+    original_obs = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.02, -.02]}
+    adapter.p.env.position[:] = [.1, .1, .9]
+    initial = adapter.request()
+    descend = next(c for c in initial['candidates'] if c['skill'] == 'descend')
+    adapter._commit_grasp(descend)
+    adapter.active = 'e1'
+    adapter.grasp_reference = (adapter.scene.entities['e1'], adapter.robot())
+    committed = adapter.committed_grasps['e1']
+    # Jaw occlusion prevents finding a new patch. The existing measured
+    # contact still exposes lift; a refresh alone must not destroy it.
+    adapter.grasp_geometry = lambda entity: None
+    if mode == 'blocked_scan':
+        monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion.run',
+            lambda *args, **kwargs: dict(executed=False, stop_reason='measured_sweep_collision'))
+    request = adapter.request()
+    assert any(c['skill'] == 'lift' for c in request['candidates'])
+    observe = next(c for c in request['candidates'] if c['skill'] == 'observe'
+        and c['parameters']['mode'] == ('refresh' if mode == 'refresh' else 'wrist_scan'))
+    receipt = adapter.execute(request, decision(request, [observe['id']]))[0]
+    if mode == 'withdrawal':
+        assert receipt['steps_used'] > 0
+        assert adapter.active is adapter.grasp_reference is None
+        assert not adapter.committed_grasps
+    else:
+        assert receipt['steps_used'] == 0
+        assert adapter.active == 'e1' and adapter.grasp_reference is not None
+        assert adapter.committed_grasps['e1'] is committed
+        assert any(c['skill'] == 'lift' for c in adapter.request()['candidates'])
+
+
 def test_precontact_instance_reference_preserves_exact_public_pixels(adapter):
     points = np.random.default_rng(18).uniform([.08, .08, .88], [.12, .12, .92], (80, 3))
     adapter.precontact_instance_surface_v1 = True

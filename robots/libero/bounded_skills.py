@@ -2131,7 +2131,6 @@ class MeasuredSkillAdapter:
             if lost_held is not None:
                 outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_lost'
         if skill == 'observe':
-            self.committed_grasps.clear()
             if (parameters['mode'] == 'wrist_scan' and self.held is None
                     and np.linalg.norm(np.asarray(self.robot()['eef_xyz_m'])-before['eef_xyz_m'])
                     > self.config.endpoint_tolerance_m):
@@ -2141,6 +2140,12 @@ class MeasuredSkillAdapter:
                 self.active = None
                 self.grasp_reference = None
                 self.withdrawal_contact = None
+                self.committed_grasps.clear()
+            elif self.active is None:
+                self.committed_grasps.clear()
+            # A passive refresh or an unexecuted scan has not broken the
+            # measured contact. Keep its public patch through jaw occlusion;
+            # losing it here can remove every lift after a successful close.
         if skill == 'set_gripper' and parameters.get('mode') == 'close' and self.active:
             if self.active in self.committed_grasps:
                 self.committed_grasps[self.active]['contact_robot'] = measured_robot(self.p)

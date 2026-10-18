@@ -1,0 +1,21 @@
+{
+  "parent_commit": "842a097ad20440c95419d3598a4c4a0a78798bef",
+  "purpose": "Keep the measured contact patch after passive refresh or an unexecuted wrist scan; release after measured withdrawal.",
+  "tests": {
+    "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_compaction.py -q",
+    "exit_code": 0,
+    "passed": 206,
+    "warnings": [
+      "Unknown config option: timeout"
+    ],
+    "wall_seconds": 114.82
+  },
+  "files": {
+    "SKILL_PACKAGE_SPEC.md": "2369e5c9d538384e68e014a0b72f27f007d56ebbf4941780af42d30a92708b62",
+    "robots/libero/bounded_skills.py": "4f253ecec39553fc8d86e5b6d2c1925c93eabead416d417aa9d0bbae3f360ae0",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "d4e78b12fc942a07cc8ff18d3f65196b6e7b77126f0eb655a118ffbaa21d20a1"
+  },
+  "physical_validation": "pending new-snapshot same-launcher startup and matched original-state replay",
+  "limits_or_truth_changed": false,
+  "training": false
+}
