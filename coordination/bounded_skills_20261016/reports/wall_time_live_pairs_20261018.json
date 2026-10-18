@@ -164,6 +164,88 @@
       "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_0/bowl_transfer_libero_spatial_t0_s0_oracle_k4_legacy/wall_time_spans.json"
     },
     {
+      "job": "job8846_100",
+      "case": "drawer_open_libero_goal_t0_s0",
+      "arm": "oracle_k4",
+      "success": true,
+      "decisions": 7,
+      "sim_steps": 594,
+      "wall_s": 1117.550013341941,
+      "raw_episode_ledger": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_100/episodes.jsonl",
+      "instrumented": true,
+      "perception_s": 447.97503023501486,
+      "consequence_planning_s": 520.0797279565595,
+      "simulation_step_render_s": 14.376487681176513,
+      "oracle_decision_s": 3.3198455926030874,
+      "model_decision_s": 0,
+      "pi05_inference_s": 0,
+      "artifact_io_s": 17.25572631834075,
+      "execution_other_s": 110.86152681522071,
+      "unattributed_s": 3.6816687430255115,
+      "perception_components_s": {
+        "segmentation": 89.07006762223318,
+        "depth": 1.2497266437858343,
+        "entity_measurement": 338.5315409908071,
+        "capture_io": 19.123694978188723
+      },
+      "execution_perception_s": 341.66616943106055,
+      "oracle_root_inclusive_s": 170.20737865008414,
+      "exclusive_detail_s": {
+        "perception.segmentation": 89.07006762223318,
+        "perception.entity_measurement": 338.5315409908071,
+        "artifact_io": 17.25572631834075,
+        "planning.consequences": 387.67906963219866,
+        "planning.request": 132.40065832436085,
+        "decision.oracle": 3.3198455926030874,
+        "simulation.step_render": 14.376487681176513,
+        "perception.depth": 1.2497266437858343,
+        "perception.capture_io": 19.123694978188723,
+        "execution.other": 110.86152681522071
+      },
+      "all_threads_exclusive_s": {
+        "perception.segmentation": 89.07006762223318,
+        "perception.entity_measurement": 338.5315409908071,
+        "artifact_io": 17.25572631834075,
+        "planning.consequences": 387.67906963219866,
+        "planning.request": 132.40065832436085,
+        "decision.oracle": 3.3198455926030874,
+        "simulation.step_render": 14.376487681176513,
+        "perception.depth": 1.2497266437858343,
+        "perception.capture_io": 19.123694978188723,
+        "execution.other": 110.86152681522071
+      },
+      "exclusive_by_root_s": {
+        "perception.entity_measurement": {
+          "perception.segmentation": 6.228934801649302,
+          "perception.entity_measurement": 0.7158712721429765
+        },
+        "planning.request": {
+          "perception.entity_measurement": 96.34693431435153,
+          "artifact_io": 6.584869944956154,
+          "planning.consequences": 131.79418692272156,
+          "planning.request": 132.40065832436085,
+          "perception.segmentation": 3.016957904677838
+        },
+        "decision.oracle": {
+          "planning.consequences": 164.8154798229225,
+          "decision.oracle": 3.3198455926030874,
+          "perception.entity_measurement": 0.00016251113265752792,
+          "artifact_io": 2.071890723425895
+        },
+        "execution.other": {
+          "planning.consequences": 91.0694028865546,
+          "perception.entity_measurement": 241.46857289317995,
+          "artifact_io": 8.5989656499587,
+          "simulation.step_render": 14.376487681176513,
+          "perception.depth": 1.2497266437858343,
+          "perception.capture_io": 19.123694978188723,
+          "perception.segmentation": 79.82417491590604,
+          "execution.other": 110.86152681522071
+        }
+      },
+      "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_100/drawer_open_libero_goal_t0_s0_oracle_k4/wall_time_spans.json"
+    },
+    {
       "job": "job8846_20",
       "case": "box_transfer_libero_object_t0_s0",
       "arm": "oracle_k4",
@@ -490,332 +572,249 @@
       "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_40/container_libero_object_t2_s0_oracle_k4_legacy/wall_time_spans.json"
     },
     {
-      "job": "job8858_100",
-      "case": "drawer_open_libero_goal_t0_s0",
+      "job": "job8846_60",
+      "case": "cup_transfer_libero_10_t4_s0",
       "arm": "oracle_k4",
       "success": true,
-      "decisions": 7,
-      "sim_steps": 594,
-      "wall_s": 1067.3154602940194,
-      "raw_episode_ledger": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8858_100/episodes.jsonl",
+      "decisions": 6,
+      "sim_steps": 2009,
+      "wall_s": 961.2471196912229,
+      "raw_episode_ledger": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_60/episodes.jsonl",
       "instrumented": true,
-      "perception_s": 415.0292401127517,
-      "consequence_planning_s": 504.27073968807235,
-      "simulation_step_render_s": 13.374342998024076,
-      "oracle_decision_s": 3.2577622826211154,
+      "perception_s": 376.56329892063513,
+      "consequence_planning_s": 494.1079114959575,
+      "simulation_step_render_s": 36.02875411044806,
+      "oracle_decision_s": 14.683798853307962,
       "model_decision_s": 0,
       "pi05_inference_s": 0,
-      "artifact_io_s": 16.48988793604076,
-      "execution_other_s": 111.2309993407689,
-      "unattributed_s": 3.6624879357405007,
+      "artifact_io_s": 9.73092743800953,
+      "execution_other_s": 25.523482243530452,
+      "unattributed_s": 4.608946629334241,
       "perception_components_s": {
-        "segmentation": 76.57924594869837,
-        "depth": 1.054378713015467,
-        "entity_measurement": 321.01848603319377,
-        "capture_io": 16.377129417844117
+        "segmentation": 100.53200227953494,
+        "depth": 1.5822764690965414,
+        "entity_measurement": 244.28127824282274,
+        "capture_io": 30.16774192918092
       },
-      "execution_perception_s": 325.98571860743687,
-      "oracle_root_inclusive_s": 169.35510516166687,
+      "execution_perception_s": 250.79455160535872,
+      "oracle_root_inclusive_s": 175.18318879092112,
       "exclusive_detail_s": {
-        "perception.segmentation": 76.57924594869837,
-        "perception.entity_measurement": 321.01848603319377,
-        "artifact_io": 16.48988793604076,
-        "planning.consequences": 373.97775430465117,
-        "planning.request": 130.29298538342118,
-        "decision.oracle": 3.2577622826211154,
-        "simulation.step_render": 13.374342998024076,
-        "perception.depth": 1.054378713015467,
-        "perception.capture_io": 16.377129417844117,
-        "execution.other": 111.2309993407689
+        "perception.segmentation": 100.53200227953494,
+        "perception.entity_measurement": 244.28127824282274,
+        "artifact_io": 9.73092743800953,
+        "planning.consequences": 422.57298426749185,
+        "planning.request": 71.53492722846568,
+        "decision.oracle": 14.683798853307962,
+        "simulation.step_render": 36.02875411044806,
+        "perception.depth": 1.5822764690965414,
+        "perception.capture_io": 30.16774192918092,
+        "execution.other": 25.523482243530452
       },
       "all_threads_exclusive_s": {
-        "perception.segmentation": 76.57924594869837,
-        "perception.entity_measurement": 321.01848603319377,
-        "artifact_io": 16.48988793604076,
-        "planning.consequences": 373.97775430465117,
-        "planning.request": 130.29298538342118,
-        "decision.oracle": 3.2577622826211154,
-        "simulation.step_render": 13.374342998024076,
-        "perception.depth": 1.054378713015467,
-        "perception.capture_io": 16.377129417844117,
-        "execution.other": 111.2309993407689
+        "perception.segmentation": 100.53200227953494,
+        "perception.entity_measurement": 244.28127824282274,
+        "artifact_io": 9.73092743800953,
+        "planning.consequences": 422.57298426749185,
+        "planning.request": 71.53492722846568,
+        "decision.oracle": 14.683798853307962,
+        "simulation.step_render": 36.02875411044806,
+        "perception.depth": 1.5822764690965414,
+        "perception.capture_io": 30.16774192918092,
+        "execution.other": 25.523482243530452
       },
       "exclusive_by_root_s": {
         "perception.entity_measurement": {
-          "perception.segmentation": 6.1910530887544155,
-          "perception.entity_measurement": 0.7310775420628488
+          "perception.segmentation": 5.630621278658509,
+          "perception.entity_measurement": 0.6854102183133364
         },
         "planning.request": {
-          "perception.entity_measurement": 79.14554766286165,
-          "artifact_io": 5.806584847625345,
-          "planning.consequences": 118.41256072651595,
-          "planning.request": 130.29298538342118,
-          "perception.segmentation": 2.975690380204469
+          "perception.entity_measurement": 119.45264818938449,
+          "artifact_io": 5.255474717356265,
+          "planning.consequences": 158.0434594801627,
+          "planning.request": 71.53492722846568
         },
         "decision.oracle": {
-          "planning.consequences": 164.02429964765906,
-          "decision.oracle": 3.2577622826211154,
-          "perception.entity_measurement": 0.00015283143147826195,
-          "artifact_io": 2.072890399955213
+          "planning.consequences": 160.2576822442934,
+          "decision.oracle": 14.683798853307962,
+          "perception.entity_measurement": 6.762892007827759e-05,
+          "artifact_io": 0.24164006439968944
         },
         "execution.other": {
-          "planning.consequences": 91.54089393047616,
-          "perception.entity_measurement": 241.1417079968378,
-          "artifact_io": 8.610412688460201,
-          "simulation.step_render": 13.374342998024076,
-          "perception.depth": 1.054378713015467,
-          "perception.capture_io": 16.377129417844117,
-          "perception.segmentation": 67.41250247973949,
-          "execution.other": 111.2309993407689
+          "planning.consequences": 104.27184254303575,
+          "perception.entity_measurement": 124.14315220620483,
+          "artifact_io": 4.233812656253576,
+          "simulation.step_render": 36.02875411044806,
+          "perception.depth": 1.5822764690965414,
+          "perception.capture_io": 30.16774192918092,
+          "perception.segmentation": 94.90138100087643,
+          "execution.other": 25.523482243530452
         }
       },
-      "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8858_100/drawer_open_libero_goal_t0_s0_oracle_k4/wall_time_spans.json"
+      "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_60/cup_transfer_libero_10_t4_s0_oracle_k4/wall_time_spans.json"
     },
     {
-      "job": "job8831_120",
-      "case": "microwave_close_libero_90_t33_s0",
-      "arm": "oracle_k4",
-      "success": false,
-      "decisions": 12,
-      "sim_steps": 610,
-      "wall_s": 1561.6992886229418,
-      "raw_episode_ledger": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8831_120/episodes.jsonl",
-      "instrumented": true,
-      "perception_s": 612.503437992651,
-      "consequence_planning_s": 779.9224161896855,
-      "simulation_step_render_s": 13.962920701131225,
-      "oracle_decision_s": 22.405055387411267,
-      "model_decision_s": 0,
-      "pi05_inference_s": 0,
-      "artifact_io_s": 41.87187637295574,
-      "execution_other_s": 86.46138706244528,
-      "unattributed_s": 4.572194916661829,
-      "perception_components_s": {
-        "segmentation": 256.3879771470092,
-        "depth": 1.286721886601299,
-        "entity_measurement": 336.32902305107564,
-        "capture_io": 18.499715907964855
-      },
-      "execution_perception_s": 253.2151928585954,
-      "oracle_root_inclusive_s": 157.71051852032542,
-      "exclusive_detail_s": {
-        "perception.segmentation": 256.3879771470092,
-        "perception.entity_measurement": 336.32902305107564,
-        "artifact_io": 41.87187637295574,
-        "planning.consequences": 526.360966084525,
-        "planning.request": 253.56145010516047,
-        "decision.oracle": 22.405055387411267,
-        "simulation.step_render": 13.962920701131225,
-        "perception.depth": 1.286721886601299,
-        "perception.capture_io": 18.499715907964855,
-        "execution.other": 86.46138706244528
-      },
-      "all_threads_exclusive_s": {
-        "perception.segmentation": 256.3879771470092,
-        "perception.entity_measurement": 336.32902305107564,
-        "artifact_io": 41.87187637295574,
-        "planning.consequences": 526.360966084525,
-        "planning.request": 253.56145010516047,
-        "decision.oracle": 22.405055387411267,
-        "simulation.step_render": 13.962920701131225,
-        "perception.depth": 1.286721886601299,
-        "perception.capture_io": 18.499715907964855,
-        "execution.other": 86.46138706244528
-      },
-      "exclusive_by_root_s": {
-        "perception.entity_measurement": {
-          "perception.segmentation": 5.424991700798273,
-          "perception.entity_measurement": 2.072890650946647
-        },
-        "planning.request": {
-          "perception.entity_measurement": 176.20417258376256,
-          "artifact_io": 37.23677490837872,
-          "planning.consequences": 293.43298301519826,
-          "perception.segmentation": 175.5860815020278,
-          "planning.request": 253.56145010516047
-        },
-        "decision.oracle": {
-          "planning.consequences": 134.17133862804621,
-          "decision.oracle": 22.405055387411267,
-          "perception.entity_measurement": 0.00010869652032852173,
-          "artifact_io": 1.1340158083476126
-        },
-        "execution.other": {
-          "planning.consequences": 98.75664444128051,
-          "simulation.step_render": 13.962920701131225,
-          "perception.depth": 1.286721886601299,
-          "perception.capture_io": 18.499715907964855,
-          "perception.segmentation": 75.37690394418314,
-          "perception.entity_measurement": 158.0518511198461,
-          "artifact_io": 3.5010856562294066,
-          "execution.other": 86.46138706244528
-        }
-      },
-      "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8831_120/microwave_close_libero_90_t33_s0_oracle_k4/wall_time_spans.json"
-    },
-    {
-      "job": "job8843_80",
-      "case": "drawer_close_libero_90_t0_s0",
-      "arm": "oracle_k4",
-      "success": false,
-      "decisions": 7,
-      "sim_steps": 448,
-      "wall_s": 753.2824601717293,
-      "raw_episode_ledger": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/episodes.jsonl",
-      "instrumented": true,
-      "perception_s": 270.2256703716703,
-      "consequence_planning_s": 445.9874306493439,
-      "simulation_step_render_s": 10.396102985367179,
-      "oracle_decision_s": 4.002170519437641,
-      "model_decision_s": 0,
-      "pi05_inference_s": 0,
-      "artifact_io_s": 15.748118158895522,
-      "execution_other_s": 2.616075084079057,
-      "unattributed_s": 4.306892402935773,
-      "perception_components_s": {
-        "segmentation": 53.19833586644381,
-        "depth": 0.9102528891526163,
-        "entity_measurement": 202.73468410084024,
-        "capture_io": 13.382397515233606
-      },
-      "execution_perception_s": 137.79220393765718,
-      "oracle_root_inclusive_s": 85.7257220200263,
-      "exclusive_detail_s": {
-        "perception.segmentation": 53.19833586644381,
-        "perception.entity_measurement": 202.73468410084024,
-        "artifact_io": 15.748118158895522,
-        "planning.consequences": 228.70465283002704,
-        "planning.request": 217.28277781931683,
-        "decision.oracle": 4.002170519437641,
-        "simulation.step_render": 10.396102985367179,
-        "perception.depth": 0.9102528891526163,
-        "perception.capture_io": 13.382397515233606,
-        "execution.other": 2.616075084079057
-      },
-      "all_threads_exclusive_s": {
-        "perception.segmentation": 53.19833586644381,
-        "perception.entity_measurement": 202.73468410084024,
-        "artifact_io": 15.748118158895522,
-        "planning.consequences": 228.70465283002704,
-        "planning.request": 217.28277781931683,
-        "decision.oracle": 4.002170519437641,
-        "simulation.step_render": 10.396102985367179,
-        "perception.depth": 0.9102528891526163,
-        "perception.capture_io": 13.382397515233606,
-        "execution.other": 2.616075084079057
-      },
-      "exclusive_by_root_s": {
-        "perception.entity_measurement": {
-          "perception.segmentation": 4.039144168142229,
-          "perception.entity_measurement": 0.8883840260095894
-        },
-        "planning.request": {
-          "perception.entity_measurement": 119.84003641083837,
-          "artifact_io": 13.080584431067109,
-          "planning.consequences": 119.78111593425274,
-          "perception.segmentation": 7.665857826825231,
-          "planning.request": 217.28277781931683
-        },
-        "decision.oracle": {
-          "planning.consequences": 80.80049331160262,
-          "decision.oracle": 4.002170519437641,
-          "perception.entity_measurement": 4.4002197682857513e-05,
-          "artifact_io": 0.9230141867883503
-        },
-        "execution.other": {
-          "planning.consequences": 28.123043584171683,
-          "simulation.step_render": 10.396102985367179,
-          "perception.depth": 0.9102528891526163,
-          "perception.capture_io": 13.382397515233606,
-          "perception.segmentation": 41.49333387147635,
-          "perception.entity_measurement": 82.0062196617946,
-          "artifact_io": 1.744519541040063,
-          "execution.other": 2.616075084079057
-        }
-      },
-      "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/wall_time_spans.json"
-    },
-    {
-      "job": "job8843_80",
-      "case": "drawer_close_libero_90_t0_s0",
+      "job": "job8846_60",
+      "case": "cup_transfer_libero_10_t4_s0",
       "arm": "oracle_k4_legacy",
       "success": true,
-      "decisions": 19,
-      "sim_steps": 635,
-      "wall_s": 2150.4148776936345,
-      "raw_episode_ledger": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/episodes.jsonl",
+      "decisions": 11,
+      "sim_steps": 2009,
+      "wall_s": 1268.0532206287608,
+      "raw_episode_ledger": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_60/episodes.jsonl",
       "instrumented": true,
-      "perception_s": 857.9787628096528,
-      "consequence_planning_s": 1199.7651722715236,
-      "simulation_step_render_s": 17.66379607329145,
-      "oracle_decision_s": 4.061958463862538,
+      "perception_s": 433.31801823945716,
+      "consequence_planning_s": 740.0823851446621,
+      "simulation_step_render_s": 35.262669472489506,
+      "oracle_decision_s": 24.195279731880873,
       "model_decision_s": 0,
       "pi05_inference_s": 0,
-      "artifact_io_s": 49.01497434685007,
-      "execution_other_s": 17.45956026390195,
-      "unattributed_s": 4.470653464552015,
+      "artifact_io_s": 15.154169800691307,
+      "execution_other_s": 15.418909275904298,
+      "unattributed_s": 4.621788963675499,
       "perception_components_s": {
-        "segmentation": 104.9104046500288,
-        "depth": 1.630938972812146,
-        "entity_measurement": 727.7365732863545,
-        "capture_io": 23.700845900457352
+        "segmentation": 89.77535637747496,
+        "depth": 1.3405789947137237,
+        "entity_measurement": 315.4883600892499,
+        "capture_io": 26.713722778018564
       },
-      "execution_perception_s": 559.4105514339171,
-      "oracle_root_inclusive_s": 46.09472481068224,
+      "execution_perception_s": 197.91862917505205,
+      "oracle_root_inclusive_s": 146.02042909990996,
       "exclusive_detail_s": {
-        "perception.segmentation": 104.9104046500288,
-        "perception.entity_measurement": 727.7365732863545,
-        "artifact_io": 49.01497434685007,
-        "planning.consequences": 391.19287398224697,
-        "planning.request": 808.5722982892767,
-        "decision.oracle": 4.061958463862538,
-        "simulation.step_render": 17.66379607329145,
-        "perception.depth": 1.630938972812146,
-        "perception.capture_io": 23.700845900457352,
-        "execution.other": 17.45956026390195
+        "perception.segmentation": 89.77535637747496,
+        "perception.entity_measurement": 315.4883600892499,
+        "artifact_io": 15.154169800691307,
+        "planning.consequences": 658.0094433603808,
+        "planning.request": 82.07294178428128,
+        "decision.oracle": 24.195279731880873,
+        "simulation.step_render": 35.262669472489506,
+        "perception.depth": 1.3405789947137237,
+        "perception.capture_io": 26.713722778018564,
+        "execution.other": 15.418909275904298
       },
       "all_threads_exclusive_s": {
-        "perception.segmentation": 104.9104046500288,
-        "perception.entity_measurement": 727.7365732863545,
-        "artifact_io": 49.01497434685007,
-        "planning.consequences": 391.19287398224697,
-        "planning.request": 808.5722982892767,
-        "decision.oracle": 4.061958463862538,
-        "simulation.step_render": 17.66379607329145,
-        "perception.depth": 1.630938972812146,
-        "perception.capture_io": 23.700845900457352,
-        "execution.other": 17.45956026390195
+        "perception.segmentation": 89.77535637747496,
+        "perception.entity_measurement": 315.4883600892499,
+        "artifact_io": 15.154169800691307,
+        "planning.consequences": 658.0094433603808,
+        "planning.request": 82.07294178428128,
+        "decision.oracle": 24.195279731880873,
+        "simulation.step_render": 35.262669472489506,
+        "perception.depth": 1.3405789947137237,
+        "perception.capture_io": 26.713722778018564,
+        "execution.other": 15.418909275904298
       },
       "exclusive_by_root_s": {
         "perception.entity_measurement": {
-          "perception.segmentation": 3.5719038834795356,
-          "perception.entity_measurement": 0.8491348936222494
+          "perception.segmentation": 5.175033997744322,
+          "perception.entity_measurement": 0.6978480634279549
         },
         "planning.request": {
-          "perception.entity_measurement": 281.007427059114,
-          "artifact_io": 31.19070205418393,
-          "planning.consequences": 215.30684495484456,
-          "perception.segmentation": 13.139293726533651,
-          "planning.request": 808.5722982892767
+          "perception.entity_measurement": 229.0787253282033,
+          "artifact_io": 9.535327656194568,
+          "planning.consequences": 445.3560742349364,
+          "planning.request": 82.07294178428128,
+          "perception.segmentation": 0.44754923367872834
         },
         "decision.oracle": {
-          "planning.consequences": 34.05307413684204,
-          "decision.oracle": 4.061958463862538,
-          "perception.entity_measurement": 0.0004518129862844944,
-          "artifact_io": 7.979240396991372
+          "planning.consequences": 121.19063082104549,
+          "decision.oracle": 24.195279731880873,
+          "perception.entity_measurement": 0.00023244135081768036,
+          "artifact_io": 0.634286105632782
         },
         "execution.other": {
-          "planning.consequences": 141.83295489056036,
-          "simulation.step_render": 17.66379607329145,
-          "perception.depth": 1.630938972812146,
-          "perception.capture_io": 23.700845900457352,
-          "perception.segmentation": 88.19920704001561,
-          "perception.entity_measurement": 445.87955952063203,
-          "artifact_io": 9.845031895674765,
-          "execution.other": 17.45956026390195
+          "planning.consequences": 91.46273830439895,
+          "perception.entity_measurement": 85.71155425626785,
+          "artifact_io": 4.984556038863957,
+          "simulation.step_render": 35.262669472489506,
+          "perception.depth": 1.3405789947137237,
+          "perception.capture_io": 26.713722778018564,
+          "perception.segmentation": 84.15277314605191,
+          "execution.other": 15.418909275904298
         }
       },
-      "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/wall_time_spans.json"
+      "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_60/cup_transfer_libero_10_t4_s0_oracle_k4_legacy/wall_time_spans.json"
+    },
+    {
+      "job": "job8846_80",
+      "case": "drawer_close_libero_90_t0_s0",
+      "arm": "oracle_k4",
+      "success": false,
+      "decisions": 7,
+      "sim_steps": 490,
+      "wall_s": 985.8521387870423,
+      "raw_episode_ledger": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_80/episodes.jsonl",
+      "instrumented": true,
+      "perception_s": 479.36879307357594,
+      "consequence_planning_s": 459.8671690551564,
+      "simulation_step_render_s": 11.82181241037324,
+      "oracle_decision_s": 4.019059388898313,
+      "model_decision_s": 0,
+      "pi05_inference_s": 0,
+      "artifact_io_s": 20.65662674140185,
+      "execution_other_s": 5.76971817901358,
+      "unattributed_s": 4.348959938623011,
+      "perception_components_s": {
+        "segmentation": 59.868449593894184,
+        "depth": 1.1404720698483288,
+        "entity_measurement": 402.67927450314164,
+        "capture_io": 15.68059690669179
+      },
+      "execution_perception_s": 309.2467041066848,
+      "oracle_root_inclusive_s": 85.88645319174975,
+      "exclusive_detail_s": {
+        "perception.segmentation": 59.868449593894184,
+        "perception.entity_measurement": 402.67927450314164,
+        "artifact_io": 20.65662674140185,
+        "planning.consequences": 268.89955010125414,
+        "planning.request": 190.96761895390227,
+        "decision.oracle": 4.019059388898313,
+        "simulation.step_render": 11.82181241037324,
+        "perception.depth": 1.1404720698483288,
+        "perception.capture_io": 15.68059690669179,
+        "execution.other": 5.76971817901358
+      },
+      "all_threads_exclusive_s": {
+        "perception.segmentation": 59.868449593894184,
+        "perception.entity_measurement": 402.67927450314164,
+        "artifact_io": 20.65662674140185,
+        "planning.consequences": 268.89955010125414,
+        "planning.request": 190.96761895390227,
+        "decision.oracle": 4.019059388898313,
+        "simulation.step_render": 11.82181241037324,
+        "perception.depth": 1.1404720698483288,
+        "perception.capture_io": 15.68059690669179,
+        "execution.other": 5.76971817901358
+      },
+      "exclusive_by_root_s": {
+        "perception.entity_measurement": {
+          "perception.segmentation": 3.976491521578282,
+          "perception.entity_measurement": 0.8926880895160139
+        },
+        "planning.request": {
+          "perception.entity_measurement": 158.79195752646774,
+          "artifact_io": 12.605787799227983,
+          "planning.consequences": 128.74881215579808,
+          "perception.segmentation": 6.460854837205261,
+          "planning.request": 190.96761895390227
+        },
+        "decision.oracle": {
+          "planning.consequences": 80.04253590526059,
+          "decision.oracle": 4.019059388898313,
+          "perception.entity_measurement": 9.69921238720417e-05,
+          "artifact_io": 1.8247609054669738
+        },
+        "execution.other": {
+          "planning.consequences": 60.108202040195465,
+          "perception.entity_measurement": 242.99453189503402,
+          "artifact_io": 6.226078036706895,
+          "simulation.step_render": 11.82181241037324,
+          "perception.depth": 1.1404720698483288,
+          "perception.capture_io": 15.68059690669179,
+          "perception.segmentation": 49.43110323511064,
+          "execution.other": 5.76971817901358
+        }
+      },
+      "raw_spans": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8846_80/drawer_close_libero_90_t0_s0_oracle_k4/wall_time_spans.json"
     }
   ],
   "scope": "Per-episode client wall time; initial simulator construction excluded",
