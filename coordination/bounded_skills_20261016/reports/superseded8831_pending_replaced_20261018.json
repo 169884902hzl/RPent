@@ -1,0 +1,46 @@
+{
+  "time_pacific": "2026-10-18T04:27:32.686215-07:00",
+  "replacement": "8846",
+  "replacement_source": "739fa4b",
+  "reason": "ordinary pending older-source representatives duplicated by startup-validated739fa4b same-state pairs",
+  "queue_before": [
+    [
+      "8831_200",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)"
+    ],
+    [
+      "8831_180",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)"
+    ],
+    [
+      "8831_160",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)"
+    ],
+    [
+      "8831_140",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)"
+    ]
+  ],
+  "command": [
+    "scancel",
+    "--state=PENDING",
+    "8831_200",
+    "8831_180",
+    "8831_160",
+    "8831_140"
+  ],
+  "protected_or_held_jobs_modified": false,
+  "running_jobs_cancelled": false
+}

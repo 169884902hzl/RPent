@@ -1,0 +1,129 @@
+{
+  "job": "8857",
+  "mode": "startup",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=24%1",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708,SOURCE_COMMIT=da28708,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_prefix_checks_20261018.json,STARTUP=1,PAIR_LEGACY=0",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "da28708",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_prefix_checks_20261018.json",
+    "sha256": "38c06e21c4dc67e4289837f48f7ec561fa2e36c304425e853272e49630304503"
+  },
+  "following_updates": [],
+  "queue_before": [
+    [
+      "8846_200",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_180",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_160",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_140",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_120",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_100",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_80",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_60",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_40",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_20",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8831_120",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8843_80",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ]
+  ],
+  "lane": 3,
+  "aggregate_cap": 4,
+  "codex2_gpu_jobs": [],
+  "startup_proof": null,
+  "training": false,
+  "confirmation": false,
+  "indices": [
+    24
+  ],
+  "scope": "original-task oracle upper bound and matched boundary-rule comparison; no pi05",
+  "submission_updates_complete": true
+}
