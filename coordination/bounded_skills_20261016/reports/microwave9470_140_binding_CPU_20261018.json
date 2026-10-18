@@ -1,0 +1,1020 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_lost_contact_20261018_4167f4e",
+  "job": "9470_140",
+  "training": false,
+  "controls": 0,
+  "gpu_used": false,
+  "records": [
+    {
+      "index": 7,
+      "context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/private_prefix_state_0007.pkl.gz",
+        "sha256": "7d74611b5507e1d287df450dacc722a7acb207a608dcdc2ba20b75c5a9285539",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "49a94ad9064b97210b800c6d5aa5597831cd496c305508ea4ebc253f71d9ede1",
+        "model_visible": false
+      },
+      "binding": {
+        "_bindings": {
+          "microwave_1": "e98"
+        },
+        "_binding_peers": {
+          "microwave_1": []
+        }
+      },
+      "private_status": {
+        "goals": [
+          [
+            "open",
+            "microwave_1"
+          ]
+        ],
+        "satisfied": [
+          false
+        ],
+        "done": false,
+        "bddl_sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f",
+        "storage_open": {}
+      },
+      "active": "e98",
+      "held": null,
+      "plans": [
+        "e98"
+      ],
+      "selected": {
+        "id": "f1e62da1337b51c3",
+        "skill": "nudge",
+        "parameters": {
+          "axis": "y",
+          "distance_m": 0.02,
+          "anchor_id": "e98"
+        }
+      },
+      "error": null,
+      "trace": [
+        {
+          "goal": [
+            "open",
+            "microwave_1"
+          ],
+          "source_public_id": "e98",
+          "target_public_id": null
+        }
+      ],
+      "entities": [
+        {
+          "id": "e99",
+          "name": "table",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.12270766496658325,
+            0.12048493325710297,
+            0.9002702236175537
+          ],
+          "lower": [
+            -0.46935203671455383,
+            -0.30198214292526243,
+            0.9002373218536377
+          ],
+          "upper": [
+            0.26669174432754517,
+            0.45984089016914376,
+            0.9004160761833191
+          ]
+        },
+        {
+          "id": "e98",
+          "name": "microwave",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.09995585680007935,
+            -0.11472222954034805,
+            1.0443699359893799
+          ],
+          "lower": [
+            -0.04569641873240471,
+            -0.1593654900789261,
+            0.9320899248123169
+          ],
+          "upper": [
+            0.1807229071855545,
+            -0.04763605073094368,
+            1.1071767807006836
+          ]
+        },
+        {
+          "id": "e114",
+          "name": "microwave door",
+          "part_of": "e98",
+          "visible": false,
+          "geometry": "measured_door_surface",
+          "xyz": [
+            0.06213369779288769,
+            -0.332264244556427,
+            1.0160508751869202
+          ],
+          "lower": [
+            -0.017243904806673527,
+            -0.3322644829750061,
+            0.946861845254898
+          ],
+          "upper": [
+            0.14186842888593673,
+            -0.3322640061378479,
+            1.0850370407104493
+          ]
+        },
+        {
+          "id": "e54",
+          "name": "microwave",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.13170824944972992,
+            -0.2340097352862358,
+            1.107136845588684
+          ],
+          "lower": [
+            -0.153660386800766,
+            -0.33626185536384584,
+            0.9376882910728455
+          ],
+          "upper": [
+            0.17301075160503387,
+            -0.16438716620206834,
+            1.1072099208831787
+          ]
+        },
+        {
+          "id": "e6",
+          "name": "microwave door",
+          "part_of": "e54",
+          "visible": false,
+          "geometry": "measured_door_surface",
+          "xyz": [
+            -0.12383581697940826,
+            -0.14241735637187958,
+            1.0165036916732788
+          ],
+          "lower": [
+            -0.15692319810390473,
+            -0.14241747558116913,
+            0.9567497992515563
+          ],
+          "upper": [
+            -0.09037844449281693,
+            -0.1411033272743225,
+            1.0753740549087525
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "stage": "fixture_contact_plan",
+          "anchor_id": "e98",
+          "label": "microwave",
+          "reason": null,
+          "measurement": null
+        },
+        {
+          "stage": "fixture_contact_measurement",
+          "anchor_id": "e54",
+          "label": "microwave",
+          "reason": null,
+          "measurement": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 12,
+            "views": {
+              "agentview": {
+                "query": "handle of the microwave",
+                "queries": [
+                  {
+                    "query": "handle of the microwave",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "query": "handle of the microwave",
+                "queries": [
+                  {
+                    "query": "handle of the microwave",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          }
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/private_prefix_state_0008.pkl.gz",
+        "sha256": "6169a3ad49fa0b50062c679bd05bd5d4513c4d993bc1662da460f65af412ea25",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "4883147550843f3253f2d034f0a63c3f5773ed95287397969414e20e2f10bc6f",
+        "model_visible": false
+      },
+      "binding": {
+        "_bindings": {
+          "microwave_1": "e98"
+        },
+        "_binding_peers": {
+          "microwave_1": []
+        }
+      },
+      "private_status": {
+        "goals": [
+          [
+            "open",
+            "microwave_1"
+          ]
+        ],
+        "satisfied": [
+          false
+        ],
+        "done": false,
+        "bddl_sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f",
+        "storage_open": {}
+      },
+      "active": "e98",
+      "held": null,
+      "plans": [
+        "e98"
+      ],
+      "selected": {
+        "id": "f1e62da1337b51c3",
+        "skill": "nudge",
+        "parameters": {
+          "axis": "y",
+          "distance_m": 0.02,
+          "anchor_id": "e98"
+        }
+      },
+      "error": null,
+      "trace": [
+        {
+          "goal": [
+            "open",
+            "microwave_1"
+          ],
+          "source_public_id": "e98",
+          "target_public_id": null
+        }
+      ],
+      "entities": [
+        {
+          "id": "e99",
+          "name": "table",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.12609240412712097,
+            0.11805273592472076,
+            0.900269627571106
+          ],
+          "lower": [
+            -0.47135087847709656,
+            -0.303374947309494,
+            0.9002373218536377
+          ],
+          "upper": [
+            0.26669177412986755,
+            0.46046936213970185,
+            0.9004161357879639
+          ]
+        },
+        {
+          "id": "e98",
+          "name": "microwave",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.10132165998220444,
+            -0.11029373481869698,
+            1.0434372425079346
+          ],
+          "lower": [
+            -0.04124377302825451,
+            -0.15920648157596587,
+            0.9318405103683471
+          ],
+          "upper": [
+            0.18164785236120223,
+            -0.035653493180871,
+            1.1071754693984985
+          ]
+        },
+        {
+          "id": "e114",
+          "name": "microwave door",
+          "part_of": "e98",
+          "visible": false,
+          "geometry": "measured_door_surface",
+          "xyz": [
+            0.06213369779288769,
+            -0.332264244556427,
+            1.0160508751869202
+          ],
+          "lower": [
+            -0.017243904806673527,
+            -0.3322644829750061,
+            0.946861845254898
+          ],
+          "upper": [
+            0.14186842888593673,
+            -0.3322640061378479,
+            1.0850370407104493
+          ]
+        },
+        {
+          "id": "e54",
+          "name": "microwave",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.13092221319675446,
+            -0.23409554362297058,
+            1.107136845588684
+          ],
+          "lower": [
+            -0.15221810340881348,
+            -0.33628295838832856,
+            0.9376882910728455
+          ],
+          "upper": [
+            0.17301075160503387,
+            -0.1643387317657471,
+            1.1072099208831787
+          ]
+        },
+        {
+          "id": "e6",
+          "name": "microwave door",
+          "part_of": "e54",
+          "visible": false,
+          "geometry": "measured_door_surface",
+          "xyz": [
+            -0.12383581697940826,
+            -0.14241735637187958,
+            1.0165036916732788
+          ],
+          "lower": [
+            -0.15692319810390473,
+            -0.14241747558116913,
+            0.9567497992515563
+          ],
+          "upper": [
+            -0.09037844449281693,
+            -0.1411033272743225,
+            1.0753740549087525
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "stage": "fixture_contact_plan",
+          "anchor_id": "e98",
+          "label": "microwave",
+          "reason": null,
+          "measurement": null
+        },
+        {
+          "stage": "fixture_contact_measurement",
+          "anchor_id": "e54",
+          "label": "microwave",
+          "reason": null,
+          "measurement": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 13,
+            "views": {
+              "agentview": {
+                "query": "handle of the microwave",
+                "queries": [
+                  {
+                    "query": "handle of the microwave",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "query": "handle of the microwave",
+                "queries": [
+                  {
+                    "query": "handle of the microwave",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          }
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/private_prefix_state_0009.pkl.gz",
+        "sha256": "c7774c080d103122951f91c3037ed3bfe20cf546c782739ffa0064663d2af24c",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "aa67c3acbd22b39f0b528b5c6999103a834f8de187d31d7988266678ef800166",
+        "model_visible": false
+      },
+      "binding": {
+        "_bindings": {
+          "microwave_1": "e98"
+        },
+        "_binding_peers": {
+          "microwave_1": []
+        }
+      },
+      "private_status": {
+        "goals": [
+          [
+            "open",
+            "microwave_1"
+          ]
+        ],
+        "satisfied": [
+          false
+        ],
+        "done": false,
+        "bddl_sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f",
+        "storage_open": {}
+      },
+      "active": "e98",
+      "held": null,
+      "plans": [],
+      "selected": {
+        "id": "af866c584b96de88",
+        "skill": "set_gripper",
+        "parameters": {
+          "mode": "open"
+        }
+      },
+      "error": null,
+      "trace": [
+        {
+          "goal": [
+            "open",
+            "microwave_1"
+          ],
+          "source_public_id": "e98",
+          "target_public_id": null,
+          "recovery": "open_lost_contact_before_reapproach"
+        }
+      ],
+      "entities": [
+        {
+          "id": "e99",
+          "name": "table",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.12777473032474518,
+            0.11541714519262314,
+            0.9002689719200134
+          ],
+          "lower": [
+            -0.47135087847709656,
+            -0.3037473702430725,
+            0.9002373218536377
+          ],
+          "upper": [
+            0.26669177412986755,
+            0.4610539329051972,
+            0.9004161357879639
+          ]
+        },
+        {
+          "id": "e98",
+          "name": "microwave",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.10384933650493622,
+            -0.10666558891534805,
+            1.0445497632026672
+          ],
+          "lower": [
+            -0.034425217658281326,
+            -0.15882015973329544,
+            0.931663304567337
+          ],
+          "upper": [
+            0.1824563518166542,
+            -0.02701808139681816,
+            1.1071745157241821
+          ]
+        },
+        {
+          "id": "e114",
+          "name": "microwave door",
+          "part_of": "e98",
+          "visible": false,
+          "geometry": "measured_door_surface",
+          "xyz": [
+            0.06213369779288769,
+            -0.332264244556427,
+            1.0160508751869202
+          ],
+          "lower": [
+            -0.017243904806673527,
+            -0.3322644829750061,
+            0.946861845254898
+          ],
+          "upper": [
+            0.14186842888593673,
+            -0.3322640061378479,
+            1.0850370407104493
+          ]
+        },
+        {
+          "id": "e54",
+          "name": "microwave",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.13092221319675446,
+            -0.23427999019622803,
+            1.107136845588684
+          ],
+          "lower": [
+            -0.153660386800766,
+            -0.3362824702262878,
+            0.9376882314682007
+          ],
+          "upper": [
+            0.17301075160503387,
+            -0.1645000869035721,
+            1.1072099208831787
+          ]
+        },
+        {
+          "id": "e6",
+          "name": "microwave door",
+          "part_of": "e54",
+          "visible": true,
+          "geometry": "measured_door_surface",
+          "xyz": [
+            -0.12378047406673431,
+            -0.1424163281917572,
+            1.0173513889312744
+          ],
+          "lower": [
+            -0.15644772946834565,
+            -0.14241647720336914,
+            0.9566544270515442
+          ],
+          "upper": [
+            -0.09156746774911881,
+            -0.14110226929187775,
+            1.0766085290908813
+          ]
+        }
+      ],
+      "diagnostics": [
+        {
+          "stage": "fixture_contact_measurement",
+          "anchor_id": "e98",
+          "label": "microwave",
+          "reason": null,
+          "measurement": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 14,
+            "views": {
+              "agentview": {
+                "query": "handle of the microwave",
+                "queries": [
+                  {
+                    "query": "handle of the microwave",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "query": "handle of the microwave",
+                "queries": [
+                  {
+                    "query": "handle of the microwave",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          }
+        },
+        {
+          "stage": "fixture_contact_measurement",
+          "anchor_id": "e54",
+          "label": "microwave",
+          "reason": null,
+          "measurement": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 14,
+            "views": {
+              "agentview": {
+                "query": "handle of the microwave",
+                "queries": [
+                  {
+                    "query": "handle of the microwave",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "query": "handle of the microwave",
+                "queries": [
+                  {
+                    "query": "handle of the microwave",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          }
+        },
+        {
+          "stage": "fixture_contact_measurement",
+          "anchor_id": "e6",
+          "label": "microwave door",
+          "reason": null,
+          "measurement": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 14,
+            "views": {
+              "agentview": {
+                "query": "handle of the microwave door",
+                "queries": [
+                  {
+                    "query": "handle of the microwave door",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "query": "handle of the microwave door",
+                "queries": [
+                  {
+                    "query": "handle of the microwave door",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave door handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  },
+                  {
+                    "query": "microwave handle",
+                    "sam_instances": 0,
+                    "accepted_instances": 0
+                  }
+                ],
+                "accepted_instances": 0,
+                "depth_components": [],
+                "reason": "handle_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          }
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/private_prefix_state_0013.pkl.gz",
+        "sha256": "8d379e5d977e68671f36c9fcb535c3988f4f6a5c2798b05394e8de9a82fd5544",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "d43b1ceb5b6f646e479eab43061ac4aae9819e53ab5b17cb14655bd1f221ea04",
+        "model_visible": false
+      },
+      "binding": {
+        "_bindings": {
+          "microwave_1": "e98"
+        },
+        "_binding_peers": {
+          "microwave_1": []
+        }
+      },
+      "private_status": {
+        "goals": [
+          [
+            "open",
+            "microwave_1"
+          ]
+        ],
+        "satisfied": [
+          false
+        ],
+        "done": false,
+        "bddl_sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f",
+        "storage_open": {}
+      },
+      "active": null,
+      "held": null,
+      "plans": [],
+      "selected": null,
+      "error": "upper-bound selector has no remaining public option",
+      "trace": [
+        {
+          "goal": [
+            "open",
+            "microwave_1"
+          ],
+          "source_public_id": "e98",
+          "target_public_id": null
+        }
+      ],
+      "entities": [
+        {
+          "id": "e99",
+          "name": "table",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.12440261244773865,
+            0.12131422758102417,
+            0.9002700448036194
+          ],
+          "lower": [
+            -0.4614105522632599,
+            -0.30255738377571106,
+            0.9002373218536377
+          ],
+          "upper": [
+            0.26669177412986755,
+            0.4603236830234528,
+            0.9004126787185669
+          ]
+        },
+        {
+          "id": "e98",
+          "name": "microwave",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.10235185921192169,
+            -0.10780863463878632,
+            1.0439202785491943
+          ],
+          "lower": [
+            -0.038217785954475406,
+            -0.15873038589954377,
+            0.9317891335487366
+          ],
+          "upper": [
+            0.18212291479110718,
+            -0.029991733282804484,
+            1.1071752309799194
+          ]
+        },
+        {
+          "id": "e114",
+          "name": "microwave door",
+          "part_of": "e98",
+          "visible": false,
+          "geometry": "measured_door_surface",
+          "xyz": [
+            0.06213369779288769,
+            -0.332264244556427,
+            1.0160508751869202
+          ],
+          "lower": [
+            -0.017243904806673527,
+            -0.3322644829750061,
+            0.946861845254898
+          ],
+          "upper": [
+            0.14186842888593673,
+            -0.3322640061378479,
+            1.0850370407104493
+          ]
+        },
+        {
+          "id": "e54",
+          "name": "microwave",
+          "part_of": null,
+          "visible": true,
+          "geometry": null,
+          "xyz": [
+            0.13092221319675446,
+            -0.2341567799448967,
+            1.107136845588684
+          ],
+          "lower": [
+            -0.153660386800766,
+            -0.33622455537319185,
+            0.9376882314682007
+          ],
+          "upper": [
+            0.17301075160503387,
+            -0.16437385112047195,
+            1.1072099208831787
+          ]
+        },
+        {
+          "id": "e6",
+          "name": "microwave door",
+          "part_of": "e54",
+          "visible": false,
+          "geometry": "measured_door_surface",
+          "xyz": [
+            -0.12378047406673431,
+            -0.1424163281917572,
+            1.0173513889312744
+          ],
+          "lower": [
+            -0.15644772946834565,
+            -0.14241647720336914,
+            0.9566544270515442
+          ],
+          "upper": [
+            -0.09156746774911881,
+            -0.14110226929187775,
+            1.0766085290908813
+          ]
+        }
+      ],
+      "diagnostics": []
+    }
+  ],
+  "choices_sha256": "461ac47b64ac5f79dd0a198266622f69efcac3709a931d15ce7f201650e09db4",
+  "script_sha256": "5477e49b840add993d69a27eb2ce7b72dd8fd6302d2306df9de27b7a1ecc11d4"
+}
