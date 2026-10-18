@@ -1,0 +1,7 @@
+8822 三对首个chunk后：bowl190、box175、container316 tick，控制序列和MuJoCo平坦状态哈希逐字节相同（最大差0）。model/data/robots控制器及夹爪快照相同；随机数状态不同，单列保留，不把完整pickle哈希说成相同。公开机器人和实体位置相同；anchors差别是证据capture_step/measurement_id。box和container新臂丢失15个抓取相关候选（含lift），重新抓取搜索selected=null；对应实例目标点数2267/3540，旧臂保留已承诺实例2672/3629。二者此时尚未验证持物，payload_local都为空，不能把差异称为已抓住payload丢失。
+
+两失败新臂首组末尾都有0tick observe(refresh)。旧源码无条件在observe清空committed_grasps；4524f81已修为被动刷新或零运动扫描保留原测量身份。新请求因丢失计划而无lift，oracle转wrist_scan；手在物体接触中，扫描仍须做完整扫掠检查，所以五个方向全部被拒、0tick measured_sweep_collision。这种拒绝应保留，修身份而非放宽碰撞。no_measured_scene_change来自既有防循环规则：刷新成功但没有揭露实体或测得≥1cm变化则记no_effect并计失败，反复两次移除。必须的每步回执已有刷新，judge/4起不再在已选前缀末尾额外append这个refresh。当前judge/5沿用该修复并统一legal_after。
+
+同launcher真实启动9000_24已COMPLETED 0:0并有物理请求；固定源码4335578的9001正在原状态0/2/3/24/40跑新旧chunk规则配对（包含用户指定三对），保留旧结果。尚无本批完整配对结论。
+
+当前规划首次请求profile为28.18秒，grasp_geometry18.47秒、_cloud_and_ik15.18秒、remove_visual_robot5.00秒、_candidate9.62秒（累计时间嵌套，不能相加）。已保存top15。逐候选进程并行暂不可直接做：共享的IK warm-start last_solution和route cache带顺序依赖，规划还更新plans/active。先比较纯几何点集运算的精确等价优化。感知函数级profile已加开关和startup默认采集，1项CPU透传/异常测试通过；还没有真实感知profile结果。
