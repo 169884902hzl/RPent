@@ -82,7 +82,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/9-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/10-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
         'spacing_source': 'measured_two_pixel_tangent',
         'max_extrapolation_error_m': .001,
@@ -154,6 +154,18 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         return extended
     if appearance:
         current = appearance_ring()
+    labels = None
+    if surface_extent is not None:
+        from robots.libero.v5_grasp_geometry import depth_components
+
+        valid = np.isfinite(world).all(axis=2)
+        ids = np.flatnonzero(valid)
+        stationary = static.query(flat[ids],
+            distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
+        valid.flat[ids[stationary]] = False
+        labels, _ = depth_components(world, valid, max_gap_m=.003)
+        evidence['depth_connected_current_surface_pixels'] = 0
+        evidence['depth_component_scope'] = 'current_self_filtered_rgbd_without_pre_lift_static_pixels'
     rounds, planar_rounds = [], []
     for _ in range(sum(mask.shape) if surface_extent is not None else 3):
         extended, _ = complete_instance_boundary(bounded_world, current, rounds=1,
@@ -182,7 +194,17 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
             extended = appearance_ring()
             appearance_added = int((extended & ~current).sum())
             current = extended
-        rounds.append(directional_added+planar_added+appearance_added)
+        connected_added = 0
+        if not directional_added and not planar_added and not appearance_added and labels is not None:
+            # Newly connected depth pixels can supply the second measured
+            # support for a curved silhouette. Resume the same boundary
+            # checks instead of stopping before those supports are used.
+            supported = np.unique(labels[current & valid])
+            connected = (labels >= 0) & np.isin(labels, supported)
+            connected_added = int((connected & ~current).sum())
+            current |= connected
+            evidence['depth_connected_current_surface_pixels'] += connected_added
+        rounds.append(directional_added+planar_added+appearance_added+connected_added)
         planar_rounds.append(planar_added)
         if rounds[-1] == 0:
             break
@@ -191,24 +213,6 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         # path; only a measured extent authorises iterative completion.
         extended, _ = complete_planar_boundary(bounded_world, current)
         current = keep_stationary(extended)
-    if surface_extent is not None:
-        from robots.libero.v5_grasp_geometry import depth_components
-
-        # Transported bounds seed membership; they must not truncate a
-        # continuous currently measured handle after grip compliance.
-        # Grow only the current depth components containing owned pixels,
-        # with robot pixels absent and old static surfaces removed first.
-        valid = np.isfinite(world).all(axis=2)
-        ids = np.flatnonzero(valid)
-        stationary = static.query(flat[ids],
-            distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
-        valid.flat[ids[stationary]] = False
-        labels, _ = depth_components(world, valid, max_gap_m=.003)
-        supported = np.unique(labels[current & valid])
-        connected = (labels >= 0) & np.isin(labels, supported)
-        evidence['depth_connected_current_surface_pixels'] = int((connected & ~current).sum())
-        evidence['depth_component_scope'] = 'current_self_filtered_rgbd_without_pre_lift_static_pixels'
-        current |= connected
     evidence['added_pixels_per_round'] = rounds
     evidence['planar_added_pixels_per_round'] = planar_rounds
     evidence['added_pixels'] = int((current & ~mask).sum())

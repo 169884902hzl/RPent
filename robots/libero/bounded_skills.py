@@ -827,6 +827,19 @@ class MeasuredSkillAdapter:
                 for camera, (world, _) in current_views.items():
                     guided, evidence = self._guided_payload_pixels(
                         world, semantic_masks.get(camera), camera, entity, result)
+                    if len(guided):
+                        # SAM can supply a missing interior seed after the
+                        # first boundary pass. Let depth and silhouette
+                        # support converge on these same public pixels.
+                        moving = np.concatenate([result, guided])
+                        completed, continuation = complete_moving_boundary(
+                            world, np.zeros(world.shape[:2], bool), moving,
+                            self.payload_reference['scene'],
+                            surface_extent=[moving.min(0), moving.max(0)],
+                            rgb=self.ex.toolkit._state.load(camera+'_high.png'),
+                            semantic_mask=semantic_masks.get(camera))
+                        guided = world[completed]
+                        evidence['post_guided_boundary_completion'] = continuation
                     seeds.append(guided)
                     records.append(evidence)
                 member, evidence = complete_spatial_payload_component(scene, np.concatenate(seeds),

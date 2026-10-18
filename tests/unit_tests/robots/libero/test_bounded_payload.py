@@ -126,6 +126,22 @@ def test_depth_connected_completion_cannot_use_filtered_robot_pixels_as_a_bridge
     assert not complete[:, 4:].any()
 
 
+def test_new_depth_members_seed_curved_boundary_completion_before_stopping():
+    world = np.full((6, 3, 3), np.nan)
+    world[:, 1] = np.c_[[0., .0005, .0025, .0064, .0105, .05], np.zeros(6), np.ones(6)]
+    mask = np.zeros((6, 3), bool)
+    mask[:2, 1] = True
+    image = np.full(world.shape, 30, dtype=np.uint8)
+    image[0] = 210
+    complete, evidence = complete_moving_boundary(world, mask, world[mask],
+        [world[4, 1]], surface_extent=[[-.001, -.01, .99], [.02, .01, 1.01]], rgb=image)
+    # Row 2 needs depth connectivity across the colour change. Only then
+    # do rows 1 and 2 jointly support the curved edge at row 3 (>3mm away).
+    assert complete[2, 1] and complete[3, 1]
+    assert not complete[4:, 1].any()  # Static surface and separate background.
+    assert evidence['depth_connected_current_surface_pixels'] > 0
+
+
 def test_curved_rgbd_silhouette_keeps_static_neighbours_and_depth_background():
     y, x = np.mgrid[:6, :5]
     world = np.stack([x*.004, y*.004, np.full(x.shape, .04)], axis=-1)
