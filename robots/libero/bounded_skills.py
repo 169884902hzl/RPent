@@ -410,8 +410,14 @@ class MeasuredSkillAdapter:
                             self.ex.toolkit._state.load(camera+'_world_high.npz')))
                         member, detail = complete_contact_surface(world, old, current_boundary=True)
                         extent = ((world >= lower).all(axis=2) & (world <= upper).all(axis=2))
-                        recovered.append(world[member & extent])
-                        evidence.append({'camera': camera, **detail})
+                        # A current rim can lie just beyond the precontact
+                        # extent. Recover one measured two-axis plane edge
+                        # after clipping; do not reinstate the unrestricted
+                        # continuation outside that old extent.
+                        member, local_plane = complete_planar_boundary(world, member & extent)
+                        recovered.append(world[member])
+                        evidence.append({'camera': camera,
+                            'post_extent_current_local_plane': local_plane, **detail})
                     _, axes = np.linalg.eigh(np.cov(old.T))
                     scene = self._base_geometry[0]
                     member, curved = complete_cylindrical_contact_surface(scene.reshape(-1, 1, 3), old, axes[:, -1])

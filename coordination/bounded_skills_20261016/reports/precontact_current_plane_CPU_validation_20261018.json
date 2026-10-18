@@ -1,0 +1,54 @@
+{
+  "scope": "original development states; current measured local plane repair; CPU only",
+  "source_sha256": {
+    "robots/libero/bounded_skills.py": "2d517c437d19679b38f54445a23e74683043bb5eea6d0a87649d66691f21038a",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "624792e55e73beb5c1645f5e35137cd600dadf82be7fc85de34218193e281c0a",
+    "coordination/bounded_skills_20261016/scripts/bowl8870_semantic_fragments_CPU_20261018.py": "dcde5c9e67687614d00393f0ba2668de4582e68a928896ec1ba1030b0cf279b8",
+    "coordination/bounded_skills_20261016/scripts/bowl8870_precontact_extent_CPU_20261018.py": "19aa9753da92d5a7e95b6267a61d1a507b7295764f0285a9e27d77f1ebf91004",
+    "coordination/bounded_skills_20261016/scripts/diagnose_saved_blocker_ray_CPU_20261018.py": "4a8e0a99cef12dc040a1bea549c9218ee93036a5220dc3617a7cd90d576ab467"
+  },
+  "tests": {
+    "log": "coordination/bounded_skills_20261016/reports/precontact_current_plane_CPU_tests_20261018.log",
+    "passed": 303,
+    "elapsed_s": 138.26,
+    "exit_code": 0
+  },
+  "paired_derivative_replay": {
+    "baseline": {
+      "path": "coordination/bounded_skills_20261016/reports/bowl8870_precontact_lift_derivatives_baseline_CPU_20261018.json",
+      "sha256": "e54f1f95d436b9cfd8663f8979db95efc3dbc8891d09444645efe6ff0d4c635d",
+      "input_sha256": "8a0c1ca4dabf3380a63874d339745ce1fe6fad524824fcd5e678a8a43045bfe2",
+      "instance_points": 346165,
+      "routes": [
+        {
+          "passed": false,
+          "reason": "measured_sweep_collision"
+        }
+      ]
+    },
+    "fixed": {
+      "path": "coordination/bounded_skills_20261016/reports/bowl8870_precontact_lift_derivatives_fixed_CPU_20261018.json",
+      "sha256": "4b6f00239d368591ab9bba1409912bc570db08d0ba3da2e79a83592bb0941b8b",
+      "input_sha256": "8a0c1ca4dabf3380a63874d339745ce1fe6fad524824fcd5e678a8a43045bfe2",
+      "instance_points": 346344,
+      "routes": [
+        {
+          "passed": true,
+          "reason": "public_route_screen_passed"
+        }
+      ]
+    }
+  },
+  "rest_pose_replay_limitation": "Earlier static-start replay passed both versions and is not evidence of route improvement. Four consecutive public control samples reproduce the original rejection.",
+  "added_current_pixels": 179,
+  "private_ray_labels": {
+    "bowl": 179,
+    "non_bowl": 0,
+    "used_for_runtime": false
+  },
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3",
+  "new_physical_success": null,
+  "training": false,
+  "confirmation": false
+}

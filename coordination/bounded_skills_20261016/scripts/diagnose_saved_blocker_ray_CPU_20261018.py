@@ -18,6 +18,8 @@ parser.add_argument('--skill', default='carry_to')
 parser.add_argument('--target', required=True)
 parser.add_argument('--contact', action='store_true')
 parser.add_argument('--output', type=Path, required=True)
+parser.add_argument('--public-candidates', type=Path,
+    help='Optionally label added pixels from a saved public local-plane diagnostic')
 args = parser.parse_args()
 sys.path.insert(0, str(args.source))
 import mujoco
@@ -43,6 +45,13 @@ if 'obstacle_point' in block:
 else:
     points = [p for group in block['public_scene_collision_points'].values() for p in group]
 points = np.unique(points, axis=0)
+if args.public_candidates:
+    public = json.loads(args.public_candidates.read_text())
+    assert public['private_truth_used'] is False and public['controls'] == 0
+    assert public['job'] == args.job and public['row'] == args.row
+    assert public['input_sha256'] == hashlib.sha256(captured).hexdigest()
+    points = np.unique([point for view in public['views']
+        for point in view['new_current_plane_pixels']['xyz_m']], axis=0)
 step = row['public_geometry_evidence'][f'bounded_screen_{args.target}_{int(args.contact)}_scene']['capture_step']
 env = ControlEnv(bddl_file_name=case['bddl']['path'], use_camera_obs=False,
     has_renderer=False, has_offscreen_renderer=False, camera_names=[], ignore_done=True, horizon=10015)
@@ -89,6 +98,9 @@ assert results, 'No exact saved-camera pixel matched the reported blockers'
 report = {'scope': 'private saved-pixel ray diagnosis only;zero controls/no renderer',
     'gpu_used': False, 'training': False, 'model_visible': False, 'used_for_control': False,
     'snapshot': ref, 'restore_max_residual': residual, 'source': str(args.source),
+    'public_candidates': ({'path': str(args.public_candidates),
+        'sha256': hashlib.sha256(args.public_candidates.read_bytes()).hexdigest()}
+        if args.public_candidates else None),
     'row': args.row, 'capture_step': step,
     'choices_prefix_sha256': hashlib.sha256(b'\n'.join(captured.splitlines()[:args.row+1])).hexdigest(),
     'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), 'results': results}

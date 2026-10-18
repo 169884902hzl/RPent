@@ -176,6 +176,31 @@ def test_precontact_curved_instance_recovers_occluded_rim_but_keeps_other_depth(
         assert evidence['private_pose_used'] is False
 
 
+@pytest.mark.parametrize('mode', ['continuous', 'depth_jump', 'filtered_robot'])
+def test_precontact_rim_recovers_one_current_plane_edge_beyond_old_extent(adapter, mode):
+    y, x = np.mgrid[:8, :20]
+    world = np.stack([.1+x*.001, .1+y*.001, np.full(x.shape, .9)], axis=-1)
+    old = world[:, :8].reshape(-1, 3).copy()
+    wanted = world[4, 9].copy()
+    world[:, 10:, 2] += .006  # A separate surface cannot join through this gap.
+    if mode == 'depth_jump':
+        world[:, 9, 2] += .006
+        wanted = world[4, 9].copy()
+    filtered = world.copy()
+    if mode == 'filtered_robot':
+        filtered[:, 9] = np.nan
+    adapter._instance_pixels = lambda key: old
+    adapter._self_filtered_world = lambda world: filtered
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter._base_geometry = (filtered.reshape(-1, 3), None)
+    adapter.active = 'e1'
+    adapter.committed_grasps['e1'] = {'plan': {}, 'instance_reference': {
+        'xyz_world': old, 'source_step': 0}}
+    pixels = adapter._contact_pixels('e1')
+    assert bool((np.linalg.norm(pixels-wanted, axis=1) < 1e-9).any()) is (mode == 'continuous')
+    assert not (np.linalg.norm(pixels-world[4, 10], axis=1) < 1e-9).any()
+
+
 @pytest.mark.parametrize('mode', ['valid', 'missing_seed', 'not_found'])
 def test_payload_point_refinement_uses_measured_interior_and_bounds(adapter, monkeypatch, mode):
     entity = adapter.scene.entities['e1']

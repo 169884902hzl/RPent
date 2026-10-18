@@ -5,3 +5,5 @@
 限制：CPU路线回放从保存的静止参考起步，不是原执行器导数前缀，也不是新的物理成功。8870_3的阻挡像素不在当帧SAM内，本改动不声称修好；正在单独核对接触前表面边界。
 
 证据：reports/semantic_fragments_CPU_validation_20261018.json、bowl8870_semantic_fragments_{baseline,dev}_CPU_20261018.json及collision_pixels/self_surface报告。固定源码后执行同launcher真实启动，再跑原状态新旧chunk规则配对。仅原版开发诊断；无训练、无确认批。
+
+源码提交 b80806fcf4b52c7ece0549cbd8ef1444a4e45b68 已推送 harness-v5；快照 /public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_semantic_fragments_20261018_b80806f；归档 SHA256 f8575b8dff16d6bf493fd14d4daab7b179e25e1b17ec940fd5e86a229233d7d3。220状态原版登记manifest的同状态CPU预检通过；同launcher真实启动8995_24为普通PENDING，尚未产生物理请求。准备正式同状态配对indices0/2/3/24/40，启动成功后才提交。替换监控进程不触碰仿真作业，仍只用node02/nice500，Codex2无GPU运行或排队时借用第四卡。
