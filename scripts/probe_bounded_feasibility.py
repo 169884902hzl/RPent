@@ -27,6 +27,24 @@ DEFAULT_PERMANENT_EXCLUSIONS = (Path(__file__).resolve().parents[1] /
     "coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_KNOWN_IDENTITIES.jsonl")
 
 
+def profile_perception_refresh(scene, output):
+    """Profile actual refresh calls without changing their inputs or results."""
+    original = scene.refresh
+    index = 0
+
+    def refresh(*args, **kwargs):
+        nonlocal index
+        path = output/f'perception_refresh_{index:03d}.pstats'
+        index += 1
+        profiler = cProfile.Profile()
+        try:
+            return profiler.runcall(original, *args, **kwargs)
+        finally:
+            profiler.dump_stats(str(path))
+
+    scene.refresh = refresh
+
+
 def save_private_decision_snapshot(facade, output, index):
     """Keep exact fixture/controller state outside every public request."""
     directory = output/'private_decision_snapshots'
@@ -262,6 +280,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                 region_anchor_cache_v1=True, record_sam_masks_v6=True)
         write(output/'public_scene_flags.json', scene_flags)
         scene = MeasuredScene(toolkit, endpoints["sam3"], ep["seed"], **scene_flags)
+        if startup or os.environ.get('BOUNDED_PROFILE_PERCEPTION') == '1':
+            profile_perception_refresh(scene, output)
         flags = {key: value for key, value in config.items()
                  if key in inspect.signature(V5Executor).parameters and key not in {"toolkit", "scene", "max_chunks", "instruction"}}
         # Whole-task use is controlled by candidate generation, not an
