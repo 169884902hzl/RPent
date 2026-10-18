@@ -1530,6 +1530,31 @@ def test_release_preserves_measured_withdrawal_surface_without_claiming_attachme
     assert adapter.grasp_reference is adapter.payload_reference is None
 
 
+def test_successive_scans_keep_released_surface_identity_without_active_contact(adapter):
+    reference = {'anchor_id': 'e1', 'plan': {'xyz_m': [.1, .1, .9]},
+        'withdrawal_surface': {'xyz_world': np.array([[.1, .1, .9]]), 'source_step': 0}}
+    adapter.withdrawal_contact = reference
+    calls = []
+    original = adapter._cloud_and_ik
+    def screen(key=None, *, contact=False):
+        calls.append((key, contact))
+        return original(key, contact=contact)
+    adapter._cloud_and_ik = screen
+    for _ in range(2):
+        request = adapter.request(k=1)
+        scan = next(c for c in request['candidates'] if c['skill'] == 'observe'
+            and c['parameters']['mode'] == 'wrist_scan')
+        receipt = adapter.execute(request, decision(request, [scan['id']]))[0]
+        # This fake scan leaves all entity measurements unchanged, so its
+        # semantic receipt may be no_effect despite actual camera motion.
+        assert receipt['steps_used'] > 0
+        assert calls[-1] == ('e1', True)
+        assert adapter.active is adapter.held is None
+        assert adapter.withdrawal_contact is reference
+        assert not adapter.committed_grasps
+        np.testing.assert_array_equal(reference['withdrawal_surface']['xyz_world'], [[.1, .1, .9]])
+
+
 def test_fixture_search_uses_oblique_contact_when_upright_palm_route_is_blocked(adapter):
     from scipy.spatial.transform import Rotation
 

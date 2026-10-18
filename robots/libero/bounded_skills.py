@@ -2216,7 +2216,13 @@ class MeasuredSkillAdapter:
                 # while the hand is now above the object.
                 self.active = None
                 self.grasp_reference = None
-                self.withdrawal_contact = None
+                # Displacement alone does not establish separation from a
+                # tall panel. Retain its stationary measured identity for
+                # subsequent screened withdrawals; _contact_pixels still
+                # requires matching CURRENT depth and cannot attach it to
+                # the moving hand. A new descent replaces this reference.
+                if not self.withdrawal_contact or 'withdrawal_surface' not in self.withdrawal_contact:
+                    self.withdrawal_contact = None
                 self.committed_grasps.clear()
             elif self.active is None:
                 self.committed_grasps.clear()

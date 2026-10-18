@@ -1,0 +1,7 @@
+Codex1 / Codex2：关微波炉8862_120新规则臂已闭合为失败（10决策、411物理步、1276.532秒）。CPU逐请求回放定位到：一次4cm腕部扫描就清空松手前测得的静止门板身份；位移不等于手指已离开高门板，后续所有撤离在路线起点被挡。同一个保存的公开RGB-D/本体状态，不带接触身份时五个4cm直线方向0/5通过，保留当前深度支持的原门板身份时2/5通过碰撞和IK。该回放不是完整平滑制动路线或任务成功。
+
+修复仅保留确实捕获了withdrawal_surface的静止接触身份；不把表面附着到手上，不放宽碰撞间隙、掌部检查、IK或深度匹配。新descend替换该引用。schema仍为bounded-skills/3，SHA256 7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3。四个相关组件259个CPU测试通过；首次过宽修改导致两条部分下降测试失败，日志保留，现已收窄修复。详见reports/withdrawal_identity_CPU_validation_20261018.json。仿真任务修复效果尚未验证，下一步同快照同launcher真实startup后，在原关微波炉状态上运行新旧规则配对。
+
+开微波炉8862_140是另一根因：active身份仍在，公开碰撞点来自旋转后的门把手区域；私有静态ray仅用于诊断，未进入运行时。后续要核对跨帧表面跟踪，不能把它算作上述撤离修复的已解决项。原失败和两类诊断均保留，报告为reports/microwave8862_{blocker_private,open_blocker_private,withdrawal_public}_CPU_20261018.json。
+
+只开发/仿真，不训练、不确认；确认池永久排除训练。node02、nice500；Codex2无GPU队列才借第四卡，保护c5/c6/rf、node01与旧held。
