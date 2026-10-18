@@ -1,3 +1,5 @@
+# Copyright 2026 The RPent Authors.
+# SPDX-License-Identifier: Apache-2.0
 """Mesh sweep and numerical IK for a sampled public RGB-D trajectory."""
 from __future__ import annotations
 
@@ -37,21 +39,26 @@ class PublicRouteScreen:
         if len(self.payload):
             self.radius = max(self.radius, float(np.linalg.norm(self.payload, axis=1).max()))
         self.initial_margin = {}
+        self.initial_target_margin = {}
         self.initial_payload_margin = {}
         if initial_pose is not None and self.tree is not None:
             xyz = np.asarray(initial_pose['xyz_m'])
             rotation = Rotation.from_quat(initial_pose['quat_xyzw']).as_matrix()
             site = rotation@Rotation.from_euler('z', -math.pi/2).as_matrix()
-            ids = np.asarray(self.tree.query_ball_point(xyz, self.radius+.02), dtype=int)
-            local = (self.points[ids]-xyz)@site
-            for box in geometry['boxes']:
-                distance = self._halfspace_distance(local, box)
-                # An actual mesh intersection is never grandfathered. Only
-                # an already occupied positive clearance band can be left
-                # without bringing that same point closer to that same hull.
-                keep = (distance > 0.) & (distance <= .004)
-                if keep.any():
-                    self.initial_margin[box['name']] = dict(zip(ids[keep], distance[keep]))
+            for points, tree, margin in ((self.points, self.tree, self.initial_margin),
+                    (self.target, self.target_tree, self.initial_target_margin)):
+                if tree is None:
+                    continue
+                ids = np.asarray(tree.query_ball_point(xyz, self.radius+.02), dtype=int)
+                local = (points[ids]-xyz)@site
+                for box in geometry['boxes']:
+                    distance = self._halfspace_distance(local, box)
+                    # An actual mesh intersection is never grandfathered.
+                    # Target and other scene pixels obey the same positive
+                    # clearance escape rule, without entering a hull further.
+                    keep = (distance > 0.) & (distance <= .004)
+                    if keep.any():
+                        margin[box['name']] = dict(zip(ids[keep], distance[keep]))
             if len(self.payload):
                 distances = cKDTree(self.payload@rotation.T+xyz).sparse_distance_matrix(
                     self.tree, .004, output_type='coo_matrix')
@@ -77,11 +84,11 @@ class PublicRouteScreen:
             result[ids] = (local[ids]@equations[:, :3].T+equations[:, 3]).max(axis=1)
         return result
 
-    def _scene_collisions(self, ids, xyz, site):
-        if not self.initial_margin:
-            return (*collision_counts(self.points[ids], xyz, site, self.geometry, self.opening,
+    def _collisions(self, points, ids, xyz, site, initial_margin):
+        if not initial_margin:
+            return (*collision_counts(points[ids], xyz, site, self.geometry, self.opening,
                 clearance_m=.004, return_points=True), 0)
-        local = (self.points[ids]-xyz)@site
+        local = (points[ids]-xyz)@site
         counts, hits, retained_margin = {}, {}, 0
         for box in self.geometry['boxes']:
             shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2
@@ -92,7 +99,7 @@ class PublicRouteScreen:
                 & (local[:, 1] >= lower[1]) & (local[:, 1] <= upper[1])
                 & (local[:, 2] >= lower[2]) & (local[:, 2] <= upper[2]))
             distance = self._halfspace_distance(local[near], box)
-            baseline = self.initial_margin.get(box['name'], {})
+            baseline = initial_margin.get(box['name'], {})
             bound = np.array([baseline.get(index, .004) for index in ids[near]])
             # Sub-nanometre round-off only; this is not a tracking tolerance.
             blocked = (distance <= .004) & (distance < bound-1e-9)
@@ -101,7 +108,7 @@ class PublicRouteScreen:
             blocked |= (distance <= 0.) | ((distance <= .004) & (bound == .004))
             retained_margin += int(((distance <= .004) & ~blocked).sum())
             counts[box['name']] = int(blocked.sum())
-            hits[box['name']] = self.points[ids[near[blocked]]][:32].tolist()
+            hits[box['name']] = points[ids[near[blocked]]][:32].tolist()
         return counts, hits, retained_margin
 
     def __call__(self, poses: list[dict]) -> dict:
@@ -182,10 +189,12 @@ class PublicRouteScreen:
         site = rotation.as_matrix()@Rotation.from_euler("z", -math.pi/2).as_matrix()
         nearby_ids = np.asarray(self.tree.query_ball_point(xyz, self.radius+.02), dtype=int)
         nearby = self.points[nearby_ids]
-        counts, scene_hits, retained_margin = self._scene_collisions(nearby_ids, xyz, site)
-        own_points = self.target[self.target_tree.query_ball_point(xyz, self.radius+.02)] if self.target_tree is not None else self.target
-        own, target_hits = collision_counts(own_points, xyz, site, self.geometry, self.opening,
-                                            clearance_m=.004, return_points=True)
+        counts, scene_hits, retained_margin = self._collisions(
+            self.points, nearby_ids, xyz, site, self.initial_margin)
+        target_ids = np.asarray(self.target_tree.query_ball_point(xyz, self.radius+.02), dtype=int) if self.target_tree is not None else np.empty(0, dtype=int)
+        own_points = self.target[target_ids]
+        own, target_hits, retained_target_margin = self._collisions(
+            self.target, target_ids, xyz, site, self.initial_target_margin)
         if self.contact_allowed:
             own = {k: v for k, v in own.items() if k == "palm"}
         if any(counts.values()) or any(own.values()):
@@ -243,5 +252,8 @@ class PublicRouteScreen:
         if self.initial_margin:
             result['initial_margin_policy'] = 'positive_clearance_no_further_incursion'
             result['initial_margin_pairs_retained'] = retained_margin
+        if self.initial_target_margin:
+            result['initial_margin_policy'] = 'positive_clearance_no_further_incursion'
+            result['initial_target_margin_pairs_retained'] = retained_target_margin
         self._pose_geometry_cache[key] = result
         return result

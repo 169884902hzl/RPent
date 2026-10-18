@@ -211,6 +211,24 @@ def test_existing_positive_margin_allows_escape_but_not_further_incursion():
     assert screen([pose])['passed']
 
 
+def test_target_positive_margin_escape_matches_scene_without_allowing_new_contact():
+    geometry = {'boxes': [{'name': 'rightfinger', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    target = [[.008, 0., 1.]]
+    screen = PublicRouteScreen([[10., 10., 10.]], geometry, ik,
+        contact_points=target, initial_pose=pose)
+    assert screen([pose, {**pose, 'xyz_m': [-.02, 0., 1.]}])['passed']
+    assert screen._geometry_at(pose)['initial_target_margin_pairs_retained'] == 1
+    deeper = screen([pose, {**pose, 'xyz_m': [.001, 0., 1.]}])
+    assert deeper['reason'] == 'measured_sweep_collision'
+    assert deeper['target_counts']['rightfinger'] == 1
+    for points in ([[.004, 0., 1.]], [[.008, 0., 1.], [-.02, 0., 1.]]):
+        blocked = PublicRouteScreen([[10., 10., 10.]], geometry, ik,
+            contact_points=points, initial_pose=pose)
+        assert blocked([pose, {**pose, 'xyz_m': [-.02, 0., 1.]}])['collision']
+
+
 def test_margin_escape_never_allows_mesh_interiors_or_new_obstacles():
     geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
     ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
