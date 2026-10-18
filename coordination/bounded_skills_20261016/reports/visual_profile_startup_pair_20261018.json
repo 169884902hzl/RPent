@@ -1,0 +1,1489 @@
+{
+  "jobs": [
+    {
+      "job": "9000_24",
+      "directory": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9000_24/box_transfer_libero_object_t0_s4_oracle_k4",
+      "choices_sha256": "29f1113c46e279da54a8b51ed2aacdd3fca5fcae3a2d6b7922604748682f6d5e",
+      "request_sha256": "880e13506d8c8c57b09150ef8f77b816cb9b5a7443ae068e7d1747e9f609f8ac",
+      "request_bytes": 30709,
+      "decision_sha256": "0eb06a9e05c9ac195933d8fc9c62f4603cf270081d77badbb36050d29904384f",
+      "decision": {
+        "schema_version": "bounded-skills/3",
+        "kind": "decision",
+        "revision": 0,
+        "observation_id": "public-0",
+        "candidate_ids": [
+          "6a5ee85653d43e03",
+          "7a31cce8dda822ca",
+          "7f56ae3f4c8b42af"
+        ]
+      },
+      "candidates": 56,
+      "planning": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9000_24/box_transfer_libero_object_t0_s4_oracle_k4/request_profile.pstats",
+        "sha256": "52ae11148442df4ca457adfb4e1a795e996a48ed23871f7697867443edcc9a35",
+        "self_total_s": 28.176859338000042,
+        "top15": [
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_skills.py",
+            "line": 1496,
+            "name": "request",
+            "primitive_calls": 1,
+            "calls": 1,
+            "self_s": 0.000546432,
+            "cumulative_s": 28.178616910000002
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_timing.py",
+            "line": 46,
+            "name": "timed",
+            "primitive_calls": 72,
+            "calls": 1322,
+            "self_s": 0.007774598000000001,
+            "cumulative_s": 25.874384525
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_skills.py",
+            "line": 935,
+            "name": "grasp_geometry",
+            "primitive_calls": 2,
+            "calls": 2,
+            "self_s": 0.064405527,
+            "cumulative_s": 18.473519839
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_skills.py",
+            "line": 253,
+            "name": "_cloud_and_ik",
+            "primitive_calls": 48,
+            "calls": 48,
+            "self_s": 0.007330245000000001,
+            "cumulative_s": 15.181791797
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_motion.py",
+            "line": 124,
+            "name": "prepare",
+            "primitive_calls": 59,
+            "calls": 59,
+            "self_s": 0.004221767,
+            "cumulative_s": 11.899699753
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_skills.py",
+            "line": 1604,
+            "name": "add",
+            "primitive_calls": 56,
+            "calls": 56,
+            "self_s": 0.00014437800000000002,
+            "cumulative_s": 9.622314387000001
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_skills.py",
+            "line": 1376,
+            "name": "_candidate",
+            "primitive_calls": 56,
+            "calls": 56,
+            "self_s": 0.001533751,
+            "cumulative_s": 9.619790398000001
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_screen.py",
+            "line": 103,
+            "name": "__call__",
+            "primitive_calls": 59,
+            "calls": 59,
+            "self_s": 0.282820126,
+            "cumulative_s": 9.065917512
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_screen.py",
+            "line": 165,
+            "name": "_geometry_at",
+            "primitive_calls": 1909,
+            "calls": 1909,
+            "self_s": 2.259604324,
+            "cumulative_s": 6.726685203000001
+          },
+          {
+            "file": "~",
+            "line": 0,
+            "name": "<method 'reduce' of 'numpy.ufunc' objects>",
+            "primitive_calls": 152314,
+            "calls": 152314,
+            "self_s": 6.376802679000001,
+            "cumulative_s": 6.376802679000001
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_self_filter.py",
+            "line": 152,
+            "name": "remove_visual_robot",
+            "primitive_calls": 5,
+            "calls": 5,
+            "self_s": 2.997725259,
+            "cumulative_s": 5.003022244
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_skills.py",
+            "line": 369,
+            "name": "_contact_pixels",
+            "primitive_calls": 6,
+            "calls": 6,
+            "self_s": 6.0609e-05,
+            "cumulative_s": 4.427460337
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_plane_20261018_4335578/robots/libero/bounded_skills.py",
+            "line": 689,
+            "name": "_instance_pixels",
+            "primitive_calls": 6,
+            "calls": 6,
+            "self_s": 0.15678497100000002,
+            "cumulative_s": 4.427202866
+          },
+          {
+            "file": "~",
+            "line": 0,
+            "name": "<method 'all' of 'numpy.ndarray' objects>",
+            "primitive_calls": 51645,
+            "calls": 51645,
+            "self_s": 0.021845624,
+            "cumulative_s": 3.810593459
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/core/_methods.py",
+            "line": 61,
+            "name": "_all",
+            "primitive_calls": 55643,
+            "calls": 55643,
+            "self_s": 0.01752572,
+            "cumulative_s": 3.7970511950000003
+          }
+        ]
+      },
+      "perception": [],
+      "physical": {
+        "arm": "oracle_k4",
+        "index": 0,
+        "sim_steps": 175,
+        "source": "public_execution_budget"
+      }
+    },
+    {
+      "job": "9006_24",
+      "directory": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4",
+      "choices_sha256": "bd9c6130bf36a9f0bfcd10cf9de52e5548559df892cad87b2e67f9ee12847e59",
+      "request_sha256": "880e13506d8c8c57b09150ef8f77b816cb9b5a7443ae068e7d1747e9f609f8ac",
+      "request_bytes": 30709,
+      "decision_sha256": "0eb06a9e05c9ac195933d8fc9c62f4603cf270081d77badbb36050d29904384f",
+      "decision": {
+        "schema_version": "bounded-skills/3",
+        "kind": "decision",
+        "revision": 0,
+        "observation_id": "public-0",
+        "candidate_ids": [
+          "6a5ee85653d43e03",
+          "7a31cce8dda822ca",
+          "7f56ae3f4c8b42af"
+        ]
+      },
+      "candidates": 56,
+      "planning": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/request_profile.pstats",
+        "sha256": "996cadadafe9dfc77de8cb6446315568d337aec10edd314e9cb91c73a96f2b00",
+        "self_total_s": 26.121777678999987,
+        "top15": [
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_skills.py",
+            "line": 1496,
+            "name": "request",
+            "primitive_calls": 1,
+            "calls": 1,
+            "self_s": 0.000740596,
+            "cumulative_s": 26.123525244000003
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+            "line": 46,
+            "name": "timed",
+            "primitive_calls": 72,
+            "calls": 1322,
+            "self_s": 0.007582392,
+            "cumulative_s": 23.813251285
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_skills.py",
+            "line": 935,
+            "name": "grasp_geometry",
+            "primitive_calls": 2,
+            "calls": 2,
+            "self_s": 0.06435134,
+            "cumulative_s": 16.603558516
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_skills.py",
+            "line": 253,
+            "name": "_cloud_and_ik",
+            "primitive_calls": 48,
+            "calls": 48,
+            "self_s": 0.007887715,
+            "cumulative_s": 13.218028644
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_motion.py",
+            "line": 124,
+            "name": "prepare",
+            "primitive_calls": 59,
+            "calls": 59,
+            "self_s": 0.004167017,
+            "cumulative_s": 11.810369723
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_skills.py",
+            "line": 1604,
+            "name": "add",
+            "primitive_calls": 56,
+            "calls": 56,
+            "self_s": 0.000149492,
+            "cumulative_s": 9.436292091
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_skills.py",
+            "line": 1376,
+            "name": "_candidate",
+            "primitive_calls": 56,
+            "calls": 56,
+            "self_s": 0.001470811,
+            "cumulative_s": 9.4338849
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_screen.py",
+            "line": 103,
+            "name": "__call__",
+            "primitive_calls": 59,
+            "calls": 59,
+            "self_s": 0.276749685,
+            "cumulative_s": 8.962572114
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_screen.py",
+            "line": 165,
+            "name": "_geometry_at",
+            "primitive_calls": 1909,
+            "calls": 1909,
+            "self_s": 2.2046328760000002,
+            "cumulative_s": 6.649689246
+          },
+          {
+            "file": "~",
+            "line": 0,
+            "name": "<method 'reduce' of 'numpy.ufunc' objects>",
+            "primitive_calls": 153314,
+            "calls": 153314,
+            "self_s": 6.326693302000001,
+            "cumulative_s": 6.326693302000001
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_skills.py",
+            "line": 369,
+            "name": "_contact_pixels",
+            "primitive_calls": 6,
+            "calls": 6,
+            "self_s": 6.1278e-05,
+            "cumulative_s": 4.496670572
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_skills.py",
+            "line": 689,
+            "name": "_instance_pixels",
+            "primitive_calls": 6,
+            "calls": 6,
+            "self_s": 0.160459643,
+            "cumulative_s": 4.496390218
+          },
+          {
+            "file": "~",
+            "line": 0,
+            "name": "<method 'all' of 'numpy.ndarray' objects>",
+            "primitive_calls": 51895,
+            "calls": 51895,
+            "self_s": 0.021397035000000002,
+            "cumulative_s": 3.763509523
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/core/_methods.py",
+            "line": 61,
+            "name": "_all",
+            "primitive_calls": 55893,
+            "calls": 55893,
+            "self_s": 0.017547749,
+            "cumulative_s": 3.750428207
+          },
+          {
+            "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_geometric_grasp.py",
+            "line": 152,
+            "name": "collision_counts",
+            "primitive_calls": 3756,
+            "calls": 3756,
+            "self_s": 1.452172301,
+            "cumulative_s": 3.1219978750000004
+          }
+        ]
+      },
+      "perception": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/perception_refresh_000.pstats",
+          "sha256": "3feb09d83d10516ca17c12957ae3ab91e4c36f9aa96528c1e50af9a3bf4be6a0",
+          "self_total_s": 6.751602362,
+          "top15": [
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_runtime.py",
+              "line": 279,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 0.009284042000000001,
+              "cumulative_s": 6.751638346
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+              "line": 46,
+              "name": "timed",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 9.931500000000001e-05,
+              "cumulative_s": 4.930071067
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/utils/rpc/http_rpc.py",
+              "line": 99,
+              "name": "call",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00027634700000000003,
+              "cumulative_s": 4.929685318000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 500,
+              "name": "open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00010964500000000001,
+              "cumulative_s": 4.90655453
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 529,
+              "name": "_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 2.8141e-05,
+              "cumulative_s": 4.906112369000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 489,
+              "name": "_call_chain",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 2.8177e-05,
+              "cumulative_s": 4.906084228
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1376,
+              "name": "http_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 2.8336e-05,
+              "cumulative_s": 4.906037032
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1307,
+              "name": "do_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000129282,
+              "cumulative_s": 4.906008696000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 1331,
+              "name": "getresponse",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 7.7372e-05,
+              "cumulative_s": 4.90178064
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 311,
+              "name": "begin",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000147217,
+              "cumulative_s": 4.901453861
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 278,
+              "name": "_read_status",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000213181,
+              "cumulative_s": 4.899471902
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'readline' of '_io.BufferedReader' objects>",
+              "primitive_calls": 45,
+              "calls": 45,
+              "self_s": 0.000115932,
+              "cumulative_s": 4.8992535550000005
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py",
+              "line": 703,
+              "name": "readinto",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 8.838900000000001e-05,
+              "cumulative_s": 4.8992329240000005
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'recv_into' of '_socket.socket' objects>",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 4.899118582000001,
+              "cumulative_s": 4.899118582000001
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/scripts/probe_bounded_feasibility.py",
+              "line": 35,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 2.0936e-05,
+              "cumulative_s": 1.5086387460000001
+            }
+          ]
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/perception_refresh_001.pstats",
+          "sha256": "43730f65a6b8ce766775cc9d1a202c4ee401983b7ffac6742acb85d31ac1e26b",
+          "self_total_s": 1.5063335340000001,
+          "top15": [
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_runtime.py",
+              "line": 279,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 0.00017076,
+              "cumulative_s": 1.50632958
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+              "line": 46,
+              "name": "timed",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 5.0154e-05,
+              "cumulative_s": 1.410064897
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/utils/rpc/http_rpc.py",
+              "line": 99,
+              "name": "call",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 0.000117738,
+              "cumulative_s": 1.409894554
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 500,
+              "name": "open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 3.9226e-05,
+              "cumulative_s": 1.403641632
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 529,
+              "name": "_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 1.1841e-05,
+              "cumulative_s": 1.40347221
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 489,
+              "name": "_call_chain",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 1.0520000000000001e-05,
+              "cumulative_s": 1.403460369
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1376,
+              "name": "http_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 9.585e-06,
+              "cumulative_s": 1.4034427900000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1307,
+              "name": "do_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 4.8402e-05,
+              "cumulative_s": 1.403433205
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 1331,
+              "name": "getresponse",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 2.7403000000000002e-05,
+              "cumulative_s": 1.4020850930000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 311,
+              "name": "begin",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 5.8924e-05,
+              "cumulative_s": 1.401968322
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 278,
+              "name": "_read_status",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 6.7406e-05,
+              "cumulative_s": 1.401250421
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'readline' of '_io.BufferedReader' objects>",
+              "primitive_calls": 15,
+              "calls": 15,
+              "self_s": 3.6025e-05,
+              "cumulative_s": 1.401181242
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py",
+              "line": 703,
+              "name": "readinto",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 3.5772e-05,
+              "cumulative_s": 1.401180037
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'recv_into' of '_socket.socket' objects>",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 1.401134794,
+              "cumulative_s": 1.401134794
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/session/base.py",
+              "line": 257,
+              "name": "load",
+              "primitive_calls": 2,
+              "calls": 2,
+              "self_s": 3.9363e-05,
+              "cumulative_s": 0.092047921
+            }
+          ]
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/perception_refresh_002.pstats",
+          "sha256": "dd379689080592bc787ea35055834065dd9c03733b33ee6667f60bdad097b404",
+          "self_total_s": 6.191131349000003,
+          "top15": [
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_runtime.py",
+              "line": 279,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 0.008381357,
+              "cumulative_s": 6.191149211000001
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+              "line": 46,
+              "name": "timed",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00010382700000000001,
+              "cumulative_s": 4.534190032000001
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/utils/rpc/http_rpc.py",
+              "line": 99,
+              "name": "call",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000293267,
+              "cumulative_s": 4.533770249000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 500,
+              "name": "open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000113103,
+              "cumulative_s": 4.5108016740000005
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 529,
+              "name": "_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 2.8688e-05,
+              "cumulative_s": 4.51033982
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 489,
+              "name": "_call_chain",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 2.6532000000000003e-05,
+              "cumulative_s": 4.510311132
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1376,
+              "name": "http_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 3.1757e-05,
+              "cumulative_s": 4.510272718
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1307,
+              "name": "do_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00014375500000000002,
+              "cumulative_s": 4.510240961
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 1331,
+              "name": "getresponse",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 8.2533e-05,
+              "cumulative_s": 4.505965566
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 311,
+              "name": "begin",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000150991,
+              "cumulative_s": 4.505629647
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 278,
+              "name": "_read_status",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000210289,
+              "cumulative_s": 4.503624734000001
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'readline' of '_io.BufferedReader' objects>",
+              "primitive_calls": 45,
+              "calls": 45,
+              "self_s": 0.00011245000000000001,
+              "cumulative_s": 4.50340603
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py",
+              "line": 703,
+              "name": "readinto",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 9.154700000000001e-05,
+              "cumulative_s": 4.503393314
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'recv_into' of '_socket.socket' objects>",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 4.503273973000001,
+              "cumulative_s": 4.503273973000001
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/scripts/probe_bounded_feasibility.py",
+              "line": 35,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 1.1888e-05,
+              "cumulative_s": 1.5173100400000001
+            }
+          ]
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/perception_refresh_003.pstats",
+          "sha256": "ad7f3cd7c094291b3e83153b92bd7af48c231e125615114724d54b20dfdb2c97",
+          "self_total_s": 1.5146398360000002,
+          "top15": [
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_runtime.py",
+              "line": 279,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 0.000147206,
+              "cumulative_s": 1.5146353700000001
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+              "line": 46,
+              "name": "timed",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 3.3819e-05,
+              "cumulative_s": 1.4219993670000002
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/utils/rpc/http_rpc.py",
+              "line": 99,
+              "name": "call",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 8.345000000000001e-05,
+              "cumulative_s": 1.4218649030000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 500,
+              "name": "open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 3.5656000000000006e-05,
+              "cumulative_s": 1.415738546
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 529,
+              "name": "_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 1.0201000000000001e-05,
+              "cumulative_s": 1.415592616
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 489,
+              "name": "_call_chain",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 8.171e-06,
+              "cumulative_s": 1.415582415
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1376,
+              "name": "http_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 9.294000000000001e-06,
+              "cumulative_s": 1.415570287
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1307,
+              "name": "do_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 4.0427000000000004e-05,
+              "cumulative_s": 1.4155609930000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 1331,
+              "name": "getresponse",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 2.2139000000000003e-05,
+              "cumulative_s": 1.4142610960000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 311,
+              "name": "begin",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 4.3491e-05,
+              "cumulative_s": 1.4141635670000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 278,
+              "name": "_read_status",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 7.6437e-05,
+              "cumulative_s": 1.413513022
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'readline' of '_io.BufferedReader' objects>",
+              "primitive_calls": 15,
+              "calls": 15,
+              "self_s": 3.9803000000000005e-05,
+              "cumulative_s": 1.413433688
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py",
+              "line": 703,
+              "name": "readinto",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 2.9478e-05,
+              "cumulative_s": 1.413424406
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'recv_into' of '_socket.socket' objects>",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 1.413386886,
+              "cumulative_s": 1.413386886
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/session/base.py",
+              "line": 257,
+              "name": "load",
+              "primitive_calls": 2,
+              "calls": 2,
+              "self_s": 2.9474000000000003e-05,
+              "cumulative_s": 0.088642338
+            }
+          ]
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/perception_refresh_004.pstats",
+          "sha256": "df18ba2f8b7a94a88d96a6eb3699ef948ce7c9990dcdffa72b277d2376640fb6",
+          "self_total_s": 6.167091881,
+          "top15": [
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_runtime.py",
+              "line": 279,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 0.008459285,
+              "cumulative_s": 6.167113875
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+              "line": 46,
+              "name": "timed",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 9.5475e-05,
+              "cumulative_s": 4.476467027
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/utils/rpc/http_rpc.py",
+              "line": 99,
+              "name": "call",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000254807,
+              "cumulative_s": 4.476063698
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 500,
+              "name": "open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000110457,
+              "cumulative_s": 4.457596088
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 529,
+              "name": "_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 2.6364e-05,
+              "cumulative_s": 4.457159041000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 489,
+              "name": "_call_chain",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 2.6501000000000003e-05,
+              "cumulative_s": 4.457132677000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1376,
+              "name": "http_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 2.9799e-05,
+              "cumulative_s": 4.457095559
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1307,
+              "name": "do_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000128131,
+              "cumulative_s": 4.45706576
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 1331,
+              "name": "getresponse",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 7.0411e-05,
+              "cumulative_s": 4.453058223
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 311,
+              "name": "begin",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000138345,
+              "cumulative_s": 4.45275095
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 278,
+              "name": "_read_status",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00019746500000000002,
+              "cumulative_s": 4.450710255000001
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'readline' of '_io.BufferedReader' objects>",
+              "primitive_calls": 45,
+              "calls": 45,
+              "self_s": 0.000111063,
+              "cumulative_s": 4.4505060290000005
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py",
+              "line": 703,
+              "name": "readinto",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 9.385900000000001e-05,
+              "cumulative_s": 4.450493304
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'recv_into' of '_socket.socket' objects>",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 4.450369822,
+              "cumulative_s": 4.450369822
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/scripts/probe_bounded_feasibility.py",
+              "line": 35,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 1.2432e-05,
+              "cumulative_s": 1.501239532
+            }
+          ]
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/perception_refresh_005.pstats",
+          "sha256": "7b33ad963e9dd39a5ab3a2a26ebb9e724860434c3733e6cd22d017af91fd3f48",
+          "self_total_s": 1.4988245169999999,
+          "top15": [
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_runtime.py",
+              "line": 279,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 0.00013098500000000002,
+              "cumulative_s": 1.498820316
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+              "line": 46,
+              "name": "timed",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 4.4737e-05,
+              "cumulative_s": 1.4102011840000002
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/utils/rpc/http_rpc.py",
+              "line": 99,
+              "name": "call",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 8.0686e-05,
+              "cumulative_s": 1.4100566030000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 500,
+              "name": "open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 3.7835e-05,
+              "cumulative_s": 1.4052324850000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 529,
+              "name": "_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 9.576000000000001e-06,
+              "cumulative_s": 1.405086308
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 489,
+              "name": "_call_chain",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 8.633e-06,
+              "cumulative_s": 1.4050767320000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1376,
+              "name": "http_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 1.006e-05,
+              "cumulative_s": 1.4050640060000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1307,
+              "name": "do_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 4.139e-05,
+              "cumulative_s": 1.405053946
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 1331,
+              "name": "getresponse",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 1.9683e-05,
+              "cumulative_s": 1.403846377
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 311,
+              "name": "begin",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 4.5295000000000006e-05,
+              "cumulative_s": 1.403752817
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 278,
+              "name": "_read_status",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 6.5968e-05,
+              "cumulative_s": 1.403113381
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'readline' of '_io.BufferedReader' objects>",
+              "primitive_calls": 15,
+              "calls": 15,
+              "self_s": 3.6659e-05,
+              "cumulative_s": 1.403045243
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py",
+              "line": 703,
+              "name": "readinto",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 3.1476e-05,
+              "cumulative_s": 1.4030398000000002
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'recv_into' of '_socket.socket' objects>",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 1.403000355,
+              "cumulative_s": 1.403000355
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/session/base.py",
+              "line": 257,
+              "name": "load",
+              "primitive_calls": 2,
+              "calls": 2,
+              "self_s": 2.873e-05,
+              "cumulative_s": 0.085930765
+            }
+          ]
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/perception_refresh_006.pstats",
+          "sha256": "a142e57f3e68b6a0686f2d157d0b2c777224e77b32be150efa884a1655b36fab",
+          "self_total_s": 6.161528108000001,
+          "top15": [
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_runtime.py",
+              "line": 279,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 0.008192683000000001,
+              "cumulative_s": 6.161547868
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+              "line": 46,
+              "name": "timed",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00010521,
+              "cumulative_s": 4.480268334000001
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/utils/rpc/http_rpc.py",
+              "line": 99,
+              "name": "call",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00025023900000000003,
+              "cumulative_s": 4.4798633290000005
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 500,
+              "name": "open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00011155,
+              "cumulative_s": 4.461402227000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 529,
+              "name": "_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 2.6817e-05,
+              "cumulative_s": 4.460979506
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 489,
+              "name": "_call_chain",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 3.0766e-05,
+              "cumulative_s": 4.460952689
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1376,
+              "name": "http_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 3.2434e-05,
+              "cumulative_s": 4.460910603
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1307,
+              "name": "do_open",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00013273900000000002,
+              "cumulative_s": 4.460878169
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 1331,
+              "name": "getresponse",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 7.051400000000001e-05,
+              "cumulative_s": 4.456919358
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 311,
+              "name": "begin",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.00014394600000000002,
+              "cumulative_s": 4.456630011000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 278,
+              "name": "_read_status",
+              "primitive_calls": 9,
+              "calls": 9,
+              "self_s": 0.000201713,
+              "cumulative_s": 4.454634679000001
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'readline' of '_io.BufferedReader' objects>",
+              "primitive_calls": 45,
+              "calls": 45,
+              "self_s": 0.000116545,
+              "cumulative_s": 4.454424992
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py",
+              "line": 703,
+              "name": "readinto",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 9.199200000000001e-05,
+              "cumulative_s": 4.454403118
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'recv_into' of '_socket.socket' objects>",
+              "primitive_calls": 18,
+              "calls": 18,
+              "self_s": 4.454283477000001,
+              "cumulative_s": 4.454283477000001
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/scripts/probe_bounded_feasibility.py",
+              "line": 35,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 1.2780000000000001e-05,
+              "cumulative_s": 1.493268794
+            }
+          ]
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9006_24/box_transfer_libero_object_t0_s4_oracle_k4/perception_refresh_007.pstats",
+          "sha256": "14e054cd0e914638df1de7fd0a16acc68be9bb6511e00e14a0e216680c681478",
+          "self_total_s": 1.49117889,
+          "top15": [
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/v5_runtime.py",
+              "line": 279,
+              "name": "refresh",
+              "primitive_calls": 1,
+              "calls": 1,
+              "self_s": 0.000141232,
+              "cumulative_s": 1.491174953
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/robots/libero/bounded_timing.py",
+              "line": 46,
+              "name": "timed",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 3.4346e-05,
+              "cumulative_s": 1.402837361
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/utils/rpc/http_rpc.py",
+              "line": 99,
+              "name": "call",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 0.000102799,
+              "cumulative_s": 1.402703043
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 500,
+              "name": "open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 3.9473e-05,
+              "cumulative_s": 1.3978579910000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 529,
+              "name": "_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 1.0083e-05,
+              "cumulative_s": 1.397709839
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 489,
+              "name": "_call_chain",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 9.92e-06,
+              "cumulative_s": 1.3976997560000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1376,
+              "name": "http_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 1.0412000000000001e-05,
+              "cumulative_s": 1.3976869600000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/urllib/request.py",
+              "line": 1307,
+              "name": "do_open",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 4.3527000000000005e-05,
+              "cumulative_s": 1.3976765480000002
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 1331,
+              "name": "getresponse",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 2.25e-05,
+              "cumulative_s": 1.396430599
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 311,
+              "name": "begin",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 4.3332000000000005e-05,
+              "cumulative_s": 1.3963345120000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/http/client.py",
+              "line": 278,
+              "name": "_read_status",
+              "primitive_calls": 3,
+              "calls": 3,
+              "self_s": 6.708400000000001e-05,
+              "cumulative_s": 1.3956896220000001
+            },
+            {
+              "file": "/public/home/sunyihan/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/socket.py",
+              "line": 703,
+              "name": "readinto",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 3.2771e-05,
+              "cumulative_s": 1.395621325
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'readline' of '_io.BufferedReader' objects>",
+              "primitive_calls": 15,
+              "calls": 15,
+              "self_s": 3.7929e-05,
+              "cumulative_s": 1.3956202
+            },
+            {
+              "file": "~",
+              "line": 0,
+              "name": "<method 'recv_into' of '_socket.socket' objects>",
+              "primitive_calls": 6,
+              "calls": 6,
+              "self_s": 1.3955800790000001,
+              "cumulative_s": 1.3955800790000001
+            },
+            {
+              "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_visual_profile_20261018_85107ca/rpent/session/base.py",
+              "line": 257,
+              "name": "load",
+              "primitive_calls": 2,
+              "calls": 2,
+              "self_s": 3.3739000000000003e-05,
+              "cumulative_s": 0.085170536
+            }
+          ]
+        }
+      ],
+      "physical": {
+        "arm": "oracle_k4",
+        "index": 0,
+        "sim_steps": 175,
+        "source": "public_execution_budget"
+      }
+    }
+  ],
+  "request_bytes_equal": true,
+  "request_changed_fields": [],
+  "decision_bytes_equal": true,
+  "canonical_serializer": "json.dumps(sort_keys=True,separators=(comma,colon),ensure_ascii=False,allow_nan=False).encode(utf8)",
+  "source_only_changes": "public legal_after labels, actual-refresh profiler, conservative self-filter broad phase",
+  "controls_in_analysis": 0,
+  "training": false,
+  "confirmation": false,
+  "pi05": false,
+  "limitation": "Single matched physical startup; profile cumulative times overlap; not episode throughput"
+}
