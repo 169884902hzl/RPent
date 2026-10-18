@@ -100,6 +100,43 @@ def test_free_space_nudge_reports_motion_arrival_without_object_effect(adapter):
     assert adapter.execute(request, decision(request, [candidate['id']]))[0]['outcome'] == 'success'
 
 
+def test_held_nudge_registers_moving_payload_when_stationary_target_is_empty(adapter):
+    from dataclasses import replace
+
+    from scipy.spatial.transform import Rotation
+
+    adapter.active = adapter.held = 'e1'
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.02, -.02]}
+    surface = np.random.default_rng(52).uniform([.08, .08, .88], [.12, .12, .92], (900, 3))
+    shift = np.zeros(3)
+    public_screen = adapter._cloud_and_ik()
+    public_screen.target = np.empty((0, 3))
+    def screen(*args, **kwargs):
+        robot = adapter.robot()
+        public_screen.payload = ((surface+shift-robot['eef_xyz_m'])
+            @ Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix())
+        adapter._base_geometry = (surface+shift, None)
+        return public_screen
+    adapter._cloud_and_ik = screen
+    def refresh(_):
+        shift[:] = [0., .02, 0.]
+        entity = adapter.scene.entities['e1']
+        adapter.scene.entities['e1'] = replace(entity,
+            xyz=tuple(np.asarray(entity.xyz)+shift),
+            lower=tuple(np.asarray(entity.lower)+shift),
+            upper=tuple(np.asarray(entity.upper)+shift), source_step=entity.source_step+1)
+    adapter.scene.refresh = refresh
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'anchor_id': 'e1', 'axis': 'y', 'distance_m': .02})
+    receipt = adapter.execute(request, decision(request, [candidate['id']]))[0]
+    assert receipt['outcome'] == 'success'
+    assert adapter.held == 'e1'
+    fit = adapter.details[-1]['execution']['public_contact_motion']['surface_registration']
+    assert fit['accepted'] and fit['translation_m'][1] == pytest.approx(.02)
+
+
 @pytest.mark.parametrize('committed_handle', [False, True])
 def test_nudge_measures_handle_motion_independently_of_stationary_parent_pixels(adapter, committed_handle):
     from dataclasses import replace

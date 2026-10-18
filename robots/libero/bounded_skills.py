@@ -1616,7 +1616,15 @@ class MeasuredSkillAdapter:
         if skill == 'nudge' and key is not None:
             screen = self._cloud_and_ik(key, contact=True)
             handle = self.plans.get(key, {}).get('handle_measurement')
-            if handle:
+            if key == self.held:
+                # Held geometry is deliberately removed from stationary
+                # screen.target. Register its measured moving surface,
+                # expressed in world coordinates, rather than an empty set.
+                robot = measured_robot(self.p)
+                contact_reference = (screen.payload
+                    @ Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix().T
+                    + robot['eef_xyz_m'])
+            elif handle:
                 from scipy.spatial import cKDTree
 
                 # A committed handle can predate the current capture. Reuse

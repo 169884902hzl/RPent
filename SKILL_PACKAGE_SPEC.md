@@ -47,6 +47,8 @@ Common failure phases: `perception`, `planning_unreachable`, `collision`, `conta
 
 `nudge` and `rotate_wrist` with a contact `anchor_id` end the chunk and require a new observation. They cannot precede another selected action or prefetch across contact. Their free-space variants remain eligible for smooth motion blending.
 
+A held-object `nudge` registers the measured moving payload surface in world coordinates. The stationary contact-target cloud is empty for a held object by design and cannot supply this reference. The private upper-bound selector can choose an existing screened 1–2 cm upward nudge when transport and alignment are both unavailable, then reobserve; it creates no additional motion option.
+
 Held-object centres and bounds are normalised from the current self-filtered payload surface before both recovery-change accounting and receipt comparisons. Requests and post-action measurements use that same estimator. Switching between a raw semantic-mask centre and the cleaned payload centre is not physical progress and cannot keep an unchanged observation action available.
 
 Current non-fixture instance masks are depth-component cleaned before grasp planning as well as after contact. Within the clean mask's measured 3-D extent, connected current RGB-D samples separated by at most 3 mm may complete a curved seam that linear boundary extrapolation misses. This uses the same robot-filtered pixels as route screening. Points outside that measured extent, disconnected surfaces and rejected mask components remain obstacles; no metric halo is subtracted. Boundary evidence records the extent and recovered pixel count. The model-facing schema is unchanged.
