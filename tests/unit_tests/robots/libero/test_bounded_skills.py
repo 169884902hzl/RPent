@@ -552,6 +552,37 @@ def test_oracle_uses_only_a_clear_bounded_lift_after_blocked_transport(adapter, 
         assert oracle.private_trace[-1]['recovery'] == 'screened_bounded_lift_after_blocked_transport'
 
 
+@pytest.mark.parametrize('direction', [-1, 1])
+@pytest.mark.parametrize('available', [.01, .02, None])
+def test_oracle_uses_only_screened_lateral_progress_when_lift_is_blocked(adapter, direction, available):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    adapter.active = adapter.held = 'e1'
+    x = .1+.2*direction
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (x, .1, .9),
+        (x-.05, .05, .89), (x+.05, .15, .91), True, 0)
+    request = adapter.request(k=1)
+    for candidate in request['candidates']:
+        parameters = candidate['parameters']
+        if candidate['skill'] in {'carry_to', 'align', 'nudge'}:
+            candidate['consequences']['collision'] = True
+        if candidate['skill'] == 'nudge' and parameters['axis'] == 'x':
+            # An away-from-goal move is clear too; it must not be chosen.
+            if parameters['distance_m'] == -.02*direction:
+                candidate['consequences']['collision'] = False
+            if available is not None and parameters['distance_m'] == available*direction:
+                candidate['consequences']['collision'] = False
+    oracle = BoundedOracle(SimpleNamespace(call=lambda _: {
+        'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}), adapter)
+    chosen = selected(request, oracle.choose(request))[0]
+    if available is None:
+        assert chosen['skill'] == 'observe'
+    else:
+        assert chosen['skill'] == 'nudge'
+        assert chosen['parameters'] == {'anchor_id': 'e1', 'axis': 'x', 'distance_m': available*direction}
+        assert oracle.private_trace[-1]['recovery'] == 'screened_lateral_progress_after_blocked_transport'
+
+
 def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
     from robots.libero.bounded_oracle import BoundedOracle
 

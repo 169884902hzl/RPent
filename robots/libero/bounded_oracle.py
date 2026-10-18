@@ -138,6 +138,27 @@ class BoundedOracle:
                                 axis='z', distance_m=distance)) is not None), None)
                         if chosen is not None:
                             self.private_trace[-1]['recovery'] = 'screened_bounded_lift_after_blocked_transport'
+                    if chosen is None:
+                        # Contact can block an upward escape while a short
+                        # lateral route is already screened and reachable.
+                        # Use its measured progress towards the destination;
+                        # the selector cannot invent or unscreen a waypoint.
+                        distance = float(np.sum((object_centre-target_centre)[:2]**2))
+                        lateral = []
+                        for candidate in feasible:
+                            parameters = candidate['parameters']
+                            if (candidate['skill'] != 'nudge'
+                                    or parameters.get('anchor_id') != source.id
+                                    or parameters.get('axis') not in {'x', 'y'}):
+                                continue
+                            endpoint = object_centre.copy()
+                            endpoint['xy'.index(parameters['axis'])] += parameters['distance_m']
+                            remaining = float(np.sum((endpoint-target_centre)[:2]**2))
+                            if remaining < distance:
+                                lateral.append((remaining, candidate['id'], candidate))
+                        if lateral:
+                            chosen = min(lateral, key=lambda entry: entry[:2])[2]
+                            self.private_trace[-1]['recovery'] = 'screened_lateral_progress_after_blocked_transport'
                 elif object_pose.lower[2] > target.upper[2]+.025:
                     chosen = find("lower", target_id=target.id)
                     # A blocked lowering route does not remove the existing
