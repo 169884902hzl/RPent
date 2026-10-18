@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Measured LIBERO adapter for the shared bounded-skills contract.
 
 No BDDL, oracle RPC or simulator object poses are read here. Candidate geometry
@@ -6,6 +8,7 @@ is confined to the existing grasp-region perception code.
 """
 from __future__ import annotations
 
+import base64
 import copy
 import hashlib
 import json
@@ -557,6 +560,44 @@ class MeasuredSkillAdapter:
             pixels = np.concatenate([pixels, current])
         return np.empty((0, 3)) if handle_only else pixels
 
+    def _guided_payload_pixels(self, world, semantic_mask, camera, entity):
+        """Refine a currently measured instance with an interior SAM point."""
+        from scipy.ndimage import distance_transform_edt
+
+        from rpent.robots.components.sam3_client import Sam3Client
+
+        empty = np.empty((0, 3))
+        evidence = {'source': 'current_measured_instance_interior_point_sam',
+            'camera': camera, 'capture_step': self.ex.toolkit._state.latest_step,
+            'private_pose_used': False, 'member_pixels': 0}
+        rpc = getattr(self.scene, 'rpc', None)
+        if rpc is None or semantic_mask is None:
+            return empty, {**evidence, 'reason': 'current_mask_or_segment_service_unavailable'}
+        valid = (np.isfinite(world).all(axis=2)
+            & (world >= entity.lower).all(axis=2) & (world <= entity.upper).all(axis=2))
+        interior = np.asarray(semantic_mask, bool) & valid
+        if not interior.any():
+            return empty, {**evidence, 'reason': 'no_current_instance_depth_seed'}
+        point = list(map(int, np.unravel_index(
+            np.argmax(distance_transform_edt(interior)), interior.shape)))
+        evidence['point_row_col'] = point
+        image = self.ex.toolkit._state.load_bytes(camera+'_high.png')
+        reply = rpc.call('sam3.segment', kwargs={
+            'image_base64': base64.b64encode(image).decode('ascii'),
+            'point': point, 'min_score': .35}, timeout_s=120)
+        self.scene.calls += 1
+        result = Sam3Client._decode_result(reply)
+        if not result.found:
+            return empty, {**evidence, 'reason': result.reason}
+        if result.mask.shape != interior.shape or not result.mask[tuple(point)]:
+            return empty, {**evidence, 'reason': 'guided_mask_does_not_match_current_seed'}
+        mask = result.mask & valid
+        evidence.update(score=result.score, member_pixels=int(mask.sum()),
+            semantic_recall=float((mask & interior).sum()/interior.sum()))
+        evidence['artifact'] = self._record_public_geometry(
+            f'bounded_payload_guided_{entity.id}_{camera}', world[mask])
+        return world[mask], evidence
+
     def _instance_pixels(self, anchor_id):
         # Fusion stores voxel CENTROIDS. They are geometry estimates, not
         # original depth pixels; exact pixel-identity subtraction using them
@@ -721,6 +762,7 @@ class MeasuredSkillAdapter:
 
             from robots.libero.bounded_payload import (
                 complete_moving_boundary,
+                complete_spatial_payload_component,
                 moving_payload_pixels,
             )
             scene = self._base_geometry[0]
@@ -770,6 +812,17 @@ class MeasuredSkillAdapter:
                     semantic_mask=semantic_masks.get(camera))
                 result = np.concatenate([result, world[completed & ~mask]])
                 records.append({'camera': camera, **evidence})
+            if entity is not None:
+                seeds = [result]
+                for camera, (world, _) in current_views.items():
+                    guided, evidence = self._guided_payload_pixels(
+                        world, semantic_masks.get(camera), camera, entity)
+                    seeds.append(guided)
+                    records.append(evidence)
+                member, evidence = complete_spatial_payload_component(scene, np.concatenate(seeds),
+                    self.payload_reference['scene'], entity.lower, entity.upper)
+                result = np.concatenate([result, scene[member]])
+                records.append(evidence)
         self._instance_cache[anchor_id] = result
         self.instance_boundary_evidence[anchor_id] = records
         return result

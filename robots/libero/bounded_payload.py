@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Track measured moving payload surfaces without a spatial obstacle carve."""
 from __future__ import annotations
 
@@ -6,6 +8,52 @@ import math
 import numpy as np
 from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation
+
+
+def complete_spatial_payload_component(points, seeds, stationary_points, lower, upper):
+    """Associate current raw depth components inside measured payload bounds.
+
+    Keep exact pixel-to-pixel edges at the existing 3 mm depth gap. A voxel
+    representative can be farther away than another pixel in that same
+    voxel and falsely disconnect a visible surface across camera views.
+    Pre-lift static pixels are removed before constructing any connections.
+    """
+    from scipy.sparse import coo_matrix
+    from scipy.sparse.csgraph import connected_components
+
+    points, seeds, stationary = (np.asarray(p, float).reshape(-1, 3)
+                                  for p in (points, seeds, stationary_points))
+    member = np.zeros(len(points), bool)
+    evidence = {'source': 'raw_current_rgbd_components_inside_measured_payload_bounds',
+        'max_gap_m': .003, 'stationary_residual_m': .004,
+        'private_pose_used': False, 'eligible_points': 0, 'seed_pixels': 0,
+        'stationary_points_retained': 0, 'exact_edges': 0, 'member_pixels': 0}
+    ids = np.flatnonzero(np.isfinite(points).all(axis=1)
+        & (points >= lower).all(axis=1) & (points <= upper).all(axis=1))
+    seeds = seeds[np.isfinite(seeds).all(axis=1)]
+    stationary = stationary[np.isfinite(stationary).all(axis=1)]
+    if len(stationary) and len(ids):
+        static = cKDTree(stationary).query(points[ids],
+            distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
+        evidence['stationary_points_retained'] = int(static.sum())
+        ids = ids[~static]
+    evidence['eligible_points'] = len(ids)
+    if not len(ids) or not len(seeds):
+        return member, evidence
+    current = points[ids]
+    seed = cKDTree(seeds).query(current,
+        distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+    evidence['seed_pixels'] = int(seed.sum())
+    if not seed.any():
+        return member, evidence
+    pairs = cKDTree(current).query_pairs(.003, output_type='ndarray')
+    graph = coo_matrix((np.ones(len(pairs), np.uint8), (pairs[:, 0], pairs[:, 1])),
+                      shape=(len(current), len(current))).tocsr()
+    _, labels = connected_components(graph, directed=False)
+    member[ids] = np.isin(labels, np.unique(labels[seed]))
+    evidence['exact_edges'] = len(pairs)
+    evidence['member_pixels'] = int(member.sum())
+    return member, evidence
 
 
 def complete_moving_boundary(world, mask, moving_points, stationary_points, *, surface_extent=None,

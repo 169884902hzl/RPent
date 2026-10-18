@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Public-only skill request and exact-ID execution checks."""
 from types import SimpleNamespace
 
@@ -43,6 +45,35 @@ def adapter(monkeypatch):
 def decision(request, ids):
     return {"schema_version": request["schema_version"], "kind": "decision", "revision": request["revision"],
             "observation_id": request["observation_id"], "candidate_ids": ids}
+
+
+@pytest.mark.parametrize('mode', ['valid', 'missing_seed', 'not_found'])
+def test_payload_point_refinement_uses_measured_interior_and_bounds(adapter, monkeypatch, mode):
+    entity = adapter.scene.entities['e1']
+    y, x = np.mgrid[:5, :5]
+    world = np.stack([.085+x*.005, .085+y*.005, np.full(x.shape, .9)], axis=-1)
+    world[0, 0] = [.9, .9, .9]
+    world[0, 1] = np.nan
+    semantic = (x >= 1) & (x <= 3) & (y >= 1) & (y <= 3)
+    mask = np.ones(x.shape, bool)
+    if mode == 'missing_seed':
+        mask[2, 2] = False
+    reply = SimpleNamespace(found=mode != 'not_found', mask=mask, score=.96, reason='not_found')
+    monkeypatch.setattr('rpent.robots.components.sam3_client.Sam3Client._decode_result', lambda _: reply)
+    calls = []
+    adapter.scene.rpc = SimpleNamespace(call=lambda *args, **kwargs: calls.append((args, kwargs)))
+    adapter.scene.calls = 0
+    adapter.ex.toolkit._state.load_bytes = lambda _: b'current-public-image'
+    points, evidence = adapter._guided_payload_pixels(world, semantic, 'wrist', entity)
+    assert calls[0][0] == ('sam3.segment',)
+    assert calls[0][1]['kwargs']['point'] == [2, 2]
+    assert 'text_prompt' not in calls[0][1]['kwargs']
+    assert evidence['capture_step'] == 0 and evidence['private_pose_used'] is False
+    assert len(points) == (23 if mode == 'valid' else 0)
+    assert np.isfinite(points).all()
+    assert (points >= entity.lower).all() and (points <= entity.upper).all()
+    adapter._guided_payload_pixels(world, None, 'wrist', entity)
+    assert len(calls) == 1
 
 
 def test_public_request_omits_whole_task_and_vla_disabled(adapter):

@@ -1,12 +1,30 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 import numpy as np
 from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_payload import (
     complete_moving_boundary,
+    complete_spatial_payload_component,
     contact_axis_registration,
     contact_normal_registration,
     moving_payload_pixels,
 )
+
+
+def test_raw_spatial_edges_do_not_lose_a_connection_at_a_voxel_boundary():
+    points = np.array([[0., 0., 1.], [.00099, 0., 1.], [.0037, 0., 1.],
+                       [.0064, 0., 1.], [.012, 0., 1.], [np.nan, 0., 1.]])
+    lower, upper = [-.001, -.01, .99], [.01, .01, 1.01]
+    member, evidence = complete_spatial_payload_component(points, points[:1], [], lower, upper)
+    assert member.tolist() == [True, True, True, True, False, False]
+    assert evidence['private_pose_used'] is False
+    # A pre-lift static point cannot bridge to the other component.
+    member, _ = complete_spatial_payload_component(points, points[:1], [[.005, 0., 1.]], lower, upper)
+    assert member.tolist() == [True, True, False, False, False, False]
+    # A nearby unowned pixel is not an exact identity seed.
+    member, _ = complete_spatial_payload_component(points, [[0., .0001, 1.]], [], lower, upper)
+    assert not member.any()
 
 
 def test_contact_axis_fit_tracks_depth_not_segment_centres():
