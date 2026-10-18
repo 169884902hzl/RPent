@@ -73,6 +73,7 @@ class MeasuredSkillAdapter:
         self.allow_vla, self.history = allow_vla, history or DevelopmentHistory()
         self.config = motion_config
         self.memory = FailureMemory()
+        self._contact_retry_references = {}
         self.revision = 0
         self.receipts: list[dict] = []
         self.details: list[dict] = []
@@ -90,6 +91,7 @@ class MeasuredSkillAdapter:
         self.preparation = measured_robot(self.p)
         self.gripper_command = -1. if self.preparation["gripper_opening_m"] >= .075 else 1.
         self.previous_scene = {}
+        self._last_scene_changes = set()
         self._base_geometry = None
         self._screen_cache = {}
         self._instance_cache = {}
@@ -145,7 +147,7 @@ class MeasuredSkillAdapter:
             'opening_m': opening, 'empty_closed_upper_m': lower, 'empty_open_lower_m': upper,
             'calibration_source': calibration.get('source_report')}
 
-    def refresh(self):
+    def refresh(self, *, contact_motion=None):
         self.ex.capture()
         self.scene.refresh(sorted(self.scene.vocabulary))
         self._base_geometry = None
@@ -160,6 +162,30 @@ class MeasuredSkillAdapter:
         current = {e.id: np.array(e.xyz) for e in self.scene.entities.values() if e.visible}
         changed = {key for key, value in current.items()
             if key not in self.previous_scene or np.linalg.norm(value-self.previous_scene[key]) > .01}
+        registration = None
+        contacts = {key: value for key, value in self._contact_retry_references.items() if key in changed}
+        if contact_motion is not None:
+            contacts[contact_motion[0]] = contact_motion
+        for contact in contacts.values():
+            key, axis, distance, reference, capture_step = contact
+            # Partial masks can jump without the contacted object moving.
+            # The same fresh depth fit used by the receipt determines whether
+            # this source changed enough to unlock its contact retries.
+            changed.discard(key)
+            if self.ex.toolkit._state.latest_step > capture_step and not self.p.env.terminated:
+                from robots.libero.bounded_payload import contact_axis_registration
+
+                self._cloud_and_ik(key, contact=True)
+                fit = contact_axis_registration(reference, self._base_geometry[0],
+                    'xyz'.index(axis), distance, endpoint_tolerance_m=self.config.endpoint_tolerance_m)
+                if contact_motion is not None and key == contact_motion[0]:
+                    registration = fit
+                if fit['accepted']:
+                    low, high = fit['compatible_axis_interval_m']
+                    if low > .01 or high < -.01:
+                        changed.add(key)
+                        self._contact_retry_references.pop(key, None)
+        self._last_scene_changes = changed
         self.memory.tick(scene_changed=bool(changed), changed_anchors=changed)
         # Temporary occlusion does not erase the last measured pose. Merely
         # detecting the same stationary entity again is not scene progress.
@@ -171,6 +197,7 @@ class MeasuredSkillAdapter:
             for e in self.scene.entities.values():
                 if e.visible:
                     self.target_cache[e.id] = e
+        return registration
 
     def _evidence(self, entity):
         return {"measurement_id": f"rgbd:{entity.source_step}:{entity.id}",
@@ -1739,7 +1766,12 @@ class MeasuredSkillAdapter:
             reason = "native_success" if outcome == "success" else "environment_reports_task_incomplete"
         elif skill == "ask_help":
             outcome, reason = "rejected", "no_human_available_use_observe_restage_or_other_approach"
-        self.refresh()
+        if skill == 'nudge' and key is not None and outcome == 'success':
+            contact_registration = self.refresh(contact_motion=(key, parameters['axis'],
+                parameters['distance_m'], contact_reference, contact_capture_step))
+        else:
+            self.refresh()
+            contact_registration = None
         lost_held = None
         if skill in MOTION_SKILLS:
             holding, lost_held = self._recheck_transport_hold(before, entities_before)
@@ -1769,9 +1801,9 @@ class MeasuredSkillAdapter:
             # Moving the camera alone cannot reset recovery failures. A scan
             # must reveal an entity or a measured scene change; otherwise
             # repeated upward scans can consume the entire episode.
-            changed = any(eid not in observed_before
+            changed = any(eid in self._last_scene_changes and (eid not in observed_before
                 or np.linalg.norm(np.asarray(entity.xyz)-observed_before[eid]) >= .01
-                for eid, entity in self.scene.entities.items() if entity.visible)
+                ) for eid, entity in self.scene.entities.items() if entity.visible)
             if not changed:
                 outcome, reason = "no_effect", "no_measured_scene_change"
         if skill == 'nudge' and key is not None and outcome == 'success':
@@ -1782,20 +1814,9 @@ class MeasuredSkillAdapter:
             displacement = np.asarray(current.xyz)-prior.xyz if measured else None
             progress = (float(displacement['xyz'.index(parameters['axis'])]
                 * np.sign(parameters['distance_m'])) if measured else None)
-            registration = None
+            registration = contact_registration
             after_capture_step = self.ex.toolkit._state.latest_step
             fresh_depth = after_capture_step > contact_capture_step
-            if fresh_depth and not self.p.env.terminated:
-                from robots.libero.bounded_payload import contact_axis_registration
-
-                # A current handle can remain visible in raw depth while SAM
-                # loses its identity. Its pre-action measured surface and a
-                # fresh self-filtered depth frame still establish motion;
-                # the cached entity centre is a separate diagnostic.
-                self._cloud_and_ik(key, contact=True)
-                registration = contact_axis_registration(contact_reference, self._base_geometry[0],
-                    'xyz'.index(parameters['axis']), parameters['distance_m'],
-                    endpoint_tolerance_m=self.config.endpoint_tolerance_m)
             detail['public_contact_motion'] = {
                 'source': 'paired_public_rgbd_axis_surface_registration',
                 'before_capture_step': contact_capture_step,
@@ -1822,6 +1843,10 @@ class MeasuredSkillAdapter:
                         outcome, phase, reason = 'no_effect', 'contact_failure', 'contact_no_measured_progress'
                     else:
                         outcome, phase, reason = 'unmeasured', 'verification_error', 'contact_surface_motion_ambiguous'
+            if (outcome in {'no_effect', 'failure', 'unmeasured'} and len(contact_reference) >= 40
+                    and reason.startswith('contact_')):
+                self._contact_retry_references[key] = (key, parameters['axis'], parameters['distance_m'],
+                    contact_reference, contact_capture_step)
         if skill == "lift" and self.grasp_reference is not None:
             source, robot_at_contact = self.grasp_reference
             current = self.scene.entities.get(key)

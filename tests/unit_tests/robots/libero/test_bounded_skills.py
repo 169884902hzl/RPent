@@ -2010,7 +2010,8 @@ def test_held_surface_normalisation_is_not_a_scene_change(adapter):
                    for c in adapter.request(k=1)['candidates'])
 
 
-def test_unrelated_mask_centre_drift_does_not_reenable_no_effect_contact(adapter):
+@pytest.mark.parametrize('reason', ['contact_no_measured_progress', 'contact_surface_motion_ambiguous'])
+def test_unrelated_mask_centre_drift_does_not_reenable_no_effect_contact(adapter, reason):
     from dataclasses import replace
 
     adapter.scene.entities['background'] = Entity('background', 'table', (0., 0., .8),
@@ -2019,7 +2020,7 @@ def test_unrelated_mask_centre_drift_does_not_reenable_no_effect_contact(adapter
     action = {'skill': 'nudge', 'parameters': {'anchor_id': 'e1', 'axis': 'y', 'distance_m': .02}}
     route = {'skill': 'move_to', 'parameters': {'anchor_id': 'e1', 'approach': 'above', 'path': 'over'}}
     for _ in range(2):
-        adapter.memory.record(action, 'no_effect', 'contact_no_measured_progress')
+        adapter.memory.record(action, 'no_effect', reason)
         adapter.memory.record(route, 'failure', 'measured_sweep_collision')
     for x in (.02, -.02, .03):
         entity = adapter.scene.entities['background']
@@ -2029,6 +2030,41 @@ def test_unrelated_mask_centre_drift_does_not_reenable_no_effect_contact(adapter
     assert adapter.memory.apply([route])  # A changed obstacle can reopen a route.
     source = adapter.scene.entities['e1']
     adapter.scene.entities['e1'] = replace(source, xyz=(.12, .1, .9))
+    adapter.refresh()
+    assert adapter.memory.apply([action])
+
+
+def test_contact_mask_jitter_cannot_unlock_failed_nudge_but_measured_motion_can(adapter):
+    from dataclasses import replace
+
+    surface = np.random.default_rng(973).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
+    shift = np.zeros(3)
+    screen = adapter._cloud_and_ik()
+    def geometry(*args, **kwargs):
+        screen.target = surface+shift
+        adapter._base_geometry = (screen.target, None)
+        return screen
+    adapter._cloud_and_ik = geometry
+    def refresh(_):
+        entity = adapter.scene.entities['e1']
+        adapter.scene.entities['e1'] = replace(entity,
+            xyz=tuple(np.asarray(entity.xyz)+[.012, 0., 0.]), source_step=entity.source_step+1)
+    adapter.scene.refresh = refresh
+    adapter.active = 'e1'
+    for _ in range(2):
+        request = adapter.request(k=1)
+        action = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+            and c['parameters'] == {'anchor_id': 'e1', 'axis': 'y', 'distance_m': .02})
+        assert adapter.execute(request, decision(request, [action['id']]))[0]['outcome'] == 'no_effect'
+    assert not adapter.memory.apply([action])
+    for _ in range(2):
+        request = adapter.request(k=1)
+        observe = next(c for c in request['candidates']
+            if c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh')
+        assert adapter.execute(request, decision(request, [observe['id']]))[0]['outcome'] == 'no_effect'
+        assert not adapter.memory.apply([action])
+    # Public depth now independently supports movement of the source.
+    shift[:] = [0., .02, 0.]
     adapter.refresh()
     assert adapter.memory.apply([action])
 

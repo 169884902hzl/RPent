@@ -84,7 +84,8 @@ class FailureMemory:
                 # for that object. Collision failures still reset for any scene
                 # change because a moved obstacle can make their route usable.
                 self.counts = {key: n for key, n in self.counts.items()
-                    if self.last.get(key) in {'contact_no_measured_progress', 'contact_motion_unmeasured'}
+                    if self.last.get(key) in {'contact_no_measured_progress', 'contact_motion_unmeasured',
+                                             'contact_surface_motion_ambiguous'}
                     and (anchor := json.loads(key)[1].get('anchor_id')) is not None
                     and anchor not in changed_anchors}
         self.cooldown = {key: n-1 for key, n in self.cooldown.items() if n > 1}
