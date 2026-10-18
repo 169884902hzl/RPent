@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:robot-decider:bounded-skills:1",
+  "$id": "urn:robot-decider:bounded-skills:2",
   "title": "Robot-independent bounded skill request, selection and receipt",
   "oneOf": [
     {
@@ -11,6 +11,12 @@
     },
     {
       "$ref": "#/$defs/receipt"
+    },
+    {
+      "$ref": "#/$defs/prefix_context"
+    },
+    {
+      "$ref": "#/$defs/oracle_labels"
     }
   ],
   "$defs": {
@@ -298,7 +304,8 @@
             "hand_mesh_observed_space",
             "nonmotion",
             "contact_selected_surface",
-            "unmeasured"
+            "unmeasured",
+            "conditional_on_prefix"
           ]
         },
         "evidence_ids": {
@@ -448,6 +455,12 @@
             "string",
             "null"
           ]
+        },
+        "expected_receipt": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/receipt_condition"
+          }
         }
       },
       "required": [
@@ -457,7 +470,8 @@
         "consequences",
         "history",
         "recent_failures",
-        "last_failure"
+        "last_failure",
+        "expected_receipt"
       ],
       "additionalProperties": false,
       "allOf": [
@@ -998,7 +1012,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/1"
+          "const": "bounded-skills/2"
         },
         "kind": {
           "const": "receipt"
@@ -1076,6 +1090,35 @@
             "$ref": "#/$defs/evidence"
           },
           "minItems": 0
+        },
+        "expectation_checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "condition": {
+                "$ref": "#/$defs/receipt_condition"
+              },
+              "measured": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "passed": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "condition",
+              "measured",
+              "passed"
+            ],
+            "additionalProperties": false
+          }
         }
       },
       "required": [
@@ -1099,7 +1142,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/1"
+          "const": "bounded-skills/2"
         },
         "kind": {
           "const": "request"
@@ -1202,7 +1245,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/1"
+          "const": "bounded-skills/2"
         },
         "kind": {
           "const": "decision"
@@ -1232,6 +1275,210 @@
         "observation_id",
         "revision",
         "candidate_ids"
+      ],
+      "additionalProperties": false
+    },
+    "receipt_condition": {
+      "type": "object",
+      "properties": {
+        "metric": {
+          "enum": [
+            "endpoint_error_m",
+            "angular_error_rad",
+            "gripper_opening_m",
+            "object_rise_m",
+            "held",
+            "released",
+            "contact_progress_m"
+          ]
+        },
+        "anchor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "minimum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maximum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "metric",
+        "anchor_id",
+        "minimum",
+        "maximum"
+      ],
+      "additionalProperties": false
+    },
+    "prefix_context": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "bounded-skills/2"
+        },
+        "kind": {
+          "const": "prefix_context"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "prefix": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "predicted_robot": {
+          "$ref": "#/$defs/robot"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidate"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/receipt_condition"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "observation_id",
+        "revision",
+        "prefix",
+        "predicted_robot",
+        "candidates",
+        "assumptions"
+      ],
+      "additionalProperties": false
+    },
+    "oracle_position": {
+      "type": "object",
+      "properties": {
+        "prefix": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "legal": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "selected": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_acceptable": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "measured_success": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "measured_failure": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "judge": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "prefix",
+        "legal",
+        "selected",
+        "rule_acceptable",
+        "measured_success",
+        "measured_failure",
+        "judge",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "oracle_labels": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "bounded-skills/2"
+        },
+        "kind": {
+          "const": "oracle_labels"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "request_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "positions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/oracle_position"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "observation_id",
+        "revision",
+        "request_sha256",
+        "positions"
       ],
       "additionalProperties": false
     }

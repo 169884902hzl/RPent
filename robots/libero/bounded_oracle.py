@@ -8,12 +8,17 @@ It does not create coordinates: all target poses remain public candidates.
 from __future__ import annotations
 
 import re
+import copy
+import hashlib
+import json
 from dataclasses import replace
 
 import numpy as np
 from scipy.spatial.transform import Rotation
 
 from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
+from robots.libero.bounded_chunk import PublicPrefixPrediction
+from rpent.skill_package.contract import is_boundary, validate_labels
 
 
 class NoPublicOption(ValueError):
@@ -48,8 +53,7 @@ class BoundedOracle:
                 pairs.append((source, target))
         return pairs[0] if len(pairs) == 1 else (None, None)
 
-    def choose(self, request):
-        status = self.rpc.call("oracle.status")
+    def _choose_one(self, request, status):
         ex = self.adapter
         # Cached public anchors remain available to the selector, just as to
         # the model. Do not lose a measured stationary target merely because
@@ -59,7 +63,8 @@ class BoundedOracle:
                     if entity.id in public_ids]
         candidates = [c for c in request["candidates"] if c["skill"] != "call_vla"]
         feasible = [c for c in candidates if c["consequences"]["collision"] is not True
-                    and c["consequences"]["ik_reachable"] is not False]
+                    and c["consequences"]["ik_reachable"] is not False
+                    and c["consequences"]["screen_scope"] != "conditional_on_prefix"]
         def find(skill, **parameters):
             return next((c for c in feasible if c["skill"] == skill
                 and all(c["parameters"].get(key) == value for key, value in parameters.items())), None)
@@ -228,11 +233,96 @@ class BoundedOracle:
         chosen = chosen or find("observe", mode="wrist_scan") or find("observe", mode="refresh")
         if chosen is None:
             raise NoPublicOption("upper-bound selector has no remaining public option")
-        ids = [chosen["id"]]
-        if request["max_actions"] == 4 and chosen["skill"] == "move_to":
-            anchor = chosen["parameters"]["anchor_id"]
-            align = find("align", anchor_id=anchor)
-            descend = find("descend", anchor_id=anchor)
-            ids.extend(c["id"] for c in (align, descend) if c is not None)
-        return {"schema_version": request["schema_version"], "kind": "decision", "revision": request["revision"],
-                "observation_id": request["observation_id"], "candidate_ids": ids}
+        return chosen
+
+    def _acceptable(self, request, status):
+        """All public choices allowed by the private task-progress rules.
+
+        Independent unsatisfied goals contribute their next safe phase. All
+        screened approaches to that source and shorter same-direction contact
+        increments are equivalent progress options, not measured successes.
+        """
+        selected = []
+        goals = [(goal, done) for goal, done in zip(status['goals'], status['satisfied']) if not done]
+        statuses = ([status] if status['done'] or not goals else
+            [{**status, 'goals': [goal], 'satisfied': [False]} for goal, _ in goals])
+        for one_goal in statuses:
+            probe = copy.copy(self)
+            probe.binding = copy.deepcopy(self.binding)
+            probe.private_trace = []
+            try:
+                selected.append(probe._choose_one(request, one_goal))
+            except NoPublicOption:
+                continue
+        acceptable = set()
+        for chosen in selected:
+            acceptable.add(chosen['id'])
+            params = chosen['parameters']
+            for candidate in request['candidates']:
+                effect = candidate['consequences']
+                if (effect['collision'] is True or effect['ik_reachable'] is False
+                        or effect['screen_scope'] == 'conditional_on_prefix'
+                        or candidate['skill'] != chosen['skill']):
+                    continue
+                other = candidate['parameters']
+                if chosen['skill'] == 'move_to' and other.get('anchor_id') == params['anchor_id']:
+                    acceptable.add(candidate['id'])
+                if (chosen['skill'] == 'nudge' and other.get('anchor_id') == params.get('anchor_id')
+                        and other['axis'] == params['axis']
+                        and 0 < other['distance_m']/params['distance_m'] <= 1):
+                    acceptable.add(candidate['id'])
+                if (chosen['skill'] == 'rotate_wrist' and other.get('anchor_id') == params.get('anchor_id')
+                        and 0 < other['angle_deg']/params['angle_deg'] <= 1):
+                    acceptable.add(candidate['id'])
+        return acceptable
+
+    def choose(self, request):
+        status = self.rpc.call('oracle.status')
+        prediction = PublicPrefixPrediction(self.adapter, request)
+        virtual = copy.copy(self)
+        virtual.binding = copy.deepcopy(self.binding)
+        virtual.adapter = prediction.adapter
+        virtual.private_trace = []
+        ids, labels = [], []
+        for _ in range(request['max_actions']):
+            context = prediction.context()
+            current = {**request, 'candidates': context['candidates'], 'robot': context['predicted_robot']}
+            # The public legal set is computed before reading oracle answers.
+            legal = [c['id'] for c in current['candidates'] if c['consequences']['collision'] is not True
+                     and c['consequences']['ik_reachable'] is not False]
+            try:
+                chosen = virtual._choose_one(current, status)
+            except NoPublicOption:
+                if ids:
+                    break
+                raise
+            acceptable = virtual._acceptable(current, status)
+            acceptable.add(chosen['id'])
+            if chosen['id'] in ids:
+                alternatives = [c for c in current['candidates'] if c['id'] in acceptable and c['id'] not in ids]
+                if not alternatives:
+                    break
+                chosen = alternatives[0]
+            labels.append({'prefix': list(ids), 'legal': legal, 'selected': chosen['id'],
+                'rule_acceptable': [cid for cid in legal if cid in acceptable],
+                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/2',
+                'evidence': [{'source': 'original_task_predicates_private', 'model_visible': False,
+                    'initial_task_status': status,
+                    'conditional_on_prefix': list(ids), 'predicted_predecessor_checks': context['assumptions'],
+                    'physically_executed_alternatives': False}]})
+            ids.append(chosen['id'])
+            legacy_end = (self.adapter.legacy_chunk_boundaries_v1 and (
+                chosen['skill'] in {'descend', 'lower', 'lift', 'set_gripper', 'release'}
+                or chosen['skill'] in {'nudge', 'rotate_wrist'} and chosen['parameters'].get('anchor_id')))
+            if is_boundary(chosen) or legacy_end:
+                break
+            prediction.advance(chosen)
+        self.private_trace.extend(virtual.private_trace)
+        self.binding = virtual.binding
+        digest = hashlib.sha256(json.dumps(request, sort_keys=True, separators=(',', ':'),
+            ensure_ascii=False, allow_nan=False).encode()).hexdigest()
+        self.last_labels = dict(schema_version=request['schema_version'], kind='oracle_labels',
+            observation_id=request['observation_id'], revision=request['revision'], request_sha256=digest, positions=labels)
+        validate_labels(request, self.last_labels)
+        return {'schema_version': request['schema_version'], 'kind': 'decision', 'revision': request['revision'],
+                'observation_id': request['observation_id'], 'candidate_ids': ids}

@@ -165,12 +165,15 @@ class SmoothMotion:
         return before, after, action
 
     def run(self, waypoints: list[dict], *, gripper: float = -1., blend: bool = True,
-            lookahead=None, request_factory=None, contact_stop=None, initial_derivatives=None) -> dict:
+            lookahead=None, request_factory=None, contact_stop=None, initial_derivatives=None,
+            waypoint_check=None) -> dict:
         inherited = measured_derivatives(self.p, self.config.hz) if initial_derivatives is None else initial_derivatives
         trajectory, origin, poses, screen = self.prepare(waypoints, blend=blend, initial_derivatives=initial_derivatives)
         if not screen["passed"]:
             return {"executed": False, "stop_reason": screen["reason"], "steps_used": 0, "screen": screen}
         trace, stop = [], "endpoint"
+        checked_waypoints = []
+        waypoint_cursor = 0
         for pose in poses[1:]:
             if self.p.env.terminated or self.p.env.truncated:
                 stop = "native_stop"
@@ -198,10 +201,20 @@ class SmoothMotion:
             if error > self.config.tracking_error_stop_m:
                 stop = "tracking_error"
                 break
+            while (waypoint_check is not None and waypoint_cursor < len(trajectory.waypoint_times or [])
+                    and pose['time_s']+1e-9 >= trajectory.waypoint_times[waypoint_cursor]):
+                reason = waypoint_check(waypoint_cursor, after)
+                checked_waypoints.append({'index': waypoint_cursor, 'time_s': pose['time_s'], 'failure': reason})
+                waypoint_cursor += 1
+                if reason:
+                    stop = 'expected_receipt_'+reason
+                    break
+            if stop.startswith('expected_receipt_'):
+                break
         # The nominal trajectory ends at zero v/a. An interrupted reference or
         # a late decision uses a p/v/a-continuous measured braking tail.
         braking = None
-        if stop in {"tracking_error", "public_contact_stop"} and not (self.p.env.terminated or self.p.env.truncated):
+        if (stop in {"tracking_error", "public_contact_stop"} or stop.startswith('expected_receipt_')) and not (self.p.env.terminated or self.p.env.truncated):
             braking = self._brake(trace, gripper)
             if not braking["executed"]:
                 stop = "braking_screen_rejected"
@@ -215,6 +228,14 @@ class SmoothMotion:
         segment_ends = trajectory.waypoint_times[:-1] if trajectory.waypoint_times else []
         indices = [min(len(trace), int(round(t*self.config.hz))) for t in segment_ends]
         metrics = motion_metrics(positions, hz=self.config.hz, waypoint_indices=indices) if len(positions) >= 5 else {}
+        metrics['reference_max_acceleration_jump'] = max((float(np.linalg.norm(
+            a.at(a.duration, 2)-b.at(0., 2))) for a, b in zip(trajectory.segments, trajectory.segments[1:])), default=0.)
+        for name, axes in (('translation', slice(0, 3)), ('rotation', slice(3, 6))):
+            metrics['reference_max_'+name+'_acceleration_jump'] = max((float(np.linalg.norm(
+                (a.at(a.duration, 2)-b.at(0., 2))[axes]))
+                for a, b in zip(trajectory.segments, trajectory.segments[1:])), default=0.)
+        metrics['reference_max_jerk_limit_ratio'] = max((segment.maximum(3, axes)/limit.jerk
+            for segment in trajectory.segments for axes, limit in self.config.groups()), default=0.)
         end_error = float(np.linalg.norm(np.asarray(waypoints[-1]["xyz_m"])-measured_robot(self.p)["eef_xyz_m"]))
         return {"executed": bool(trace), "stop_reason": stop, "steps_used": len(trace), "screen": screen,
                 "endpoint_error_m": end_error, "max_tracking_error_m": max((row["tracking_error_m"] for row in trace), default=0.),
@@ -222,7 +243,8 @@ class SmoothMotion:
                 "initial_derivatives": [d.tolist() for d in inherited] if inherited is not None else None,
                 "initial_derivatives_source": "explicit" if initial_derivatives is not None else "public_20hz_sensor_stream" if inherited is not None else "unmeasured_rest_reference",
                 "reference_duration_s": trajectory.duration,
-                "waypoint_times_s": list(trajectory.waypoint_times), "braking": braking}
+                "waypoint_times_s": list(trajectory.waypoint_times), "braking": braking,
+                "checked_waypoints": checked_waypoints}
 
     def _brake(self, trace: list[dict], gripper: float) -> dict:
         """Brake translation AND rotation, retaining early-interrupt evidence."""

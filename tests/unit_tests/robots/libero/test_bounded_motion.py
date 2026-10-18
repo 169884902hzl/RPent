@@ -198,3 +198,20 @@ def test_nonconvergent_measured_retarget_brakes_before_replanning():
         np.testing.assert_allclose(trajectory.at(0., order), expected, atol=1e-8)
         np.testing.assert_allclose(trajectory.at(trajectory.duration, order), np.zeros(6), atol=1e-8)
     np.testing.assert_allclose(poses[-1]['xyz_m'], [.5, 0., 1.], atol=1e-8)
+
+
+def test_failed_waypoint_guard_brakes_before_unexecuted_suffix():
+    p = FakePrimitives()
+    checked = []
+    def check(index, after):
+        checked.append(index)
+        return 'diagnostic_guard' if index == 0 else None
+    result = SmoothMotion(p, lambda poses: {'passed': True, 'reason': 'public_test_scene'}).run(
+        [{'xyz_m': [.1, 0., 1.]}, {'xyz_m': [.4, 0., 1.]}], waypoint_check=check)
+    assert checked == [0]
+    assert result['stop_reason'] == 'expected_receipt_diagnostic_guard'
+    assert result['braking']['executed']
+    assert result['steps_used'] == len(p.actions) == len(result['trace'])
+    assert p.env.position[0] < .4
+    assert result['metrics']['reference_max_translation_acceleration_jump'] < 1e-9
+    assert result['metrics']['reference_max_jerk_limit_ratio'] <= 1.000001

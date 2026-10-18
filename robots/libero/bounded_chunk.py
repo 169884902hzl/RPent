@@ -1,0 +1,267 @@
+"""Public prefix prediction and measured receipt guards for bounded chunks.
+
+Predictions are conditional plans, never new sensor evidence. This module has
+no oracle imports or simulator-object access.
+"""
+from __future__ import annotations
+
+import copy
+from types import SimpleNamespace
+from dataclasses import replace
+
+import numpy as np
+from scipy.spatial.transform import Rotation
+
+from robots.libero.bounded_motion import measured_robot
+from robots.libero.bounded_screen import PublicRouteScreen
+from robots.libero.v5_grasp_route import separate_target_points
+from robots.libero.bounded_self_filter import gripper_at_measured_fingers
+from rpent.skill_package import VERSION
+from rpent.skill_package.contract import is_boundary, validate
+
+
+def expected_receipt(adapter, skill, parameters, route=None):
+    """Derive checks from measured geometry and fixed execution tolerances."""
+    anchor = parameters.get('anchor_id')
+    def condition(metric, minimum=None, maximum=None, key=anchor):
+        return dict(metric=metric, anchor_id=key, minimum=minimum, maximum=maximum)
+    checks = []
+    if route is not None:
+        checks += [condition('endpoint_error_m', 0., adapter.config.endpoint_tolerance_m),
+                   condition('angular_error_rad', 0., .05)]
+    if skill in {'release', 'set_gripper'}:
+        opening = skill == 'release' or parameters.get('mode') == 'open'
+        if opening:
+            checks += [condition('gripper_opening_m', .075, .085), condition('released', 1., 1.)]
+        else:
+            anchor = adapter.active
+            width = adapter.plans.get(anchor, {}).get('width_m')
+            if width is not None:
+                # The measured opposing section is not an exact pad aperture.
+                # Publish the range; an empty closure must not pass as contact.
+                low, high = max(.005, width-.015), min(.075, width+.015)
+            else:
+                low, high = (.005, .075) if anchor else (0., .005)
+            checks += [condition('gripper_opening_m', low, high, key=anchor)]
+    if skill == 'lift':
+        checks += [condition('object_rise_m', .03), condition('held', 1., 1.)]
+    if skill in {'carry_to', 'lower'} and adapter.held:
+        checks += [condition('held', 1., 1., key=adapter.held)]
+    if skill == 'nudge' and anchor:
+        checks += [condition('contact_progress_m', .005)]
+    return checks
+
+
+def check_receipt(candidate, receipt, detail):
+    """Evaluate the selected step's conditions against actual public evidence."""
+    values = {
+        'endpoint_error_m': detail.get('endpoint_error_m'),
+        'angular_error_rad': detail.get('angular_endpoint_error_rad'),
+        'gripper_opening_m': receipt['after']['gripper_opening_m'],
+        'object_rise_m': detail.get('public_hold', {}).get('rise_m'),
+        'contact_progress_m': detail.get('public_contact_motion', {}).get('axis_progress_m'),
+        'released': float(receipt['after']['held_anchor_id'] is None),
+    }
+    checks = []
+    for condition in candidate['expected_receipt']:
+        metric = condition['metric']
+        value = (float(receipt['after']['held_anchor_id'] == condition['anchor_id'])
+                 if metric == 'held' else values.get(metric))
+        if value is not None and not np.isfinite(value):
+            value = None
+        passed = None if value is None else bool(
+            (condition['minimum'] is None or value >= condition['minimum'])
+            and (condition['maximum'] is None or value <= condition['maximum']))
+        checks.append(dict(condition=condition, measured=value, passed=passed))
+    receipt['expectation_checks'] = checks
+    if receipt['stop_reason'] != 'native_success' and receipt['outcome'] == 'success':
+        failed = next((c for c in checks if c['passed'] is not True), None)
+        if failed is not None:
+            receipt.update(outcome='unmeasured' if failed['passed'] is None else 'failure',
+                phase='verification_error', stop_reason='expected_receipt_'+failed['condition']['metric'])
+    return receipt
+
+
+class PublicPrefixPrediction:
+    """Predict one chosen prefix from frozen measured clouds and robot geometry.
+
+    Each successor is re-screened with the predicted jaw state and payload.
+    The mutable clone never captures images, steps an environment, or writes
+    artifacts. Consumers can request a prefix context lazily; no oracle path
+    is used to generate its public options.
+    """
+
+    def __init__(self, adapter, request):
+        self.request = request
+        self.prefix = []
+        self.assumptions = []
+        self.original = {c['id']: c for c in request['candidates']}
+        self.sensor = measured_robot(adapter.p)
+        self.adapter = clone = copy.copy(adapter)
+        clone.scene = copy.copy(adapter.scene)
+        clone.scene.entities = dict(adapter.scene.entities)
+        clone.scene.measurement_clouds = dict(adapter.scene.measurement_clouds)
+        clone.target_cache = dict(adapter.target_cache)
+        clone.plans = copy.deepcopy(adapter.plans)
+        clone.candidate_diagnostics = []
+        clone.record_public_geometry = False
+        clone._screen_cache = {}
+        self.budget = dict(adapter.p.env.execution_budget())
+        clone.p = SimpleNamespace(env=SimpleNamespace(raw_obs=self._obs, execution_budget=lambda: self.budget))
+        clone._proprio_sample = None
+        self.pending = adapter.active if adapter.grasp_reference is not None else None
+        self.payload_local = None
+        self.payload_id = adapter.held
+        self.clouds = {}
+        self.screens = {}
+        self.moved = set()
+        self.checking_skill = None
+        self.source_adapter = adapter
+        self.base_screen = adapter._cloud_and_ik()
+        self.world = (np.array(self.base_screen.points, copy=True)
+            if isinstance(self.base_screen, PublicRouteScreen) else np.empty((0, 3)))
+        self.ik = copy.copy(self.base_screen.ik) if isinstance(self.base_screen, PublicRouteScreen) else None
+        if self.ik is not None:
+            self.ik.cache = dict(self.ik.cache)
+        if adapter.held and isinstance(self.base_screen, PublicRouteScreen):
+            self.payload_local = np.array(self.base_screen.payload, copy=True)
+        clone._cloud_and_ik = self._screen
+
+    def _obs(self):
+        return {'robot0_eef_pos': self.sensor['eef_xyz_m'], 'robot0_eef_quat': self.sensor['eef_quat_xyzw'],
+            'robot0_gripper_qpos': self.sensor['finger_positions_m'], 'robot0_joint_pos': self.sensor['joint_positions_rad']}
+
+    def _target(self, key):
+        if key is None:
+            return np.empty((0, 3))
+        if key not in self.clouds:
+            screen = self.source_adapter._cloud_and_ik(key, contact=True)
+            self.clouds[key] = np.array(screen.target, copy=True)
+        return self.clouds[key]
+
+    def _screen(self, anchor_id=None, *, contact=False):
+        if not isinstance(self.base_screen, PublicRouteScreen):
+            return self.source_adapter._cloud_and_ik(anchor_id, contact=contact)
+        cache_key = (anchor_id, contact, bool(self.adapter.held or self.checking_skill == 'lift'))
+        if cache_key in self.screens:
+            return self.screens[cache_key]
+        target = self._target(anchor_id)
+        world = self.world
+        for key in self.moved:
+            original = self.source_adapter._cloud_and_ik(key, contact=True).target
+            _, world = separate_target_points(original, world)
+            if key != self.adapter.held and key != self.payload_id:
+                world = np.concatenate([world, self.clouds[key]])
+        payload = self.payload_local if self.adapter.held or self.checking_skill == 'lift' else None
+        if self.payload_id and payload is not None:
+            original = self.source_adapter._cloud_and_ik(self.payload_id, contact=True).target
+            _, world = separate_target_points(original, world)
+            if anchor_id == self.payload_id:
+                target = np.empty((0, 3))
+        _, world = separate_target_points(target, world)
+        result = PublicRouteScreen(world,
+            gripper_at_measured_fingers(self.adapter.geometry, self.sensor['finger_positions_m']),
+            self.ik, opening=self.sensor['gripper_opening_m'], contact_points=target,
+            contact_allowed=contact, payload_local=payload,
+            initial_pose={'xyz_m': self.sensor['eef_xyz_m'], 'quat_xyzw': self.sensor['eef_quat_xyzw']})
+        self.screens[cache_key] = result
+        return result
+
+    def candidate(self, candidate):
+        """Return consequences conditioned on this exact ordered prefix."""
+        self.checking_skill = candidate['skill']
+        result = self.adapter._candidate(candidate['skill'], candidate['parameters'])
+        if result is not None:
+            result['recent_failures'] = candidate['recent_failures']
+            result['last_failure'] = candidate['last_failure']
+        return result
+
+    def advance(self, candidate):
+        """Apply commanded effects only, conditional on passing its checks."""
+        from robots.libero.bounded_skills import MOTION_SKILLS
+
+        skill, params = candidate['skill'], candidate['parameters']
+        if is_boundary(candidate):
+            raise ValueError('cannot predict beyond a control-handoff boundary')
+        before = copy.deepcopy(self.sensor)
+        if skill in MOTION_SKILLS:
+            # context() may have screened other alternatives afterwards.
+            # Continue IK from this selected route's endpoint, never from the
+            # last enumerated alternative's joint solution.
+            self.candidate(candidate)
+            route = self.adapter._route(skill, params)
+            if route is None:
+                raise ValueError('prefix has no measured route')
+            self.sensor.update(eef_xyz_m=route[-1]['xyz_m'], eef_quat_xyzw=route[-1]['quat_xyzw'])
+            if self.ik is not None and self.ik.last_solution is not None:
+                self.sensor['joint_positions_rad'] = self.ik.last_solution.tolist()
+                self.ik = self.ik.with_measured_robot(self.sensor)
+            if skill == 'descend':
+                self.adapter.active = params['anchor_id']
+            if skill == 'lift' and self.pending == params['anchor_id']:
+                self.adapter.held = self.pending
+            if self.adapter.held:
+                key = self.adapter.held
+                entity = self.adapter.scene.entities[key]
+                rotation = Rotation.from_quat(self.sensor['eef_quat_xyzw'])*Rotation.from_quat(before['eef_quat_xyzw']).inv()
+                def move(points):
+                    return rotation.apply(np.asarray(points)-before['eef_xyz_m'])+self.sensor['eef_xyz_m']
+                corners = np.array([[x,y,z] for x in (entity.lower[0],entity.upper[0])
+                    for y in (entity.lower[1],entity.upper[1]) for z in (entity.lower[2],entity.upper[2])])
+                bounds = move(corners)
+                self.adapter.scene.entities[key] = replace(entity, xyz=tuple(move(entity.xyz)),
+                    lower=tuple(bounds.min(0)), upper=tuple(bounds.max(0)))
+                self.clouds[key] = move(self._target(key))
+                self.moved.add(key)
+            elif skill == 'nudge' and params.get('anchor_id'):
+                # Contact progress is a conditional effect of this bounded
+                # command, not an unexplained moved anchor at the next step.
+                key = params['anchor_id']
+                entity = self.adapter.scene.entities[key]
+                delta = np.zeros(3)
+                delta['xyz'.index(params['axis'])] = params['distance_m']
+                self.adapter.scene.entities[key] = replace(entity,
+                    xyz=tuple(np.asarray(entity.xyz)+delta), lower=tuple(np.asarray(entity.lower)+delta),
+                    upper=tuple(np.asarray(entity.upper)+delta))
+                self.clouds[key] = self._target(key)+delta
+                self.moved.add(key)
+                if key in self.adapter.plans:
+                    self.adapter.plans[key]['xyz_m'] = (np.asarray(self.adapter.plans[key]['xyz_m'])+delta).tolist()
+        elif skill in {'release', 'set_gripper'}:
+            opening = skill == 'release' or params.get('mode') == 'open'
+            width = self.adapter.plans.get(self.adapter.active, {}).get('width_m')
+            aperture = .08 if opening else width or 0.
+            self.sensor['gripper_opening_m'] = aperture
+            self.sensor['finger_positions_m'] = [aperture/2, -aperture/2]
+            if opening:
+                self.adapter.active = self.adapter.held = self.pending = self.payload_id = None
+                self.payload_local = None
+            else:
+                self.pending = self.adapter.active
+                entity = self.adapter.scene.entities.get(self.pending)
+                # Fixed furniture contact is not a payload attachment.
+                from robots.libero.v5_state import fixture_actions
+                if entity and not entity.part_of and not fixture_actions(entity.name):
+                    points = self._target(self.pending)
+                    self.payload_id = self.pending
+                    self.payload_local = (points-self.sensor['eef_xyz_m'])@Rotation.from_quat(self.sensor['eef_quat_xyzw']).as_matrix()
+                else:
+                    self.pending = None
+        self.budget['remaining_sim_steps'] = max(0, self.budget['remaining_sim_steps']-candidate['consequences']['expected_steps'])
+        self.assumptions.extend(candidate['expected_receipt'])
+        self.prefix.append(candidate['id'])
+        self.screens.clear()
+
+    def context(self):
+        candidates = []
+        for original in self.original.values():
+            if original['id'] in self.prefix:
+                continue
+            candidate = self.candidate(original) if self.prefix else original
+            if candidate is not None and candidate['consequences']['screen_scope'] != 'conditional_on_prefix':
+                candidates.append(candidate)
+        result = dict(schema_version=VERSION, kind='prefix_context', observation_id=self.request['observation_id'],
+            revision=self.request['revision'], prefix=list(self.prefix), predicted_robot=self.adapter.robot(),
+            candidates=candidates, assumptions=list(self.assumptions))
+        validate(result)
+        return result

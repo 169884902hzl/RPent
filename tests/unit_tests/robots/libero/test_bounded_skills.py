@@ -444,15 +444,18 @@ def test_transport_rechecks_visible_holding_and_releases_a_dropped_payload(adapt
     receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
     receipt = receipts[-1]
     if blended:
-        assert adapter.details[-1]['blended'] and receipts[0]['outcome'] == 'success'
-        assert len(receipts) == 2
+        assert adapter.details[-1]['blended']
+        assert len(receipts) == (1 if mode == 'dropped' else 2)
+        if mode != 'dropped':
+            assert receipts[0]['outcome'] == 'success'
     if mode == 'dropped':
         assert receipt['outcome'] == 'failure' and receipt['stop_reason'] == 'public_hold_lost'
         assert receipt['phase'] == 'contact_failure'
         assert adapter.held is adapter.active is adapter.ex.held is None
         assert adapter.payload_reference is adapter.grasp_reference is None
         assert next(c for c in receipt['changes'] if c['anchor_id'] == 'e1')['held'] is False
-        assert not any(c['skill'] == 'carry_to' for c in adapter.request(k=1)['candidates'])
+        assert all(c['consequences']['screen_scope'] == 'conditional_on_prefix'
+        for c in adapter.request(k=1)['candidates'] if c['skill'] == 'carry_to')
     else:
         assert receipt['outcome'] == 'success'
         assert adapter.held == 'e1'
@@ -507,7 +510,8 @@ def test_empty_jaws_interrupt_transport_before_endpoint_even_when_payload_is_occ
     assert result['braking']['executed']
     assert next(i for i, row in enumerate(result['trace']) if row['braking']) == 8
     assert result['steps_used'] < carry['consequences']['expected_steps']
-    assert not any(c['skill'] == 'carry_to' for c in adapter.request(k=1)['candidates'])
+    assert all(c['consequences']['screen_scope'] == 'conditional_on_prefix'
+        for c in adapter.request(k=1)['candidates'] if c['skill'] == 'carry_to')
 
 
 def test_empty_jaw_stop_uses_original_sensor_calibration_and_keeps_thin_held_rim(adapter):
@@ -665,19 +669,19 @@ def test_oracle_between_reference_is_resolved_jointly_without_deleting_anchors(s
         plans={'e28': plan, 'e79': plan}, receipts=[])
     oracle = BoundedOracle(SimpleNamespace(call=lambda _: {
         'done': False, 'goals': [['on', 'akita_black_bowl_9', 'plate_7']], 'satisfied': [False]}), adapter)
-    request = {'schema_version': 'bounded-skills/1', 'revision': 0,
+    request = {'schema_version': 'bounded-skills/2', 'revision': 0,
         'observation_id': 'public-0', 'max_actions': 1,
         'robot': {'eef_xyz_m': [0., 0., 1.2], 'eef_quat_xyzw': [0., 0., 0., 1.],
                   'gripper_opening_m': .08},
         'anchors': [{'id': e.id} for e in measured],
         'candidates': [{'id': 'approach', 'skill': 'move_to',
-                        'consequences': {'collision': False, 'ik_reachable': True},
+                        'consequences': {'collision': False, 'ik_reachable': True, 'screen_scope': 'hand_mesh_observed_space'},
                         'parameters': {'anchor_id': 'e28', 'approach': 'above', 'path': 'over'}},
                        {'id': 'scan', 'skill': 'observe',
-                        'consequences': {'collision': False, 'ik_reachable': True},
+                        'consequences': {'collision': False, 'ik_reachable': True, 'screen_scope': 'hand_mesh_observed_space'},
                         'parameters': {'mode': 'wrist_scan'}}]}
-    result = oracle.choose(request)
-    assert result['candidate_ids'] == (['scan'] if second_feasible_reference else ['approach'])
+    result = oracle._choose_one(request, oracle.rpc.call('oracle.status'))
+    assert result['id'] == ('scan' if second_feasible_reference else 'approach')
     assert oracle.private_trace[-1]['target_public_id'] == (None if second_feasible_reference else 'e90')
     assert list(adapter.scene.entities) == ['e28', 'e79', 'e90', 'e84', 'e97']
     assert len(request['anchors']) == 5
@@ -1809,23 +1813,23 @@ def test_private_rotary_selector_converts_outward_turn_to_local_wrist_axis(
     assert chosen['skill'] == 'set_gripper' and chosen['parameters']['mode'] == 'open'
 
 
-def test_contact_boundary_cannot_have_hidden_suffix(adapter):
+def test_gripper_can_precede_a_measured_suffix(adapter):
     request = adapter.request(k=4)
     close = next(c for c in request["candidates"] if c["skill"] == "set_gripper" and c["parameters"]["mode"] == "close")
     observe = next(c for c in request["candidates"] if c["skill"] == "observe")
-    with pytest.raises(ValueError, match="boundary"):
-        selected(request, decision(request, [close["id"], observe["id"]]))
+    assert [c['skill'] for c in selected(request, decision(request, [close['id'], observe['id']]))] == ['set_gripper', 'observe']
+    with pytest.raises(ValueError, match='boundary'):
+        selected(request, decision(request, [observe['id'], close['id']]))
 
 
 @pytest.mark.parametrize('skill', ['nudge', 'rotate_wrist'])
-def test_anchored_motion_ends_chunk_and_cannot_prefetch_across_contact(adapter, monkeypatch, skill):
+def test_anchored_motion_allows_suffix_but_keeps_contact_measurement_off_async_worker(adapter, monkeypatch, skill):
     adapter.active = 'e1'
     request = adapter.request(k=4)
     contact = next(c for c in request['candidates'] if c['skill'] == skill
         and c['parameters'].get('anchor_id') == 'e1')
     observe = next(c for c in request['candidates'] if c['skill'] == 'observe')
-    with pytest.raises(ValueError, match='boundary'):
-        selected(request, decision(request, [contact['id'], observe['id']]))
+    assert len(selected(request, decision(request, [contact['id'], observe['id']]))) == 2
     lookaheads = []
     def execute_motion(*args, **kwargs):
         lookaheads.append(kwargs.get('lookahead'))
@@ -1845,7 +1849,7 @@ def test_k4_motion_prefix_is_actually_blended(adapter):
     np.testing.assert_allclose(adapter.robot()["eef_xyz_m"], [.01, .01, 1.], atol=1e-8)
 
 
-def test_k4_descend_is_a_separate_contact_boundary_and_publishes_active(adapter, monkeypatch):
+def test_k4_descend_is_a_measured_checkpoint_and_publishes_active(adapter, monkeypatch):
     blended = []
     original = adapter._execute_motion_group
     def trace_group(request, candidates, **kwargs):
@@ -1887,8 +1891,8 @@ def test_k4_stalled_rotation_is_not_reported_success_from_position_alone(adapter
     turns = [next(c for c in request['candidates'] if c['skill'] == 'rotate_wrist'
         and c['parameters']['angle_deg'] == angle) for angle in (45, 90)]
     receipts = adapter.execute(request, decision(request, [c['id'] for c in turns]))
-    assert all(r['outcome'] == 'failure' and r['stop_reason'] == 'angular_waypoint_not_reached'
-        for r in receipts)
+    assert len(receipts) == 1  # Fail the first turn before executing its suffix.
+    assert receipts[0]['outcome'] == 'failure' and receipts[0]['stop_reason'] == 'angular_waypoint_not_reached'
 
 
 def test_held_payload_skips_unused_contact_search_and_keeps_carry_options(adapter):

@@ -66,6 +66,10 @@ def motion(paths):
                 metrics.update(common_path_errors(json.loads(trace_raw)))
                 trace_sources.append({'path': str(record), 'sha256': hashlib.sha256(trace_raw).hexdigest()})
             details = row["details"]
+            for key in ('reference_max_translation_acceleration_jump', 'reference_max_rotation_acceleration_jump',
+                        'reference_max_jerk_limit_ratio'):
+                values = [d['metrics'][key] for d in details if key in d.get('metrics', {})]
+                metrics[key] = max(values) if values else None
             complete = not row.get("error")
             if row["method"].startswith("smooth"):
                 complete = complete and all(d.get("stop_reason") == "endpoint" and
@@ -86,7 +90,9 @@ def motion(paths):
             "metrics": {key: distribution([r["metrics"].get(key) for r in group]) for key in (
                 "jerk_rms_m_s3", "waypoint_stops", "commanded_segment_stops", "path_length_m",
                 "path_to_chord_ratio", "max_tracking_error_m", "max_waypoint_residual_m",
-                "max_path_deviation_m", "rms_path_deviation_m", "final_endpoint_error_m")}}
+                "max_path_deviation_m", "rms_path_deviation_m", "final_endpoint_error_m",
+                "reference_max_translation_acceleration_jump", "reference_max_rotation_acceleration_jump",
+                "reference_max_jerk_limit_ratio")}}
     lookup = {(r["seed"], r["sequence"], r["method"]): r for r in rows}
     if len(lookup) != len(rows):
         raise ValueError("duplicate motion state/method")
@@ -136,7 +142,18 @@ def feasibility(paths):
             "decisions": distribution([r.get("decisions") for r in group]),
             "sim_steps": distribution([r.get("sim_steps") for r in group]),
             "wall_s": distribution([r.get("wall_s") for r in group]),
+            "native_step_limit_hits": sum(r.get('native_step_limit_hit', False) for r in group),
+            "native_step_limit_measured_n": sum('native_step_limit_hit' in r for r in group),
+            "actual_actions_per_decision": distribution([n for r in group for n in r.get('actual_actions_per_decision', [])]),
+            "actual_actions_histogram": dict(Counter(n for r in group for n in r.get('actual_actions_per_decision', []))),
+            "attempted_actions_per_decision": distribution([n for r in group for n in r.get('attempted_actions_per_decision', [])]),
+            "chunk_truncation_reasons": dict(Counter(chunk['stop_reason'] for r in group for chunk in r.get('chunk_truncations', []))),
+            "chunk_truncation_skills": dict(Counter(chunk['interrupted_skill'] for r in group for chunk in r.get('chunk_truncations', []))),
+            "skill_attempts": dict(sum((Counter(r.get('skill_attempts', {})) for r in group), Counter())),
             "failure_phases": dict(Counter(r.get("failure_phase") for r in group if not r["success"]))})
+        summary[-1]['skill_midchunk_truncation_rate'] = {
+            skill: summary[-1]['chunk_truncation_skills'].get(skill, 0)/n
+            for skill, n in summary[-1]['skill_attempts'].items() if n}
     return {"sources": sources, "summary": summary, "rows": rows, "training": False}
 
 

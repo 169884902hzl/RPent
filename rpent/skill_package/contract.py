@@ -13,19 +13,17 @@ from . import VERSION as VERSION
 SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
-BOUNDARIES = {"observe", "call_vla", "set_gripper", "release", "descend", "lower", "lift", "finish", "ask_help"}
+BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
 
 
 def is_boundary(candidate: dict) -> bool:
-    """Contact nudges and wrist turns also require a fresh observation."""
-    return (candidate['skill'] in BOUNDARIES
-        or (candidate['skill'] in {'nudge', 'rotate_wrist'}
-            and candidate['parameters'].get('anchor_id') is not None))
+    """Only actions that hand off control statically terminate a chunk."""
+    return candidate['skill'] in BOUNDARIES
 
 
 def validate(value: dict) -> None:
     kind = value.get("kind")
-    if kind not in {"request", "decision", "receipt"}:
+    if kind not in {"request", "decision", "receipt", "prefix_context", "oracle_labels"}:
         raise ValueError("unknown bounded-skills message kind")
     schema = {key: val for key, val in SCHEMA.items() if key != "oneOf"}
     schema["$ref"] = f"#/$defs/{kind}"
@@ -45,7 +43,7 @@ def validate(value: dict) -> None:
 
 
 def selected(request: dict, decision: dict) -> list[dict]:
-    """Reject stale/invented actions and crossing a contact boundary."""
+    """Reject stale/invented actions and crossing a control-handoff boundary."""
     validate(request)
     validate(decision)
     if decision["observation_id"] != request["observation_id"] or decision["revision"] != request["revision"]:
@@ -58,8 +56,37 @@ def selected(request: dict, decision: dict) -> list[dict]:
         raise ValueError("unknown or duplicate candidate ID")
     result = [candidates[i] for i in ids]
     if any(is_boundary(c) for c in result[:-1]):
-        raise ValueError("decision crosses an observation/contact boundary")
+        raise ValueError("decision crosses a control-handoff boundary")
     return result
+
+
+def validate_labels(request: dict, labels: dict) -> None:
+    """Bind private set labels to one exact request and ordered prefix."""
+    import hashlib
+
+    validate(labels)
+    digest = hashlib.sha256(json.dumps(request, sort_keys=True, separators=(',', ':'),
+        ensure_ascii=False, allow_nan=False).encode()).hexdigest()
+    if (labels['request_sha256'] != digest or labels['observation_id'] != request['observation_id']
+            or labels['revision'] != request['revision']):
+        raise ValueError('oracle labels are for a different public request')
+    ids = {c['id'] for c in request['candidates']}
+    prefix = []
+    for position in labels['positions']:
+        if position['prefix'] != prefix:
+            raise ValueError('oracle labels do not follow the selected prefix')
+        legal = set(position['legal'])
+        if not legal <= ids or position['selected'] not in legal:
+            raise ValueError('oracle labels reference an illegal candidate')
+        for field in ('rule_acceptable', 'measured_success', 'measured_failure'):
+            if not set(position[field]) <= legal:
+                raise ValueError('oracle label is outside its public legal set')
+        if set(position['measured_success']) & set(position['measured_failure']):
+            raise ValueError('conflicting measured success and failure')
+        acceptable = (set(position['rule_acceptable']) | set(position['measured_success'])) - set(position['measured_failure'])
+        if not acceptable or position['selected'] not in acceptable:
+            raise ValueError('selected oracle action is outside the acceptable set')
+        prefix.append(position['selected'])
 
 
 def identity(candidate: dict) -> str:

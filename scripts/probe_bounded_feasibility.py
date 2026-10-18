@@ -291,7 +291,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         if arm.startswith(("oracle", "model")) or arm == "call_vla":
             xml = Path(robosuite.__file__).parent/"models/assets/grippers/panda_gripper.xml"
             adapter = MeasuredSkillAdapter(executor, xml, allow_vla=arm == "call_vla",
-                record_public_geometry=True, precontact_instance_surface_v1=config.get('precontact_instance_surface_v1', True))
+                record_public_geometry=True, precontact_instance_surface_v1=config.get('precontact_instance_surface_v1', True),
+                legacy_chunk_boundaries_v1=config.get('legacy_chunk_boundaries_v1', False))
             policy = None if arm.startswith("model") else BoundedOracle(rpc, adapter)
             if arm.startswith("model"):
                 from robots.libero.bounded_async import AsyncSkillDecisions, http_choice
@@ -352,9 +353,15 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     fixture_evidence = copy.deepcopy(scene.fixture_measurement_evidence)
                     rejected_fixtures = copy.deepcopy(scene.rejected_fixture_measurements)
                     private_snapshot = save_private_decision_snapshot(facade, output, index)
+                    if policy is not None and hasattr(policy, 'last_labels'):
+                        # Private training labels are never merged into the
+                        # source public request or the model-facing receipt.
+                        with (output/'private_oracle_labels.jsonl').open('a') as labels:
+                            labels.write(json.dumps(policy.last_labels, allow_nan=False)+'\n')
                     detail_start = len(adapter.details)
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
+                           "chunk_execution": adapter.last_chunk,
                            "private_pre_execution_snapshot": private_snapshot,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
                            "instance_boundary_evidence": boundary_evidence,
@@ -410,8 +417,33 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
             "failure_phase": None, "source": "official_original_task_predicates_private",
             "status": "startup_physical" if startup else "physical_result", "training": False,
             "pi05_calls": 0 if arm.startswith(("oracle", "model")) else decision_count if arm == "pi05_only" else None,
-            "fusion_version": "rgbd_dual_view/1", "k": 1 if arm == "oracle_k1" else 4 if arm == "oracle_k4" else None}
+            "fusion_version": "rgbd_dual_view/1", "k": 1 if arm == "oracle_k1" else 4 if arm.startswith('oracle_k4') else None}
         summary["terminal_diagnostic"] = terminal_diagnostic
+        summary['chunk_rule'] = ('static-contact-v1-comparison' if config.get('legacy_chunk_boundaries_v1')
+                                 else 'measured-receipt-v2')
+        if adapter is not None:
+            physical_records = [row for row in records if 'receipts' in row]
+            summary['actual_actions_per_decision'] = [sum(r['steps_used'] > 0 for r in row['receipts'])
+                for row in physical_records]
+            summary['attempted_actions_per_decision'] = [len(row['receipts']) for row in physical_records]
+            summary['skill_attempts'] = dict(Counter(r['skill'] for row in physical_records for r in row['receipts']))
+            summary['skill_verified'] = dict(Counter(r['skill'] for row in physical_records for r in row['receipts']
+                if r['outcome'] == 'success'))
+            summary['chunk_truncations'] = [row['chunk_execution'] for row in physical_records
+                if row['chunk_execution']['discarded_ids']]
+            metrics = [detail['execution']['metrics'] for row in physical_records for detail in row['execution_details']
+                if 'metrics' in detail.get('execution', {})]
+            summary['smooth_reference_max_acceleration_jump'] = max(
+                (m.get('reference_max_acceleration_jump', 0.) for m in metrics), default=None)
+            summary['smooth_reference_max_jerk_limit_ratio'] = max(
+                (m.get('reference_max_jerk_limit_ratio', 0.) for m in metrics), default=None)
+            for name in ('translation', 'rotation'):
+                key = 'reference_max_'+name+'_acceleration_jump'
+                summary['smooth_'+key] = max((m.get(key, 0.) for m in metrics), default=None)
+        summary['native_step_limit_hit'] = bool(p.env.truncated)
+        summary['terminal_category'] = ('native_success' if summary['success'] else
+            'simulation_step_limit' if p.env.truncated else 'no_public_option' if terminal_diagnostic
+            else 'decision_limit' if decision_count >= maximum else 'other')
         if pick_branch:
             # Private metrology runs only after the branch's controls end.
             # Its extra integration never enters the decision budget/state.
@@ -558,7 +590,9 @@ def main():
                             result = legacy_episode(case, endpoints, output, config, args.legacy_source.resolve(strict=True),
                                 allow_original90_adapter=args.legacy_original90_adapter)
                         else:
-                            result = episode(case, arm, endpoints, output, config, startup=args.startup,
+                            case_config = ({**config, 'legacy_chunk_boundaries_v1': True}
+                                if arm == 'oracle_k4_legacy' else config)
+                            result = episode(case, arm, endpoints, output, case_config, startup=args.startup,
                                 choice_endpoint=args.choice_endpoint, decision_latency_s=args.decision_latency_s,
                                 preparation_latency_s=args.preparation_latency_s)
                     except Exception as exc:

@@ -27,6 +27,7 @@ from robots.libero.bounded_motion import (
     public_control,
 )
 from robots.libero.bounded_screen import PublicRouteScreen
+from robots.libero.bounded_chunk import PublicPrefixPrediction, check_receipt, expected_receipt
 from robots.libero.bounded_self_filter import (
     gripper_at_measured_fingers,
     gripper_visual_boxes,
@@ -68,7 +69,8 @@ class MeasuredSkillAdapter:
 
     def __init__(self, executor, gripper_xml: str | Path, *, allow_vla: bool = True,
                  history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
-                 record_public_geometry: bool = False, precontact_instance_surface_v1: bool = False):
+                 record_public_geometry: bool = False, precontact_instance_surface_v1: bool = False,
+                 legacy_chunk_boundaries_v1: bool = False):
         self.ex, self.p, self.scene = executor, executor.p, executor.scene
         self.xml = Path(gripper_xml)
         self.geometry = panda_geometry(self.xml)
@@ -104,6 +106,7 @@ class MeasuredSkillAdapter:
         self._proprio_sample = None
         self.record_public_geometry = record_public_geometry
         self.precontact_instance_surface_v1 = precontact_instance_surface_v1
+        self.legacy_chunk_boundaries_v1 = legacy_chunk_boundaries_v1
         self.public_geometry_evidence = {}
         self._last_free_chunk = None
         self.last_prefetch_adoption = None
@@ -1315,7 +1318,15 @@ class MeasuredSkillAdapter:
         if skill in MOTION_SKILLS:
             route = self._route(skill, parameters)
             if route is None:
-                return None
+                if skill not in {'carry_to', 'lower'}:
+                    return None
+                # Available after a measured-anchor grasp within this chunk.
+                # No initial collision/IK result is claimed for that prefix.
+                consequence['screen_scope'] = 'conditional_on_prefix'
+                return {'id': cid, 'skill': skill, 'parameters': parameters,
+                    'consequences': consequence, 'history': None,
+                    'recent_failures': 0, 'last_failure': None,
+                    'expected_receipt': expected_receipt(self, skill, parameters)}
             contact = skill in {"descend", "lower", "nudge"} or (skill in {"lift", "rotate_wrist"} and self.active is not None)
             motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=contact), self.config)
             trajectory, _, _, evidence = motion.prepare(route)
@@ -1337,7 +1348,9 @@ class MeasuredSkillAdapter:
             consequence["expected_steps"] = estimate["expected_steps"] or 240
             consequence["screen_scope"] = "unmeasured"
         return {"id": cid, "skill": skill, "parameters": parameters, "consequences": consequence,
-                "history": history, "recent_failures": 0, "last_failure": None}
+                "history": history, "recent_failures": 0, "last_failure": None,
+                "expected_receipt": expected_receipt(self, skill, parameters,
+                    route if skill in MOTION_SKILLS else None)}
 
     def _refresh_held_measurement(self):
         """Use the cleaned current payload for carry and lower anchor bounds."""
@@ -1527,7 +1540,7 @@ class MeasuredSkillAdapter:
                         add("move_to", anchor_id=entity.id, approach=approach, path=path)
                 for skill in ("align", "descend", "lift"):
                     add(skill, anchor_id=entity.id)
-            if self.held and entity.id != self.held:
+            if entity.id != self.held:
                 add("carry_to", target_id=entity.id)
                 add("lower", target_id=entity.id)
             if self.allow_vla:
@@ -1663,35 +1676,99 @@ class MeasuredSkillAdapter:
         self.latest_request = request
         return True
 
+    def prefix_context(self, request, prefix):
+        """Compute public consequences for any chosen prefix, without stepping."""
+        prediction = PublicPrefixPrediction(self, request)
+        for cid in prefix:
+            candidate = prediction.candidate(prediction.original[cid])
+            if candidate is None:
+                raise ValueError('prefix references an unmeasured route')
+            prediction.advance(candidate)
+        return prediction.context()
+
+    def plan_chunk(self, request, decision):
+        """Screen the selected sequence using its predicted predecessor states."""
+        prediction = PublicPrefixPrediction(self, request)
+        plan = []
+        for original in selected(request, decision):
+            candidate = prediction.candidate(original)
+            if candidate is None:
+                candidate = copy.deepcopy(original)
+            plan.append({'prefix': list(prediction.prefix), 'candidate': candidate,
+                'predicted_robot': prediction.adapter.robot(),
+                'predicted_anchors': {key: list(entity.xyz)
+                    for key, entity in prediction.adapter.scene.entities.items()},
+                'conditional_on': copy.deepcopy(prediction.assumptions)})
+            if is_boundary(candidate) or candidate['consequences']['screen_scope'] == 'conditional_on_prefix':
+                break
+            prediction.advance(candidate)
+        return plan
+
+    def _free_motion(self, candidate):
+        """Contact still permits a suffix, but requires a measured checkpoint."""
+        skill = candidate['skill']
+        return (skill in MOTION_SKILLS and skill not in {'descend', 'lower', 'lift'}
+            and not (skill in {'nudge', 'rotate_wrist'} and candidate['parameters'].get('anchor_id')))
+
     def execute(self, request, decision, *, async_decisions=None):
         choices = selected(request, decision)
         if self.latest_request is not request:
             raise ValueError("request is not the adapter's current observation")
-        free_chunk = all(c['skill'] in MOTION_SKILLS and not is_boundary(c) for c in choices)
+        free_chunk = all(self._free_motion(c) for c in choices)
         parent_receipts = copy.deepcopy(self.receipts[-3:])
         remaining_at_start = self.p.env.execution_budget()['remaining_sim_steps']
-        # Each suffix is resolved from current public geometry; a contact or
-        # newly measured scene change ends the chunk before any stale suffix.
-        outcomes = []
-        # Contact outcomes cannot be predicted by a pre-contact request.
-        lookahead = async_decisions if not any(is_boundary(c) for c in choices) else None
-        prefix = []
-        for candidate in choices:
-            if is_boundary(candidate) or candidate["skill"] not in MOTION_SKILLS:
+        plan = self.plan_chunk(request, decision)
+        self.details.append({'chunk_plan': plan, 'prediction_is_measurement': False})
+        lookahead = async_decisions if free_chunk else None
+        outcomes, cursor = [], 0
+        while cursor < len(plan):
+            row = plan[cursor]
+            candidate = row['candidate']
+            # Reusing a measured anchor is allowed; an unexplained fresh move
+            # of that anchor invalidates the prediction before its suffix.
+            parameters = candidate['parameters']
+            keys = [parameters.get('anchor_id'), parameters.get('target_id')]
+            stale = next((key for key in keys if key is not None and key != self.held
+                and key in row['predicted_anchors']
+                and (entity := self.scene.entities.get(key)) is not None and entity.visible
+                and np.linalg.norm(np.asarray(entity.xyz)-row['predicted_anchors'][key]) > .01), None)
+            if stale is not None:
+                robot = self.robot()
+                receipt = dict(schema_version=VERSION, kind='receipt', observation_id=request['observation_id'],
+                    candidate_id=candidate['id'], skill=candidate['skill'], outcome='failure', phase='perception',
+                    stop_reason='predicted_anchor_changed', steps_used=0, before=robot, after=robot,
+                    changes=[], evidence=[self._evidence(self.scene.entities[stale])], expectation_checks=[])
+                self.receipts.append(receipt)
+                self.memory.record(candidate, receipt['outcome'], receipt['stop_reason'])
+                outcomes.append(receipt)
                 break
-            prefix.append(candidate)
-        if len(prefix) > 1:
-            outcomes.extend(self._execute_motion_group(request, prefix, lookahead=lookahead))
-            choices = choices[len(prefix):] if (all(r["outcome"] == "success" for r in outcomes)
-                and not (self.p.env.terminated or self.p.env.truncated)) else []
-        for candidate in choices:
-            receipt = self._execute_one(request, candidate, lookahead=lookahead)
-            outcomes.append(receipt)
-            self.receipts.append(receipt)
-            self.memory.record(candidate, receipt["outcome"], receipt["stop_reason"])
-            if (receipt["outcome"] != "success" or candidate["skill"] not in MOTION_SKILLS
-                    or self.p.env.terminated or self.p.env.truncated):
+            group = []
+            for following in plan[cursor:]:
+                if not self._free_motion(following['candidate']):
+                    break
+                group.append(following['candidate'])
+            if len(group) > 1:
+                receipts = self._execute_motion_group(request, group, lookahead=lookahead)
+                outcomes.extend(receipts)
+                cursor += len(receipts)
+                if len(receipts) < len(group) or any(r['outcome'] != 'success' for r in receipts):
+                    break
+            else:
+                receipt = self._execute_one(request, candidate, lookahead=lookahead)
+                outcomes.append(receipt)
+                self.receipts.append(receipt)
+                self.memory.record(candidate, receipt['outcome'], receipt['stop_reason'])
+                cursor += 1
+                if receipt['outcome'] != 'success' or is_boundary(candidate):
+                    break
+            if self.p.env.terminated or self.p.env.truncated:
                 break
+        executed = [r['candidate_id'] for r in outcomes]
+        self.last_chunk = {'schema_version': VERSION, 'selected_ids': decision['candidate_ids'],
+            'executed_ids': executed, 'actual_actions': sum(r['steps_used'] > 0 for r in outcomes),
+            'discarded_ids': decision['candidate_ids'][len(executed):],
+            'stop_reason': outcomes[-1]['stop_reason'] if outcomes else 'no_predicted_route',
+            'interrupted_skill': outcomes[-1]['skill'] if outcomes and len(executed) < len(choices) else None}
         self.revision += 1
         self._last_free_chunk = ({'revision': request['revision'], 'parent_receipts': parent_receipts,
             'remaining_sim_steps': remaining_at_start, 'end_robot': self.robot()}
@@ -1712,12 +1789,34 @@ class MeasuredSkillAdapter:
             boundaries.append(len(waypoints)-1)
             robot = {**robot, "eef_xyz_m": route[-1]["xyz_m"], "eef_quat_xyzw": route[-1]["quat_xyzw"]}
         motion = SmoothMotion(self.p, self._cloud_and_ik(), self.config)
+        boundary_loss = None
+        boundary_hold = []
+        def check_waypoint(index, measured):
+            nonlocal boundary_loss
+            if index not in boundaries:
+                return None
+            waypoint = waypoints[index]
+            if np.linalg.norm(np.asarray(measured['eef_xyz_m'])-waypoint['xyz_m']) > self.config.endpoint_tolerance_m:
+                return 'endpoint_error_m'
+            if (Rotation.from_quat(measured['eef_quat_xyzw'])*Rotation.from_quat(waypoint['quat_xyzw']).inv()).magnitude() > .05:
+                return 'angular_error_rad'
+            if self.held:
+                self.refresh()
+                holding, lost = self._recheck_transport_hold(before_group, entities_before)
+                boundary_hold.append({'waypoint_index': index, 'evidence': holding})
+                if lost is not None:
+                    boundary_loss = (index, lost)
+                    return 'public_hold_lost'
+            return None
         result = motion.run(waypoints, gripper=self.gripper_command, blend=True,
             lookahead=lookahead, request_factory=self.snapshot_decision_context if lookahead is not None else None,
-            contact_stop=self._empty_held_gripper)
+            contact_stop=self._empty_held_gripper, waypoint_check=check_waypoint)
         self.refresh()
         holding, lost_held = self._recheck_transport_hold(before_group, entities_before)
+        if boundary_loss is not None:
+            lost_held = boundary_loss[1]
         trace = result.get("trace", [])
+        interrupted_at = next((check['index'] for check in result.get('checked_waypoints', []) if check['failure']), None)
         cursor, receipts = 0, []
         for candidate, boundary in zip(candidates, boundaries):
             target = np.asarray(waypoints[boundary]["xyz_m"])
@@ -1727,6 +1826,8 @@ class MeasuredSkillAdapter:
                 candidates_i = range(cursor, len(trace))
                 passage_time = result['waypoint_times_s'][boundary]
                 at = min(candidates_i, key=lambda i: abs(trace[i]['time_s']-passage_time)) if cursor < len(trace) else len(trace)-1
+                if boundary == interrupted_at:
+                    at = len(trace)-1  # The failed step owns its braking tail.
                 segment = trace[cursor:at+1]
                 after_raw = trace[at]["after"]
                 before_raw = segment[0]["before"] if segment else after_raw
@@ -1746,7 +1847,9 @@ class MeasuredSkillAdapter:
             terminal_passage = bool(segment) and cursor == len(trace) and (self.p.env.terminated or self.p.env.truncated)
             if terminal_passage and self.p.env.terminated:
                 outcome, reason = 'success', 'native_success'
-            endpoint_loss = lost_held is not None and (cursor == len(trace) or candidate is candidates[-1])
+            endpoint_loss = lost_held is not None and (
+                boundary_loss is not None and boundary == boundary_loss[0]
+                or boundary_loss is None and (cursor == len(trace) or candidate is candidates[-1]))
             phase = None if outcome == 'success' else 'planning_unreachable'
             if endpoint_loss:
                 outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_lost'
@@ -1758,15 +1861,16 @@ class MeasuredSkillAdapter:
                 "changes": ([{'anchor_id': lost_held, 'displacement_m': None, 'held': False,
                     'relation': None, 'fixture_state': None}] if endpoint_loss else []),
                 "evidence": [self._evidence(e) for e in self.scene.entities.values()]}
+            check_receipt(candidate, receipt, {'endpoint_error_m': error, 'angular_endpoint_error_rad': angular_error})
             validate(receipt)
             receipts.append(receipt)
             self.receipts.append(receipt)
-            self.memory.record(candidate, outcome, reason)
-            if terminal_passage or endpoint_loss:
+            self.memory.record(candidate, receipt['outcome'], receipt['stop_reason'])
+            if terminal_passage or endpoint_loss or receipt['outcome'] != 'success':
                 break
         self.details.append({"candidate_ids": [c["id"] for c in candidates], "execution": result,
                              "blended": True, "waypoint_errors_are_measured": True,
-                             "public_transport_hold": holding})
+                             "public_transport_hold": holding, "boundary_hold_checks": boundary_hold})
         return receipts
 
     def _execute_one(self, request, candidate, *, lookahead=None):
@@ -2034,6 +2138,7 @@ class MeasuredSkillAdapter:
                 'cameras': ['main', 'wrist'] if self.scene.dual_view_fusion_v1 else ['main'],
                 'operation': (f"paired_contact_axis:{parameters['axis']}:compatible_interval_m="
                     + json.dumps(fit['compatible_axis_interval_m']))})
+        check_receipt(candidate, receipt, detail)
         validate(receipt)
         self.details.append({"candidate_id": candidate["id"], "execution": detail})
         self.ex.held = self.held

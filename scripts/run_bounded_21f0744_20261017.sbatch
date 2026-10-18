@@ -41,6 +41,7 @@ SHARD_COUNT_VALUE="${SHARD_COUNT:-220}"
   --manifest "$MANIFEST" --shard-index "$SHARD" --shards "$SHARD_COUNT_VALUE" --states
 EXTRA=()
 if [[ "${STARTUP:-0}" == 1 ]]; then EXTRA+=(--startup); fi
+if [[ "${PAIR_LEGACY:-0}" == 1 ]]; then PROBE_ARMS=oracle_k4,oracle_k4_legacy; fi
 exec "$ROOT/.venv/bin/python" -u -m scripts.probe_bounded_feasibility \
   --manifest "$MANIFEST" \
   --arms "${PROBE_ARMS:-oracle_k4}" \
