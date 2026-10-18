@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+from itertools import combinations
 from pathlib import Path
 
 parser = argparse.ArgumentParser()
@@ -49,15 +50,18 @@ running = [row for row in ours if row[2] == 'RUNNING']
 assert len(running) <= 4 and all(row[3]=='node02' for row in running), running
 # Do not touch held jobs, c5/c6/rf, or Codex2's model jobs.
 active = [row[0] for row in running]
+release_barrier = ('?'.join('afterany:'+':'.join(group)
+    for group in combinations(active, max(1, len(running)-aggregate_cap+1)))
+    if len(running) >= aggregate_cap else None)
 lane_arrays = ({'8173', '8192', '8252', '8265'} | set(args.replace_array)) if args.full else {'8173'}
 following = [row[0] for row in ours if row[0].split('_')[0] in lane_arrays
     and row[2]=='PENDING' and 'JobHeld' not in row[4]]
 capacity = max(1, aggregate_cap-len(running)) if args.full else 1
 if args.full:
-    dependency = ('?'.join('afterany:'+child for child in active)
+    dependency = (release_barrier
                   if len(running) >= aggregate_cap else 'afterany:'+startup_proof['job'])
 else:
-    dependency = ('?'.join('afterany:'+child for child in active)
+    dependency = (release_barrier
                   if len(running) >= aggregate_cap else None)
 arguments = ['sbatch','--parsable','--nodelist=node02','--nice=500',
     '--array='+(args.indices+'%'+str(capacity) if args.full else '24%1'),

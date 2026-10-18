@@ -2,11 +2,9 @@
 import argparse
 import hashlib
 import json
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
-
-from scripts.summarize_bounded_probes import distribution, feasibility
-
 
 def read_rows(path):
     if not path.exists():
@@ -18,6 +16,8 @@ def summarize(root, tag):
     base = root/'coordination/bounded_skills_20261016'
     receipt_path = base/'reports'/f'{tag}_full_submission.json'
     receipt = json.loads(receipt_path.read_text())
+    sys.path.insert(0, receipt['snapshot'])
+    from scripts.summarize_bounded_probes import distribution, feasibility
     manifest = Path(receipt['manifest']['path'])
     assert hashlib.sha256(manifest.read_bytes()).hexdigest() == receipt['manifest']['sha256']
     cases = json.loads(manifest.read_text())['cases']
