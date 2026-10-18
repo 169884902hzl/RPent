@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
 import math
 from dataclasses import replace
 from pathlib import Path
@@ -1613,7 +1614,9 @@ class MeasuredSkillAdapter:
         key = parameters.get("anchor_id", parameters.get("target_id"))
         phase, outcome, reason, detail = None, "unmeasured", "measurement_missing", {}
         contact_reference = None
+        contact_capture_step = None
         if skill == 'nudge' and key is not None:
+            contact_capture_step = self.ex.toolkit._state.latest_step
             screen = self._cloud_and_ik(key, contact=True)
             handle = self.plans.get(key, {}).get('handle_measurement')
             if key == self.held:
@@ -1780,17 +1783,24 @@ class MeasuredSkillAdapter:
             progress = (float(displacement['xyz'.index(parameters['axis'])]
                 * np.sign(parameters['distance_m'])) if measured else None)
             registration = None
-            if measured and not self.p.env.terminated:
+            after_capture_step = self.ex.toolkit._state.latest_step
+            fresh_depth = after_capture_step > contact_capture_step
+            if fresh_depth and not self.p.env.terminated:
                 from robots.libero.bounded_payload import contact_axis_registration
 
+                # A current handle can remain visible in raw depth while SAM
+                # loses its identity. Its pre-action measured surface and a
+                # fresh self-filtered depth frame still establish motion;
+                # the cached entity centre is a separate diagnostic.
                 self._cloud_and_ik(key, contact=True)
                 registration = contact_axis_registration(contact_reference, self._base_geometry[0],
                     'xyz'.index(parameters['axis']), parameters['distance_m'],
                     endpoint_tolerance_m=self.config.endpoint_tolerance_m)
             detail['public_contact_motion'] = {
                 'source': 'paired_public_rgbd_axis_surface_registration',
-                'before_capture_step': prior.source_step if prior is not None else None,
-                'after_capture_step': current.source_step if current is not None else None,
+                'before_capture_step': contact_capture_step,
+                'after_capture_step': after_capture_step,
+                'entity_measurement_current': measured,
                 'displacement_m': displacement.tolist() if measured else None,
                 'command_axis': parameters['axis'], 'entity_axis_progress_m': progress,
                 'axis_progress_m': (float(registration['translation_m']['xyz'.index(parameters['axis'])]
@@ -1799,7 +1809,7 @@ class MeasuredSkillAdapter:
             # EEF arrival alone says nothing about a contacted object moving.
             # Preserve free-space nudges and the benchmark's native success.
             if not self.p.env.terminated:
-                if not measured or not registration['accepted']:
+                if not fresh_depth or not registration['accepted']:
                     outcome, phase, reason = 'unmeasured', 'verification_error', 'contact_motion_unmeasured'
                 else:
                     low, high = sorted(np.asarray(registration['compatible_axis_interval_m'])
@@ -1853,6 +1863,14 @@ class MeasuredSkillAdapter:
             "stop_reason": reason, "steps_used": self.p.env.execution_budget()["used_sim_steps"]-start_steps,
             "before": before, "after": self.robot(), "changes": changes,
             "evidence": [self._evidence(entity) for entity in self.scene.entities.values()]}
+        contact_motion = detail.get('public_contact_motion')
+        if contact_motion and (fit := contact_motion['surface_registration']) and fit['accepted']:
+            receipt['evidence'].append({
+                'measurement_id': f'rgbd-contact:{contact_capture_step}:{after_capture_step}:{key}',
+                'capture_step': after_capture_step, 'source': 'derived_public',
+                'cameras': ['main', 'wrist'] if self.scene.dual_view_fusion_v1 else ['main'],
+                'operation': (f"paired_contact_axis:{parameters['axis']}:compatible_interval_m="
+                    + json.dumps(fit['compatible_axis_interval_m']))})
         validate(receipt)
         self.details.append({"candidate_id": candidate["id"], "execution": detail})
         self.ex.held = self.held

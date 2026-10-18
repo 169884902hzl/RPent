@@ -20,6 +20,11 @@ def adapter(monkeypatch):
     geometry = {"boxes": [], "max_opening_m": .08}
     monkeypatch.setattr("robots.libero.bounded_skills.panda_geometry", lambda xml: geometry)
     ex = SimpleNamespace(p=p, scene=scene, instruction="put the box on the plate", capture=lambda: None, held=None)
+    ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0,
+        load=lambda _: np.empty((0, 0, 3))))
+    def capture():
+        ex.toolkit._state.latest_step += 1
+    ex.capture = capture
     result = MeasuredSkillAdapter(ex, "/static/grippers/panda_gripper.xml", allow_vla=False)
     result.grasp_geometry = lambda e: {"xyz_m": [.1, .1, .9], "quat_xyzw": [0, 0, 0, 1], "width_m": .04}
     def screen(poses):
@@ -27,7 +32,11 @@ def adapter(monkeypatch):
             "passed": True, "reason": "test_public_geometry", "collision": False, "ik_reachable": True,
             "path_min_clearance_m": .05, "screen_scope": "test_measured_mesh"}
     screen.points = screen.target = np.empty((0, 3))
-    result._cloud_and_ik = lambda *args, **kwargs: screen
+    def cloud_screen(*args, **kwargs):
+        if result._base_geometry is None:
+            result._base_geometry = (screen.points, None)
+        return screen
+    result._cloud_and_ik = cloud_screen
     return result
 
 
@@ -48,7 +57,8 @@ def test_public_request_omits_whole_task_and_vla_disabled(adapter):
 
 @pytest.mark.parametrize('effect,expected', [
     ('stationary', 'no_effect'), ('moved', 'success'),
-    ('occluded', 'unmeasured'), ('stale', 'unmeasured'),
+    ('occluded', 'no_effect'), ('stale', 'no_effect'),
+    ('rgbd_occluded', 'unmeasured'), ('raw_stale', 'unmeasured'),
     ('opposite', 'failure'), ('perpendicular', 'no_effect'),
     ('segmentation_drift', 'no_effect'),
 ])
@@ -61,7 +71,8 @@ def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapt
     original_screen = adapter._cloud_and_ik()
     def screen(*args, **kwargs):
         original_screen.target = surface+shifted
-        adapter._base_geometry = (original_screen.target, None)
+        cloud = np.empty((0, 3)) if effect == 'rgbd_occluded' else original_screen.target
+        adapter._base_geometry = (cloud, None)
         return original_screen
     adapter._cloud_and_ik = screen
     def refresh(_):
@@ -74,6 +85,8 @@ def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapt
             visible=effect != 'occluded',
             source_step=entity.source_step+(effect != 'stale'))
     adapter.scene.refresh = refresh
+    if effect == 'raw_stale':
+        adapter.ex.capture = lambda: None
     initial = adapter.robot()['eef_xyz_m']
     request = adapter.request(k=1)
     candidate = next(c for c in request['candidates'] if c['skill'] == 'nudge'
@@ -91,6 +104,40 @@ def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapt
         request = adapter.request(k=1)
         adapter.execute(request, decision(request, [candidate['id']]))
         assert all(c['id'] != candidate['id'] for c in adapter.request(k=1)['candidates'])
+
+
+@pytest.mark.parametrize('entity_state', ['cached', 'removed'])
+def test_nudge_uses_fresh_depth_when_sam_loses_handle_identity(adapter, entity_state):
+    from dataclasses import replace
+
+    handle = np.random.default_rng(271).uniform([-.015, -.01, -.01], [.015, .01, .01], (900, 3))
+    shift = np.zeros(3)
+    original = adapter._cloud_and_ik()
+    def screen(*args, **kwargs):
+        original.target = handle+shift
+        adapter._base_geometry = (original.target, None)
+        return original
+    adapter._cloud_and_ik = screen
+    adapter.active = 'e1'
+    request = adapter.request(k=1)
+    def refresh(_):
+        shift[:] = [0., .02, 0.]
+        if entity_state == 'removed':
+            adapter.scene.entities.pop('e1')
+        else:
+            adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], visible=False)
+    adapter.scene.refresh = refresh
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'anchor_id': 'e1', 'axis': 'y', 'distance_m': .02})
+    receipt = adapter.execute(request, decision(request, [candidate['id']]))[0]
+    assert receipt['outcome'] == 'success'
+    motion = adapter.details[-1]['execution']['public_contact_motion']
+    assert not motion['entity_measurement_current']
+    assert motion['axis_progress_m'] == pytest.approx(.02)
+    assert (motion['before_capture_step'], motion['after_capture_step']) == (0, 1)
+    assert any(e['measurement_id'] == 'rgbd-contact:0:1:e1' and e['source'] == 'derived_public'
+        for e in receipt['evidence'])
+    validate(receipt)
 
 
 def test_free_space_nudge_reports_motion_arrival_without_object_effect(adapter):
