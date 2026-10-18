@@ -144,3 +144,31 @@ def test_oracle_returns_prefix_specific_private_sets_without_public_labels(adapt
     first['measured_success'] = first['measured_failure'] = [first['selected']]
     with pytest.raises(ValueError, match='conflicting'):
         validate_labels(request, corrupt)
+
+
+def test_oracle_prefix_clones_bindings_without_copying_live_rpc(adapter):
+    from multiprocessing.process import AuthenticationString
+
+    class LiveRPC:
+        authkey = AuthenticationString(b'offline-regression')
+
+        def call(self, *_):
+            return {'done': False, 'goals': [['on', 'box_1']], 'satisfied': [False]}
+
+    physical_grip(adapter)
+    request = adapter.request(k=4)
+    rpc = LiveRPC()
+    oracle = BoundedOracle(rpc, adapter)
+    original_binding = oracle.binding
+    original_binding._bindings['existing'] = 'unchanged'
+    original_binding._binding_peers['existing'] = {'peer'}
+
+    answer = oracle.choose(request)
+
+    assert len(answer['candidate_ids']) == 4
+    assert oracle.binding.rpc is rpc
+    assert original_binding._bindings == {'existing': 'unchanged'}
+    assert oracle.binding._bindings['box_1'] == 'e1'
+    oracle.binding._binding_peers['existing'].add('new-peer')
+    assert original_binding._binding_peers['existing'] == {'peer'}
+    validate_labels(request, oracle.last_labels)

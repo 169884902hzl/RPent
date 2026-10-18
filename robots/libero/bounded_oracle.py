@@ -248,7 +248,7 @@ class BoundedOracle:
             [{**status, 'goals': [goal], 'satisfied': [False]} for goal, _ in goals])
         for one_goal in statuses:
             probe = copy.copy(self)
-            probe.binding = copy.deepcopy(self.binding)
+            probe.binding = copy.deepcopy(self.binding, {id(self.binding.rpc): self.binding.rpc})
             probe.private_trace = []
             try:
                 selected.append(probe._choose_one(request, one_goal))
@@ -280,7 +280,7 @@ class BoundedOracle:
         status = self.rpc.call('oracle.status')
         prediction = PublicPrefixPrediction(self.adapter, request)
         virtual = copy.copy(self)
-        virtual.binding = copy.deepcopy(self.binding)
+        virtual.binding = copy.deepcopy(self.binding, {id(self.binding.rpc): self.binding.rpc})
         virtual.adapter = prediction.adapter
         virtual.private_trace = []
         ids, labels = [], []
