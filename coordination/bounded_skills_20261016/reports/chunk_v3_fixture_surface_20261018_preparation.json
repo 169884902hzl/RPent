@@ -1,0 +1,53 @@
+{
+  "source_commit": "739fa4b",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_fixture_surface_20261018_739fa4b",
+  "archive_sha256": "8df4439001c8ad5bbd90d02055d44d9449020d2d4c6b48de5e852152b3947d0b",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_fixture_surface_20261018.json",
+    "sha256": "e493625550a672058fdf1baaa85b4591b94c1252e448e8df4545ba58d0d218bf"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_fixture_surface_20261018.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_fixture_surface_20261018_739fa4b/coordination/bounded_skills_20261016/reports/chunk_anchor_surface_CPU_20261018.json",
+    "sha256": "b00f00f50b0cf086c94a10e936d16701e2da00105424bf5674a6f7437ad03379",
+    "results": {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit_tests/robots/libero/test_bounded_skills.py",
+        "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+        "tests/unit_tests/robots/libero/test_bounded_prefix.py",
+        "tests/unit_tests/robots/libero/test_bounded_compaction.py",
+        "tests/unit_tests/robots/libero/test_bounded_async.py",
+        "tests/unit_tests/robots/libero/test_skill_package_schema.py",
+        "tests/unit_tests/robots/libero/test_bounded_vla.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "wall_s": 141.01640012999997,
+      "source_sha256": {
+        "robots/libero/bounded_skills.py": "d63ade53a8d5a461afa0857ec844e00edcb38197a0033d78f793500fadc3c86b",
+        "robots/libero/bounded_chunk.py": "ab98e53a3d1a13a074abf4a62dc8e6c7fc56816343b158aa2bcb13c032c70329",
+        "SKILL_PACKAGE_SPEC.md": "2bb0ea99f3ffc7cf65a1f76deecf05cfea7fb0a81a4a26877f1d7f529b36f4fd",
+        "rpent/skill_package/schema.json": "7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3",
+        "tests/unit_tests/robots/libero/test_bounded_chunk.py": "d935cd277df8853422562d46f996c8c0e904d8e3dd0ef4533c143c39e0a94ed3"
+      },
+      "source_unchanged_during_run": true,
+      "GPU_used": false,
+      "training": false
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}

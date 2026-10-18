@@ -44,6 +44,8 @@ for job in args.job:
                 assert accounted <= row['wall_s']+1e-3, 'overlapping main-thread times'
                 execution = timing.get('main_thread_exclusive_by_root_s', {}).get('execution.other', {})
                 entry.update(instrumented=True, **buckets, unattributed_s=residual,
+                    perception_components_s={key: main.get('perception.'+key, 0.)
+                        for key in ('segmentation', 'depth', 'entity_measurement', 'capture_io')},
                     execution_perception_s=sum(v for k, v in execution.items() if k.startswith('perception.')),
                     oracle_root_inclusive_s=sum(timing.get('main_thread_exclusive_by_root_s', {}).get('decision.oracle', {}).values()),
                     exclusive_detail_s=main,
@@ -69,6 +71,18 @@ for row in rows:
                    f"{row['unattributed_s']:.3f}"]
     else:
         values += ['unmeasured']*6+[f"{row['unseparated_residual_s']:.3f} (request {row['measured_request_generation_s']:.3f})"]
+    lines.append('| '+' | '.join(values)+' |')
+lines += ['', 'Perception components below are already included in the table above.', '',
+    '| Job / state / arm | Segmentation s | Depth s | Entity measurement s | Capture / transport s |',
+    '| --- | ---: | ---: | ---: | ---: |']
+for row in rows:
+    components = row.get('perception_components_s')
+    values = [f"{row['job']} / {row['case']} / {row['arm']}"]
+    if components is not None:
+        assert abs(sum(components.values())-row['perception_s']) < 1e-6
+        values += [f'{value:.3f}' for value in components.values()]
+    else:
+        values += ['unmeasured']*4
     lines.append('| '+' | '.join(values)+' |')
 args.output.with_suffix('.md').write_text('\n'.join(lines)+'\n')
 print(json.dumps(dict(complete_episodes=len(rows), instrumented=sum(r['instrumented'] for r in rows),

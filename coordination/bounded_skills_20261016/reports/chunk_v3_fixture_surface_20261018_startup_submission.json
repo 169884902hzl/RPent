@@ -1,0 +1,89 @@
+{
+  "job": "8845",
+  "mode": "startup",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=24%1",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_fixture_surface_20261018_739fa4b,SOURCE_COMMIT=739fa4b,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_fixture_surface_20261018.json,STARTUP=1,PAIR_LEGACY=0",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_fixture_surface_20261018_739fa4b/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "739fa4b",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_fixture_surface_20261018_739fa4b",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_fixture_surface_20261018.json",
+    "sha256": "e493625550a672058fdf1baaa85b4591b94c1252e448e8df4545ba58d0d218bf"
+  },
+  "following_updates": [],
+  "queue_before": [
+    [
+      "8831_200",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "8831_180",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "8831_160",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "8831_140",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "8831_120",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "8843_100",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8843_80",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ]
+  ],
+  "lane": 3,
+  "aggregate_cap": 4,
+  "codex2_gpu_jobs": [],
+  "startup_proof": null,
+  "training": false,
+  "confirmation": false,
+  "indices": [
+    24
+  ],
+  "scope": "original-task oracle upper bound and matched boundary-rule comparison; no pi05",
+  "submission_updates_complete": true
+}
