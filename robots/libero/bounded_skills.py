@@ -1834,7 +1834,21 @@ class MeasuredSkillAdapter:
         parent_receipts = copy.deepcopy(self.receipts[-3:])
         remaining_at_start = self.p.env.execution_budget()['remaining_sim_steps']
         plan = self.plan_chunk(request, decision)
-        self.details.append({'chunk_plan': plan, 'prediction_is_measurement': False})
+        # Freeze actual current surfaces before controls. A selected contact
+        # prefix can move an anchor; its later guard must compare fresh depth
+        # with that conditionally translated surface, not an old SAM centre.
+        reference_keys = {key for row in plan for key in (
+            row['candidate']['parameters'].get('anchor_id'),
+            row['candidate']['parameters'].get('target_id'),
+            *(check['anchor_id'] for check in row['candidate']['expected_receipt']))
+            if key is not None and key != self.held}
+        references = {key: np.array(self._contact_pixels(key), copy=True)
+            for key in sorted(reference_keys)}
+        self.details.append({'chunk_plan': plan, 'prediction_is_measurement': False,
+            'anchor_surface_references': {key: {
+                'points': len(points), 'capture_step': self.ex.toolkit._state.latest_step,
+                'artifact': self._record_public_geometry('bounded_chunk_reference_'+key, points)}
+                for key, points in references.items()}})
         lookahead = async_decisions if free_chunk else None
         outcomes, cursor = [], 0
         while cursor < len(plan):
@@ -1859,16 +1873,17 @@ class MeasuredSkillAdapter:
                 # the clean pre-approach surface is still in the same place.
                 # Preserve the 1cm movement gate, but test actual RGB-D
                 # surface displacement before treating that centre as motion.
-                committed = self.committed_grasps.get(key, {})
-                reference = committed.get('instance_reference')
+                reference = references.get(key)
                 recheck = {'accepted': False, 'reason': 'pre_action_surface_missing'}
-                if (reference is not None and np.linalg.norm(np.asarray(
-                        row['predicted_anchors'][key])-committed['anchor_xyz']) < 1e-9):
+                if reference is not None and len(reference) >= 40:
                     from robots.libero.bounded_payload import stationary_surface_registration
 
+                    shift = (np.asarray(row['predicted_anchors'][key])
+                        -plan[0]['predicted_anchors'][key])
                     self._cloud_and_ik(key, contact=True)
-                    recheck = stationary_surface_registration(reference['xyz_world'],
-                        self._base_geometry[0], self._instance_pixels(key))
+                    recheck = stationary_surface_registration(reference+shift,
+                        self._base_geometry[0], self._contact_pixels(key))
+                    recheck['conditional_prefix_translation_m'] = shift.tolist()
                 self.details.append({'anchor_recheck': recheck, 'anchor_id': key,
                     'predicted_xyz_m': row['predicted_anchors'][key],
                     'current_visible_centre_xyz_m': list(self.scene.entities[key].xyz)})

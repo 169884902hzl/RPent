@@ -105,6 +105,42 @@ def test_lift_without_fresh_object_evidence_cannot_authorize_suffix(adapter):
     assert receipts[0]['stop_reason'] == 'expected_receipt_object_rise_m'
 
 
+def test_contact_prefix_checks_translated_surface_despite_partial_mask_centre_drift(adapter):
+    adapter.active = 'e1'
+    entity = adapter.scene.entities['e1']
+    surface = np.random.default_rng(981).uniform([.08, .085, .89], [.12, .115, .91], (1200, 3))
+    initial_eef = np.array(adapter.robot()['eef_xyz_m'])
+    screen = adapter._cloud_and_ik()
+    def current_surface():
+        return surface+np.array(adapter.robot()['eef_xyz_m'])-initial_eef
+    adapter._instance_pixels = adapter._contact_pixels = lambda key, **kwargs: current_surface()
+    def geometry(*args, **kwargs):
+        screen.target = current_surface()
+        adapter._base_geometry = (screen.target, None)
+        return screen
+    adapter._cloud_and_ik = geometry
+    def refresh(_):
+        delta = np.array(adapter.robot()['eef_xyz_m'])-initial_eef
+        # Contact geometry follows the hand; a partial mask moves the
+        # reported centre sideways by 25mm. It must not veto actual depth.
+        bias = np.array([-.025, 0., 0.]) if delta[1] > 0. else np.zeros(3)
+        adapter.scene.entities['e1'] = replace(entity,
+            xyz=tuple(np.array(entity.xyz)+delta+bias),
+            lower=tuple(np.array(entity.lower)+delta), upper=tuple(np.array(entity.upper)+delta),
+            source_step=adapter.ex.toolkit._state.latest_step)
+    adapter.scene.refresh = refresh
+    request = adapter.request(k=4)
+    choices = [next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'anchor_id': 'e1', 'axis': 'y', 'distance_m': distance})
+        for distance in (.02, .01)]
+    receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
+    assert len(receipts) == 2 and all(r['outcome'] == 'success' for r in receipts)
+    np.testing.assert_allclose(np.array(adapter.robot()['eef_xyz_m'])-initial_eef, [0., .03, 0.], atol=1e-8)
+    recheck = next(d['anchor_recheck'] for d in adapter.details if 'anchor_recheck' in d)
+    assert recheck['accepted']
+    np.testing.assert_allclose(recheck['conditional_prefix_translation_m'], [0., .02, 0.])
+
+
 def test_prefix_consequences_start_from_predicted_not_initial_pose(adapter):
     request = adapter.request(k=4)
     first = next(c for c in request['candidates'] if c['skill'] == 'nudge' and c['parameters'] == {'axis':'x', 'distance_m':.01})

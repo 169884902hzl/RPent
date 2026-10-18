@@ -1,0 +1,210 @@
+{
+  "scope": "CPU saved public contact surfaces and screened RGB-D; no controls",
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_contact_prediction_20261018_6f453c5",
+  "inputs": {
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8831_100/drawer_open_libero_goal_t0_s0_oracle_k4/bounded_contact_e54_reference.npz/03.npz": "82f16d06dfc3286770a8b2fd433f453850475b3f368656149b2c5dfccdf2ac5a",
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8831_100/drawer_open_libero_goal_t0_s0_oracle_k4/bounded_contact_e54_reference.npz/04.npz": "457fb0f17f835939dbf075c71c95201de60d6aa473bc3c61fff972472286ebc3",
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8831_100/drawer_open_libero_goal_t0_s0_oracle_k4/bounded_screen_e54_1_target.npz/04.npz": "157167f17983c31e1a8db55746fec1925d458b8379c42b78a03bb695d1d1bd10",
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8831_100/drawer_open_libero_goal_t0_s0_oracle_k4/bounded_screen_e54_1_scene.npz/04.npz": "f303e49864648ca4875374651bf380a915a5ebd59e2b8e7f96f58ad7b989b7bc"
+  },
+  "before_points": 135461,
+  "after_points": 104878,
+  "expected_translation_m": [
+    0.0,
+    0.02,
+    0.0
+  ],
+  "observed_axis_interval_m": [
+    0.018,
+    0.02
+  ],
+  "checks": {
+    "0.0": {
+      "source": "pre_action_surface_and_current_public_rgbd",
+      "accepted": false,
+      "private_pose_used": false,
+      "tolerance_m": 0.01,
+      "axis_fits": {
+        "x": {
+          "source": "pre_action_surface_and_current_self_filtered_rgbd",
+          "accepted": true,
+          "translation_m": [
+            -0.002999999999999999,
+            0.0,
+            0.0
+          ],
+          "compatible_axis_interval_m": [
+            -0.007,
+            0.008
+          ],
+          "residual_cap_m": 0.008,
+          "squared_residual_increment_m2": 1e-06,
+          "private_pose_used": false,
+          "mean_capped_squared_residual_m2": 2.4541259984745965e-05,
+          "supported_fraction": 0.8845010615711253,
+          "samples": 2355,
+          "fits": 65,
+          "reason": "public_axis_surface_fit"
+        },
+        "y": {
+          "source": "pre_action_surface_and_current_self_filtered_rgbd",
+          "accepted": true,
+          "translation_m": [
+            0.0,
+            0.019000000000000003,
+            0.0
+          ],
+          "compatible_axis_interval_m": [
+            0.018,
+            0.02
+          ],
+          "residual_cap_m": 0.008,
+          "squared_residual_increment_m2": 1e-06,
+          "private_pose_used": false,
+          "mean_capped_squared_residual_m2": 9.480785905425224e-08,
+          "supported_fraction": 1.0,
+          "samples": 2355,
+          "fits": 65,
+          "reason": "public_axis_surface_fit"
+        },
+        "z": {
+          "source": "pre_action_surface_and_current_self_filtered_rgbd",
+          "accepted": true,
+          "translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "compatible_axis_interval_m": [
+            -0.001,
+            0.002
+          ],
+          "residual_cap_m": 0.008,
+          "squared_residual_increment_m2": 1e-06,
+          "private_pose_used": false,
+          "mean_capped_squared_residual_m2": 2.4707945308930664e-05,
+          "supported_fraction": 0.90276008492569,
+          "samples": 2355,
+          "fits": 65,
+          "reason": "public_axis_surface_fit"
+        }
+      },
+      "shared_instance_pixels": 479,
+      "compatible_displacement_bound_m": 0.021633307652783935,
+      "reason": "surface_moved_or_ambiguous"
+    },
+    "0.02": {
+      "source": "pre_action_surface_and_current_public_rgbd",
+      "accepted": true,
+      "private_pose_used": false,
+      "tolerance_m": 0.01,
+      "axis_fits": {
+        "x": {
+          "source": "pre_action_surface_and_current_self_filtered_rgbd",
+          "accepted": true,
+          "translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "compatible_axis_interval_m": [
+            -0.003,
+            0.002
+          ],
+          "residual_cap_m": 0.008,
+          "squared_residual_increment_m2": 1e-06,
+          "private_pose_used": false,
+          "mean_capped_squared_residual_m2": 5.636032875652444e-07,
+          "supported_fraction": 1.0,
+          "samples": 2355,
+          "fits": 65,
+          "reason": "public_axis_surface_fit"
+        },
+        "y": {
+          "source": "pre_action_surface_and_current_self_filtered_rgbd",
+          "accepted": true,
+          "translation_m": [
+            0.0,
+            -0.0010000000000000009,
+            0.0
+          ],
+          "compatible_axis_interval_m": [
+            -0.002,
+            0.0
+          ],
+          "residual_cap_m": 0.008,
+          "squared_residual_increment_m2": 1e-06,
+          "private_pose_used": false,
+          "mean_capped_squared_residual_m2": 9.480785905425224e-08,
+          "supported_fraction": 1.0,
+          "samples": 2355,
+          "fits": 65,
+          "reason": "public_axis_surface_fit"
+        },
+        "z": {
+          "source": "pre_action_surface_and_current_self_filtered_rgbd",
+          "accepted": true,
+          "translation_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "compatible_axis_interval_m": [
+            -0.001,
+            0.001
+          ],
+          "residual_cap_m": 0.008,
+          "squared_residual_increment_m2": 1e-06,
+          "private_pose_used": false,
+          "mean_capped_squared_residual_m2": 5.636032875652444e-07,
+          "supported_fraction": 1.0,
+          "samples": 2355,
+          "fits": 65,
+          "reason": "public_axis_surface_fit"
+        }
+      },
+      "shared_instance_pixels": 91822,
+      "compatible_displacement_bound_m": 0.0037416573867739417,
+      "reason": "surface_still_at_measured_anchor"
+    },
+    "0.04": {
+      "source": "pre_action_surface_and_current_public_rgbd",
+      "accepted": false,
+      "private_pose_used": false,
+      "tolerance_m": 0.01,
+      "axis_fits": {
+        "x": {
+          "source": "pre_action_surface_and_current_self_filtered_rgbd",
+          "accepted": false,
+          "translation_m": [
+            -0.0010000000000000009,
+            0.0,
+            0.0
+          ],
+          "compatible_axis_interval_m": [
+            -0.032,
+            0.012
+          ],
+          "residual_cap_m": 0.008,
+          "squared_residual_increment_m2": 1e-06,
+          "private_pose_used": false,
+          "mean_capped_squared_residual_m2": 6.0422058048621484e-05,
+          "supported_fraction": 0.11040339702760085,
+          "samples": 2355,
+          "fits": 65,
+          "reason": "contact_surface_overlap_insufficient"
+        }
+      },
+      "shared_instance_pixels": 1461,
+      "reason": "surface_displacement_unmeasured"
+    }
+  },
+  "script_sha256": "c85109eb07bb52b5d0f2c46b0c16d5c7040884a8ecee0b49379c7f1bafb6d588",
+  "verifier_sha256": "06db75cbc3b4cd1699b1a611910d0dc2df01c77a266591b1bd7cca8769a31e1d",
+  "training": false,
+  "GPU_used": false,
+  "limitations": [
+    "Uses saved public self-filtered and screened clouds, not a new physical replay.",
+    "The 0cm and 4cm predictions deliberately disagree with the observed 1.9cm movement."
+  ]
+}
