@@ -1,0 +1,28 @@
+{
+  "job": "9253",
+  "mode": "startup",
+  "indices": [
+    0
+  ],
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=0%1",
+    "--dependency=afterany:9248",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74,SOURCE_COMMIT=ec89f74,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_real_box_support_r3_20261018.json,SHARD_COUNT=20,STARTUP=1,PAIR_LEGACY=0,PROBE_ARMS=oracle_k4",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+  "source_commit": "ec89f74",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_real_box_support_r3_20261018.json",
+    "sha256": "684269e4bba33a1097ee690e3ff4ca4697f4216a977bcf69210f6e9f80d3a920"
+  },
+  "formal_array_submitted": false,
+  "physical_validation": "pending first physical request",
+  "training": false,
+  "confirmation": false,
+  "script_sha256": "3aa3e5e6f81367074a40c71ed6f613996b2fbcb2f3d88322c39d4e03e18f55a1"
+}
