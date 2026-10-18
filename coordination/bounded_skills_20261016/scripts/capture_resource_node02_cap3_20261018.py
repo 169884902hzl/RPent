@@ -14,7 +14,9 @@ import matplotlib.pyplot as plt
 command = ["ssh", "gpu5880-ts", "squeue -h -u sunyihan -o '%i|%j|%T|%N|%R'"]
 raw = subprocess.check_output(command, text=True)
 rows = [line.split("|") for line in raw.splitlines()]
-ours = [row for row in rows if row[1].startswith("rd-bounded-")]
+ours = [row for row in rows if row[1].startswith("rd-bounded-")
+        and not row[1].startswith("rd-bounded-choice-")]
+codex2 = [row for row in rows if row[1].startswith("rd-bounded-choice-")]
 requirements = {}
 for job in sorted({row[0].split('_')[0] for row in ours}):
     detail = subprocess.check_output(['ssh', 'gpu5880-ts', 'scontrol show job '+job+' -o'], text=True)
@@ -29,7 +31,7 @@ now = datetime.now(ZoneInfo("America/Los_Angeles")).isoformat()
 root = Path(__file__).resolve().parents[1]/"reports"
 report = {"time_pacific": now, "command": command[-1], "stdout": raw,
     "our_running_by_node": {"node01": running.get("node01", 0), "node02": running.get("node02", 0)},
-    "requirements_by_array": requirements,
+    "requirements_by_array": requirements, "codex2_bounded_choice_jobs": codex2,
     "scope": "read-only; all rd-bounded active jobs; protected and held jobs unchanged"}
 p = root/"resource_latest_node02_cap3_20261018.json"
 p.write_text(json.dumps(report, indent=2)+"\n")
