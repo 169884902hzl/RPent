@@ -1131,6 +1131,33 @@ class MeasuredSkillAdapter:
             'surface_measurement': {'xyz_world': self._instance_pixels(entity.id).tolist(),
                 'source_step': entity.source_step, 'normal_xyz': normal.tolist()}}
 
+    def _refresh_contact_normal(self, entity, plan):
+        """Refit a contacted panel's normal from its current measured surface.
+
+        Keep the original contact pixels for collision association. Only a
+        fresh, visibly planar patch may update the movement direction; a
+        thin handle or an occluded/stale capture supplies no panel normal.
+        """
+        surface = plan.get('surface_measurement')
+        if (not surface or not entity.visible
+                or entity.source_step != self.ex.toolkit._state.latest_step):
+            return
+        points = np.asarray(self.scene.measurement_clouds.get(entity.id, []), dtype=float).reshape(-1, 3)
+        points = points[np.isfinite(points).all(axis=1)]
+        if len(points) < 40:
+            return
+        centre = np.median(points, axis=0)
+        _, axes = np.linalg.eigh(np.cov(points.T))
+        dimensions = np.diff(np.quantile((points-centre)@axes, [.02, .98], axis=0), axis=0)[0]
+        # The same measured thin-surface test used when choosing contact.
+        if dimensions[0] > .02 or min(dimensions[1:]) < max(.04, 4*dimensions[0]):
+            return
+        normal = axes[:, 0]
+        if np.dot(normal, surface['normal_xyz']) < 0:
+            normal = -normal
+        surface['normal_xyz'] = normal.tolist()
+        surface['normal_source_step'] = entity.source_step
+
     def _fixture_closure_aperture(self, points, contact, orientation):
         """Measure first contact in each finger's finite sliding convex hull.
 
@@ -1514,6 +1541,7 @@ class MeasuredSkillAdapter:
                 # second approach from inside the fixture. Current handle
                 # pixels, when available, still update collision membership.
                 plan = copy.deepcopy(committed['plan'])
+                self._refresh_contact_normal(entity, plan)
                 handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction) if entity.visible else {}
                 if handle.get('pose'):
                     plan['handle_measurement'] = handle

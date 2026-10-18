@@ -1892,6 +1892,41 @@ def test_measured_vertical_panel_has_bounded_push_options_without_a_visible_hand
     assert chosen['parameters']['axis'] == 'x' and chosen['parameters']['distance_m'] > 0
 
 
+@pytest.mark.parametrize('capture', ['fresh', 'stale', 'occluded', 'thin_handle'])
+def test_committed_panel_direction_uses_only_a_fresh_measured_plane(adapter, capture):
+    from dataclasses import replace
+
+    from scipy.spatial.transform import Rotation
+
+    entity = replace(adapter.scene.entities['e1'], name='microwave door',
+                     visible=capture != 'occluded', source_step=3 if capture == 'stale' else 4)
+    adapter.scene.entities['e1'] = entity
+    y, z = np.mgrid[:20, :20]
+    patch = np.stack([np.zeros(y.size), (y.ravel()-10)*.008, (z.ravel()-10)*.008], axis=-1)
+    if capture == 'thin_handle':
+        patch[:, 1] *= .05
+    rotation = Rotation.from_euler('z', 40, degrees=True)
+    adapter.scene.measurement_clouds['e1'] = rotation.apply(patch)+[.1, .1, .9]
+    adapter.ex.toolkit._state.latest_step = 4
+    adapter.active = 'e1'
+    adapter.p.env.position[:] = entity.xyz
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.scene.measure_fixture_handle_pose = lambda *args: {'pose': None}
+    original_surface = {'xyz_world': patch.tolist(), 'source_step': 0, 'normal_xyz': [-1., 0., 0.]}
+    plan = {'xyz_m': list(entity.xyz), 'quat_xyzw': [0., 0., 0., 1.], 'width_m': None,
+            'contact_kind': 'surface', 'surface_measurement': original_surface}
+    adapter.committed_grasps['e1'] = {'plan': plan, 'anchor_xyz': np.asarray(entity.xyz)}
+    adapter.request(k=1)
+    measured = adapter.plans['e1']['surface_measurement']
+    expected = rotation.apply([-1., 0., 0.]) if capture == 'fresh' else [-1., 0., 0.]
+    np.testing.assert_allclose(measured['normal_xyz'], expected, atol=1e-12)
+    assert measured.get('normal_source_step') == (4 if capture == 'fresh' else None)
+    assert measured['source_step'] == 0
+    assert measured['xyz_world'] == original_surface['xyz_world']
+    assert original_surface['normal_xyz'] == [-1., 0., 0.]
+
+
 def test_surface_contact_screens_symmetric_wrist_instead_of_discarding_it(adapter):
     from scipy.spatial.transform import Rotation
 
