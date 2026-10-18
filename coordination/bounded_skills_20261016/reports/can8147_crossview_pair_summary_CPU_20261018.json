@@ -1,0 +1,178 @@
+{
+  "scope": "paired saved public RGB-D and proprioception; zero controls; development only",
+  "gpu_used": false,
+  "training": false,
+  "private_truth_used_for_membership": false,
+  "results": [
+    {
+      "file": "can8147_contact_membership_CPU_20261018.json",
+      "sha256": "f87adc79062f49c266d32391b2d0f1c5de4f1ba782c339eda022d9ff53832aed",
+      "scene_points": 155644,
+      "target_points": 2703,
+      "route": {
+        "passed": false,
+        "reason": "measured_sweep_collision",
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "at": {
+          "xyz_m": [
+            -0.11370882117755256,
+            -0.23773881192932916,
+            0.07299706861922199
+          ],
+          "quat_xyzw": [
+            0.8696414929198737,
+            0.493682441115683,
+            0.0007029332047495473,
+            -0.0009094014862891829
+          ]
+        },
+        "counts": {
+          "palm": 0,
+          "leftfinger": 4,
+          "leftfinger_pad": 4,
+          "rightfinger": 2,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [
+            [
+              -0.09057234972715378,
+              -0.2520179748535156,
+              0.07191604375839233
+            ],
+            [
+              -0.09031699597835541,
+              -0.25209125876426697,
+              0.07204870879650116
+            ],
+            [
+              -0.08876792341470718,
+              -0.250413715839386,
+              0.07952945679426193
+            ],
+            [
+              -0.08705342561006546,
+              -0.2480068802833557,
+              0.0792558416724205
+            ]
+          ],
+          "leftfinger_pad": [
+            [
+              -0.09057234972715378,
+              -0.2520179748535156,
+              0.07191604375839233
+            ],
+            [
+              -0.09031699597835541,
+              -0.25209125876426697,
+              0.07204870879650116
+            ],
+            [
+              -0.08876792341470718,
+              -0.250413715839386,
+              0.07952945679426193
+            ],
+            [
+              -0.08705342561006546,
+              -0.2480068802833557,
+              0.0792558416724205
+            ]
+          ],
+          "rightfinger": [
+            [
+              -0.13617977499961853,
+              -0.21556925773620605,
+              0.07950543612241745
+            ],
+            [
+              -0.1366584450006485,
+              -0.21638119220733643,
+              0.07951857149600983
+            ]
+          ],
+          "rightfinger_pad": []
+        }
+      },
+      "missing_blockers": 4
+    },
+    {
+      "file": "can8147_contact_membership_extent_only_CPU_20261018.json",
+      "sha256": "8c74e855d64b0ac225b733a35d17ae2a54edbf0c69721a2c8b94d824c01ab8c0",
+      "scene_points": 155522,
+      "target_points": 2949,
+      "route": {
+        "passed": false,
+        "reason": "measured_sweep_collision",
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "at": {
+          "xyz_m": [
+            -0.11370882117755256,
+            -0.23773881192932916,
+            0.07299706861922199
+          ],
+          "quat_xyzw": [
+            0.8696414929198737,
+            0.493682441115683,
+            0.0007029332047495473,
+            -0.0009094014862891829
+          ]
+        },
+        "counts": {
+          "palm": 0,
+          "leftfinger": 1,
+          "leftfinger_pad": 1,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [
+            [
+              -0.08876792341470718,
+              -0.250413715839386,
+              0.07952945679426193
+            ]
+          ],
+          "leftfinger_pad": [
+            [
+              -0.08876792341470718,
+              -0.250413715839386,
+              0.07952945679426193
+            ]
+          ],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        }
+      },
+      "missing_blockers": 1
+    },
+    {
+      "file": "can8147_contact_membership_CPU_20261018_dev.json",
+      "sha256": "3073294c4a96e2082703ea7b2d17013ece3d994e4e8040e687b7c86e5b8de507",
+      "scene_points": 155521,
+      "target_points": 2950,
+      "route": {
+        "passed": true,
+        "reason": "public_route_screen_passed",
+        "collision": false,
+        "ik_reachable": true,
+        "path_min_clearance_m": 0.005999357516638259
+      },
+      "missing_blockers": 0
+    }
+  ],
+  "commit": "8e491524af107c82f2951882e25a9d25b205cdb4",
+  "cpu_tests": 217,
+  "new_physical_result": null
+}

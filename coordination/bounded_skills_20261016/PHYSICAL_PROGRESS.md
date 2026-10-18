@@ -1,6 +1,33 @@
 # 10/16 bounded-skills physical development results
 
-Latest pushed runtime is `3449b96`: calibrated empty jaws interrupt held-object motion through the existing smooth brake, then clear holding even if the RGB-D endpoint is occluded.168 relatedCPU tests pass. On an exact saved carry prefix,public stop63+brake8=71 controls versus old192;this is CPU diagnostic evidence,not task success. Same-launcher startup8121_20 waitsfor running8112;only pending8112_23–39 were replaced. See [empty-transport delivery](progress_empty_transport_20261018.md).
+Latest pushed runtime is `8e491524af107c82f2951882e25a9d25b205cdb4`. It retains original segmented RGB-D fragments only when another current view supplies a matching local measured surface. 217 related CPU tests pass. At the same restored can init1 state, the old screen rejects before control; the repaired screen permits a real32-control lift with99.857mm object rise,0.470mm EEF residual and11/11 dual-finger tail samples. This CPU physics branch is neither a complete task nor a v3 confirmation score. Same-source startup8154_21 remains queued behind8147. See [fused-contact delivery](progress_fused_contact_20261018.md).
+
+Preceding runtime `7e2e869fe69c400fb63cb7fe77d1796261a31fa5` cleans disconnected microwave-handle SAM depth components and prevents tracked-handle continuation from growing onto connected backing surfaces.211 adapter/screen/payload/geometry tests and50 disjoint fixture-runtime tests pass. Saved-public microwave row3 contact intervals change from0–3mm to18–20mm,while two drawer intervals stay-10 to-8mm. Same-source startup8151_140 is queued behind the running plate representative. These are measurement recomputations,not new task results. See [contact-extent delivery](progress_contact_extent_20261018.md).
+
+Runtime `93682995be6108c0aa02f7b34f9635c5e0f61d2c` uses measured-bounds midpoints for held-object and destination XY. Can init2 full8144_22 succeeds natively:10decisions/705controls/392.56s; init0 full8147_20 succeeds6/493/246.71s. Init1 full8147_21 fails9/396/475.30s at the pre-lift collision diagnosed above. Its unchanged closed cohort is2/3(Wilson95%20.8–93.9%). Bowl8145_0 succeeds5/270/425.89s(1/1,20.7–100%);container8145_40 succeeds8/1164/371.11s(1/1,20.7–100%). Cup8145_60 fails at second-object transport(collision):17decisions/1973controls/1335.33s,0/1(Wilson95%0–79.3%). Its first cup remains correctly placed. Can init3 remains running. These small development cohorts do not qualify a category. See [transport-centre delivery](progress_transport_midpoint_20261018.md).
+
+Previous runtime `7dba5cd23654abce91f71589ae9b1261aab2bf90`: an ordinary instance segmented in only one view can recover current self-filtered depth pixels in the other view using the existing surface/continuity/calibration gates. 182 focused CPU tests pass. On the exact8133 saved public sensors, the previous production reconstruction is reproduced element-for-element; three fixed complete-route/closure screens change from0/3 to3/3. This is CPU geometry evidence, not physical task success. Same-source startup8136_22 completed0:0 and recorded194 physical controls;full paired8137_22 failed after16 decisions/739 controls/572.43s,while same-source init0 job8141_20 succeeded natively after6/498/242.98s. These remain separate original states,onlynode02,Nice500. See [missing-view delivery](progress_missing_view_20261018.md).
+
+Preceding runtime `9e03b06bd496910370891510e9a346a2892f8ad6` supplies measurement RGB-D from a separate single-sample framebuffer. The normal policy RGB/depth framebuffer is restored byte-for-byte in real CPU software rendering. Its114 focused CPU tests passed in two non-overlapping invocations(47+67). Startup8133_22 completed a real physical request; full8134_22 failed at collision after10 decisions/289 controls/358.7s. Its old result is preserved. Source and pixel evidence are in [single-sample delivery](progress_single_sample_20261018.md).
+
+Selected closed development cohorts, each source kept separate:
+
+|Source|Original category|Native success/n|Wilson95%|Decisions median/P90|Controls median/P90|Wall seconds median/P90|
+|---|---|---:|---|---|---|---|
+|11a73af|bowl_transfer|5/9|26.7–81.1%|8/13.6|353/709.8|511.9/1095.5|
+|3449b96|box_transfer (alphabet-soup can)|0/5|0–43.4%|8/12|375/672|391.9/608.5|
+|9e03b06|box_transfer (alphabet-soup can)|0/1|0–79.3%|10/10|289/289|358.7/358.7|
+|a961dfd|drawer_close|0/1|0–79.3%|22/22|713/713|1773.1/1773.1|
+|a961dfd|microwave_close|0/1|0–79.3%|13/13|513/513|1076.5/1076.5|
+|a961dfd|microwave_open|0/1|0–79.3%|19/19|1020/1020|1319.3/1319.3|
+|7dba5cd|box_transfer (alphabet-soup can)|1/2|9.5–90.5%|11/15|618.5/714.9|407.7/539.5|
+|7dba5cd|bowl_transfer|1/1|20.7–100%|6/6|268/268|536.5/536.5|
+|9368299|box_transfer (alphabet-soup can)|2/3|20.8–93.9%|9/9.8|493/662.6|392.6/458.8|
+|9368299|bowl_transfer|1/1|20.7–100%|5/5|270/270|425.9/425.9|
+
+All four closed bowl failures are post-lift payload-collision blocks, not unverified picks. Can init0 drops during transport, init1 is blocked after close before lift and exhausts recovery options, init2 carries successfully then blocks at lower, init3 blocks at descent, init4 has no remaining legal recovery route. Drawer makes real closing progress but remains partly open. Private body-chain inspection identifies a sliding upper-drawer body at the drawer blockers, not fixed cabinet geometry. Public before/after depth distinguishes a moving subset, but a CPU moving-subset screen only passes1/4 tested routes and still encounters ownership ambiguity. It is diagnostic only and is not deployed. Source/source-state repeats and partial runs do not add independent trials. These small development cohorts do not qualify any category;20/category remains incomplete.
+
+Preceding runtime `3449b96` brakes on calibrated empty jaws, including occluded RGB-D endpoints. On an exact saved carry prefix, public stop63+brake8=71 controls versus old192; this is CPU diagnostic evidence, not task success. See [empty-transport delivery](progress_empty_transport_20261018.md).
 
 Source `a961dfd` repairs the current handle reference. Nudge verification now reuses the currently observed handle pixels already recovered for collision screening, instead of asking a committed older handle capture to be current. It keeps the stationary parent separate.172 CPU tests pass; saved public drawer decisions2/3 change from zero reference points to60,881/65,185 raw points,with measured axis shifts-8/-9mm and compatible ranges[-10,-7]/[-10,-8]mm. These are saved-data measurements,not new physical task scores. Same-source startup8114_80 completed387 controls and a real physical request;full contact development8117(80/120/140/160/200%1) now runs serially onnode02. Only unstarted8103_120/160/200 were replaced. See [handle-reference delivery](progress_handle_reference_20261018.md).
 
