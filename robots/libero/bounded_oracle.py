@@ -330,7 +330,7 @@ class BoundedOracle:
                 raise ValueError('private oracle returned an option outside public legal_after')
             labels.append({'prefix': list(ids), 'legal': legal, 'selected': chosen['id'],
                 'rule_acceptable': [cid for cid in legal if cid in acceptable],
-                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/5',
+                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/6',
                 'evidence': [{'source': 'original_task_predicates_private', 'model_visible': False,
                     'initial_task_status': status,
                     'conditional_on_prefix': list(ids), 'predicted_predecessor_checks': context['assumptions'],

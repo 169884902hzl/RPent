@@ -14,7 +14,7 @@ SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
-LEGALITY_VERSION = "public-request-legal/1"
+LEGALITY_VERSION = "public-request-legal/2"
 
 
 def compact_candidate(candidate: dict) -> dict:
@@ -43,9 +43,10 @@ def committed_candidate_ids(request: dict) -> set[str]:
 def legal_after(request: dict, prefix) -> tuple[str, ...]:
     """Public sequence legality, identical for labels and model decoding.
 
-    This uses only the frozen request. Collision/IK consequences describe a
-    particular predicted state, so they do not remove IDs from this set.
-    The executor separately re-screens the chosen trajectory after each step.
+    Frozen public collision/IK blockers remain excluded. A conditional
+    transport requires the public held state or a predecessor's published
+    held postcondition. No planner, new observation or private label is read.
+    The executor still verifies actual receipts and re-screens each step.
     """
     prefix = tuple(prefix)
     candidates = {c['id']: c for c in request['candidates']}
@@ -62,10 +63,36 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
         raise ValueError('prefix crosses a control-handoff boundary')
     if len(prefix) > request['max_actions']:
         raise ValueError('prefix exceeds requested K')
+    robot = ((request.get('execution_prefix') or {}).get('predicted_state') or {}).get('robot', request['robot'])
+    held = robot['held_anchor_id']
+    anchors = {a['id'] for a in request['anchors']}
+
+    def available(candidate):
+        effect = candidate['consequences']
+        if effect['collision'] is True or effect['ik_reachable'] is False:
+            return False
+        if effect['screen_scope'] == 'conditional_on_prefix':
+            return (candidate['skill'] in {'carry_to', 'lower'} and held is not None
+                    and held in anchors and held != candidate['parameters'].get('target_id'))
+        return True
+
+    for cid in prefix:
+        candidate = candidates[cid]
+        if not available(candidate):
+            raise ValueError('prefix contains an action outside public preconditions')
+        if candidate['skill'] == 'release' or (candidate['skill'] == 'set_gripper'
+                and candidate['parameters']['mode'] == 'open'):
+            held = None
+        for check in candidate.get('expected_receipt', []):
+            if (check['metric'] == 'held' and check['minimum'] == 1
+                    and check['maximum'] in (None, 1) and check['anchor_id'] in anchors):
+                held = check['anchor_id']
+            elif check['metric'] == 'released' and check['minimum'] == 1:
+                held = None
     if len(prefix) == request['max_actions'] or (prefix and is_boundary(candidates[prefix[-1]])):
         return ()
     used = set(prefix) | committed
-    return tuple(cid for cid in candidates if cid not in used)
+    return tuple(cid for cid, candidate in candidates.items() if cid not in used and available(candidate))
 
 
 def validate(value: dict) -> None:
