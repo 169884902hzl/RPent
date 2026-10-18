@@ -35,6 +35,7 @@ from robots.libero.v5_grasp_geometry import (
     clean_object_mask,
     complete_contact_surface,
     complete_crossview_boundary,
+    complete_cylindrical_contact_surface,
     complete_instance_boundary,
     complete_planar_boundary,
     complete_sparse_instance_boundary,
@@ -534,6 +535,22 @@ class MeasuredSkillAdapter:
                                 'surface_residual_m': .001, 'matched_pixels': len(matched),
                                 'private_pose_used': False})
                         current = np.concatenate(recovered)
+                    tangent = tracked.get('pose', {}).get('handle_tangent_xy')
+                    if tangent is not None and len(current) >= 40:
+                        # A bar's newly exposed curved side is not coplanar
+                        # with its old visible side. Current measured arcs,
+                        # along the measured handle axis, can own those raw
+                        # depth pixels without carving a proximity halo.
+                        axis = rotation@old_rotation.T@np.r_[tangent,0.]
+                        curved = [current]
+                        for camera in ('agentview','wrist'):
+                            world = self._self_filtered_world(np.asarray(
+                                self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                            member, cylinder = complete_cylindrical_contact_surface(world,current,axis)
+                            curved.append(world[member])
+                            records.append({'camera':camera,'capture_step':self.ex.toolkit._state.latest_step,
+                                **cylinder})
+                        current = np.concatenate(curved)
                     self.instance_boundary_evidence.setdefault(anchor_id, []).extend(records)
             if handle_only:
                 return current

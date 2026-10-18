@@ -8,6 +8,91 @@ import numpy as np
 VERSION = 'public-grasp-geometry/1-dev'
 
 
+def complete_cylindrical_contact_surface(world, reference, axis, *, max_residual_m=.001):
+    """Associate current handle pixels with locally measured curved sections.
+
+    A handle's hidden side can reappear after contact. A planar continuation
+    cannot recover it. Fit circular sections along the measured handle axis;
+    require an observed arc of at least 90 degrees, not a nearly straight
+    backing panel. Only present depth samples on that measured section and
+    inside its measured axial span acquire membership.
+    """
+    from scipy.optimize import least_squares
+
+    world = np.asarray(world, float)
+    reference = np.asarray(reference, float).reshape(-1, 3)
+    reference = reference[np.isfinite(reference).all(axis=1)]
+    result = np.zeros(world.shape[:2], bool)
+    evidence = {'source': 'current_rgbd_and_measured_handle_circular_sections',
+        'private_pose_used': False, 'max_surface_residual_m': max_residual_m,
+        'minimum_arc_deg': 90., 'sections': [], 'matched_pixels': 0}
+    direction = np.asarray(axis, float)
+    if len(reference) < 40 or np.linalg.norm(direction) < .001:
+        return result, evidence
+    direction /= np.linalg.norm(direction)
+    transverse = np.eye(3)[np.argmin(abs(direction))]
+    transverse -= direction*np.dot(transverse,direction)
+    transverse /= np.linalg.norm(transverse)
+    basis = np.stack([direction,transverse,np.cross(direction,transverse)],axis=1)
+    origin = reference.mean(0)
+    _, ids = np.unique(np.floor(reference/.001).astype(int),axis=0,return_index=True)
+    measured = (reference[ids]-origin)@basis
+    flat = world.reshape(-1,3)
+    valid_ids = np.flatnonzero(np.isfinite(flat).all(axis=1))
+    current = (flat[valid_ids]-origin)@basis
+    rng = np.random.default_rng(181016)
+    lower, upper = measured[:,0].min(),measured[:,0].max()
+    for start in np.arange(lower,upper,.01):
+        stop = min(start+.01,upper)
+        section = measured[(measured[:,0]>=start)&(measured[:,0]<=stop)]
+        if len(section) < 20:
+            continue
+        section = section[np.linspace(0,len(section)-1,min(1200,len(section)),dtype=int)]
+        patch = section[:,1:]
+        maximum_radius = np.linalg.norm(np.ptp(patch,axis=0))
+        best = None
+        for _ in range(300):
+            three = patch[rng.choice(len(patch),3,replace=False)]
+            matrix = 2*(three[1:]-three[0])
+            if abs(np.linalg.det(matrix)) < 1e-10:
+                continue
+            centre = np.linalg.solve(matrix,np.square(three[1:]).sum(1)-np.square(three[0]).sum())
+            radius = np.linalg.norm(three[0]-centre)
+            if not 2*max_residual_m < radius <= maximum_radius:
+                continue
+            support = abs(np.linalg.norm(patch-centre,axis=1)-radius)<=max_residual_m
+            if support.sum() < max(20,.25*len(patch)):
+                continue
+            angles = np.sort(np.arctan2(*(patch[support]-centre).T[::-1]))
+            span = 2*np.pi-np.diff(np.r_[angles,angles[0]+2*np.pi]).max()
+            if span < np.pi/2:
+                continue
+            if best is None or support.sum()>best[0].sum():
+                best = support,centre,radius
+        if best is None:
+            continue
+        support,centre,radius = best
+        def residual(parameters):
+            return np.linalg.norm(patch[support]-parameters[:2],axis=1)-parameters[2]
+        fit = least_squares(residual,np.r_[centre,radius],loss='soft_l1',f_scale=max_residual_m)
+        distances = abs(residual(fit.x))
+        angles = np.sort(np.arctan2(*(patch[support]-fit.x[:2]).T[::-1]))
+        span = 2*np.pi-np.diff(np.r_[angles,angles[0]+2*np.pi]).max()
+        if (np.median(distances)>max_residual_m or span<np.pi/2
+                or not 2*max_residual_m < fit.x[2]<=maximum_radius):
+            continue
+        observed = section[support,0]
+        eligible = ((current[:,0]>=observed.min())&(current[:,0]<=observed.max()))
+        members = (eligible & (abs(np.linalg.norm(current[:,1:]-fit.x[:2],axis=1)-fit.x[2])
+            <=max_residual_m))
+        result.flat[valid_ids[members]] = True
+        evidence['sections'].append({'axial_span_m':[float(observed.min()),float(observed.max())],
+            'radius_m':float(fit.x[2]), 'observed_arc_deg':float(np.degrees(span)),
+            'support_points':int(support.sum()),'matched_pixels':int(members.sum())})
+    evidence['matched_pixels'] = int(result.sum())
+    return result, evidence
+
+
 def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.001,
                              measured_tangent_spacing=False):
     """Recover one omitted edge pixel on a measured local two-axis surface."""

@@ -3,9 +3,39 @@ import pytest
 
 from robots.libero.v5_grasp_geometry import (
     clean_object_mask,
+    complete_cylindrical_contact_surface,
     depth_components,
     measure_pan_handle,
 )
+
+
+def test_curved_handle_completion_keeps_other_radius_and_unobserved_axial_span():
+    x, angle = np.meshgrid(np.linspace(-.03,.03,31),np.linspace(0,2*np.pi,180,endpoint=False),indexing='ij')
+    world = np.stack([x,.008*np.cos(angle),1.+.008*np.sin(angle)],axis=-1)
+    reference = world[(angle>=.1)&(angle<=2.9)]
+    outside = world.copy()
+    outside[:,:,1:] = np.array([0.,1.])+(outside[:,:,1:]-[0.,1.])*1.5
+    extended = np.concatenate([world,outside,world+[.10,0.,0.]],axis=0)
+    result,evidence = complete_cylindrical_contact_surface(extended,reference,[1.,0.,0.])
+    assert result[:31].all()
+    assert not result[31:].any()
+    assert evidence['private_pose_used'] is False
+    assert evidence['sections']
+    assert all(s['observed_arc_deg']>=90 for s in evidence['sections'])
+
+
+@pytest.mark.parametrize('mode',['plane','short_arc','missing_axis','sparse'])
+def test_curved_handle_completion_requires_measured_curvature(mode):
+    x,angle = np.meshgrid(np.linspace(-.03,.03,31),np.linspace(0,.2,50),indexing='ij')
+    world = np.stack([x,.008*np.cos(angle),1.+.008*np.sin(angle)],axis=-1)
+    if mode == 'plane':
+        world[:,:,1] = .008
+    reference = world.reshape(-1,3)
+    axis = [0.,0.,0.] if mode == 'missing_axis' else [1.,0.,0.]
+    if mode == 'sparse':
+        reference = reference[:10]
+    result,_ = complete_cylindrical_contact_surface(world,reference,axis)
+    assert not result.any()
 
 
 @pytest.mark.parametrize('offset,segmented,expected', [
