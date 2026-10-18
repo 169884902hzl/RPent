@@ -68,6 +68,34 @@ def test_empty_close_discards_lift_and_reports_failed_width(adapter):
     assert adapter.held is None and adapter.robot()['eef_xyz_m'][2] == pytest.approx(.9)
 
 
+@pytest.mark.parametrize('moved', [False, True])
+def test_fresh_surface_not_a_view_dependent_centre_controls_chunk_cutoff(adapter, moved):
+    physical_grip(adapter)
+    entity = adapter.scene.entities['e1']
+    source = np.random.default_rng(97).uniform([.08, .085, .89], [.12, .115, .91], (900, 3))
+    partial = source[source[:, 0] > .11]
+    adapter.precontact_instance_surface_v1 = True
+    adapter._instance_pixels = lambda key: source if adapter.ex.toolkit._state.latest_step == 0 else (
+        partial+[.02, 0., 0.] if moved else partial)
+    adapter.scene.refresh = lambda _: adapter.scene.entities.update(e1=replace(entity,
+        xyz=tuple(np.array(entity.xyz)+[.02, 0., 0.]),
+        source_step=adapter.ex.toolkit._state.latest_step))
+    original_screen = adapter._cloud_and_ik
+    def screen(*args, **kwargs):
+        result = original_screen(*args, **kwargs)
+        adapter._base_geometry = (source+[.02, 0., 0.] if moved else source, None)
+        return result
+    adapter._cloud_and_ik = screen
+    request = adapter.request(k=4)
+    choices = grip_sequence(request)[:2]
+    receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
+    assert len(receipts) == 2
+    assert receipts[-1]['stop_reason'] == ('predicted_anchor_changed' if moved else 'endpoint')
+    assert (receipts[-1]['steps_used'] == 0) is moved
+    recheck = next(d['anchor_recheck'] for d in adapter.details if 'anchor_recheck' in d)
+    assert recheck['accepted'] is (not moved)
+
+
 def test_lift_without_fresh_object_evidence_cannot_authorize_suffix(adapter):
     request = adapter.request(k=4)
     lift = next(c for c in request['candidates'] if c['skill'] == 'lift')

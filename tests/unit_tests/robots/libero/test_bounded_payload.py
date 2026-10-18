@@ -9,6 +9,7 @@ from robots.libero.bounded_payload import (
     contact_axis_registration,
     contact_normal_registration,
     moving_payload_pixels,
+    stationary_surface_registration,
 )
 
 
@@ -49,6 +50,28 @@ def test_contact_axis_fit_retains_planar_ambiguity_and_missing_data():
     assert fit['compatible_axis_interval_m'][1] > .005
     for reference, current in ((plane[:10], plane), (plane, plane+[1., 0., 0.])):
         assert not contact_axis_registration(reference, current, 1, .02)['accepted']
+
+
+def test_stationary_anchor_uses_shared_depth_instead_of_partial_surface_centre():
+    source = np.random.default_rng(97).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
+    partial = source[source[:, 0] > .01]
+    assert np.linalg.norm(np.median(partial, axis=0)-np.median(source, axis=0)) > .01
+    fit = stationary_surface_registration(source, source, partial)
+    assert fit['accepted'] and fit['private_pose_used'] is False
+    assert fit['compatible_displacement_bound_m'] <= .01
+
+
+def test_stationary_anchor_rejects_motion_ambiguity_and_missing_identity():
+    source = np.random.default_rng(97).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
+    moved = source+[.02, 0., 0.]
+    assert not stationary_surface_registration(source, moved, moved)['accepted']
+    # A stationary neighbouring surface cannot establish the moved identity.
+    assert not stationary_surface_registration(source, source, moved+[1., 0., 0.])['accepted']
+    x, y = np.mgrid[-40:41, -40:41]
+    plane = np.c_[x.ravel()*.001, y.ravel()*.001, np.zeros(x.size)]
+    patch = plane[(abs(plane[:, 0]) < .01) & (abs(plane[:, 1]) < .01)]
+    assert not stationary_surface_registration(patch, plane, patch)['accepted']
+    assert not stationary_surface_registration(source[:10], source, source)['accepted']
 
 
 def test_contact_fit_corrects_normal_compliance_without_tangent_drift():

@@ -1728,10 +1728,32 @@ class MeasuredSkillAdapter:
             # of that anchor invalidates the prediction before its suffix.
             parameters = candidate['parameters']
             keys = [parameters.get('anchor_id'), parameters.get('target_id')]
-            stale = next((key for key in keys if key is not None and key != self.held
+            stale_keys = [key for key in keys if key is not None and key != self.held
                 and key in row['predicted_anchors']
                 and (entity := self.scene.entities.get(key)) is not None and entity.visible
-                and np.linalg.norm(np.asarray(entity.xyz)-row['predicted_anchors'][key]) > .01), None)
+                and np.linalg.norm(np.asarray(entity.xyz)-row['predicted_anchors'][key]) > .01]
+            stale = None
+            for key in stale_keys:
+                # Moving the wrist changes a partial SAM centre even when
+                # the clean pre-approach surface is still in the same place.
+                # Preserve the 1cm movement gate, but test actual RGB-D
+                # surface displacement before treating that centre as motion.
+                committed = self.committed_grasps.get(key, {})
+                reference = committed.get('instance_reference')
+                recheck = {'accepted': False, 'reason': 'pre_action_surface_missing'}
+                if (reference is not None and np.linalg.norm(np.asarray(
+                        row['predicted_anchors'][key])-committed['anchor_xyz']) < 1e-9):
+                    from robots.libero.bounded_payload import stationary_surface_registration
+
+                    self._cloud_and_ik(key, contact=True)
+                    recheck = stationary_surface_registration(reference['xyz_world'],
+                        self._base_geometry[0], self._instance_pixels(key))
+                self.details.append({'anchor_recheck': recheck, 'anchor_id': key,
+                    'predicted_xyz_m': row['predicted_anchors'][key],
+                    'current_visible_centre_xyz_m': list(self.scene.entities[key].xyz)})
+                if not recheck['accepted']:
+                    stale = key
+                    break
             if stale is not None:
                 robot = self.robot()
                 receipt = dict(schema_version=VERSION, kind='receipt', observation_id=request['observation_id'],

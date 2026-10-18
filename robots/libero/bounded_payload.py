@@ -342,6 +342,41 @@ def contact_axis_registration(reference, current_scene, axis, distance_m, *, end
     return {**evidence, 'accepted': True, 'reason': 'public_axis_surface_fit'}
 
 
+def stationary_surface_registration(reference, current_scene, current_instance, *, tolerance_m=.01):
+    """Recheck a shifted visible centre against its unchanged measured surface.
+
+    Shared current instance pixels establish identity. Three bounded axis
+    fits must each constrain displacement; a flat ambiguous patch cannot
+    authorize continuation merely because it overlaps a stationary plane.
+    This supplies no corrected pose and never moves an old grasp point.
+    """
+    source, instance = (np.asarray(points, float).reshape(-1, 3)
+                        for points in (reference, current_instance))
+    source = source[np.isfinite(source).all(axis=1)]
+    instance = instance[np.isfinite(instance).all(axis=1)]
+    result = {'source': 'pre_action_surface_and_current_public_rgbd', 'accepted': False,
+              'private_pose_used': False, 'tolerance_m': tolerance_m, 'axis_fits': {}}
+    if min(len(source), len(instance)) < 40:
+        return {**result, 'reason': 'instance_surface_missing'}
+    overlap = cKDTree(source).query(instance,
+        distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001
+    result['shared_instance_pixels'] = int(overlap.sum())
+    if overlap.sum() < 40:
+        return {**result, 'reason': 'current_instance_identity_not_shared'}
+    bounds = []
+    for axis in range(3):
+        fit = contact_axis_registration(source, current_scene, axis, .02)
+        result['axis_fits']['xyz'[axis]] = fit
+        if not fit['accepted']:
+            return {**result, 'reason': 'surface_displacement_unmeasured'}
+        bounds.append(max(abs(v) for v in fit['compatible_axis_interval_m']))
+    bound = float(np.linalg.norm(bounds))
+    result['compatible_displacement_bound_m'] = bound
+    accepted = bound <= tolerance_m
+    return {**result, 'accepted': accepted,
+            'reason': 'surface_still_at_measured_anchor' if accepted else 'surface_moved_or_ambiguous'}
+
+
 def contact_normal_registration(predicted, measured, normal):
     """Fit contact compliance along a publicly measured surface normal.
 
