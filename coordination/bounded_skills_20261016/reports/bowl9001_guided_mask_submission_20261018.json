@@ -1,0 +1,79 @@
+{
+  "job": "9019",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/scripts/run_bowl9001_guided_mask_20261018.sbatch"
+  ],
+  "preflight": {
+    "inputs": [
+      {
+        "camera": "agentview",
+        "point": [
+          491,
+          766
+        ],
+        "image": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9001_2/bowl_transfer_libero_spatial_t0_s2_oracle_k4/agentview_high.png/05.png",
+        "image_sha256": "1752a7a88d83d04ba5f99add2a640f5939a298917c58cc248064e8d4d448cf72",
+        "world": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9001_2/bowl_transfer_libero_spatial_t0_s2_oracle_k4/agentview_world_high.npz/05.npz",
+        "world_sha256": "608bd739567a5a47653852c673b829af0312f32dac37457851885fb423b7fdcd",
+        "bounds": [
+          [
+            -0.15269090235233307,
+            0.14479181170463562,
+            0.9897928833961487
+          ],
+          [
+            -0.04627449810504913,
+            0.25216424465179443,
+            1.0514456033706665
+          ]
+        ]
+      },
+      {
+        "camera": "wrist",
+        "point": [
+          670,
+          826
+        ],
+        "image": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9001_2/bowl_transfer_libero_spatial_t0_s2_oracle_k4/wrist_high.png/05.png",
+        "image_sha256": "e5c5b55a8d8e0b249105a33d3fa381a2bbc4d6a172894328e665e6b44953aea8",
+        "world": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9001_2/bowl_transfer_libero_spatial_t0_s2_oracle_k4/wrist_world_high.npz/05.npz",
+        "world_sha256": "d21f932a559f559b4043e612cffa01e9750d5202b54ce237c2df56d18cee4c6b",
+        "bounds": [
+          [
+            -0.15269090235233307,
+            0.14479181170463562,
+            0.9897928833961487
+          ],
+          [
+            -0.04627449810504913,
+            0.25216424465179443,
+            1.0514456033706665
+          ]
+        ]
+      }
+    ],
+    "private_truth_used": false,
+    "controls": 0
+  },
+  "source_commit": "9f11e41",
+  "script_sha256": "3e1f0abaed180d0d30d2f637e00e86a30594ef75dd2773d821b7a9cf235089a6",
+  "launcher_sha256": "6dc4178440c3a03f5dac0b27370121fbd4013ebc8a1e1ba04cd94c6debd1368e",
+  "our_running_before": [
+    [
+      "9018_120",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "gres/gpu:1",
+      "node02"
+    ]
+  ],
+  "aggregate_cap": 4,
+  "codex2": [],
+  "training": false,
+  "physical_controls": 0
+}
