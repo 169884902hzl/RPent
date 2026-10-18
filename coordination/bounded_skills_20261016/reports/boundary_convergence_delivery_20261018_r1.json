@@ -1,0 +1,72 @@
+{
+  "scope": "original-scene public RGB-D CPU reproduction and tested source delivery; physical full result pending",
+  "source_commit": "11ec9aa0b59265cdfd50310e7b9868c4ff1bfa21",
+  "files": {
+    "robots/libero/bounded_payload.py": "532a9a084d5414427b946f23e8a630dcfc6008fc32616fc20c1ebf4315957fee",
+    "robots/libero/bounded_skills.py": "a33f1c25cacb495962d6f0e0a7daf0d65997fb09f36e6d9f2bee54d4c6dd7594",
+    "tests/unit_tests/robots/libero/test_bounded_payload.py": "e8f01b29e19a241345d968bd8a4a77f55e3e9eb330c41f1c0ca3025b0bb418cb"
+  },
+  "cpu_tests": {
+    "command": "OPENBLAS_NUM_THREADS=1 .venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_screen.py tests/unit_tests/robots/libero/test_bounded_motion.py tests/unit_tests/robots/libero/test_bounded_exclusions.py -q",
+    "passed": 225,
+    "elapsed_s": 84.83,
+    "warnings": 6,
+    "log": "coordination/bounded_skills_20261016/reports/boundary_convergence_unit_tests_20261018.log"
+  },
+  "saved_state_pair": {
+    "path": "coordination/bounded_skills_20261016/reports/cup8158_guided_runtime_pair_r17_CPU_20261018.json",
+    "sha256": "fa6a39432ae9a0bcf3b92f904966a944141f8037a1f4fec3553c26fd5ed60016",
+    "results": [
+      {
+        "passed": false,
+        "reason": "measured_payload_collision",
+        "path_min_clearance_m": 0.003655244721623648,
+        "samples": 11,
+        "ik_reachable": null,
+        "collision": true,
+        "method": "original"
+      },
+      {
+        "passed": true,
+        "reason": "public_route_screen_passed",
+        "path_min_clearance_m": 0.007107283111498908,
+        "samples": 92,
+        "ik_reachable": true,
+        "collision": false,
+        "method": "working_runtime"
+      }
+    ]
+  },
+  "snapshot": {
+    "scope": "CPU preparation only; no GPU submission or physical result",
+    "source_commit": "11ec9aa0b59265cdfd50310e7b9868c4ff1bfa21",
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_11ec9aa_20261018",
+    "archive_sha256": "352d2ab157f51cd4091dccae178359898e714cd6e3674899e67a1b3a0c4e51ff",
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_boundary_convergence_20261018.json",
+      "sha256": "d54bd4117468e9475c00828f4873eecc664b01f8b3d83809c37012ff095263f8"
+    },
+    "preflight": {
+      "exit_code": 0,
+      "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_boundary_convergence_20261018.log"
+    },
+    "cpu_tests": 225,
+    "training": false,
+    "confirmation": false,
+    "pi05_in_oracle": false
+  },
+  "physical_startup_job": "8248_60",
+  "runtime_request_schema": "bounded-skills/1 unchanged",
+  "boundary_evidence_version": "public-temporal-seeded-instance-boundary/10-dev",
+  "thresholds_unchanged": {
+    "depth_component_gap_m": 0.003,
+    "stationary_veto_m": 0.004,
+    "appearance_max_colour_difference": 0.1,
+    "appearance_max_surface_step_m": 0.025,
+    "minimum_support_pixels": 2,
+    "collision_clearance_m": 0.004
+  },
+  "training": false,
+  "confirmation": false,
+  "pi05_disabled": true
+}

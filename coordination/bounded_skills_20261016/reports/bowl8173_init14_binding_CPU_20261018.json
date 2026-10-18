@@ -1,0 +1,265 @@
+{
+  "scope": "CPU binding diagnostic only; omitted-anchor variants are not deployed, executed, or scored",
+  "choices_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_14/bowl_transfer_libero_spatial_t0_s14_oracle_k4/choices.jsonl",
+  "choices_sha256": "0addadde29ae93a83c9cccd5e5f80e60aa82c4c70d670c836db785be921d647c",
+  "training": false,
+  "gpu_used": false,
+  "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+  "anchors": [
+    {
+      "id": "e28",
+      "label": "bowl",
+      "frame": "world",
+      "xyz_m": [
+        -0.07310932502150536,
+        0.20106090158224105,
+        0.9307372636265225
+      ],
+      "size_m": [
+        0.10034457765519618,
+        0.09864109655221304,
+        0.04360547495610778
+      ],
+      "quat_xyzw": null,
+      "confidence": 0.9609375,
+      "cached": false,
+      "evidence": [
+        {
+          "measurement_id": "rgbd:0:e28",
+          "capture_step": 0,
+          "source": "rgbd",
+          "cameras": [
+            "main",
+            "wrist"
+          ],
+          "operation": "segmented_rgbd_bounds"
+        }
+      ]
+    },
+    {
+      "id": "e79",
+      "label": "bowl",
+      "frame": "world",
+      "xyz_m": [
+        -0.2068396508693695,
+        0.32579830288887024,
+        0.9319599866867065
+      ],
+      "size_m": [
+        0.10276188373565673,
+        0.09871295690536502,
+        0.043468143939972004
+      ],
+      "quat_xyzw": null,
+      "confidence": 0.95703125,
+      "cached": false,
+      "evidence": [
+        {
+          "measurement_id": "rgbd:0:e79",
+          "capture_step": 0,
+          "source": "rgbd",
+          "cameras": [
+            "main",
+            "wrist"
+          ],
+          "operation": "segmented_rgbd_bounds"
+        }
+      ]
+    },
+    {
+      "id": "e90",
+      "label": "plate",
+      "frame": "world",
+      "xyz_m": [
+        0.07301223956440625,
+        0.20896659957038033,
+        0.9098883867263794
+      ],
+      "size_m": [
+        0.1226153759094874,
+        0.12309741966316798,
+        0.011686930405822582
+      ],
+      "quat_xyzw": null,
+      "confidence": 0.96875,
+      "cached": false,
+      "evidence": [
+        {
+          "measurement_id": "rgbd:0:e90",
+          "capture_step": 0,
+          "source": "rgbd",
+          "cameras": [
+            "main",
+            "wrist"
+          ],
+          "operation": "segmented_rgbd_bounds"
+        }
+      ]
+    },
+    {
+      "id": "e97",
+      "label": "plate",
+      "frame": "world",
+      "xyz_m": [
+        -0.25021785497665405,
+        -0.1274537444114685,
+        0.9307721853256226
+      ],
+      "size_m": [
+        0.11983764171600342,
+        0.09690195262432096,
+        0.005449533462524414
+      ],
+      "quat_xyzw": null,
+      "confidence": 0.361328125,
+      "cached": false,
+      "evidence": [
+        {
+          "measurement_id": "rgbd:0:e97",
+          "capture_step": 0,
+          "source": "rgbd",
+          "cameras": [
+            "main",
+            "wrist"
+          ],
+          "operation": "segmented_rgbd_bounds"
+        }
+      ]
+    },
+    {
+      "id": "e84",
+      "label": "ramekin",
+      "frame": "world",
+      "xyz_m": [
+        -0.22906210273504257,
+        0.21057510375976562,
+        0.9265088438987732
+      ],
+      "size_m": [
+        0.08230057090520856,
+        0.07911604791879653,
+        0.03600669741630558
+      ],
+      "quat_xyzw": null,
+      "confidence": 0.93359375,
+      "cached": false,
+      "evidence": [
+        {
+          "measurement_id": "rgbd:0:e84",
+          "capture_step": 0,
+          "source": "rgbd",
+          "cameras": [
+            "main",
+            "wrist"
+          ],
+          "operation": "segmented_rgbd_bounds"
+        }
+      ]
+    },
+    {
+      "id": "e68",
+      "label": "table",
+      "frame": "world",
+      "xyz_m": [
+        -0.11491512903012335,
+        0.07317761238664389,
+        0.9002824425697327
+      ],
+      "size_m": [
+        0.7384755114714305,
+        0.7817009681661924,
+        0.00042074422041571413
+      ],
+      "quat_xyzw": null,
+      "confidence": 0.8828125,
+      "cached": false,
+      "evidence": [
+        {
+          "measurement_id": "rgbd:0:e68",
+          "capture_step": 0,
+          "source": "rgbd",
+          "cameras": [
+            "main",
+            "wrist"
+          ],
+          "operation": "segmented_rgbd_bounds"
+        }
+      ]
+    }
+  ],
+  "binding_variants": [
+    {
+      "diagnostic_omitted_public_id": null,
+      "source": null,
+      "target": null
+    },
+    {
+      "diagnostic_omitted_public_id": "e90",
+      "source": null,
+      "target": "e97"
+    },
+    {
+      "diagnostic_omitted_public_id": "e97",
+      "source": "e28",
+      "target": "e90"
+    }
+  ],
+  "private_trace": [
+    {
+      "goal": [
+        "on",
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "source_public_id": null,
+      "target_public_id": null
+    },
+    {
+      "goal": [
+        "on",
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "source_public_id": null,
+      "target_public_id": null
+    },
+    {
+      "goal": [
+        "on",
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "source_public_id": null,
+      "target_public_id": null
+    },
+    {
+      "goal": [
+        "on",
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "source_public_id": null,
+      "target_public_id": null
+    },
+    {
+      "goal": [
+        "on",
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "source_public_id": null,
+      "target_public_id": null
+    },
+    {
+      "goal": [
+        "on",
+        "akita_black_bowl_1",
+        "plate_1"
+      ],
+      "source_public_id": null,
+      "target_public_id": null
+    }
+  ],
+  "raw_failure_phase": "planning_unreachable",
+  "causal_stage": "perception_binding_unresolved"
+}
