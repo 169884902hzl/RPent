@@ -1517,6 +1517,41 @@ def test_fixture_search_uses_oblique_contact_when_upright_palm_route_is_blocked(
     assert all(c['screen']['collision'] for c in choices['candidates'][:12])
 
 
+def test_fixture_closure_uses_local_finger_sweeps_instead_of_entire_bar(adapter):
+    from scipy.spatial import ConvexHull
+    from scipy.spatial.transform import Rotation
+
+    boxes = []
+    for name, limits, slide in (
+            ('leftfinger', [-.01, 0.], [-1., 0., 0.]),
+            ('rightfinger', [0., .01], [1., 0., 0.])):
+        corners = np.array([[x, y, z] for x in limits for y in (-.01, .01) for z in (-.02, .01)])
+        boxes.append({'name': name, 'slide_per_half_opening': slide,
+            'convex_halfspaces': ConvexHull(corners).equations.tolist()})
+    adapter.geometry['boxes'] = boxes
+    rng = np.random.default_rng(18102026)
+    local = np.concatenate([rng.uniform([x, -.1, -.015], [x, .1, .005], (1000, 3))
+        for x in (-.015, .015)])
+    # An oblique bar's far ends enlarge its global projection but never
+    # enter the finite finger footprints. They cannot predict jaw opening.
+    ends = rng.uniform([-.08, .06, -.015], [.08, .1, .005], (500, 3))
+    orientation = Rotation.from_euler('z', np.pi/2)
+    contact = np.array([.1, .1, .9])
+    points = np.concatenate([local, ends])+contact
+    assert np.ptp(np.quantile(points[:, 0], [.02, .98])) > .08
+    measured = adapter._fixture_closure_aperture(points, contact, orientation)
+    assert measured['width_m'] == pytest.approx(.03)
+    adapter._handle_pixels = lambda measurement: points
+    plan = {'xyz_m': contact.tolist(), 'quat_xyzw': orientation.as_quat().tolist(),
+        'approach_xyz_m': [.1, -.02, .9], 'width_m': .15}
+    selected = adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan)
+    assert selected['width_m'] == pytest.approx(.03)
+    assert selected['closure_aperture'] == measured
+    # One-sided or missing depth cannot establish bilateral contact width.
+    assert adapter._fixture_closure_aperture(local[local[:, 0] > 0]+contact,
+        contact, orientation) is None
+
+
 def test_fixture_oblique_width_is_measured_and_cannot_exceed_gripper_opening(adapter):
     plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
         'approach_xyz_m': [.1, -.02, .9], 'width_m': .01}

@@ -1104,6 +1104,38 @@ class MeasuredSkillAdapter:
             'surface_measurement': {'xyz_world': self._instance_pixels(entity.id).tolist(),
                 'source_step': entity.source_step, 'normal_xyz': normal.tolist()}}
 
+    def _fixture_closure_aperture(self, points, contact, orientation):
+        """Measure first contact in each finger's finite sliding convex hull.
+
+        The projection of an entire oblique bar includes ends outside the
+        fingers. Only its observed surface inside the real closure sweep
+        contributes to the predicted aperture. Missing bilateral coverage
+        returns no estimate; it never asserts an empty or successful grasp.
+        """
+        rotation = (orientation*Rotation.from_euler('z', -math.pi/2)).as_matrix()
+        local = (np.asarray(points)-contact)@rotation
+        fingers = {'leftfinger': [], 'rightfinger': []}
+        for box in self.geometry['boxes']:
+            side = next((name for name in fingers if box['name'].startswith(name)), None)
+            if side is None or not box.get('convex_halfspaces') or not box.get('slide_per_half_opening'):
+                continue
+            planes = np.asarray(box['convex_halfspaces'])
+            c = planes[:, :3]@box['slide_per_half_opening']
+            b = local@planes[:, :3].T+planes[:, 3]
+            positive, negative, fixed = c > 1e-9, c < -1e-9, abs(c) <= 1e-9
+            lower = np.maximum(0., np.max(b[:, positive]/c[positive], axis=1)) if positive.any() else np.zeros(len(local))
+            upper = np.minimum(self.geometry['max_opening_m']/2,
+                np.min(b[:, negative]/c[negative], axis=1)) if negative.any() else np.full(
+                    len(local), self.geometry['max_opening_m']/2)
+            eligible = (lower <= upper) & (b[:, fixed] <= 1e-9).all(axis=1)
+            if eligible.any():
+                fingers[side].append(float(upper[eligible].max()))
+        if not all(fingers.values()):
+            return None
+        contacts = {side: max(values) for side, values in fingers.items()}
+        return {'source': 'public_handle_pixels_and_static_finger_closure_hulls',
+            'width_m': sum(contacts.values()), 'finger_half_apertures_m': contacts}
+
     def _screen_fixture_approaches(self, entity, plan):
         """Select a measured handle entry with a clear complete contact route.
 
@@ -1124,13 +1156,17 @@ class MeasuredSkillAdapter:
             for orientation in sorted((oblique, oblique*Rotation.from_euler('z', math.pi)),
                     key=lambda q: (q*current.inv()).magnitude()):
                 width = plan.get('width_m')
+                aperture = None
                 if len(handle_points) >= 10:
                     closing = (orientation*Rotation.from_euler('z', -math.pi/2)).as_matrix()[:, 0]
                     extent = np.quantile(handle_points@closing, [.02, .98])
                     width = float(extent[1]-extent[0])
-                orientations.append((orientation, roll, width))
+                    aperture = self._fixture_closure_aperture(handle_points, contact, orientation)
+                    if aperture is not None:
+                        width = aperture['width_m']
+                orientations.append((orientation, roll, width, aperture))
         choices = []
-        for orientation, roll, width in orientations:
+        for orientation, roll, width, aperture in orientations:
             quat = orientation.as_quat().tolist()
             for distance in (.12, .08, .04):
                 entry = contact+normal*distance
@@ -1148,7 +1184,8 @@ class MeasuredSkillAdapter:
                             {'xyz_m': high_entry, 'quat_xyzw': quat}, route[-1]]
                     route.append({'xyz_m': contact.tolist(), 'quat_xyzw': quat})
                     choices.append({'stand_off_m': distance, 'rotate_at': rotate_at,
-                        'handle_roll_deg': roll, 'width_m': width, 'route': route, 'screen': None})
+                        'handle_roll_deg': roll, 'width_m': width, 'closure_aperture': aperture,
+                        'route': route, 'screen': None})
         screen = self._cloud_and_ik(entity.id, contact=True)
         selected = None
         accepted_orientations = set()
@@ -1196,6 +1233,7 @@ class MeasuredSkillAdapter:
         route = choices[selected]['route']
         return {**plan, 'quat_xyzw': route[-1]['quat_xyzw'],
             'width_m': choices[selected]['width_m'],
+            'closure_aperture': choices[selected]['closure_aperture'],
             'approach_xyz_m': route[-2]['xyz_m'], 'approach_route': route[:-1]}
 
     def _transport_alignment(self, robot):
