@@ -1555,7 +1555,13 @@ class MeasuredSkillAdapter:
                 # second approach from inside the fixture. Current handle
                 # pixels, when available, still update collision membership.
                 plan = copy.deepcopy(committed['plan'])
+                surface = plan.get('surface_measurement')
+                if surface is not None:
+                    surface.update(copy.deepcopy(committed.get('current_surface_normal', {})))
                 self._refresh_contact_normal(entity, plan)
+                if surface is not None and 'normal_source_step' in surface:
+                    committed['current_surface_normal'] = {
+                        field: copy.deepcopy(surface[field]) for field in ('normal_xyz', 'normal_source_step')}
                 handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction) if entity.visible else {}
                 if handle.get('pose'):
                     plan['handle_measurement'] = handle

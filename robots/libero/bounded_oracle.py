@@ -225,9 +225,18 @@ class BoundedOracle:
                     normal = contact.get('surface_measurement', {}).get('normal_xyz')
                     if normal is None:
                         normal = contact.get("handle_measurement", {}).get("pose", {}).get("approach_normal_xyz", [0., -1., 0.])
-                    axis = int(np.argmax(np.abs(normal)))
-                    direction = (1 if predicate == "open" else -1)*np.sign(normal[axis])
-                    chosen = nudge("xyz"[axis], direction)
+                    normal = np.asarray(normal)
+                    for axis in np.argsort(-np.abs(normal), kind='stable'):
+                        direction = (1 if predicate == "open" else -1)*np.sign(normal[axis])
+                        option = nudge("xyz"[axis], direction)
+                        # A blocked dominant axis can leave a shorter safe
+                        # push on another measured normal component. Require
+                        # the same 5mm progress resolution; tiny PCA noise
+                        # must not turn an unrelated axis into progress.
+                        if (option is not None and abs(normal[axis]
+                                * option['parameters']['distance_m']) >= .005):
+                            chosen = option
+                            break
                     # A predicted blocked sweep is not a measured failed
                     # contact. Await the executed prefix's checks instead of
                     # closing and immediately reopening in one chunk. A
@@ -330,7 +339,7 @@ class BoundedOracle:
                 raise ValueError('private oracle returned an option outside public legal_after')
             labels.append({'prefix': list(ids), 'legal': legal, 'selected': chosen['id'],
                 'rule_acceptable': [cid for cid in legal if cid in acceptable],
-                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/6',
+                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/7',
                 'evidence': [{'source': 'original_task_predicates_private', 'model_visible': False,
                     'initial_task_status': status,
                     'conditional_on_prefix': list(ids), 'predicted_predecessor_checks': context['assumptions'],

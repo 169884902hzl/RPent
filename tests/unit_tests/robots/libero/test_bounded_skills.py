@@ -1957,6 +1957,17 @@ def test_committed_panel_direction_uses_only_a_fresh_measured_plane(adapter, cap
     assert measured['source_step'] == 0
     assert measured['xyz_world'] == original_surface['xyz_world']
     assert original_surface['normal_xyz'] == [-1., 0., 0.]
+    if measured_plane:
+        # A later occlusion keeps the last measured direction and its age;
+        # it must not restore the initial committed contact normal.
+        adapter.scene.entities['e1'] = replace(entity, visible=False)
+        adapter.ex.toolkit._state.latest_step = 5
+        adapter.request(k=1)
+        cached = adapter.plans['e1']['surface_measurement']
+        np.testing.assert_allclose(cached['normal_xyz'], expected, atol=1e-12)
+        assert cached['normal_source_step'] == 4
+        assert cached['source_step'] == 0
+        assert original_surface['normal_xyz'] == [-1., 0., 0.]
 
 
 def test_surface_contact_screens_symmetric_wrist_instead_of_discarding_it(adapter):
@@ -2027,6 +2038,30 @@ def test_private_fixture_selector_uses_shorter_screened_nudge(adapter, predicate
     assert chosen['skill'] == 'set_gripper' and chosen['parameters']['mode'] == 'open'
     request['candidates'].remove(chosen)
     assert selected(request, oracle.choose(request))[0]['skill'] == 'observe'
+
+
+@pytest.mark.parametrize('secondary', [.53, .01])
+def test_private_fixture_selector_tries_measured_secondary_axis_before_release(adapter, secondary):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    original_obs = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.active = 'e1'
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [['close', 'microwave_1']], 'satisfied': [False]}), adapter)
+    oracle.binding.bind = lambda *args, **kwargs: adapter.scene.entities['e1']
+    request = adapter.request(k=1)
+    adapter.plans['e1']['surface_measurement'] = {'normal_xyz': [-.85, -secondary, -.001]}
+    for candidate in request['candidates']:
+        if candidate['skill'] == 'nudge':
+            candidate['consequences']['collision'] = not (
+                candidate['parameters']['axis'] == 'y' and candidate['parameters']['distance_m'] == .01)
+    chosen = selected(request, oracle.choose(request))[0]
+    if secondary == .53:
+        assert chosen['skill'] == 'nudge'
+        assert chosen['parameters'] == {'axis': 'y', 'distance_m': .01, 'anchor_id': 'e1'}
+    else:
+        assert chosen['skill'] == 'set_gripper' and chosen['parameters']['mode'] == 'open'
 
 
 @pytest.mark.parametrize('predicate,direction', [('turnon', 1), ('turnoff', -1)])
