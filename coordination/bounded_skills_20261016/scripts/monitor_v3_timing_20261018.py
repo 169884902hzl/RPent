@@ -23,6 +23,7 @@ startup = receipt['job']+'_24'
 full_path = base/'reports'/f'{tag}_full_submission.json'
 last = None
 last_accounting = 0.
+watched_arrays = {receipt['job']}
 while True:
     rows = [line.split('|') for line in subprocess.check_output(['squeue','-r','-h','-u','sunyihan',
         '-o','%i|%j|%T|%N|%b|%E|%R'],text=True).splitlines()]
@@ -33,9 +34,10 @@ while True:
     active = [r for r in ours if r[2]=='RUNNING']
     cap = 3 if c2 else 4
     assert len(active)<=4 and all(r[3]=='node02' for r in active), active
-    watched = [receipt['job']]
+    watched_arrays.update(r[0].split('_')[0] for r in ours if 'JobHeld' not in r[6])
     if full_path.exists():
-        watched.append(json.loads(full_path.read_text())['job'])
+        watched_arrays.add(json.loads(full_path.read_text())['job'])
+    watched = sorted(watched_arrays)
     accounting = [line.split('|') for line in subprocess.check_output(
         ['sacct', '-X', '-n', '-j', ','.join(watched),
          '--format=JobID%32,State%32,ExitCode', '-P'], text=True).splitlines()]
@@ -82,12 +84,21 @@ while True:
         subprocess.run([str(root/'.venv/bin/python'),str(base/'scripts/rebalance_chunk_v2_20261018.py'),
             '--tag',tag],check=True,stdout=subprocess.DEVNULL)
         if not any(r[0].split('_')[0]==full for r in ours):
+            subprocess.run([str(root/'.venv/bin/python'),str(base/'scripts/rebalance_chunk_v2_20261018.py'),
+                '--tag',args.following_tag],check=True,stdout=subprocess.DEVNULL)
             print(subprocess.check_output(['sacct','-X','-n','-j',full,
                 '--format=JobID,State,ExitCode,Elapsed','-P'],text=True),flush=True)
             print('TIMING_ARRAY_FINISHED: inspect all physical rows and failures before proceeding',flush=True)
             break
-    subprocess.run([str(root/'.venv/bin/python'),str(base/'scripts/rebalance_chunk_v2_20261018.py'),
-        '--tag',args.following_tag,'--after',barrier],check=True,stdout=subprocess.DEVNULL)
+    # Preserve priority while this array still has work waiting for a slot.
+    # Once its remaining tasks are all running, the independently startup-
+    # gated following array can fill spare capacity instead of idling a GPU.
+    primary_pending = any(r[0].split('_')[0] == barrier and r[2] == 'PENDING' for r in ours)
+    following_command = [str(root/'.venv/bin/python'),str(base/'scripts/rebalance_chunk_v2_20261018.py'),
+        '--tag',args.following_tag]
+    if not full_path.exists() or primary_pending:
+        following_command += ['--after',barrier]
+    subprocess.run(following_command,check=True,stdout=subprocess.DEVNULL)
     status = dict(startup=[r for r in ours if r[0]==startup], running=active,cap=cap,codex2=c2,
         full_job=full if full_path.exists() else None)
     if status != last:
