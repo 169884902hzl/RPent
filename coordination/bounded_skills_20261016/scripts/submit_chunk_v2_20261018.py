@@ -16,6 +16,8 @@ parser.add_argument('--tag', default='chunk_v2_20261018')
 parser.add_argument('--replace-array', action='append', default=[])
 parser.add_argument('--indices', default='0-219', help='Registered original-state indices for the paired full run')
 parser.add_argument('--startup-index', type=int, default=24)
+parser.add_argument('--expected-case-names',
+    help='Exact comma-separated identities, in full-index order; guards cross-manifest reindexing')
 parser.add_argument('--after', help='Ordinary startup waits for this existing job; never releases held jobs')
 args = parser.parse_args()
 assert not (args.full and args.after), '--after applies only to startup submission'
@@ -34,15 +36,24 @@ assert not receipt.exists(), 'Use the existing submission receipt'
 prep = json.loads((base/'reports'/f'{args.tag}_preparation.json').read_text())
 source, manifest = Path(prep['snapshot']), Path(prep['manifest']['path'])
 assert hashlib.sha256(manifest.read_bytes()).hexdigest() == prep['manifest']['sha256']
+plan = json.loads(manifest.read_text())
+selected_cases = [plan['cases'][index] for index in indices]
+if args.expected_case_names:
+    expected = args.expected_case_names.split(',')
+    actual = [case['name'] for case in selected_cases]
+    assert actual == expected, f'Case identity mismatch: expected {expected}, selected {actual}'
+    assert plan['cases'][args.startup_index]['name'] in expected, 'Startup is outside the requested cases'
 launcher = source/'scripts/run_bounded_21f0744_20261017.sbatch'
 assert all(p.is_absolute() and p.is_file() for p in (launcher, manifest))
 startup_proof = None
 if args.full:
     startup = json.loads((base/'reports'/f'{args.tag}_startup_submission.json').read_text())
+    assert startup['snapshot'] == str(source) and startup['manifest'] == prep['manifest']
     job = startup['job']+'_'+str(startup['indices'][0])
     directory = root/'results/bounded_skills/feasibility_20261017'/('job'+job)
     rows = [json.loads(line) for line in (directory/'episodes.jsonl').open()]
     assert len(rows) == 1 and rows[0]['status'] == 'startup_physical'
+    assert rows[0]['case'] == plan['cases'][startup['indices'][0]], 'Startup case differs from manifest'
     physical = json.loads(next(directory.glob('*oracle*/first_physical_request.json')).read_text())
     assert physical['sim_steps'] > 0
     state = subprocess.check_output(['sacct','-X','-n','-j',job,'--format=State,ExitCode','-P'],text=True).strip()
@@ -100,6 +111,8 @@ report={'job':job,'mode':mode,'arguments':arguments,'source_commit':prep['source
     'lane':'available_node02' if args.full else 3,'aggregate_cap':aggregate_cap,
     'codex2_gpu_jobs':codex2_gpu,'startup_proof':startup_proof,'training':False,'confirmation':False,
     'indices': indices if args.full else [args.startup_index],
+    'selected_cases': selected_cases if args.full else [plan['cases'][args.startup_index]],
+    'expected_case_names': args.expected_case_names,
     'scope':('original-task oracle K4 upper bound; no pi05' if args.oracle_only
         else 'original-task oracle upper bound and matched boundary-rule comparison; no pi05'),
     'submission_updates_complete':True}

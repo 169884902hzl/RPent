@@ -20,6 +20,8 @@ parser.add_argument('--follow-through', action='store_true',
     help='Keep resource/accounting checks active until the following array also exits')
 parser.add_argument('--oracle-only', action='store_true',
     help='The startup-gated priority array uses only the oracle K4 arm')
+parser.add_argument('--expected-case-names',
+    help='Forward the exact requested case identities to full-array submission')
 args = parser.parse_args()
 tag = args.tag
 receipt = json.loads((base/'reports'/f'{tag}_startup_submission.json').read_text())
@@ -82,6 +84,9 @@ while True:
             '--tag',tag,'--full','--indices',args.indices,'--replace-array',args.replace_array]
         if args.oracle_only:
             command.append('--oracle-only')
+        if args.expected_case_names:
+            command += ['--expected-case-names', args.expected_case_names,
+                '--startup-index', str(receipt['indices'][0])]
         subprocess.run(command,check=True)
         continue  # Refresh the queue; these rows predate the submitted array.
     barrier = startup

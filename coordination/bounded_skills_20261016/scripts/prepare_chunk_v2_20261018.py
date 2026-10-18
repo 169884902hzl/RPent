@@ -12,6 +12,8 @@ parser.add_argument('--commit', default='77ee4ff')
 parser.add_argument('--tag', default='chunk_v2_20261018')
 parser.add_argument('--archive-sha256', default='530486fe43e1fdf546716dc72c05daf1f8b32341b48ba53f06187c9d92000f78')
 parser.add_argument('--cpu-validation-receipt', type=Path)
+parser.add_argument('--base-manifest', type=Path,
+    help='Existing registered original-state manifest; cases remain byte-for-byte unchanged')
 args = parser.parse_args()
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 base = root/'coordination/bounded_skills_20261016'
@@ -27,7 +29,8 @@ source.mkdir()
 with tarfile.open(archive) as stream:
     stream.extractall(source)
 preparation = root/'results/bounded_skills/feasibility_20261017/preparation'
-previous = preparation/'original20_manifest_precontact_20261018.json'
+previous = args.base_manifest or preparation/'original20_manifest_precontact_20261018.json'
+assert previous.is_absolute() and previous.is_file()
 plan = json.loads(previous.read_text())
 plan.update(source_commit=commit, source_snapshot={'path':str(source), 'code_archive_sha256':archive_sha})
 # No case, BDDL, state identity, split, predicate, budget or robot limit changes.

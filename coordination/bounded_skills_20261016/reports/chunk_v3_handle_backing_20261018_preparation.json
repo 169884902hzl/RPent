@@ -1,0 +1,43 @@
+{
+  "source_commit": "31a70c0",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_handle_backing_20261018_31a70c0",
+  "archive_sha256": "211217b5a649915edf5144e8ce5d5bed6b0426f8486dcd44f4baddf045fc6a21",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_handle_backing_20261018.json",
+    "sha256": "af572518b5817bcd59ee237f5563b30ec21b200f45afa01a89ac937ec6f66bc3"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_handle_backing_20261018.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/handle_backing_cpu_validation_20261018.json",
+    "sha256": "db5ef42b7d955151299cd8ac0908b827206a0d7b521c4e095cb9b214fcae8990",
+    "results": {
+      "source_commit": "31a70c0ab5bf698c3552c780f05450343b396a77",
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_v5_microwave_handle_orientation.py tests/unit_tests/robots/libero/test_v5_fixture_parts.py tests/unit_tests/robots/libero/test_v5_runtime.py tests/unit_tests/robots/libero/test_v5_microwave_door_tracking.py tests/unit_tests/robots/libero/test_v5_microwave_identity.py -q",
+      "exit_code": 0,
+      "passed": 211,
+      "seconds": 2.04,
+      "log": "coordination/bounded_skills_20261016/reports/handle_backing_cpu_tests_20261018.log.gz",
+      "raw_log_sha256": "fdba388dc3eafe17352031ce1f6c6ccdaa83b1501ffc90ea38a021a2094e76ec",
+      "compressed_log_sha256": "caa423071f2a2ddc397d52f9a9c25717ab067a52b6f036e514fcfd8ef9215a22",
+      "archive": "bounded_chunk_v3_handle_backing_20261018_31a70c0.tar.gz",
+      "archive_sha256": "211217b5a649915edf5144e8ce5d5bed6b0426f8486dcd44f4baddf045fc6a21",
+      "runtime_sha256": "27d11de3b994662624d6d1ace2ca69575c10bbd5d9c800de6af074f97c00228b",
+      "ruff_added_diagnostics": 0,
+      "scope": "CPU regression; physical effectiveness pending",
+      "gpu_used": false,
+      "physics_steps": 0
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}

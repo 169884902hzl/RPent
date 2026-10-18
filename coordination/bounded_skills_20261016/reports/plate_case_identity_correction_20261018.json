@@ -1,0 +1,97 @@
+{
+  "time_pacific": "2026-10-18T16:11:08.615875-07:00",
+  "reason": "Round-robin indices 8/19 were incorrectly reused in a category-ordered manifest.",
+  "incorrect_full_job": "9498",
+  "incorrect_selected_cases": [
+    {
+      "name": "bowl_transfer_libero_spatial_t0_s8",
+      "category": "bowl_transfer",
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 0,
+        "seed": 8
+      },
+      "state_sha256": "3f628d77bb395ff9ff2b248e18e5dea19d9b1103ed48b55df4eafa29188bd9f0",
+      "bddl": {
+        "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+        "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+      },
+      "purpose": "development_feasibility_no_training"
+    },
+    {
+      "name": "bowl_transfer_libero_spatial_t0_s19",
+      "category": "bowl_transfer",
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 0,
+        "seed": 19
+      },
+      "state_sha256": "18f349fb4d8b52566befcd2a80723d533717d8dd5dada90ecd7721d512b65e32",
+      "bddl": {
+        "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+        "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+      },
+      "purpose": "development_feasibility_no_training"
+    }
+  ],
+  "correct_indices": [
+    160,
+    161
+  ],
+  "correct_cases": [
+    {
+      "name": "plate_push_libero_goal_t5_s0",
+      "category": "plate_push",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 5,
+        "seed": 0
+      },
+      "state_sha256": "cea30572c1ece1c5d5a53c64fef51544c3a02dbb6bf6bc06d02d3a03ea719aa7",
+      "bddl": {
+        "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/push_the_plate_to_the_front_of_the_stove.bddl",
+        "sha256": "26f22f8ad39a4b2b344b049115c45661a877fa0b4821fb78246725e7e87d8c0b"
+      },
+      "purpose": "development_feasibility_no_training"
+    },
+    {
+      "name": "plate_push_libero_goal_t5_s1",
+      "category": "plate_push",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 5,
+        "seed": 1
+      },
+      "state_sha256": "5ce7bdf94e5030da4f2cdaecaf680d5607faec8614ca63773f1b67ef045d78bf",
+      "bddl": {
+        "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/push_the_plate_to_the_front_of_the_stove.bddl",
+        "sha256": "26f22f8ad39a4b2b344b049115c45661a877fa0b4821fb78246725e7e87d8c0b"
+      },
+      "purpose": "development_feasibility_no_training"
+    }
+  ],
+  "source_commit": "2997335",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_inclined_rim_20261018.json",
+    "sha256": "271011d3308eeaf2f279795d39436abdb32c2bca9a69fac0a3d19870c4740690"
+  },
+  "negative_test": {
+    "exit_code": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/scripts/submit_chunk_v2_20261018.py\", line 44, in <module>\n    assert actual == expected, f'Case identity mismatch: expected {expected}, selected {actual}'\nAssertionError: Case identity mismatch: expected ['plate_push_libero_goal_t5_s0', 'plate_push_libero_goal_t5_s1'], selected ['bowl_transfer_libero_spatial_t0_s8', 'bowl_transfer_libero_spatial_t0_s19']\n",
+    "submitted_job": false
+  },
+  "stopped_controller": {
+    "pid": 1825717,
+    "command": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python -u /public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/scripts/monitor_v3_timing_20261018.py --tag chunk_v3_inclined_rim_20261018 --indices 8,19 --following-tag original20_support_roundrobin_20261018 --replace-array 9248 --oracle-only --follow-through "
+  },
+  "startup_submission": {
+    "job": "9500",
+    "mode": "startup",
+    "source_commit": "2997335",
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_inclined_rim_20261018_2997335",
+    "lane": 3
+  },
+  "running_or_held_jobs_modified": false,
+  "training": false,
+  "script_sha256": "39f90b468862d829ae25563de1d124b5ce898e55894efc07358c37cdcfaeab4e"
+}
