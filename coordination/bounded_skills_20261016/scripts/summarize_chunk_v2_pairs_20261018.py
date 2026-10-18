@@ -25,7 +25,9 @@ def summarize(root, tag):
     histograms = defaultdict(Counter)
     eligible = defaultdict(Counter)
     cutoffs = defaultdict(Counter)
-    for index, case in enumerate(cases):
+    indices = receipt.get('indices', list(range(len(cases))))
+    for index in indices:
+        case = cases[index]
         directory = root/'results/bounded_skills/feasibility_20261017'/f"job{receipt['job']}_{index}"
         path = directory/'episodes.jsonl'
         rows = read_rows(path)
@@ -84,7 +86,7 @@ def summarize(root, tag):
             for skill, n in counts.items()}
     return {'source_commit': receipt['source_commit'], 'snapshot': receipt['snapshot'],
         'submission': receipt, 'scope': 'original-task development; identical source and state; only static chunk boundary rule differs',
-        'registered_states': len(cases), 'closed_pairs': len(pairs),
+        'registered_states': len(indices), 'closed_pairs': len(pairs),
         'outcomes': dict(Counter(pair['outcome'] for pair in pairs)),
         'paired_by_category': paired_summary, 'pairs': pairs, 'pending': waiting,
         'execution_errors': errors, 'actual_actions_per_decision_histogram': dict(histograms),

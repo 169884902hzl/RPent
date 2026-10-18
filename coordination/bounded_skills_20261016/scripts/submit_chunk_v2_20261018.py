@@ -9,7 +9,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--full', action='store_true')
 parser.add_argument('--tag', default='chunk_v2_20261018')
 parser.add_argument('--replace-array', action='append', default=[])
+parser.add_argument('--indices', default='0-219', help='Registered original-state indices for the paired full run')
 args = parser.parse_args()
+indices = []
+for part in args.indices.split(','):
+    ends = [int(value) for value in part.split('-')]
+    assert len(ends) in {1, 2}
+    indices.extend(range(ends[0], ends[-1]+1))
+assert indices and len(indices) == len(set(indices)) and all(0 <= i < 220 for i in indices)
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 base = root/'coordination/bounded_skills_20261016'
 mode = 'full' if args.full else 'startup'
@@ -53,7 +60,7 @@ else:
     dependency = ('?'.join('afterany:'+child for child in active)
                   if len(running) >= aggregate_cap else None)
 arguments = ['sbatch','--parsable','--nodelist=node02','--nice=500',
-    '--array='+('0-219%'+str(capacity) if args.full else '24%1'),
+    '--array='+(args.indices+'%'+str(capacity) if args.full else '24%1'),
     *(['--dependency='+dependency] if dependency else []),
     '--export=ALL,SOURCE='+str(source)+',SOURCE_COMMIT='+prep['source_commit']+',MANIFEST='+str(manifest)
         +',STARTUP='+('0' if args.full else '1')+',PAIR_LEGACY='+('1' if args.full else '0'),str(launcher)]
@@ -74,6 +81,7 @@ report={'job':job,'mode':mode,'arguments':arguments,'source_commit':prep['source
     'snapshot':str(source),'manifest':prep['manifest'],'following_updates':updates,'queue_before':ours,
     'lane':'available_node02' if args.full else 3,'aggregate_cap':aggregate_cap,
     'codex2_gpu_jobs':codex2_gpu,'startup_proof':startup_proof,'training':False,'confirmation':False,
+    'indices': indices if args.full else [24],
     'scope':'original-task oracle upper bound and matched boundary-rule comparison; no pi05',
     'submission_updates_complete':True}
 receipt.write_text(json.dumps(report,indent=2)+'\n')
