@@ -235,6 +235,42 @@ def test_oracle_refreshes_blocked_lift_before_discarding_unmeasured_grasp(adapte
         ('set_gripper', {'mode': 'open'}) if failed_lift else ('observe', {'mode': 'refresh'}))
 
 
+@pytest.mark.parametrize('predicate', ['open', 'close', 'turnon', 'turnoff'])
+def test_oracle_measures_predicted_blocked_contact_before_releasing_it(adapter, monkeypatch, predicate):
+    physical_grip(adapter)
+    request = adapter.request(k=4)
+    adapter.plans['e1']['handle_measurement'] = {
+        'pose': {'approach_normal_xyz': [0., 0., 1.] if predicate.startswith('turn') else [0., 1., 0.]}}
+    original = type(adapter)._candidate
+
+    def blocked_closed_contact(self, skill, parameters, **kwargs):
+        result = original(self, skill, parameters, **kwargs)
+        if (result is not None and skill in {'nudge', 'rotate_wrist'}
+                and self.robot()['gripper_opening_m'] < .075):
+            result['consequences']['collision'] = True
+        return result
+
+    monkeypatch.setattr(type(adapter), '_candidate', blocked_closed_contact)
+    status = {'done': False, 'goals': [[predicate, 'fixture_1']], 'satisfied': [False]}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda *_: status), adapter)
+    oracle.binding.bind = lambda *args, **kwargs: adapter.scene.entities['e1']
+    choices = selected(request, oracle.choose(request))
+    assert [c['skill'] for c in choices] == ['move_to', 'descend', 'set_gripper', 'observe']
+    assert choices[2]['parameters'] == {'mode': 'close'}
+    assert choices[3]['parameters'] == {'mode': 'refresh'}
+    assert oracle.last_labels['positions'][-1]['rule_acceptable'] == [choices[3]['id']]
+
+    # The same obstruction confirmed in a current measured state still
+    # allows the existing open-and-reapproach recovery.
+    current = {**request, 'robot': {**request['robot'], 'gripper_opening_m': .04}}
+    adapter.active = 'e1'
+    for c in current['candidates']:
+        if c['skill'] in {'nudge', 'rotate_wrist'}:
+            c['consequences']['collision'] = True
+    measured = oracle._choose_one(current, status)
+    assert (measured['skill'], measured['parameters']) == ('set_gripper', {'mode': 'open'})
+
+
 def test_oracle_prefix_clones_bindings_without_copying_live_rpc(adapter):
     from multiprocessing.process import AuthenticationString
 

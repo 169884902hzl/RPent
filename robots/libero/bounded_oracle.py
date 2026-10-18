@@ -53,7 +53,7 @@ class BoundedOracle:
                 pairs.append((source, target))
         return pairs[0] if len(pairs) == 1 else (None, None)
 
-    def _choose_one(self, request, status):
+    def _choose_one(self, request, status, *, predicted_prefix=False):
         ex = self.adapter
         # Cached public anchors remain available to the selector, just as to
         # the model. Do not lose a measured stationary target merely because
@@ -190,6 +190,8 @@ class BoundedOracle:
                     delta = np.asarray(target.xyz)-source.xyz
                     axis = int(np.argmax(np.abs(delta[:2])))
                     chosen = nudge('xy'[axis], delta[axis])
+                    if chosen is None and predicted_prefix:
+                        chosen = find('observe', mode='refresh')
                 elif predicate in {"on", "in"}:
                     last = ex.receipts[-1] if ex.receipts else None
                     failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success'
@@ -210,8 +212,10 @@ class BoundedOracle:
                         # measured control, reversing the outward turn sign.
                         wrist_axis = Rotation.from_quat(robot['eef_quat_xyzw']).apply([0., 0., 1.])
                         direction *= np.sign(np.dot(wrist_axis, normal))
-                    chosen = (find("rotate_wrist", angle_deg=float(45*direction))
-                              or find("set_gripper", mode="open"))
+                    chosen = find("rotate_wrist", angle_deg=float(45*direction))
+                    if chosen is None:
+                        chosen = (find('observe', mode='refresh') if predicted_prefix
+                                  else find("set_gripper", mode="open"))
                 else:
                     normal = contact.get('surface_measurement', {}).get('normal_xyz')
                     if normal is None:
@@ -219,11 +223,13 @@ class BoundedOracle:
                     axis = int(np.argmax(np.abs(normal)))
                     direction = (1 if predicate == "open" else -1)*np.sign(normal[axis])
                     chosen = nudge("xyz"[axis], direction)
-                    # A blocked contact route needs a new contact, not an
-                    # occluded scan with the same closed fingers. Opening
-                    # is an existing public option and clears the adapter's
-                    # contact commitment before measuring a fresh approach.
-                    chosen = chosen or find("set_gripper", mode="open")
+                    # A predicted blocked sweep is not a measured failed
+                    # contact. First observe the actual closure instead of
+                    # closing and immediately reopening in one chunk. A
+                    # measured blocked route keeps the existing recovery.
+                    if chosen is None:
+                        chosen = (find('observe', mode='refresh') if predicted_prefix
+                                  else find("set_gripper", mode="open"))
                 continue
             error = np.linalg.norm(xyz-contact["xyz_m"])
             angular = (Rotation.from_quat(robot["eef_quat_xyzw"])*Rotation.from_quat(contact["quat_xyzw"]).inv()).magnitude()
@@ -242,7 +248,7 @@ class BoundedOracle:
             raise NoPublicOption("upper-bound selector has no remaining public option")
         return chosen
 
-    def _acceptable(self, request, status):
+    def _acceptable(self, request, status, *, predicted_prefix=False):
         """All public choices allowed by the private task-progress rules.
 
         Independent unsatisfied goals contribute their next safe phase. All
@@ -258,7 +264,7 @@ class BoundedOracle:
             probe.binding = copy.deepcopy(self.binding, {id(self.binding.rpc): self.binding.rpc})
             probe.private_trace = []
             try:
-                selected.append(probe._choose_one(request, one_goal))
+                selected.append(probe._choose_one(request, one_goal, predicted_prefix=predicted_prefix))
             except NoPublicOption:
                 continue
         acceptable = set()
@@ -298,12 +304,13 @@ class BoundedOracle:
             legal = [c['id'] for c in current['candidates'] if c['consequences']['collision'] is not True
                      and c['consequences']['ik_reachable'] is not False]
             try:
-                chosen = virtual._choose_one(current, status)
+                predicted_prefix = bool(ids) or request.get('execution_prefix') is not None
+                chosen = virtual._choose_one(current, status, predicted_prefix=predicted_prefix)
             except NoPublicOption:
                 if ids:
                     break
                 raise
-            acceptable = virtual._acceptable(current, status)
+            acceptable = virtual._acceptable(current, status, predicted_prefix=predicted_prefix)
             acceptable.add(chosen['id'])
             if chosen['id'] in ids:
                 alternatives = [c for c in current['candidates'] if c['id'] in acceptable and c['id'] not in ids]
@@ -312,7 +319,7 @@ class BoundedOracle:
                 chosen = alternatives[0]
             labels.append({'prefix': list(ids), 'legal': legal, 'selected': chosen['id'],
                 'rule_acceptable': [cid for cid in legal if cid in acceptable],
-                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/2',
+                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/3',
                 'evidence': [{'source': 'original_task_predicates_private', 'model_visible': False,
                     'initial_task_status': status,
                     'conditional_on_prefix': list(ids), 'predicted_predecessor_checks': context['assumptions'],

@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/home/agilex/cobot_magic/rpent_libero_eval/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+    "tests/unit_tests/robots/libero/test_bounded_prefix.py",
+    "tests/unit_tests/robots/libero/test_bounded_compaction.py",
+    "tests/unit_tests/robots/libero/test_bounded_async.py",
+    "tests/unit_tests/robots/libero/test_skill_package_schema.py",
+    "tests/unit_tests/robots/libero/test_bounded_vla.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "wall_s": 135.03069297689945,
+  "log": "coordination/bounded_skills_20261016/reports/predicted_contact_CPU_20261018.log",
+  "log_sha256": "0e2dffa7d567fa8edc382e52e28d4034875918be4dd9afb903008cc96c4eb484",
+  "source_sha256": {
+    "robots/libero/bounded_oracle.py": "2037db74cd5bdb8fd60bd60d3998a6f6df59f82e244d736b11f3eca49e90ce26",
+    "rpent/skill_package/schema.json": "7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3",
+    "SKILL_PACKAGE_SPEC.md": "ddb1cc4b21e10239bd0f140beed06c28b07d330a612ce001d2686385fab92e98",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py": "c7f92f89a0371ac0167d6bd4121aa45853c4eefb84c763512f9f4ced1d02d0ab"
+  },
+  "training": false,
+  "GPU_used": false
+}
