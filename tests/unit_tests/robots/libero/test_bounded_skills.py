@@ -47,6 +47,49 @@ def decision(request, ids):
             "observation_id": request["observation_id"], "candidate_ids": ids}
 
 
+def test_measured_anchor_still_has_screened_approaches_without_a_contact_fit(adapter):
+    adapter.grasp_geometry = lambda entity: None
+    request = adapter.request(k=4)
+    approaches = [c for c in request['candidates'] if c['skill'] == 'move_to']
+    assert len(approaches) == 12
+    assert not any(c['skill'] in {'align', 'descend', 'lift'} for c in request['candidates'])
+    assert not adapter.plans
+    for candidate in approaches:
+        assert candidate['consequences']['screen_scope'] == 'hand_mesh_observed_space'
+        assert candidate['consequences']['expected_width_m'] is None
+        route = adapter._route('move_to', candidate['parameters'])
+        assert route[-1]['quat_xyzw'] == request['robot']['eef_quat_xyzw']
+        endpoint = np.asarray(route[-1]['xyz_m'])
+        lower = np.asarray(adapter.scene.entities['e1'].lower)
+        upper = np.asarray(adapter.scene.entities['e1'].upper)
+        assert np.linalg.norm(np.maximum(0., np.maximum(lower-endpoint, endpoint-upper))) >= .12-1e-9
+        adapter._commit_grasp(candidate)
+    assert not adapter.committed_grasps
+    validate(request)
+
+
+def test_private_recovery_approaches_an_ungraspable_source_once_before_measuring(adapter):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    adapter.grasp_geometry = lambda entity: None
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .1, .9),
+        (.25, .05, .89), (.35, .15, .91), True, 0)
+    status = {'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: status), adapter)
+    request = adapter.request(k=4)
+    decision = oracle.choose(request)
+    assert len(decision['candidate_ids']) == 1
+    chosen = next(c for c in request['candidates'] if c['id'] == decision['candidate_ids'][0])
+    assert chosen['skill'] == 'move_to' and chosen['parameters']['anchor_id'] == 'e1'
+    assert oracle.last_labels['positions'][0]['rule_acceptable']
+    # Prior recovery views are not additional progress labels. No controls
+    # are needed to check that the private selector advances to another view.
+    adapter.receipts.append({'candidate_id': chosen['id']})
+    acceptable = oracle._acceptable(request, status)
+    assert chosen['id'] not in acceptable
+    assert oracle._choose_one(request, status)['id'] != chosen['id']
+
+
 def test_same_capture_self_filter_reuses_only_identical_inputs(adapter, monkeypatch):
     import scipy.spatial
     from scipy.spatial import cKDTree
@@ -2970,10 +3013,10 @@ def test_held_anchor_and_lower_route_use_the_cleaned_current_payload(adapter):
 
 @pytest.mark.parametrize('active,held,opening,expected', [
     ('e1', None, .025, 'set_gripper'),
-    (None, None, .025, 'observe'),
-    ('another', None, .025, 'observe'),
+    (None, None, .025, 'move_to'),
+    ('another', None, .025, 'move_to'),
     ('e1', 'another', .025, 'observe'),
-    ('e1', None, .08, 'observe'),
+    ('e1', None, .08, 'move_to'),
 ])
 def test_oracle_reopens_lost_active_contact_without_dropping_a_held_payload(
         adapter, active, held, opening, expected):
@@ -2992,8 +3035,12 @@ def test_oracle_reopens_lost_active_contact_without_dropping_a_held_payload(
     if expected == 'set_gripper':
         assert chosen['parameters'] == {'mode': 'open'}
         assert oracle.private_trace[-1]['recovery'] == 'open_lost_contact_before_reapproach'
+    elif expected == 'move_to':
+        assert chosen['parameters']['anchor_id'] == 'e1'
+        assert oracle.private_trace[-1]['recovery'] == 'measured_anchor_approach_without_contact_fit'
     else:
         assert 'recovery' not in oracle.private_trace[-1]
+    assert adapter.held == held
 
 
 def test_oracle_releases_a_payload_already_inside_a_measured_container(adapter):

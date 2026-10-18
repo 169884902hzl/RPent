@@ -76,6 +76,28 @@ def test_model_chosen_nonoracle_prefix_is_labeled_without_mutating_saved_state(c
     assert calls == ['oracle.status'] and not adapter.p.actions
 
 
+def test_unfitted_anchor_recovery_labels_match_the_online_selector(monkeypatch):
+    adapter = adapter_fixture.__wrapped__(monkeypatch)
+    adapter._cloud_and_ik = lambda *args, **kwargs: SavedScreen()
+    adapter.grasp_geometry = lambda entity: None
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .1, .91),
+        (.25, .05, .9), (.35, .15, .92), True, 0)
+    request = adapter.request(k=4)
+    status = {'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: status), adapter)
+    state = capture_annotation_state(oracle, request)
+    choice = oracle.choose(request)
+    assert len(choice['candidate_ids']) == 1
+    expected = oracle.last_labels['positions'][0]
+    actual = annotate_prefix(state, request, [])
+    for field in ('legal', 'rule_acceptable', 'selected'):
+        assert actual[field] == expected[field]
+    after_approach = annotate_prefix(state, request, choice['candidate_ids'])
+    assert after_approach['requires_measurement']
+    assert after_approach['legal'] == list(legal_after(request, choice['candidate_ids']))
+    assert after_approach['physics_steps'] == 0 and not adapter.p.actions
+
+
 def test_reject_mismatched_request_invalid_prefix_and_corrupt_snapshot(captured, tmp_path):
     _, _, request, state, _ = captured
     with pytest.raises(ValueError, match='different request'):

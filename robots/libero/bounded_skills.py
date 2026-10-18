@@ -1436,22 +1436,31 @@ class MeasuredSkillAdapter:
         point = start.copy()
         if skill in {"move_to", "align", "descend"}:
             contact = self.plans.get(key)
-            if contact is None:
-                return None
-            goal = np.array(contact["xyz_m"])
             approach = parameters.get("approach", "above")
             right, front = map(np.asarray, self.scene.view_axes)
             direction = {"above": np.array([0., 0., 1.]), "front": front,
                          "left": -right, "right": right}[approach]
-            if skill == "align":
-                return [{"xyz_m": start.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
-            if skill == "descend":
-                return [{"xyz_m": goal.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
-            preferred = approach == contact.get('preferred_approach')
-            if preferred and parameters['path'] == contact.get('preferred_path', 'over'):
-                return copy.deepcopy(contact['approach_route'])
-            point = np.asarray(contact['approach_xyz_m']) if preferred else goal+direction*.12
-            quat = contact["quat_xyzw"]
+            if contact is None:
+                if skill != 'move_to' or entity is None or not entity.visible:
+                    return None
+                # A failed opposing-contact fit does not erase a measured
+                # anchor. Offer a noncontact observation approach outside
+                # its measured bounds, retaining the current wrist pose.
+                # The normal full-hand sweep and IK screen still apply.
+                lower, upper = np.asarray(entity.lower), np.asarray(entity.upper)
+                goal = (lower+upper)/2
+                point = goal+direction*(float(np.abs(direction)@(upper-lower))/2+.12)
+            else:
+                goal = np.array(contact["xyz_m"])
+                if skill == "align":
+                    return [{"xyz_m": start.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
+                if skill == "descend":
+                    return [{"xyz_m": goal.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
+                preferred = approach == contact.get('preferred_approach')
+                if preferred and parameters['path'] == contact.get('preferred_path', 'over'):
+                    return copy.deepcopy(contact['approach_route'])
+                point = np.asarray(contact['approach_xyz_m']) if preferred else goal+direction*.12
+                quat = contact["quat_xyzw"]
             path = parameters["path"]
             if path == "over":
                 height = max(start[2], point[2])+ .08
@@ -1736,10 +1745,11 @@ class MeasuredSkillAdapter:
         for entity in entities:
             if entity.id == self.held:
                 add('align', anchor_id=entity.id)
-            if entity.id in self.plans and self.held is None:
+            if self.held is None and (entity.id in self.plans or entity.visible):
                 for approach in ("above", "front", "left", "right"):
                     for path in ("direct", "over", "around"):
                         add("move_to", anchor_id=entity.id, approach=approach, path=path)
+            if entity.id in self.plans and self.held is None:
                 for skill in ("align", "descend", "lift"):
                     add(skill, anchor_id=entity.id)
             if entity.id != self.held:

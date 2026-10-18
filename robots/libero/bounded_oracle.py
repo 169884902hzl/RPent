@@ -20,7 +20,7 @@ from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 from robots.libero.bounded_chunk import PublicPrefixPrediction
 from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
-JUDGE_VERSION = 'libero-private-task-progress-rules/9'
+JUDGE_VERSION = 'libero-private-task-progress-rules/10'
 
 
 class NoPublicOption(ValueError):
@@ -198,6 +198,19 @@ class BoundedOracle:
                     chosen = find('set_gripper', mode='open')
                     if chosen is not None:
                         self.private_trace[-1]['recovery'] = 'open_lost_contact_before_reapproach'
+                if chosen is None and predicted_prefix:
+                    chosen = measure_contact()
+                if chosen is None:
+                    attempted = {receipt['candidate_id'] for receipt in ex.receipts}
+                    for option in feasible:
+                        if (option['skill'] != 'move_to' or option['parameters']['anchor_id'] != source.id
+                                or option['id'] in attempted):
+                            continue
+                        route = ex._route('move_to', option['parameters'], robot=robot)
+                        if route is not None and np.linalg.norm(np.asarray(route[-1]['xyz_m'])-xyz) > .02:
+                            chosen = option
+                            self.private_trace[-1]['recovery'] = 'measured_anchor_approach_without_contact_fit'
+                            break
                 chosen = chosen or find("observe", mode="wrist_scan")
                 continue
             if robot["gripper_opening_m"] < .075:
@@ -303,6 +316,12 @@ class BoundedOracle:
                     continue
                 other = candidate['parameters']
                 if chosen['skill'] == 'move_to' and other.get('anchor_id') == params['anchor_id']:
+                    if params['anchor_id'] not in self.adapter.plans:
+                        if candidate['id'] in {receipt['candidate_id'] for receipt in self.adapter.receipts}:
+                            continue
+                        route = self.adapter._route('move_to', other, robot=request['robot'])
+                        if route is None or np.linalg.norm(np.asarray(route[-1]['xyz_m'])-request['robot']['eef_xyz_m']) <= .02:
+                            continue
                     acceptable.add(candidate['id'])
                 if (chosen['skill'] == 'nudge' and other.get('anchor_id') == params.get('anchor_id')
                         and other['axis'] == params['axis']
