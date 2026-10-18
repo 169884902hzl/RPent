@@ -351,6 +351,18 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                         with timings.measure('planning.request'):
                             request = adapter.request(k=1 if arm == "oracle_k1" else 4)
                     request_s = time.perf_counter()-request_started
+                    offline_state_reference = None
+                    if prefetched is None:
+                        from robots.libero.bounded_offline_labels import (
+                            capture_annotation_state,
+                            save_annotation_state,
+                        )
+                        with timings.measure('private_labels.offline_capture'):
+                            annotation_oracle = policy or BoundedOracle(rpc, adapter)
+                            offline_state = capture_annotation_state(annotation_oracle, request)
+                            offline_state_reference = save_annotation_state(
+                                output/f'private_prefix_state_{index:04d}.pkl.gz', offline_state)
+                            del offline_state
                     if prefetched is None:
                         try:
                             with timings.measure('decision.model' if arm.startswith('model') else 'decision.oracle'):
@@ -358,7 +370,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                         except NoPublicOption as exc:
                             terminal_diagnostic = str(exc)
                             ledger.write(json.dumps({"index": index, "event": "no_remaining_public_option",
-                                "request": request, "error": str(exc), "sim_steps": before})+"\n")
+                                "request": request, "error": str(exc), "sim_steps": before,
+                                "private_prefix_annotation_state": offline_state_reference})+"\n")
                             ledger.flush()
                             break
                     if arm == "call_vla":
@@ -394,6 +407,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                            "chunk_execution": adapter.last_chunk,
                            "candidate_compaction": adapter.candidate_compaction,
                            "private_pre_execution_snapshot": private_snapshot,
+                           "private_prefix_annotation_state": offline_state_reference,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
                            "instance_boundary_evidence": boundary_evidence,
                            "perception_evidence": perception_evidence,
