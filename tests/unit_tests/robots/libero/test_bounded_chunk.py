@@ -68,6 +68,26 @@ def test_empty_close_discards_lift_and_reports_failed_width(adapter):
     assert adapter.held is None and adapter.robot()['eef_xyz_m'][2] == pytest.approx(.9)
 
 
+@pytest.mark.parametrize('empty', [True, False])
+def test_fingertip_contact_expects_empty_closure_without_a_payload(adapter, empty):
+    physical_grip(adapter, empty=empty)
+    adapter.active = 'e1'
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+            'width_m': None, 'contact_kind': 'surface'}
+    adapter.committed_grasps['e1'] = {'plan': plan, 'anchor_xyz': np.array([.1, .1, .9])}
+    request = adapter.request(k=4)
+    close = next(c for c in request['candidates'] if c['skill'] == 'set_gripper'
+                 and c['parameters']['mode'] == 'close')
+    prediction = PublicPrefixPrediction(adapter, request)
+    prediction.advance(prediction.candidate(close))
+    assert prediction.pending is prediction.payload_id is prediction.payload_local is None
+    assert prediction.adapter.held is None
+    receipts = adapter.execute(request, decision(request, [close['id']]))
+    assert receipts[0]['outcome'] == ('success' if empty else 'failure')
+    assert receipts[0]['expectation_checks'][0]['passed'] is empty
+    assert adapter.held is None
+
+
 @pytest.mark.parametrize('moved', [False, True])
 def test_fresh_surface_not_a_view_dependent_centre_controls_chunk_cutoff(adapter, moved):
     physical_grip(adapter)

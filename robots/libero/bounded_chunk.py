@@ -39,8 +39,13 @@ def expected_receipt(adapter, skill, parameters, route=None):
             checks += [condition('gripper_opening_m', .075, .085), condition('released', 1., 1.)]
         else:
             anchor = adapter.active
-            width = adapter.plans.get(anchor, {}).get('width_m')
-            if width is not None:
+            plan = adapter.plans.get(anchor, {})
+            width = plan.get('width_m')
+            if plan.get('contact_kind') == 'surface':
+                # Fingertip pushing closes the empty jaws; it does not
+                # promise an opposing grasp or attach a payload.
+                low, high = 0., .005
+            elif width is not None:
                 # The measured opposing section is not an exact pad aperture.
                 # Publish the range; an empty closure must not pass as contact.
                 low, high = max(.005, width-.015), min(.075, width+.015)
@@ -274,7 +279,9 @@ class PublicPrefixPrediction:
                 entity = self.adapter.scene.entities.get(self.pending)
                 # Fixed furniture contact is not a payload attachment.
                 from robots.libero.v5_state import fixture_actions
-                if entity and not entity.part_of and not fixture_actions(entity.name):
+                plan = self.adapter.plans.get(self.pending, {})
+                if (entity and not entity.part_of and not fixture_actions(entity.name)
+                        and plan.get('contact_kind') != 'surface'):
                     points = _voxel(self._target(self.pending), .002)
                     self.payload_id = self.pending
                     self.payload_local = (points-self.sensor['eef_xyz_m'])@Rotation.from_quat(self.sensor['eef_quat_xyzw']).as_matrix()
