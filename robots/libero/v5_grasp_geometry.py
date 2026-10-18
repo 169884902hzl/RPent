@@ -42,7 +42,9 @@ def complete_cylindrical_contact_surface(world, reference, axis, *, max_residual
     current = (flat[valid_ids]-origin)@basis
     rng = np.random.default_rng(181016)
     lower, upper = measured[:,0].min(),measured[:,0].max()
-    for start in np.arange(lower,upper,.01):
+    # Overlap the measured sections so sparse axial samples at a window
+    # boundary do not leave an artificial gap between two fitted surfaces.
+    for start in np.arange(lower,upper,.005):
         stop = min(start+.01,upper)
         section = measured[(measured[:,0]>=start)&(measured[:,0]<=stop)]
         if len(section) < 20:

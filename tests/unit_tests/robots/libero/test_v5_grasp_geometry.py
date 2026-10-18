@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 import numpy as np
 import pytest
 
@@ -22,6 +24,16 @@ def test_curved_handle_completion_keeps_other_radius_and_unobserved_axial_span()
     assert evidence['private_pose_used'] is False
     assert evidence['sections']
     assert all(s['observed_arc_deg']>=90 for s in evidence['sections'])
+
+
+def test_curved_handle_completion_spans_sampling_gap_at_section_boundary():
+    axial = np.r_[np.linspace(0., .0096, 25), np.linspace(.0104, .02, 25)]
+    x, angle = np.meshgrid(axial, np.linspace(.1, 2.9, 100), indexing='ij')
+    reference = np.stack([x, .008*np.cos(angle), 1.+.008*np.sin(angle)], axis=-1)
+    current = np.array([[[.01, -.008, 1.], [-.001, -.008, 1.],
+                         [.021, -.008, 1.], [.01, -.012, 1.]]])
+    result, _ = complete_cylindrical_contact_surface(current, reference, [1., 0., 0.])
+    assert result.tolist() == [[True, False, False, False]]
 
 
 @pytest.mark.parametrize('mode',['plane','short_arc','missing_axis','sparse'])
