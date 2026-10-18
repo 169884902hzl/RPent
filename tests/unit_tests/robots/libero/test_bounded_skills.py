@@ -376,6 +376,32 @@ def test_oracle_selects_existing_measured_alignment_after_carry_ik_rejection(ada
     assert chosen['skill'] == 'align' and chosen['parameters'] == {'anchor_id': 'e1'}
 
 
+@pytest.mark.parametrize('available', [.02, .01, None])
+def test_oracle_uses_only_a_clear_bounded_lift_after_blocked_transport(adapter, available):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    adapter.active = adapter.held = 'e1'
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .1, .9),
+        (.25, .05, .89), (.35, .15, .91), True, 0)
+    request = adapter.request(k=1)
+    for c in request['candidates']:
+        if c['skill'] in {'carry_to', 'align'}:
+            c['consequences']['collision'] = True
+        if c['skill'] == 'nudge':
+            c['consequences']['collision'] = (c['parameters'].get('axis') != 'z'
+                or c['parameters'].get('distance_m') != available)
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}), adapter)
+    chosen = selected(request, oracle.choose(request))[0]
+    if available is None:
+        assert chosen['skill'] == 'observe'
+        assert 'recovery' not in oracle.private_trace[-1]
+    else:
+        assert chosen['skill'] == 'nudge'
+        assert chosen['parameters'] == {'anchor_id': 'e1', 'axis': 'z', 'distance_m': available}
+        assert oracle.private_trace[-1]['recovery'] == 'screened_bounded_lift_after_blocked_transport'
+
+
 def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
     from robots.libero.bounded_oracle import BoundedOracle
 

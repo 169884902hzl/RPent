@@ -98,6 +98,16 @@ class BoundedOracle:
                 if not inside and np.linalg.norm((object_centre-target_centre)[:2]) > .025:
                     chosen = (find("carry_to", target_id=target.id)
                         or find('align', anchor_id=source.id))
+                    if chosen is None:
+                        # A short measured lift can be clear while the full
+                        # transport/scan sweep is blocked. Select only an
+                        # existing screened option, then measure again; do
+                        # not discard the held instance or relax the screen.
+                        chosen = next((candidate for distance in (.02, .01)
+                            if (candidate := find('nudge', anchor_id=source.id,
+                                axis='z', distance_m=distance)) is not None), None)
+                        if chosen is not None:
+                            self.private_trace[-1]['recovery'] = 'screened_bounded_lift_after_blocked_transport'
                 elif object_pose.lower[2] > target.upper[2]+.025:
                     chosen = find("lower", target_id=target.id)
                     # A blocked lowering route does not remove the existing
