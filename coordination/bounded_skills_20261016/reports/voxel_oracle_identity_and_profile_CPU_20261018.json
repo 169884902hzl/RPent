@@ -1,0 +1,34 @@
+{
+  "scope": "CPU same saved public RGB-D, before4524 vs after334; full and compact oracle rerun, no controls",
+  "checks": {
+    "full": {
+      "decisions_equal": true,
+      "labels_equal": true,
+      "screens_equal": true
+    },
+    "compact": {
+      "decisions_equal": true,
+      "labels_equal": true,
+      "screens_equal": true
+    }
+  },
+  "profiles": {
+    "before": {
+      "total_profiled_s": 148.7288515629998,
+      "voxel_calls": 156,
+      "voxel_cumulative_s": 64.907799724,
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/original8288_oracle_profile4524_CPU_20261018.pstats",
+      "sha256": "c6a5fba9198b2f1d24c839f38b7725c5eb43dbf005cd8c19c19857955a0e55b2"
+    },
+    "after": {
+      "total_profiled_s": 101.44900394300011,
+      "voxel_calls": 156,
+      "voxel_cumulative_s": 17.983686826,
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/original8288_oracle_profile334_CPU_20261018.pstats",
+      "sha256": "03437af3d07287e0243d7fd54edf20c6cbc0514a011fae8fa8fd691c68882bb8"
+    }
+  },
+  "training": false,
+  "GPU_used": false,
+  "limitation": "cProfile totals include profiling overhead and are not full-episode speed results."
+}

@@ -1,0 +1,91 @@
+{
+  "job": "8829",
+  "mode": "startup",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=24%1",
+    "--dependency=afterany:8827_0?afterany:8600_4?afterany:8600_5?afterany:8262_160",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_voxel_20261018_334144f,SOURCE_COMMIT=334144f,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_voxel_20261018.json,STARTUP=1,PAIR_LEGACY=0",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_voxel_20261018_334144f/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "334144f",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_voxel_20261018_334144f",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_voxel_20261018.json",
+    "sha256": "80bf7b65df267e84dd6bae626ab2649d26173a169207ab41d59cc8f22bd5806e"
+  },
+  "following_updates": [],
+  "queue_before": [
+    [
+      "8827_24",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8827_40",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8827_0",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8600_4",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8600_5",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8262_160",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ]
+  ],
+  "lane": 3,
+  "aggregate_cap": 4,
+  "codex2_gpu_jobs": [],
+  "startup_proof": null,
+  "training": false,
+  "confirmation": false,
+  "indices": [
+    24
+  ],
+  "scope": "original-task oracle upper bound and matched boundary-rule comparison; no pi05",
+  "submission_updates_complete": true,
+  "post_submission_updates": [
+    [
+      "scontrol",
+      "update",
+      "JobId=8829_24",
+      "Dependency=afterany:8827"
+    ]
+  ],
+  "purpose": "Same-source/same-launcher startup for next original-state upper-bound cohort; follows three completed contact-repair timing pairs."
+}
