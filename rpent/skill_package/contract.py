@@ -14,6 +14,7 @@ SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
+LEGALITY_VERSION = "public-request-legal/1"
 
 
 def compact_candidate(candidate: dict) -> dict:
@@ -37,6 +38,34 @@ def committed_candidate_ids(request: dict) -> set[str]:
     ids = {step['id'] for step in steps}
     identities = {identity(step) for step in steps}
     return {c['id'] for c in request['candidates'] if c['id'] in ids or identity(c) in identities}
+
+
+def legal_after(request: dict, prefix) -> tuple[str, ...]:
+    """Public sequence legality, identical for labels and model decoding.
+
+    This uses only the frozen request. Collision/IK consequences describe a
+    particular predicted state, so they do not remove IDs from this set.
+    The executor separately re-screens the chosen trajectory after each step.
+    """
+    prefix = tuple(prefix)
+    candidates = {c['id']: c for c in request['candidates']}
+    if len(candidates) != len(request['candidates']):
+        raise ValueError('duplicate public candidate ID')
+    if len(set(prefix)) != len(prefix):
+        raise ValueError('prefix repeats a candidate ID')
+    if any(cid not in candidates for cid in prefix):
+        raise ValueError('prefix references an unknown candidate')
+    committed = committed_candidate_ids(request)
+    if set(prefix) & committed:
+        raise ValueError('prefix reselects an already committed action')
+    if any(is_boundary(candidates[cid]) for cid in prefix[:-1]):
+        raise ValueError('prefix crosses a control-handoff boundary')
+    if len(prefix) > request['max_actions']:
+        raise ValueError('prefix exceeds requested K')
+    if len(prefix) == request['max_actions'] or (prefix and is_boundary(candidates[prefix[-1]])):
+        return ()
+    used = set(prefix) | committed
+    return tuple(cid for cid in candidates if cid not in used)
 
 
 def validate(value: dict) -> None:
@@ -93,10 +122,7 @@ def selected(request: dict, decision: dict) -> list[dict]:
     if len(candidates) != len(request["candidates"]) or any(i not in candidates for i in ids):
         raise ValueError("unknown or duplicate candidate ID")
     result = [candidates[i] for i in ids]
-    if set(ids) & committed_candidate_ids(request):
-        raise ValueError('decision reselects an already committed action')
-    if any(is_boundary(c) for c in result[:-1]):
-        raise ValueError("decision crosses a control-handoff boundary")
+    legal_after(request, ids)
     return result
 
 
@@ -115,8 +141,11 @@ def validate_labels(request: dict, labels: dict) -> None:
     for position in labels['positions']:
         if position['prefix'] != prefix:
             raise ValueError('oracle labels do not follow the selected prefix')
+        expected_legal = legal_after(request, prefix)
         legal = set(position['legal'])
-        if not legal <= ids or position['selected'] not in legal or legal & committed_candidate_ids(request):
+        if tuple(position['legal']) != expected_legal:
+            raise ValueError('oracle legal set differs from public legal_after')
+        if not legal <= ids or position['selected'] not in legal:
             raise ValueError('oracle labels reference an illegal candidate')
         for field in ('rule_acceptable', 'measured_success', 'measured_failure'):
             if not set(position[field]) <= legal:

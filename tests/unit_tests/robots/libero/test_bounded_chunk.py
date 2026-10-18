@@ -9,7 +9,7 @@ import pytest
 from robots.libero.bounded_chunk import PublicPrefixPrediction
 from robots.libero.bounded_oracle import BoundedOracle
 from robots.libero.bounded_screen import PublicRouteScreen
-from rpent.skill_package.contract import selected, validate, validate_labels
+from rpent.skill_package.contract import legal_after, selected, validate, validate_labels
 from tests.unit_tests.robots.libero.test_bounded_skills import adapter as adapter, decision
 
 
@@ -326,6 +326,10 @@ def test_oracle_returns_prefix_specific_private_sets_without_public_labels(adapt
     validate_labels(request, oracle.last_labels)
     assert len(answer['candidate_ids']) == 4
     assert len(oracle.last_labels['positions']) == 4
+    assert oracle.last_legality_audit['selected_outside_legal'] == 0
+    assert oracle.last_legality_audit['rule_acceptable_outside_legal'] == 0
+    for row in oracle.last_labels['positions']:
+        assert tuple(row['legal']) == legal_after(request, row['prefix'])
     assert oracle.last_labels['positions'][1]['prefix'] == answer['candidate_ids'][:1]
     assert len(oracle.last_labels['positions'][0]['rule_acceptable']) > 1
     assert all(not row['measured_success'] and not row['measured_failure'] for row in oracle.last_labels['positions'])
@@ -339,6 +343,11 @@ def test_oracle_returns_prefix_specific_private_sets_without_public_labels(adapt
     first['measured_success'] = first['measured_failure'] = [first['selected']]
     with pytest.raises(ValueError, match='conflicting'):
         validate_labels(request, corrupt)
+    narrowed = copy.deepcopy(oracle.last_labels)
+    first = narrowed['positions'][0]
+    first['legal'] = [cid for cid in first['legal'] if cid not in first['rule_acceptable']]
+    with pytest.raises(ValueError, match='public legal_after'):
+        validate_labels(request, narrowed)
 
 
 @pytest.mark.parametrize('failed_lift', [False, True])
@@ -386,7 +395,7 @@ def test_oracle_executes_prefix_checks_before_blocked_contact_recovery(adapter, 
     assert choices[2]['parameters'] == {'mode': 'close'}
     assert len(oracle.last_labels['positions']) == 3
     assert oracle.private_trace[-1]['await_prefix_measurement']
-    assert all(row['judge'] == 'libero-private-task-progress-rules/4'
+    assert all(row['judge'] == 'libero-private-task-progress-rules/5'
                for row in oracle.last_labels['positions'])
     receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
     assert len(receipts) == 3 and all(r['outcome'] == 'success' for r in receipts)

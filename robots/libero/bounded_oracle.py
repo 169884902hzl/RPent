@@ -18,7 +18,7 @@ from scipy.spatial.transform import Rotation
 
 from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 from robots.libero.bounded_chunk import PublicPrefixPrediction
-from rpent.skill_package.contract import is_boundary, validate_labels
+from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
 
 class NoPublicOption(ValueError):
@@ -302,12 +302,15 @@ class BoundedOracle:
         virtual.adapter = prediction.adapter
         virtual.private_trace = []
         ids, labels = [], []
+        self.last_legality_audit = {'version': LEGALITY_VERSION,
+            'selected_outside_legal': 0, 'rule_acceptable_outside_legal': 0}
         for _ in range(request['max_actions']):
+            legal = list(legal_after(request, ids))
+            if not legal:
+                break
             context = prediction.context()
-            current = {**request, 'candidates': context['candidates'], 'robot': context['predicted_robot']}
-            # The public legal set is computed before reading oracle answers.
-            legal = [c['id'] for c in current['candidates'] if c['consequences']['collision'] is not True
-                     and c['consequences']['ik_reachable'] is not False]
+            current = {**request, 'candidates': [c for c in context['candidates'] if c['id'] in legal],
+                       'robot': context['predicted_robot']}
             try:
                 predicted_prefix = bool(ids) or request.get('execution_prefix') is not None
                 trace_start = len(virtual.private_trace)
@@ -321,17 +324,17 @@ class BoundedOracle:
                 break
             acceptable = virtual._acceptable(current, status, predicted_prefix=predicted_prefix)
             acceptable.add(chosen['id'])
-            if chosen['id'] in ids:
-                alternatives = [c for c in current['candidates'] if c['id'] in acceptable and c['id'] not in ids]
-                if not alternatives:
-                    break
-                chosen = alternatives[0]
+            self.last_legality_audit['selected_outside_legal'] += int(chosen['id'] not in legal)
+            self.last_legality_audit['rule_acceptable_outside_legal'] += len(acceptable-set(legal))
+            if chosen['id'] not in legal or not acceptable <= set(legal):
+                raise ValueError('private oracle returned an option outside public legal_after')
             labels.append({'prefix': list(ids), 'legal': legal, 'selected': chosen['id'],
                 'rule_acceptable': [cid for cid in legal if cid in acceptable],
-                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/4',
+                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/5',
                 'evidence': [{'source': 'original_task_predicates_private', 'model_visible': False,
                     'initial_task_status': status,
                     'conditional_on_prefix': list(ids), 'predicted_predecessor_checks': context['assumptions'],
+                    'public_legality_audit': dict(self.last_legality_audit),
                     'physically_executed_alternatives': False}]})
             ids.append(chosen['id'])
             legacy_end = (self.adapter.legacy_chunk_boundaries_v1 and (
