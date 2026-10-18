@@ -568,6 +568,47 @@ def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
     assert next(a for a in request['anchors'] if a['id'] == 'e2')['cached'] is True
 
 
+@pytest.mark.parametrize('second_feasible_reference', [False, True])
+def test_oracle_between_reference_is_resolved_jointly_without_deleting_anchors(second_feasible_reference):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    def entity(key, name, x, y):
+        return Entity(key, name, (x, y, .93), (x-.03, y-.03, .91),
+                      (x+.03, y+.03, .95), True, 0)
+
+    measured = [entity('e28', 'bowl', -.0731, .2011),
+                entity('e79', 'bowl', -.2068, .3258),
+                entity('e90', 'plate', .0730, .2090),
+                entity('e84', 'ramekin', -.2291, .2106),
+                entity('e97', 'plate', -.2502, -.1275)]
+    if second_feasible_reference:
+        measured[-1] = entity('e97', 'plate', -.1845, .4410)
+    instruction = 'pick up the black bowl between the plate and the ramekin and place it on the plate'
+    plan = {'xyz_m': [-.0731, .2011, .93], 'quat_xyzw': [0., 0., 0., 1.],
+            'approach_xyz_m': [-.0731, .2011, 1.1]}
+    adapter = SimpleNamespace(ex=SimpleNamespace(instruction=instruction), held=None,
+        scene=SimpleNamespace(entities={e.id: e for e in measured}, view_axes=((0, 1, 0), (1, 0, 0))),
+        plans={'e28': plan, 'e79': plan}, receipts=[])
+    oracle = BoundedOracle(SimpleNamespace(call=lambda _: {
+        'done': False, 'goals': [['on', 'akita_black_bowl_9', 'plate_7']], 'satisfied': [False]}), adapter)
+    request = {'schema_version': 'bounded-skills/1', 'revision': 0,
+        'observation_id': 'public-0', 'max_actions': 1,
+        'robot': {'eef_xyz_m': [0., 0., 1.2], 'eef_quat_xyzw': [0., 0., 0., 1.],
+                  'gripper_opening_m': .08},
+        'anchors': [{'id': e.id} for e in measured],
+        'candidates': [{'id': 'approach', 'skill': 'move_to',
+                        'consequences': {'collision': False, 'ik_reachable': True},
+                        'parameters': {'anchor_id': 'e28', 'approach': 'above', 'path': 'over'}},
+                       {'id': 'scan', 'skill': 'observe',
+                        'consequences': {'collision': False, 'ik_reachable': True},
+                        'parameters': {'mode': 'wrist_scan'}}]}
+    result = oracle.choose(request)
+    assert result['candidate_ids'] == (['scan'] if second_feasible_reference else ['approach'])
+    assert oracle.private_trace[-1]['target_public_id'] == (None if second_feasible_reference else 'e90')
+    assert list(adapter.scene.entities) == ['e28', 'e79', 'e90', 'e84', 'e97']
+    assert len(request['anchors']) == 5
+
+
 @pytest.mark.parametrize('predicate,gap,blocked,expected', [
     ('on', .08, True, 'release'), ('on', .08, False, 'lower'),
     ('on', .15, True, 'observe'), ('in', .08, True, 'observe'),

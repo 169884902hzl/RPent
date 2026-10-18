@@ -1,3 +1,5 @@
+# Copyright 2026 The RPent Authors.
+# SPDX-License-Identifier: Apache-2.0
 """Private original-task upper-bound selector for existing public skill IDs.
 
 This module must never be imported by a model-facing adapter or serializer.
@@ -5,6 +7,7 @@ It does not create coordinates: all target poses remain public candidates.
 """
 from __future__ import annotations
 
+import re
 from dataclasses import replace
 
 import numpy as np
@@ -22,6 +25,28 @@ class BoundedOracle:
         self.rpc, self.adapter = rpc, adapter
         self.binding = OriginalOraclePolicy(rpc)
         self.private_trace: list[dict] = []
+
+    def _between_pair(self, source_symbol, target_symbol, entities, phrase, axes):
+        """Resolve a unique measured source/reference pair, retaining all anchors.
+
+        An extra category detection need not make the relation ambiguous: only
+        one of the measured reference instances may actually bracket a source.
+        This is private option selection, not removal from public perception.
+        """
+        if not re.search(r"\bbetween\b", phrase, re.IGNORECASE):
+            return None, None
+        references = [e for e in entities if self.binding.bind(
+            target_symbol, [e], "", axes, source_reference=False) is e]
+        pairs = []
+        for reference in references:
+            alternative_ids = {e.id for e in references if e.id != reference.id}
+            hypothesis = [e for e in entities if e.id not in alternative_ids]
+            source = self.binding.bind(source_symbol, hypothesis, phrase, axes)
+            target = self.binding.bind(target_symbol, hypothesis, phrase, axes,
+                                       source_reference=False)
+            if source is not None and target is not None and source.id != target.id:
+                pairs.append((source, target))
+        return pairs[0] if len(pairs) == 1 else (None, None)
 
     def choose(self, request):
         status = self.rpc.call("oracle.status")
@@ -55,6 +80,11 @@ class BoundedOracle:
             phrase = goal_clause(ex.ex.instruction, symbol)
             source = self.binding.bind(symbol, entities, phrase, ex.scene.view_axes)
             target = self.binding.bind(goal[2], entities, phrase, ex.scene.view_axes, source_reference=False) if len(goal) == 3 else None
+            if len(goal) == 3 and (source is None or target is None):
+                paired_source, paired_target = self._between_pair(
+                    symbol, goal[2], entities, phrase, ex.scene.view_axes)
+                if paired_source is not None:
+                    source, target = paired_source, paired_target
             if source is not None and predicate in {'open', 'close'} and source.id not in ex.plans:
                 # A public segmented panel can expose push contact when its
                 # parent's handle is not visible. Select its existing public
