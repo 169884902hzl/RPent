@@ -123,6 +123,7 @@ def test_public_request_omits_whole_task_and_vla_disabled(adapter):
     ('occluded', 'no_effect'), ('stale', 'no_effect'),
     ('rgbd_occluded', 'unmeasured'), ('raw_stale', 'unmeasured'),
     ('opposite', 'failure'), ('perpendicular', 'no_effect'),
+    ('boundary_moved', 'success'), ('boundary_opposite', 'failure'),
     ('segmentation_drift', 'no_effect'),
 ])
 def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapter, effect, expected):
@@ -141,6 +142,7 @@ def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapt
     def refresh(_):
         entity = adapter.scene.entities['e1']
         delta = {'moved': [0., .02, 0.], 'opposite': [0., -.02, 0.],
+            'boundary_moved': [0., .006, 0.], 'boundary_opposite': [0., -.006, 0.],
             'perpendicular': [.02, 0., 0.], 'segmentation_drift': [0., .02, 0.]}.get(effect, [0., 0., 0.])
         shifted[:] = delta if effect != 'segmentation_drift' else [0., 0., 0.]
         adapter.scene.entities['e1'] = replace(entity,
@@ -158,11 +160,12 @@ def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapt
     assert receipt['outcome'] == expected
     assert adapter.robot()['eef_xyz_m'][1]-initial[1] == pytest.approx(.02)
     assert adapter.details[-1]['execution']['public_contact_motion']['source'] == 'paired_public_rgbd_axis_surface_registration'
-    if effect == 'opposite':
+    if effect in {'opposite', 'boundary_opposite'}:
         assert receipt['stop_reason'] == 'contact_motion_opposes_command'
-    if effect in {'moved', 'opposite', 'perpendicular'}:
+    if effect in {'moved', 'opposite', 'perpendicular', 'boundary_moved', 'boundary_opposite'}:
         assert adapter.details[-1]['execution']['public_contact_motion']['axis_progress_m'] == pytest.approx(
-            {'moved': .02, 'opposite': -.02, 'perpendicular': 0.}[effect])
+            {'moved': .02, 'opposite': -.02, 'perpendicular': 0.,
+             'boundary_moved': .006, 'boundary_opposite': -.006}[effect])
     if effect == 'stationary':
         request = adapter.request(k=1)
         adapter.execute(request, decision(request, [candidate['id']]))

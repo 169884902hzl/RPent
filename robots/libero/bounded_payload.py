@@ -329,7 +329,10 @@ def contact_axis_registration(reference, current_scene, axis, distance_m, *, end
     translation = np.zeros(3)
     translation[axis] = shifts[best]
     evidence.update(translation_m=translation.tolist(),
-        compatible_axis_interval_m=[float(compatible.min()), float(compatible.max())],
+        # Millimetre-grid arithmetic can put a nominal 5mm bound a few
+        # ulps below the 5mm progress gate. Picometre serialization removes
+        # that arithmetic noise without changing the measured threshold.
+        compatible_axis_interval_m=np.round([compatible.min(), compatible.max()], 12).tolist(),
         mean_capped_squared_residual_m2=scores[best], supported_fraction=supported[best],
         samples=len(source), fits=len(shifts))
     if supported[best] < .5:
