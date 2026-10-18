@@ -285,11 +285,15 @@ def _surface_registration(predicted, measured):
         corrected = (predicted-centre)@rotation.T+centre+shift
         displacement = np.linalg.norm(corrected-predicted, axis=1)
         angle = float(Rotation.from_matrix(rotation).magnitude())
-        if angle > .1 or displacement.max() > .015:
-            return predicted, {**evidence, 'reason': 'surface_shift_exceeds_public_hold_tolerance'}
         change = (a-ac)@delta_rotation.T+bc-a
         if np.linalg.norm(change, axis=1).max() < .00001:
             break
+    # ICP iterates are optimization proposals, not accepted scene motion.
+    # A partial curved view can temporarily overshoot before its final fit
+    # returns inside these same bounds. Only the returned transform grants
+    # membership; keep the original prediction if that final fit is invalid.
+    if angle > .1 or displacement.max() > .015:
+        return predicted, {**evidence, 'reason': 'surface_shift_exceeds_public_hold_tolerance'}
     after = tree.query((source-centre)@rotation.T+centre+shift)[0]
     if np.median(after) >= np.median(before):
         return predicted, {**evidence, 'reason': 'surface_fit_not_improved'}

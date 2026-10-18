@@ -1,0 +1,52 @@
+{
+  "scope": "CPU candidate validation, not a physical result",
+  "parent_commit": "2285f5d",
+  "source_files": {
+    "robots/libero/bounded_payload.py": "26522432e1fd3fe07351e631d9617566340aa205a3ac64e2170385c323c03702",
+    "tests/unit_tests/robots/libero/test_bounded_payload.py": "731920ae70981bd3845449a52d42ba93c8a175e328105c70ee324e70409a3a2f",
+    "tests/unit_tests/robots/libero/fixtures/public_curved_payload_fit.npz": "c3b898617c7a8add03985a6c5197a76714e634570171f342d31ad5925a202bef"
+  },
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_skills.py",
+      "exit_code": 0,
+      "passed": 241,
+      "elapsed_s": 103.48,
+      "note": "Before adding one numeric regression; production fix already applied"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_payload.py",
+      "exit_code": 0,
+      "passed": 34,
+      "elapsed_s": 0.72,
+      "note": "Includes the new regression; overlaps 33 tests above"
+    }
+  ],
+  "warnings": [
+    "Existing pytest timeout option is unregistered"
+  ],
+  "changed_production_and_test_ruff": {
+    "exit_code": 0
+  },
+  "runtime_criteria_changed": false,
+  "rotation_limit_rad": 0.1,
+  "maximum_surface_displacement_m": 0.015,
+  "cpu_saved_screens": {
+    "16": {
+      "old_rejected_poses_now_pass": 16,
+      "full_nudge_routes_pass": 12,
+      "new_owned_pixels": 3,
+      "removed_pixels": 0
+    },
+    "19": {
+      "old_rejected_poses_now_pass": 16,
+      "full_nudge_routes_pass": 12,
+      "new_owned_pixels": 9,
+      "removed_pixels": 0
+    }
+  },
+  "private_pixel_diagnostic": "All 12 new raw pixels identify the bowl; zero simulator restore error, zero controls; diagnostic labels stay outside runtime",
+  "physical_replay": "pending same-source startup",
+  "training": false,
+  "confirmation": false
+}

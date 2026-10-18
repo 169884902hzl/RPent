@@ -1,9 +1,12 @@
 # Copyright 2026 Zhilun Hu.
 # SPDX-License-Identifier: Apache-2.0
+from pathlib import Path
+
 import numpy as np
 from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_payload import (
+    _surface_registration,
     complete_moving_boundary,
     complete_spatial_payload_component,
     contact_axis_registration,
@@ -423,6 +426,20 @@ def test_large_grip_rotation_cannot_relabel_a_nearby_surface():
     matched, evidence = moving_payload_pixels([moved[-1]], ref, current, current_target=moved)
     assert not matched.any()
     assert not evidence['surface_registration']['accepted']
+
+
+def test_curved_partial_view_validates_the_final_fit_instead_of_an_intermediate_iterate():
+    # Original-task public RGB-D, job9026_16, row2, deterministically sampled
+    # every 128 points. Its second ICP proposal exceeds 0.1 rad; the final fit
+    # returns inside the original rotation and 15 mm displacement limits.
+    with np.load(Path(__file__).parent/'fixtures/public_curved_payload_fit.npz') as capture:
+        source, measured = capture['predicted'], capture['current']
+    corrected, fit = _surface_registration(source, measured)
+    assert fit['accepted']
+    assert fit['rotation_rad'] <= fit['max_rotation_rad'] == .1
+    assert fit['maximum_surface_displacement_m'] <= fit['max_surface_displacement_m'] == .015
+    assert fit['median_residual_after_m'] < fit['median_residual_before_m']
+    assert np.max(np.linalg.norm(corrected-source, axis=1)) <= .015
 
 
 def test_static_destination_pixels_cannot_remain_in_the_initial_payload_mask():
