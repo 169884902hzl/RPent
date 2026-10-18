@@ -192,7 +192,12 @@ def remove_measured_hand(points, eef_xyz, body_quat, geometry, opening):
 def _voxel(points, size=.004):
     points = np.asarray(points, dtype=float)
     points = points[np.isfinite(points).all(axis=1) & (np.linalg.norm(points, axis=1) > 1e-6)]
-    _, index = np.unique(np.floor(points / size).astype(int), axis=0, return_index=True)
+    cells = np.ascontiguousarray(np.floor(points / size).astype(int))
+    # Equality of a fixed-width integer record is equality of all cell axes.
+    # Sorting the retained indices preserves the first original depth pixel
+    # and input order without NumPy's slower multi-column unique sort.
+    records = cells.view(np.dtype((np.void, cells.dtype.itemsize*cells.shape[1]))).reshape(-1)
+    _, index = np.unique(records, return_index=True)
     return points[np.sort(index)]
 
 

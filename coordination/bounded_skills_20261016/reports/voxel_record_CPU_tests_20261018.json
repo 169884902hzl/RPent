@@ -1,0 +1,26 @@
+{
+  "parent_commit": "06cce3616355b62cb22c56ff09b88a5e64aca629",
+  "purpose": "Exact integer-record voxel deduplication; preserve all retained measured pixels and order.",
+  "cpu_tests": {
+    "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_v5_geometric_grasp.py tests/unit_tests/robots/libero/test_v5_grasp_route.py tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_compaction.py -q",
+    "passed": 228,
+    "exit_code": 0,
+    "duration_s": 157.01,
+    "warnings": [
+      "Unknown config option: timeout"
+    ]
+  },
+  "static_checks": {
+    "fatal_ruff": 0,
+    "diff_check": 0
+  },
+  "files_sha256": {
+    "robots/libero/v5_geometric_grasp.py": "eddd7d4a09084e87eaad761b9a83218b19b38fa4a23003fb2589170193b66d7a",
+    "tests/unit_tests/robots/libero/test_v5_geometric_grasp.py": "77429487a720a78e75afed68f2bd92cfbe487d5251f8db7ebf039aa22104608c",
+    "coordination/bounded_skills_20261016/scripts/benchmark_voxel_pixels_CPU_20261018.py": "92c60cea2e81b2763253443730eaefc5504d63ac3e61c8169ba9c2e2b67d460b"
+  },
+  "schema_or_behavior_change": false,
+  "saved_pixel_and_oracle_replay": "pending immutable-snapshot comparison",
+  "training": false,
+  "GPU_used": false
+}

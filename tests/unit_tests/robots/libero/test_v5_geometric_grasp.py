@@ -1,8 +1,25 @@
 import numpy as np
 
 from robots.libero.v5_geometric_grasp import (
-    _opposition, collision_counts, sample_grasps, servo_grasp_pose, side_site_rotation, site_rotation,
+    _opposition, _voxel, collision_counts, sample_grasps, servo_grasp_pose, side_site_rotation, site_rotation,
 )
+
+
+def test_voxel_retains_first_pixels_in_input_order_across_negative_and_positive_cells():
+    points = np.array([
+        [.0041, .0081, .0121], [-.0001, -.0041, .0161],
+        [.0049, .0089, .0129], [-.0009, -.0049, .0169],
+        [0., 0., 0.], [np.nan, 1., 1.], [1., np.inf, 1.],
+        [-.0041, -.0041, .0161], [.0041, .0121, .0081],
+        [.008, .0081, .0121], [1e-8, 0., 0.],
+    ])
+    expected = points[[0, 1, 7, 8, 9]]
+    # Also exercise a view whose three coordinate columns are not contiguous.
+    padded = np.zeros((len(points), 6))
+    padded[:, ::2] = points
+    np.testing.assert_array_equal(_voxel(padded[:, ::2]), expected)
+    assert _voxel(np.empty((0, 3))).shape == (0, 3)
+    assert _voxel(points[4:7]).shape == (0, 3)
 
 
 def cube_surface():
