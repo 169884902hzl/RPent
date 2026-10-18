@@ -1,0 +1,49 @@
+{
+  "time_pacific": "2026-10-18T15:54:28.958882-07:00",
+  "reason": "CPU and saved-state checks passed; use available fourth GPU for identical-launcher startup",
+  "queue_running_before": [
+    [
+      "9475_140",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "gres/gpu:1",
+      "node02"
+    ],
+    [
+      "9475_120",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "gres/gpu:1",
+      "node02"
+    ],
+    [
+      "9248_19",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "gres/gpu:1",
+      "node02"
+    ]
+  ],
+  "codex2_before": [],
+  "target_before": [
+    [
+      "9497_8",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "gres/gpu:1",
+      "(Dependency)"
+    ]
+  ],
+  "command": [
+    "scontrol",
+    "update",
+    "JobId=9497_8",
+    "Dependency="
+  ],
+  "held_jobs_released": false,
+  "training": false
+}

@@ -1,0 +1,1711 @@
+{
+  "records": [
+    {
+      "row": 10,
+      "step": 16,
+      "camera": "agentview",
+      "parent": {
+        "id": "e98",
+        "xyz_m": [
+          0.10213497281074524,
+          -0.10777472704648972,
+          1.0446481704711914
+        ],
+        "lower_m": [
+          -0.03770464137196541,
+          -0.15883312821388246,
+          0.9317450046539306
+        ],
+        "upper_m": [
+          0.18212595224380493,
+          -0.030280395001173015,
+          1.1071752309799194
+        ]
+      },
+      "point_yx": null,
+      "evidence": {
+        "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+        "source": "perception",
+        "panels": [
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.17299920320510864,
+                -0.23885488510131836,
+                1.0214672088623047
+              ],
+              "lower": [
+                0.17210069298744202,
+                -0.31682302355766295,
+                0.9301735758781433
+              ],
+              "upper": [
+                0.17301183938980103,
+                -0.1716136395931244,
+                1.1069307327270508
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.17299920320510864,
+                -0.23885488510131836,
+                1.0214672088623047
+              ],
+              "normal_xy": [
+                -0.9999999499152891,
+                -0.0003164955285730693
+              ],
+              "residual_p90_m": 2.9222623453116616e-05,
+              "points": 46241
+            },
+            "pixels": 46241
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.08696535974740982,
+                -0.15643100440502167,
+                1.0602506399154663
+              ],
+              "lower": [
+                -0.1638570874929428,
+                -0.288275990486145,
+                0.953549325466156
+              ],
+              "upper": [
+                -0.08694664388895035,
+                -0.14464164674282073,
+                1.1072126626968384
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.08696535974740982,
+                -0.15643100440502167,
+                1.0602506399154663
+              ],
+              "normal_xy": [
+                -0.8742011946901482,
+                0.4855638693337034
+              ],
+              "residual_p90_m": 0.0052428477035229085,
+              "points": 5185
+            },
+            "pixels": 5185
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.03382297605276108,
+                -0.17430289089679718,
+                1.1071336269378662
+              ],
+              "lower": [
+                -0.08606650412082673,
+                -0.22650238037109374,
+                0.9558258032798768
+              ],
+              "upper": [
+                0.16288988292217255,
+                -0.164106547832489,
+                1.1071845293045044
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.03382297605276108,
+                -0.17430289089679718,
+                1.1071336269378662
+              ],
+              "normal_xy": [
+                -0.2504998661337232,
+                -0.9681166340203988
+              ],
+              "residual_p90_m": 0.003502710274702996,
+              "points": 5629
+            },
+            "pixels": 5629
+          }
+        ],
+        "reason": "adjacent_panel_missing_or_ambiguous"
+      },
+      "overlay": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/door9470_recall_images/e98_agentview_16.png",
+        "sha256": "71671154c2a767d6a45842884b51aa60adaf3442db154719e15414d6886d5986"
+      },
+      "recorded_door_evidence": {
+        "query": "door of the microwave",
+        "source_step": 16,
+        "source": "perception",
+        "accepted_instances": 0,
+        "accepted_by_camera": {
+          "agentview": 0,
+          "wrist": 0
+        },
+        "instances": [
+          {
+            "camera": "agentview",
+            "score": 0.765625,
+            "guidance": null,
+            "filtering": {
+              "basis": "current_rgbd_above_measured_support/4-dev",
+              "input_points": 57553,
+              "retained_points": 45204,
+              "support_available": true,
+              "panel": {
+                "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": 45204,
+                "reason": "no_independent_fixed_patch"
+              }
+            },
+            "reason": "door_plane_not_measured",
+            "candidate_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/microwave_door_candidate_e98_agentview_1d329d9ab0bddda9.npz/16.npz",
+              "points": 45204,
+              "sha256": "d7235bd562dcf39636198063a92fcace55a273f58ff6d1025f2c93a85fd630c4",
+              "source": "perception",
+              "source_step": 16
+            }
+          },
+          {
+            "camera": "wrist",
+            "guidance": {
+              "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+              "source": "perception",
+              "panels": [
+                {
+                  "measurement": {
+                    "name": "microwave door",
+                    "xyz": [
+                      0.1450391560792923,
+                      -0.2395620346069336,
+                      1.0156476497650146
+                    ],
+                    "lower": [
+                      0.13933176279067994,
+                      -0.33226051926612854,
+                      0.943999115228653
+                    ],
+                    "upper": [
+                      0.14508061110973358,
+                      -0.18609927624464034,
+                      1.0867785930633544
+                    ],
+                    "geometry": "measured_door_surface"
+                  },
+                  "plane": {
+                    "centre": [
+                      0.1450391560792923,
+                      -0.2395620346069336,
+                      1.0156476497650146
+                    ],
+                    "normal_xy": [
+                      -0.9999379906844986,
+                      0.01113619261002441
+                    ],
+                    "residual_p90_m": 0.0008709066084794638,
+                    "points": 48332
+                  },
+                  "pixels": 48332
+                }
+              ],
+              "point": [
+                510,
+                851
+              ]
+            }
+          },
+          {
+            "camera": "wrist",
+            "score": 0.68359375,
+            "guidance": {
+              "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+              "source": "perception",
+              "panels": [
+                {
+                  "measurement": {
+                    "name": "microwave door",
+                    "xyz": [
+                      0.1450391560792923,
+                      -0.2395620346069336,
+                      1.0156476497650146
+                    ],
+                    "lower": [
+                      0.13933176279067994,
+                      -0.33226051926612854,
+                      0.943999115228653
+                    ],
+                    "upper": [
+                      0.14508061110973358,
+                      -0.18609927624464034,
+                      1.0867785930633544
+                    ],
+                    "geometry": "measured_door_surface"
+                  },
+                  "plane": {
+                    "centre": [
+                      0.1450391560792923,
+                      -0.2395620346069336,
+                      1.0156476497650146
+                    ],
+                    "normal_xy": [
+                      -0.9999379906844986,
+                      0.01113619261002441
+                    ],
+                    "residual_p90_m": 0.0008709066084794638,
+                    "points": 48332
+                  },
+                  "pixels": 48332
+                }
+              ],
+              "point": [
+                510,
+                851
+              ]
+            },
+            "filtering": {
+              "basis": "current_rgbd_above_measured_support/4-dev",
+              "input_points": 104131,
+              "retained_points": 104131,
+              "support_available": true,
+              "panel": {
+                "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": 104131,
+                "reason": "no_independent_fixed_patch"
+              }
+            },
+            "reason": "door_plane_not_measured",
+            "candidate_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/microwave_door_candidate_e98_wrist_ea20738d08fb45b6.npz/16.npz",
+              "points": 104131,
+              "sha256": "ead07f96ccd7d4679a7917bf49f91731a9d66569a52daf965a2aa53a9a581ae5",
+              "source": "perception",
+              "source_step": 16
+            }
+          }
+        ],
+        "reason": "door_not_measured_in_available_views"
+      }
+    },
+    {
+      "row": 10,
+      "step": 16,
+      "camera": "agentview",
+      "parent": {
+        "id": "e54",
+        "xyz_m": [
+          0.13092221319675446,
+          -0.23411883413791656,
+          1.107136845588684
+        ],
+        "lower_m": [
+          -0.153660386800766,
+          -0.3363009989261627,
+          0.9376882314682007
+        ],
+        "upper_m": [
+          0.17301075160503387,
+          -0.1643938347697258,
+          1.1072099208831787
+        ]
+      },
+      "point_yx": null,
+      "evidence": {
+        "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+        "source": "perception",
+        "panels": [
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.10692767798900604,
+                -0.10461119562387466,
+                1.0397412776947021
+              ],
+              "lower": [
+                -0.038797801733016966,
+                -0.14527232050895691,
+                0.9296398878097534
+              ],
+              "upper": [
+                0.1824297785758972,
+                -0.02839098274707793,
+                1.1071573495864868
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.10692767798900604,
+                -0.10461119562387466,
+                1.0397412776947021
+              ],
+              "normal_xy": [
+                -0.4608966382906547,
+                -0.887453823481748
+              ],
+              "residual_p90_m": 0.0015836065895727576,
+              "points": 28541
+            },
+            "pixels": 28541
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.13682782649993896,
+                -0.13074010610580444,
+                1.1071377992630005
+              ],
+              "lower": [
+                -0.04210633039474487,
+                -0.15401606738567353,
+                0.9400718832015991
+              ],
+              "upper": [
+                0.18113082885742188,
+                -0.04387124434113505,
+                1.1071815490722656
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.13682782649993896,
+                -0.13074010610580444,
+                1.1071377992630005
+              ],
+              "normal_xy": [
+                -0.4351854161315862,
+                -0.9003408541138063
+              ],
+              "residual_p90_m": 0.0035306848930681816,
+              "points": 5223
+            },
+            "pixels": 5223
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.13083865493535995,
+                -0.1428067535161972,
+                1.0372531414031982
+              ],
+              "lower": [
+                -0.16070129960775376,
+                -0.1458514600992203,
+                0.9462738692760467
+              ],
+              "upper": [
+                -0.09115555346012116,
+                -0.13959862291812897,
+                1.1072094440460205
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.13083865493535995,
+                -0.1428067535161972,
+                1.0372531414031982
+              ],
+              "normal_xy": [
+                -2.6621700326247482e-05,
+                -0.9999999996456426
+              ],
+              "residual_p90_m": 0.0017052089769338495,
+              "points": 3162
+            },
+            "pixels": 3162
+          }
+        ],
+        "reason": "adjacent_panel_missing_or_ambiguous"
+      },
+      "overlay": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/door9470_recall_images/e54_agentview_16.png",
+        "sha256": "71671154c2a767d6a45842884b51aa60adaf3442db154719e15414d6886d5986"
+      },
+      "recorded_door_evidence": {
+        "query": "door of the microwave",
+        "source_step": 16,
+        "source": "perception",
+        "accepted_instances": 0,
+        "accepted_by_camera": {
+          "agentview": 0,
+          "wrist": 0
+        },
+        "instances": [
+          {
+            "camera": "agentview",
+            "score": 0.765625,
+            "guidance": null,
+            "filtering": {
+              "basis": "current_rgbd_above_measured_support/4-dev",
+              "input_points": 57553,
+              "retained_points": 45204,
+              "support_available": true,
+              "panel": {
+                "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": 45204,
+                "reason": "no_independent_fixed_patch"
+              }
+            },
+            "reason": "door_plane_not_measured",
+            "candidate_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/microwave_door_candidate_e54_agentview_1d329d9ab0bddda9.npz/16.npz",
+              "points": 45204,
+              "sha256": "d7235bd562dcf39636198063a92fcace55a273f58ff6d1025f2c93a85fd630c4",
+              "source": "perception",
+              "source_step": 16
+            }
+          },
+          {
+            "camera": "wrist",
+            "guidance": {
+              "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+              "source": "perception",
+              "panels": [
+                {
+                  "measurement": {
+                    "name": "microwave door",
+                    "xyz": [
+                      -0.11390083283185959,
+                      -0.14241637289524078,
+                      1.0160797834396362
+                    ],
+                    "lower": [
+                      -0.1410154765844345,
+                      -0.1424165964126587,
+                      0.9290316343307495
+                    ],
+                    "upper": [
+                      -0.08723168790340423,
+                      -0.13917221128940582,
+                      1.1023738336563111
+                    ],
+                    "geometry": "measured_door_surface"
+                  },
+                  "plane": {
+                    "centre": [
+                      -0.11390083283185959,
+                      -0.14241637289524078,
+                      1.0160797834396362
+                    ],
+                    "normal_xy": [
+                      0.0039006808927469273,
+                      -0.999992392315348
+                    ],
+                    "residual_p90_m": 0.0014167882957105877,
+                    "points": 88329
+                  },
+                  "pixels": 88329
+                }
+              ],
+              "point": [
+                323,
+                239
+              ]
+            }
+          },
+          {
+            "camera": "wrist",
+            "score": 0.87890625,
+            "guidance": {
+              "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+              "source": "perception",
+              "panels": [
+                {
+                  "measurement": {
+                    "name": "microwave door",
+                    "xyz": [
+                      -0.11390083283185959,
+                      -0.14241637289524078,
+                      1.0160797834396362
+                    ],
+                    "lower": [
+                      -0.1410154765844345,
+                      -0.1424165964126587,
+                      0.9290316343307495
+                    ],
+                    "upper": [
+                      -0.08723168790340423,
+                      -0.13917221128940582,
+                      1.1023738336563111
+                    ],
+                    "geometry": "measured_door_surface"
+                  },
+                  "plane": {
+                    "centre": [
+                      -0.11390083283185959,
+                      -0.14241637289524078,
+                      1.0160797834396362
+                    ],
+                    "normal_xy": [
+                      0.0039006808927469273,
+                      -0.999992392315348
+                    ],
+                    "residual_p90_m": 0.0014167882957105877,
+                    "points": 88329
+                  },
+                  "pixels": 88329
+                }
+              ],
+              "point": [
+                323,
+                239
+              ]
+            },
+            "filtering": {
+              "basis": "current_rgbd_above_measured_support/4-dev",
+              "input_points": 140130,
+              "retained_points": 140049,
+              "support_available": true,
+              "panel": {
+                "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": 140049,
+                "reason": "no_independent_fixed_patch"
+              }
+            },
+            "reason": "door_plane_not_measured",
+            "candidate_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/microwave_door_candidate_e54_wrist_43c6628521159a81.npz/16.npz",
+              "points": 140049,
+              "sha256": "8ce9571dbb94c700b0ee1f0dfa9b3afc146652496f28dc0fedb72fab599349a2",
+              "source": "perception",
+              "source_step": 16
+            }
+          }
+        ],
+        "reason": "door_not_measured_in_available_views"
+      }
+    },
+    {
+      "row": 10,
+      "step": 16,
+      "camera": "wrist",
+      "parent": {
+        "id": "e98",
+        "xyz_m": [
+          0.10213497281074524,
+          -0.10777472704648972,
+          1.0446481704711914
+        ],
+        "lower_m": [
+          -0.03770464137196541,
+          -0.15883312821388246,
+          0.9317450046539306
+        ],
+        "upper_m": [
+          0.18212595224380493,
+          -0.030280395001173015,
+          1.1071752309799194
+        ]
+      },
+      "point_yx": null,
+      "evidence": {
+        "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+        "source": "perception",
+        "panels": [
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.1254241168498993,
+                -0.14241640269756317,
+                1.0187932848930359
+              ],
+              "lower": [
+                -0.15364216029644012,
+                -0.1424165815114975,
+                0.9291902387142181
+              ],
+              "upper": [
+                -0.0945304986834526,
+                -0.1391722410917282,
+                1.102350742816925
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.1254241168498993,
+                -0.14241640269756317,
+                1.0187932848930359
+              ],
+              "normal_xy": [
+                -0.006796755103896133,
+                -0.9999769017932651
+              ],
+              "residual_p90_m": 0.0014339877160109771,
+              "points": 91694
+            },
+            "pixels": 91694
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.14504624903202057,
+                -0.23033928871154785,
+                1.0154337882995605
+              ],
+              "lower": [
+                0.14240220904350281,
+                -0.33226025104522705,
+                0.9442760062217712
+              ],
+              "upper": [
+                0.14508631825447083,
+                -0.17816857397556304,
+                1.086544065475464
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.14504624903202057,
+                -0.23033928871154785,
+                1.0154337882995605
+              ],
+              "normal_xy": [
+                -0.9999939574724557,
+                0.003476351331013075
+              ],
+              "residual_p90_m": 0.00023106397493459884,
+              "points": 51435
+            },
+            "pixels": 51435
+          }
+        ],
+        "reason": "adjacent_panel_missing_or_ambiguous"
+      },
+      "overlay": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/door9470_recall_images/e98_wrist_16.png",
+        "sha256": "835eaa6e389f0276b7b8abd44d4be8bc5fa0a58ead39dff5823c6ddd7c367089"
+      },
+      "recorded_door_evidence": {
+        "query": "door of the microwave",
+        "source_step": 16,
+        "source": "perception",
+        "accepted_instances": 0,
+        "accepted_by_camera": {
+          "agentview": 0,
+          "wrist": 0
+        },
+        "instances": [
+          {
+            "camera": "agentview",
+            "score": 0.765625,
+            "guidance": null,
+            "filtering": {
+              "basis": "current_rgbd_above_measured_support/4-dev",
+              "input_points": 57553,
+              "retained_points": 45204,
+              "support_available": true,
+              "panel": {
+                "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": 45204,
+                "reason": "no_independent_fixed_patch"
+              }
+            },
+            "reason": "door_plane_not_measured",
+            "candidate_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/microwave_door_candidate_e98_agentview_1d329d9ab0bddda9.npz/16.npz",
+              "points": 45204,
+              "sha256": "d7235bd562dcf39636198063a92fcace55a273f58ff6d1025f2c93a85fd630c4",
+              "source": "perception",
+              "source_step": 16
+            }
+          },
+          {
+            "camera": "wrist",
+            "guidance": {
+              "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+              "source": "perception",
+              "panels": [
+                {
+                  "measurement": {
+                    "name": "microwave door",
+                    "xyz": [
+                      0.1450391560792923,
+                      -0.2395620346069336,
+                      1.0156476497650146
+                    ],
+                    "lower": [
+                      0.13933176279067994,
+                      -0.33226051926612854,
+                      0.943999115228653
+                    ],
+                    "upper": [
+                      0.14508061110973358,
+                      -0.18609927624464034,
+                      1.0867785930633544
+                    ],
+                    "geometry": "measured_door_surface"
+                  },
+                  "plane": {
+                    "centre": [
+                      0.1450391560792923,
+                      -0.2395620346069336,
+                      1.0156476497650146
+                    ],
+                    "normal_xy": [
+                      -0.9999379906844986,
+                      0.01113619261002441
+                    ],
+                    "residual_p90_m": 0.0008709066084794638,
+                    "points": 48332
+                  },
+                  "pixels": 48332
+                }
+              ],
+              "point": [
+                510,
+                851
+              ]
+            }
+          },
+          {
+            "camera": "wrist",
+            "score": 0.68359375,
+            "guidance": {
+              "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+              "source": "perception",
+              "panels": [
+                {
+                  "measurement": {
+                    "name": "microwave door",
+                    "xyz": [
+                      0.1450391560792923,
+                      -0.2395620346069336,
+                      1.0156476497650146
+                    ],
+                    "lower": [
+                      0.13933176279067994,
+                      -0.33226051926612854,
+                      0.943999115228653
+                    ],
+                    "upper": [
+                      0.14508061110973358,
+                      -0.18609927624464034,
+                      1.0867785930633544
+                    ],
+                    "geometry": "measured_door_surface"
+                  },
+                  "plane": {
+                    "centre": [
+                      0.1450391560792923,
+                      -0.2395620346069336,
+                      1.0156476497650146
+                    ],
+                    "normal_xy": [
+                      -0.9999379906844986,
+                      0.01113619261002441
+                    ],
+                    "residual_p90_m": 0.0008709066084794638,
+                    "points": 48332
+                  },
+                  "pixels": 48332
+                }
+              ],
+              "point": [
+                510,
+                851
+              ]
+            },
+            "filtering": {
+              "basis": "current_rgbd_above_measured_support/4-dev",
+              "input_points": 104131,
+              "retained_points": 104131,
+              "support_available": true,
+              "panel": {
+                "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": 104131,
+                "reason": "no_independent_fixed_patch"
+              }
+            },
+            "reason": "door_plane_not_measured",
+            "candidate_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/microwave_door_candidate_e98_wrist_ea20738d08fb45b6.npz/16.npz",
+              "points": 104131,
+              "sha256": "ead07f96ccd7d4679a7917bf49f91731a9d66569a52daf965a2aa53a9a581ae5",
+              "source": "perception",
+              "source_step": 16
+            }
+          }
+        ],
+        "reason": "door_not_measured_in_available_views"
+      }
+    },
+    {
+      "row": 10,
+      "step": 16,
+      "camera": "wrist",
+      "parent": {
+        "id": "e54",
+        "xyz_m": [
+          0.13092221319675446,
+          -0.23411883413791656,
+          1.107136845588684
+        ],
+        "lower_m": [
+          -0.153660386800766,
+          -0.3363009989261627,
+          0.9376882314682007
+        ],
+        "upper_m": [
+          0.17301075160503387,
+          -0.1643938347697258,
+          1.1072099208831787
+        ]
+      },
+      "point_yx": null,
+      "evidence": {
+        "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+        "source": "perception",
+        "panels": [
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.12052738666534424,
+                -0.14241637289524078,
+                1.0160173177719116
+              ],
+              "lower": [
+                -0.1540476781129837,
+                -0.1424165964126587,
+                0.9290233373641967
+              ],
+              "upper": [
+                -0.08728656142950057,
+                -0.13917221128940582,
+                1.1023840188980103
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.12052738666534424,
+                -0.14241637289524078,
+                1.0160173177719116
+              ],
+              "normal_xy": [
+                0.002322902114956128,
+                -0.9999973020592429
+              ],
+              "residual_p90_m": 0.0013921116297815307,
+              "points": 109379
+            },
+            "pixels": 109379
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.06085141375660896,
+                -0.09106464311480522,
+                0.9582960903644562
+              ],
+              "lower": [
+                0.010800898242741823,
+                -0.13210191428661347,
+                0.9545995724201203
+              ],
+              "upper": [
+                0.14168697327375412,
+                -0.06271138161420822,
+                1.0767901611328126
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.06085141375660896,
+                -0.09106464311480522,
+                0.9582960903644562
+              ],
+              "normal_xy": [
+                -0.4652931988893681,
+                -0.88515661838304
+              ],
+              "residual_p90_m": 0.0035295242702324935,
+              "points": 13212
+            },
+            "pixels": 13212
+          }
+        ],
+        "reason": "adjacent_panel_missing_or_ambiguous"
+      },
+      "overlay": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/door9470_recall_images/e54_wrist_16.png",
+        "sha256": "835eaa6e389f0276b7b8abd44d4be8bc5fa0a58ead39dff5823c6ddd7c367089"
+      },
+      "recorded_door_evidence": {
+        "query": "door of the microwave",
+        "source_step": 16,
+        "source": "perception",
+        "accepted_instances": 0,
+        "accepted_by_camera": {
+          "agentview": 0,
+          "wrist": 0
+        },
+        "instances": [
+          {
+            "camera": "agentview",
+            "score": 0.765625,
+            "guidance": null,
+            "filtering": {
+              "basis": "current_rgbd_above_measured_support/4-dev",
+              "input_points": 57553,
+              "retained_points": 45204,
+              "support_available": true,
+              "panel": {
+                "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": 45204,
+                "reason": "no_independent_fixed_patch"
+              }
+            },
+            "reason": "door_plane_not_measured",
+            "candidate_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/microwave_door_candidate_e54_agentview_1d329d9ab0bddda9.npz/16.npz",
+              "points": 45204,
+              "sha256": "d7235bd562dcf39636198063a92fcace55a273f58ff6d1025f2c93a85fd630c4",
+              "source": "perception",
+              "source_step": 16
+            }
+          },
+          {
+            "camera": "wrist",
+            "guidance": {
+              "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+              "source": "perception",
+              "panels": [
+                {
+                  "measurement": {
+                    "name": "microwave door",
+                    "xyz": [
+                      -0.11390083283185959,
+                      -0.14241637289524078,
+                      1.0160797834396362
+                    ],
+                    "lower": [
+                      -0.1410154765844345,
+                      -0.1424165964126587,
+                      0.9290316343307495
+                    ],
+                    "upper": [
+                      -0.08723168790340423,
+                      -0.13917221128940582,
+                      1.1023738336563111
+                    ],
+                    "geometry": "measured_door_surface"
+                  },
+                  "plane": {
+                    "centre": [
+                      -0.11390083283185959,
+                      -0.14241637289524078,
+                      1.0160797834396362
+                    ],
+                    "normal_xy": [
+                      0.0039006808927469273,
+                      -0.999992392315348
+                    ],
+                    "residual_p90_m": 0.0014167882957105877,
+                    "points": 88329
+                  },
+                  "pixels": 88329
+                }
+              ],
+              "point": [
+                323,
+                239
+              ]
+            }
+          },
+          {
+            "camera": "wrist",
+            "score": 0.87890625,
+            "guidance": {
+              "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+              "source": "perception",
+              "panels": [
+                {
+                  "measurement": {
+                    "name": "microwave door",
+                    "xyz": [
+                      -0.11390083283185959,
+                      -0.14241637289524078,
+                      1.0160797834396362
+                    ],
+                    "lower": [
+                      -0.1410154765844345,
+                      -0.1424165964126587,
+                      0.9290316343307495
+                    ],
+                    "upper": [
+                      -0.08723168790340423,
+                      -0.13917221128940582,
+                      1.1023738336563111
+                    ],
+                    "geometry": "measured_door_surface"
+                  },
+                  "plane": {
+                    "centre": [
+                      -0.11390083283185959,
+                      -0.14241637289524078,
+                      1.0160797834396362
+                    ],
+                    "normal_xy": [
+                      0.0039006808927469273,
+                      -0.999992392315348
+                    ],
+                    "residual_p90_m": 0.0014167882957105877,
+                    "points": 88329
+                  },
+                  "pixels": 88329
+                }
+              ],
+              "point": [
+                323,
+                239
+              ]
+            },
+            "filtering": {
+              "basis": "current_rgbd_above_measured_support/4-dev",
+              "input_points": 140130,
+              "retained_points": 140049,
+              "support_available": true,
+              "panel": {
+                "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": 140049,
+                "reason": "no_independent_fixed_patch"
+              }
+            },
+            "reason": "door_plane_not_measured",
+            "candidate_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9470_140/microwave_open_libero_90_t35_s0_oracle_k4/microwave_door_candidate_e54_wrist_43c6628521159a81.npz/16.npz",
+              "points": 140049,
+              "sha256": "8ce9571dbb94c700b0ee1f0dfa9b3afc146652496f28dc0fedb72fab599349a2",
+              "source": "perception",
+              "source_step": 16
+            }
+          }
+        ],
+        "reason": "door_not_measured_in_available_views"
+      }
+    },
+    {
+      "row": 13,
+      "step": 19,
+      "camera": "agentview",
+      "parent": {
+        "id": "e98",
+        "xyz_m": [
+          0.10235185921192169,
+          -0.10780863463878632,
+          1.0439202785491943
+        ],
+        "lower_m": [
+          -0.038217785954475406,
+          -0.15873038589954377,
+          0.9317891335487366
+        ],
+        "upper_m": [
+          0.18212291479110718,
+          -0.029991733282804484,
+          1.1071752309799194
+        ]
+      },
+      "point_yx": null,
+      "evidence": {
+        "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+        "source": "perception",
+        "panels": [
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.17299920320510864,
+                -0.23880739510059357,
+                1.0214672088623047
+              ],
+              "lower": [
+                0.17210069298744202,
+                -0.31681622087955474,
+                0.9301735758781433
+              ],
+              "upper": [
+                0.17301183938980103,
+                -0.17154059290885926,
+                1.1069307327270508
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.17299920320510864,
+                -0.23880739510059357,
+                1.0214672088623047
+              ],
+              "normal_xy": [
+                -0.9999999505931174,
+                -0.000314346564807908
+              ],
+              "residual_p90_m": 2.9098464724070005e-05,
+              "points": 46272
+            },
+            "pixels": 46272
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.08696749806404114,
+                -0.15565088391304016,
+                1.040462613105774
+              ],
+              "lower": [
+                -0.1252988064289093,
+                -0.16127379715442658,
+                0.9503313899040222
+              ],
+              "upper": [
+                -0.08694680780172348,
+                -0.14147628843784332,
+                1.1071996688842773
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.08696749806404114,
+                -0.15565088391304016,
+                1.040462613105774
+              ],
+              "normal_xy": [
+                -0.4383672580072473,
+                -0.8987959429743814
+              ],
+              "residual_p90_m": 0.004661565444491849,
+              "points": 2664
+            },
+            "pixels": 2664
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.03550444170832634,
+                -0.22234703600406647,
+                1.1071484684944153
+              ],
+              "lower": [
+                -0.08278310418128967,
+                -0.2876828110218048,
+                0.9649762618541717
+              ],
+              "upper": [
+                0.16130425035953522,
+                -0.16410839557647705,
+                1.1071865558624268
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.03550444170832634,
+                -0.22234703600406647,
+                1.1071484684944153
+              ],
+              "normal_xy": [
+                -0.4612795636394942,
+                -0.8872548473626717
+              ],
+              "residual_p90_m": 0.0035945673652991676,
+              "points": 4298
+            },
+            "pixels": 4298
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.06291794776916504,
+                -0.1714385747909546,
+                0.9991728067398071
+              ],
+              "lower": [
+                -0.06293049052357674,
+                -0.20507292002439498,
+                0.9437096118927002
+              ],
+              "upper": [
+                -0.002496994151733883,
+                -0.16655495434999465,
+                1.0689374208450317
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.06291794776916504,
+                -0.1714385747909546,
+                0.9991728067398071
+              ],
+              "normal_xy": [
+                -0.5122534915895204,
+                -0.8588343032007659
+              ],
+              "residual_p90_m": 0.00352987381677266,
+              "points": 1710
+            },
+            "pixels": 1710
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.014460532926023006,
+                -0.22803521156311035,
+                1.1071557998657227
+              ],
+              "lower": [
+                -0.09693222284317017,
+                -0.29813827633857726,
+                0.9569558525085449
+              ],
+              "upper": [
+                0.12922219932079315,
+                -0.16411326825618744,
+                1.107192873954773
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.014460532926023006,
+                -0.22803521156311035,
+                1.1071557998657227
+              ],
+              "normal_xy": [
+                -0.5185497505885364,
+                -0.8550474584282247
+              ],
+              "residual_p90_m": 0.003540002004158551,
+              "points": 3769
+            },
+            "pixels": 3769
+          }
+        ],
+        "reason": "adjacent_panel_missing_or_ambiguous"
+      },
+      "overlay": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/door9470_recall_images/e98_agentview_19.png",
+        "sha256": "14f3ae8b5d72d4d38d52337bbfae397dfbabab5453fc8b5b1a50ece6d16e70a8"
+      },
+      "recorded_door_evidence": null
+    },
+    {
+      "row": 13,
+      "step": 19,
+      "camera": "agentview",
+      "parent": {
+        "id": "e54",
+        "xyz_m": [
+          0.13092221319675446,
+          -0.2341567799448967,
+          1.107136845588684
+        ],
+        "lower_m": [
+          -0.153660386800766,
+          -0.33622455537319185,
+          0.9376882314682007
+        ],
+        "upper_m": [
+          0.17301075160503387,
+          -0.16437385112047195,
+          1.1072099208831787
+        ]
+      },
+      "point_yx": null,
+      "evidence": {
+        "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+        "source": "perception",
+        "panels": [
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.11537540704011917,
+                -0.10936731100082397,
+                1.0404387712478638
+              ],
+              "lower": [
+                -0.03866913914680481,
+                -0.14849792420864105,
+                0.9297224283218384
+              ],
+              "upper": [
+                0.18240052461624146,
+                -0.028323741629719734,
+                1.1071512699127197
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.11537540704011917,
+                -0.10936731100082397,
+                1.0404387712478638
+              ],
+              "normal_xy": [
+                -0.4648859432060205,
+                -0.885370577673241
+              ],
+              "residual_p90_m": 0.0025207650272018067,
+              "points": 30051
+            },
+            "pixels": 30051
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.11098489165306091,
+                -0.11785291880369186,
+                1.1071456670761108
+              ],
+              "lower": [
+                -0.04091579467058182,
+                -0.15405898213386535,
+                0.9460995316505432
+              ],
+              "upper": [
+                0.17965231835842133,
+                -0.03703518956899644,
+                1.1071815490722656
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.11098489165306091,
+                -0.11785291880369186,
+                1.1071456670761108
+              ],
+              "normal_xy": [
+                -0.46667150133120455,
+                -0.884430726425354
+              ],
+              "residual_p90_m": 0.0034005594434622696,
+              "points": 4333
+            },
+            "pixels": 4333
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.12543991208076477,
+                -0.1428043246269226,
+                1.0384377241134644
+              ],
+              "lower": [
+                -0.16031866252422333,
+                -0.1457984107732773,
+                0.9478351855278015
+              ],
+              "upper": [
+                -0.0871609103679657,
+                -0.13960136473178864,
+                1.107208013534546
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.12543991208076477,
+                -0.1428043246269226,
+                1.0384377241134644
+              ],
+              "normal_xy": [
+                -0.0008450671359636915,
+                -0.9999996429307041
+              ],
+              "residual_p90_m": 0.0013920834410457129,
+              "points": 3625
+            },
+            "pixels": 3625
+          }
+        ],
+        "reason": "adjacent_panel_missing_or_ambiguous"
+      },
+      "overlay": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/door9470_recall_images/e54_agentview_19.png",
+        "sha256": "14f3ae8b5d72d4d38d52337bbfae397dfbabab5453fc8b5b1a50ece6d16e70a8"
+      },
+      "recorded_door_evidence": null
+    },
+    {
+      "row": 13,
+      "step": 19,
+      "camera": "wrist",
+      "parent": {
+        "id": "e98",
+        "xyz_m": [
+          0.10235185921192169,
+          -0.10780863463878632,
+          1.0439202785491943
+        ],
+        "lower_m": [
+          -0.038217785954475406,
+          -0.15873038589954377,
+          0.9317891335487366
+        ],
+        "upper_m": [
+          0.18212291479110718,
+          -0.029991733282804484,
+          1.1071752309799194
+        ]
+      },
+      "point_yx": null,
+      "evidence": {
+        "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+        "source": "perception",
+        "panels": [
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.1261506900191307,
+                -0.14241637289524078,
+                1.0157814621925354
+              ],
+              "lower": [
+                -0.16580651879310607,
+                -0.1435355567932129,
+                0.9291155648231506
+              ],
+              "upper": [
+                -0.08715390384197236,
+                -0.13917218148708344,
+                1.1028144788742065
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.1261506900191307,
+                -0.14241637289524078,
+                1.0157814621925354
+              ],
+              "normal_xy": [
+                -0.0005504709235941633,
+                -0.9999998484908698
+              ],
+              "residual_p90_m": 0.0017055239635491966,
+              "points": 129348
+            },
+            "pixels": 129348
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.14504943788051605,
+                -0.2264031171798706,
+                1.012040376663208
+              ],
+              "lower": [
+                0.1408411967754364,
+                -0.3322603702545166,
+                0.9432174563407898
+              ],
+              "upper": [
+                0.14509232342243195,
+                -0.17045210242271425,
+                1.0816830110549926
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.14504943788051605,
+                -0.2264031171798706,
+                1.012040376663208
+              ],
+              "normal_xy": [
+                -0.9999770908381702,
+                0.0067688846075399526
+              ],
+              "residual_p90_m": 0.0005573158074857055,
+              "points": 56405
+            },
+            "pixels": 56405
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                0.12639784812927246,
+                -0.33226001262664795,
+                0.968144416809082
+              ],
+              "lower": [
+                0.06333695530891419,
+                -0.33226072788238525,
+                0.9431181144714356
+              ],
+              "upper": [
+                0.13324151635169984,
+                -0.17286934196949005,
+                1.0879324674606323
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                0.12639784812927246,
+                -0.33226001262664795,
+                0.968144416809082
+              ],
+              "normal_xy": [
+                -0.9251800488270002,
+                -0.3795284933341233
+              ],
+              "residual_p90_m": 0.005856191672325682,
+              "points": 5817
+            },
+            "pixels": 5817
+          }
+        ],
+        "reason": "adjacent_panel_missing_or_ambiguous"
+      },
+      "overlay": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/door9470_recall_images/e98_wrist_19.png",
+        "sha256": "7dd993cdec6df599d47d2e3d01e3c05053c4737d13f8790ed35b05a8ec263740"
+      },
+      "recorded_door_evidence": null
+    },
+    {
+      "row": 13,
+      "step": 19,
+      "camera": "wrist",
+      "parent": {
+        "id": "e54",
+        "xyz_m": [
+          0.13092221319675446,
+          -0.2341567799448967,
+          1.107136845588684
+        ],
+        "lower_m": [
+          -0.153660386800766,
+          -0.33622455537319185,
+          0.9376882314682007
+        ],
+        "upper_m": [
+          0.17301075160503387,
+          -0.16437385112047195,
+          1.1072099208831787
+        ]
+      },
+      "point_yx": null,
+      "evidence": {
+        "basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+        "source": "perception",
+        "panels": [
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.030644778162240982,
+                -0.03196427971124649,
+                1.0660512447357178
+              ],
+              "lower": [
+                -0.0463472293317318,
+                -0.10736223518848419,
+                0.9803750610351563
+              ],
+              "upper": [
+                0.11397987365722656,
+                -0.02496578685939312,
+                1.1050674057006835
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.030644778162240982,
+                -0.03196427971124649,
+                1.0660512447357178
+              ],
+              "normal_xy": [
+                -0.4614098057968184,
+                -0.8871871229422474
+              ],
+              "residual_p90_m": 0.00021805465070557975,
+              "points": 157985
+            },
+            "pixels": 157985
+          },
+          {
+            "measurement": {
+              "name": "microwave door",
+              "xyz": [
+                -0.12643441557884216,
+                -0.14241637289524078,
+                1.0158160328865051
+              ],
+              "lower": [
+                -0.16604585617780684,
+                -0.1432243525981903,
+                0.9291233110427857
+              ],
+              "upper": [
+                -0.08734182476997375,
+                -0.13917218148708344,
+                1.1028157091140747
+              ],
+              "geometry": "measured_door_surface"
+            },
+            "plane": {
+              "centre": [
+                -0.12643441557884216,
+                -0.14241637289524078,
+                1.0158160328865051
+              ],
+              "normal_xy": [
+                0.001469772112053871,
+                -0.9999989198843859
+              ],
+              "residual_p90_m": 0.0016287068796764707,
+              "points": 129162
+            },
+            "pixels": 129162
+          }
+        ],
+        "reason": "adjacent_panel_missing_or_ambiguous"
+      },
+      "overlay": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/door9470_recall_images/e54_wrist_19.png",
+        "sha256": "7dd993cdec6df599d47d2e3d01e3c05053c4737d13f8790ed35b05a8ec263740"
+      },
+      "recorded_door_evidence": null
+    }
+  ],
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_anchor_recovery_20261018_eee8434",
+  "script_sha256": "0e5e13875ad00b86a7c1812ecb034f068daf85990e545245b81e45aa466548f9",
+  "scope": "public RGB-D adjacent-plane diagnostic; no new segmentation, control, simulation or private labels",
+  "gpu_used": false,
+  "physics_steps": 0,
+  "training": false
+}

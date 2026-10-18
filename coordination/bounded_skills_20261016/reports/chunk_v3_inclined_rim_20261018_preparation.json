@@ -1,0 +1,52 @@
+{
+  "source_commit": "2997335",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_inclined_rim_20261018_2997335",
+  "archive_sha256": "eaa9ff4b35ced712df6d3f2c56fea4076a540fb06cd44ee78bb1eccaf50c02e4",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_inclined_rim_20261018.json",
+    "sha256": "271011d3308eeaf2f279795d39436abdb32c2bca9a69fac0a3d19870c4740690"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_inclined_rim_20261018.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/inclined_rim_cpu_validation_20261018.json",
+    "sha256": "a4a6646d64884e64886f2df9914849599c9facc9f82437e6b8ac077478bf67d4",
+    "results": {
+      "source_commit": "29973353fd587acdd3172caaad4e452a465f3168",
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_offline_labels.py -q",
+      "exit_code": 0,
+      "passed": 261,
+      "seconds": 133.58,
+      "warnings": [
+        "Unregistered pytest timeout configuration in this environment"
+      ],
+      "source_files": {
+        "robots/libero/bounded_skills.py": "534209dbe3da69fea29aa43b2ea6a40de1677bb4891e0e7dc9163e3df763ee55",
+        "tests/unit_tests/robots/libero/test_bounded_skills.py": "8ab13855cac699b68630b17c27008348edf3c27458c6ca73638a3fea9ae39b90",
+        "SKILL_PACKAGE_SPEC.md": "3cae4bf5bf5548c9a83a0157b2e62fae51432365be9822585ec21b15fc1bf207"
+      },
+      "raw_log_sha256": "5983107cd2afe7df176cda03e4bb4be5d15bdf39153535f138cd733dfacfcd64",
+      "compressed_log": "coordination/bounded_skills_20261016/reports/inclined_rim_cpu_tests_20261018.log.gz",
+      "compressed_log_sha256": "c752bb42a9bef670d87bd29fd527930e15c1c285c4e3e04004fc697136af657c",
+      "ruff_added_diagnostics": 0,
+      "ruff_existing": {
+        "robots/libero/bounded_skills.py": 5,
+        "tests/unit_tests/robots/libero/test_bounded_skills.py": 2
+      },
+      "gpu_used": false,
+      "physics_steps": 0,
+      "scope": "CPU regression; physical contact effectiveness not established"
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}
