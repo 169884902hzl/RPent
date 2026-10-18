@@ -1,0 +1,52 @@
+{
+  "source_commit": "b6cf6d0",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0",
+  "archive_sha256": "cc0a7bdc5578aa97a0c325d4a43aa4e30128cd41ef724f49b7a8edc78042bffe",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_self_filter_20261018.json",
+    "sha256": "0040274982f0afd4e5f3e9858bef4e1050e4364bc6766be6e419df4ff4f61270"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_self_filter_20261018.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/coordination/bounded_skills_20261016/reports/self_filter_cache_final_CPU_20261018.json",
+    "sha256": "a8ee3540661d33f4b555acf7e22d0e8394b2f174fba6d735aeff1fad961d402f",
+    "results": {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit_tests/robots/libero/test_bounded_skills.py",
+        "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+        "tests/unit_tests/robots/libero/test_bounded_prefix.py",
+        "tests/unit_tests/robots/libero/test_bounded_compaction.py",
+        "tests/unit_tests/robots/libero/test_bounded_async.py",
+        "tests/unit_tests/robots/libero/test_skill_package_schema.py",
+        "tests/unit_tests/robots/libero/test_bounded_vla.py",
+        "tests/unit_tests/robots/libero/test_bounded_timing.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "wall_s": 148.63609764073044,
+      "source_sha256": {
+        "robots/libero/bounded_skills.py": "041f63d05d6753eb30e6a272e705ac23700495c8fe511da55ad1689af017130b",
+        "tests/unit_tests/robots/libero/test_bounded_skills.py": "eca1a3d8b92272d9c71e95e763068847fa2a3fb32a4b614679a282fbf6fe8bbe"
+      },
+      "source_unchanged": true,
+      "log": "coordination/bounded_skills_20261016/reports/self_filter_cache_final_CPU_20261018.log",
+      "training": false,
+      "physical_validation": false
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}
