@@ -359,9 +359,13 @@ def test_oracle_refreshes_blocked_lift_before_discarding_unmeasured_grasp(adapte
 
 
 @pytest.mark.parametrize('predicate', ['open', 'close', 'turnon', 'turnoff'])
-def test_oracle_measures_predicted_blocked_contact_before_releasing_it(adapter, monkeypatch, predicate):
+@pytest.mark.parametrize('refresh_blocked', [False, True])
+def test_oracle_executes_prefix_checks_before_blocked_contact_recovery(adapter, monkeypatch, predicate, refresh_blocked):
     physical_grip(adapter)
     request = adapter.request(k=4)
+    if refresh_blocked:
+        request['candidates'] = [c for c in request['candidates']
+            if not (c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh')]
     adapter.plans['e1']['handle_measurement'] = {
         'pose': {'approach_normal_xyz': [0., 0., 1.] if predicate.startswith('turn') else [0., 1., 0.]}}
     original = type(adapter)._candidate
@@ -378,10 +382,15 @@ def test_oracle_measures_predicted_blocked_contact_before_releasing_it(adapter, 
     oracle = BoundedOracle(SimpleNamespace(call=lambda *_: status), adapter)
     oracle.binding.bind = lambda *args, **kwargs: adapter.scene.entities['e1']
     choices = selected(request, oracle.choose(request))
-    assert [c['skill'] for c in choices] == ['move_to', 'descend', 'set_gripper', 'observe']
+    assert [c['skill'] for c in choices] == ['move_to', 'descend', 'set_gripper']
     assert choices[2]['parameters'] == {'mode': 'close'}
-    assert choices[3]['parameters'] == {'mode': 'refresh'}
-    assert oracle.last_labels['positions'][-1]['rule_acceptable'] == [choices[3]['id']]
+    assert len(oracle.last_labels['positions']) == 3
+    assert oracle.private_trace[-1]['await_prefix_measurement']
+    assert all(row['judge'] == 'libero-private-task-progress-rules/4'
+               for row in oracle.last_labels['positions'])
+    receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
+    assert len(receipts) == 3 and all(r['outcome'] == 'success' for r in receipts)
+    assert all(r['expectation_checks'] for r in receipts)
 
     # The same obstruction confirmed in a current measured state still
     # allows the existing open-and-reapproach recovery.
@@ -392,6 +401,16 @@ def test_oracle_measures_predicted_blocked_contact_before_releasing_it(adapter, 
             c['consequences']['collision'] = True
     measured = oracle._choose_one(current, status)
     assert (measured['skill'], measured['parameters']) == ('set_gripper', {'mode': 'open'})
+
+
+def test_oracle_retains_observe_when_source_has_no_measurement(adapter):
+    request = adapter.request(k=4)
+    status = {'done': False, 'goals': [['open', 'fixture_1']], 'satisfied': [False]}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda *_: status), adapter)
+    oracle.binding.bind = lambda *args, **kwargs: None
+    choices = selected(request, oracle.choose(request))
+    assert [c['skill'] for c in choices] == ['observe']
+    assert not any(row.get('await_prefix_measurement') for row in oracle.private_trace)
 
 
 def test_oracle_prefix_clones_bindings_without_copying_live_rpc(adapter):

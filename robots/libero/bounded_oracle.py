@@ -68,6 +68,13 @@ class BoundedOracle:
         def find(skill, **parameters):
             return next((c for c in feasible if c["skill"] == skill
                 and all(c["parameters"].get(key) == value for key, value in parameters.items())), None)
+        def measure_contact():
+            # Each executed step already refreshes and checks its receipt.
+            # A speculative obstruction must end the existing prefix, not
+            # spend a zero-motion observe and its recovery failure budget.
+            if predicted_prefix:
+                self.private_trace[-1]['await_prefix_measurement'] = True
+            return find('observe', mode='refresh')
         def nudge(axis, direction):
             # A 2 cm sweep can be blocked while the measured 1 cm sweep
             # still permits progress. Reobserve after that smaller action;
@@ -191,17 +198,15 @@ class BoundedOracle:
                     axis = int(np.argmax(np.abs(delta[:2])))
                     chosen = nudge('xy'[axis], delta[axis])
                     if chosen is None and predicted_prefix:
-                        chosen = find('observe', mode='refresh')
+                        chosen = measure_contact()
                 elif predicate in {"on", "in"}:
                     last = ex.receipts[-1] if ex.receipts else None
                     failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success'
                     chosen = None if failed_lift else find("lift", anchor_id=source.id)
                     if chosen is None and not failed_lift:
-                        # A blocked conditional payload sweep is not a
-                        # measured failed grasp. Refresh at the contact pose
-                        # before opening, rather than closing and reopening
-                        # the same object in one predicted chunk.
-                        chosen = find('observe', mode='refresh')
+                        # Await the prefix's actual contact measurement
+                        # before discarding an unmeasured grasp.
+                        chosen = measure_contact()
                     chosen = chosen or find("set_gripper", mode="open")
                 elif predicate in {"turnon", "turnoff", "turn_on", "turn_off"}:
                     direction = 1 if "on" in predicate else -1
@@ -214,7 +219,7 @@ class BoundedOracle:
                         direction *= np.sign(np.dot(wrist_axis, normal))
                     chosen = find("rotate_wrist", angle_deg=float(45*direction))
                     if chosen is None:
-                        chosen = (find('observe', mode='refresh') if predicted_prefix
+                        chosen = (measure_contact() if predicted_prefix
                                   else find("set_gripper", mode="open"))
                 else:
                     normal = contact.get('surface_measurement', {}).get('normal_xyz')
@@ -224,11 +229,11 @@ class BoundedOracle:
                     direction = (1 if predicate == "open" else -1)*np.sign(normal[axis])
                     chosen = nudge("xyz"[axis], direction)
                     # A predicted blocked sweep is not a measured failed
-                    # contact. First observe the actual closure instead of
+                    # contact. Await the executed prefix's checks instead of
                     # closing and immediately reopening in one chunk. A
                     # measured blocked route keeps the existing recovery.
                     if chosen is None:
-                        chosen = (find('observe', mode='refresh') if predicted_prefix
+                        chosen = (measure_contact() if predicted_prefix
                                   else find("set_gripper", mode="open"))
                 continue
             error = np.linalg.norm(xyz-contact["xyz_m"])
@@ -305,11 +310,15 @@ class BoundedOracle:
                      and c['consequences']['ik_reachable'] is not False]
             try:
                 predicted_prefix = bool(ids) or request.get('execution_prefix') is not None
+                trace_start = len(virtual.private_trace)
                 chosen = virtual._choose_one(current, status, predicted_prefix=predicted_prefix)
             except NoPublicOption:
                 if ids:
                     break
                 raise
+            if ids and any(row.get('await_prefix_measurement')
+                           for row in virtual.private_trace[trace_start:]):
+                break
             acceptable = virtual._acceptable(current, status, predicted_prefix=predicted_prefix)
             acceptable.add(chosen['id'])
             if chosen['id'] in ids:
@@ -319,7 +328,7 @@ class BoundedOracle:
                 chosen = alternatives[0]
             labels.append({'prefix': list(ids), 'legal': legal, 'selected': chosen['id'],
                 'rule_acceptable': [cid for cid in legal if cid in acceptable],
-                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/3',
+                'measured_success': [], 'measured_failure': [], 'judge': 'libero-private-task-progress-rules/4',
                 'evidence': [{'source': 'original_task_predicates_private', 'model_visible': False,
                     'initial_task_status': status,
                     'conditional_on_prefix': list(ids), 'predicted_predecessor_checks': context['assumptions'],

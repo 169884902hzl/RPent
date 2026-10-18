@@ -1,0 +1,414 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/choices.jsonl",
+  "job": "8843_80",
+  "scope": "preserved development failure, CPU log analysis",
+  "observation": "Two successful nudges are followed by no-effect refreshes and a failed wrist scan.",
+  "hypothesis": "The private oracle appends a refresh after a blocked speculative contact successor, although executor steps already measure receipts.",
+  "public_screens_relaxed": false,
+  "physical_repair_verified": false,
+  "rows": [
+    {
+      "index": 0,
+      "observation_id": "public-0",
+      "selected": [
+        {
+          "id": "afaa94b76db4abe4",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e101",
+            "approach": "right",
+            "path": "over"
+          }
+        },
+        {
+          "id": "b19fc7a1d676a1b9",
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e101"
+          }
+        },
+        {
+          "id": "7f56ae3f4c8b42af",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "close"
+          }
+        },
+        {
+          "id": "027cea6b4534fa9c",
+          "skill": "observe",
+          "parameters": {
+            "mode": "refresh"
+          }
+        }
+      ],
+      "safe_positive_y_nudges": [
+        {
+          "id": "78fc3aade1371307",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.01
+          }
+        },
+        {
+          "id": "f395c81b7408c9d5",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.02
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "move_to",
+          "candidate_id": "afaa94b76db4abe4",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 344,
+          "expectation_checks": [
+            {
+              "condition": {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e101",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              "measured": 0.00045847996543516847,
+              "passed": true
+            },
+            {
+              "condition": {
+                "metric": "angular_error_rad",
+                "anchor_id": "e101",
+                "minimum": 0.0,
+                "maximum": 0.05
+              },
+              "measured": 0.002251731859510658,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "skill": "descend",
+          "candidate_id": "b19fc7a1d676a1b9",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 38,
+          "expectation_checks": [
+            {
+              "condition": {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e101",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              "measured": 0.00340834684989066,
+              "passed": true
+            },
+            {
+              "condition": {
+                "metric": "angular_error_rad",
+                "anchor_id": "e101",
+                "minimum": 0.0,
+                "maximum": 0.05
+              },
+              "measured": 0.012704808280102725,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "skill": "set_gripper",
+          "candidate_id": "7f56ae3f4c8b42af",
+          "outcome": "success",
+          "stop_reason": "measured_gripper_change",
+          "steps_used": 15,
+          "expectation_checks": [
+            {
+              "condition": {
+                "metric": "gripper_opening_m",
+                "anchor_id": "e101",
+                "minimum": 0.005,
+                "maximum": 0.02776326481138068
+              },
+              "measured": 0.018098613362613224,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "skill": "observe",
+          "candidate_id": "027cea6b4534fa9c",
+          "outcome": "no_effect",
+          "stop_reason": "no_measured_scene_change",
+          "steps_used": 0,
+          "expectation_checks": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "index": 1,
+      "observation_id": "public-1",
+      "selected": [
+        {
+          "id": "9757f247ae1ba704",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": -0.01,
+            "anchor_id": "e101"
+          }
+        },
+        {
+          "id": "027cea6b4534fa9c",
+          "skill": "observe",
+          "parameters": {
+            "mode": "refresh"
+          }
+        }
+      ],
+      "safe_positive_y_nudges": [
+        {
+          "id": "f831316d5f9ef233",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.01,
+            "anchor_id": "e101"
+          }
+        },
+        {
+          "id": "5345c2b852f5cf2c",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.02,
+            "anchor_id": "e101"
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "nudge",
+          "candidate_id": "9757f247ae1ba704",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 14,
+          "expectation_checks": [
+            {
+              "condition": {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e101",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              "measured": 0.001770984690957287,
+              "passed": true
+            },
+            {
+              "condition": {
+                "metric": "angular_error_rad",
+                "anchor_id": "e101",
+                "minimum": 0.0,
+                "maximum": 0.05
+              },
+              "measured": 0.002319255510953539,
+              "passed": true
+            },
+            {
+              "condition": {
+                "metric": "contact_progress_m",
+                "anchor_id": "e101",
+                "minimum": 0.005,
+                "maximum": null
+              },
+              "measured": 0.007999999999999998,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "skill": "observe",
+          "candidate_id": "027cea6b4534fa9c",
+          "outcome": "no_effect",
+          "stop_reason": "no_measured_scene_change",
+          "steps_used": 0,
+          "expectation_checks": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "index": 2,
+      "observation_id": "public-2",
+      "selected": [
+        {
+          "id": "9757f247ae1ba704",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": -0.01,
+            "anchor_id": "e101"
+          }
+        },
+        {
+          "id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "parameters": {
+            "mode": "wrist_scan"
+          }
+        }
+      ],
+      "safe_positive_y_nudges": [
+        {
+          "id": "f831316d5f9ef233",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.01,
+            "anchor_id": "e101"
+          }
+        },
+        {
+          "id": "5345c2b852f5cf2c",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.02,
+            "anchor_id": "e101"
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "nudge",
+          "candidate_id": "9757f247ae1ba704",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 14,
+          "expectation_checks": [
+            {
+              "condition": {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e101",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              "measured": 0.0011440314704459819,
+              "passed": true
+            },
+            {
+              "condition": {
+                "metric": "angular_error_rad",
+                "anchor_id": "e101",
+                "minimum": 0.0,
+                "maximum": 0.05
+              },
+              "measured": 0.0017724476714167986,
+              "passed": true
+            },
+            {
+              "condition": {
+                "metric": "contact_progress_m",
+                "anchor_id": "e101",
+                "minimum": 0.005,
+                "maximum": null
+              },
+              "measured": 0.008999999999999998,
+              "passed": true
+            }
+          ]
+        },
+        {
+          "skill": "observe",
+          "candidate_id": "1f9311eb6c9f6bb8",
+          "outcome": "failure",
+          "stop_reason": "scan_waypoint_not_reached",
+          "steps_used": 23,
+          "expectation_checks": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "index": 3,
+      "observation_id": "public-3",
+      "selected": [
+        {
+          "id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "parameters": {
+            "mode": "wrist_scan"
+          }
+        }
+      ],
+      "safe_positive_y_nudges": [],
+      "receipts": [
+        {
+          "skill": "observe",
+          "candidate_id": "1f9311eb6c9f6bb8",
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0,
+          "expectation_checks": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "index": 4,
+      "observation_id": "public-4",
+      "selected": [
+        {
+          "id": "027cea6b4534fa9c",
+          "skill": "observe",
+          "parameters": {
+            "mode": "refresh"
+          }
+        }
+      ],
+      "safe_positive_y_nudges": [],
+      "receipts": [
+        {
+          "skill": "observe",
+          "candidate_id": "027cea6b4534fa9c",
+          "outcome": "no_effect",
+          "stop_reason": "no_measured_scene_change",
+          "steps_used": 0,
+          "expectation_checks": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "index": 5,
+      "observation_id": "public-5",
+      "selected": [
+        {
+          "id": "027cea6b4534fa9c",
+          "skill": "observe",
+          "parameters": {
+            "mode": "refresh"
+          }
+        }
+      ],
+      "safe_positive_y_nudges": [],
+      "receipts": [
+        {
+          "skill": "observe",
+          "candidate_id": "027cea6b4534fa9c",
+          "outcome": "no_effect",
+          "stop_reason": "no_measured_scene_change",
+          "steps_used": 0,
+          "expectation_checks": []
+        }
+      ],
+      "error": null
+    },
+    {
+      "index": 6,
+      "observation_id": "public-6",
+      "selected": [],
+      "safe_positive_y_nudges": [],
+      "receipts": [],
+      "error": "upper-bound selector has no remaining public option"
+    }
+  ]
+}
