@@ -1,12 +1,16 @@
 """Replay the recorded false-cutoff state before admitting a new source array."""
+import argparse
 import hashlib
 import json
 import subprocess
 from pathlib import Path
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--tag', default='chunk_v2_surfacefix_20261018')
+args = parser.parse_args()
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 reports = root/'coordination/bounded_skills_20261016/reports'
-tag = 'chunk_v2_surfacefix_20261018'
+tag = args.tag
 receipt = reports/f'{tag}_startup_submission.json'
 assert not receipt.exists(), 'Reuse the saved submission receipt'
 prep = json.loads((reports/f'{tag}_preparation.json').read_text())

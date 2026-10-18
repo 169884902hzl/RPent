@@ -1,0 +1,25 @@
+{
+  "source_commit": "8c1da81fb5509a504d905d151fc33b20296bee34",
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_motion.py tests/unit_tests/robots/libero/test_bounded_trajectory.py -q",
+      "exit_code": 0,
+      "passed": 252,
+      "duration_s": 111.04
+    },
+    {
+      "command": "ruff check --select E9,F63,F7,F82 bounded_motion.py test_bounded_motion.py audit_smooth_joins_20261018.py",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check changed files",
+      "exit_code": 0
+    }
+  ],
+  "warnings": [
+    "pytest config option timeout is unknown"
+  ],
+  "gpu_validation": "pending same-source startup",
+  "scope": "CPU regressions; reference continuation does not certify measured-state braking handoffs",
+  "training": false
+}

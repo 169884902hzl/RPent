@@ -1,0 +1,34 @@
+{
+  "source_commit": "9a1de6849fbd4084821ca0c44b7bcd4edc7d92f6",
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_motion.py tests/unit_tests/robots/libero/test_bounded_screen.py -q",
+      "exit_code": 0,
+      "passed": 242,
+      "duration_s": 98.74
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_chunk.py -q",
+      "exit_code": 0,
+      "passed": 13,
+      "duration_s": 12.55
+    },
+    {
+      "command": "ruff check --select E9,F63,F7,F82 changed Python files",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check changed files",
+      "exit_code": 0
+    }
+  ],
+  "warnings": ["pytest config option timeout is unknown"],
+  "saved_input_replay": {
+    "before": "prefix8300_lift_raw_RGBD_CPU_20261018.json",
+    "after": "prefix8300_lift_raw_pixeldev_CPU_20261018.json",
+    "result": "Original self-obstacle removed; another unsegmented boundary pixel still blocks the conditional lift. No full-route or physical success claim."
+  },
+  "gpu_validation": "pending same-source startup",
+  "training": false,
+  "scope": "Pixel identity in conditional payload screens and private oracle refresh before releasing an unmeasured grasp. No new public fields, relaxed collision clearance, or changed actuator limits."
+}
