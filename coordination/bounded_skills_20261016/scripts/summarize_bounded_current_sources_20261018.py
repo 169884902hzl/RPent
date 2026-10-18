@@ -1,5 +1,5 @@
 from pathlib import Path
-import json,math,sys
+import json,sys
 sys.path.insert(0,'/public/home/sunyihan/rpent_libero_eval/source_bounded_cbaa92a_20261017')
 from scripts.summarize_bounded_probes import feasibility
 root=Path('/public/home/sunyihan/rpent_libero_eval');base=root/'results/bounded_skills/feasibility_20261017'
@@ -18,6 +18,8 @@ jobs.update({'8156_21':'8e49152','8158_60':'bc160ff',**{f'8159_{i}':'bc160ff' fo
 jobs.update({'8161_100':'cbffa78',**{f'8162_{i}':'cbffa78' for i in (80,120,180,200)},'8163_140':'cbffa78'})
 jobs.update({'8170_100':'3d71f44', **{f'8171_{i}':'3d71f44' for i in (80,120,180,200)}})
 jobs.update({f'8173_{i}':'3d71f44' for i in range(3,60)})
+jobs.update({'8183_100':'9cacb71', **{f'8184_{i}':'9cacb71' for i in (80,120,180,200)}})
+jobs.update({f'8192_{i}':'9cacb71' for i in range(101,120)})
 rows=[]
 for j,source in jobs.items():
  p=base/('job'+j)/'episodes.jsonl'
