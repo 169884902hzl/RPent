@@ -1149,8 +1149,10 @@ class MeasuredSkillAdapter:
         centre = np.median(points, axis=0)
         _, axes = np.linalg.eigh(np.cov(points.T))
         dimensions = np.diff(np.quantile((points-centre)@axes, [.02, .98], axis=0), axis=0)[0]
-        # The same measured thin-surface test used when choosing contact.
-        if dimensions[0] > .02 or min(dimensions[1:]) < max(.04, 4*dimensions[0]):
+        # Two broad tangents must support the normal. Unlike selecting a
+        # fingertip contact, orienting the measured face does not require
+        # its parallel recessed surfaces to fit within a 2 cm slab.
+        if min(dimensions[1:]) < max(.04, 4*dimensions[0]):
             return
         normal = axes[:, 0]
         if np.dot(normal, surface['normal_xyz']) < 0:

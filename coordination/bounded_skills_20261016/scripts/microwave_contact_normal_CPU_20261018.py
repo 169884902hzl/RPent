@@ -3,6 +3,7 @@
 """Refit saved public panel captures without simulation or private coordinates."""
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import sys
@@ -12,6 +13,7 @@ from types import SimpleNamespace
 os.environ.update(CUDA_VISIBLE_DEVICES='', OPENBLAS_NUM_THREADS='1')
 parser = argparse.ArgumentParser()
 parser.add_argument('--source', type=Path, required=True)
+parser.add_argument('--candidate', type=Path)
 parser.add_argument('--output', type=Path, required=True)
 args = parser.parse_args()
 sys.path.insert(0, str(args.source))
@@ -20,6 +22,14 @@ import numpy as np  # noqa: E402
 
 from robots.libero.bounded_skills import MeasuredSkillAdapter  # noqa: E402
 from robots.libero.v5_state import Entity  # noqa: E402
+
+module_path = args.source/'robots/libero/bounded_skills.py'
+if args.candidate:
+    module_path = args.candidate
+    spec = importlib.util.spec_from_file_location('contact_normal_candidate', module_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    MeasuredSkillAdapter = module.MeasuredSkillAdapter
 
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 directory = root/'results/bounded_skills/feasibility_20261017/job8993_120'
@@ -47,8 +57,8 @@ for artifact in sorted((arm/'bounded_contact_e114_reference.npz').glob('*.npz'))
     records.append({'artifact': str(artifact), 'sha256': hashlib.sha256(artifact.read_bytes()).hexdigest(),
         'points': len(points), 'capture_step': step, 'old_normal': old, 'new_normal': normal.tolist(),
         'normal_source_step': reference.get('normal_source_step'), 'changed_angle_deg': angle})
-report = {'source': str(args.source), 'module_sha256': hashlib.sha256(
-    (args.source/'robots/libero/bounded_skills.py').read_bytes()).hexdigest(),
+report = {'source': str(args.source), 'module_path': str(module_path),
+    'module_sha256': hashlib.sha256(module_path.read_bytes()).hexdigest(),
     'choices_sha256': hashlib.sha256(raw).hexdigest(), 'rows': records,
     'private_truth_used': False, 'gpu_used': False, 'controls': 0, 'training': False,
     'limitation': 'Saved associated contact surfaces test the normal refit; live segmentation and task success remain separate.'}

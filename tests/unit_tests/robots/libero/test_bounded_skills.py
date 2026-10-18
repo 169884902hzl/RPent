@@ -1892,7 +1892,7 @@ def test_measured_vertical_panel_has_bounded_push_options_without_a_visible_hand
     assert chosen['parameters']['axis'] == 'x' and chosen['parameters']['distance_m'] > 0
 
 
-@pytest.mark.parametrize('capture', ['fresh', 'stale', 'occluded', 'thin_handle'])
+@pytest.mark.parametrize('capture', ['fresh', 'recessed_panel', 'stale', 'occluded', 'thin_handle'])
 def test_committed_panel_direction_uses_only_a_fresh_measured_plane(adapter, capture):
     from dataclasses import replace
 
@@ -1905,6 +1905,8 @@ def test_committed_panel_direction_uses_only_a_fresh_measured_plane(adapter, cap
     patch = np.stack([np.zeros(y.size), (y.ravel()-10)*.008, (z.ravel()-10)*.008], axis=-1)
     if capture == 'thin_handle':
         patch[:, 1] *= .05
+    elif capture == 'recessed_panel':
+        patch = np.concatenate([patch+[depth, 0., 0.] for depth in (-.0115, 0., .0115)])
     rotation = Rotation.from_euler('z', 40, degrees=True)
     adapter.scene.measurement_clouds['e1'] = rotation.apply(patch)+[.1, .1, .9]
     adapter.ex.toolkit._state.latest_step = 4
@@ -1919,9 +1921,10 @@ def test_committed_panel_direction_uses_only_a_fresh_measured_plane(adapter, cap
     adapter.committed_grasps['e1'] = {'plan': plan, 'anchor_xyz': np.asarray(entity.xyz)}
     adapter.request(k=1)
     measured = adapter.plans['e1']['surface_measurement']
-    expected = rotation.apply([-1., 0., 0.]) if capture == 'fresh' else [-1., 0., 0.]
+    measured_plane = capture in {'fresh', 'recessed_panel'}
+    expected = rotation.apply([-1., 0., 0.]) if measured_plane else [-1., 0., 0.]
     np.testing.assert_allclose(measured['normal_xyz'], expected, atol=1e-12)
-    assert measured.get('normal_source_step') == (4 if capture == 'fresh' else None)
+    assert measured.get('normal_source_step') == (4 if measured_plane else None)
     assert measured['source_step'] == 0
     assert measured['xyz_world'] == original_surface['xyz_world']
     assert original_surface['normal_xyz'] == [-1., 0., 0.]
