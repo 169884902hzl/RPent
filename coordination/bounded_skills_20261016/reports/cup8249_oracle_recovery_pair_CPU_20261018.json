@@ -1,0 +1,87 @@
+{
+  "scope": "selector-only CPU pair; unchanged saved public request; no controls",
+  "model_visible_changes": false,
+  "gpu_used": false,
+  "training": false,
+  "physical_result": null,
+  "private_truth_used_only_for_oracle_selection": true,
+  "choices_prefix_sha256": "0a0c1642f5245e3549b08cb5d09cc37ebb6fab304dc2a4570e5b1c5bbebdfa5b",
+  "working_oracle_sha256": "da1e62e00f0eba35855ad055c5e2600ca5f69224247ba6d4a8439878522623f4",
+  "script_sha256": "6f225379904638d820b9453826bdeefd603d6c63ec3909738ba0954d8d530035",
+  "row": 12,
+  "results": [
+    {
+      "method": "original",
+      "chosen": {
+        "id": "1f9311eb6c9f6bb8",
+        "skill": "observe",
+        "parameters": {
+          "mode": "wrist_scan"
+        },
+        "consequences": {
+          "path_min_clearance_m": null,
+          "collision": null,
+          "ik_reachable": null,
+          "expected_width_m": null,
+          "expected_gripper_opening_m": null,
+          "expected_steps": 0,
+          "screen_scope": "nonmotion",
+          "evidence_ids": []
+        },
+        "history": null,
+        "recent_failures": 0,
+        "last_failure": null
+      },
+      "private_trace": [
+        {
+          "goal": [
+            "on",
+            "white_yellow_mug_1",
+            "plate_2"
+          ],
+          "source_public_id": "e6",
+          "target_public_id": "e99"
+        }
+      ]
+    },
+    {
+      "method": "lateral_recovery",
+      "chosen": {
+        "id": "9865b3cf69f09866",
+        "skill": "nudge",
+        "parameters": {
+          "axis": "y",
+          "distance_m": 0.01,
+          "anchor_id": "e6"
+        },
+        "consequences": {
+          "path_min_clearance_m": 0.002591588255642199,
+          "collision": false,
+          "ik_reachable": true,
+          "expected_width_m": null,
+          "expected_gripper_opening_m": null,
+          "expected_steps": 14,
+          "screen_scope": "contact_selected_surface",
+          "evidence_ids": [
+            "rgbd:13:e6"
+          ]
+        },
+        "history": null,
+        "recent_failures": 0,
+        "last_failure": null
+      },
+      "private_trace": [
+        {
+          "goal": [
+            "on",
+            "white_yellow_mug_1",
+            "plate_2"
+          ],
+          "source_public_id": "e6",
+          "target_public_id": "e99",
+          "recovery": "screened_lateral_progress_after_blocked_transport"
+        }
+      ]
+    }
+  ]
+}

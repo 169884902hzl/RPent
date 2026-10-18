@@ -1,0 +1,76 @@
+{
+  "scope": "public saved sensors only,zero controls;actual tested e425264 adapter on saved sensors and recorded initial derivatives",
+  "gpu_used": false,
+  "private_truth_used": false,
+  "training": false,
+  "row": 3,
+  "current_measured_axis": [
+    -0.006806733412656551,
+    -0.004957297865333446,
+    0.9999645461605745
+  ],
+  "initial_derivatives": [
+    [
+      -0.006079114083323983,
+      -0.00019456013868879296,
+      -6.653141144674635e-05,
+      0.0015728972985218125,
+      0.0038901428084067995,
+      -0.00017573209819412357
+    ],
+    [
+      0.022883249919355975,
+      0.0005091651821442778,
+      0.00020138133232094901,
+      -0.0002472712053958872,
+      0.0012647934242440099,
+      -0.0030050103388364873
+    ],
+    [
+      -0.047494840201112165,
+      0.0019093654028967677,
+      -0.0006332892539262502,
+      -0.017169560571636676,
+      -0.018164290281980945,
+      0.03549077694393028
+    ]
+  ],
+  "axis_eigenvalues": [
+    9.486429881120084e-06,
+    0.00012622949407118525,
+    0.002486034823554962
+  ],
+  "choices_sha256": "bf0e13e4e5e6b3b46c1b0dcaf45815441e77426464182d9d9ffbb8b193c2e472",
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_e425264_20261018",
+  "cached_target_points": 8013,
+  "reconstructed_contact_points": 265519,
+  "corrected_contact_points": 265519,
+  "corrected_contact_blocker_distance_m": 0.0,
+  "rebuilt_target_points": 8182,
+  "cached_blocker_target_distance_m": 0.006933223088234668,
+  "rebuilt_blocker_target_distance_m": 0.0,
+  "screens": [
+    {
+      "method": "cached",
+      "passed": false,
+      "reason": "measured_sweep_collision",
+      "path_min_clearance_m": 0.0,
+      "counts": {
+        "palm": 0,
+        "leftfinger": 0,
+        "leftfinger_pad": 0,
+        "rightfinger": 0,
+        "rightfinger_pad": 3
+      },
+      "target_counts": {
+        "palm": 0
+      }
+    },
+    {
+      "method": "rebuilt",
+      "passed": true,
+      "reason": "public_route_screen_passed",
+      "path_min_clearance_m": 0.007685455884976775
+    }
+  ]
+}

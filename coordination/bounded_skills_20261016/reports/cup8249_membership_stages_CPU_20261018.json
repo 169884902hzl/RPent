@@ -1,0 +1,4280 @@
+{
+  "scope": "exact saved public RGB-D, robot feedback and recorded real point-query clouds; zero controls",
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_11ec9aa_20261018",
+  "private_truth_used": false,
+  "gpu_used": false,
+  "training": false,
+  "choices_prefix_sha256": "0a0c1642f5245e3549b08cb5d09cc37ebb6fab304dc2a4570e5b1c5bbebdfa5b",
+  "script_sha256": "a11aeb8545b7e2cbfb457248cd3d1b24288663c54b2c5eb9fc396e3e2dc53a25",
+  "blockers": [
+    [
+      0.052309200167655945,
+      0.07953768968582153,
+      0.6060572266578674
+    ],
+    [
+      0.05381254106760025,
+      0.08415824919939041,
+      0.617265522480011
+    ]
+  ],
+  "instance_points": 356094,
+  "nearest_member_m": [
+    0.009316482383323318,
+    0.009797395108726783
+  ],
+  "stages": [
+    {
+      "function": "clean_object_mask",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009347866563103817,
+        0.018678124671737906
+      ],
+      "member_pixels": 22076,
+      "evidence": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 22076,
+            "lower": [
+              -0.01372810173779726,
+              0.013884679414331913,
+              0.5456883311271667
+            ],
+            "upper": [
+              0.061904052272439,
+              0.1408839002251625,
+              0.6387668550014496
+            ],
+            "stationary_prior_fraction": 0.9371262909947454
+          },
+          {
+            "label": 1,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 2,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 3,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 4,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 5,
+            "points": 3,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 6,
+            "points": 6,
+            "rejected": "too_few_depth_points"
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 22076,
+        "input_pixels": 22089
+      }
+    },
+    {
+      "function": "complete_instance_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22654,
+      "evidence": {
+        "version": "public-depth-continuous-instance-boundary/1-dev",
+        "source": "current_instance_mask_and_same_view_rgbd",
+        "input_pixels": 22076,
+        "added_pixels_per_round": [
+          457,
+          96,
+          25
+        ],
+        "rounds": 3,
+        "max_step_m": 0.003,
+        "spacing_source": "fixed_metric_limit",
+        "max_extrapolation_error_m": 0.001,
+        "private_target_pose_used": false
+      }
+    },
+    {
+      "function": "complete_planar_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22745,
+      "evidence": {
+        "version": "public-local-plane-instance-boundary/1-dev",
+        "candidate_pixels": 870,
+        "added_pixels": 91,
+        "max_step_m": 0.003,
+        "minimum_step_limit_m": 0.003,
+        "max_residual_m": 0.001,
+        "tangent_span_multiplier": null,
+        "spacing_source": "fixed_metric_limit",
+        "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+        "private_target_pose_used": false
+      }
+    },
+    {
+      "function": "complete_sparse_instance_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22651,
+      "evidence": {
+        "version": "public-extent-bounded-sparse-instance/1-dev",
+        "source": "current_rgbd_mask_and_measured_pixel_tangents",
+        "added_pixels": 575,
+        "private_pose_used": false,
+        "measured_extent_m": [
+          [
+            -0.024199694395065308,
+            0.010538214817643166,
+            0.5380747318267822
+          ],
+          [
+            0.06228427216410637,
+            0.14672887325286865,
+            0.6420982480049133
+          ]
+        ],
+        "directional": {
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 22076,
+          "added_pixels_per_round": [
+            406,
+            70,
+            18
+          ],
+          "rounds": 3,
+          "max_step_m": null,
+          "spacing_source": "measured_two_pixel_tangent",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false
+        },
+        "local_plane": {
+          "version": "public-local-plane-instance-boundary/2-dev",
+          "candidate_pixels": 102,
+          "added_pixels": 81,
+          "max_step_m": null,
+          "minimum_step_limit_m": 0.003,
+          "max_residual_m": 0.001,
+          "tangent_span_multiplier": 2,
+          "spacing_source": "measured_two_axis_pixel_tangents",
+          "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+          "private_target_pose_used": false
+        }
+      }
+    },
+    {
+      "function": "clean_object_mask",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22783,
+      "evidence": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 22783,
+            "lower": [
+              -0.013825251869857311,
+              0.01320561908185482,
+              0.5447614932060242
+            ],
+            "upper": [
+              0.06190028443932533,
+              0.1409999680519104,
+              0.6387057113647461
+            ],
+            "stationary_prior_fraction": 0.9280603959092306
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 22783,
+        "input_pixels": 22783
+      }
+    },
+    {
+      "function": "clean_object_mask",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.018256573702888645,
+        0.013608251754509781
+      ],
+      "member_pixels": 153063,
+      "evidence": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 153063,
+            "lower": [
+              -0.025735606253147126,
+              0.06980852633714676,
+              0.5379436755180359
+            ],
+            "upper": [
+              0.0616938117146492,
+              0.14486806571483613,
+              0.6420146560668946
+            ],
+            "stationary_prior_fraction": 1.0
+          },
+          {
+            "label": 1,
+            "points": 3,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 2,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 153063,
+        "input_pixels": 153067
+      }
+    },
+    {
+      "function": "complete_instance_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.017346519970357657,
+        0.013608251754509781
+      ],
+      "member_pixels": 154882,
+      "evidence": {
+        "version": "public-depth-continuous-instance-boundary/1-dev",
+        "source": "current_instance_mask_and_same_view_rgbd",
+        "input_pixels": 153063,
+        "added_pixels_per_round": [
+          1035,
+          589,
+          195
+        ],
+        "rounds": 3,
+        "max_step_m": 0.003,
+        "spacing_source": "fixed_metric_limit",
+        "max_extrapolation_error_m": 0.001,
+        "private_target_pose_used": false
+      }
+    },
+    {
+      "function": "complete_planar_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.017235099418253432,
+        0.013608251754509781
+      ],
+      "member_pixels": 154959,
+      "evidence": {
+        "version": "public-local-plane-instance-boundary/1-dev",
+        "candidate_pixels": 769,
+        "added_pixels": 77,
+        "max_step_m": 0.003,
+        "minimum_step_limit_m": 0.003,
+        "max_residual_m": 0.001,
+        "tangent_span_multiplier": null,
+        "spacing_source": "fixed_metric_limit",
+        "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+        "private_target_pose_used": false
+      }
+    },
+    {
+      "function": "complete_sparse_instance_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.017235099418253432,
+        0.013593845378737354
+      ],
+      "member_pixels": 154965,
+      "evidence": {
+        "version": "public-extent-bounded-sparse-instance/1-dev",
+        "source": "current_rgbd_mask_and_measured_pixel_tangents",
+        "added_pixels": 1902,
+        "private_pose_used": false,
+        "measured_extent_m": [
+          [
+            -0.028044620528817177,
+            0.06427576392889023,
+            0.5370966196060181
+          ],
+          [
+            0.06285391002893448,
+            0.1478094905614853,
+            0.6427096724510193
+          ]
+        ],
+        "directional": {
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 153063,
+          "added_pixels_per_round": [
+            1090,
+            580,
+            174
+          ],
+          "rounds": 3,
+          "max_step_m": null,
+          "spacing_source": "measured_two_pixel_tangent",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false
+        },
+        "local_plane": {
+          "version": "public-local-plane-instance-boundary/2-dev",
+          "candidate_pixels": 217,
+          "added_pixels": 58,
+          "max_step_m": null,
+          "minimum_step_limit_m": 0.003,
+          "max_residual_m": 0.001,
+          "tangent_span_multiplier": 2,
+          "spacing_source": "measured_two_axis_pixel_tangents",
+          "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+          "private_target_pose_used": false
+        }
+      }
+    },
+    {
+      "function": "clean_object_mask",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.016012113722211452,
+        0.009797395108726783
+      ],
+      "member_pixels": 155167,
+      "evidence": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 155167,
+            "lower": [
+              -0.025740718841552733,
+              0.06933977246284485,
+              0.5379534721374511
+            ],
+            "upper": [
+              0.06176391169428825,
+              0.1450661838054657,
+              0.6420109128952026
+            ],
+            "stationary_prior_fraction": 1.0
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 155167,
+        "input_pixels": 155167
+      }
+    },
+    {
+      "function": "complete_crossview_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22786,
+      "evidence": {
+        "version": "public-crossview-instance-boundary/4-dev",
+        "candidate_pixels": 4,
+        "added_pixels": 0,
+        "shared_opposite_view_components": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          25,
+          26,
+          27
+        ],
+        "max_step_m": 0.003,
+        "max_depth_residual_m": 0.001,
+        "plane_supported_pixels": 0,
+        "plane_patch_pixels": 16,
+        "max_plane_residual_m": 0.001,
+        "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+        "private_target_pose_used": false,
+        "refined_component": {
+          "version": "public-grasp-geometry/1-dev",
+          "source": "perception",
+          "max_gap_m": 0.012,
+          "components": [
+            {
+              "label": 0,
+              "points": 22786,
+              "lower": [
+                -0.013825114630162717,
+                0.013202138245105743,
+                0.5447627127170562
+              ],
+              "upper": [
+                0.0619002390652895,
+                0.1409994423389435,
+                0.6387054860591889
+              ],
+              "stationary_prior_fraction": 0.9279382076713771
+            }
+          ],
+          "selected": 0,
+          "retained_pixels": 22786,
+          "input_pixels": 22786
+        },
+        "semantic_fragments": {
+          "source": "current_semantic_fragment_and_opposite_current_local_surface",
+          "candidate_pixels": 13,
+          "added_pixels": 0,
+          "patch_points": 8,
+          "max_support_distance_m": 0.003,
+          "max_plane_residual_m": 0.001,
+          "private_pose_used": false
+        }
+      }
+    },
+    {
+      "function": "clean_object_mask",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22786,
+      "evidence": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 22786,
+            "lower": [
+              -0.013825114630162717,
+              0.013202138245105743,
+              0.5447627127170562
+            ],
+            "upper": [
+              0.0619002390652895,
+              0.1409994423389435,
+              0.6387054860591889
+            ],
+            "stationary_prior_fraction": 0.9279382076713771
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 22786,
+        "input_pixels": 22786
+      }
+    },
+    {
+      "function": "retain_crossview_semantic_fragments",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22786,
+      "evidence": {
+        "source": "current_semantic_fragment_and_opposite_current_local_surface",
+        "candidate_pixels": 13,
+        "added_pixels": 0,
+        "patch_points": 8,
+        "max_support_distance_m": 0.003,
+        "max_plane_residual_m": 0.001,
+        "private_pose_used": false
+      }
+    },
+    {
+      "function": "complete_crossview_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.016012113722211452,
+        0.009797395108726783
+      ],
+      "member_pixels": 155223,
+      "evidence": {
+        "version": "public-crossview-instance-boundary/4-dev",
+        "candidate_pixels": 72,
+        "added_pixels": 51,
+        "shared_opposite_view_components": [
+          0
+        ],
+        "max_step_m": 0.003,
+        "max_depth_residual_m": 0.001,
+        "plane_supported_pixels": 0,
+        "plane_patch_pixels": 16,
+        "max_plane_residual_m": 0.001,
+        "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+        "private_target_pose_used": false,
+        "refined_component": {
+          "version": "public-grasp-geometry/1-dev",
+          "source": "perception",
+          "max_gap_m": 0.012,
+          "components": [
+            {
+              "label": 0,
+              "points": 155223,
+              "lower": [
+                -0.025740544497966766,
+                0.06933350890874862,
+                0.5379538059234619
+              ],
+              "upper": [
+                0.06176620215177536,
+                0.14506584644317627,
+                0.642010576725006
+              ],
+              "stationary_prior_fraction": 1.0
+            }
+          ],
+          "selected": 0,
+          "retained_pixels": 155223,
+          "input_pixels": 155223
+        },
+        "semantic_fragments": {
+          "source": "current_semantic_fragment_and_opposite_current_local_surface",
+          "candidate_pixels": 0,
+          "added_pixels": 0,
+          "patch_points": 8,
+          "max_support_distance_m": 0.003,
+          "max_plane_residual_m": 0.001,
+          "private_pose_used": false
+        }
+      }
+    },
+    {
+      "function": "clean_object_mask",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.016012113722211452,
+        0.009797395108726783
+      ],
+      "member_pixels": 155223,
+      "evidence": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 155223,
+            "lower": [
+              -0.025740544497966766,
+              0.06933350890874862,
+              0.5379538059234619
+            ],
+            "upper": [
+              0.06176620215177536,
+              0.14506584644317627,
+              0.642010576725006
+            ],
+            "stationary_prior_fraction": 1.0
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 155223,
+        "input_pixels": 155223
+      }
+    },
+    {
+      "function": "retain_crossview_semantic_fragments",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.016012113722211452,
+        0.009797395108726783
+      ],
+      "member_pixels": 155223,
+      "evidence": {
+        "source": "current_semantic_fragment_and_opposite_current_local_surface",
+        "candidate_pixels": 0,
+        "added_pixels": 0,
+        "patch_points": 8,
+        "max_support_distance_m": 0.003,
+        "max_plane_residual_m": 0.001,
+        "private_pose_used": false
+      }
+    },
+    {
+      "function": "complete_moving_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22790,
+      "evidence": {
+        "version": "public-temporal-seeded-instance-boundary/10-dev",
+        "source": "co_moving_public_pixels_and_same_view_rgbd_continuity",
+        "spacing_source": "measured_two_pixel_tangent",
+        "max_extrapolation_error_m": 0.001,
+        "temporal_seed_pixels": 0,
+        "added_pixels": 4,
+        "stationary_points_retained": 0,
+        "initial_mask_stationary_pixels_retained": 0,
+        "measured_surface_extent_m": [
+          [
+            -0.03206572309136391,
+            0.00551025802269578,
+            0.5327634811401367
+          ],
+          [
+            0.06685391068458557,
+            0.15203461050987244,
+            0.6467117071151733
+          ]
+        ],
+        "depth_connected_current_surface_pixels": 0,
+        "depth_component_scope": "current_self_filtered_rgbd_without_pre_lift_static_pixels",
+        "added_pixels_per_round": [
+          0
+        ],
+        "planar_added_pixels_per_round": [
+          0
+        ],
+        "appearance_boundary": {
+          "version": "public-rgbd-silhouette-ring/3-dev",
+          "stop": "no_further_supported_pixels_in_extent_or_current_semantic_edge",
+          "max_channel_difference": 0.1,
+          "max_pixel_surface_step_m": 0.025,
+          "minimum_support_pixels": 2,
+          "added_pixels": 4,
+          "current_semantic_edge_pixels_outside_predicted_extent": 0,
+          "added_pixels_per_round": [
+            4,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "function": "complete_moving_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.016012113722211452,
+        0.009797395108726783
+      ],
+      "member_pixels": 155225,
+      "evidence": {
+        "version": "public-temporal-seeded-instance-boundary/10-dev",
+        "source": "co_moving_public_pixels_and_same_view_rgbd_continuity",
+        "spacing_source": "measured_two_pixel_tangent",
+        "max_extrapolation_error_m": 0.001,
+        "temporal_seed_pixels": 51,
+        "added_pixels": 53,
+        "stationary_points_retained": 0,
+        "initial_mask_stationary_pixels_retained": 0,
+        "measured_surface_extent_m": [
+          [
+            -0.03206572309136391,
+            0.00551025802269578,
+            0.5327634811401367
+          ],
+          [
+            0.06685391068458557,
+            0.15203461050987244,
+            0.6467117071151733
+          ]
+        ],
+        "depth_connected_current_surface_pixels": 0,
+        "depth_component_scope": "current_self_filtered_rgbd_without_pre_lift_static_pixels",
+        "added_pixels_per_round": [
+          0
+        ],
+        "planar_added_pixels_per_round": [
+          0
+        ],
+        "appearance_boundary": {
+          "version": "public-rgbd-silhouette-ring/3-dev",
+          "stop": "no_further_supported_pixels_in_extent_or_current_semantic_edge",
+          "max_channel_difference": 0.1,
+          "max_pixel_surface_step_m": 0.025,
+          "minimum_support_pixels": 2,
+          "added_pixels": 2,
+          "current_semantic_edge_pixels_outside_predicted_extent": 0,
+          "added_pixels_per_round": [
+            2,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "function": "complete_moving_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.018678124671737906
+      ],
+      "member_pixels": 22790,
+      "evidence": {
+        "version": "public-temporal-seeded-instance-boundary/10-dev",
+        "source": "co_moving_public_pixels_and_same_view_rgbd_continuity",
+        "spacing_source": "measured_two_pixel_tangent",
+        "max_extrapolation_error_m": 0.001,
+        "temporal_seed_pixels": 22790,
+        "added_pixels": 22790,
+        "stationary_points_retained": 0,
+        "initial_mask_stationary_pixels_retained": 0,
+        "measured_surface_extent_m": [
+          [
+            -0.028065724298357964,
+            0.009510258212685585,
+            0.5367634892463684
+          ],
+          [
+            0.06285391002893448,
+            0.14803461730480194,
+            0.6427116990089417
+          ]
+        ],
+        "depth_connected_current_surface_pixels": 0,
+        "depth_component_scope": "current_self_filtered_rgbd_without_pre_lift_static_pixels",
+        "added_pixels_per_round": [
+          0
+        ],
+        "planar_added_pixels_per_round": [
+          0
+        ],
+        "appearance_boundary": {
+          "version": "public-rgbd-silhouette-ring/3-dev",
+          "stop": "no_further_supported_pixels_in_extent_or_current_semantic_edge",
+          "max_channel_difference": 0.1,
+          "max_pixel_surface_step_m": 0.025,
+          "minimum_support_pixels": 2,
+          "added_pixels": 0,
+          "current_semantic_edge_pixels_outside_predicted_extent": 0,
+          "added_pixels_per_round": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "function": "complete_moving_boundary",
+      "shape": [
+        1024,
+        1024,
+        3
+      ],
+      "nearest_member_m": [
+        0.010088542579916678,
+        0.009797395108726783
+      ],
+      "member_pixels": 155237,
+      "evidence": {
+        "version": "public-temporal-seeded-instance-boundary/10-dev",
+        "source": "co_moving_public_pixels_and_same_view_rgbd_continuity",
+        "spacing_source": "measured_two_pixel_tangent",
+        "max_extrapolation_error_m": 0.001,
+        "temporal_seed_pixels": 155227,
+        "added_pixels": 155237,
+        "stationary_points_retained": 0,
+        "initial_mask_stationary_pixels_retained": 0,
+        "measured_surface_extent_m": [
+          [
+            -0.028065724298357964,
+            0.009510258212685585,
+            0.5367634892463684
+          ],
+          [
+            0.06285391002893448,
+            0.14803461730480194,
+            0.6427116990089417
+          ]
+        ],
+        "depth_connected_current_surface_pixels": 0,
+        "depth_component_scope": "current_self_filtered_rgbd_without_pre_lift_static_pixels",
+        "added_pixels_per_round": [
+          2,
+          3,
+          1,
+          1,
+          0
+        ],
+        "planar_added_pixels_per_round": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "appearance_boundary": {
+          "version": "public-rgbd-silhouette-ring/3-dev",
+          "stop": "no_further_supported_pixels_in_extent_or_current_semantic_edge",
+          "max_channel_difference": 0.1,
+          "max_pixel_surface_step_m": 0.025,
+          "minimum_support_pixels": 2,
+          "added_pixels": 4,
+          "current_semantic_edge_pixels_outside_predicted_extent": 0,
+          "added_pixels_per_round": [
+            3,
+            1,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "function": "complete_spatial_payload_component",
+      "shape": [
+        1742209,
+        3
+      ],
+      "nearest_member_m": [
+        0.009316482383323318,
+        0.009797395108726783
+      ],
+      "member_pixels": 178028,
+      "evidence": {
+        "source": "raw_current_rgbd_components_inside_measured_payload_bounds",
+        "max_gap_m": 0.003,
+        "stationary_residual_m": 0.004,
+        "private_pose_used": false,
+        "eligible_points": 178034,
+        "seed_pixels": 178027,
+        "stationary_points_retained": 0,
+        "exact_edges": 41784287,
+        "member_pixels": 178028
+      }
+    }
+  ],
+  "patches": [
+    {
+      "camera": "wrist",
+      "pixel_xy": [
+        481,
+        846
+      ],
+      "point_m": [
+        0.052309200167655945,
+        0.07953768968582153,
+        0.6060572266578674
+      ],
+      "prelift_static_nearest_m": 0.08100583508444166,
+      "nearest_member_m": 0.009316482383323318,
+      "inside_final_extent": true,
+      "owned": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "semantic": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "finite": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "rgb": [
+        [
+          [
+            17,
+            17,
+            17
+          ],
+          [
+            36,
+            36,
+            36
+          ],
+          [
+            35,
+            35,
+            35
+          ],
+          [
+            34,
+            34,
+            34
+          ],
+          [
+            35,
+            35,
+            33
+          ],
+          [
+            48,
+            48,
+            47
+          ],
+          [
+            64,
+            64,
+            63
+          ],
+          [
+            82,
+            82,
+            80
+          ],
+          [
+            100,
+            99,
+            97
+          ]
+        ],
+        [
+          [
+            17,
+            17,
+            17
+          ],
+          [
+            37,
+            37,
+            37
+          ],
+          [
+            36,
+            36,
+            36
+          ],
+          [
+            34,
+            34,
+            34
+          ],
+          [
+            35,
+            34,
+            33
+          ],
+          [
+            46,
+            46,
+            45
+          ],
+          [
+            61,
+            61,
+            60
+          ],
+          [
+            79,
+            79,
+            77
+          ],
+          [
+            97,
+            96,
+            94
+          ]
+        ],
+        [
+          [
+            17,
+            17,
+            17
+          ],
+          [
+            37,
+            37,
+            37
+          ],
+          [
+            36,
+            36,
+            36
+          ],
+          [
+            35,
+            35,
+            35
+          ],
+          [
+            34,
+            34,
+            33
+          ],
+          [
+            44,
+            44,
+            43
+          ],
+          [
+            58,
+            58,
+            57
+          ],
+          [
+            76,
+            75,
+            74
+          ],
+          [
+            94,
+            93,
+            90
+          ]
+        ],
+        [
+          [
+            17,
+            17,
+            17
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            37,
+            37,
+            37
+          ],
+          [
+            36,
+            36,
+            36
+          ],
+          [
+            34,
+            34,
+            32
+          ],
+          [
+            43,
+            42,
+            42
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            72,
+            72,
+            70
+          ],
+          [
+            90,
+            90,
+            87
+          ]
+        ],
+        [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            36,
+            36,
+            36
+          ],
+          [
+            22,
+            21,
+            19
+          ],
+          [
+            40,
+            39,
+            38
+          ],
+          [
+            55,
+            55,
+            54
+          ],
+          [
+            69,
+            69,
+            67
+          ],
+          [
+            87,
+            86,
+            84
+          ]
+        ],
+        [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            37,
+            37,
+            37
+          ],
+          [
+            22,
+            21,
+            17
+          ],
+          [
+            37,
+            37,
+            35
+          ],
+          [
+            53,
+            53,
+            52
+          ],
+          [
+            66,
+            66,
+            64
+          ],
+          [
+            84,
+            84,
+            81
+          ]
+        ],
+        [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            40,
+            40,
+            40
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            22,
+            21,
+            17
+          ],
+          [
+            37,
+            36,
+            35
+          ],
+          [
+            51,
+            51,
+            50
+          ],
+          [
+            64,
+            64,
+            63
+          ],
+          [
+            81,
+            81,
+            79
+          ]
+        ],
+        [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            41,
+            41,
+            41
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            22,
+            21,
+            18
+          ],
+          [
+            36,
+            36,
+            34
+          ],
+          [
+            49,
+            49,
+            48
+          ],
+          [
+            62,
+            62,
+            61
+          ],
+          [
+            78,
+            78,
+            76
+          ]
+        ],
+        [
+          [
+            15,
+            15,
+            15
+          ],
+          [
+            41,
+            41,
+            41
+          ],
+          [
+            40,
+            40,
+            40
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            23,
+            22,
+            20
+          ],
+          [
+            36,
+            36,
+            34
+          ],
+          [
+            47,
+            47,
+            46
+          ],
+          [
+            61,
+            61,
+            59
+          ],
+          [
+            75,
+            75,
+            73
+          ]
+        ]
+      ],
+      "xyz_world": [
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.052309200167655945,
+            0.07953768968582153,
+            0.6060572266578674
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.05248140171170235,
+            0.08003594726324081,
+            0.6074485778808594
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.05279111862182617,
+            0.08098681271076202,
+            0.6097613573074341
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.0530887171626091,
+            0.08190042525529861,
+            0.6119838356971741
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.05371508002281189,
+            0.08389729261398315,
+            0.6164051294326782
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ]
+      ],
+      "distance_from_point_m": [
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.0,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.0014878750656385342,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.004006592917547471,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.006427663714094272,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.01131643617466672,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ]
+      ]
+    },
+    {
+      "camera": "wrist",
+      "pixel_xy": [
+        481,
+        851
+      ],
+      "point_m": [
+        0.05381254106760025,
+        0.08415824919939041,
+        0.617265522480011
+      ],
+      "prelift_static_nearest_m": 0.09022392032042409,
+      "nearest_member_m": 0.009797395108726783,
+      "inside_final_extent": true,
+      "owned": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "semantic": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "finite": [
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "rgb": [
+        [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            37,
+            37,
+            37
+          ],
+          [
+            22,
+            21,
+            17
+          ],
+          [
+            37,
+            37,
+            35
+          ],
+          [
+            53,
+            53,
+            52
+          ],
+          [
+            66,
+            66,
+            64
+          ],
+          [
+            84,
+            84,
+            81
+          ]
+        ],
+        [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            40,
+            40,
+            40
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            22,
+            21,
+            17
+          ],
+          [
+            37,
+            36,
+            35
+          ],
+          [
+            51,
+            51,
+            50
+          ],
+          [
+            64,
+            64,
+            63
+          ],
+          [
+            81,
+            81,
+            79
+          ]
+        ],
+        [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            41,
+            41,
+            41
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            22,
+            21,
+            18
+          ],
+          [
+            36,
+            36,
+            34
+          ],
+          [
+            49,
+            49,
+            48
+          ],
+          [
+            62,
+            62,
+            61
+          ],
+          [
+            78,
+            78,
+            76
+          ]
+        ],
+        [
+          [
+            15,
+            15,
+            15
+          ],
+          [
+            41,
+            41,
+            41
+          ],
+          [
+            40,
+            40,
+            40
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            23,
+            22,
+            20
+          ],
+          [
+            36,
+            36,
+            34
+          ],
+          [
+            47,
+            47,
+            46
+          ],
+          [
+            61,
+            61,
+            59
+          ],
+          [
+            75,
+            75,
+            73
+          ]
+        ],
+        [
+          [
+            43,
+            43,
+            43
+          ],
+          [
+            42,
+            42,
+            42
+          ],
+          [
+            41,
+            41,
+            41
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            23,
+            22,
+            20
+          ],
+          [
+            36,
+            35,
+            34
+          ],
+          [
+            46,
+            45,
+            45
+          ],
+          [
+            59,
+            59,
+            58
+          ],
+          [
+            72,
+            72,
+            71
+          ]
+        ],
+        [
+          [
+            44,
+            44,
+            44
+          ],
+          [
+            43,
+            43,
+            43
+          ],
+          [
+            41,
+            41,
+            41
+          ],
+          [
+            38,
+            38,
+            38
+          ],
+          [
+            24,
+            23,
+            21
+          ],
+          [
+            35,
+            35,
+            33
+          ],
+          [
+            44,
+            44,
+            43
+          ],
+          [
+            57,
+            57,
+            56
+          ],
+          [
+            71,
+            71,
+            69
+          ]
+        ],
+        [
+          [
+            44,
+            44,
+            44
+          ],
+          [
+            43,
+            43,
+            43
+          ],
+          [
+            42,
+            42,
+            42
+          ],
+          [
+            37,
+            37,
+            37
+          ],
+          [
+            24,
+            23,
+            21
+          ],
+          [
+            35,
+            34,
+            33
+          ],
+          [
+            42,
+            42,
+            41
+          ],
+          [
+            55,
+            55,
+            54
+          ],
+          [
+            69,
+            69,
+            68
+          ]
+        ],
+        [
+          [
+            44,
+            44,
+            44
+          ],
+          [
+            44,
+            44,
+            44
+          ],
+          [
+            43,
+            43,
+            43
+          ],
+          [
+            37,
+            37,
+            37
+          ],
+          [
+            24,
+            24,
+            22
+          ],
+          [
+            35,
+            34,
+            32
+          ],
+          [
+            38,
+            38,
+            36
+          ],
+          [
+            54,
+            54,
+            53
+          ],
+          [
+            68,
+            68,
+            66
+          ]
+        ],
+        [
+          [
+            44,
+            44,
+            44
+          ],
+          [
+            45,
+            45,
+            45
+          ],
+          [
+            43,
+            43,
+            43
+          ],
+          [
+            36,
+            36,
+            36
+          ],
+          [
+            25,
+            24,
+            22
+          ],
+          [
+            34,
+            34,
+            32
+          ],
+          [
+            38,
+            38,
+            36
+          ],
+          [
+            52,
+            52,
+            51
+          ],
+          [
+            66,
+            66,
+            64
+          ]
+        ]
+      ],
+      "xyz_world": [
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.05248140171170235,
+            0.08003594726324081,
+            0.6074485778808594
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.05279111862182617,
+            0.08098681271076202,
+            0.6097613573074341
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.0530887171626091,
+            0.08190042525529861,
+            0.6119838356971741
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.05371508002281189,
+            0.08389729261398315,
+            0.6164051294326782
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            0.05381254106760025,
+            0.08415824919939041,
+            0.617265522480011
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ],
+        [
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ],
+          [
+            NaN,
+            NaN,
+            NaN
+          ]
+        ]
+      ],
+      "distance_from_point_m": [
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.0107302239725187,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.008210591218143236,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.005789465025366767,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.0009043634173368653,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          0.0,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ],
+        [
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN,
+          NaN
+        ]
+      ]
+    }
+  ],
+  "boundary": [
+    {
+      "camera": "agentview",
+      "source_step": 13,
+      "held_component": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 22076,
+            "lower": [
+              -0.01372810173779726,
+              0.013884679414331913,
+              0.5456883311271667
+            ],
+            "upper": [
+              0.061904052272439,
+              0.1408839002251625,
+              0.6387668550014496
+            ],
+            "stationary_prior_fraction": 0.9371262909947454
+          },
+          {
+            "label": 1,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 2,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 3,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 4,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 5,
+            "points": 3,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 6,
+            "points": 6,
+            "rejected": "too_few_depth_points"
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 22076,
+        "input_pixels": 22089
+      },
+      "refined_component": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 22783,
+            "lower": [
+              -0.013825251869857311,
+              0.01320561908185482,
+              0.5447614932060242
+            ],
+            "upper": [
+              0.06190028443932533,
+              0.1409999680519104,
+              0.6387057113647461
+            ],
+            "stationary_prior_fraction": 0.9280603959092306
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 22783,
+        "input_pixels": 22783
+      },
+      "local_plane": {
+        "version": "public-local-plane-instance-boundary/1-dev",
+        "candidate_pixels": 870,
+        "added_pixels": 91,
+        "max_step_m": 0.003,
+        "minimum_step_limit_m": 0.003,
+        "max_residual_m": 0.001,
+        "tangent_span_multiplier": null,
+        "spacing_source": "fixed_metric_limit",
+        "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+        "private_target_pose_used": false
+      },
+      "sparse_boundary": {
+        "version": "public-extent-bounded-sparse-instance/1-dev",
+        "source": "current_rgbd_mask_and_measured_pixel_tangents",
+        "added_pixels": 575,
+        "private_pose_used": false,
+        "measured_extent_m": [
+          [
+            -0.024199694395065308,
+            0.010538214817643166,
+            0.5380747318267822
+          ],
+          [
+            0.06228427216410637,
+            0.14672887325286865,
+            0.6420982480049133
+          ]
+        ],
+        "directional": {
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 22076,
+          "added_pixels_per_round": [
+            406,
+            70,
+            18
+          ],
+          "rounds": 3,
+          "max_step_m": null,
+          "spacing_source": "measured_two_pixel_tangent",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false
+        },
+        "local_plane": {
+          "version": "public-local-plane-instance-boundary/2-dev",
+          "candidate_pixels": 102,
+          "added_pixels": 81,
+          "max_step_m": null,
+          "minimum_step_limit_m": 0.003,
+          "max_residual_m": 0.001,
+          "tangent_span_multiplier": 2,
+          "spacing_source": "measured_two_axis_pixel_tangents",
+          "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+          "private_target_pose_used": false
+        }
+      },
+      "connected_surface": {
+        "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+        "max_gap_m": 0.003,
+        "lower": [
+          -0.024199694395065308,
+          0.010538214817643166,
+          0.5380747318267822
+        ],
+        "upper": [
+          0.06228427216410637,
+          0.14672887325286865,
+          0.6420982480049133
+        ],
+        "added_pixels": 17
+      },
+      "version": "public-depth-continuous-instance-boundary/1-dev",
+      "source": "current_instance_mask_and_same_view_rgbd",
+      "input_pixels": 22076,
+      "added_pixels_per_round": [
+        457,
+        96,
+        25
+      ],
+      "rounds": 3,
+      "max_step_m": 0.003,
+      "spacing_source": "fixed_metric_limit",
+      "max_extrapolation_error_m": 0.001,
+      "private_target_pose_used": false,
+      "fused_extent_component": {
+        "source": "current_self_filtered_rgbd_component_within_two_current_mask_extents",
+        "max_gap_m": 0.003,
+        "lower": [
+          -0.028065724298357964,
+          0.009510258212685585,
+          0.5367634892463684
+        ],
+        "upper": [
+          0.06285391002893448,
+          0.14803461730480194,
+          0.6427116990089417
+        ],
+        "added_pixels": 3
+      },
+      "crossview": {
+        "version": "public-crossview-instance-boundary/4-dev",
+        "candidate_pixels": 4,
+        "added_pixels": 0,
+        "shared_opposite_view_components": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          25,
+          26,
+          27
+        ],
+        "max_step_m": 0.003,
+        "max_depth_residual_m": 0.001,
+        "plane_supported_pixels": 0,
+        "plane_patch_pixels": 16,
+        "max_plane_residual_m": 0.001,
+        "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+        "private_target_pose_used": false,
+        "refined_component": {
+          "version": "public-grasp-geometry/1-dev",
+          "source": "perception",
+          "max_gap_m": 0.012,
+          "components": [
+            {
+              "label": 0,
+              "points": 22786,
+              "lower": [
+                -0.013825114630162717,
+                0.013202138245105743,
+                0.5447627127170562
+              ],
+              "upper": [
+                0.0619002390652895,
+                0.1409994423389435,
+                0.6387054860591889
+              ],
+              "stationary_prior_fraction": 0.9279382076713771
+            }
+          ],
+          "selected": 0,
+          "retained_pixels": 22786,
+          "input_pixels": 22786
+        },
+        "semantic_fragments": {
+          "source": "current_semantic_fragment_and_opposite_current_local_surface",
+          "candidate_pixels": 13,
+          "added_pixels": 0,
+          "patch_points": 8,
+          "max_support_distance_m": 0.003,
+          "max_plane_residual_m": 0.001,
+          "private_pose_used": false
+        }
+      }
+    },
+    {
+      "camera": "wrist",
+      "source_step": 13,
+      "held_component": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 153063,
+            "lower": [
+              -0.025735606253147126,
+              0.06980852633714676,
+              0.5379436755180359
+            ],
+            "upper": [
+              0.0616938117146492,
+              0.14486806571483613,
+              0.6420146560668946
+            ],
+            "stationary_prior_fraction": 1.0
+          },
+          {
+            "label": 1,
+            "points": 3,
+            "rejected": "too_few_depth_points"
+          },
+          {
+            "label": 2,
+            "points": 1,
+            "rejected": "too_few_depth_points"
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 153063,
+        "input_pixels": 153067
+      },
+      "refined_component": {
+        "version": "public-grasp-geometry/1-dev",
+        "source": "perception",
+        "max_gap_m": 0.012,
+        "components": [
+          {
+            "label": 0,
+            "points": 155167,
+            "lower": [
+              -0.025740718841552733,
+              0.06933977246284485,
+              0.5379534721374511
+            ],
+            "upper": [
+              0.06176391169428825,
+              0.1450661838054657,
+              0.6420109128952026
+            ],
+            "stationary_prior_fraction": 1.0
+          }
+        ],
+        "selected": 0,
+        "retained_pixels": 155167,
+        "input_pixels": 155167
+      },
+      "local_plane": {
+        "version": "public-local-plane-instance-boundary/1-dev",
+        "candidate_pixels": 769,
+        "added_pixels": 77,
+        "max_step_m": 0.003,
+        "minimum_step_limit_m": 0.003,
+        "max_residual_m": 0.001,
+        "tangent_span_multiplier": null,
+        "spacing_source": "fixed_metric_limit",
+        "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+        "private_target_pose_used": false
+      },
+      "sparse_boundary": {
+        "version": "public-extent-bounded-sparse-instance/1-dev",
+        "source": "current_rgbd_mask_and_measured_pixel_tangents",
+        "added_pixels": 1902,
+        "private_pose_used": false,
+        "measured_extent_m": [
+          [
+            -0.028044620528817177,
+            0.06427576392889023,
+            0.5370966196060181
+          ],
+          [
+            0.06285391002893448,
+            0.1478094905614853,
+            0.6427096724510193
+          ]
+        ],
+        "directional": {
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 153063,
+          "added_pixels_per_round": [
+            1090,
+            580,
+            174
+          ],
+          "rounds": 3,
+          "max_step_m": null,
+          "spacing_source": "measured_two_pixel_tangent",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false
+        },
+        "local_plane": {
+          "version": "public-local-plane-instance-boundary/2-dev",
+          "candidate_pixels": 217,
+          "added_pixels": 58,
+          "max_step_m": null,
+          "minimum_step_limit_m": 0.003,
+          "max_residual_m": 0.001,
+          "tangent_span_multiplier": 2,
+          "spacing_source": "measured_two_axis_pixel_tangents",
+          "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+          "private_target_pose_used": false
+        }
+      },
+      "connected_surface": {
+        "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+        "max_gap_m": 0.003,
+        "lower": [
+          -0.028044620528817177,
+          0.06427576392889023,
+          0.5370966196060181
+        ],
+        "upper": [
+          0.06285391002893448,
+          0.1478094905614853,
+          0.6427096724510193
+        ],
+        "added_pixels": 130
+      },
+      "version": "public-depth-continuous-instance-boundary/1-dev",
+      "source": "current_instance_mask_and_same_view_rgbd",
+      "input_pixels": 153063,
+      "added_pixels_per_round": [
+        1035,
+        589,
+        195
+      ],
+      "rounds": 3,
+      "max_step_m": 0.003,
+      "spacing_source": "fixed_metric_limit",
+      "max_extrapolation_error_m": 0.001,
+      "private_target_pose_used": false,
+      "fused_extent_component": {
+        "source": "current_self_filtered_rgbd_component_within_two_current_mask_extents",
+        "max_gap_m": 0.003,
+        "lower": [
+          -0.028065724298357964,
+          0.009510258212685585,
+          0.5367634892463684
+        ],
+        "upper": [
+          0.06285391002893448,
+          0.14803461730480194,
+          0.6427116990089417
+        ],
+        "added_pixels": 5
+      },
+      "crossview": {
+        "version": "public-crossview-instance-boundary/4-dev",
+        "candidate_pixels": 72,
+        "added_pixels": 51,
+        "shared_opposite_view_components": [
+          0
+        ],
+        "max_step_m": 0.003,
+        "max_depth_residual_m": 0.001,
+        "plane_supported_pixels": 0,
+        "plane_patch_pixels": 16,
+        "max_plane_residual_m": 0.001,
+        "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+        "private_target_pose_used": false,
+        "refined_component": {
+          "version": "public-grasp-geometry/1-dev",
+          "source": "perception",
+          "max_gap_m": 0.012,
+          "components": [
+            {
+              "label": 0,
+              "points": 155223,
+              "lower": [
+                -0.025740544497966766,
+                0.06933350890874862,
+                0.5379538059234619
+              ],
+              "upper": [
+                0.06176620215177536,
+                0.14506584644317627,
+                0.642010576725006
+              ],
+              "stationary_prior_fraction": 1.0
+            }
+          ],
+          "selected": 0,
+          "retained_pixels": 155223,
+          "input_pixels": 155223
+        },
+        "semantic_fragments": {
+          "source": "current_semantic_fragment_and_opposite_current_local_surface",
+          "candidate_pixels": 0,
+          "added_pixels": 0,
+          "patch_points": 8,
+          "max_support_distance_m": 0.003,
+          "max_plane_residual_m": 0.001,
+          "private_pose_used": false
+        }
+      }
+    },
+    {
+      "source": "pre_lift_stationary_scene_veto_current_mask",
+      "stationary_pixels_retained_as_obstacles": 0,
+      "stationary_residual_m": 0.004
+    },
+    {
+      "version": "public-rigid-payload-membership/4-dev",
+      "source": "pre_lift_rgbd_target_and_scene_with_measured_eef_motion",
+      "reference_capture_step": 11,
+      "surface_residual_m": 0.004,
+      "stationary_residual_m": 0.004,
+      "candidate_points": 0,
+      "stationary_points_retained": 0,
+      "associated_points": 0,
+      "private_pose_used": false,
+      "surface_registration": {
+        "source": "current_clean_rgbd_instance_surface",
+        "accepted": false,
+        "translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_rad": 0.0,
+        "max_surface_displacement_m": 0.015,
+        "max_rotation_rad": 0.1,
+        "reason": "surface_shift_exceeds_public_hold_tolerance"
+      },
+      "temporal_prediction_rejected": true,
+      "measured_surface_extent_m": [
+        [
+          -0.03206572309136391,
+          0.00551025802269578,
+          0.5327634811401367
+        ],
+        [
+          0.06685391068458557,
+          0.15203461050987244,
+          0.6467117071151733
+        ]
+      ]
+    },
+    {
+      "camera": "agentview",
+      "version": "public-temporal-seeded-instance-boundary/10-dev",
+      "source": "co_moving_public_pixels_and_same_view_rgbd_continuity",
+      "spacing_source": "measured_two_pixel_tangent",
+      "max_extrapolation_error_m": 0.001,
+      "temporal_seed_pixels": 0,
+      "added_pixels": 4,
+      "stationary_points_retained": 0,
+      "initial_mask_stationary_pixels_retained": 0,
+      "measured_surface_extent_m": [
+        [
+          -0.03206572309136391,
+          0.00551025802269578,
+          0.5327634811401367
+        ],
+        [
+          0.06685391068458557,
+          0.15203461050987244,
+          0.6467117071151733
+        ]
+      ],
+      "depth_connected_current_surface_pixels": 0,
+      "depth_component_scope": "current_self_filtered_rgbd_without_pre_lift_static_pixels",
+      "added_pixels_per_round": [
+        0
+      ],
+      "planar_added_pixels_per_round": [
+        0
+      ],
+      "appearance_boundary": {
+        "version": "public-rgbd-silhouette-ring/3-dev",
+        "stop": "no_further_supported_pixels_in_extent_or_current_semantic_edge",
+        "max_channel_difference": 0.1,
+        "max_pixel_surface_step_m": 0.025,
+        "minimum_support_pixels": 2,
+        "added_pixels": 4,
+        "current_semantic_edge_pixels_outside_predicted_extent": 0,
+        "added_pixels_per_round": [
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "camera": "wrist",
+      "version": "public-temporal-seeded-instance-boundary/10-dev",
+      "source": "co_moving_public_pixels_and_same_view_rgbd_continuity",
+      "spacing_source": "measured_two_pixel_tangent",
+      "max_extrapolation_error_m": 0.001,
+      "temporal_seed_pixels": 51,
+      "added_pixels": 53,
+      "stationary_points_retained": 0,
+      "initial_mask_stationary_pixels_retained": 0,
+      "measured_surface_extent_m": [
+        [
+          -0.03206572309136391,
+          0.00551025802269578,
+          0.5327634811401367
+        ],
+        [
+          0.06685391068458557,
+          0.15203461050987244,
+          0.6467117071151733
+        ]
+      ],
+      "depth_connected_current_surface_pixels": 0,
+      "depth_component_scope": "current_self_filtered_rgbd_without_pre_lift_static_pixels",
+      "added_pixels_per_round": [
+        0
+      ],
+      "planar_added_pixels_per_round": [
+        0
+      ],
+      "appearance_boundary": {
+        "version": "public-rgbd-silhouette-ring/3-dev",
+        "stop": "no_further_supported_pixels_in_extent_or_current_semantic_edge",
+        "max_channel_difference": 0.1,
+        "max_pixel_surface_step_m": 0.025,
+        "minimum_support_pixels": 2,
+        "added_pixels": 2,
+        "current_semantic_edge_pixels_outside_predicted_extent": 0,
+        "added_pixels_per_round": [
+          2,
+          0
+        ]
+      }
+    },
+    {
+      "source": "current_measured_instance_interior_point_sam",
+      "camera": "agentview",
+      "capture_step": 13,
+      "private_pose_used": false,
+      "member_pixels": 20257,
+      "point_row_col": [
+        586,
+        674
+      ],
+      "prompt_surface_bounds_m": [
+        [
+          -0.028065724298357964,
+          0.009510258212685585,
+          0.5367634892463684
+        ],
+        [
+          0.06285391002893448,
+          0.14803461730480194,
+          0.6427116990089417
+        ]
+      ],
+      "score": 0.69921875,
+      "semantic_recall": 0.9148849429244428,
+      "artifact": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8249_60/cup_transfer_libero_10_t4_s0_oracle_k4/bounded_payload_guided_e6_agentview.npz/13.npz",
+        "sha256": "16e03b589f792856df941ff5c6597faf1fa2c294fc87e5bbde0ded5581d3ca1e",
+        "capture_step": 13,
+        "points": 20257,
+        "source": "public_rgbd_and_proprioceptive_robot_filter",
+        "private_truth_used": false
+      },
+      "post_guided_boundary_completion": {
+        "version": "public-temporal-seeded-instance-boundary/10-dev",
+        "source": "co_moving_public_pixels_and_same_view_rgbd_continuity",
+        "spacing_source": "measured_two_pixel_tangent",
+        "max_extrapolation_error_m": 0.001,
+        "temporal_seed_pixels": 22790,
+        "added_pixels": 22790,
+        "stationary_points_retained": 0,
+        "initial_mask_stationary_pixels_retained": 0,
+        "measured_surface_extent_m": [
+          [
+            -0.028065724298357964,
+            0.009510258212685585,
+            0.5367634892463684
+          ],
+          [
+            0.06285391002893448,
+            0.14803461730480194,
+            0.6427116990089417
+          ]
+        ],
+        "depth_connected_current_surface_pixels": 0,
+        "depth_component_scope": "current_self_filtered_rgbd_without_pre_lift_static_pixels",
+        "added_pixels_per_round": [
+          0
+        ],
+        "planar_added_pixels_per_round": [
+          0
+        ],
+        "appearance_boundary": {
+          "version": "public-rgbd-silhouette-ring/3-dev",
+          "stop": "no_further_supported_pixels_in_extent_or_current_semantic_edge",
+          "max_channel_difference": 0.1,
+          "max_pixel_surface_step_m": 0.025,
+          "minimum_support_pixels": 2,
+          "added_pixels": 0,
+          "current_semantic_edge_pixels_outside_predicted_extent": 0,
+          "added_pixels_per_round": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "source": "current_measured_instance_interior_point_sam",
+      "camera": "wrist",
+      "capture_step": 13,
+      "private_pose_used": false,
+      "member_pixels": 145021,
+      "point_row_col": [
+        683,
+        156
+      ],
+      "prompt_surface_bounds_m": [
+        [
+          -0.028065724298357964,
+          0.009510258212685585,
+          0.5367634892463684
+        ],
+        [
+          0.06285391002893448,
+          0.14803461730480194,
+          0.6427116990089417
+        ]
+      ],
+      "score": 0.94921875,
+      "semantic_recall": 0.9459648389267445,
+      "artifact": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8249_60/cup_transfer_libero_10_t4_s0_oracle_k4/bounded_payload_guided_e6_wrist.npz/13.npz",
+        "sha256": "c24072c7630b5d7fa5ce69365d4628d9b272fe9d61a9c5365fd058000c7e6964",
+        "capture_step": 13,
+        "points": 145021,
+        "source": "public_rgbd_and_proprioceptive_robot_filter",
+        "private_truth_used": false
+      },
+      "post_guided_boundary_completion": {
+        "version": "public-temporal-seeded-instance-boundary/10-dev",
+        "source": "co_moving_public_pixels_and_same_view_rgbd_continuity",
+        "spacing_source": "measured_two_pixel_tangent",
+        "max_extrapolation_error_m": 0.001,
+        "temporal_seed_pixels": 155227,
+        "added_pixels": 155237,
+        "stationary_points_retained": 0,
+        "initial_mask_stationary_pixels_retained": 0,
+        "measured_surface_extent_m": [
+          [
+            -0.028065724298357964,
+            0.009510258212685585,
+            0.5367634892463684
+          ],
+          [
+            0.06285391002893448,
+            0.14803461730480194,
+            0.6427116990089417
+          ]
+        ],
+        "depth_connected_current_surface_pixels": 0,
+        "depth_component_scope": "current_self_filtered_rgbd_without_pre_lift_static_pixels",
+        "added_pixels_per_round": [
+          2,
+          3,
+          1,
+          1,
+          0
+        ],
+        "planar_added_pixels_per_round": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "appearance_boundary": {
+          "version": "public-rgbd-silhouette-ring/3-dev",
+          "stop": "no_further_supported_pixels_in_extent_or_current_semantic_edge",
+          "max_channel_difference": 0.1,
+          "max_pixel_surface_step_m": 0.025,
+          "minimum_support_pixels": 2,
+          "added_pixels": 4,
+          "current_semantic_edge_pixels_outside_predicted_extent": 0,
+          "added_pixels_per_round": [
+            3,
+            1,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "source": "raw_current_rgbd_components_inside_measured_payload_bounds",
+      "max_gap_m": 0.003,
+      "stationary_residual_m": 0.004,
+      "private_pose_used": false,
+      "eligible_points": 178034,
+      "seed_pixels": 178027,
+      "stationary_points_retained": 0,
+      "exact_edges": 41784287,
+      "member_pixels": 178028
+    }
+  ]
+}
