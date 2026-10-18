@@ -38,6 +38,7 @@ from robots.libero.v5_grasp_geometry import (
     complete_planar_boundary,
     complete_sparse_instance_boundary,
     depth_components,
+    retain_crossview_semantic_fragments,
 )
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
@@ -596,6 +597,27 @@ class MeasuredSkillAdapter:
                 points = world[expanded]
                 current_views[camera] = world, expanded
             samples[camera] = points
+        if clean_instance and len(current_views) == 2:
+            # One camera can observe a rim hidden behind the fingers in the
+            # other. Its current measured extent can bound same-view depth
+            # continuity without requiring an occluded opposite projection.
+            # Retain the 3 mm component test and the public self filter;
+            # a bounding box alone never establishes pixel ownership.
+            measured = np.concatenate([world[mask] for world, mask in current_views.values()])
+            if len(measured):
+                lower, upper = measured.min(0), measured.max(0)
+                for camera, (world, mask) in list(current_views.items()):
+                    valid = (np.isfinite(world).all(axis=2)
+                        & (world >= lower).all(axis=2) & (world <= upper).all(axis=2))
+                    labels, _ = depth_components(world, valid, max_gap_m=.003)
+                    supported = np.unique(labels[mask & valid])
+                    completed = mask | ((labels >= 0) & np.isin(labels, supported))
+                    current_views[camera] = world, completed
+                    samples[camera] = world[completed]
+                    next(row for row in records if row['camera'] == camera)['fused_extent_component'] = {
+                        'source': 'current_self_filtered_rgbd_component_within_two_current_mask_extents',
+                        'max_gap_m': .003, 'lower': lower.tolist(), 'upper': upper.tolist(),
+                        'added_pixels': int((completed & ~mask).sum())}
         if len(current_views) == 2:
             for camera, (world, mask) in current_views.items():
                 other = next(key for key in current_views if key != camera)
@@ -606,6 +628,12 @@ class MeasuredSkillAdapter:
                     completed, component = clean_object_mask(world, completed,
                         prior_lower=entity.lower, prior_upper=entity.upper)
                     evidence['refined_component'] = component
+                    # The local surface test is independent current evidence
+                    # for a fragment whose small size triggered cleanup.
+                    # Retain it after cleanup instead of deleting it again.
+                    completed, semantic = retain_crossview_semantic_fragments(world,
+                        semantic_masks[camera], completed, other_world, other_mask)
+                    evidence['semantic_fragments'] = semantic
                 samples[camera] = world[completed]
                 next(row for row in records if row['camera'] == camera)['crossview'] = evidence
         entity = self.scene.entities.get(anchor_id)

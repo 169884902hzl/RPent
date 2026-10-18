@@ -83,6 +83,44 @@ def complete_sparse_instance_boundary(world, mask):
         'directional': directional, 'local_plane': planar}
 
 
+def retain_crossview_semantic_fragments(world, semantic_mask, mask, other_world, other_mask):
+    """Retain a small current SAM fragment supported by another measured view.
+
+    Robot self-filtering can disconnect a true rim from its main mask. Only
+    originally segmented current pixels are eligible here; they need an
+    independent local surface in the other current view, rather than a
+    metric dilation into unlabelled obstacles.
+    """
+    from scipy.spatial import cKDTree
+
+    world, other_world = np.asarray(world), np.asarray(other_world)
+    result = np.asarray(mask, bool).copy()
+    ids = np.flatnonzero(np.asarray(semantic_mask, bool) & ~result & np.isfinite(world).all(axis=2))
+    other = other_world[np.asarray(other_mask, bool) & np.isfinite(other_world).all(axis=2)]
+    evidence = {'source': 'current_semantic_fragment_and_opposite_current_local_surface',
+        'candidate_pixels': len(ids), 'added_pixels': 0, 'patch_points': 8,
+        'max_support_distance_m': .003, 'max_plane_residual_m': .001,
+        'private_pose_used': False}
+    if not len(ids) or len(other) < 8:
+        return result, evidence
+    queries = world.reshape(-1, 3)[ids]
+    distances, neighbours = cKDTree(other).query(queries, k=8, distance_upper_bound=np.nextafter(.003, np.inf))
+    supported = np.isfinite(distances).all(axis=1)
+    ids, queries, neighbours = ids[supported], queries[supported], neighbours[supported]
+    if len(ids):
+        patch = other[neighbours]
+        centres = patch.mean(axis=1)
+        centred = patch-centres[:, None]
+        _, spread, axes = np.linalg.svd(centred, full_matrices=False)
+        normals = axes[:, -1]
+        residual = np.abs(np.einsum('npi,ni->np', centred, normals)).max(axis=1)
+        query_residual = np.abs(np.einsum('ni,ni->n', queries-centres, normals))
+        supported = (spread[:, 1] > 1e-5) & (residual <= .001) & (query_residual <= .001)
+        result.flat[ids[supported]] = True
+        evidence['added_pixels'] = int(supported.sum())
+    return result, evidence
+
+
 def complete_crossview_boundary(world, mask, other_world, other_mask, other_metadata,
                                 *, max_step_m=.003, max_depth_residual_m=.001):
     """Associate omitted surface pixels using another current target view.

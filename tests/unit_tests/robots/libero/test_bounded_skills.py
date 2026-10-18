@@ -1739,6 +1739,33 @@ def test_uncontacted_instance_recovers_curved_seam_without_owning_table_or_neigh
                for c in detail['held_component']['components'])
 
 
+def test_two_current_views_recover_occluded_connected_rim_without_owning_depth_gap(adapter, monkeypatch):
+    from dataclasses import replace
+
+    yy, xx = np.mgrid[:24, :40]
+    world = np.stack([.1+xx*.001, .1+yy*.001, .9+.0008*(xx+yy)], axis=-1)
+    world[12:16, 20:24, 2] -= .006  # Neighbour lies inside the combined extent.
+    main = world.copy()
+    main[8:] = np.nan  # The rim below this occlusion has no opposite projection.
+    main_mask = (yy < 6) & (xx < 31)
+    wrist_mask = xx < 6
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'],
+        xyz=(.115, .11, .915), lower=(.1, .1, .89), upper=(.14, .13, .94))
+    adapter.scene.measurement_clouds_by_view = {'e1': {
+        'agentview': {'source_step': 0, 'xyz_world': main[main_mask]},
+        'wrist': {'source_step': 0, 'xyz_world': world[wrist_mask]}}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0,
+        load=lambda name: {} if name.endswith('.json') else main if name.startswith('agentview') else world))
+    # Test depth-supported ownership when the calibrated opposite-view
+    # projection contributes no additional pixels behind the occlusion.
+    monkeypatch.setattr('robots.libero.bounded_skills.complete_crossview_boundary',
+        lambda world, mask, *args, **kwargs: (mask.copy(), {}))
+    completed = adapter._instance_pixels('e1')
+    assert np.linalg.norm(completed-world[18, 14], axis=1).min() < 1e-9
+    assert np.linalg.norm(completed-world[13, 21], axis=1).min() > .003
+    assert np.linalg.norm(completed-world[10, 38], axis=1).min() > .003
+
+
 def test_scene_instance_subtraction_precedes_voxel_centroids(adapter, monkeypatch):
     adapter.geometry['site_offset_in_gripper_m'] = [0., 0., 0.]
     target = np.array([[.1001, .1, .9], [.1009, .1, .9]])

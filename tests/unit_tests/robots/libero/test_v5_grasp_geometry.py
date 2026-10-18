@@ -1,10 +1,32 @@
 import numpy as np
+import pytest
 
 from robots.libero.v5_grasp_geometry import (
     clean_object_mask,
     depth_components,
     measure_pan_handle,
 )
+
+
+@pytest.mark.parametrize('offset,segmented,expected', [
+    (0., True, True), (.0005, True, True), (.0015, True, False),
+    (.004, True, False), (0., False, False)])
+def test_small_current_semantic_fragment_requires_opposite_measured_surface(offset, segmented, expected):
+    from robots.libero.v5_grasp_geometry import retain_crossview_semantic_fragments
+
+    y, x = np.mgrid[:9, :9]
+    other = np.stack([x*.0001, y*.0001, np.ones_like(x)], axis=-1)
+    world = np.array([[[.0004, .0004, 1.+offset]]])
+    result, evidence = retain_crossview_semantic_fragments(world,
+        np.array([[segmented]]), np.zeros((1, 1), bool), other, np.ones(x.shape, bool))
+    assert bool(result[0, 0]) is expected
+    assert evidence['private_pose_used'] is False
+    # Neither an isolated opposite pixel nor a one-dimensional edge can
+    # supply a locally measured surface, even with matching depth.
+    for mask in (np.eye(9, dtype=bool), np.zeros((9, 9), bool)):
+        result, _ = retain_crossview_semantic_fragments(world,
+            np.ones((1, 1), bool), np.zeros((1, 1), bool), other, mask)
+        assert not result.any()
 
 
 def test_contact_continuation_crosses_more_than_three_pixels_but_keeps_prior_extent():
