@@ -18,6 +18,7 @@ def test_nested_work_is_not_double_counted_and_exception_restores_stack():
     report = timer.summary(8.)
     assert report['main_thread_exclusive_s'] == {'planning': 3., 'decision': 4.}
     assert report['main_thread_unattributed_s'] == 1.
+    assert report['main_thread_exclusive_by_root_s'] == {'decision': {'planning': 3., 'decision': 4.}}
 
 
 def test_class_instrumentation_keeps_copied_predictor_bound_to_its_own_state():

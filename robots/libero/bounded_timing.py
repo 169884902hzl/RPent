@@ -24,7 +24,7 @@ class EpisodeTimings:
     def measure(self, category, hook=None):
         stack = getattr(self.threads, 'stack', [])
         self.threads.stack = stack
-        entry = [self.clock(), 0.]
+        entry = [self.clock(), 0., category]
         stack.append(entry)
         try:
             yield
@@ -35,7 +35,8 @@ class EpisodeTimings:
                 stack[-1][1] += elapsed
             event = dict(category=category, hook=hook, thread=get_ident(),
                 start_s=entry[0]-self.started, inclusive_s=elapsed,
-                exclusive_s=max(0., elapsed-entry[1]))
+                exclusive_s=max(0., elapsed-entry[1]),
+                root_category=stack[0][2] if stack else category)
             with self.lock:
                 self.events.append(event)
 
@@ -57,15 +58,18 @@ class EpisodeTimings:
     def summary(self, wall_s):
         totals = defaultdict(float)
         main = defaultdict(float)
+        by_root = defaultdict(lambda: defaultdict(float))
         calls = defaultdict(int)
         for event in self.events:
             totals[event['category']] += event['exclusive_s']
             calls[event['category']+':'+str(event['hook'])] += 1
             if event['thread'] == self.main_thread:
                 main[event['category']] += event['exclusive_s']
+                by_root[event['root_category']][event['category']] += event['exclusive_s']
         return dict(version='bounded-wall-time/1', wall_s=wall_s,
             main_thread_exclusive_s=dict(main), all_threads_exclusive_s=dict(totals),
             main_thread_unattributed_s=max(0., wall_s-sum(main.values())), calls=dict(calls),
+            main_thread_exclusive_by_root_s={key: dict(value) for key, value in by_root.items()},
             worker_times_overlap_main_thread=True,
             scope='client wall time including transport; initial simulator construction excluded')
 
