@@ -1,0 +1,687 @@
+{
+  "scope": "saved original-scene private prefix diagnosis;zero controls",
+  "gpu_used": false,
+  "training": false,
+  "model_visible": false,
+  "used_for_control": false,
+  "choices_prefix_sha256": "9a0ec4334e878d430bc7af8682c84991cb79eb2b94546339174f8e0950feb168",
+  "choices_captured_bytes": 5455844,
+  "case": {
+    "name": "drawer_open_libero_goal_t0_s0",
+    "category": "drawer_open",
+    "episode": {
+      "suite": "libero_goal",
+      "task": 0,
+      "seed": 0
+    },
+    "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+    "bddl": {
+      "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+      "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+    },
+    "purpose": "development_feasibility_no_training"
+  },
+  "script_sha256": "0cc3cb499c0ad0167a3084b06b88a836153a5dc2b3dc64619d5cbcd34aa0c3a6",
+  "rows": [
+    {
+      "row": 0,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8145_100/drawer_open_libero_goal_t0_s0_oracle_k4/private_decision_snapshots/000.pkl",
+        "sha256": "65c7fca356ca7ca3a8a7156149d59cbf005cefb4d3457feb5499cbb381f9cdc7",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_residual": 0.0,
+      "private_joints": {
+        "wooden_cabinet_1_top_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_middle_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_bottom_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        }
+      },
+      "private_contacts": [],
+      "private_goals": [
+        {
+          "goal": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "satisfied": false
+        }
+      ],
+      "public_robot": {
+        "eef_xyz_m": [
+          -0.21656817920894614,
+          0.009551702694210214,
+          1.171379705431876
+        ],
+        "eef_quat_xyzw": [
+          0.9993390979615471,
+          0.023681443738526542,
+          -0.026534454952502874,
+          0.007515265014135448
+        ],
+        "gripper_opening_m": 0.07807917358855249,
+        "held_anchor_id": null,
+        "velocity_m_s": null
+      },
+      "chosen": [
+        {
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e54",
+            "approach": "right",
+            "path": "over"
+          }
+        },
+        {
+          "skill": "align",
+          "parameters": {
+            "anchor_id": "e54"
+          }
+        },
+        {
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e54"
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "move_to",
+          "outcome": "success",
+          "stop_reason": "measured_waypoint_passage",
+          "steps_used": 394
+        },
+        {
+          "skill": "align",
+          "outcome": "success",
+          "stop_reason": "measured_waypoint_passage",
+          "steps_used": 5
+        },
+        {
+          "skill": "descend",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 38
+        }
+      ]
+    },
+    {
+      "row": 1,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8145_100/drawer_open_libero_goal_t0_s0_oracle_k4/private_decision_snapshots/001.pkl",
+        "sha256": "d4c8bc6a982d47ff39bc5ece35045318d664774bd28850c5edcaec96fc78c543",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_residual": 0.0,
+      "private_joints": {
+        "wooden_cabinet_1_top_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_middle_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_bottom_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        }
+      },
+      "private_contacts": [],
+      "private_goals": [
+        {
+          "goal": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "satisfied": false
+        }
+      ],
+      "public_robot": {
+        "eef_xyz_m": [
+          0.02526590083682627,
+          -0.13423078277902867,
+          1.0221108999928188
+        ],
+        "eef_quat_xyzw": [
+          0.6550237308893525,
+          -0.27249688711480724,
+          0.27590862770377655,
+          0.6485088955775015
+        ],
+        "gripper_opening_m": 0.07927343921480406,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          -0.0009033346983400706,
+          -0.06396445230127519,
+          0.0005437099693968234
+        ]
+      },
+      "chosen": [
+        {
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "close"
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "set_gripper",
+          "outcome": "success",
+          "stop_reason": "measured_gripper_change",
+          "steps_used": 15
+        }
+      ]
+    },
+    {
+      "row": 2,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8145_100/drawer_open_libero_goal_t0_s0_oracle_k4/private_decision_snapshots/002.pkl",
+        "sha256": "7df0ad95d3d052a4aebd9350a4fd4d8c12da8105ba6fa7f212ed0d600edcd8b6",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_residual": 0.0,
+      "private_joints": {
+        "wooden_cabinet_1_top_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_middle_level": {
+          "qpos": -0.0011601522963752202,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_bottom_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        }
+      },
+      "private_contacts": [
+        {
+          "geoms": [
+            "wooden_cabinet_1_g29",
+            "gripper0_right_finger1_collision"
+          ],
+          "bodies": [
+            "wooden_cabinet_1_cabinet_middle",
+            "gripper0_right_leftfinger"
+          ],
+          "force_contact_frame": [
+            12.550774368093887,
+            -0.5386078973391248,
+            11.94146948757078,
+            0.07484644538723267,
+            0.0,
+            0.0
+          ],
+          "distance_m": -3.2927409962779515e-05
+        },
+        {
+          "geoms": [
+            "wooden_cabinet_1_g29",
+            "gripper0_right_finger2_collision"
+          ],
+          "bodies": [
+            "wooden_cabinet_1_cabinet_middle",
+            "gripper0_right_rightfinger"
+          ],
+          "force_contact_frame": [
+            12.826547693387088,
+            0.568001433925642,
+            12.813076123592035,
+            0.04527948491866641,
+            0.0,
+            0.0
+          ],
+          "distance_m": -2.2756457602746135e-05
+        }
+      ],
+      "private_goals": [
+        {
+          "goal": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "satisfied": false
+        }
+      ],
+      "public_robot": {
+        "eef_xyz_m": [
+          0.02666212325456628,
+          -0.13284940966175057,
+          1.0183734477270805
+        ],
+        "eef_quat_xyzw": [
+          0.6560532414089971,
+          -0.26963123438019143,
+          0.27276409736041396,
+          0.6499945300343071
+        ],
+        "gripper_opening_m": 0.040689682058209595,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          0.0018616298903200157,
+          0.0018418308230374603,
+          -0.00498326968765106
+        ]
+      },
+      "chosen": [
+        {
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.02,
+            "anchor_id": "e54"
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "nudge",
+          "outcome": "no_effect",
+          "stop_reason": "contact_no_measured_progress",
+          "steps_used": 18
+        }
+      ]
+    },
+    {
+      "row": 3,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8145_100/drawer_open_libero_goal_t0_s0_oracle_k4/private_decision_snapshots/003.pkl",
+        "sha256": "905aa533815b65706d3fd7b48953409a1ce020a141d1d6d6686d65180cb3d6b2",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_residual": 0.0,
+      "private_joints": {
+        "wooden_cabinet_1_top_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_middle_level": {
+          "qpos": -0.020113977819990508,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_bottom_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        }
+      },
+      "private_contacts": [
+        {
+          "geoms": [
+            "wooden_cabinet_1_g29",
+            "gripper0_right_finger1_collision"
+          ],
+          "bodies": [
+            "wooden_cabinet_1_cabinet_middle",
+            "gripper0_right_leftfinger"
+          ],
+          "force_contact_frame": [
+            17.00500545913211,
+            -5.026380316951226,
+            8.013081530369968,
+            -0.05155928170558988,
+            0.0,
+            0.0
+          ],
+          "distance_m": -4.424286759628375e-05
+        },
+        {
+          "geoms": [
+            "wooden_cabinet_1_g29",
+            "gripper0_right_finger2_collision"
+          ],
+          "bodies": [
+            "wooden_cabinet_1_cabinet_middle",
+            "gripper0_right_rightfinger"
+          ],
+          "force_contact_frame": [
+            17.109838593283417,
+            4.782934902049691,
+            8.606884158366748,
+            0.06744313127486737,
+            0.0,
+            0.0
+          ],
+          "distance_m": -4.447948350372321e-05
+        }
+      ],
+      "private_goals": [
+        {
+          "goal": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "satisfied": false
+        }
+      ],
+      "public_robot": {
+        "eef_xyz_m": [
+          0.02671543052022737,
+          -0.11391917289794615,
+          1.0182605577488144
+        ],
+        "eef_quat_xyzw": [
+          0.6562885099792987,
+          -0.26817467675876433,
+          0.2715722657494742,
+          0.6508580789159646
+        ],
+        "gripper_opening_m": 0.0403933094493361,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          5.9230295178988125e-05,
+          0.02103359640422714,
+          -0.00012543330918453796
+        ]
+      },
+      "chosen": [
+        {
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.02,
+            "anchor_id": "e54"
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "nudge",
+          "outcome": "unmeasured",
+          "stop_reason": "contact_motion_unmeasured",
+          "steps_used": 18
+        }
+      ]
+    },
+    {
+      "row": 4,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8145_100/drawer_open_libero_goal_t0_s0_oracle_k4/private_decision_snapshots/004.pkl",
+        "sha256": "786fe95e0cfaf5cf35cf8709750ddde924a9db9ceeab812176e2502fa428018e",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_residual": 0.0,
+      "private_joints": {
+        "wooden_cabinet_1_top_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_middle_level": {
+          "qpos": -0.039165523776271444,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_bottom_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        }
+      },
+      "private_contacts": [
+        {
+          "geoms": [
+            "wooden_cabinet_1_g29",
+            "gripper0_right_finger1_collision"
+          ],
+          "bodies": [
+            "wooden_cabinet_1_cabinet_middle",
+            "gripper0_right_leftfinger"
+          ],
+          "force_contact_frame": [
+            15.18184675869035,
+            -4.041136683526159,
+            9.897015804463297,
+            -0.004836299334641143,
+            0.0,
+            0.0
+          ],
+          "distance_m": -3.950079679854442e-05
+        },
+        {
+          "geoms": [
+            "wooden_cabinet_1_g29",
+            "gripper0_right_finger2_collision"
+          ],
+          "bodies": [
+            "wooden_cabinet_1_cabinet_middle",
+            "gripper0_right_rightfinger"
+          ],
+          "force_contact_frame": [
+            15.280705758158394,
+            3.8138889254218347,
+            10.480322356512415,
+            0.01741051645627508,
+            0.0,
+            0.0
+          ],
+          "distance_m": -3.967344068400713e-05
+        }
+      ],
+      "private_goals": [
+        {
+          "goal": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "satisfied": false
+        }
+      ],
+      "public_robot": {
+        "eef_xyz_m": [
+          0.02681272320640079,
+          -0.0948607411267475,
+          1.01814584027503
+        ],
+        "eef_quat_xyzw": [
+          0.656363101030063,
+          -0.2670413208943497,
+          0.27071762429746826,
+          0.651604466249222
+        ],
+        "gripper_opening_m": 0.04021510353530185,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          0.00010810298463713221,
+          0.02117603530133183,
+          -0.00012746385976036834
+        ]
+      },
+      "chosen": [
+        {
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.01,
+            "anchor_id": "e54"
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "nudge",
+          "outcome": "unmeasured",
+          "stop_reason": "contact_motion_unmeasured",
+          "steps_used": 14
+        }
+      ]
+    },
+    {
+      "row": 5,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8145_100/drawer_open_libero_goal_t0_s0_oracle_k4/private_decision_snapshots/005.pkl",
+        "sha256": "3c8b940fcd4af6181d253f92b1b0858b6c161e559dd1077d32941e388db9e836",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_residual": 0.0,
+      "private_joints": {
+        "wooden_cabinet_1_top_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_middle_level": {
+          "qpos": -0.04824297367791547,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        },
+        "wooden_cabinet_1_bottom_level": {
+          "qpos": 0.0,
+          "range": [
+            -0.16,
+            0.01
+          ]
+        }
+      },
+      "private_contacts": [
+        {
+          "geoms": [
+            "wooden_cabinet_1_g29",
+            "gripper0_right_finger1_collision"
+          ],
+          "bodies": [
+            "wooden_cabinet_1_cabinet_middle",
+            "gripper0_right_leftfinger"
+          ],
+          "force_contact_frame": [
+            14.588743628773328,
+            -3.835525085118819,
+            10.265511620289416,
+            -0.06221049717528,
+            0.0,
+            0.0
+          ],
+          "distance_m": -3.793572380354902e-05
+        },
+        {
+          "geoms": [
+            "wooden_cabinet_1_g29",
+            "gripper0_right_finger2_collision"
+          ],
+          "bodies": [
+            "wooden_cabinet_1_cabinet_middle",
+            "gripper0_right_rightfinger"
+          ],
+          "force_contact_frame": [
+            14.889678705547722,
+            3.6197455585470073,
+            11.186913423815993,
+            0.06658186796234665,
+            0.0,
+            0.0
+          ],
+          "distance_m": -3.868773882742537e-05
+        }
+      ],
+      "private_goals": [
+        {
+          "goal": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "satisfied": false
+        }
+      ],
+      "public_robot": {
+        "eef_xyz_m": [
+          0.02689470087293708,
+          -0.08577467635762336,
+          1.0180453659414834
+        ],
+        "eef_quat_xyzw": [
+          0.6565514857327467,
+          -0.2660867121389142,
+          0.26990753423059816,
+          0.6521410362573292
+        ],
+        "gripper_opening_m": 0.04005624008159499,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          0.00011711095219470268,
+          0.012980092527320205,
+          -0.00014353476220950258
+        ]
+      },
+      "chosen": [
+        {
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.01,
+            "anchor_id": "e54"
+          }
+        }
+      ],
+      "receipts": [
+        {
+          "skill": "nudge",
+          "outcome": "unmeasured",
+          "stop_reason": "contact_motion_unmeasured",
+          "steps_used": 14
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "source_commit": "bc160fff5d434e72ee0a44585552727256f662c8",
+  "startup_job": "8157_60",
+  "startup_accounting": "COMPLETED|0:0",
+  "first_physical_request": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8157_60/cup_transfer_libero_10_t4_s0_oracle_k4/first_physical_request.json",
+    "sha256": "d7846a70af192bd03739eb4d2eabb19ef1b7a80de740dea682555c9efd900211",
+    "arm": "oracle_k4",
+    "index": 0,
+    "sim_steps": 564,
+    "source": "public_execution_budget"
+  },
+  "full_cup_job": "8158",
+  "full_cup_arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_bc160ff_20261018,SOURCE_COMMIT=bc160fff5d434e72ee0a44585552727256f662c8,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_bc160ff_held_nudge.json,STARTUP=0",
+    "--array=60%1",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_bc160ff_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "original20_three_category_job": "8159",
+  "cohort_arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_bc160ff_20261018,SOURCE_COMMIT=bc160fff5d434e72ee0a44585552727256f662c8,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_bc160ff_held_nudge.json,STARTUP=0",
+    "--array=0-59%1",
+    "--dependency=afterany:8158",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_bc160ff_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "scope": "original oracle development;pi05 disabled;20registered states per bowl/can/container category after paired cup;not confirmation or training",
+  "queue_before": [
+    [
+      "8145_180",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      ""
+    ],
+    [
+      "8151_140",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      ""
+    ],
+    [
+      "8145_100",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02"
+    ],
+    [
+      "8117_160",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02"
+    ]
+  ],
+  "aggregate_cap": 3
+}
