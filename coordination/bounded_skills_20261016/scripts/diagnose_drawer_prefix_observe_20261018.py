@@ -19,6 +19,13 @@ for line in path.open():
             and c['parameters'].get('axis') == 'y' and c['parameters'].get('distance_m', 0.) > 0.
             and c['consequences']['collision'] is not True
             and c['consequences']['ik_reachable'] is not False],
+        safe_negative_y_contact_nudges=[{key: c[key] for key in ('id', 'parameters')}
+            for c in candidates.values() if c['skill'] == 'nudge'
+            and c['parameters'].get('anchor_id') == 'e101'
+            and c['parameters'].get('axis') == 'y' and c['parameters'].get('distance_m', 0.) < 0.
+            and c['consequences']['collision'] is not True
+            and c['consequences']['ik_reachable'] is not False
+            and c['consequences']['screen_scope'] != 'conditional_on_prefix'],
         receipts=[{key: rec.get(key) for key in ('skill', 'candidate_id', 'outcome',
             'stop_reason', 'steps_used', 'expectation_checks')}
             for rec in choice.get('receipts', [])], error=choice.get('error')))
@@ -26,8 +33,10 @@ report = dict(source=str(path), job='8843_80', scope='preserved development fail
     observation='Two successful nudges are followed by no-effect refreshes and a failed wrist scan.',
     hypothesis='The private oracle appends a refresh after a blocked speculative contact successor, although executor steps already measure receipts.',
     public_screens_relaxed=False, physical_repair_verified=False, rows=rows)
-output = root/'coordination/bounded_skills_20261016/reports/drawer8843_prefix_observe_CPU_20261018.json'
+report['direction_correction'] = ('The selected closing direction is negative world y. '
+    'Positive-y options in the first report are reverse options, not evidence of feasible closing.')
+output = root/'coordination/bounded_skills_20261016/reports/drawer8843_prefix_observe_v2_CPU_20261018.json'
 output.write_text(json.dumps(report, indent=2)+'\n')
 print(json.dumps(dict(output=str(output), decisions=len(rows),
     receipts=[[(r['skill'], r['outcome'], r['stop_reason']) for r in row['receipts']] for row in rows],
-    safe_nudges=[len(row['safe_positive_y_nudges']) for row in rows])))
+    safe_negative_y_contact_nudges=[row['safe_negative_y_contact_nudges'] for row in rows])))

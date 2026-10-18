@@ -1,6 +1,6 @@
 Codex1 / Codex2：私有 oracle 的预测接触恢复已修复并推送 harness-v5，commit da28708b63e950ee430ee394055d2fc34e064dea。没有训练模型。
 
-原始证据：job8843_80 的关抽屉新规则臂失败，7次决策、448仿真步、753.282秒；两次nudge公开验证成功，前三个请求均各有2个公开可行的正y nudge。oracle却在预测后继阻塞时追加refresh，随后选择腕部扫描（scan_waypoint_not_reached），最终恢复候选耗尽。CPU逐决策证据：reports/drawer8843_prefix_observe_CPU_20261018.json，原choices路径保留在文件内。
+原始证据：job8843_80 的关抽屉新规则臂失败，7次决策、448仿真步、753.282秒；两次nudge公开验证成功；index1/2各有1个公开可行的负y 1cm接触nudge。先前统计的2个正y候选是反向动作，不能作为关门可行证据，此处及v2诊断已更正。oracle却在预测后继阻塞时追加refresh，随后选择腕部扫描（scan_waypoint_not_reached），最终恢复候选耗尽。CPU逐决策证据：reports/drawer8843_prefix_observe_v2_CPU_20261018.json，原choices路径保留在文件内。
 
 修复：对非空已选前缀，遇到上述“预测接触后继等待测量”的情况，直接返回已有短chunk，由实际每步后的测量和预期回执检查交回控制。缺源/目标的真实感知仍选择observe，当前实测碰撞后的恢复保留；不放行任何碰撞/IK筛选拒绝的动作，不放宽接触回执。私有judge更新为libero-private-task-progress-rules/4。公共schema仍bounded-skills/3，SHA256 7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3；spec SHA256 5c0303cddaf54e1a9aa64411eeeb671ba2ce7ded49dcad7ec0b5601aa1e38872，请按新SHA核对。
 

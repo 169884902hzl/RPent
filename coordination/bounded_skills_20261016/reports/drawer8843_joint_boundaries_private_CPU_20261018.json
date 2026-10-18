@@ -1,0 +1,684 @@
+{
+  "scope": "private CPU state restoration without renderer or policy actions; not a new rollout or rescore",
+  "private_truth_used_for_control": false,
+  "GPU_used": false,
+  "training": false,
+  "case": {
+    "name": "drawer_close_libero_90_t0_s0",
+    "category": "drawer_close",
+    "episode": {
+      "suite": "libero_90",
+      "task": 0,
+      "seed": 0
+    },
+    "state_sha256": "0e6867b26d97a59583bf7aa6f6604389590c00fa0a814fd39edc6c5f534d8964",
+    "bddl": {
+      "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+      "sha256": "a0824cbe6b3146c00984f5a01307a3e39aac9ddc434ee4ff040b5536a0c48bbc"
+    },
+    "purpose": "development_feasibility_no_training"
+  },
+  "arms": [
+    {
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/choices.jsonl",
+      "choices_sha256": "0cb320e99f7d44e0a8a59b8f3db9f513289dec5e76082e5d2896b0d851a06bfe",
+      "samples": [
+        {
+          "index": 0,
+          "sim_steps": 0,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.15165901295563317,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/private_decision_snapshots/000.pkl",
+            "sha256": "c6d85eaea8748e9662a3cb04250f08c5f656311546fd30f98940f233f1c7b50b",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "move_to",
+              "parameters": {
+                "anchor_id": "e101",
+                "approach": "right",
+                "path": "over"
+              }
+            },
+            {
+              "skill": "descend",
+              "parameters": {
+                "anchor_id": "e101"
+              }
+            },
+            {
+              "skill": "set_gripper",
+              "parameters": {
+                "mode": "close"
+              }
+            },
+            {
+              "skill": "observe",
+              "parameters": {
+                "mode": "refresh"
+              }
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "sim_steps": 397,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.1520884024326312,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/private_decision_snapshots/001.pkl",
+            "sha256": "c2efee723d30bf7cca10983946a0896c1f181265decd4522c617d29d65b01de8",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            },
+            {
+              "skill": "observe",
+              "parameters": {
+                "mode": "refresh"
+              }
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "sim_steps": 411,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.14358173237570593,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/private_decision_snapshots/002.pkl",
+            "sha256": "23ceee148f1c1c12d679874d587085399c2c3038a4e371f9ea931d780b45fb1e",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            },
+            {
+              "skill": "observe",
+              "parameters": {
+                "mode": "wrist_scan"
+              }
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "sim_steps": 448,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.13813466730441054,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/private_decision_snapshots/003.pkl",
+            "sha256": "1813e62e2cf650982a19568c28f58a2b417b80c60d753ac8ca97432506b5eab3",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "observe",
+              "parameters": {
+                "mode": "wrist_scan"
+              }
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "sim_steps": 448,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.13813466730441054,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/private_decision_snapshots/004.pkl",
+            "sha256": "1813e62e2cf650982a19568c28f58a2b417b80c60d753ac8ca97432506b5eab3",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "observe",
+              "parameters": {
+                "mode": "refresh"
+              }
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "sim_steps": 448,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.13813466730441054,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4/private_decision_snapshots/005.pkl",
+            "sha256": "1813e62e2cf650982a19568c28f58a2b417b80c60d753ac8ca97432506b5eab3",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "observe",
+              "parameters": {
+                "mode": "refresh"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/choices.jsonl",
+      "choices_sha256": "116e7526cad336d276281ae18c72b383d72abc38003ca3bbf163f3a52e82d223",
+      "samples": [
+        {
+          "index": 0,
+          "sim_steps": 0,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.15165901295563317,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/000.pkl",
+            "sha256": "02bfe5fec103382e59353c7e609e63563e6d4f39b61907ffe736918e8a0d9738",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "move_to",
+              "parameters": {
+                "anchor_id": "e101",
+                "approach": "right",
+                "path": "over"
+              }
+            },
+            {
+              "skill": "descend",
+              "parameters": {
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "sim_steps": 382,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.15165901295563317,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/001.pkl",
+            "sha256": "69f6e6db7de05adaf8ebad0ec04a1b3786810102054a5ef65fab627a1e3b86a0",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "set_gripper",
+              "parameters": {
+                "mode": "close"
+              }
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "sim_steps": 397,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.1520884024326312,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/002.pkl",
+            "sha256": "4799b539a2a2352264b1b300bf5ca6b9ff936b5596018502c7b8fc40ae72d470",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "sim_steps": 411,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.14358173237570593,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/003.pkl",
+            "sha256": "96b42f624a22d0c1e5c5dedfd8dc9e2c4e9260ba997ae1d14b254a4ff1e4f36b",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "sim_steps": 425,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.13469028446409137,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/004.pkl",
+            "sha256": "c96995eb4062c2a15925b94de8a4789561f9994856add52f6892f67d89106d9e",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "sim_steps": 439,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.1258381385906074,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/005.pkl",
+            "sha256": "76d98df12f77d0dc8b5a2667bd6333e8a43fd557e0f20b330223bf67c8417711",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "sim_steps": 453,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.11694207910822126,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/006.pkl",
+            "sha256": "3edc12df731f0ce1640becb1a088f991b6714e983436572d4f16b7cd814ef44d",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "sim_steps": 467,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.10802528761279803,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/007.pkl",
+            "sha256": "dc41b4271243637a718dfe8cd2371fd0f3464a51de9a195b35340f67d7faf4ca",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "sim_steps": 481,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.09906373503400724,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/008.pkl",
+            "sha256": "27ee0778b6ad0245ad6bd714cb58f74a945fee54b9ff230d259edfac5b296f13",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "sim_steps": 495,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.0901045498655768,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/009.pkl",
+            "sha256": "df3fa144c8bb9a406314a830b0fdcd8c88e80dfceceb32e95185cf814a36ee93",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "sim_steps": 509,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.08112834516524249,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/010.pkl",
+            "sha256": "8087969fcdcb0c8b2956b1a6723896af9615cd895bac2b7a92f090b64d144c2f",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "sim_steps": 523,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.07213538845905873,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/011.pkl",
+            "sha256": "52fe043cc83bede1bedfdea6b9897b004c3889a0a0421aaff991cd29d6eeee6a",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "sim_steps": 537,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.06312539513677232,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/012.pkl",
+            "sha256": "394181c11ac340197edecf99a0d7ae0340aaeec39b7381e789fdabdf6aedc7fc",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "sim_steps": 551,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.05409947375189798,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/013.pkl",
+            "sha256": "82897f8cdb627410c794f827de6462232d9b3cab18c3a794951a0dd927e0583f",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "sim_steps": 565,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.045058003558596335,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/014.pkl",
+            "sha256": "d5527b73c180167b33315e217a6f96bcb9989f44f77b43e6a23ef97695d466b5",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "sim_steps": 579,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.036001556925065806,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/015.pkl",
+            "sha256": "2bbe55fc20c51bc24125779cc3dade80923175a6504514d26671c001bad44c99",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "sim_steps": 593,
+          "private_joints": {
+            "wooden_cabinet_1_top_level": -0.026928741104137132,
+            "wooden_cabinet_1_middle_level": 0.0,
+            "wooden_cabinet_1_bottom_level": 0.0
+          },
+          "private_native_success": false,
+          "source_snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8843_80/drawer_close_libero_90_t0_s0_oracle_k4_legacy/private_decision_snapshots/016.pkl",
+            "sha256": "fa6f5fa1d8956bc1692def55d454e50d886003b51114b7b6475eb60446c2f58b",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restored_state_max_error": 0.0,
+          "selected": [
+            {
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": -0.01,
+                "anchor_id": "e101"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
