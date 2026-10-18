@@ -1790,18 +1790,36 @@ class MeasuredScene:
                     if face is None and parent.name == "microwave":
                         face, detail["current_door_orientation"] = self._current_microwave_door_face(
                             parent, camera, cloud)
-                        # A closed door may be included in the shell's mask,
-                        # so no independent door entity exists. Its measured
-                        # backing plane can still orient a detected handle;
-                        # it must not manufacture a door/endpoint identity.
-                        doors = [e for e in self.entities.values()
-                                 if e.name == 'microwave door' and e.part_of == parent.id]
+                        # A compound door mask can fail the whole-cloud plane
+                        # check, while another view labels a fixed panel as
+                        # the door. Current local backing-plane consensus can
+                        # still orient the handle; it never labels an endpoint.
                         view = self.measurement_clouds_by_view.get(parent.id, {}).get(camera, {})
-                        if (face is None and not doors and parent.visible and parent.source_step == state.latest_step
-                                and view.get('source_step') == state.latest_step and view.get('xyz_world') is not None):
+                        if face is None and parent.visible and parent.source_step == state.latest_step:
+                            from pathlib import Path
+
                             from robots.libero.v5_fixture_parts import measured_handle_backing_face
-                            face, detail['current_handle_backing_orientation'] = measured_handle_backing_face(
-                                view['xyz_world'], cloud)
+                            backing, sources = [], []
+                            if view.get('source_step') == state.latest_step and view.get('xyz_world') is not None:
+                                backing.append(view['xyz_world'])
+                                sources.append({'source': 'current_segmented_parent', 'camera': camera,
+                                                'source_step': state.latest_step})
+                            door_evidence = self.fixture_measurement_evidence.get(parent.id, {}).get('door_measurement', {})
+                            for item in door_evidence.get('instances', []):
+                                ref = item.get('candidate_cloud', {})
+                                if (item.get('camera') != camera or ref.get('source') != 'perception'
+                                        or ref.get('source_step') != state.latest_step):
+                                    continue
+                                path = Path(ref['path'])
+                                if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != ref['sha256']:
+                                    continue
+                                with np.load(path) as arrays:
+                                    backing.append(arrays[arrays.files[0]])
+                                sources.append(ref)
+                            if backing:
+                                points = np.unique(np.concatenate(backing), axis=0)
+                                face, detail['current_handle_backing_orientation'] = measured_handle_backing_face(points, cloud)
+                                detail['current_handle_backing_orientation']['backing_sources'] = sources
                     face = face or vertical_face(cloud)
                     if face:
                         centre = np.median(cloud, axis=0)

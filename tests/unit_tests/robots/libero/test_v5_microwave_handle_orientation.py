@@ -169,6 +169,42 @@ def test_backing_orientation_needs_current_points(tmp_path, monkeypatch):
     assert result['pose'] is None
 
 
+def test_wrong_door_identity_does_not_hide_independent_handle_backing(tmp_path, monkeypatch):
+    scene, parent, door, _, _ = scene_with_door(tmp_path, monkeypatch)
+    evidence = scene.fixture_measurement_evidence[parent.id]['door_measurement']
+    evidence['source_cameras'] = []
+    backing, handle = backing_and_handle()
+    scene.measurement_clouds_by_view[parent.id] = {
+        camera: {'xyz_world': np.concatenate([backing, handle]), 'source_step': 3}
+        for camera in ('agentview', 'wrist')}
+    result = scene.measure_fixture_handle_pose(parent, 'open the microwave')
+    assert result['pose']['approach_normal_xy'] == pytest.approx([0., 1.], abs=1e-8)
+    assert scene.entities[door.id] == door
+    assert evidence['source_cameras'] == []
+    assert all(view['current_handle_backing_orientation']['backing_sources']
+               for view in result['views'].values())
+
+
+@pytest.mark.parametrize('mutation', ['current', 'stale', 'changed', 'wrong_view'])
+def test_compound_current_door_pixels_can_orient_handle_without_claiming_identity(tmp_path, monkeypatch, mutation):
+    scene, parent, _, _, _ = scene_with_door(tmp_path, monkeypatch)
+    scene.dual_view_fusion_v1 = False
+    evidence = scene.fixture_measurement_evidence[parent.id]['door_measurement']
+    evidence['source_cameras'] = []
+    backing, handle = backing_and_handle()
+    path = tmp_path/'compound_candidate.npz'
+    np.savez_compressed(path, np.concatenate([backing, handle]))
+    ref = {'source': 'perception', 'source_step': 2 if mutation == 'stale' else 3,
+           'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+    evidence['instances'] = [{'camera': 'wrist' if mutation == 'wrong_view' else 'agentview',
+                             'candidate_cloud': ref, 'reason': 'door_plane_not_measured'}]
+    if mutation == 'changed':
+        path.write_bytes(b'changed')
+    result = scene.measure_fixture_handle_pose(parent, 'open the microwave')
+    assert (result['pose'] is not None) == (mutation == 'current')
+    assert evidence['source_cameras'] == []
+
+
 def test_backing_orientation_rejects_perpendicular_surfaces_and_unsupported_clouds():
     backing, handle = backing_and_handle()
     perpendicular = np.array([(-.02, y, z) for y in np.linspace(-.1, .15, 35)
