@@ -1,0 +1,31 @@
+{
+  "source_commit": "8156a500f0dc2b5987770a2decee257f27774d33",
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_payload.py -q",
+      "exit_code": 0,
+      "passed": 222,
+      "duration_s": 112.27
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_chunk.py -q",
+      "exit_code": 0,
+      "passed": 9,
+      "duration_s": 10.99,
+      "scope": "final multi-anchor guard loop revision"
+    },
+    {
+      "command": "ruff check --select E9,F63,F7,F82 affected runtime and test files",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check affected runtime and test files",
+      "exit_code": 0
+    }
+  ],
+  "warnings": [
+    "pytest config option timeout is unknown in this local environment"
+  ],
+  "gpu_validation": "not yet run for this source",
+  "training": false
+}

@@ -1,0 +1,229 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v2_surfacefix_20261018_8156a50",
+  "directory": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8288_24/box_transfer_libero_object_t0_s4_oracle_k4",
+  "ledger_sha256": "d2f160ccd44a557cf4b9529a0623874e7513f544beca84d02101f0423b59ae7c",
+  "row": 0,
+  "anchor": {
+    "id": "e61",
+    "label": "alphabet soup",
+    "frame": "world",
+    "xyz_m": [
+      -0.10880518332123756,
+      -0.2250600294633345,
+      0.055288796623547874
+    ],
+    "size_m": [
+      0.060830285772681236,
+      0.061029070367415755,
+      0.07670532834405701
+    ],
+    "quat_xyzw": null,
+    "confidence": 0.87890625,
+    "cached": false,
+    "evidence": [
+      {
+        "measurement_id": "rgbd:0:e61",
+        "capture_step": 0,
+        "source": "rgbd",
+        "cameras": [
+          "main",
+          "wrist"
+        ],
+        "operation": "segmented_rgbd_bounds"
+      }
+    ]
+  },
+  "reported_centre_displacement_m": [
+    0.010623205453157425,
+    -0.012839989228682097,
+    0.009231517712275185
+  ],
+  "reported_centre_distance_m": 0.019050951072445605,
+  "capture_step": 1,
+  "reference_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8288_24/box_transfer_libero_object_t0_s4_oracle_k4/bounded_precontact_e61_target.npz/00.npz",
+  "reference_sha256": "39f884407f20b8dc67dc2f5f4f3d217f87ca53de077d9447998ad949fa06a366",
+  "reference_points": 24833,
+  "views": {
+    "agentview": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8288_24/box_transfer_libero_object_t0_s4_oracle_k4/agentview_world_high.npz/01.npz",
+      "sha256": "5e03e3a7ec6082cff5a5dbf2591603c7a9ccffc992d5eb23facb1cd809171f51",
+      "local_public_points": 12518,
+      "reference_support_fraction": {
+        "0.001": 0.5976321829823219,
+        "0.002": 0.7555269198244272,
+        "0.004": 0.8161317601578545,
+        "0.008": 0.895985181009141
+      },
+      "median_reference_residual_m": 0.0009015104724333498
+    },
+    "wrist": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8288_24/box_transfer_libero_object_t0_s4_oracle_k4/wrist_world_high.npz/01.npz",
+      "sha256": "15217bb6c4e41653546f9f8455f2edeb3c0c9e5f9484c2c6cc020faffaa2407b",
+      "local_public_points": 107575,
+      "reference_support_fraction": {
+        "0.001": 0.5772963395481818,
+        "0.002": 0.6634317239157572,
+        "0.004": 0.7343454274554021,
+        "0.008": 0.8197559698787903
+      },
+      "median_reference_residual_m": 0.0007436015295633505
+    }
+  },
+  "combined_reference_support_fraction": {
+    "0.001": 0.7451777876213104,
+    "0.002": 0.8225345306648412,
+    "0.004": 0.8684411871300286,
+    "0.008": 0.9169653283936697
+  },
+  "axis_fits": {
+    "x": {
+      "source": "pre_action_surface_and_current_self_filtered_rgbd",
+      "accepted": true,
+      "translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "compatible_axis_interval_m": [
+        -0.001,
+        0.002
+      ],
+      "residual_cap_m": 0.008,
+      "squared_residual_increment_m2": 1e-06,
+      "private_pose_used": false,
+      "mean_capped_squared_residual_m2": 8.629704781756047e-06,
+      "supported_fraction": 0.9017094017094017,
+      "samples": 4446,
+      "fits": 65,
+      "reason": "public_axis_surface_fit"
+    },
+    "y": {
+      "source": "pre_action_surface_and_current_self_filtered_rgbd",
+      "accepted": true,
+      "translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "compatible_axis_interval_m": [
+        -0.002,
+        0.001
+      ],
+      "residual_cap_m": 0.008,
+      "squared_residual_increment_m2": 1e-06,
+      "private_pose_used": false,
+      "mean_capped_squared_residual_m2": 8.629704781756047e-06,
+      "supported_fraction": 0.9017094017094017,
+      "samples": 4446,
+      "fits": 65,
+      "reason": "public_axis_surface_fit"
+    },
+    "z": {
+      "source": "pre_action_surface_and_current_self_filtered_rgbd",
+      "accepted": true,
+      "translation_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "compatible_axis_interval_m": [
+        -0.001,
+        0.002
+      ],
+      "residual_cap_m": 0.008,
+      "squared_residual_increment_m2": 1e-06,
+      "private_pose_used": false,
+      "mean_capped_squared_residual_m2": 8.629704781756047e-06,
+      "supported_fraction": 0.9017094017094017,
+      "samples": 4446,
+      "fits": 65,
+      "reason": "public_axis_surface_fit"
+    }
+  },
+  "scope": "saved public RGB-D and proprioception only; no controls, no private poses",
+  "limitations": [
+    "An axis fit is conditional on no motion in the other axes.",
+    "Surface overlap is evidence; it alone does not prove an unchanged object pose."
+  ],
+  "current_mask_matches": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8288_24/box_transfer_libero_object_t0_s4_oracle_k4/v6_sam_agentview_4df9aa5595d312d9.npz/01.npz",
+      "centre_distance_m": 0.0
+    }
+  ],
+  "guard_replay": {
+    "source": "pre_action_surface_and_current_public_rgbd",
+    "accepted": true,
+    "private_pose_used": false,
+    "tolerance_m": 0.01,
+    "axis_fits": {
+      "x": {
+        "source": "pre_action_surface_and_current_self_filtered_rgbd",
+        "accepted": true,
+        "translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "compatible_axis_interval_m": [
+          -0.001,
+          0.002
+        ],
+        "residual_cap_m": 0.008,
+        "squared_residual_increment_m2": 1e-06,
+        "private_pose_used": false,
+        "mean_capped_squared_residual_m2": 8.629704781756047e-06,
+        "supported_fraction": 0.9017094017094017,
+        "samples": 4446,
+        "fits": 65,
+        "reason": "public_axis_surface_fit"
+      },
+      "y": {
+        "source": "pre_action_surface_and_current_self_filtered_rgbd",
+        "accepted": true,
+        "translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "compatible_axis_interval_m": [
+          -0.002,
+          0.001
+        ],
+        "residual_cap_m": 0.008,
+        "squared_residual_increment_m2": 1e-06,
+        "private_pose_used": false,
+        "mean_capped_squared_residual_m2": 8.629704781756047e-06,
+        "supported_fraction": 0.9017094017094017,
+        "samples": 4446,
+        "fits": 65,
+        "reason": "public_axis_surface_fit"
+      },
+      "z": {
+        "source": "pre_action_surface_and_current_self_filtered_rgbd",
+        "accepted": true,
+        "translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "compatible_axis_interval_m": [
+          -0.001,
+          0.002
+        ],
+        "residual_cap_m": 0.008,
+        "squared_residual_increment_m2": 1e-06,
+        "private_pose_used": false,
+        "mean_capped_squared_residual_m2": 8.629704781756047e-06,
+        "supported_fraction": 0.9017094017094017,
+        "samples": 4446,
+        "fits": 65,
+        "reason": "public_axis_surface_fit"
+      }
+    },
+    "shared_instance_pixels": 5735,
+    "compatible_displacement_bound_m": 0.0034641016151377548,
+    "reason": "surface_still_at_measured_anchor"
+  },
+  "current_mask_identity_source": "unique saved SAM mask matching reported public anchor centre within 1mm"
+}

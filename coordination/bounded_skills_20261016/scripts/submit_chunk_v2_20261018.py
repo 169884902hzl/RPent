@@ -8,6 +8,7 @@ from pathlib import Path
 parser = argparse.ArgumentParser()
 parser.add_argument('--full', action='store_true')
 parser.add_argument('--tag', default='chunk_v2_20261018')
+parser.add_argument('--replace-array', action='append', default=[])
 args = parser.parse_args()
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 base = root/'coordination/bounded_skills_20261016'
@@ -31,21 +32,29 @@ if args.full:
     state = subprocess.check_output(['sacct','-X','-n','-j',job,'--format=State,ExitCode','-P'],text=True).strip()
     assert state == 'COMPLETED|0:0', state
     startup_proof = {'job':job,'summary':rows[0],'first_physical_request':physical,'state_exit':state}
-raw = subprocess.check_output(['squeue','-r','-h','-u','sunyihan','-o','%i|%j|%T|%N|%R'],text=True)
+raw = subprocess.check_output(['squeue','-r','-h','-u','sunyihan','-o','%i|%j|%T|%N|%R|%b'],text=True)
+codex2_gpu = [line for line in raw.splitlines()
+    if line.split('|')[1].startswith(('rd-bounded-choice-', 'rd-c2-'))
+    and 'gpu' in line.split('|')[5].lower() and line.split('|')[2] in {'RUNNING','PENDING'}]
+aggregate_cap = 3 if codex2_gpu else 4
 ours = [line.split('|') for line in raw.splitlines() if '|rd-bounded-' in line and 'rd-bounded-choice-' not in line]
 running = [row for row in ours if row[2] == 'RUNNING']
-assert len(running) <= 3 and all(row[3]=='node02' for row in running), running
+assert len(running) <= 4 and all(row[3]=='node02' for row in running), running
 # Do not touch held jobs, c5/c6/rf, or Codex2's model jobs.
 active = [row[0] for row in running if args.full or row[0].startswith('8173_')]
-assert active, running
 if not args.full:
     assert len(active) == 1, active
-lane_arrays = {'8173', '8192', '8252', '8265'} if args.full else {'8173'}
+lane_arrays = ({'8173', '8192', '8252', '8265'} | set(args.replace_array)) if args.full else {'8173'}
 following = [row[0] for row in ours if row[0].split('_')[0] in lane_arrays
     and row[2]=='PENDING' and 'JobHeld' not in row[4]]
-assert following
+capacity = max(1, aggregate_cap-len(running)) if args.full else 1
+if args.full:
+    dependency = ('?'.join('afterany:'+child for child in active)
+                  if len(running) >= aggregate_cap else 'afterany:'+startup_proof['job'])
+else:
+    dependency = 'afterany:'+':'.join(active)
 arguments = ['sbatch','--parsable','--nodelist=node02','--nice=500',
-    '--array='+('0-219%1' if args.full else '24%1'),'--dependency=afterany:'+':'.join(active),
+    '--array='+('0-219%'+str(capacity) if args.full else '24%1'),'--dependency='+dependency,
     '--export=ALL,SOURCE='+str(source)+',SOURCE_COMMIT='+prep['source_commit']+',MANIFEST='+str(manifest)
         +',STARTUP='+('0' if args.full else '1')+',PAIR_LEGACY='+('1' if args.full else '0'),str(launcher)]
 job = subprocess.check_output(arguments,text=True).strip().split(';')[0]
@@ -61,24 +70,10 @@ for child in following:
     command=['scontrol','update','JobId='+child,'Dependency='+dependency]
     subprocess.run(command,check=True)
     updates.append(command)
-if args.full:
-    current = subprocess.check_output(['squeue', '-r', '-h', '-u', 'sunyihan',
-        '-o', '%i|%j|%T|%N|%R'], text=True)
-    other_running = [line.split('|')[0] for line in current.splitlines()
-        if '|rd-bounded-' in line and 'rd-bounded-choice-' not in line
-        and '|RUNNING|' in line and not line.startswith(job+'_')]
-    # Start in the newly freed startup lane. As the other old-source tasks
-    # naturally finish, a later resource check can raise this array to 3.
-    capacity = max(1, 3-len(other_running))
-    dependency = ('?'.join('afterany:'+child for child in other_running)
-        if len(other_running) >= 3 else 'afterany:'+startup['job'])
-    command = ['scontrol', 'update', 'JobId='+job, 'ArrayTaskThrottle='+str(capacity),
-        'Dependency='+dependency]
-    subprocess.run(command, check=True)
-    updates.append(command)
 report={'job':job,'mode':mode,'arguments':arguments,'source_commit':prep['source_commit'],
     'snapshot':str(source),'manifest':prep['manifest'],'following_updates':updates,'queue_before':ours,
-    'lane':'all_three' if args.full else 3,'aggregate_cap':3,'startup_proof':startup_proof,'training':False,'confirmation':False,
+    'lane':'available_node02' if args.full else 3,'aggregate_cap':aggregate_cap,
+    'codex2_gpu_jobs':codex2_gpu,'startup_proof':startup_proof,'training':False,'confirmation':False,
     'scope':'original-task oracle upper bound and matched boundary-rule comparison; no pi05',
     'submission_updates_complete':True}
 receipt.write_text(json.dumps(report,indent=2)+'\n')

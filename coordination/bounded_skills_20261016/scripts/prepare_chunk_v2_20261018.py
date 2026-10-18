@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--commit', default='77ee4ff')
 parser.add_argument('--tag', default='chunk_v2_20261018')
 parser.add_argument('--archive-sha256', default='530486fe43e1fdf546716dc72c05daf1f8b32341b48ba53f06187c9d92000f78')
+parser.add_argument('--cpu-validation-receipt', type=Path)
 args = parser.parse_args()
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 base = root/'coordination/bounded_skills_20261016'
@@ -46,8 +47,10 @@ report = {'source_commit':commit, 'snapshot':str(source), 'archive_sha256':archi
     'manifest':{'path':str(manifest),'sha256':hashlib.sha256(manifest.read_bytes()).hexdigest()},
     'preflight':{'exit_code':check.returncode,'log':str(log)}, 'n_states':len(plan['cases']),
     'entry':'scripts.probe_bounded_feasibility:episode', 'interpreter':str(root/'.venv/bin/python'),
-    'cpu_validation':[{'suite':'skills/motion/async/schema/chunk','passed':215},
-        {'suite':'post-change targeted regressions','passed':32}, {'suite':'final chunk/motion','passed':19}],
+    'cpu_validation': ({'receipt':str(args.cpu_validation_receipt),
+        'sha256':hashlib.sha256(args.cpu_validation_receipt.read_bytes()).hexdigest(),
+        'results':json.loads(args.cpu_validation_receipt.read_text())}
+        if args.cpu_validation_receipt else None),
     'physical_validation':'pending same-launcher startup', 'training':False,'confirmation':False,'pi05_in_oracle':False}
 (base/'reports'/f'{args.tag}_preparation.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
