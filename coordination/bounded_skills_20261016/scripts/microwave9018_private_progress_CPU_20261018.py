@@ -1,5 +1,8 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Label saved microwave states after public decisions; execute no controls."""
 # ruff: noqa: E402 -- pin the immutable source and disable GPU before imports
+import argparse
 import hashlib
 import json
 import os
@@ -9,7 +12,13 @@ from pathlib import Path
 
 os.environ.update(CUDA_VISIBLE_DEVICES='', LIBERO_TYPE='standard', OPENBLAS_NUM_THREADS='1')
 root = Path('/public/home/sunyihan/rpent_libero_eval')
-source = root/'source_bounded_chunk_v3_panel_normal2_20261018_9f11e41'
+parser = argparse.ArgumentParser()
+parser.add_argument('--tag', default='chunk_v3_panel_normal2_20261018')
+parser.add_argument('--job', default='9018_120')
+args = parser.parse_args()
+base = root/'coordination/bounded_skills_20261016'
+receipt = json.loads((base/'reports'/f'{args.tag}_full_submission.json').read_text())
+source = Path(receipt['snapshot'])
 sys.path.insert(0, str(source))
 
 import numpy as np
@@ -18,10 +27,8 @@ from libero.libero.envs.env_wrapper import ControlEnv
 from robots.libero.v5_branch_state import restore_actuators
 from robots.libero.v5_reset_seed import attach_reset_seed
 
-base = root/'coordination/bounded_skills_20261016'
-receipt = json.loads((base/'reports/chunk_v3_panel_normal2_20261018_full_submission.json').read_text())
-case = json.loads(Path(receipt['manifest']['path']).read_text())['cases'][120]
-directory = root/'results/bounded_skills/feasibility_20261017/job9018_120'
+case = json.loads(Path(receipt['manifest']['path']).read_text())['cases'][int(args.job.split('_')[1])]
+directory = root/'results/bounded_skills/feasibility_20261017'/('job'+args.job)
 env = ControlEnv(bddl_file_name=case['bddl']['path'], use_camera_obs=False,
     has_renderer=False, has_offscreen_renderer=False, camera_names=[], ignore_done=True, horizon=10015)
 attach_reset_seed(env)
@@ -61,7 +68,7 @@ try:
                     for receipt in row['receipts']]})
 finally:
     env.close()
-output = base/'reports/microwave9018_private_progress_CPU_20261018.json'
+output = base/'reports'/f'microwave{args.job.split("_")[0]}_private_progress_CPU_20261018.json'
 output.write_text(json.dumps({'scope': 'private posthoc labels only; no runtime inputs or controls',
     'source': str(source), 'case': case, 'rows': records, 'terminal_records': terminal_records, 'gpu_used': False,
     'controls': 0, 'training': False, 'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}, indent=2)+'\n')

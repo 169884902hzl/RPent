@@ -1,0 +1,278 @@
+{
+  "scope": "saved public RGB-D and execution proprioception; zero controls",
+  "source_commit": "ff00387",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_panel_recovery_20261018_ff00387",
+  "choices_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9025_120/microwave_close_libero_90_t33_s0_oracle_k4/choices.jsonl",
+  "choices_sha256": "cdc39edf40ae79d2fcf3653937f71e21961205cce17cea04a5a16e615f37b098",
+  "script_sha256": "836a8b948b9438fdecf773503651b594f4c6270819c8a7e93370129001fac8b8",
+  "updated_screen_sha256": "ad3a8261a050dac3ec0635d3e08c05875284cda57c1dd9f283ab42e4b70ec899",
+  "private_truth_used": false,
+  "gpu_used": false,
+  "training": false,
+  "results": [
+    {
+      "index": 7,
+      "robot": {
+        "eef_xyz_m": [
+          -0.10120684362380349,
+          0.14419224042017542,
+          1.117767438180222
+        ],
+        "eef_quat_xyzw": [
+          0.4858416176326765,
+          0.5153471524105051,
+          0.5151928726932898,
+          0.4826505350711648
+        ],
+        "gripper_opening_m": 0.07852824445918938,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          0.0012507331956681353,
+          -0.0003442100578058802,
+          0.036737083885213094
+        ]
+      },
+      "finger_positions_m": [
+        0.03847753325264156,
+        -0.04005071120654782
+      ],
+      "target_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9025_120/microwave_close_libero_90_t33_s0_oracle_k4/bounded_screen_e114_0_target.npz/12.npz",
+        "sha256": "cad716eca73efb07b28da2608896cc3bf4ae18a03a134c3b5fba351bec64b80d",
+        "capture_step": 12,
+        "points": 14380,
+        "source": "public_rgbd_and_proprioceptive_robot_filter",
+        "private_truth_used": false
+      },
+      "target_points": 14380,
+      "boxes": [
+        {
+          "name": "palm",
+          "hits": 0,
+          "inside_mesh": 0,
+          "positive_margin": 0,
+          "min_signed_distance_m": null,
+          "max_signed_distance_m": null
+        },
+        {
+          "name": "leftfinger",
+          "hits": 0,
+          "inside_mesh": 0,
+          "positive_margin": 0,
+          "min_signed_distance_m": null,
+          "max_signed_distance_m": null
+        },
+        {
+          "name": "leftfinger_pad",
+          "hits": 0,
+          "inside_mesh": 0,
+          "positive_margin": 0,
+          "min_signed_distance_m": null,
+          "max_signed_distance_m": null
+        },
+        {
+          "name": "rightfinger",
+          "hits": 18,
+          "inside_mesh": 0,
+          "positive_margin": 18,
+          "min_signed_distance_m": 0.0023668584955883754,
+          "max_signed_distance_m": 0.0037875942580282585
+        },
+        {
+          "name": "rightfinger_pad",
+          "hits": 12,
+          "inside_mesh": 0,
+          "positive_margin": 12,
+          "min_signed_distance_m": 0.003209515303370351,
+          "max_signed_distance_m": 0.00398122525870904
+        }
+      ],
+      "geometry_only_routes": [
+        {
+          "axis": "x",
+          "distance_m": -0.01,
+          "old_passed": false,
+          "new_passed": true,
+          "old_reason": "measured_sweep_collision",
+          "new_reason": "public_route_screen_passed"
+        },
+        {
+          "axis": "x",
+          "distance_m": 0.01,
+          "old_passed": false,
+          "new_passed": false,
+          "old_reason": "measured_sweep_collision",
+          "new_reason": "measured_sweep_collision"
+        },
+        {
+          "axis": "y",
+          "distance_m": -0.01,
+          "old_passed": false,
+          "new_passed": true,
+          "old_reason": "measured_sweep_collision",
+          "new_reason": "public_route_screen_passed"
+        },
+        {
+          "axis": "y",
+          "distance_m": 0.01,
+          "old_passed": false,
+          "new_passed": false,
+          "old_reason": "measured_sweep_collision",
+          "new_reason": "measured_sweep_collision"
+        },
+        {
+          "axis": "z",
+          "distance_m": -0.01,
+          "old_passed": false,
+          "new_passed": true,
+          "old_reason": "measured_sweep_collision",
+          "new_reason": "public_route_screen_passed"
+        },
+        {
+          "axis": "z",
+          "distance_m": 0.01,
+          "old_passed": false,
+          "new_passed": false,
+          "old_reason": "measured_sweep_collision",
+          "new_reason": "measured_sweep_collision"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "reason": "no_target_screen_record"
+    },
+    {
+      "index": 9,
+      "reason": "no_target_screen_record"
+    },
+    {
+      "index": 10,
+      "robot": {
+        "eef_xyz_m": [
+          -0.09826768058518975,
+          0.14349925294921742,
+          1.2430861301581024
+        ],
+        "eef_quat_xyzw": [
+          0.4852670154843993,
+          0.5146844697273436,
+          0.5157530016425894,
+          0.4833370062399571
+        ],
+        "gripper_opening_m": 0.07893480944112385,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          0.0007359002970776422,
+          -0.0002123179506242972,
+          0.03621885896753839
+        ]
+      },
+      "finger_positions_m": [
+        0.03889376062996531,
+        -0.04004104881115854
+      ],
+      "target_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9025_120/microwave_close_libero_90_t33_s0_oracle_k4/bounded_screen_e114_0_target.npz/15.npz",
+        "sha256": "ddeaa00d6d7283a5a0e5dffc0bd95bfc10c38d19a56fb20f20345fb69a6ae2eb",
+        "capture_step": 15,
+        "points": 12406,
+        "source": "public_rgbd_and_proprioceptive_robot_filter",
+        "private_truth_used": false
+      },
+      "target_points": 12406,
+      "boxes": [
+        {
+          "name": "palm",
+          "hits": 0,
+          "inside_mesh": 0,
+          "positive_margin": 0,
+          "min_signed_distance_m": null,
+          "max_signed_distance_m": null
+        },
+        {
+          "name": "leftfinger",
+          "hits": 0,
+          "inside_mesh": 0,
+          "positive_margin": 0,
+          "min_signed_distance_m": null,
+          "max_signed_distance_m": null
+        },
+        {
+          "name": "leftfinger_pad",
+          "hits": 0,
+          "inside_mesh": 0,
+          "positive_margin": 0,
+          "min_signed_distance_m": null,
+          "max_signed_distance_m": null
+        },
+        {
+          "name": "rightfinger",
+          "hits": 0,
+          "inside_mesh": 0,
+          "positive_margin": 0,
+          "min_signed_distance_m": null,
+          "max_signed_distance_m": null
+        },
+        {
+          "name": "rightfinger_pad",
+          "hits": 0,
+          "inside_mesh": 0,
+          "positive_margin": 0,
+          "min_signed_distance_m": null,
+          "max_signed_distance_m": null
+        }
+      ],
+      "geometry_only_routes": [
+        {
+          "axis": "x",
+          "distance_m": -0.01,
+          "old_passed": true,
+          "new_passed": true,
+          "old_reason": "public_route_screen_passed",
+          "new_reason": "public_route_screen_passed"
+        },
+        {
+          "axis": "x",
+          "distance_m": 0.01,
+          "old_passed": true,
+          "new_passed": true,
+          "old_reason": "public_route_screen_passed",
+          "new_reason": "public_route_screen_passed"
+        },
+        {
+          "axis": "y",
+          "distance_m": -0.01,
+          "old_passed": true,
+          "new_passed": true,
+          "old_reason": "public_route_screen_passed",
+          "new_reason": "public_route_screen_passed"
+        },
+        {
+          "axis": "y",
+          "distance_m": 0.01,
+          "old_passed": true,
+          "new_passed": true,
+          "old_reason": "public_route_screen_passed",
+          "new_reason": "public_route_screen_passed"
+        },
+        {
+          "axis": "z",
+          "distance_m": -0.01,
+          "old_passed": true,
+          "new_passed": true,
+          "old_reason": "public_route_screen_passed",
+          "new_reason": "public_route_screen_passed"
+        },
+        {
+          "axis": "z",
+          "distance_m": 0.01,
+          "old_passed": true,
+          "new_passed": true,
+          "old_reason": "public_route_screen_passed",
+          "new_reason": "public_route_screen_passed"
+        }
+      ]
+    }
+  ]
+}
