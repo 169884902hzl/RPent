@@ -28,6 +28,24 @@ def test_raw_spatial_edges_do_not_lose_a_connection_at_a_voxel_boundary():
     assert not member.any()
 
 
+def test_spatial_membership_is_union_of_seeded_components_with_unseeded_bridges():
+    points = np.array([[0., 0., 1.], [0., 0., 1.], [.002, 0., 1.], [.004, 0., 1.],
+                       [.1, 0., 1.], [.102, 0., 1.], [.2, 0., 1.], [.202, 0., 1.]])
+    member, evidence = complete_spatial_payload_component(points, points[[0, 4]], [],
+        [-1., -1., 0.], [1., 1., 2.])
+    assert member.tolist() == [True]*6+[False, False]
+    assert evidence['seed_pixels'] == 3  # Both duplicate raw pixels are seeds.
+    assert evidence['exact_edges'] == 6
+
+
+def test_all_seeded_spatial_pixels_retain_original_edge_count():
+    points = np.zeros((1000, 3))
+    member, evidence = complete_spatial_payload_component(points, points, [], [-1.]*3, [1.]*3)
+    assert member.all()
+    assert evidence['exact_edges'] == 499500
+    assert evidence['seed_pixels'] == evidence['member_pixels'] == 1000
+
+
 def test_contact_axis_fit_tracks_depth_not_segment_centres():
     surface = np.random.default_rng(97).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
     for shift in (0., .02, -.02):

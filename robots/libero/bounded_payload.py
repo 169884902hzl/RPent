@@ -46,12 +46,26 @@ def complete_spatial_payload_component(points, seeds, stationary_points, lower, 
     evidence['seed_pixels'] = int(seed.sum())
     if not seed.any():
         return member, evidence
-    pairs = cKDTree(current).query_pairs(.003, output_type='ndarray')
-    graph = coo_matrix((np.ones(len(pairs), np.uint8), (pairs[:, 0], pairs[:, 1])),
-                      shape=(len(current), len(current))).tocsr()
+    tree = cKDTree(current)
+    # Only membership in ANY seeded component matters. Contract all seeded
+    # vertices to one root; edges between seeds cannot change that answer.
+    # Dense surfaces often already have >99% seeds, so constructing all
+    # seed-to-seed edges wastes most of the memory and graph work.
+    unknown = np.flatnonzero(~seed)
+    pairs = cKDTree(current[unknown]).query_pairs(.003, output_type='ndarray')
+    touches_seed = cKDTree(current[seed]).query(current[unknown])[0] <= .003
+    root = len(unknown)
+    direct = np.flatnonzero(touches_seed)
+    left = np.r_[pairs[:, 0], direct]
+    right = np.r_[pairs[:, 1], np.full(len(direct), root)]
+    graph = coo_matrix((np.ones(len(left), np.uint8), (left, right)),
+                      shape=(root+1, root+1)).tocsr()
     _, labels = connected_components(graph, directed=False)
-    member[ids] = np.isin(labels, np.unique(labels[seed]))
-    evidence['exact_edges'] = len(pairs)
+    member[ids[seed]] = True
+    member[ids[unknown]] = labels[:root] == labels[root]
+    # Keep the original exact-edge diagnostic without materializing those
+    # edges. The self query includes each diagonal and both directions.
+    evidence['exact_edges'] = (int(tree.count_neighbors(tree, .003))-len(current))//2
     evidence['member_pixels'] = int(member.sum())
     return member, evidence
 
