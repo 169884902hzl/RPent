@@ -6,6 +6,7 @@ no oracle imports or simulator-object access.
 from __future__ import annotations
 
 import copy
+import hashlib
 from types import SimpleNamespace
 from dataclasses import replace
 
@@ -116,6 +117,7 @@ class PublicPrefixPrediction:
         self.clouds = {}
         self.original_clouds = {}
         self.screens = {}
+        self.separated_worlds = {}
         self.moved = set()
         self.checking_skill = None
         self.source_adapter = adapter
@@ -168,7 +170,18 @@ class PublicPrefixPrediction:
                 target = np.empty((0, 3))
         # One subtraction from original pixels; doing it incrementally
         # downsamples between identities and retains fictitious self-obstacles.
-        _, world = separate_target_points(np.concatenate(exclusions), np.concatenate([world, *additions]))
+        excluded = np.concatenate(exclusions)
+        # The captured world is immutable for this prediction. Jaw/pose
+        # changes need new collision screens but often subtract the exact
+        # same pixels. Key by all variable input bytes, retaining order;
+        # moved surfaces and newly attached payloads cannot reuse stale work.
+        def identity(points):
+            return points.shape, points.dtype.str, hashlib.sha256(points.tobytes()).digest()
+        world_key = (identity(excluded), tuple(identity(points) for points in additions))
+        if world_key not in self.separated_worlds:
+            _, separated = separate_target_points(excluded, np.concatenate([world, *additions]))
+            self.separated_worlds[world_key] = separated
+        world = self.separated_worlds[world_key]
         result = PublicRouteScreen(world,
             gripper_at_measured_fingers(self.adapter.geometry, self.sensor['finger_positions_m']),
             self.ik, opening=self.sensor['gripper_opening_m'], contact_points=_voxel(target, .002),

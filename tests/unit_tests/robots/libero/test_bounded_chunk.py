@@ -192,6 +192,51 @@ def test_prefix_subtracts_raw_instance_before_independent_voxel_samples(adapter,
     assert adapter.held is None and not adapter.p.actions
 
 
+def test_prefix_reuses_exact_pixel_subtraction_but_rechecks_moved_surfaces(adapter, monkeypatch):
+    from robots.libero import bounded_chunk
+    from robots.libero.v5_geometric_grasp import _voxel
+
+    target = np.array([[.1, .1, .9], [.101, .1, .9]])
+    obstacle = np.array([[.5, .5, .5]])
+    world = np.concatenate([target, obstacle])
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}],
+                'max_opening_m': .08}
+    class IK:
+        cache = {}
+        last_solution = None
+    request = adapter.request(k=4)
+    adapter.geometry = geometry
+    adapter._cloud_and_ik = lambda anchor=None, **_: PublicRouteScreen(
+        world, geometry, IK(), contact_points=target if anchor else None,
+        measured_scene_points=world, measured_target_points=target if anchor else None)
+    prediction = PublicPrefixPrediction(adapter, request)
+    split = bounded_chunk.separate_target_points
+    calls = []
+    def counted(*args):
+        calls.append(1)
+        return split(*args)
+    monkeypatch.setattr(bounded_chunk, 'separate_target_points', counted)
+
+    first = prediction._screen('e1', contact=True)
+    prediction.screens.clear()
+    prediction.sensor['gripper_opening_m'] = .04
+    second = prediction._screen('e1', contact=True)
+    assert len(calls) == 1 and second is not first
+    assert first.opening == .08 and second.opening == .04
+    np.testing.assert_array_equal(second.points, _voxel(obstacle))
+
+    baseline = prediction._screen()
+    prediction.clouds['e1'] = target+[.02, 0., 0.]
+    prediction.moved.add('e1')
+    prediction.screens.clear()
+    moved = prediction._screen()
+    assert len(calls) == 3
+    np.testing.assert_array_equal(baseline.points, _voxel(world))
+    np.testing.assert_array_equal(moved.points,
+        _voxel(np.concatenate([obstacle, target+[.02, 0., 0.]])))
+    assert not adapter.p.actions
+
+
 def test_oracle_returns_prefix_specific_private_sets_without_public_labels(adapter):
     physical_grip(adapter)
     request = adapter.request(k=4)

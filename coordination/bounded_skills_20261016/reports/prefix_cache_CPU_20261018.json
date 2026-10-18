@@ -1,0 +1,26 @@
+{
+  "command": [
+    "/home/agilex/cobot_magic/rpent_libero_eval/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+    "tests/unit_tests/robots/libero/test_bounded_prefix.py",
+    "tests/unit_tests/robots/libero/test_bounded_compaction.py",
+    "tests/unit_tests/robots/libero/test_bounded_async.py",
+    "tests/unit_tests/robots/libero/test_skill_package_schema.py",
+    "tests/unit_tests/robots/libero/test_bounded_vla.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "wall_s": 133.87945066392422,
+  "log": "coordination/bounded_skills_20261016/reports/prefix_cache_CPU_20261018.log",
+  "log_sha256": "09b8435232f88b59d2f2fbb4083603a8557360b57e8df8f52c90a9612bc0e3e7",
+  "source_sha256": {
+    "robots/libero/bounded_chunk.py": "c6f3df5f77ee2fedb3f269bf04d00cfd678357874785b7d03a07d5b61e1da1e0",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py": "e4b2014cd2c719780fa1a144856c69a64e7b3a9b3d2b0a135f7424a5f0249228"
+  },
+  "GPU_used": false,
+  "training": false,
+  "scope": "exact prefix point-subtraction memoization; no receipt change"
+}
