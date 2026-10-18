@@ -1,0 +1,359 @@
+{
+  "job": "8870",
+  "mode": "full",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=1-59,61-99,101-119%3",
+    "--dependency=afterany:8862",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0,SOURCE_COMMIT=b6cf6d0,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_self_filter_20261018.json,SHARD_COUNT=220,STARTUP=0,PAIR_LEGACY=0,PROBE_ARMS=oracle_k4",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "b6cf6d0",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_self_filter_20261018.json",
+    "sha256": "0040274982f0afd4e5f3e9858bef4e1050e4364bc6766be6e419df4ff4f61270"
+  },
+  "indices": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119
+  ],
+  "startup_proof": {
+    "job": "8860_24",
+    "summary": {
+      "case": {
+        "name": "box_transfer_libero_object_t0_s4",
+        "category": "box_transfer",
+        "episode": {
+          "suite": "libero_object",
+          "task": 0,
+          "seed": 4
+        },
+        "state_sha256": "ccf1b9956a832c5ba7e57eed974483435a70a1e7ab668b172a5555c75933abfe",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+          "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": false,
+      "decisions": 1,
+      "sim_steps": 175,
+      "skill_sim_steps": {
+        "move_to": 113,
+        "descend": 47,
+        "set_gripper": 15
+      },
+      "wall_s": 97.93271991983056,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "startup_physical",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null,
+      "wall_time_breakdown": {
+        "version": "bounded-wall-time/1",
+        "wall_s": 97.93271991983056,
+        "main_thread_exclusive_s": {
+          "perception.segmentation": 24.050848106388003,
+          "perception.entity_measurement": 8.215676372405142,
+          "artifact_io": 1.2618572837673128,
+          "planning.consequences": 45.18030213098973,
+          "planning.request": 2.2900463780388236,
+          "decision.oracle": 0.025072396267205477,
+          "simulation.step_render": 3.53416931303218,
+          "perception.depth": 0.2986366315744817,
+          "perception.capture_io": 4.6662709708325565,
+          "execution.other": 4.41299075493589
+        },
+        "all_threads_exclusive_s": {
+          "perception.segmentation": 24.050848106388003,
+          "perception.entity_measurement": 8.215676372405142,
+          "artifact_io": 1.2618572837673128,
+          "planning.consequences": 45.18030213098973,
+          "planning.request": 2.2900463780388236,
+          "decision.oracle": 0.025072396267205477,
+          "simulation.step_render": 3.53416931303218,
+          "perception.depth": 0.2986366315744817,
+          "perception.capture_io": 4.6662709708325565,
+          "execution.other": 4.41299075493589
+        },
+        "main_thread_unattributed_s": 3.9968495815992355,
+        "calls": {
+          "perception.segmentation:call": 48,
+          "perception.entity_measurement:refresh": 8,
+          "perception.entity_measurement:_refresh_held_measurement": 4,
+          "perception.entity_measurement:_instance_pixels": 10,
+          "perception.entity_measurement:_contact_pixels": 9,
+          "artifact_io:_record_public_geometry": 23,
+          "planning.consequences:_cloud_and_ik": 56,
+          "planning.consequences:check": 1903,
+          "planning.consequences:__call__": 200,
+          "planning.consequences:_route": 207,
+          "planning.consequences:_candidate": 225,
+          "planning.request:None": 1,
+          "planning.consequences:context": 4,
+          "decision.oracle:None": 1,
+          "planning.consequences:plan_chunk": 1,
+          "simulation.step_render:step": 175,
+          "perception.depth:_metric_depth": 12,
+          "perception.depth:_world_from_depth": 12,
+          "simulation.step_render:render_camera": 6,
+          "perception.capture_io:get_env_state": 3,
+          "execution.other:None": 1
+        },
+        "main_thread_exclusive_by_root_s": {
+          "perception.entity_measurement": {
+            "perception.segmentation": 6.317700476851314,
+            "perception.entity_measurement": 0.39937875932082534
+          },
+          "planning.request": {
+            "perception.entity_measurement": 4.664470809046179,
+            "artifact_io": 1.0788335907272995,
+            "planning.consequences": 20.161636324599385,
+            "planning.request": 2.2900463780388236
+          },
+          "decision.oracle": {
+            "planning.consequences": 18.156282593961805,
+            "decision.oracle": 0.025072396267205477
+          },
+          "execution.other": {
+            "planning.consequences": 6.86238321242854,
+            "perception.entity_measurement": 3.151826804038137,
+            "artifact_io": 0.1830236930400133,
+            "simulation.step_render": 3.53416931303218,
+            "perception.depth": 0.2986366315744817,
+            "perception.capture_io": 4.6662709708325565,
+            "perception.segmentation": 17.73314762953669,
+            "execution.other": 4.41299075493589
+          }
+        },
+        "worker_times_overlap_main_thread": true,
+        "scope": "client wall time including transport; initial simulator construction excluded"
+      },
+      "chunk_rule": "measured-receipt-v2",
+      "actual_actions_per_decision": [
+        3
+      ],
+      "attempted_actions_per_decision": [
+        3
+      ],
+      "skill_attempts": {
+        "move_to": 1,
+        "descend": 1,
+        "set_gripper": 1
+      },
+      "skill_verified": {
+        "move_to": 1,
+        "descend": 1,
+        "set_gripper": 1
+      },
+      "chunk_truncations": [],
+      "smooth_reference_max_acceleration_jump": 3.6923281099805784e-14,
+      "smooth_reference_max_jerk_limit_ratio": 0.9970059900149796,
+      "smooth_reference_max_translation_acceleration_jump": 3.6923281099805784e-14,
+      "smooth_reference_max_rotation_acceleration_jump": 1.9711310752743742e-16,
+      "native_step_limit_hit": false,
+      "terminal_category": "other"
+    },
+    "first_physical_request": {
+      "arm": "oracle_k4",
+      "index": 0,
+      "sim_steps": 175,
+      "source": "public_execution_budget"
+    },
+    "state_exit": "COMPLETED|0:0"
+  },
+  "registered_unique_states": 120,
+  "same_source_state_reuse": [
+    {
+      "index": 0,
+      "case": {
+        "name": "bowl_transfer_libero_spatial_t0_s0",
+        "category": "bowl_transfer",
+        "episode": {
+          "suite": "libero_spatial",
+          "task": 0,
+          "seed": 0
+        },
+        "state_sha256": "4e3eaf7a315bc3bafb6db4837c8eef0e5f8aea717782a2a3ea33139392d966ed",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+          "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8862_0/episodes.jsonl",
+      "rule": "Use the recorded result, including failure; do not replace it or count twice."
+    },
+    {
+      "index": 60,
+      "case": {
+        "name": "cup_transfer_libero_10_t4_s0",
+        "category": "cup_transfer",
+        "episode": {
+          "suite": "libero_10",
+          "task": 4,
+          "seed": 0
+        },
+        "state_sha256": "4365b3c5a82da7f8818c11ef5fd494c4890c17c4c3e27948dc290a9ac2f08131",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_10/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate.bddl",
+          "sha256": "0c6749b920bff1e1efe47ffb0e0b801a3e6959a650e710f376dd2b812c74e865"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8862_60/episodes.jsonl",
+      "rule": "Use the recorded result, including failure; do not replace it or count twice."
+    },
+    {
+      "index": 100,
+      "case": {
+        "name": "drawer_open_libero_goal_t0_s0",
+        "category": "drawer_open",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 0,
+          "seed": 0
+        },
+        "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+          "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8862_100/episodes.jsonl",
+      "rule": "Use the recorded result, including failure; do not replace it or count twice."
+    }
+  ],
+  "other_categories": "Current-source representatives precede their original20 cohorts.",
+  "scope": "six original20 oracle-only development cohorts; pi0.5 disabled",
+  "submission_script_sha256": "424b9b016bc1460d50316bd375fbd65d1dff9828f1517bb602695e7f9f64986c",
+  "training": false,
+  "confirmation": false
+}

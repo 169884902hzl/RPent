@@ -1,0 +1,111 @@
+{
+  "job": "8860",
+  "mode": "startup",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=24%1",
+    "--dependency=afterany:8846_100?afterany:8846_80?afterany:8846_60?afterany:8858_80",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0,SOURCE_COMMIT=b6cf6d0,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_self_filter_20261018.json,STARTUP=1,PAIR_LEGACY=0",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "b6cf6d0",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_self_filter_20261018.json",
+    "sha256": "0040274982f0afd4e5f3e9858bef4e1050e4364bc6766be6e419df4ff4f61270"
+  },
+  "following_updates": [],
+  "queue_before": [
+    [
+      "8846_200",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_180",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_160",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_140",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_120",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_100",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_80",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8846_60",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "8858_80",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ]
+  ],
+  "lane": 3,
+  "aggregate_cap": 4,
+  "codex2_gpu_jobs": [],
+  "startup_proof": null,
+  "training": false,
+  "confirmation": false,
+  "indices": [
+    24
+  ],
+  "scope": "original-task oracle upper bound and matched boundary-rule comparison; no pi05",
+  "submission_updates_complete": true,
+  "reused_existing_startup_receipt": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/chunk_v3_self_filter_20261018_startup_submission.json",
+    "sha256": "fbca508ff6039a813d66233d271dfc3ca10d913d5a91e59327083ec32bdc542a"
+  },
+  "purpose": "Same source, manifest and launcher startup reused by original20 oracle-only cohorts; no new startup job claimed."
+}

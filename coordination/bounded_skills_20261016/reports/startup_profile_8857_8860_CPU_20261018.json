@@ -1,0 +1,602 @@
+{
+  "rows": [
+    {
+      "job": "8857_24",
+      "source_commit": null,
+      "inputs": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8857_24/box_transfer_libero_object_t0_s4_oracle_k4/choices.jsonl",
+          "sha256": "8724f490033e5af020061918ef5b1428aeccd32e5cca1c2b8ae6196158bb98fe"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8857_24/episodes.jsonl",
+          "sha256": "c03952cd2e13a3ed21761cb7b33a759bddfb6b27cc4f3d3ea51564164a72239d"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8857_24/box_transfer_libero_object_t0_s4_oracle_k4/request_profile.pstats",
+          "sha256": "e080be6398ee618e755f1a94d7e34dcae1309b87cbcf5a2c3030235b2a8fb08f"
+        }
+      ],
+      "request_sha256": "880e13506d8c8c57b09150ef8f77b816cb9b5a7443ae068e7d1747e9f609f8ac",
+      "candidate_count": 56,
+      "profile_total_self_s": 29.707383309000054,
+      "top_inclusive_functions": [
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 1469,
+          "function": "request",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_s": 0.000765761,
+          "inclusive_s": 29.709152369
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_timing.py",
+          "line": 46,
+          "function": "timed",
+          "primitive_calls": 72,
+          "calls": 1322,
+          "self_s": 0.008701809000000001,
+          "inclusive_s": 27.393050392000003
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 908,
+          "function": "grasp_geometry",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_s": 0.064803762,
+          "inclusive_s": 19.955621358000002
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 251,
+          "function": "_cloud_and_ik",
+          "primitive_calls": 48,
+          "calls": 48,
+          "self_s": 0.008237115,
+          "inclusive_s": 16.674310339
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_motion.py",
+          "line": 124,
+          "function": "prepare",
+          "primitive_calls": 59,
+          "calls": 59,
+          "self_s": 0.004301784,
+          "inclusive_s": 11.938568762000001
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 1577,
+          "function": "add",
+          "primitive_calls": 56,
+          "calls": 56,
+          "self_s": 0.000176181,
+          "inclusive_s": 9.669709391000001
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 1349,
+          "function": "_candidate",
+          "primitive_calls": 56,
+          "calls": 56,
+          "self_s": 0.001694446,
+          "inclusive_s": 9.667029484
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_screen.py",
+          "line": 103,
+          "function": "__call__",
+          "primitive_calls": 59,
+          "calls": 59,
+          "self_s": 0.28854319,
+          "inclusive_s": 9.07406355
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_screen.py",
+          "line": 165,
+          "function": "_geometry_at",
+          "primitive_calls": 1909,
+          "calls": 1909,
+          "self_s": 2.240403794,
+          "inclusive_s": 6.718431130000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'reduce' of 'numpy.ufunc' objects>",
+          "primitive_calls": 153114,
+          "calls": 153114,
+          "self_s": 6.586552917000001,
+          "inclusive_s": 6.586552917000001
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 354,
+          "function": "_contact_pixels",
+          "primitive_calls": 6,
+          "calls": 6,
+          "self_s": 5.4788000000000005e-05,
+          "inclusive_s": 5.969454934000001
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 665,
+          "function": "_instance_pixels",
+          "primitive_calls": 6,
+          "calls": 6,
+          "self_s": 0.159077731,
+          "inclusive_s": 5.968229633
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_self_filter.py",
+          "line": 152,
+          "function": "remove_visual_robot",
+          "primitive_calls": 5,
+          "calls": 5,
+          "self_s": 2.927180641,
+          "inclusive_s": 4.928539955000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'all' of 'numpy.ndarray' objects>",
+          "primitive_calls": 51647,
+          "calls": 51647,
+          "self_s": 0.021214139,
+          "inclusive_s": 3.8442378820000003
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 61,
+          "function": "_all",
+          "primitive_calls": 55649,
+          "calls": 55649,
+          "self_s": 0.017784980000000002,
+          "inclusive_s": 3.832384089
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/v5_geometric_grasp.py",
+          "line": 152,
+          "function": "collision_counts",
+          "primitive_calls": 3756,
+          "calls": 3756,
+          "self_s": 1.4631602320000001,
+          "inclusive_s": 3.135195819
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 2383,
+          "function": "norm",
+          "primitive_calls": 116602,
+          "calls": 116602,
+          "self_s": 0.799583406,
+          "inclusive_s": 3.1350429080000004
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 322,
+          "function": "_self_filtered_world",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_s": 2.458636455,
+          "inclusive_s": 2.776951827
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/rpent/skill_package/trajectory.py",
+          "line": 111,
+          "function": "plan",
+          "primitive_calls": 59,
+          "calls": 59,
+          "self_s": 0.006526540000000001,
+          "inclusive_s": 2.6709329250000002
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/v5_grasp_route.py",
+          "line": 13,
+          "function": "separate_target_points",
+          "primitive_calls": 8,
+          "calls": 8,
+          "self_s": 0.543604082,
+          "inclusive_s": 2.665264664
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/rpent/skill_package/trajectory.py",
+          "line": 145,
+          "function": "<listcomp>",
+          "primitive_calls": 266,
+          "calls": 266,
+          "self_s": 0.013223213000000001,
+          "inclusive_s": 2.3474291860000003
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/rpent/skill_package/trajectory.py",
+          "line": 40,
+          "function": "maximum",
+          "primitive_calls": 9792,
+          "calls": 9792,
+          "self_s": 0.06346839900000001,
+          "inclusive_s": 2.334205973
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_screen.py",
+          "line": 80,
+          "function": "_scene_collisions",
+          "primitive_calls": 1856,
+          "calls": 1856,
+          "self_s": 0.113004109,
+          "inclusive_s": 1.719504665
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/v5_geometric_grasp.py",
+          "line": 192,
+          "function": "_voxel",
+          "primitive_calls": 20,
+          "calls": 20,
+          "self_s": 0.347404588,
+          "inclusive_s": 1.703771339
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_skills.py",
+          "line": 119,
+          "function": "_record_public_geometry",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 0.00038973,
+          "inclusive_s": 1.0824155400000002
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/v5_grasp_geometry.py",
+          "line": 497,
+          "function": "depth_components",
+          "primitive_calls": 16,
+          "calls": 16,
+          "self_s": 0.123467876,
+          "inclusive_s": 1.0719030820000002
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/rpent/session/base.py",
+          "line": 187,
+          "function": "save",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 0.000548779,
+          "inclusive_s": 1.06649258
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_prefix_checks_20261018_da28708/robots/libero/bounded_screen.py",
+          "line": 112,
+          "function": "dense_poses",
+          "primitive_calls": 10912,
+          "calls": 10912,
+          "self_s": 0.719320209,
+          "inclusive_s": 1.0432030410000002
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/lib/npyio.py",
+          "line": 647,
+          "function": "savez_compressed",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 9.995800000000001e-05,
+          "inclusive_s": 1.04272532
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/lib/npyio.py",
+          "line": 713,
+          "function": "_savez",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 0.00042549300000000004,
+          "inclusive_s": 1.042605671
+        }
+      ],
+      "scope": "one first request in a startup check; not a full episode"
+    },
+    {
+      "job": "8860_24",
+      "source_commit": null,
+      "inputs": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8860_24/box_transfer_libero_object_t0_s4_oracle_k4/choices.jsonl",
+          "sha256": "72b3643ae931b190fca2a1c255796e3888f40eb6e1bbd46ab8265a860ac218f9"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8860_24/episodes.jsonl",
+          "sha256": "6fa55c2ea5c9eeec25d957affe27a6a0af0cc57c1c4413fe96c2fbb55eb6a701"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8860_24/box_transfer_libero_object_t0_s4_oracle_k4/request_profile.pstats",
+          "sha256": "724ffde66ad306265d7fc06762021d3f57d28f383029b71249d79b48d571b6d5"
+        }
+      ],
+      "request_sha256": "880e13506d8c8c57b09150ef8f77b816cb9b5a7443ae068e7d1747e9f609f8ac",
+      "candidate_count": 56,
+      "profile_total_self_s": 28.19320762300001,
+      "top_inclusive_functions": [
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 1484,
+          "function": "request",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_s": 0.000509213,
+          "inclusive_s": 28.194919484000003
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_timing.py",
+          "line": 46,
+          "function": "timed",
+          "primitive_calls": 72,
+          "calls": 1322,
+          "self_s": 0.007135343000000001,
+          "inclusive_s": 25.905842705
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 923,
+          "function": "grasp_geometry",
+          "primitive_calls": 2,
+          "calls": 2,
+          "self_s": 0.064551014,
+          "inclusive_s": 18.596092679
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 253,
+          "function": "_cloud_and_ik",
+          "primitive_calls": 48,
+          "calls": 48,
+          "self_s": 0.007043962000000001,
+          "inclusive_s": 15.309045347000001
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_motion.py",
+          "line": 124,
+          "function": "prepare",
+          "primitive_calls": 59,
+          "calls": 59,
+          "self_s": 0.004062401,
+          "inclusive_s": 11.799784915
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 1592,
+          "function": "add",
+          "primitive_calls": 56,
+          "calls": 56,
+          "self_s": 0.00013068700000000002,
+          "inclusive_s": 9.516396532
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 1364,
+          "function": "_candidate",
+          "primitive_calls": 56,
+          "calls": 56,
+          "self_s": 0.001425157,
+          "inclusive_s": 9.514397583000001
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_screen.py",
+          "line": 103,
+          "function": "__call__",
+          "primitive_calls": 59,
+          "calls": 59,
+          "self_s": 0.278469597,
+          "inclusive_s": 8.981588069
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_screen.py",
+          "line": 165,
+          "function": "_geometry_at",
+          "primitive_calls": 1909,
+          "calls": 1909,
+          "self_s": 2.209752254,
+          "inclusive_s": 6.674491153000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'reduce' of 'numpy.ufunc' objects>",
+          "primitive_calls": 153102,
+          "calls": 153102,
+          "self_s": 6.417275788,
+          "inclusive_s": 6.417275788
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_self_filter.py",
+          "line": 152,
+          "function": "remove_visual_robot",
+          "primitive_calls": 5,
+          "calls": 5,
+          "self_s": 2.9399082560000003,
+          "inclusive_s": 4.8910892630000005
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 369,
+          "function": "_contact_pixels",
+          "primitive_calls": 6,
+          "calls": 6,
+          "self_s": 6.2696e-05,
+          "inclusive_s": 4.664421488
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 680,
+          "function": "_instance_pixels",
+          "primitive_calls": 6,
+          "calls": 6,
+          "self_s": 0.15806814600000002,
+          "inclusive_s": 4.664157674
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "function": "<method 'all' of 'numpy.ndarray' objects>",
+          "primitive_calls": 51645,
+          "calls": 51645,
+          "self_s": 0.021573474000000002,
+          "inclusive_s": 3.8066104440000004
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 61,
+          "function": "_all",
+          "primitive_calls": 55643,
+          "calls": 55643,
+          "self_s": 0.017473073000000002,
+          "inclusive_s": 3.793123834
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 2383,
+          "function": "norm",
+          "primitive_calls": 116602,
+          "calls": 116602,
+          "self_s": 0.7986671660000001,
+          "inclusive_s": 3.129276506
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/v5_geometric_grasp.py",
+          "line": 152,
+          "function": "collision_counts",
+          "primitive_calls": 3756,
+          "calls": 3756,
+          "self_s": 1.4516937380000001,
+          "inclusive_s": 3.126768836
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/rpent/skill_package/trajectory.py",
+          "line": 111,
+          "function": "plan",
+          "primitive_calls": 59,
+          "calls": 59,
+          "self_s": 0.006334075000000001,
+          "inclusive_s": 2.6281333080000002
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/v5_grasp_route.py",
+          "line": 13,
+          "function": "separate_target_points",
+          "primitive_calls": 8,
+          "calls": 8,
+          "self_s": 0.5365338350000001,
+          "inclusive_s": 2.620771292
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/rpent/skill_package/trajectory.py",
+          "line": 145,
+          "function": "<listcomp>",
+          "primitive_calls": 266,
+          "calls": 266,
+          "self_s": 0.013100780000000001,
+          "inclusive_s": 2.313420718
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/rpent/skill_package/trajectory.py",
+          "line": 40,
+          "function": "maximum",
+          "primitive_calls": 9792,
+          "calls": 9792,
+          "self_s": 0.062232091,
+          "inclusive_s": 2.3003199380000003
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_screen.py",
+          "line": 80,
+          "function": "_scene_collisions",
+          "primitive_calls": 1856,
+          "calls": 1856,
+          "self_s": 0.114534177,
+          "inclusive_s": 1.716698657
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/v5_geometric_grasp.py",
+          "line": 192,
+          "function": "_voxel",
+          "primitive_calls": 20,
+          "calls": 20,
+          "self_s": 0.343731903,
+          "inclusive_s": 1.67046655
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 324,
+          "function": "_self_filtered_world",
+          "primitive_calls": 4,
+          "calls": 4,
+          "self_s": 1.2482305740000001,
+          "inclusive_s": 1.451947662
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/v5_grasp_geometry.py",
+          "line": 497,
+          "function": "depth_components",
+          "primitive_calls": 16,
+          "calls": 16,
+          "self_s": 0.122824232,
+          "inclusive_s": 1.08323221
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/robots/libero/bounded_skills.py",
+          "line": 120,
+          "function": "_record_public_geometry",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 0.000358778,
+          "inclusive_s": 1.0786671730000001
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/rpent/session/base.py",
+          "line": 187,
+          "function": "save",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 0.0005586650000000001,
+          "inclusive_s": 1.066329426
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/lib/npyio.py",
+          "line": 647,
+          "function": "savez_compressed",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 0.00011914900000000001,
+          "inclusive_s": 1.041232439
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/lib/npyio.py",
+          "line": 713,
+          "function": "_savez",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 0.000446618,
+          "inclusive_s": 1.041090353
+        },
+        {
+          "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/numpy/lib/format.py",
+          "line": 666,
+          "function": "write_array",
+          "primitive_calls": 18,
+          "calls": 18,
+          "self_s": 0.000384134,
+          "inclusive_s": 1.017263094
+        }
+      ],
+      "scope": "one first request in a startup check; not a full episode"
+    }
+  ],
+  "public_requests_exactly_equal": true,
+  "request_profile_self_s_delta": -1.5141756860000442,
+  "script_sha256": "050b5388036fa789ca82f00d98523dd804db1688f572fb8267e13b37915ba6a2",
+  "training": false,
+  "confirmation": false,
+  "limitations": [
+    "One startup request per source does not establish stable speedup.",
+    "Inclusive function times overlap and must not be summed.",
+    "No collision, inverse-kinematics or perception criterion is changed."
+  ]
+}
