@@ -560,7 +560,7 @@ class MeasuredSkillAdapter:
             pixels = np.concatenate([pixels, current])
         return np.empty((0, 3)) if handle_only else pixels
 
-    def _guided_payload_pixels(self, world, semantic_mask, camera, entity):
+    def _guided_payload_pixels(self, world, semantic_mask, camera, entity, current_points):
         """Refine a currently measured instance with an interior SAM point."""
         from scipy.ndimage import distance_transform_edt
 
@@ -573,14 +573,23 @@ class MeasuredSkillAdapter:
         rpc = getattr(self.scene, 'rpc', None)
         if rpc is None or semantic_mask is None:
             return empty, {**evidence, 'reason': 'current_mask_or_segment_service_unavailable'}
+        current = np.asarray(current_points).reshape(-1, 3)
+        current = current[np.isfinite(current).all(axis=1)]
+        if not len(current):
+            return empty, {**evidence, 'reason': 'no_current_instance_depth_seed'}
+        # A robust anchor truncates measured tails (e.g. a bowl's upper rim).
+        # Collision membership needs the complete currently owned raw extent;
+        # these bounds still cannot grant membership without a SAM mask.
+        lower, upper = current.min(0), current.max(0)
         valid = (np.isfinite(world).all(axis=2)
-            & (world >= entity.lower).all(axis=2) & (world <= entity.upper).all(axis=2))
+            & (world >= lower).all(axis=2) & (world <= upper).all(axis=2))
         interior = np.asarray(semantic_mask, bool) & valid
         if not interior.any():
             return empty, {**evidence, 'reason': 'no_current_instance_depth_seed'}
         point = list(map(int, np.unravel_index(
             np.argmax(distance_transform_edt(interior)), interior.shape)))
         evidence['point_row_col'] = point
+        evidence['prompt_surface_bounds_m'] = [lower.tolist(), upper.tolist()]
         image = self.ex.toolkit._state.load_bytes(camera+'_high.png')
         reply = rpc.call('sam3.segment', kwargs={
             'image_base64': base64.b64encode(image).decode('ascii'),
@@ -812,15 +821,16 @@ class MeasuredSkillAdapter:
                     semantic_mask=semantic_masks.get(camera))
                 result = np.concatenate([result, world[completed & ~mask]])
                 records.append({'camera': camera, **evidence})
-            if entity is not None:
+            if entity is not None and len(result):
+                lower, upper = result.min(0), result.max(0)
                 seeds = [result]
                 for camera, (world, _) in current_views.items():
                     guided, evidence = self._guided_payload_pixels(
-                        world, semantic_masks.get(camera), camera, entity)
+                        world, semantic_masks.get(camera), camera, entity, result)
                     seeds.append(guided)
                     records.append(evidence)
                 member, evidence = complete_spatial_payload_component(scene, np.concatenate(seeds),
-                    self.payload_reference['scene'], entity.lower, entity.upper)
+                    self.payload_reference['scene'], lower, upper)
                 result = np.concatenate([result, scene[member]])
                 records.append(evidence)
         self._instance_cache[anchor_id] = result

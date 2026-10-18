@@ -64,7 +64,8 @@ def test_payload_point_refinement_uses_measured_interior_and_bounds(adapter, mon
     adapter.scene.rpc = SimpleNamespace(call=lambda *args, **kwargs: calls.append((args, kwargs)))
     adapter.scene.calls = 0
     adapter.ex.toolkit._state.load_bytes = lambda _: b'current-public-image'
-    points, evidence = adapter._guided_payload_pixels(world, semantic, 'wrist', entity)
+    current = np.asarray([entity.lower, entity.upper])
+    points, evidence = adapter._guided_payload_pixels(world, semantic, 'wrist', entity, current)
     assert calls[0][0] == ('sam3.segment',)
     assert calls[0][1]['kwargs']['point'] == [2, 2]
     assert 'text_prompt' not in calls[0][1]['kwargs']
@@ -72,8 +73,39 @@ def test_payload_point_refinement_uses_measured_interior_and_bounds(adapter, mon
     assert len(points) == (23 if mode == 'valid' else 0)
     assert np.isfinite(points).all()
     assert (points >= entity.lower).all() and (points <= entity.upper).all()
-    adapter._guided_payload_pixels(world, None, 'wrist', entity)
+    adapter._guided_payload_pixels(world, None, 'wrist', entity, current)
     assert len(calls) == 1
+
+
+def test_payload_prompt_uses_owned_surface_without_carving_its_bounds(adapter, monkeypatch):
+    from dataclasses import replace
+
+    y, x = np.mgrid[:9, :9]
+    world = np.stack([.08+x*.005, .08+y*.005, np.full(x.shape, .9)], axis=-1)
+    semantic = np.ones(x.shape, bool)
+    current = world[1:4, 1:4].reshape(-1, 3)
+    calls = []
+    adapter.scene.rpc = SimpleNamespace(call=lambda *args, **kwargs: calls.append(kwargs))
+    adapter.scene.calls = 0
+    adapter.ex.toolkit._state.load_bytes = lambda _: b'current-public-image'
+    # A prompt bound cannot itself grant membership to other depth pixels.
+    mask = np.zeros(x.shape, bool)
+    mask[2, 2] = True
+    mask[2, 1] = True
+    mask[8, 8] = True
+    monkeypatch.setattr('rpent.robots.components.sam3_client.Sam3Client._decode_result',
+        lambda _: SimpleNamespace(found=True, mask=mask, score=.96, reason=''))
+    entity = replace(adapter.scene.entities['e1'], lower=(.09, .08, .88))
+    points, evidence = adapter._guided_payload_pixels(
+        world, semantic, 'wrist', entity, current)
+    assert calls[0]['kwargs']['point'] == [2, 2]
+    np.testing.assert_array_equal(points, world[2, 1:3])
+    assert points[0, 0] < entity.lower[0]
+    assert evidence['member_pixels'] == 2
+    empty, evidence = adapter._guided_payload_pixels(
+        world, semantic, 'wrist', adapter.scene.entities['e1'], np.empty((0, 3)))
+    assert len(empty) == 0 and len(calls) == 1
+    assert evidence['reason'] == 'no_current_instance_depth_seed'
 
 
 def test_public_request_omits_whole_task_and_vla_disabled(adapter):
