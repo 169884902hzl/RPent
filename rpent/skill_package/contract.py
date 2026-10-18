@@ -16,6 +16,16 @@ VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
 
 
+def compact_candidate(candidate: dict) -> dict:
+    """Keep a short current-prefix blocker without deleting a future action."""
+    effect = candidate['consequences']
+    if effect['collision'] is not True and effect['ik_reachable'] is not False:
+        return candidate
+    return {key: candidate[key] for key in ('id', 'skill', 'parameters', 'recent_failures', 'last_failure')} | {
+        'consequences': {key: effect[key] for key in ('collision', 'ik_reachable')} | {
+            'screen_scope': 'blocked_at_current_prefix'}}
+
+
 def is_boundary(candidate: dict) -> bool:
     """Only actions that hand off control statically terminate a chunk."""
     return candidate['skill'] in BOUNDARIES
@@ -40,6 +50,26 @@ def validate(value: dict) -> None:
                 anchor = candidate["parameters"].get(key)
                 if anchor is not None and anchor not in anchors:
                     raise ValueError("candidate references an unmeasured anchor")
+        prefix = value['execution_prefix']
+        if prefix is not None:
+            if prefix['source_revision'] >= value['revision']:
+                raise ValueError('execution prefix must precede this decision revision')
+            steps = prefix['steps']
+            if len({step['id'] for step in steps}) != len(steps) or any(is_boundary(step) for step in steps):
+                raise ValueError('execution prefix contains duplicate steps or a handoff boundary')
+            for step in steps:
+                for key in ('anchor_id', 'target_id'):
+                    if (anchor := step['parameters'].get(key)) is not None and anchor not in anchors:
+                        raise ValueError('execution prefix references an unmeasured anchor')
+            predicted = prefix['predicted_state']
+            predicted_ids = [anchor['id'] for anchor in predicted['anchors']]
+            if set(predicted_ids) != anchors or len(predicted_ids) != len(anchors):
+                raise ValueError('execution prefix cannot introduce or drop measured anchor identities')
+            held = predicted['robot']['held_anchor_id']
+            if held is not None and held not in anchors:
+                raise ValueError('execution prefix holds an unmeasured anchor')
+            if predicted['remaining_sim_steps'] > value['remaining_sim_steps']:
+                raise ValueError('execution prefix cannot create simulation budget')
 
 
 def selected(request: dict, decision: dict) -> list[dict]:

@@ -18,7 +18,7 @@ from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_geometric_grasp import _voxel
 from robots.libero.bounded_self_filter import gripper_at_measured_fingers
 from rpent.skill_package import VERSION
-from rpent.skill_package.contract import is_boundary, validate
+from rpent.skill_package.contract import compact_candidate, is_boundary, validate
 
 
 def expected_receipt(adapter, skill, parameters, route=None):
@@ -186,7 +186,7 @@ class PublicPrefixPrediction:
             result['last_failure'] = candidate['last_failure']
         return result
 
-    def advance(self, candidate):
+    def advance(self, candidate, *, commanded_endpoint=None):
         """Apply commanded effects only, conditional on passing its checks."""
         from robots.libero.bounded_skills import MOTION_SKILLS
 
@@ -198,8 +198,17 @@ class PublicPrefixPrediction:
             # context() may have screened other alternatives afterwards.
             # Continue IK from this selected route's endpoint, never from the
             # last enumerated alternative's joint solution.
-            self.candidate(candidate)
-            route = self.adapter._route(skill, params)
+            if commanded_endpoint is None:
+                self.candidate(candidate)
+                route = self.adapter._route(skill, params)
+            else:
+                # An in-flight relative action already committed its endpoint.
+                # Reapplying its full delta from a mid-motion sample overshoots.
+                route = [commanded_endpoint]
+                if self.ik is not None:
+                    check = self.ik.check(route[-1]['xyz_m'], route[-1]['quat_xyzw'])
+                    if not check['solution_found']:
+                        raise ValueError('committed endpoint IK prediction could not be completed')
             if route is None:
                 raise ValueError('prefix has no measured route')
             self.sensor.update(eef_xyz_m=route[-1]['xyz_m'], eef_quat_xyzw=route[-1]['quat_xyzw'])
@@ -272,6 +281,7 @@ class PublicPrefixPrediction:
                 candidates.append(candidate)
         result = dict(schema_version=VERSION, kind='prefix_context', observation_id=self.request['observation_id'],
             revision=self.request['revision'], prefix=list(self.prefix), predicted_robot=self.adapter.robot(),
-            candidates=candidates, assumptions=list(self.assumptions))
+            candidates=([compact_candidate(c) for c in candidates]
+                if self.adapter.compact_infeasible_candidates_v1 else candidates), assumptions=list(self.assumptions))
         validate(result)
         return result

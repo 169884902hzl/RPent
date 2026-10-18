@@ -7,6 +7,18 @@ from robots.libero.bounded_async import AsyncSkillDecisions
 from tests.unit_tests.robots.libero.test_bounded_skills import adapter, decision
 
 
+def moving_request(adapter, request, first, monkeypatch):
+    adapter.geometry['site_offset_in_gripper_m'] = [0., 0., 0.]
+    adapter._base_geometry = ([], None)
+    monkeypatch.setattr('robots.libero.bounded_skills.PublicPoseScreen', lambda *args, **kwargs: None)
+    adapter._executing_prefix = {'request': request, 'choices': [first], 'completed': 0}
+    try:
+        snapshot = adapter.snapshot_decision_context(remaining_reference_s=.5)
+        return snapshot['build_request']()
+    finally:
+        adapter._executing_prefix = None
+
+
 def test_async_worker_never_reads_live_environment(adapter, monkeypatch):
     execution_thread = threading.get_ident()
     original = adapter.p.env.raw_obs
@@ -47,7 +59,7 @@ def test_stale_geometry_discards_readonly_result(adapter):
     frozen["revision"] += 1
     loop = AsyncSkillDecisions(lambda req: decision(req, [req["candidates"][0]["id"]]), decision_latency_s=1.)
     try:
-        loop.poll(.5, lambda: {"sim_step": 0, "build_request": lambda: frozen})
+        loop.poll(.5, lambda **kwargs: {"sim_step": 0, "build_request": lambda: frozen})
         adapter.revision += 1
         adapter.scene.entities.clear()
         assert loop.take(adapter, wait=True) is None
@@ -79,19 +91,22 @@ def test_stable_objects_do_not_allow_stale_robot_budget_or_receipts(adapter):
     assert not adapter.adopt_prefetched(frozen)
 
 
-def test_moving_prefetch_rechecks_selected_route_and_keeps_source_measurement(adapter):
+def test_moving_prefetch_rechecks_selected_route_and_keeps_source_measurement(adapter, monkeypatch):
     request = adapter.request(k=1)
-    frozen = copy.deepcopy(request)
-    frozen['revision'] += 1
-    frozen['observation_id'] = 'prefetch-1-step0'
     first = next(c for c in request['candidates'] if c['skill'] == 'nudge'
         and c['parameters'] == {'axis': 'x', 'distance_m': .02})
+    frozen = moving_request(adapter, request, first, monkeypatch)
     following = next(c for c in frozen['candidates'] if c['skill'] == 'nudge'
         and c['parameters'] == {'axis': 'y', 'distance_m': .01})
     adapter.execute(request, decision(request, [first['id']]))
     chosen = decision(frozen, [following['id']])
     assert adapter.adopt_prefetched(frozen, chosen)
     assert frozen['robot']['eef_xyz_m'][0] == 0.  # Keep its true source timestamp/pose.
+    prefix = frozen['execution_prefix']
+    assert prefix['steps'] == [{key: first[key] for key in ('id', 'skill', 'parameters')}]
+    assert prefix['predicted_state']['robot']['eef_xyz_m'][0] == .02
+    assert prefix['predicted_state']['remaining_sim_steps'] < frozen['remaining_sim_steps']
+    assert following['consequences']['expected_steps'] > 0
     assert adapter.last_prefetch_adoption['current_remaining_sim_steps'] < frozen['remaining_sim_steps']
     receipt = adapter.execute(frozen, chosen)[0]
     assert receipt['outcome'] == 'success'
@@ -99,12 +114,11 @@ def test_moving_prefetch_rechecks_selected_route_and_keeps_source_measurement(ad
     assert abs(receipt['after']['eef_xyz_m'][1]-.01) < 1e-8
 
 
-def test_moving_prefetch_rejects_a_new_collision_and_contact_transition(adapter):
+def test_moving_prefetch_rejects_a_new_collision_and_contact_transition(adapter, monkeypatch):
     request = adapter.request(k=1)
-    frozen = copy.deepcopy(request)
-    frozen['revision'] += 1
     move = next(c for c in request['candidates'] if c['skill'] == 'nudge'
         and c['parameters'] == {'axis': 'x', 'distance_m': .01})
+    frozen = moving_request(adapter, request, move, monkeypatch)
     adapter.execute(request, decision(request, [move['id']]))
     adapter._cloud_and_ik = lambda *args, **kwargs: lambda poses: {
         'passed': False, 'reason': 'measured_sweep_collision', 'collision': True,
@@ -118,3 +132,53 @@ def test_moving_prefetch_rejects_a_new_collision_and_contact_transition(adapter)
         and c['parameters']['mode'] == 'close')
     adapter.execute(request, decision(request, [gripper['id']]))
     assert not adapter.adopt_prefetched(frozen, decision(frozen, [gripper['id']]))
+
+
+def test_moving_prefetch_rejects_unfulfilled_or_different_commitment(adapter, monkeypatch):
+    request = adapter.request(k=1)
+    move = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'x', 'distance_m': .02})
+    frozen = moving_request(adapter, request, move, monkeypatch)
+    chosen = decision(frozen, [move['id']])
+    adapter.execute(request, decision(request, [move['id']]))
+    valid = copy.deepcopy(frozen)
+    frozen['execution_prefix']['predicted_state']['robot']['eef_xyz_m'][0] += .03
+    assert not adapter.adopt_prefetched(frozen, chosen)
+    frozen = copy.deepcopy(valid)
+    frozen['execution_prefix']['source_observation_id'] = 'other-source'
+    assert not adapter.adopt_prefetched(frozen, chosen)
+    frozen = copy.deepcopy(valid)
+    frozen['execution_prefix']['steps'][0]['id'] = 'another-step'
+    assert not adapter.adopt_prefetched(frozen, chosen)
+    adapter._last_free_chunk = None  # Interrupted source chunks discard their promise.
+    assert not adapter.adopt_prefetched(valid, chosen)
+
+
+def test_inflight_relative_move_predicts_committed_endpoint_not_another_delta(adapter, monkeypatch):
+    request = adapter.request(k=4)
+    x = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'x', 'distance_m': .02})
+    y = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'y', 'distance_m': .01})
+    snapshots = []
+    original = adapter.snapshot_decision_context
+    def freeze(**kwargs):
+        result = original(**kwargs)
+        snapshots.append(result)
+        return result
+    adapter.snapshot_decision_context = freeze
+    adapter.geometry['site_offset_in_gripper_m'] = [0., 0., 0.]
+    monkeypatch.setattr('robots.libero.bounded_skills.PublicPoseScreen', lambda *args, **kwargs: None)
+    class Lookahead:
+        pending = None
+        def poll(self, remaining, factory):
+            if not snapshots and adapter.robot()['eef_xyz_m'][0] > .001:
+                factory(remaining_reference_s=remaining)
+    adapter.execute(request, decision(request, [x['id'], y['id']]), async_decisions=Lookahead())
+    assert snapshots
+    frozen = snapshots[0]['build_request']()
+    assert 0. < frozen['robot']['eef_xyz_m'][0] < .02
+    predicted = frozen['execution_prefix']['predicted_state']['robot']['eef_xyz_m']
+    assert abs(predicted[0]-.02) < 1e-9
+    assert abs(predicted[1]-.01) < 1e-9
+    assert [s['id'] for s in frozen['execution_prefix']['steps']] == [x['id'], y['id']]

@@ -1,0 +1,110 @@
+{
+  "scope": "CPU format/token check; no model inference, no physical execution",
+  "schema": {
+    "schema_path": "/home/agilex/cobot_magic/rpent_libero_eval/rpent/skill_package/schema.json",
+    "schema_version": "bounded-skills/3",
+    "schema_sha256": "7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3",
+    "contract_sha256": "07438793e1310e664e3ebbcbca7f2cf58f49f972caf27cd2f3283352e057acb0",
+    "package_init_sha256": "2deeb481dd535ca0836c3aa89bf8928f47c907f1aa5edba569b684f1e4bc958c",
+    "boundaries": [
+      "ask_help",
+      "call_vla",
+      "finish",
+      "observe"
+    ]
+  },
+  "tokenizer_files": {
+    "tokenizer_config.json": "316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8",
+    "tokenizer.json": "5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42",
+    "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+  },
+  "consumer_sources": {
+    "robot_decider/robot_decider/bounded_choice/augmentation.py": "86600277062604eb8baeb0e382db44b73dde5823c07482b88100493929718fe3",
+    "robot_decider/robot_decider/bounded_choice/constraints.py": "c9487e8b3dd0719309e0b73dd122ca5440f57bf0e63d881e9fdf52b00d1241d8",
+    "robot_decider/robot_decider/bounded_choice/skill_package.py": "6edd6221ca3bf4c3dd32ca55c98cfcb54a4019d67deda0de7c45573e7f487e94",
+    "robot_decider/robot_decider/bounded_choice/__init__.py": "eff0d838d21ec3e9109cbc6b56a4470d33666760e51db6278acae72c9e38b755",
+    "robot_decider/robot_decider/bounded_choice/training.py": "af7d077bdd16d0f429f7c47d90674cce43de49e34896547f75d0cd6fed50e7c0",
+    "robot_decider/robot_decider/bounded_choice/serialization.py": "9093357039010647205a0064be93f99737152fd524807dbb441ad3a8fcce15ad",
+    "robot_decider/robot_decider/bounded_choice/readout.py": "13cbe1963f4414824f0309cacee3fb34939a8430bae8aa3a65b74a5f6888183c"
+  },
+  "rows": [
+    {
+      "source": "/home/agilex/cobot_magic/robot_decider_v5r_codex2/benchmarks/bounded_choice/results/revision_20261018/libero56/libero_v2_startup8288_public_request.json",
+      "source_sha256": "11a509673078f01316687bbfdba4715a041a63d78da60e16cc101e38360d21fc",
+      "candidate_ids": [
+        "0bd304c7cfbba7aa",
+        "6a5ee85653d43e03",
+        "452e7b8044d28f4f",
+        "d686937417b330df",
+        "32ff98beb37217f5",
+        "28d15d584c161127",
+        "737e25a4b680709f",
+        "201085af2fa02e00",
+        "6979efca7848d29b",
+        "4d2c3bfae42d480e",
+        "5e65e071c1493097",
+        "f894aad604a4bb28",
+        "7d3793318385431c",
+        "7a31cce8dda822ca",
+        "dac903109eca00fd",
+        "27eae2108c570a49",
+        "b16aea62003244b6",
+        "58e30809edbbaa3c",
+        "db34c88a36bd3c01",
+        "47ab1150dde57295",
+        "f2ce7741866a4113",
+        "7dc3a7231a30acb4",
+        "b7c7addcdc6857c2",
+        "35e9f95db145ee6d",
+        "725cb7c18934d6dc",
+        "c14aa752f5d90253",
+        "796f65dc7491a72c",
+        "a05e823b292c7e72",
+        "ffa20429b400222c",
+        "c305dbea5ddde74a",
+        "cd9c12429cb6236f",
+        "39d5ef0328b50b1f",
+        "152f60649776897f",
+        "0e02afb39fadcf03",
+        "af866c584b96de88",
+        "7f56ae3f4c8b42af",
+        "058d2cacfdbbe9ee",
+        "c839f7047168985f",
+        "b72a74bd885f119f",
+        "c6879ac9fab32978",
+        "f72537752ef750d0",
+        "edd9ac4d0212063f",
+        "47151ff6c459c6e1",
+        "f2ebf3511c61912b",
+        "25c428d919219ac9",
+        "e6e9f48f9eae056f",
+        "78fc3aade1371307",
+        "f395c81b7408c9d5",
+        "ddc57af16afe47d4",
+        "f3cd747ecda3e7bd",
+        "3f2b6fae234e9b1a",
+        "ba5417f0b7c390e9",
+        "027cea6b4534fa9c",
+        "1f9311eb6c9f6bb8",
+        "1491d75e66b081aa",
+        "825cb73a9c032a28"
+      ],
+      "blocked_markers": 5,
+      "full": {
+        "candidates": 56,
+        "prompt_tokens": 13181,
+        "prompt_sha256": "8721d6e608111d9d24f5b5a0ac64b6e81fa4106a393afe3a5c5e8f3d03baade8",
+        "prompt_bytes": 35631
+      },
+      "compact": {
+        "candidates": 56,
+        "prompt_tokens": 12558,
+        "prompt_sha256": "cb06259f54a3f7fa720d976b86829d796d9c056f7b7fbb3d083bafe65dc0ad6f",
+        "prompt_bytes": 33918
+      },
+      "tokens_saved": 623
+    }
+  ],
+  "training": false,
+  "GPU_used": false
+}

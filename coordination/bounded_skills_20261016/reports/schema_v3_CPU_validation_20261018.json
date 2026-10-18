@@ -1,0 +1,24 @@
+{
+  "scope": "Schema v3 compact measured blockers, in-flight execution prefix, episode timing instrumentation; CPU only",
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_async.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_compaction.py tests/unit_tests/robots/libero/test_bounded_timing.py tests/unit_tests/robots/libero/test_bounded_probe_resilience.py tests/unit_tests/robots/libero/test_skill_package_schema.py --tb=short",
+      "passed": 227,
+      "exit_code": 0,
+      "duration_s": 126.85
+    },
+    {
+      "command": "install_episode_timers with actual MeasuredScene and owning classes and fake clients; restored all 22 hooks",
+      "exit_code": 0
+    },
+    {
+      "command": "ruff check --select E9,F63,F7,F82 changed Python sources; git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "warnings": [
+    "pytest config option timeout is unknown"
+  ],
+  "physical_validation": "pending same-launcher startup",
+  "training": false
+}

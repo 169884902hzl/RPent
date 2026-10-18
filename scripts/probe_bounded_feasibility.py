@@ -200,6 +200,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
             pick_branch=False):
     from robots.libero.bounded_oracle import BoundedOracle, NoPublicOption
     from robots.libero.bounded_skills import MeasuredSkillAdapter
+    from robots.libero.bounded_timing import EpisodeTimings, install_episode_timers
+    from robots.libero import tools as libero_tools
     from robots.libero.toolkit import LiberoToolkit
     from robots.libero.v5_oracle_policy import OriginalOraclePolicy
     from robots.libero.v5_runtime import (
@@ -227,7 +229,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
     toolkit = None
     adapter = None
     async_choices = None
-    started = time.perf_counter()
+    timings = EpisodeTimings()
+    started = timings.started
     output.mkdir(parents=True, exist_ok=False)
     try:
         write(output/'measurement_render.json', {'rgbd_no_msaa_v1': no_msaa,
@@ -265,6 +268,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         # executor constructor option. Validate this exact constructor on CPU.
         max_chunks = int(config.get("max_chunks", 40))
         executor = V5Executor(toolkit, scene, max_chunks, **flags)
+        install_episode_timers(timings, tools=libero_tools, env=executor.p.env,
+            toolkit=toolkit, scene=scene, model=model)
         initial = toolkit.execute_tool("view_env_state", {}).result
         instruction = initial["task_language"]
         scene.instruction = executor.instruction = instruction
@@ -292,7 +297,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
             xml = Path(robosuite.__file__).parent/"models/assets/grippers/panda_gripper.xml"
             adapter = MeasuredSkillAdapter(executor, xml, allow_vla=arm == "call_vla",
                 record_public_geometry=True, precontact_instance_surface_v1=config.get('precontact_instance_surface_v1', True),
-                legacy_chunk_boundaries_v1=config.get('legacy_chunk_boundaries_v1', False))
+                legacy_chunk_boundaries_v1=config.get('legacy_chunk_boundaries_v1', False),
+                compact_infeasible_candidates_v1=config.get('compact_infeasible_candidates_v1', True))
             policy = None if arm.startswith("model") else BoundedOracle(rpc, adapter)
             if arm.startswith("model"):
                 from robots.libero.bounded_async import AsyncSkillDecisions, http_choice
@@ -318,14 +324,17 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                         request, decision = prefetched
                     elif startup or os.environ.get('BOUNDED_PROFILE_REQUESTS') == '1':
                         profiler = cProfile.Profile()
-                        request = profiler.runcall(adapter.request, k=1 if arm == "oracle_k1" else 4)
+                        with timings.measure('planning.request'):
+                            request = profiler.runcall(adapter.request, k=1 if arm == "oracle_k1" else 4)
                         profiler.dump_stats(str(output/"request_profile.pstats"))
                     else:
-                        request = adapter.request(k=1 if arm == "oracle_k1" else 4)
+                        with timings.measure('planning.request'):
+                            request = adapter.request(k=1 if arm == "oracle_k1" else 4)
                     request_s = time.perf_counter()-request_started
                     if prefetched is None:
                         try:
-                            decision = choose(request) if arm.startswith("model") else policy.choose(request)
+                            with timings.measure('decision.model' if arm.startswith('model') else 'decision.oracle'):
+                                decision = choose(request) if arm.startswith("model") else policy.choose(request)
                         except NoPublicOption as exc:
                             terminal_diagnostic = str(exc)
                             ledger.write(json.dumps({"index": index, "event": "no_remaining_public_option",
@@ -359,9 +368,11 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                         with (output/'private_oracle_labels.jsonl').open('a') as labels:
                             labels.write(json.dumps(policy.last_labels, allow_nan=False)+'\n')
                     detail_start = len(adapter.details)
-                    receipts = adapter.execute(request, decision, async_decisions=async_choices)
+                    with timings.measure('execution.other'):
+                        receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
                            "chunk_execution": adapter.last_chunk,
+                           "candidate_compaction": adapter.candidate_compaction,
                            "private_pre_execution_snapshot": private_snapshot,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
                            "instance_boundary_evidence": boundary_evidence,
@@ -381,7 +392,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     traces = []
                     # Whole official instruction is confined to this control
                     # arm, never exposed as a bounded skill candidate.
-                    p._vlm_chunk(instruction, trace_callback=traces.append)
+                    with timings.measure('execution.other'):
+                        p._vlm_chunk(instruction, trace_callback=traces.append)
                     row = {"skill": "pi05_full_instruction_control", "trace": traces}
                     skill_steps["pi05_only"] += p.env.execution_budget()["used_sim_steps"]-before
                 else:
@@ -391,8 +403,10 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     choices = candidates(entities, instruction, tuple(p._last_obs_eef_pos), executor.held,
                         executor.receipts, random.Random(ep["seed"]+index), persist_attempts=True,
                         vla_subtasks=macros, use_cached_measurements=True, gripper_opening=float(p._last_obs_gripper))
-                    action = policy.choose(entities, choices, executor.held, executor.receipts, instruction, scene.view_axes)
-                    receipt = executor.execute(action)
+                    with timings.measure('decision.oracle'):
+                        action = policy.choose(entities, choices, executor.held, executor.receipts, instruction, scene.view_axes)
+                    with timings.measure('execution.other'):
+                        receipt = executor.execute(action)
                     row = {"action": action.text(), "receipt": receipt}
                     skill_steps[action.tool] += p.env.execution_budget()["used_sim_steps"]-before
                 row.update(index=index, sim_steps_before=before, sim_steps_after=p.env.execution_budget()["used_sim_steps"])
@@ -419,6 +433,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
             "pi05_calls": 0 if arm.startswith(("oracle", "model")) else decision_count if arm == "pi05_only" else None,
             "fusion_version": "rgbd_dual_view/1", "k": 1 if arm == "oracle_k1" else 4 if arm.startswith('oracle_k4') else None}
         summary["terminal_diagnostic"] = terminal_diagnostic
+        summary['wall_time_breakdown'] = timings.summary(summary['wall_s'])
+        write(output/'wall_time_spans.json', timings.events)
         summary['chunk_rule'] = ('static-contact-v1-comparison' if config.get('legacy_chunk_boundaries_v1')
                                  else 'measured-receipt-v2')
         if adapter is not None:
@@ -463,6 +479,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         write(output/"summary.json", summary)
         return summary
     except Exception:
+        write(output/'wall_time_partial.json', timings.summary(time.perf_counter()-started))
+        write(output/'wall_time_spans.json', timings.events)
         if adapter is not None:
             write(output/"partial_execution.json", {"details": adapter.details,
                 "vla_trace": getattr(adapter, "vla_trace", []), "receipts": adapter.receipts})
@@ -470,6 +488,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
     finally:
         if async_choices is not None:
             async_choices.close()
+        timings.close()
         if toolkit is not None:
             toolkit.close()
         facade.close()

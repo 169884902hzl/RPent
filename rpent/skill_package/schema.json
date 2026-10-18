@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:robot-decider:bounded-skills:2",
+  "$id": "urn:robot-decider:bounded-skills:3",
   "title": "Robot-independent bounded skill request, selection and receipt",
   "oneOf": [
     {
@@ -263,71 +263,14 @@
       ]
     },
     "consequences": {
-      "type": "object",
-      "properties": {
-        "path_min_clearance_m": {
-          "type": [
-            "number",
-            "null"
-          ]
+      "oneOf": [
+        {
+          "$ref": "#/$defs/full_consequences"
         },
-        "collision": {
-          "type": [
-            "boolean",
-            "null"
-          ]
-        },
-        "ik_reachable": {
-          "type": [
-            "boolean",
-            "null"
-          ]
-        },
-        "expected_width_m": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "expected_gripper_opening_m": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "expected_steps": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "screen_scope": {
-          "enum": [
-            "hand_mesh_observed_space",
-            "nonmotion",
-            "contact_selected_surface",
-            "unmeasured",
-            "conditional_on_prefix"
-          ]
-        },
-        "evidence_ids": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "minItems": 0
+        {
+          "$ref": "#/$defs/blocked_consequences"
         }
-      },
-      "required": [
-        "path_min_clearance_m",
-        "collision",
-        "ik_reachable",
-        "expected_width_m",
-        "expected_gripper_opening_m",
-        "expected_steps",
-        "screen_scope",
-        "evidence_ids"
-      ],
-      "additionalProperties": false
+      ]
     },
     "parameters": {
       "type": "object",
@@ -468,10 +411,8 @@
         "skill",
         "parameters",
         "consequences",
-        "history",
         "recent_failures",
-        "last_failure",
-        "expected_receipt"
+        "last_failure"
       ],
       "additionalProperties": false,
       "allOf": [
@@ -955,6 +896,25 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "screen_scope": {
+                    "const": "blocked_at_current_prefix"
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "required": [
+              "history",
+              "expected_receipt"
+            ]
+          }
         }
       ]
     },
@@ -1012,7 +972,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/2"
+          "const": "bounded-skills/3"
         },
         "kind": {
           "const": "receipt"
@@ -1142,7 +1102,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/2"
+          "const": "bounded-skills/3"
         },
         "kind": {
           "const": "request"
@@ -1224,6 +1184,16 @@
             ],
             "additionalProperties": false
           }
+        },
+        "execution_prefix": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/execution_prefix"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1237,7 +1207,8 @@
         "robot",
         "candidates",
         "receipts",
-        "max_actions"
+        "max_actions",
+        "execution_prefix"
       ],
       "additionalProperties": false
     },
@@ -1245,7 +1216,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/2"
+          "const": "bounded-skills/3"
         },
         "kind": {
           "const": "decision"
@@ -1323,7 +1294,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/2"
+          "const": "bounded-skills/3"
         },
         "kind": {
           "const": "prefix_context"
@@ -1446,7 +1417,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/2"
+          "const": "bounded-skills/3"
         },
         "kind": {
           "const": "oracle_labels"
@@ -1479,6 +1450,210 @@
         "revision",
         "request_sha256",
         "positions"
+      ],
+      "additionalProperties": false
+    },
+    "full_consequences": {
+      "type": "object",
+      "properties": {
+        "path_min_clearance_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "collision": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "ik_reachable": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "expected_width_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "expected_gripper_opening_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "expected_steps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "screen_scope": {
+          "enum": [
+            "hand_mesh_observed_space",
+            "nonmotion",
+            "contact_selected_surface",
+            "unmeasured",
+            "conditional_on_prefix"
+          ]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "path_min_clearance_m",
+        "collision",
+        "ik_reachable",
+        "expected_width_m",
+        "expected_gripper_opening_m",
+        "expected_steps",
+        "screen_scope",
+        "evidence_ids"
+      ],
+      "additionalProperties": false
+    },
+    "blocked_consequences": {
+      "type": "object",
+      "properties": {
+        "collision": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "ik_reachable": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "screen_scope": {
+          "const": "blocked_at_current_prefix"
+        }
+      },
+      "required": [
+        "collision",
+        "ik_reachable",
+        "screen_scope"
+      ],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "properties": {
+            "collision": {
+              "const": true
+            }
+          }
+        },
+        {
+          "properties": {
+            "ik_reachable": {
+              "const": false
+            }
+          }
+        }
+      ]
+    },
+    "committed_step": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill": {
+          "enum": [
+            "move_to",
+            "align",
+            "descend",
+            "lift",
+            "carry_to",
+            "lower",
+            "set_gripper",
+            "release",
+            "rotate_wrist",
+            "nudge",
+            "observe",
+            "call_vla",
+            "finish",
+            "ask_help"
+          ]
+        },
+        "parameters": {
+          "$ref": "#/$defs/parameters"
+        }
+      },
+      "required": [
+        "id",
+        "skill",
+        "parameters"
+      ],
+      "additionalProperties": false
+    },
+    "execution_prefix": {
+      "type": "object",
+      "properties": {
+        "source_observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/committed_step"
+          },
+          "minItems": 1,
+          "maxItems": 4
+        },
+        "predicted_state": {
+          "type": "object",
+          "properties": {
+            "robot": {
+              "$ref": "#/$defs/robot"
+            },
+            "anchors": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/anchor"
+              }
+            },
+            "remaining_sim_steps": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "robot",
+            "anchors",
+            "remaining_sim_steps"
+          ],
+          "additionalProperties": false
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/receipt_condition"
+          }
+        }
+      },
+      "required": [
+        "source_observation_id",
+        "source_revision",
+        "steps",
+        "predicted_state",
+        "assumptions"
       ],
       "additionalProperties": false
     }

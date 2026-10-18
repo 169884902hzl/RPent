@@ -43,7 +43,8 @@ log = preparation/f'preflight_{args.tag}.log'
 log.write_text(check.stdout+check.stderr)
 assert check.returncode == 0, check.stderr
 report = {'source_commit':commit, 'snapshot':str(source), 'archive_sha256':archive_sha,
-    'schema_version':'bounded-skills/2', 'schema_sha256':hashlib.sha256((source/'rpent/skill_package/schema.json').read_bytes()).hexdigest(),
+    'schema_version':json.loads((source/'rpent/skill_package/schema.json').read_text())['$defs']['request']['properties']['schema_version']['const'],
+    'schema_sha256':hashlib.sha256((source/'rpent/skill_package/schema.json').read_bytes()).hexdigest(),
     'manifest':{'path':str(manifest),'sha256':hashlib.sha256(manifest.read_bytes()).hexdigest()},
     'preflight':{'exit_code':check.returncode,'log':str(log)}, 'n_states':len(plan['cases']),
     'entry':'scripts.probe_bounded_feasibility:episode', 'interpreter':str(root/'.venv/bin/python'),

@@ -669,7 +669,7 @@ def test_oracle_between_reference_is_resolved_jointly_without_deleting_anchors(s
         plans={'e28': plan, 'e79': plan}, receipts=[])
     oracle = BoundedOracle(SimpleNamespace(call=lambda _: {
         'done': False, 'goals': [['on', 'akita_black_bowl_9', 'plate_7']], 'satisfied': [False]}), adapter)
-    request = {'schema_version': 'bounded-skills/2', 'revision': 0,
+    request = {'schema_version': 'bounded-skills/3', 'revision': 0,
         'observation_id': 'public-0', 'max_actions': 1,
         'robot': {'eef_xyz_m': [0., 0., 1.2], 'eef_quat_xyzw': [0., 0., 0., 1.],
                   'gripper_opening_m': .08},

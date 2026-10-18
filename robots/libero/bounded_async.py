@@ -26,7 +26,7 @@ class AsyncSkillDecisions:
     def poll(self, remaining_s, snapshot_factory):
         if self.pending is not None or remaining_s > self.lead_s:
             return
-        snapshot = snapshot_factory()
+        snapshot = snapshot_factory(remaining_reference_s=remaining_s)
         event = {"submitted_wall_s": time.perf_counter(), "remaining_reference_s": remaining_s,
                  "public_sim_step": snapshot["sim_step"], "lead_estimate_s": self.lead_s}
         self.events.append(event)

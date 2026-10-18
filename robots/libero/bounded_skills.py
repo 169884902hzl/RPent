@@ -54,6 +54,7 @@ from robots.libero.v5_subtasks import measured_instance_description, subtask_phr
 from rpent.skill_package import VERSION
 from rpent.skill_package.contract import (
     FailureMemory,
+    compact_candidate,
     identity,
     is_boundary,
     selected,
@@ -70,7 +71,8 @@ class MeasuredSkillAdapter:
     def __init__(self, executor, gripper_xml: str | Path, *, allow_vla: bool = True,
                  history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
                  record_public_geometry: bool = False, precontact_instance_surface_v1: bool = False,
-                 legacy_chunk_boundaries_v1: bool = False):
+                 legacy_chunk_boundaries_v1: bool = False,
+                 compact_infeasible_candidates_v1: bool = True):
         self.ex, self.p, self.scene = executor, executor.p, executor.scene
         self.xml = Path(gripper_xml)
         self.geometry = panda_geometry(self.xml)
@@ -107,9 +109,12 @@ class MeasuredSkillAdapter:
         self.record_public_geometry = record_public_geometry
         self.precontact_instance_surface_v1 = precontact_instance_surface_v1
         self.legacy_chunk_boundaries_v1 = legacy_chunk_boundaries_v1
+        self.compact_infeasible_candidates_v1 = compact_infeasible_candidates_v1
         self.public_geometry_evidence = {}
         self._last_free_chunk = None
         self.last_prefetch_adoption = None
+        self._executing_prefix = None
+        self.candidate_compaction = None
 
     def _record_public_geometry(self, name, points):
         """Keep exact measured screen inputs outside the model request."""
@@ -1574,16 +1579,23 @@ class MeasuredSkillAdapter:
         for row in relations(relation_entities, right_axis=right, front_axis=front):
             _, source, relation, target = row.split()
             public_relations.append({"source_id": source, "relation": relation, "target_id": target})
+        published = self.memory.apply(candidates)
+        compact = [compact_candidate(c) for c in published] if self.compact_infeasible_candidates_v1 else published
+        self.candidate_compaction = {'before_count': len(published), 'after_count': len(compact),
+            'blocked_markers': sum(c['consequences']['screen_scope'] == 'blocked_at_current_prefix' for c in compact),
+            'before_json_bytes': len(json.dumps(published, separators=(',', ':')).encode()),
+            'after_json_bytes': len(json.dumps(compact, separators=(',', ':')).encode())}
         request = {"schema_version": VERSION, "kind": "request", "observation_id": f"public-{self.revision}",
             "revision": self.revision, "instruction": self.ex.instruction,
             "remaining_sim_steps": self.p.env.execution_budget()["remaining_sim_steps"],
-            "anchors": self.anchors(), "robot": self.robot(), "candidates": self.memory.apply(candidates),
-            "receipts": self.receipts[-3:], "relations": public_relations, "max_actions": k}
+            "anchors": self.anchors(), "robot": self.robot(), "candidates": compact,
+            "receipts": self.receipts[-3:], "relations": public_relations, "max_actions": k,
+            "execution_prefix": None}
         validate(request)
         self.latest_request = request
         return request
 
-    def snapshot_decision_context(self):
+    def snapshot_decision_context(self, *, remaining_reference_s=None):
         """Freeze only public data; no environment access in the worker."""
         if self._base_geometry is None:
             self._cloud_and_ik()
@@ -1617,11 +1629,42 @@ class MeasuredSkillAdapter:
         template["remaining_sim_steps"] = budget["remaining_sim_steps"]
         template["revision"] = self.revision+1
         template["observation_id"] = f"prefetch-{self.revision+1}-step{budget['used_sim_steps']}"
+        committed = copy.deepcopy(self._executing_prefix)
         def build_request():
             request = copy.deepcopy(template)
+            future = clone
+            if committed is not None:
+                remaining = committed['choices'][committed['completed']:]
+                if remaining:
+                    prediction = PublicPrefixPrediction(clone, template)
+                    for candidate in remaining:
+                        endpoint = committed.get('motion_endpoints', {}).get(candidate['id'])
+                        resolved = candidate if endpoint is not None else prediction.candidate(candidate)
+                        if resolved is None:
+                            raise ValueError('committed prefix lost its measured route')
+                        prediction.advance(resolved, commanded_endpoint=endpoint)
+                    future = prediction.adapter
+                    expected_budget = (prediction.budget['remaining_sim_steps'] if remaining_reference_s is None
+                        else max(0, budget['remaining_sim_steps']-math.ceil(remaining_reference_s*self.config.hz)))
+                    prediction.budget['remaining_sim_steps'] = expected_budget
+                    predicted_anchors = copy.deepcopy(template['anchors'])
+                    for anchor in predicted_anchors:
+                        entity = future.scene.entities[anchor['id']]
+                        anchor.update(xyz_m=list(entity.xyz),
+                            size_m=(np.asarray(entity.upper)-entity.lower).tolist())
+                    predicted_robot = future.robot()
+                    predicted_robot['velocity_m_s'] = [0., 0., 0.]  # Conditional rest endpoint, not a measurement.
+                    request['execution_prefix'] = dict(
+                        source_observation_id=committed['request']['observation_id'],
+                        source_revision=committed['request']['revision'],
+                        steps=[{key: c[key] for key in ('id', 'skill', 'parameters')} for c in remaining],
+                        predicted_state=dict(robot=predicted_robot, anchors=predicted_anchors,
+                            remaining_sim_steps=expected_budget), assumptions=list(prediction.assumptions))
             request["candidates"] = [candidate for c in template["candidates"]
-                if (candidate := clone._candidate(c["skill"], c["parameters"])) is not None]
-            request["candidates"] = clone.memory.apply(request["candidates"])
+                if (candidate := future._candidate(c["skill"], c["parameters"])) is not None]
+            request["candidates"] = future.memory.apply(request["candidates"])
+            if self.compact_infeasible_candidates_v1:
+                request['candidates'] = [compact_candidate(c) for c in request['candidates']]
             validate(request)
             return request
         return {"sim_step": budget["used_sim_steps"], "build_request": build_request}
@@ -1634,6 +1677,8 @@ class MeasuredSkillAdapter:
         exact = (request['robot'] == self.robot()
                 and request['remaining_sim_steps'] == self.p.env.execution_budget()['remaining_sim_steps']
                 and request['receipts'] == self.receipts[-3:])
+        prefix = request['execution_prefix']
+        anchors = request['anchors']
         if not exact:
             chunk = self._last_free_chunk
             # A moving prefetch necessarily predates the endpoint's robot,
@@ -1641,15 +1686,31 @@ class MeasuredSkillAdapter:
             # earlier observation: do not relabel those measurements as new.
             # Only the just-completed free-motion chunk may bridge that age;
             # contact/failure cannot be predicted by a pre-contact request.
-            if (decision is None or chunk is None or chunk['revision']+1 != self.revision
+            if (decision is None or chunk is None or prefix is None or chunk['revision']+1 != self.revision
+                    or prefix['source_revision'] != chunk['revision']
+                    or prefix['source_observation_id'] != chunk['observation_id']
+                    or [step['id'] for step in prefix['steps']] != chunk['selected_ids'][-len(prefix['steps']):]
                     or request['receipts'] != chunk['parent_receipts']
                     or not (self.p.env.execution_budget()['remaining_sim_steps']
                         <= request['remaining_sim_steps'] <= chunk['remaining_sim_steps'])
                     or chunk['end_robot'] != self.robot()):
                 return False
+            predicted = prefix['predicted_state']
+            expected_robot, actual_robot = predicted['robot'], self.robot()
+            if (expected_robot['held_anchor_id'] != actual_robot['held_anchor_id']
+                    or np.linalg.norm(np.asarray(expected_robot['eef_xyz_m'])-actual_robot['eef_xyz_m'])
+                        > self.config.endpoint_tolerance_m
+                    or (Rotation.from_quat(expected_robot['eef_quat_xyzw'])
+                        *Rotation.from_quat(actual_robot['eef_quat_xyzw']).inv()).magnitude() > .05):
+                return False
+            anchors = predicted['anchors']
+        elif prefix is not None:
+            # An in-flight promise is accepted only through its completed,
+            # successful source chunk, even if measured poses happen to agree.
+            return False
         if self.receipts and self.receipts[-1]["outcome"] != "success":
             return False
-        for anchor in request["anchors"]:
+        for anchor in anchors:
             current = self.scene.entities.get(anchor["id"])
             if current is None or np.linalg.norm(np.asarray(current.xyz)-anchor["xyz_m"]) > .01:
                 return False
@@ -1714,6 +1775,14 @@ class MeasuredSkillAdapter:
 
     def execute(self, request, decision, *, async_decisions=None):
         choices = selected(request, decision)
+        self._executing_prefix = ({'request': request, 'choices': choices, 'completed': 0}
+            if all(self._free_motion(c) for c in choices) else None)
+        try:
+            return self._execute_chunk(request, decision, choices, async_decisions=async_decisions)
+        finally:
+            self._executing_prefix = None
+
+    def _execute_chunk(self, request, decision, choices, *, async_decisions=None):
         if self.latest_request is not request:
             raise ValueError("request is not the adapter's current observation")
         free_chunk = all(self._free_motion(c) for c in choices)
@@ -1724,6 +1793,8 @@ class MeasuredSkillAdapter:
         lookahead = async_decisions if free_chunk else None
         outcomes, cursor = [], 0
         while cursor < len(plan):
+            if self._executing_prefix is not None:
+                self._executing_prefix['completed'] = cursor
             row = plan[cursor]
             candidate = row['candidate']
             # Reusing a measured anchor is allowed; an unexplained fresh move
@@ -1795,8 +1866,10 @@ class MeasuredSkillAdapter:
             'interrupted_skill': outcomes[-1]['skill'] if outcomes and len(executed) < len(choices) else None}
         self.revision += 1
         self._last_free_chunk = ({'revision': request['revision'], 'parent_receipts': parent_receipts,
+            'observation_id': request['observation_id'], 'selected_ids': decision['candidate_ids'],
             'remaining_sim_steps': remaining_at_start, 'end_robot': self.robot()}
-            if free_chunk and outcomes and all(r['outcome'] == 'success' for r in outcomes) else None)
+            if free_chunk and len(outcomes) == len(choices)
+                and all(r['outcome'] == 'success' for r in outcomes) else None)
         return outcomes
 
     def _execute_motion_group(self, request, candidates, *, lookahead=None):
@@ -1812,9 +1885,17 @@ class MeasuredSkillAdapter:
             waypoints.extend(route)
             boundaries.append(len(waypoints)-1)
             robot = {**robot, "eef_xyz_m": route[-1]["xyz_m"], "eef_quat_xyzw": route[-1]["quat_xyzw"]}
+        if self._executing_prefix is not None:
+            # Public endpoints of the actual screened trajectory, frozen before
+            # the first control command. Never replay a relative delta twice.
+            self._executing_prefix['motion_endpoints'] = {
+                c['id']: copy.deepcopy(waypoints[b]) for c, b in zip(candidates, boundaries)}
+            offset = self._executing_prefix['completed']
+            self._executing_prefix['choices'][offset:offset+len(candidates)] = candidates
         motion = SmoothMotion(self.p, self._cloud_and_ik(), self.config)
         boundary_loss = None
         boundary_hold = []
+        group_offset = self._executing_prefix['completed'] if self._executing_prefix is not None else 0
         def check_waypoint(index, measured):
             nonlocal boundary_loss
             if index not in boundaries:
@@ -1831,6 +1912,8 @@ class MeasuredSkillAdapter:
                 if lost is not None:
                     boundary_loss = (index, lost)
                     return 'public_hold_lost'
+            if self._executing_prefix is not None:
+                self._executing_prefix['completed'] = group_offset+boundaries.index(index)+1
             return None
         result = motion.run(waypoints, gripper=self.gripper_command, blend=True,
             lookahead=lookahead, request_factory=self.snapshot_decision_context if lookahead is not None else None,

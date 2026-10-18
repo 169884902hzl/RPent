@@ -14,7 +14,7 @@ def test_schema_is_valid():
 
 
 def decision():
-    return {'schema_version': 'bounded-skills/2', 'kind': 'decision',
+    return {'schema_version': 'bounded-skills/3', 'kind': 'decision',
             'observation_id': 'obs1', 'revision': 0, 'candidate_ids': ['c1']}
 
 
