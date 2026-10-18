@@ -1,0 +1,58 @@
+{
+  "source_commit": "ff00387",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_panel_recovery_20261018_ff00387",
+  "archive_sha256": "c778d531bbe4d78d9add82978032afc0f6f2b484be1dc60a6a3e1b31e65550c7",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_panel_recovery_20261018.json",
+    "sha256": "80527cf324e6cb38665a7696082d3996db76dfcbe3d5551aced8d04628826033"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_panel_recovery_20261018.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/panel_recovery_validation_CPU_20261018.json",
+    "sha256": "f260c11c32517a44a2dd60028d625b1ca90ef8e8b532129b1c7d7f1163009bea",
+    "results": {
+      "source_commit": "ff0038711320c9d04372f1d28026b0e56945792b",
+      "scope": "CPU regression checks; no physical success or confirmation claim",
+      "tests": [
+        {
+          "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py",
+          "passed": 227,
+          "failed": 8,
+          "seconds": 146.14,
+          "failure_cause": "All 8 chunk failures were the stale judge/6 assertion; adapter cases all passed."
+        },
+        {
+          "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_chunk.py",
+          "passed": 28,
+          "failed": 0,
+          "seconds": 39.88,
+          "exit_code": 0,
+          "change": "Update only judge version assertion to /7; retain all behavior assertions."
+        }
+      ],
+      "files": {
+        "robots/libero/bounded_skills.py": "7bfa2e1f7c7686ed73d242724b2bc6c8589b525022c9b4c75c8b39f9589596f9",
+        "robots/libero/bounded_oracle.py": "b74b2c68acb4852764fae1490b0d2b125ec106b2fac49830141180de1ac0b425",
+        "rpent/skill_package/schema.json": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+        "rpent/skill_package/contract.py": "7e898e3bd4e8f4c7a4e9951d897cc1fe682037ee35ee4d6d5cc1f52606e2f49c"
+      },
+      "archive_sha256": "c778d531bbe4d78d9add82978032afc0f6f2b484be1dc60a6a3e1b31e65550c7",
+      "judge": "libero-private-task-progress-rules/7",
+      "wire_schema_changed": false,
+      "training": false,
+      "confirmation": false
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}

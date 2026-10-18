@@ -1,0 +1,32 @@
+{
+  "source_commit": "ff0038711320c9d04372f1d28026b0e56945792b",
+  "scope": "CPU regression checks; no physical success or confirmation claim",
+  "tests": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py",
+      "passed": 227,
+      "failed": 8,
+      "seconds": 146.14,
+      "failure_cause": "All 8 chunk failures were the stale judge/6 assertion; adapter cases all passed."
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_chunk.py",
+      "passed": 28,
+      "failed": 0,
+      "seconds": 39.88,
+      "exit_code": 0,
+      "change": "Update only judge version assertion to /7; retain all behavior assertions."
+    }
+  ],
+  "files": {
+    "robots/libero/bounded_skills.py": "7bfa2e1f7c7686ed73d242724b2bc6c8589b525022c9b4c75c8b39f9589596f9",
+    "robots/libero/bounded_oracle.py": "b74b2c68acb4852764fae1490b0d2b125ec106b2fac49830141180de1ac0b425",
+    "rpent/skill_package/schema.json": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+    "rpent/skill_package/contract.py": "7e898e3bd4e8f4c7a4e9951d897cc1fe682037ee35ee4d6d5cc1f52606e2f49c"
+  },
+  "archive_sha256": "c778d531bbe4d78d9add82978032afc0f6f2b484be1dc60a6a3e1b31e65550c7",
+  "judge": "libero-private-task-progress-rules/7",
+  "wire_schema_changed": false,
+  "training": false,
+  "confirmation": false
+}

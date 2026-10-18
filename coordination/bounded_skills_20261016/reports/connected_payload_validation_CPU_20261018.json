@@ -1,0 +1,31 @@
+{
+  "source_commit": "a5efcd25a6edc5164026c4394334b25b8ff41605",
+  "scope": "CPU tests; not a physical task or confirmation result",
+  "tests": [
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py -q -k \"payload or guided\"",
+      "passed": 29,
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py -q",
+      "passed": 205,
+      "exit_code": 0,
+      "seconds": 107.18
+    }
+  ],
+  "ruff": {
+    "diagnostic_script": "passed",
+    "adapter_existing_findings": 5,
+    "test_existing_findings": 2,
+    "new_findings": 0
+  },
+  "files": {
+    "robots/libero/bounded_skills.py": "e1d00383b660b84c4fff64e215eca4096dde760ee28d8dfe209b902827ff21e2",
+    "rpent/skill_package/schema.json": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+    "rpent/skill_package/contract.py": "7e898e3bd4e8f4c7a4e9951d897cc1fe682037ee35ee4d6d5cc1f52606e2f49c"
+  },
+  "archive_sha256": "55519b57e878eddb3de7b3c015a18c5ca4c2b5f178b2869bdf4dcc5bcd0af329",
+  "training": false,
+  "confirmation": false
+}

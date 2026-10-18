@@ -1,0 +1,93 @@
+{
+  "scope": "saved public request selector-only counterfactual; committed source fixed",
+  "request_sha256": "16c104ebb070038d98b49a4d9a17ce543b4c3d6ef1c0339d18a468df0e493104",
+  "choices_sha256": "977bced28ba03e206b19ee9161ee72b300b31be7d6191e0c08872743b03e6850",
+  "candidate_oracle_sha256": "b74b2c68acb4852764fae1490b0d2b125ec106b2fac49830141180de1ac0b425",
+  "script_sha256": "4c36f1aadf15ed6f5a5988a97be78dbef132b40ab3d5e6878af3f0672e02a5ef",
+  "planner_calls": 0,
+  "controls": 0,
+  "gpu_used": false,
+  "training": false,
+  "records": [
+    {
+      "selector": "baseline",
+      "direction": "reverted_initial",
+      "normal": {
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ]
+      },
+      "selected": {
+        "id": "af866c584b96de88",
+        "skill": "set_gripper",
+        "parameters": {
+          "mode": "open"
+        }
+      },
+      "selected_is_public_legal": true
+    },
+    {
+      "selector": "baseline",
+      "direction": "last_measured",
+      "normal": {
+        "normal_xyz": [
+          -0.846972872926569,
+          -0.5316352251661711,
+          -0.0009694787406311334
+        ],
+        "normal_source_step": 6
+      },
+      "selected": {
+        "id": "af866c584b96de88",
+        "skill": "set_gripper",
+        "parameters": {
+          "mode": "open"
+        }
+      },
+      "selected_is_public_legal": true
+    },
+    {
+      "selector": "candidate",
+      "direction": "reverted_initial",
+      "normal": {
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ]
+      },
+      "selected": {
+        "id": "af866c584b96de88",
+        "skill": "set_gripper",
+        "parameters": {
+          "mode": "open"
+        }
+      },
+      "selected_is_public_legal": true
+    },
+    {
+      "selector": "candidate",
+      "direction": "last_measured",
+      "normal": {
+        "normal_xyz": [
+          -0.846972872926569,
+          -0.5316352251661711,
+          -0.0009694787406311334
+        ],
+        "normal_source_step": 6
+      },
+      "selected": {
+        "id": "4c03bf61e25fb5f0",
+        "skill": "nudge",
+        "parameters": {
+          "axis": "y",
+          "distance_m": 0.01,
+          "anchor_id": "e114"
+        }
+      },
+      "selected_is_public_legal": true
+    }
+  ]
+}

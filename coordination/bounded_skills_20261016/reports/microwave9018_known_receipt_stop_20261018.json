@@ -1,0 +1,38 @@
+{
+  "job": "9018_120",
+  "time_pacific": "2026-10-18T09:27:40.108414-07:00",
+  "source_commit": "9f11e41",
+  "new_arm_physical_result_preserved": true,
+  "paired_result": false,
+  "reason": "The completed new arm retains an erroneous opposing-grasp opening expectation for surface contact (first close failure). Its source predates the tested8052b27 surface-close fix; remaining legacy arm was stopped as a known-defective development comparison. Restart only from the combined current source; no failed result is erased.",
+  "episodes": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9018_120/episodes.jsonl",
+    "sha256": "25de18bdf44b67e53bc94791c7fa0c38cb710fd2e1a9a70dc5b208b69a46eb97"
+  },
+  "choices": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9018_120/microwave_close_libero_90_t33_s0_oracle_k4/choices.jsonl",
+      "sha256": "977bced28ba03e206b19ee9161ee72b300b31be7d6191e0c08872743b03e6850",
+      "rows": 13
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9018_120/microwave_close_libero_90_t33_s0_oracle_k4_legacy/choices.jsonl",
+      "sha256": "03bec01dbed2210268412f438280f2c0ae4e9a4f6aa81b921349f52573eb7a82",
+      "rows": 1
+    }
+  ],
+  "command": [
+    "scancel",
+    "9018_120"
+  ],
+  "protected_jobs_modified": false,
+  "training": false,
+  "confirmation": false,
+  "new_arm": {
+    "success": false,
+    "decisions": 13,
+    "sim_steps": 526,
+    "wall_s": 1240.7997602638789,
+    "terminal_diagnostic": "upper-bound selector has no remaining public option"
+  }
+}
