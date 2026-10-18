@@ -1,0 +1,31 @@
+{
+  "scope": "CPU source-pinned control and arbitrary-prefix audit helpers; no runtime code changes",
+  "files": [
+    {
+      "path": "coordination/bounded_skills_20261016/scripts/audit_existing_controls_20261018.py",
+      "baseline_lint_counts": {
+        "CPY001:Missing copyright notice at top of file": 1,
+        "C408:Unnecessary `dict()` call (rewrite as a literal)": 6
+      },
+      "current_lint_counts": {
+        "CPY001:Missing copyright notice at top of file": 1,
+        "C408:Unnecessary `dict()` call (rewrite as a literal)": 6
+      },
+      "py_compile_exit": 0,
+      "new_lint_findings": 0
+    },
+    {
+      "path": "coordination/bounded_skills_20261016/scripts/audit_offline_prefix_state_CPU_20261018.py",
+      "baseline_lint_counts": {},
+      "current_lint_counts": {},
+      "py_compile_exit": 0,
+      "new_lint_findings": 0
+    }
+  ],
+  "actual_runs": [
+    "All 440 historical control rows match current ec89f74 case/state/BDDL set and raw outcome fields",
+    "Cup9248_3 row1: 4 oracle positions match; one constructed alternative nudge returns labels; zero steps/RPC/GPU"
+  ],
+  "training": false,
+  "confirmation": false
+}

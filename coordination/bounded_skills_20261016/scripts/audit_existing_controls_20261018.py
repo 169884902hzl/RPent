@@ -17,10 +17,13 @@ def state_key(case):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', type=Path, required=True)
+    parser.add_argument('--manifest', type=Path,
+        help='Current original220 manifest; compare identities independently of order')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     reports = args.root/'coordination/bounded_skills_20261016/reports'
-    manifest = args.root/'results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_prefix_checks_20261018.json'
+    manifest = (args.manifest or args.root/
+        'results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_prefix_checks_20261018.json').resolve(strict=True)
     plan = json.loads(manifest.read_text())
     expected = Counter(state_key(case) for case in plan['cases'])
     registered = {state_key(case): case for case in plan['cases']}

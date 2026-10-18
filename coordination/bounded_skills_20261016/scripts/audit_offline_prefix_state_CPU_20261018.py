@@ -14,10 +14,13 @@ os.environ.update(CUDA_VISIBLE_DEVICES='', OPENBLAS_NUM_THREADS='1')
 parser = argparse.ArgumentParser()
 parser.add_argument('--job', default='9046_120')
 parser.add_argument('--row', type=int, default=0)
+parser.add_argument('--source-tag', default='chunk_v3_offline_labels_20261018',
+    help='Preparation receipt pinning the source that produced this captured context')
 args = parser.parse_args()
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 base = root/'coordination/bounded_skills_20261016'
-prep = json.loads((base/'reports/chunk_v3_offline_labels_20261018_preparation.json').read_text())
+prep_path = base/'reports'/f'{args.source_tag}_preparation.json'
+prep = json.loads(prep_path.read_text())
 sys.path.insert(0, prep['snapshot'])
 
 from robots.libero.bounded_offline_labels import annotate_prefix, load_annotation_state
@@ -53,7 +56,7 @@ assert set(actual['rule_acceptable']) <= set(actual['legal'])
 report = {'job': args.job, 'row': args.row, 'source_commit': prep['source_commit'], 'snapshot': prep['snapshot'],
     'state_reference': ref, 'snapshot_bytes': Path(ref['path']).stat().st_size,
     'inputs': [{'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
-               for path in (choices, labels_path)], 'records': records,
+               for path in (choices, labels_path, prep_path)], 'records': records,
     'oracle_positions': len(expected['positions']), 'oracle_mismatches': 0,
     'physics_steps': 0, 'gpu_used': False, 'training': False,
     'scope': 'actual captured measured state; private conditional rule labels, no branch outcome claim',
