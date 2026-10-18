@@ -1,0 +1,4941 @@
+{
+  "source_commit": "4524f81",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_refresh_20261018_4524f81",
+  "submission": {
+    "job": "8827",
+    "mode": "full",
+    "arguments": [
+      "sbatch",
+      "--parsable",
+      "--nodelist=node02",
+      "--nice=500",
+      "--array=0,24,40%1",
+      "--dependency=afterany:8826_24",
+      "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_refresh_20261018_4524f81,SOURCE_COMMIT=4524f81,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_refresh_20261018.json,STARTUP=0,PAIR_LEGACY=1",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_refresh_20261018_4524f81/scripts/run_bounded_21f0744_20261017.sbatch"
+    ],
+    "source_commit": "4524f81",
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_refresh_20261018_4524f81",
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_refresh_20261018.json",
+      "sha256": "3483bae783b7d123b95536229087b687e85f22d8a214db2e831fb2bf89dfbe90"
+    },
+    "following_updates": [
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_219",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_218",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_217",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_216",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_215",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_214",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_213",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_212",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_211",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_210",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_209",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_208",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_207",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_206",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_205",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_204",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_203",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_202",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_201",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_200",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_199",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_198",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_197",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_196",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_195",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_194",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_193",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_192",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_191",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_190",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_189",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_188",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_187",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_186",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_185",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_184",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_183",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_182",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_181",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_180",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_179",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_178",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_177",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_176",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_175",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_174",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_173",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_172",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_171",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_170",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_169",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_168",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_167",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_166",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_165",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_164",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_163",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_162",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_161",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_160",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_159",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_158",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_157",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_156",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_155",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_154",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_153",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_152",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_151",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_150",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_149",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_148",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_147",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_146",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_145",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_144",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_143",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_142",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_141",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_140",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_139",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_138",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_137",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_136",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_135",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_134",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_133",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_132",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_131",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_130",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_129",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_128",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_127",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_126",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_125",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_124",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_123",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_122",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_121",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_120",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_119",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_118",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_117",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_116",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_115",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_114",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_113",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_112",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_111",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_110",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_109",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_108",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_107",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_106",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_105",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_104",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_103",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_102",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_101",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_100",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_99",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_98",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_97",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_96",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_95",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_94",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_93",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_92",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_91",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_90",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_89",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_88",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_87",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_86",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_85",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_84",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_83",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_82",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_81",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_80",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_79",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_78",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_77",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_76",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_75",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_74",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_73",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_72",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_71",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_70",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_69",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_68",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_67",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_66",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_65",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_64",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_63",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_62",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_61",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_60",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_59",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_58",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_57",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_56",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_55",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_54",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_53",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_52",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_51",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_50",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_49",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_48",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_47",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_46",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_45",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_44",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_43",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_42",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_41",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_40",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_39",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_38",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_37",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_36",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_35",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_34",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_33",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_32",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_31",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_30",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_29",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_28",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_27",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_26",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_25",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_24",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_23",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_22",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_21",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_20",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_19",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_18",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_17",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_16",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_15",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_14",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_13",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_12",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_11",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_10",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_9",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_8",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_7",
+        "Dependency=afterany:8827"
+      ],
+      [
+        "scontrol",
+        "update",
+        "JobId=8600_6",
+        "Dependency=afterany:8827"
+      ]
+    ],
+    "queue_before": [
+      [
+        "8600_219",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_218",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_217",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_216",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_215",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_214",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_213",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_212",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_211",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_210",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_209",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_208",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_207",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_206",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_205",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_204",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_203",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_202",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_201",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_200",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_199",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_198",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_197",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_196",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_195",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_194",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_193",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_192",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_191",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_190",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_189",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_188",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_187",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_186",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_185",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_184",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_183",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_182",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_181",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_180",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_179",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_178",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_177",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_176",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_175",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_174",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_173",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_172",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_171",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_170",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_169",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_168",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_167",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_166",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_165",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_164",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_163",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_162",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_161",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_160",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_159",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_158",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_157",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_156",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_155",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_154",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_153",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_152",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_151",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_150",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_149",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_148",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_147",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_146",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_145",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_144",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_143",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_142",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_141",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_140",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_139",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_138",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_137",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_136",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_135",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_134",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_133",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_132",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_131",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_130",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_129",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_128",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_127",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_126",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_125",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_124",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_123",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_122",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_121",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_120",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_119",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_118",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_117",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_116",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_115",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_114",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_113",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_112",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_111",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_110",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_109",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_108",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_107",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_106",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_105",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_104",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_103",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_102",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_101",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_100",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_99",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_98",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_97",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_96",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_95",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_94",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_93",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_92",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_91",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_90",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_89",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_88",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_87",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_86",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_85",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_84",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_83",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_82",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_81",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_80",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_79",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_78",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_77",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_76",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_75",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_74",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_73",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_72",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_71",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_70",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_69",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_68",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_67",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_66",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_65",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_64",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_63",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_62",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_61",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_60",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_59",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_58",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_57",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_56",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_55",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_54",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_53",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_52",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_51",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_50",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_49",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_48",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_47",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_46",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_45",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_44",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_43",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_42",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_41",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_40",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_39",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_38",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_37",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_36",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_35",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_34",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_33",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_32",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_31",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_30",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_29",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_28",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_27",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_26",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_25",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_24",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_23",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_22",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_21",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_20",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_19",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_18",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_17",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_16",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_15",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_14",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_13",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_12",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_11",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_10",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_9",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_8",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_7",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_6",
+        "rd-bounded-feasibility-v21",
+        "PENDING",
+        "",
+        "(JobArrayTaskLimit)",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_4",
+        "rd-bounded-feasibility-v21",
+        "RUNNING",
+        "node02",
+        "node02",
+        "gres/gpu:1"
+      ],
+      [
+        "8600_5",
+        "rd-bounded-feasibility-v21",
+        "RUNNING",
+        "node02",
+        "node02",
+        "gres/gpu:1"
+      ],
+      [
+        "8262_160",
+        "rd-bounded-feasibility-v21",
+        "RUNNING",
+        "node02",
+        "node02",
+        "gres/gpu:1"
+      ]
+    ],
+    "lane": "available_node02",
+    "aggregate_cap": 4,
+    "codex2_gpu_jobs": [],
+    "startup_proof": {
+      "job": "8826_24",
+      "summary": {
+        "case": {
+          "name": "box_transfer_libero_object_t0_s4",
+          "category": "box_transfer",
+          "episode": {
+            "suite": "libero_object",
+            "task": 0,
+            "seed": 4
+          },
+          "state_sha256": "ccf1b9956a832c5ba7e57eed974483435a70a1e7ab668b172a5555c75933abfe",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+            "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4",
+        "success": false,
+        "decisions": 1,
+        "sim_steps": 175,
+        "skill_sim_steps": {
+          "move_to": 113,
+          "descend": 47,
+          "set_gripper": 15,
+          "observe": 0
+        },
+        "wall_s": 127.4702112628147,
+        "failure_phase": null,
+        "source": "official_original_task_predicates_private",
+        "status": "startup_physical",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": null,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 127.4702112628147,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 29.875752304680645,
+            "perception.entity_measurement": 9.7515385071747,
+            "artifact_io": 1.2479274435900152,
+            "planning.consequences": 65.31607938744128,
+            "planning.request": 2.3313379366882145,
+            "decision.oracle": 0.03453385829925537,
+            "simulation.step_render": 3.9203935293480754,
+            "perception.depth": 0.4088514670729637,
+            "perception.capture_io": 6.191375646274537,
+            "execution.other": 4.4040353070013225
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 29.875752304680645,
+            "perception.entity_measurement": 9.7515385071747,
+            "artifact_io": 1.2479274435900152,
+            "planning.consequences": 65.31607938744128,
+            "planning.request": 2.3313379366882145,
+            "decision.oracle": 0.03453385829925537,
+            "simulation.step_render": 3.9203935293480754,
+            "perception.depth": 0.4088514670729637,
+            "perception.capture_io": 6.191375646274537,
+            "execution.other": 4.4040353070013225
+          },
+          "main_thread_unattributed_s": 3.9883858752436936,
+          "calls": {
+            "perception.segmentation:call": 60,
+            "perception.entity_measurement:refresh": 10,
+            "perception.entity_measurement:_refresh_held_measurement": 5,
+            "perception.entity_measurement:_instance_pixels": 9,
+            "perception.entity_measurement:_contact_pixels": 7,
+            "artifact_io:_record_public_geometry": 22,
+            "planning.consequences:_cloud_and_ik": 56,
+            "planning.consequences:check": 1845,
+            "planning.consequences:__call__": 200,
+            "planning.consequences:_route": 207,
+            "planning.consequences:_candidate": 226,
+            "planning.request:None": 1,
+            "planning.consequences:context": 4,
+            "decision.oracle:None": 1,
+            "planning.consequences:plan_chunk": 1,
+            "simulation.step_render:step": 175,
+            "perception.depth:_metric_depth": 16,
+            "perception.depth:_world_from_depth": 16,
+            "simulation.step_render:render_camera": 8,
+            "perception.capture_io:get_env_state": 4,
+            "execution.other:None": 1
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 6.29876166395843,
+              "perception.entity_measurement": 0.4073367058299482
+            },
+            "planning.request": {
+              "perception.entity_measurement": 5.909405787009746,
+              "artifact_io": 1.0768357594497502,
+              "planning.consequences": 23.5380045408383,
+              "planning.request": 2.3313379366882145
+            },
+            "decision.oracle": {
+              "planning.consequences": 32.68180293729529,
+              "decision.oracle": 0.03453385829925537
+            },
+            "execution.other": {
+              "planning.consequences": 9.096271909307688,
+              "perception.entity_measurement": 3.4347960143350065,
+              "artifact_io": 0.171091684140265,
+              "simulation.step_render": 3.9203935293480754,
+              "perception.depth": 0.4088514670729637,
+              "perception.capture_io": 6.191375646274537,
+              "perception.segmentation": 23.576990640722215,
+              "execution.other": 4.4040353070013225
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "measured-receipt-v2",
+        "actual_actions_per_decision": [
+          3
+        ],
+        "attempted_actions_per_decision": [
+          4
+        ],
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "observe": 1
+        },
+        "skill_verified": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1
+        },
+        "chunk_truncations": [],
+        "smooth_reference_max_acceleration_jump": 3.6923281099805784e-14,
+        "smooth_reference_max_jerk_limit_ratio": 0.9970059900149796,
+        "smooth_reference_max_translation_acceleration_jump": 3.6923281099805784e-14,
+        "smooth_reference_max_rotation_acceleration_jump": 1.9711310752743742e-16,
+        "native_step_limit_hit": false,
+        "terminal_category": "other"
+      },
+      "first_physical_request": {
+        "arm": "oracle_k4",
+        "index": 0,
+        "sim_steps": 175,
+        "source": "public_execution_budget"
+      },
+      "state_exit": "COMPLETED|0:0"
+    },
+    "training": false,
+    "confirmation": false,
+    "indices": [
+      0,
+      24,
+      40
+    ],
+    "scope": "original-task oracle upper bound and matched boundary-rule comparison; no pi05",
+    "submission_updates_complete": true
+  },
+  "scope": "original-task development; identical source and state; only static chunk boundary rule differs",
+  "registered_states": 3,
+  "closed_pairs": 3,
+  "outcomes": {
+    "both_success": 3
+  },
+  "paired_by_category": {
+    "bowl_transfer": {
+      "n": 1,
+      "outcomes": {
+        "both_success": 1
+      },
+      "decision_delta": {
+        "n": 1,
+        "median": -2,
+        "p90": -2.0,
+        "max": -2
+      },
+      "simulation_step_delta": {
+        "n": 1,
+        "median": 0,
+        "p90": 0.0,
+        "max": 0
+      }
+    },
+    "box_transfer": {
+      "n": 1,
+      "outcomes": {
+        "both_success": 1
+      },
+      "decision_delta": {
+        "n": 1,
+        "median": -3,
+        "p90": -3.0,
+        "max": -3
+      },
+      "simulation_step_delta": {
+        "n": 1,
+        "median": -1,
+        "p90": -1.0,
+        "max": -1
+      }
+    },
+    "container": {
+      "n": 1,
+      "outcomes": {
+        "both_success": 1
+      },
+      "decision_delta": {
+        "n": 1,
+        "median": -2,
+        "p90": -2.0,
+        "max": -2
+      },
+      "simulation_step_delta": {
+        "n": 1,
+        "median": 4,
+        "p90": 4.0,
+        "max": 4
+      }
+    }
+  },
+  "pairs": [
+    {
+      "shard": 0,
+      "case": {
+        "name": "bowl_transfer_libero_spatial_t0_s0",
+        "category": "bowl_transfer",
+        "episode": {
+          "suite": "libero_spatial",
+          "task": 0,
+          "seed": 0
+        },
+        "state_sha256": "4e3eaf7a315bc3bafb6db4837c8eef0e5f8aea717782a2a3ea33139392d966ed",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+          "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "outcome": "both_success",
+      "new": {
+        "success": true,
+        "decisions": 3,
+        "sim_steps": 265,
+        "wall_s": 538.4544432801194,
+        "failure_phase": null,
+        "terminal_category": "native_success"
+      },
+      "old": {
+        "success": true,
+        "decisions": 5,
+        "sim_steps": 265,
+        "wall_s": 575.1919216969982,
+        "failure_phase": null,
+        "terminal_category": "native_success"
+      },
+      "delta": {
+        "decisions": -2,
+        "sim_steps": 0,
+        "wall_s": -36.73747841687873
+      }
+    },
+    {
+      "shard": 24,
+      "case": {
+        "name": "box_transfer_libero_object_t0_s4",
+        "category": "box_transfer",
+        "episode": {
+          "suite": "libero_object",
+          "task": 0,
+          "seed": 4
+        },
+        "state_sha256": "ccf1b9956a832c5ba7e57eed974483435a70a1e7ab668b172a5555c75933abfe",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+          "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "outcome": "both_success",
+      "new": {
+        "success": true,
+        "decisions": 2,
+        "sim_steps": 409,
+        "wall_s": 311.8461713618599,
+        "failure_phase": null,
+        "terminal_category": "native_success"
+      },
+      "old": {
+        "success": true,
+        "decisions": 5,
+        "sim_steps": 410,
+        "wall_s": 347.73306680331007,
+        "failure_phase": null,
+        "terminal_category": "native_success"
+      },
+      "delta": {
+        "decisions": -3,
+        "sim_steps": -1,
+        "wall_s": -35.88689544145018
+      }
+    },
+    {
+      "shard": 40,
+      "case": {
+        "name": "container_libero_object_t2_s0",
+        "category": "container",
+        "episode": {
+          "suite": "libero_object",
+          "task": 2,
+          "seed": 0
+        },
+        "state_sha256": "02feb7104ff3af12f1247c461997f1113686f704fb702cd3280d6bfba56e6f71",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl",
+          "sha256": "024978e9e8f43a49b49d0965f4f426d364ce056307f0fcf5733dc4682fac437a"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "outcome": "both_success",
+      "new": {
+        "success": true,
+        "decisions": 2,
+        "sim_steps": 588,
+        "wall_s": 252.15827872697264,
+        "failure_phase": null,
+        "terminal_category": "native_success"
+      },
+      "old": {
+        "success": true,
+        "decisions": 4,
+        "sim_steps": 584,
+        "wall_s": 298.28890203498304,
+        "failure_phase": null,
+        "terminal_category": "native_success"
+      },
+      "delta": {
+        "decisions": -2,
+        "sim_steps": 4,
+        "wall_s": -46.1306233080104
+      }
+    }
+  ],
+  "pending": [],
+  "execution_errors": [],
+  "actual_actions_per_decision_histogram": {
+    "oracle_k4": {
+      "3": 4,
+      "2": 1,
+      "1": 1,
+      "4": 1
+    },
+    "oracle_k4_legacy": {
+      "2": 5,
+      "1": 9
+    }
+  },
+  "midchunk_truncations_by_eligible_skill": {
+    "oracle_k4": {
+      "move_to": {
+        "eligible_with_suffix": 3,
+        "interrupted": 0,
+        "rate": 0.0,
+        "reasons": {}
+      },
+      "descend": {
+        "eligible_with_suffix": 3,
+        "interrupted": 0,
+        "rate": 0.0,
+        "reasons": {}
+      },
+      "set_gripper": {
+        "eligible_with_suffix": 3,
+        "interrupted": 0,
+        "rate": 0.0,
+        "reasons": {}
+      },
+      "lift": {
+        "eligible_with_suffix": 3,
+        "interrupted": 0,
+        "rate": 0.0,
+        "reasons": {}
+      },
+      "carry_to": {
+        "eligible_with_suffix": 3,
+        "interrupted": 0,
+        "rate": 0.0,
+        "reasons": {}
+      },
+      "lower": {
+        "eligible_with_suffix": 2,
+        "interrupted": 1,
+        "rate": 0.5,
+        "reasons": {
+          "measured_payload_collision": 1
+        }
+      },
+      "release": {
+        "eligible_with_suffix": 2,
+        "interrupted": 2,
+        "rate": 1.0,
+        "reasons": {
+          "native_success": 2
+        }
+      }
+    },
+    "oracle_k4_legacy": {
+      "move_to": {
+        "eligible_with_suffix": 3,
+        "interrupted": 0,
+        "rate": 0.0,
+        "reasons": {}
+      },
+      "carry_to": {
+        "eligible_with_suffix": 3,
+        "interrupted": 0,
+        "rate": 0.0,
+        "reasons": {}
+      }
+    }
+  },
+  "physical_result_cohorts": {
+    "sources": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_0/episodes.jsonl",
+        "sha256": "cf3648a7e661a704b049ce8f1ca1157ead606378c29d11ff16c8bade35af5cf7"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_24/episodes.jsonl",
+        "sha256": "91be55eecc98f9a756e253286bdd4730971c8c4abf5dfbdb2a68d8ce58314ac9"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_40/episodes.jsonl",
+        "sha256": "d951a4f32bc783e10da0f4d1c24241ba9bb45ba114e0029ccc8171fea36b6e7f"
+      }
+    ],
+    "summary": [
+      {
+        "arm": "oracle_k4",
+        "category": "bowl_transfer",
+        "n": 1,
+        "success": 1,
+        "rate": 1.0,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "decisions": {
+          "n": 1,
+          "median": 3,
+          "p90": 3.0,
+          "max": 3
+        },
+        "sim_steps": {
+          "n": 1,
+          "median": 265,
+          "p90": 265.0,
+          "max": 265
+        },
+        "wall_s": {
+          "n": 1,
+          "median": 538.4544432801194,
+          "p90": 538.4544432801194,
+          "max": 538.4544432801194
+        },
+        "native_step_limit_hits": 0,
+        "native_step_limit_measured_n": 1,
+        "actual_actions_per_decision": {
+          "n": 3,
+          "median": 2,
+          "p90": 2.8,
+          "max": 3
+        },
+        "actual_actions_histogram": {
+          "3": 1,
+          "2": 1,
+          "1": 1
+        },
+        "attempted_actions_per_decision": {
+          "n": 3,
+          "median": 3,
+          "p90": 3.8,
+          "max": 4
+        },
+        "chunk_truncation_reasons": {
+          "measured_payload_collision": 1,
+          "native_success": 1
+        },
+        "chunk_truncation_skills": {
+          "lower": 1,
+          "release": 1
+        },
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "observe": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "failure_phases": {},
+        "skill_midchunk_truncation_rate": {
+          "move_to": 0.0,
+          "descend": 0.0,
+          "set_gripper": 0.0,
+          "observe": 0.0,
+          "lift": 0.0,
+          "carry_to": 0.0,
+          "lower": 1.0,
+          "release": 1.0
+        }
+      },
+      {
+        "arm": "oracle_k4",
+        "category": "box_transfer",
+        "n": 1,
+        "success": 1,
+        "rate": 1.0,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "decisions": {
+          "n": 1,
+          "median": 2,
+          "p90": 2.0,
+          "max": 2
+        },
+        "sim_steps": {
+          "n": 1,
+          "median": 409,
+          "p90": 409.0,
+          "max": 409
+        },
+        "wall_s": {
+          "n": 1,
+          "median": 311.8461713618599,
+          "p90": 311.8461713618599,
+          "max": 311.8461713618599
+        },
+        "native_step_limit_hits": 0,
+        "native_step_limit_measured_n": 1,
+        "actual_actions_per_decision": {
+          "n": 2,
+          "median": 3.5,
+          "p90": 3.9,
+          "max": 4
+        },
+        "actual_actions_histogram": {
+          "3": 1,
+          "4": 1
+        },
+        "attempted_actions_per_decision": {
+          "n": 2,
+          "median": 4.0,
+          "p90": 4.0,
+          "max": 4
+        },
+        "chunk_truncation_reasons": {},
+        "chunk_truncation_skills": {},
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "observe": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "failure_phases": {},
+        "skill_midchunk_truncation_rate": {
+          "move_to": 0.0,
+          "descend": 0.0,
+          "set_gripper": 0.0,
+          "observe": 0.0,
+          "lift": 0.0,
+          "carry_to": 0.0,
+          "lower": 0.0,
+          "release": 0.0
+        }
+      },
+      {
+        "arm": "oracle_k4",
+        "category": "container",
+        "n": 1,
+        "success": 1,
+        "rate": 1.0,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "decisions": {
+          "n": 1,
+          "median": 2,
+          "p90": 2.0,
+          "max": 2
+        },
+        "sim_steps": {
+          "n": 1,
+          "median": 588,
+          "p90": 588.0,
+          "max": 588
+        },
+        "wall_s": {
+          "n": 1,
+          "median": 252.15827872697264,
+          "p90": 252.15827872697264,
+          "max": 252.15827872697264
+        },
+        "native_step_limit_hits": 0,
+        "native_step_limit_measured_n": 1,
+        "actual_actions_per_decision": {
+          "n": 2,
+          "median": 3.0,
+          "p90": 3.0,
+          "max": 3
+        },
+        "actual_actions_histogram": {
+          "3": 2
+        },
+        "attempted_actions_per_decision": {
+          "n": 2,
+          "median": 3.5,
+          "p90": 3.9,
+          "max": 4
+        },
+        "chunk_truncation_reasons": {
+          "native_success": 1
+        },
+        "chunk_truncation_skills": {
+          "release": 1
+        },
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "observe": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "release": 1
+        },
+        "failure_phases": {},
+        "skill_midchunk_truncation_rate": {
+          "move_to": 0.0,
+          "descend": 0.0,
+          "set_gripper": 0.0,
+          "observe": 0.0,
+          "lift": 0.0,
+          "carry_to": 0.0,
+          "release": 1.0
+        }
+      },
+      {
+        "arm": "oracle_k4_legacy",
+        "category": "bowl_transfer",
+        "n": 1,
+        "success": 1,
+        "rate": 1.0,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "decisions": {
+          "n": 1,
+          "median": 5,
+          "p90": 5.0,
+          "max": 5
+        },
+        "sim_steps": {
+          "n": 1,
+          "median": 265,
+          "p90": 265.0,
+          "max": 265
+        },
+        "wall_s": {
+          "n": 1,
+          "median": 575.1919216969982,
+          "p90": 575.1919216969982,
+          "max": 575.1919216969982
+        },
+        "native_step_limit_hits": 0,
+        "native_step_limit_measured_n": 1,
+        "actual_actions_per_decision": {
+          "n": 5,
+          "median": 1,
+          "p90": 1.6,
+          "max": 2
+        },
+        "actual_actions_histogram": {
+          "2": 1,
+          "1": 4
+        },
+        "attempted_actions_per_decision": {
+          "n": 5,
+          "median": 1,
+          "p90": 2.0,
+          "max": 2
+        },
+        "chunk_truncation_reasons": {},
+        "chunk_truncation_skills": {},
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "failure_phases": {},
+        "skill_midchunk_truncation_rate": {
+          "move_to": 0.0,
+          "descend": 0.0,
+          "set_gripper": 0.0,
+          "lift": 0.0,
+          "carry_to": 0.0,
+          "lower": 0.0,
+          "release": 0.0
+        }
+      },
+      {
+        "arm": "oracle_k4_legacy",
+        "category": "box_transfer",
+        "n": 1,
+        "success": 1,
+        "rate": 1.0,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "decisions": {
+          "n": 1,
+          "median": 5,
+          "p90": 5.0,
+          "max": 5
+        },
+        "sim_steps": {
+          "n": 1,
+          "median": 410,
+          "p90": 410.0,
+          "max": 410
+        },
+        "wall_s": {
+          "n": 1,
+          "median": 347.73306680331007,
+          "p90": 347.73306680331007,
+          "max": 347.73306680331007
+        },
+        "native_step_limit_hits": 0,
+        "native_step_limit_measured_n": 1,
+        "actual_actions_per_decision": {
+          "n": 5,
+          "median": 1,
+          "p90": 2.0,
+          "max": 2
+        },
+        "actual_actions_histogram": {
+          "2": 2,
+          "1": 3
+        },
+        "attempted_actions_per_decision": {
+          "n": 5,
+          "median": 1,
+          "p90": 2.0,
+          "max": 2
+        },
+        "chunk_truncation_reasons": {},
+        "chunk_truncation_skills": {},
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "failure_phases": {},
+        "skill_midchunk_truncation_rate": {
+          "move_to": 0.0,
+          "descend": 0.0,
+          "set_gripper": 0.0,
+          "lift": 0.0,
+          "carry_to": 0.0,
+          "lower": 0.0,
+          "release": 0.0
+        }
+      },
+      {
+        "arm": "oracle_k4_legacy",
+        "category": "container",
+        "n": 1,
+        "success": 1,
+        "rate": 1.0,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "decisions": {
+          "n": 1,
+          "median": 4,
+          "p90": 4.0,
+          "max": 4
+        },
+        "sim_steps": {
+          "n": 1,
+          "median": 584,
+          "p90": 584.0,
+          "max": 584
+        },
+        "wall_s": {
+          "n": 1,
+          "median": 298.28890203498304,
+          "p90": 298.28890203498304,
+          "max": 298.28890203498304
+        },
+        "native_step_limit_hits": 0,
+        "native_step_limit_measured_n": 1,
+        "actual_actions_per_decision": {
+          "n": 4,
+          "median": 1.5,
+          "p90": 2.0,
+          "max": 2
+        },
+        "actual_actions_histogram": {
+          "2": 2,
+          "1": 2
+        },
+        "attempted_actions_per_decision": {
+          "n": 4,
+          "median": 1.5,
+          "p90": 2.0,
+          "max": 2
+        },
+        "chunk_truncation_reasons": {},
+        "chunk_truncation_skills": {},
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "release": 1
+        },
+        "failure_phases": {},
+        "skill_midchunk_truncation_rate": {
+          "move_to": 0.0,
+          "descend": 0.0,
+          "set_gripper": 0.0,
+          "lift": 0.0,
+          "carry_to": 0.0,
+          "release": 0.0
+        }
+      }
+    ],
+    "rows": [
+      {
+        "case": {
+          "name": "bowl_transfer_libero_spatial_t0_s0",
+          "category": "bowl_transfer",
+          "episode": {
+            "suite": "libero_spatial",
+            "task": 0,
+            "seed": 0
+          },
+          "state_sha256": "4e3eaf7a315bc3bafb6db4837c8eef0e5f8aea717782a2a3ea33139392d966ed",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+            "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4",
+        "success": true,
+        "decisions": 3,
+        "sim_steps": 265,
+        "skill_sim_steps": {
+          "move_to": 128,
+          "descend": 47,
+          "set_gripper": 15,
+          "observe": 0,
+          "lift": 32,
+          "carry_to": 38,
+          "lower": 0,
+          "release": 5
+        },
+        "wall_s": 538.4544432801194,
+        "failure_phase": null,
+        "source": "official_original_task_predicates_private",
+        "status": "physical_result",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": null,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 538.4544432801194,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 55.769731044303626,
+            "perception.entity_measurement": 120.45625511929393,
+            "artifact_io": 4.222152846399695,
+            "planning.consequences": 297.4394698399119,
+            "planning.request": 31.88385354913771,
+            "decision.oracle": 3.3971432633697987,
+            "simulation.step_render": 7.526045206002891,
+            "perception.depth": 0.6995366606861353,
+            "perception.capture_io": 11.65630225930363,
+            "execution.other": 1.4363639941439033
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 55.769731044303626,
+            "perception.entity_measurement": 120.45625511929393,
+            "artifact_io": 4.222152846399695,
+            "planning.consequences": 297.4394698399119,
+            "planning.request": 31.88385354913771,
+            "decision.oracle": 3.3971432633697987,
+            "simulation.step_render": 7.526045206002891,
+            "perception.depth": 0.6995366606861353,
+            "perception.capture_io": 11.65630225930363,
+            "execution.other": 1.4363639941439033
+          },
+          "main_thread_unattributed_s": 3.967589497566223,
+          "calls": {
+            "perception.segmentation:call": 114,
+            "perception.entity_measurement:refresh": 9,
+            "perception.entity_measurement:_refresh_held_measurement": 11,
+            "perception.entity_measurement:_instance_pixels": 53,
+            "perception.entity_measurement:_contact_pixels": 35,
+            "artifact_io:_record_public_geometry": 111,
+            "planning.consequences:_cloud_and_ik": 170,
+            "planning.consequences:check": 5863,
+            "planning.consequences:__call__": 656,
+            "planning.consequences:_route": 580,
+            "planning.consequences:_candidate": 634,
+            "planning.request:None": 3,
+            "planning.consequences:context": 10,
+            "decision.oracle:None": 3,
+            "planning.consequences:plan_chunk": 3,
+            "simulation.step_render:step": 265,
+            "perception.depth:_metric_depth": 32,
+            "perception.depth:_world_from_depth": 32,
+            "simulation.step_render:render_camera": 16,
+            "perception.capture_io:get_env_state": 8,
+            "execution.other:None": 3
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 6.526120907161385,
+              "perception.entity_measurement": 0.5768603449687362
+            },
+            "planning.request": {
+              "perception.entity_measurement": 53.83359257504344,
+              "artifact_io": 2.626952129881829,
+              "planning.consequences": 108.01371572585776,
+              "planning.request": 31.88385354913771
+            },
+            "decision.oracle": {
+              "planning.consequences": 139.94840857153758,
+              "decision.oracle": 3.3971432633697987,
+              "perception.entity_measurement": 7.997546344995499e-05,
+              "artifact_io": 0.24330530175939202
+            },
+            "execution.other": {
+              "planning.consequences": 49.47734554251656,
+              "perception.entity_measurement": 66.0457222238183,
+              "artifact_io": 1.3518954147584736,
+              "simulation.step_render": 7.526045206002891,
+              "perception.depth": 0.6995366606861353,
+              "perception.capture_io": 11.65630225930363,
+              "perception.segmentation": 49.24361013714224,
+              "execution.other": 1.4363639941439033
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "measured-receipt-v2",
+        "actual_actions_per_decision": [
+          3,
+          2,
+          1
+        ],
+        "attempted_actions_per_decision": [
+          4,
+          3,
+          1
+        ],
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "observe": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "skill_verified": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "release": 1
+        },
+        "chunk_truncations": [
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "a08cab3ca5e50340",
+              "c85c7e6c3bd16a27",
+              "0cd8e41bbf47913e",
+              "987434631f6c114e"
+            ],
+            "executed_ids": [
+              "a08cab3ca5e50340",
+              "c85c7e6c3bd16a27",
+              "0cd8e41bbf47913e"
+            ],
+            "actual_actions": 2,
+            "discarded_ids": [
+              "987434631f6c114e"
+            ],
+            "stop_reason": "measured_payload_collision",
+            "interrupted_skill": "lower"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "987434631f6c114e",
+              "1f9311eb6c9f6bb8"
+            ],
+            "executed_ids": [
+              "987434631f6c114e"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "1f9311eb6c9f6bb8"
+            ],
+            "stop_reason": "native_success",
+            "interrupted_skill": "release"
+          }
+        ],
+        "smooth_reference_max_acceleration_jump": 3.5111773322454063e-13,
+        "smooth_reference_max_jerk_limit_ratio": 0.9970059900149792,
+        "smooth_reference_max_translation_acceleration_jump": 3.5111773322454063e-13,
+        "smooth_reference_max_rotation_acceleration_jump": 1.8347493163869709e-16,
+        "native_step_limit_hit": false,
+        "terminal_category": "native_success",
+        "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_0/episodes.jsonl",
+        "report_category": "bowl_transfer"
+      },
+      {
+        "case": {
+          "name": "bowl_transfer_libero_spatial_t0_s0",
+          "category": "bowl_transfer",
+          "episode": {
+            "suite": "libero_spatial",
+            "task": 0,
+            "seed": 0
+          },
+          "state_sha256": "4e3eaf7a315bc3bafb6db4837c8eef0e5f8aea717782a2a3ea33139392d966ed",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+            "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4_legacy",
+        "success": true,
+        "decisions": 5,
+        "sim_steps": 265,
+        "skill_sim_steps": {
+          "move_to": 128,
+          "descend": 47,
+          "set_gripper": 15,
+          "lift": 32,
+          "carry_to": 38,
+          "lower": 0,
+          "release": 5
+        },
+        "wall_s": 575.1919216969982,
+        "failure_phase": null,
+        "source": "official_original_task_predicates_private",
+        "status": "physical_result",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": null,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 575.1919216969982,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 48.33509470894933,
+            "perception.entity_measurement": 143.5528880469501,
+            "artifact_io": 5.780314388684928,
+            "planning.consequences": 310.9828270999715,
+            "planning.request": 35.536238233558834,
+            "decision.oracle": 7.755257685203105,
+            "simulation.step_render": 7.11397419590503,
+            "perception.depth": 0.5893905824050307,
+            "perception.capture_io": 10.116184192243963,
+            "execution.other": 1.5296808877028525
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 48.33509470894933,
+            "perception.entity_measurement": 143.5528880469501,
+            "artifact_io": 5.780314388684928,
+            "planning.consequences": 310.9828270999715,
+            "planning.request": 35.536238233558834,
+            "decision.oracle": 7.755257685203105,
+            "simulation.step_render": 7.11397419590503,
+            "perception.depth": 0.5893905824050307,
+            "perception.capture_io": 10.116184192243963,
+            "execution.other": 1.5296808877028525
+          },
+          "main_thread_unattributed_s": 3.9000716754235327,
+          "calls": {
+            "perception.segmentation:call": 102,
+            "perception.entity_measurement:refresh": 8,
+            "perception.entity_measurement:_refresh_held_measurement": 12,
+            "perception.entity_measurement:_instance_pixels": 81,
+            "perception.entity_measurement:_contact_pixels": 52,
+            "artifact_io:_record_public_geometry": 162,
+            "planning.consequences:_cloud_and_ik": 279,
+            "planning.consequences:check": 5724,
+            "planning.consequences:__call__": 501,
+            "planning.consequences:_route": 397,
+            "planning.consequences:_candidate": 433,
+            "planning.request:None": 5,
+            "planning.consequences:context": 7,
+            "decision.oracle:None": 5,
+            "planning.consequences:plan_chunk": 5,
+            "simulation.step_render:step": 265,
+            "perception.depth:_metric_depth": 28,
+            "perception.depth:_world_from_depth": 28,
+            "simulation.step_render:render_camera": 14,
+            "perception.capture_io:get_env_state": 7,
+            "execution.other:None": 5
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 6.018690136726946,
+              "perception.entity_measurement": 0.5380422156304121
+            },
+            "planning.request": {
+              "perception.entity_measurement": 101.40753251221031,
+              "artifact_io": 4.280186088755727,
+              "planning.consequences": 203.73714734381065,
+              "planning.request": 35.536238233558834,
+              "perception.segmentation": 0.2162962811999023
+            },
+            "decision.oracle": {
+              "planning.consequences": 64.09316888730973,
+              "decision.oracle": 7.755257685203105,
+              "perception.entity_measurement": 0.00013928674161434174,
+              "artifact_io": 0.3222043211571872
+            },
+            "execution.other": {
+              "planning.consequences": 43.152510868851095,
+              "perception.entity_measurement": 41.607174032367766,
+              "artifact_io": 1.1779239787720144,
+              "simulation.step_render": 7.11397419590503,
+              "perception.depth": 0.5893905824050307,
+              "perception.capture_io": 10.116184192243963,
+              "perception.segmentation": 42.10010829102248,
+              "execution.other": 1.5296808877028525
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "static-contact-v1-comparison",
+        "actual_actions_per_decision": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "attempted_actions_per_decision": [
+          2,
+          1,
+          1,
+          2,
+          1
+        ],
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "skill_verified": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "release": 1
+        },
+        "chunk_truncations": [],
+        "smooth_reference_max_acceleration_jump": 3.5111773322454063e-13,
+        "smooth_reference_max_jerk_limit_ratio": 0.9970059900149792,
+        "smooth_reference_max_translation_acceleration_jump": 3.5111773322454063e-13,
+        "smooth_reference_max_rotation_acceleration_jump": 1.8347493163869709e-16,
+        "native_step_limit_hit": false,
+        "terminal_category": "native_success",
+        "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_0/episodes.jsonl",
+        "report_category": "bowl_transfer"
+      },
+      {
+        "case": {
+          "name": "box_transfer_libero_object_t0_s4",
+          "category": "box_transfer",
+          "episode": {
+            "suite": "libero_object",
+            "task": 0,
+            "seed": 4
+          },
+          "state_sha256": "ccf1b9956a832c5ba7e57eed974483435a70a1e7ab668b172a5555c75933abfe",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+            "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4",
+        "success": true,
+        "decisions": 2,
+        "sim_steps": 409,
+        "skill_sim_steps": {
+          "move_to": 113,
+          "descend": 47,
+          "set_gripper": 15,
+          "observe": 0,
+          "lift": 32,
+          "carry_to": 167,
+          "lower": 25,
+          "release": 10
+        },
+        "wall_s": 311.8461713618599,
+        "failure_phase": null,
+        "source": "official_original_task_predicates_private",
+        "status": "physical_result",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": null,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 311.8461713618599,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 54.01725311530754,
+            "perception.entity_measurement": 83.94699989212677,
+            "artifact_io": 3.3427589228376746,
+            "planning.consequences": 136.3149726074189,
+            "planning.request": 2.96831336338073,
+            "decision.oracle": 0.08449757751077414,
+            "simulation.step_render": 8.436045731417835,
+            "perception.depth": 0.7578917383216321,
+            "perception.capture_io": 12.387930321972817,
+            "execution.other": 5.540827149990946
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 54.01725311530754,
+            "perception.entity_measurement": 83.94699989212677,
+            "artifact_io": 3.3427589228376746,
+            "planning.consequences": 136.3149726074189,
+            "planning.request": 2.96831336338073,
+            "decision.oracle": 0.08449757751077414,
+            "simulation.step_render": 8.436045731417835,
+            "perception.depth": 0.7578917383216321,
+            "perception.capture_io": 12.387930321972817,
+            "execution.other": 5.540827149990946
+          },
+          "main_thread_unattributed_s": 4.0486809415742755,
+          "calls": {
+            "perception.segmentation:call": 115,
+            "perception.entity_measurement:refresh": 18,
+            "perception.entity_measurement:_refresh_held_measurement": 10,
+            "perception.entity_measurement:_instance_pixels": 22,
+            "perception.entity_measurement:_contact_pixels": 16,
+            "artifact_io:_record_public_geometry": 54,
+            "planning.consequences:_cloud_and_ik": 101,
+            "planning.consequences:check": 2443,
+            "planning.consequences:__call__": 357,
+            "planning.consequences:_route": 359,
+            "planning.consequences:_candidate": 398,
+            "planning.request:None": 2,
+            "planning.consequences:context": 8,
+            "decision.oracle:None": 2,
+            "planning.consequences:plan_chunk": 2,
+            "simulation.step_render:step": 409,
+            "perception.depth:_metric_depth": 32,
+            "perception.depth:_world_from_depth": 32,
+            "simulation.step_render:render_camera": 16,
+            "perception.capture_io:get_env_state": 8,
+            "execution.other:None": 2
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 6.265353619586676,
+              "perception.entity_measurement": 0.3922628373838961
+            },
+            "planning.request": {
+              "perception.entity_measurement": 35.79310884140432,
+              "artifact_io": 1.5142036313191056,
+              "planning.consequences": 35.99412002880126,
+              "planning.request": 2.96831336338073
+            },
+            "decision.oracle": {
+              "planning.consequences": 58.321145094465464,
+              "decision.oracle": 0.08449757751077414,
+              "perception.entity_measurement": 2.440391108393669e-05,
+              "artifact_io": 0.14012405462563038
+            },
+            "execution.other": {
+              "planning.consequences": 41.99970748415217,
+              "perception.entity_measurement": 47.76160380942747,
+              "artifact_io": 1.6884312368929386,
+              "simulation.step_render": 8.436045731417835,
+              "perception.depth": 0.7578917383216321,
+              "perception.capture_io": 12.387930321972817,
+              "perception.segmentation": 47.75189949572086,
+              "execution.other": 5.540827149990946
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "measured-receipt-v2",
+        "actual_actions_per_decision": [
+          3,
+          4
+        ],
+        "attempted_actions_per_decision": [
+          4,
+          4
+        ],
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "observe": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "skill_verified": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "chunk_truncations": [],
+        "smooth_reference_max_acceleration_jump": 3.6923281099805784e-14,
+        "smooth_reference_max_jerk_limit_ratio": 0.9970059900149796,
+        "smooth_reference_max_translation_acceleration_jump": 3.6923281099805784e-14,
+        "smooth_reference_max_rotation_acceleration_jump": 1.9711310752743742e-16,
+        "native_step_limit_hit": false,
+        "terminal_category": "native_success",
+        "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_24/episodes.jsonl",
+        "report_category": "box_transfer"
+      },
+      {
+        "case": {
+          "name": "box_transfer_libero_object_t0_s4",
+          "category": "box_transfer",
+          "episode": {
+            "suite": "libero_object",
+            "task": 0,
+            "seed": 4
+          },
+          "state_sha256": "ccf1b9956a832c5ba7e57eed974483435a70a1e7ab668b172a5555c75933abfe",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+            "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4_legacy",
+        "success": true,
+        "decisions": 5,
+        "sim_steps": 410,
+        "skill_sim_steps": {
+          "move_to": 113,
+          "descend": 47,
+          "set_gripper": 15,
+          "lift": 32,
+          "carry_to": 168,
+          "lower": 25,
+          "release": 10
+        },
+        "wall_s": 347.73306680331007,
+        "failure_phase": null,
+        "source": "official_original_task_predicates_private",
+        "status": "physical_result",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": null,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 347.73306680331007,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 47.56303037656471,
+            "perception.entity_measurement": 117.84530176455155,
+            "artifact_io": 4.978572505526245,
+            "planning.consequences": 143.73069617245346,
+            "planning.request": 3.8205266278237104,
+            "decision.oracle": 0.08865641336888075,
+            "simulation.step_render": 8.595532380510122,
+            "perception.depth": 0.6403958355076611,
+            "perception.capture_io": 10.859426606912166,
+            "execution.other": 5.609242992475629
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 47.56303037656471,
+            "perception.entity_measurement": 117.84530176455155,
+            "artifact_io": 4.978572505526245,
+            "planning.consequences": 143.73069617245346,
+            "planning.request": 3.8205266278237104,
+            "decision.oracle": 0.08865641336888075,
+            "simulation.step_render": 8.595532380510122,
+            "perception.depth": 0.6403958355076611,
+            "perception.capture_io": 10.859426606912166,
+            "execution.other": 5.609242992475629
+          },
+          "main_thread_unattributed_s": 4.001685127615929,
+          "calls": {
+            "perception.segmentation:call": 104,
+            "perception.entity_measurement:refresh": 16,
+            "perception.entity_measurement:_refresh_held_measurement": 12,
+            "perception.entity_measurement:_instance_pixels": 39,
+            "perception.entity_measurement:_contact_pixels": 27,
+            "artifact_io:_record_public_geometry": 87,
+            "planning.consequences:_cloud_and_ik": 194,
+            "planning.consequences:check": 2660,
+            "planning.consequences:__call__": 270,
+            "planning.consequences:_route": 263,
+            "planning.consequences:_candidate": 299,
+            "planning.request:None": 5,
+            "planning.consequences:context": 7,
+            "decision.oracle:None": 5,
+            "planning.consequences:plan_chunk": 5,
+            "simulation.step_render:step": 410,
+            "perception.depth:_metric_depth": 28,
+            "perception.depth:_world_from_depth": 28,
+            "simulation.step_render:render_camera": 14,
+            "perception.capture_io:get_env_state": 7,
+            "execution.other:None": 5
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 5.734788991045207,
+              "perception.entity_measurement": 0.3586163208819926
+            },
+            "planning.request": {
+              "perception.entity_measurement": 84.1054433034733,
+              "artifact_io": 2.9307464701123536,
+              "planning.consequences": 87.35937731992453,
+              "planning.request": 3.8205266278237104,
+              "perception.segmentation": 0.12950362591072917
+            },
+            "decision.oracle": {
+              "planning.consequences": 27.075464762747288,
+              "decision.oracle": 0.08865641336888075,
+              "perception.entity_measurement": 0.00010896055027842522,
+              "artifact_io": 0.5665295259095728
+            },
+            "execution.other": {
+              "planning.consequences": 29.295854089781642,
+              "perception.entity_measurement": 33.381133179645985,
+              "artifact_io": 1.4812965095043182,
+              "simulation.step_render": 8.595532380510122,
+              "perception.depth": 0.6403958355076611,
+              "perception.capture_io": 10.859426606912166,
+              "perception.segmentation": 41.698737759608775,
+              "execution.other": 5.609242992475629
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "static-contact-v1-comparison",
+        "actual_actions_per_decision": [
+          2,
+          1,
+          1,
+          2,
+          1
+        ],
+        "attempted_actions_per_decision": [
+          2,
+          1,
+          1,
+          2,
+          1
+        ],
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "skill_verified": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "lower": 1,
+          "release": 1
+        },
+        "chunk_truncations": [],
+        "smooth_reference_max_acceleration_jump": 3.6923281099805784e-14,
+        "smooth_reference_max_jerk_limit_ratio": 0.9970059900149801,
+        "smooth_reference_max_translation_acceleration_jump": 3.6923281099805784e-14,
+        "smooth_reference_max_rotation_acceleration_jump": 1.9711310752743742e-16,
+        "native_step_limit_hit": false,
+        "terminal_category": "native_success",
+        "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_24/episodes.jsonl",
+        "report_category": "box_transfer"
+      },
+      {
+        "case": {
+          "name": "container_libero_object_t2_s0",
+          "category": "container",
+          "episode": {
+            "suite": "libero_object",
+            "task": 2,
+            "seed": 0
+          },
+          "state_sha256": "02feb7104ff3af12f1247c461997f1113686f704fb702cd3280d6bfba56e6f71",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl",
+            "sha256": "024978e9e8f43a49b49d0965f4f426d364ce056307f0fcf5733dc4682fac437a"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4",
+        "success": true,
+        "decisions": 2,
+        "sim_steps": 588,
+        "skill_sim_steps": {
+          "move_to": 254,
+          "descend": 47,
+          "set_gripper": 15,
+          "observe": 0,
+          "lift": 32,
+          "carry_to": 233,
+          "release": 7
+        },
+        "wall_s": 252.15827872697264,
+        "failure_phase": null,
+        "source": "official_original_task_predicates_private",
+        "status": "physical_result",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": null,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 252.15827872697264,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 46.914995091967285,
+            "perception.entity_measurement": 62.18471598997712,
+            "artifact_io": 2.7593061137013137,
+            "planning.consequences": 104.36462627863511,
+            "planning.request": 5.243329629302025,
+            "decision.oracle": 0.08930928958579898,
+            "simulation.step_render": 10.03653270425275,
+            "perception.depth": 0.6600332842208445,
+            "perception.capture_io": 10.89771930174902,
+            "execution.other": 4.885600443929434
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 46.914995091967285,
+            "perception.entity_measurement": 62.18471598997712,
+            "artifact_io": 2.7593061137013137,
+            "planning.consequences": 104.36462627863511,
+            "planning.request": 5.243329629302025,
+            "decision.oracle": 0.08930928958579898,
+            "simulation.step_render": 10.03653270425275,
+            "perception.depth": 0.6600332842208445,
+            "perception.capture_io": 10.89771930174902,
+            "execution.other": 4.885600443929434
+          },
+          "main_thread_unattributed_s": 4.122110599651933,
+          "calls": {
+            "perception.segmentation:call": 98,
+            "perception.entity_measurement:refresh": 16,
+            "perception.entity_measurement:_refresh_held_measurement": 9,
+            "perception.entity_measurement:_instance_pixels": 17,
+            "perception.entity_measurement:_contact_pixels": 13,
+            "artifact_io:_record_public_geometry": 41,
+            "planning.consequences:_cloud_and_ik": 83,
+            "planning.consequences:check": 2543,
+            "planning.consequences:__call__": 319,
+            "planning.consequences:_route": 299,
+            "planning.consequences:_candidate": 338,
+            "planning.request:None": 2,
+            "planning.consequences:context": 8,
+            "decision.oracle:None": 2,
+            "planning.consequences:plan_chunk": 2,
+            "simulation.step_render:step": 588,
+            "perception.depth:_metric_depth": 28,
+            "perception.depth:_world_from_depth": 28,
+            "simulation.step_render:render_camera": 14,
+            "perception.capture_io:get_env_state": 7,
+            "execution.other:None": 2
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 6.199280413798988,
+              "perception.entity_measurement": 0.4102109521627426
+            },
+            "planning.request": {
+              "perception.entity_measurement": 35.06067477399483,
+              "artifact_io": 1.3183151045814157,
+              "planning.consequences": 35.73829156998545,
+              "planning.request": 5.243329629302025
+            },
+            "decision.oracle": {
+              "planning.consequences": 37.072561006527394,
+              "decision.oracle": 0.08930928958579898,
+              "perception.entity_measurement": 3.958120942115784e-05,
+              "artifact_io": 0.13999204291030765
+            },
+            "execution.other": {
+              "planning.consequences": 31.55377370212227,
+              "perception.entity_measurement": 26.713790682610124,
+              "artifact_io": 1.3009989662095904,
+              "simulation.step_render": 10.03653270425275,
+              "perception.depth": 0.6600332842208445,
+              "perception.capture_io": 10.89771930174902,
+              "perception.segmentation": 40.7157146781683,
+              "execution.other": 4.885600443929434
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "measured-receipt-v2",
+        "actual_actions_per_decision": [
+          3,
+          3
+        ],
+        "attempted_actions_per_decision": [
+          4,
+          3
+        ],
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "observe": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "release": 1
+        },
+        "skill_verified": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "release": 1
+        },
+        "chunk_truncations": [
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "994e6cc558d9f3ab",
+              "178aa52a6dcc2aec",
+              "987434631f6c114e",
+              "61847fe1921eb908"
+            ],
+            "executed_ids": [
+              "994e6cc558d9f3ab",
+              "178aa52a6dcc2aec",
+              "987434631f6c114e"
+            ],
+            "actual_actions": 3,
+            "discarded_ids": [
+              "61847fe1921eb908"
+            ],
+            "stop_reason": "native_success",
+            "interrupted_skill": "release"
+          }
+        ],
+        "smooth_reference_max_acceleration_jump": 1.0527962074957792e-14,
+        "smooth_reference_max_jerk_limit_ratio": 0.9970059900149797,
+        "smooth_reference_max_translation_acceleration_jump": 1.0527917582083514e-14,
+        "smooth_reference_max_rotation_acceleration_jump": 2.105027969338864e-15,
+        "native_step_limit_hit": false,
+        "terminal_category": "native_success",
+        "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_40/episodes.jsonl",
+        "report_category": "container"
+      },
+      {
+        "case": {
+          "name": "container_libero_object_t2_s0",
+          "category": "container",
+          "episode": {
+            "suite": "libero_object",
+            "task": 2,
+            "seed": 0
+          },
+          "state_sha256": "02feb7104ff3af12f1247c461997f1113686f704fb702cd3280d6bfba56e6f71",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl",
+            "sha256": "024978e9e8f43a49b49d0965f4f426d364ce056307f0fcf5733dc4682fac437a"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4_legacy",
+        "success": true,
+        "decisions": 4,
+        "sim_steps": 584,
+        "skill_sim_steps": {
+          "move_to": 254,
+          "descend": 47,
+          "set_gripper": 15,
+          "lift": 32,
+          "carry_to": 229,
+          "release": 7
+        },
+        "wall_s": 298.28890203498304,
+        "failure_phase": null,
+        "source": "official_original_task_predicates_private",
+        "status": "physical_result",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": null,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 298.28890203498304,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 40.17453672736883,
+            "perception.entity_measurement": 90.29908925155178,
+            "artifact_io": 3.879749166313559,
+            "planning.consequences": 127.14732967270538,
+            "planning.request": 7.5162751050665975,
+            "decision.oracle": 0.057847555726766586,
+            "simulation.step_render": 10.19561873190105,
+            "perception.depth": 0.5676741856150329,
+            "perception.capture_io": 9.571273948065937,
+            "execution.other": 4.885329450946301
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 40.17453672736883,
+            "perception.entity_measurement": 90.29908925155178,
+            "artifact_io": 3.879749166313559,
+            "planning.consequences": 127.14732967270538,
+            "planning.request": 7.5162751050665975,
+            "decision.oracle": 0.057847555726766586,
+            "simulation.step_render": 10.19561873190105,
+            "perception.depth": 0.5676741856150329,
+            "perception.capture_io": 9.571273948065937,
+            "execution.other": 4.885329450946301
+          },
+          "main_thread_unattributed_s": 3.994178239721805,
+          "calls": {
+            "perception.segmentation:call": 86,
+            "perception.entity_measurement:refresh": 14,
+            "perception.entity_measurement:_refresh_held_measurement": 10,
+            "perception.entity_measurement:_instance_pixels": 27,
+            "perception.entity_measurement:_contact_pixels": 20,
+            "artifact_io:_record_public_geometry": 62,
+            "planning.consequences:_cloud_and_ik": 140,
+            "planning.consequences:check": 3207,
+            "planning.consequences:__call__": 254,
+            "planning.consequences:_route": 195,
+            "planning.consequences:_candidate": 226,
+            "planning.request:None": 4,
+            "planning.consequences:context": 6,
+            "decision.oracle:None": 4,
+            "planning.consequences:plan_chunk": 4,
+            "simulation.step_render:step": 584,
+            "perception.depth:_metric_depth": 24,
+            "perception.depth:_world_from_depth": 24,
+            "simulation.step_render:render_camera": 12,
+            "perception.capture_io:get_env_state": 6,
+            "execution.other:None": 4
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 5.74251590995118,
+              "perception.entity_measurement": 0.3651961339637637
+            },
+            "planning.request": {
+              "perception.entity_measurement": 75.26109780324623,
+              "artifact_io": 2.3032168820500374,
+              "planning.consequences": 90.15426246542484,
+              "planning.request": 7.5162751050665975,
+              "perception.segmentation": 0.024757080245763063
+            },
+            "decision.oracle": {
+              "planning.consequences": 18.452383684460074,
+              "decision.oracle": 0.057847555726766586,
+              "perception.entity_measurement": 6.669759750366211e-05,
+              "artifact_io": 0.45369651820510626
+            },
+            "execution.other": {
+              "planning.consequences": 18.540683522820473,
+              "perception.entity_measurement": 14.67272861674428,
+              "artifact_io": 1.1228357660584152,
+              "simulation.step_render": 10.19561873190105,
+              "perception.depth": 0.5676741856150329,
+              "perception.capture_io": 9.571273948065937,
+              "perception.segmentation": 34.40726373717189,
+              "execution.other": 4.885329450946301
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "static-contact-v1-comparison",
+        "actual_actions_per_decision": [
+          2,
+          1,
+          1,
+          2
+        ],
+        "attempted_actions_per_decision": [
+          2,
+          1,
+          1,
+          2
+        ],
+        "skill_attempts": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "release": 1
+        },
+        "skill_verified": {
+          "move_to": 1,
+          "descend": 1,
+          "set_gripper": 1,
+          "lift": 1,
+          "carry_to": 1,
+          "release": 1
+        },
+        "chunk_truncations": [],
+        "smooth_reference_max_acceleration_jump": 8.578597371043868e-15,
+        "smooth_reference_max_jerk_limit_ratio": 0.9970059900149797,
+        "smooth_reference_max_translation_acceleration_jump": 8.316320707066428e-15,
+        "smooth_reference_max_rotation_acceleration_jump": 2.105027969338864e-15,
+        "native_step_limit_hit": false,
+        "terminal_category": "native_success",
+        "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8827_40/episodes.jsonl",
+        "report_category": "container"
+      }
+    ],
+    "training": false
+  },
+  "limitations": [
+    "Unfinished arms are not paired results.",
+    "Native success may legitimately discard a suffix; stop reasons remain separate.",
+    "Existing smooth_reference metrics cover nominal splines, not all braking or cross-skill joins."
+  ],
+  "training": false,
+  "confirmation": false,
+  "script_sha256": "2e2d762199e244093e29f6832648607751e03ffba34cb249ba8365823cbb3e24"
+}
