@@ -117,11 +117,14 @@ def test_precontact_instance_reference_preserves_exact_public_pixels(adapter):
     adapter.precontact_instance_surface_v1 = True
     adapter.plans['e1'] = {'xyz_m': [.1, .1, .9]}
     adapter._instance_pixels = lambda key: points
+    neighbour = np.array([[.15, .1, .9]])
+    adapter._base_geometry = (np.concatenate([points, neighbour]), None)
     adapter._commit_grasp({'skill': 'move_to', 'parameters': {'anchor_id': 'e1'}})
     saved = adapter.committed_grasps['e1']['instance_reference']
     np.testing.assert_array_equal(saved['xyz_world'], points)
     assert not np.shares_memory(saved['xyz_world'], points)
     assert saved['source_step'] == 0
+    np.testing.assert_allclose(saved['stationary_scene'], neighbour)
 
 
 def test_rejected_zero_step_nudge_keeps_measured_contact_for_recovery(adapter, monkeypatch):
@@ -176,8 +179,8 @@ def test_precontact_curved_instance_recovers_occluded_rim_but_keeps_other_depth(
         assert evidence['private_pose_used'] is False
 
 
-@pytest.mark.parametrize('shift_m', [.006, .03])
-def test_precontact_surface_tracks_small_contact_motion_only(adapter, shift_m):
+@pytest.mark.parametrize('shift_m, has_static', [(.006, False), (.006, True), (.03, False)])
+def test_precontact_surface_tracks_small_contact_motion_only(adapter, shift_m, has_static):
     y, x = np.mgrid[:30, :40]
     old = np.stack([.08+x*.001, .08+y*.001,
                     .9+.004*np.sin(x*.2)+.002*np.cos(y*.3)], axis=-1)
@@ -189,19 +192,23 @@ def test_precontact_surface_tracks_small_contact_motion_only(adapter, shift_m):
     # A separate nearby depth surface remains an obstacle after association.
     other = world[15, 21] + [0., 0., .006]
     world[15, 21] = other
+    stationary = world[5, 5].copy()
+    current = current[np.linalg.norm(current-stationary, axis=1) > 1e-9]
     adapter._instance_pixels = lambda key: current
     adapter._self_filtered_world = lambda points: points
     adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
     adapter._base_geometry = (world.reshape(-1, 3), None)
     adapter.active = 'e1'
     adapter.committed_grasps['e1'] = {'plan': {}, 'instance_reference': {
-        'xyz_world': old.reshape(-1, 3), 'source_step': 0}}
+        'xyz_world': old.reshape(-1, 3), 'source_step': 0,
+        'stationary_scene': np.array([stationary]) if has_static else np.empty((0, 3))}}
     pixels = adapter._contact_pixels('e1')
     evidence = adapter.instance_boundary_evidence['e1'][-1]
     accepted = shift_m < .015
     assert evidence['surface_registration']['accepted'] is accepted
     assert bool((np.linalg.norm(pixels-missing, axis=1) < 1e-9).any()) is accepted
     assert not (np.linalg.norm(pixels-other, axis=1) < 1e-9).any()
+    assert bool((np.linalg.norm(pixels-stationary, axis=1) < 1e-9).any()) is (accepted and not has_static)
     assert evidence['private_pose_used'] is False
 
 

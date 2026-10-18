@@ -402,7 +402,10 @@ class MeasuredSkillAdapter:
                 # Finger contact can move the object before lift. Register
                 # its old measured surface to the current clean instance;
                 # never infer this displacement from commanded hand motion.
-                old, registration = _surface_registration(old, pixels)
+                stationary = reference.get('stationary_scene')
+                registration = {'accepted': False, 'reason': 'precontact_stationary_scene_missing'}
+                if stationary is not None:
+                    old, registration = _surface_registration(old, pixels)
                 overlap = cKDTree(old).query(pixels,
                     distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001
                 recovered, evidence = [pixels], []
@@ -431,7 +434,18 @@ class MeasuredSkillAdapter:
                     recovered.append(scene[member[:, 0] & extent])
                     evidence.append({'source': 'current_rgbd_matches_precontact_circular_sections',
                         'fit': curved, 'axis_xyz': axes[:, -1].tolist()})
-                pixels = np.concatenate(recovered)
+                recovered = np.concatenate(recovered)
+                retained = 0
+                if stationary is not None and len(stationary):
+                    # A small surface fit can otherwise sweep a curved
+                    # boundary onto its unmoved support or neighbour. Keep
+                    # those additions in the obstacle cloud, as after lift.
+                    added = cKDTree(pixels).query(recovered)[0] > 1e-6
+                    static = cKDTree(stationary).query(recovered,
+                        distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
+                    retained = int((added & static).sum())
+                    recovered = recovered[~(added & static)]
+                pixels = recovered
                 self._instance_cache[cache_key] = pixels
                 self.instance_boundary_evidence.setdefault(anchor_id, []).append({
                     'source': 'current_rgbd_matches_exact_precontact_instance_surface',
@@ -439,6 +453,7 @@ class MeasuredSkillAdapter:
                     'capture_step': self.ex.toolkit._state.latest_step,
                     'shared_current_pixels': int(overlap.sum()), 'minimum_shared_pixels': 40,
                     'surface_registration': registration,
+                    'stationary_pixels_retained_as_obstacles': retained,
                     'surface_residual_m': .001, 'private_pose_used': False, 'matches': evidence})
             pixels = self._instance_cache[cache_key]
         if (surface and 'anchor_xyz' in committed and self.active is None and entity is not None
@@ -2483,9 +2498,18 @@ class MeasuredSkillAdapter:
                 # millimetre-scale identity needed after jaw occlusion.
                 points = self._instance_pixels(key)
                 if len(points) >= 40:
+                    from scipy.spatial import cKDTree
+
+                    from robots.libero.v5_geometric_grasp import _voxel
+
+                    self._cloud_and_ik(key, contact=True)
+                    scene = self._base_geometry[0]
+                    member = cKDTree(points).query(scene,
+                        distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
                     artifact = self._record_public_geometry(f'bounded_precontact_{key}_target', points)
                     self.committed_grasps[key]['instance_reference'] = {
                         'xyz_world': np.array(points, copy=True),
+                        'stationary_scene': _voxel(scene[~member], .001),
                         'source_step': self.ex.toolkit._state.latest_step, 'artifact': artifact}
 
     def call_vla(self, parameters):

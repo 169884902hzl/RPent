@@ -1,0 +1,37 @@
+{
+  "scope": "precontact registration with stationary neighbour veto; CPU validation only",
+  "source_parent": "af3953a",
+  "physical_validation": "pending same-source startup and paired replay",
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_payload.py -q",
+      "passed": 245,
+      "exit_code": 0,
+      "seconds": 112.02
+    }
+  ],
+  "files": [
+    {
+      "path": "robots/libero/bounded_skills.py",
+      "sha256": "701a3d5d9d78e249cabaa42484eaf9632e8b1be18f1ca22234260c929566939c"
+    }
+  ],
+  "pytest_warning": "existing unknown timeout configuration option",
+  "training": false,
+  "confirmation": false,
+  "gpu_used": false,
+  "private_truth_in_runtime": false,
+  "rejected_predecessor": {
+    "source": "af3953a",
+    "added_bowl_pixels": 30,
+    "added_plate_pixels": 29,
+    "gpu_submitted": false
+  },
+  "candidate_saved_public_result": {
+    "added_bowl_pixels": 30,
+    "added_other_pixels": 0,
+    "removed_pixels": 0,
+    "route_screen": "public_route_screen_passed",
+    "private_identity_diagnostic_only": true
+  }
+}
