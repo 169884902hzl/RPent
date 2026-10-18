@@ -70,12 +70,14 @@ def audit_choices(paths):
                     if last['after'] == first['before']:
                         initial = result.get('initial_derivatives')
                         acceleration = np.asarray(initial[1] if initial is not None else np.zeros(6))
+                        reference_start = result.get('reference_start_pose', first['before'])
                         joins.append({'record': str(path), 'decision_index': decision_index,
                             'detail_index': detail_index, 'kind': 'adjacent_motion_same_measured_state',
                             'reference_translation_acceleration_jump': float(np.linalg.norm(
                                 acceleration[:3]-np.asarray(last['reference_acceleration'])[:3])),
                             'reference_position_jump_m': float(np.linalg.norm(
-                                np.asarray(first['before']['eef_xyz_m'])-last['desired']['xyz_m']))})
+                                np.asarray(reference_start['eef_xyz_m'])-last['desired']['xyz_m'])),
+                            'initial_derivatives_source': result.get('initial_derivatives_source')})
                 previous_motion = result
     brake_joins = [r['braking'] for r in motions if r['braking'] and r['braking']['executed']]
     summary = {'motions': len(motions), 'executed_brakes': len(brake_joins),

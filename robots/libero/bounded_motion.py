@@ -106,14 +106,28 @@ class SmoothMotion:
         self.p, self.screen, self.config = primitives, screen, config
         self.trace: list[dict] = []
 
+    def _reference_start(self, initial_derivatives):
+        measured = measured_robot(self.p)
+        previous = getattr(self.p, '_bounded_rest_reference', None)
+        if (initial_derivatives is None and previous is not None
+                and previous['control_index'] == getattr(self.p, '_bounded_control_index', 0)
+                and previous['measured_robot'] == measured):
+            # Feedback lag is not a new reference acceleration. Adjacent
+            # screened motions continue from the prior reference's rest
+            # endpoint, while OSC still controls from CURRENT sensors.
+            return ({**measured, **previous['pose']}, (np.zeros(6),)*3, 'previous_rest_reference')
+        inherited = measured_derivatives(self.p, self.config.hz) if initial_derivatives is None else initial_derivatives
+        source = ('explicit' if initial_derivatives is not None else
+                  'public_20hz_sensor_stream' if inherited is not None else 'unmeasured_rest_reference')
+        return measured, inherited, source
+
     def prepare(self, waypoints: list[dict], *, blend: bool = True, initial_derivatives=None):
-        start = measured_robot(self.p)
+        start, inherited, source = self._reference_start(initial_derivatives)
         origin = Rotation.from_quat(start["eef_quat_xyzw"])
         points = [np.r_[start["eef_xyz_m"], [0., 0., 0.]]]
         for point in waypoints:
             rotation = Rotation.from_quat(point.get("quat_xyzw", start["eef_quat_xyzw"]))
             points.append(np.r_[point["xyz_m"], (rotation*origin.inv()).as_rotvec()])
-        inherited = measured_derivatives(self.p, self.config.hz) if initial_derivatives is None else initial_derivatives
         try:
             if inherited is not None and any(np.linalg.norm(derivative[indices]) > bound*1.000001
                     for indices, limit in self.config.groups()
@@ -146,7 +160,15 @@ class SmoothMotion:
         poses = [{"xyz_m": value[:3].tolist(),
                   "quat_xyzw": (Rotation.from_rotvec(value[3:])*origin).as_quat().tolist(),
                   "time_s": float(t)} for t, value in zip(times, values)]
-        evidence = self.screen(poses)
+        screen_poses = poses
+        if source == 'previous_rest_reference':
+            current = measured_robot(self.p)
+            # The command reference is continuous, but the feedback robot
+            # can lag it. Screen that corrective sweep as well; continuing
+            # a reference must not skip the physical start of the route.
+            screen_poses = [{'xyz_m': current['eef_xyz_m'],
+                'quat_xyzw': current['eef_quat_xyzw'], 'time_s': 0.}, *poses]
+        evidence = self.screen(screen_poses)
         return trajectory, origin, poses, evidence
 
     def _command(self, xyz, quat, gripper):
@@ -167,7 +189,7 @@ class SmoothMotion:
     def run(self, waypoints: list[dict], *, gripper: float = -1., blend: bool = True,
             lookahead=None, request_factory=None, contact_stop=None, initial_derivatives=None,
             waypoint_check=None) -> dict:
-        inherited = measured_derivatives(self.p, self.config.hz) if initial_derivatives is None else initial_derivatives
+        reference_start, inherited, inherited_source = self._reference_start(initial_derivatives)
         trajectory, origin, poses, screen = self.prepare(waypoints, blend=blend, initial_derivatives=initial_derivatives)
         if not screen["passed"]:
             return {"executed": False, "stop_reason": screen["reason"], "steps_used": 0, "screen": screen}
@@ -237,11 +259,19 @@ class SmoothMotion:
         metrics['reference_max_jerk_limit_ratio'] = max((segment.maximum(3, axes)/limit.jerk
             for segment in trajectory.segments for axes, limit in self.config.groups()), default=0.)
         end_error = float(np.linalg.norm(np.asarray(waypoints[-1]["xyz_m"])-measured_robot(self.p)["eef_xyz_m"]))
+        if (trace and stop in {'endpoint', 'decision_pending_at_rest_endpoint'}
+                and end_error <= self.config.endpoint_tolerance_m
+                and not (self.p.env.terminated or self.p.env.truncated)):
+            self.p._bounded_rest_reference = {
+                'control_index': getattr(self.p, '_bounded_control_index', 0),
+                'measured_robot': measured_robot(self.p),
+                'pose': {'eef_xyz_m': poses[-1]['xyz_m'], 'eef_quat_xyzw': poses[-1]['quat_xyzw']}}
         return {"executed": bool(trace), "stop_reason": stop, "steps_used": len(trace), "screen": screen,
                 "endpoint_error_m": end_error, "max_tracking_error_m": max((row["tracking_error_m"] for row in trace), default=0.),
                 "metrics": metrics, "trace": trace, "config": asdict(self.config),
                 "initial_derivatives": [d.tolist() for d in inherited] if inherited is not None else None,
-                "initial_derivatives_source": "explicit" if initial_derivatives is not None else "public_20hz_sensor_stream" if inherited is not None else "unmeasured_rest_reference",
+                "initial_derivatives_source": inherited_source,
+                "reference_start_pose": {key: reference_start[key] for key in ('eef_xyz_m', 'eef_quat_xyzw')},
                 "reference_duration_s": trajectory.duration,
                 "waypoint_times_s": list(trajectory.waypoint_times), "braking": braking,
                 "checked_waypoints": checked_waypoints}

@@ -35,6 +35,43 @@ def test_executes_blended_curve_and_reports_actual_metrics():
     assert max(np.linalg.norm(action[:3]) for action in p.actions) < 1.
 
 
+def test_adjacent_references_do_not_reset_to_feedback_lag_acceleration():
+    from robots.libero.bounded_motion import measured_derivatives
+
+    p = FakePrimitives()
+    p._step_env = lambda action: setattr(p.env, 'position', p.env.position+action[:3]*.05*.15)
+    screens = []
+    def screen(poses):
+        screens.append(poses)
+        return {'passed': True}
+    motion = SmoothMotion(p, screen)
+    first = motion.run([{'xyz_m': [.1, 0., 1.]}])
+    assert first['stop_reason'] == 'endpoint'
+    assert np.linalg.norm(measured_derivatives(p, 20.)[1]) > 1e-5
+    reference = first['trace'][-1]['desired']
+    second = motion.run([{'xyz_m': [.15, .03, 1.]}])
+    assert second['initial_derivatives_source'] == 'previous_rest_reference'
+    np.testing.assert_allclose(screens[-1][0]['xyz_m'], first['trace'][-1]['after']['eef_xyz_m'])
+    np.testing.assert_allclose(screens[-1][1]['xyz_m'], reference['xyz_m'])
+    np.testing.assert_allclose(second['reference_start_pose']['eef_xyz_m'], reference['xyz_m'], atol=1e-12)
+    np.testing.assert_allclose(second['reference_start_pose']['eef_quat_xyzw'], reference['quat_xyzw'], atol=1e-12)
+    np.testing.assert_allclose(second['initial_derivatives'][:2], 0., atol=1e-12)
+    np.testing.assert_allclose(first['trace'][-1]['reference_acceleration'], 0., atol=1e-9)
+    assert second['metrics']['reference_max_jerk_limit_ratio'] <= 1.000001
+
+
+def test_intervening_public_control_invalidates_a_rest_reference():
+    from robots.libero.bounded_motion import public_control
+
+    p = FakePrimitives()
+    motion = SmoothMotion(p, lambda poses: {'passed': True})
+    motion.run([{'xyz_m': [.1, 0., 1.]}])
+    public_control(p, np.array([0., 0., 0., 0., 0., 0., 1.]))
+    start, _, source = motion._reference_start(None)
+    assert source == 'public_20hz_sensor_stream'
+    np.testing.assert_allclose(start['eef_xyz_m'], p.env.position)
+
+
 def test_rejected_inherited_brake_is_screened_before_planning_its_retarget(monkeypatch):
     from robots.libero import bounded_motion
 
