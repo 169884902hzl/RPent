@@ -47,6 +47,38 @@ def decision(request, ids):
             "observation_id": request["observation_id"], "candidate_ids": ids}
 
 
+def test_same_capture_self_filter_reuses_only_identical_inputs(adapter, monkeypatch):
+    import scipy.spatial
+    from scipy.spatial import cKDTree
+
+    builds = []
+    def tree(points):
+        builds.append(True)
+        return cKDTree(points)
+    monkeypatch.setattr(scipy.spatial, 'cKDTree', tree)
+    world = np.array([[[.1, .2, .3], [.4, .5, .6]]])
+    adapter._base_geometry = (world.reshape(-1, 3)[:1].copy(), None)
+    first = adapter._self_filtered_world(world)
+    assert np.array_equal(first[0, 0], world[0, 0])
+    assert np.isnan(first[0, 1]).all()
+    first[:] = 0.  # A consumer must not mutate later cached results.
+    assert np.array_equal(adapter._self_filtered_world(world.copy())[0, 0], world[0, 0])
+    assert len(builds) == 1
+
+    changed = world.copy()
+    changed[0, 0, 0] += .001
+    assert np.isnan(adapter._self_filtered_world(changed)).all()
+    assert len(builds) == 2
+    adapter.ex.toolkit._state.latest_step += 1
+    adapter._self_filtered_world(world)
+    assert len(builds) == 3
+    adapter._base_geometry = (world.reshape(-1, 3)[1:].copy(), None)
+    latest = adapter._self_filtered_world(world)
+    assert np.isnan(latest[0, 0]).all()
+    assert np.array_equal(latest[0, 1], world[0, 1])
+    assert len(builds) == 4
+
+
 @pytest.mark.parametrize('mode', ['refresh', 'blocked_scan', 'withdrawal'])
 def test_observation_keeps_contact_until_the_hand_actually_withdraws(adapter, monkeypatch, mode):
     original_obs = adapter.p.env.raw_obs

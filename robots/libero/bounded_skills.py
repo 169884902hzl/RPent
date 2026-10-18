@@ -104,6 +104,7 @@ class MeasuredSkillAdapter:
         self._base_geometry = None
         self._screen_cache = {}
         self._instance_cache = {}
+        self._self_filtered_capture = None
         self.instance_boundary_evidence = {}
         self._proprio_sample = None
         self.record_public_geometry = record_public_geometry
@@ -167,6 +168,7 @@ class MeasuredSkillAdapter:
         self._base_geometry = None
         self._screen_cache.clear()
         self._instance_cache.clear()
+        self._self_filtered_capture = None
         self.instance_boundary_evidence.clear()
         self.public_geometry_evidence.clear()
         # Requests publish a self-filtered held surface. Compare the same
@@ -325,13 +327,26 @@ class MeasuredSkillAdapter:
             return world
         from scipy.spatial import cKDTree
 
+        # The raw self-filtered scene is immutable for this capture. Several
+        # contact/instance fits query the same full camera frame; reuse only
+        # identical pixel bytes, never a previous frame or different geometry.
+        scene = self._base_geometry[0]
+        capture_step = self.ex.toolkit._state.latest_step
+        cache = self._self_filtered_capture
+        if cache is None or cache['scene'] is not scene or cache['step'] != capture_step:
+            cache = self._self_filtered_capture = {'scene': scene, 'step': capture_step, 'frames': {}}
+        key = (world.shape, world.dtype.str, hashlib.sha256(world.tobytes()).digest())
+        if key in cache['frames']:
+            return cache['frames'][key].copy()
         flat = world.reshape(-1, 3)
         ids = np.flatnonzero(np.isfinite(flat).all(axis=1))
-        current = cKDTree(self._base_geometry[0]).query(flat[ids],
+        current = cKDTree(scene).query(flat[ids],
             distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
         filtered = np.full_like(flat, np.nan)
         filtered[ids[current]] = flat[ids[current]]
-        return filtered.reshape(world.shape)
+        filtered = filtered.reshape(world.shape)
+        cache['frames'][key] = filtered
+        return filtered.copy()
 
     def _handle_pixels(self, measurement, *, contact_surface=False):
         """Load only the current public handle samples, never a pose prior."""
