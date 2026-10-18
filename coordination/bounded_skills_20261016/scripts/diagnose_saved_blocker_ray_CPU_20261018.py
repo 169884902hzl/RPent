@@ -16,6 +16,7 @@ parser.add_argument('--source', type=Path, required=True)
 parser.add_argument('--manifest', type=Path, required=True)
 parser.add_argument('--skill', default='carry_to')
 parser.add_argument('--target', required=True)
+parser.add_argument('--contact', action='store_true')
 parser.add_argument('--output', type=Path, required=True)
 args = parser.parse_args()
 sys.path.insert(0, str(args.source))
@@ -36,13 +37,13 @@ saved = pickle.loads(raw)
 plan = json.loads(args.manifest.read_text())
 case = next(c for c in plan['cases'] if c['name']+'_oracle_k4' == directory.name)
 block = next(d for d in row['candidate_screen_diagnostics'] if d.get('skill') == args.skill
-    and d.get('parameters', {}).get('target_id') == args.target)
+    and d.get('parameters', {}).get('target_id', d.get('parameters', {}).get('anchor_id')) == args.target)
 if 'obstacle_point' in block:
     points = [block['obstacle_point']]
 else:
     points = [p for group in block['public_scene_collision_points'].values() for p in group]
 points = np.unique(points, axis=0)
-step = row['public_geometry_evidence'][f'bounded_screen_{args.target}_0_scene']['capture_step']
+step = row['public_geometry_evidence'][f'bounded_screen_{args.target}_{int(args.contact)}_scene']['capture_step']
 env = ControlEnv(bddl_file_name=case['bddl']['path'], use_camera_obs=False,
     has_renderer=False, has_offscreen_renderer=False, camera_names=[], ignore_done=True, horizon=10015)
 attach_reset_seed(env)

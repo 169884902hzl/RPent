@@ -13,6 +13,9 @@ preparation = json.loads((base / "reports/lateral_recovery_preparation_20261018.
 startup_receipt = json.loads((base / "reports/lateral_recovery_cup_startup_submission_20261018.json").read_text())
 startup_job = startup_receipt['job'].split(';')[0]+'_60'
 predecessor = startup_job
+door_startup = base / 'reports/door_tracking_microwave_startup_submission_20261018.json'
+if door_startup.exists():
+    predecessor = json.loads(door_startup.read_text())['job'].split(';')[0]
 source = Path(preparation["snapshot"])
 manifest = Path(preparation["manifest"]["path"])
 assert hashlib.sha256(manifest.read_bytes()).hexdigest() == preparation["manifest"]["sha256"]
@@ -32,7 +35,7 @@ ours = [row.split("|") for row in raw.splitlines() if "|rd-bounded-" in row]
 running = [row for row in ours if row[2] == "RUNNING"]
 assert len(running) <= 3 and all(row[3] == "node02" for row in running), running
 arguments = [
-    "sbatch", "--parsable", "--nodelist=node02", "--nice=500", "--array=14,60,160%1",
+    "sbatch", "--parsable", "--nodelist=node02", "--nice=500", "--array=14,16,60,160%1",
     '--dependency=afterany:'+predecessor,
     "--export=ALL,SOURCE=" + str(source) + ",SOURCE_COMMIT=" + preparation["source_commit"]
     + ",MANIFEST=" + str(manifest) + ",STARTUP=0",
@@ -40,7 +43,7 @@ arguments = [
 ]
 job = subprocess.check_output(arguments, text=True).strip()
 report = {
-    "scope": "full original bowl init14, cup init0 and plate init0 oracle replays after same-source physical startup",
+    "scope": "full original bowl init14/init16, cup init0 and plate init0 oracle replays after same-source physical startup",
     "training": False, "confirmation": False, "pi05_disabled": True,
     "job": job, "arguments": arguments, "snapshot": str(source),
     "source_commit": preparation["source_commit"], "manifest": preparation["manifest"],

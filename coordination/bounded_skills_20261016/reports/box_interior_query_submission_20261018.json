@@ -1,0 +1,41 @@
+{
+  "scope": "saved original public images only; zero controls, no training or confirmation",
+  "job": "8266",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--dependency=afterany:8262_14",
+    "--export=ALL,PUBLIC_QUERY_FILE=/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/box8173_24_interior_queries_CPU_20261018.json,PUBLIC_QUERY_STEM=box8173_24_interior_query",
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/run_saved_point_query_20261018.sbatch"
+  ],
+  "following_updates": [
+    [
+      "scontrol",
+      "update",
+      "JobId=8262_16",
+      "Dependency=afterany:8266"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=8262_60",
+      "Dependency=afterany:8266"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=8262_160",
+      "Dependency=afterany:8266"
+    ]
+  ],
+  "query_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/box8173_24_interior_queries_CPU_20261018.json",
+    "sha256": "b48cb452beaef42037e610d525f000a191cda2c565e19930c73380db2dfb9292"
+  },
+  "script_sha256": "9a451b4885fd19def05888f48847c9bcc8e740c26d22e059682ac4dabca8079b",
+  "launcher_sha256": "77367e2594600ffc61192e80a2e055abb0f82d1633a004eb8619d9e264a6c86b",
+  "aggregate_cap": 3,
+  "lane": "1: bowl init14 -> saved query -> bowl16/cup/plate -> microwave"
+}

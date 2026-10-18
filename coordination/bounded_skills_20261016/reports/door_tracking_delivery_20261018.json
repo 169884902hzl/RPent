@@ -1,0 +1,140 @@
+{
+  "scope": "original-scene development door-identity repair; CPU evidence and queued physical startup only",
+  "source_commit": "124314ed79a3b192c273a1587952ddaa8bb94b99",
+  "files": {
+    "robots/libero/bounded_self_filter.py": "7c42796b6d34e90712c0f1eef79e6465f6bd64af5452cbcb84e876feeefbc52e",
+    "robots/libero/v5_microwave_identity.py": "264eaf495c74d70c52ea44ba0b8c19d6ad8c756eab33153d278e29ebfe0feda5",
+    "robots/libero/v5_runtime.py": "55e08e4a8abcd749085dc7e10a1bb14585d80a3dd263ee61f9b4387f93460570",
+    "scripts/probe_bounded_feasibility.py": "5a4f5821cb85420d4495d1e3b663a18f3996490ed67c0a436603464d99d4174a",
+    "tests/unit_tests/robots/libero/test_v5_microwave_door_tracking.py": "86a1aa17829adf1778ecc8a0fbe9971e7f8bb1d19a755440a7d687efa7070f20"
+  },
+  "cpu_tests": {
+    "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_v5_microwave_door_tracking.py tests/unit_tests/robots/libero/test_v5_runtime.py tests/unit_tests/robots/libero/test_v5_microwave_capture.py tests/unit_tests/robots/libero/test_v5_microwave_identity.py -q",
+    "passed": 250,
+    "elapsed_s": 1.84,
+    "warnings": [
+      "local pytest has no timeout plugin"
+    ]
+  },
+  "lint": {
+    "baseline_findings": 40,
+    "current_findings": 40,
+    "new_findings": 0
+  },
+  "saved_capture_comparison": [
+    {
+      "path": "coordination/bounded_skills_20261016/reports/microwave8255_saved_tracking_CPU_20261018.json",
+      "sha256": "a60eadea04bbb3b3c94c0f184d9fc24687fc94e6663cafe8bfe0989d6fff62ad",
+      "measured_captures": 1,
+      "captures": 15,
+      "private_truth_used": false,
+      "controls": 0,
+      "independent_fixed_anchor_provided": false
+    },
+    {
+      "path": "coordination/bounded_skills_20261016/reports/microwave8255_saved_tracking_CPU_20261018_self_filtered.json",
+      "sha256": "aed11ef61637fcdc4aacbcfc36e77cc0fccd4885558a34b764d184275d69bbba",
+      "measured_captures": 1,
+      "captures": 15,
+      "private_truth_used": false,
+      "controls": 0,
+      "independent_fixed_anchor_provided": false
+    },
+    {
+      "path": "coordination/bounded_skills_20261016/reports/microwave8255_saved_tracking_CPU_20261018_self_filtered_candidate.json",
+      "sha256": "e24ea206b3697c82e06efd59a48fb52aaa4461be3f2324a9c7a47a88bccd6054",
+      "measured_captures": 10,
+      "captures": 15,
+      "private_truth_used": false,
+      "controls": 0,
+      "independent_fixed_anchor_provided": false
+    }
+  ],
+  "snapshot": {
+    "scope": "CPU preparation only; no GPU submission or physical result",
+    "source_commit": "124314ed79a3b192c273a1587952ddaa8bb94b99",
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_124314e_20261018",
+    "archive_sha256": "285fcc3434853fa74357c9402550b5d7a11a5ba67f12b29fa55568236054e11a",
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_door_tracking_20261018.json",
+      "sha256": "6731a793b022fad19815fa4cae6a9321aa220ff33bb2f512d6ae6451855c9cbb"
+    },
+    "preflight": {
+      "exit_code": 0,
+      "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_door_tracking_20261018.log"
+    },
+    "cpu_tests": 250,
+    "training": false,
+    "confirmation": false,
+    "pi05_in_oracle": false
+  },
+  "physical_startup_job": "8261_120",
+  "physical_startup_passed": true,
+  "full_physical_result": null,
+  "runtime_schema": "bounded-skills/1 unchanged",
+  "endpoint_verifier_changed": false,
+  "existing_thresholds_changed": false,
+  "training": false,
+  "confirmation": false,
+  "pi05_disabled": true,
+  "runtime_sources": [
+    "public RGB-D",
+    "robot proprioception",
+    "static Panda geometry"
+  ],
+  "additional_cpu_tests": {
+    "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_probe_resilience.py tests/unit_tests/robots/libero/test_bounded_screen.py -q",
+    "passed": 21,
+    "elapsed_s": 0.25
+  },
+  "saved_capture_candidate_source": "coordination/bounded_skills_20261016/scripts/door_tracking_candidate_CPU_20261018.py",
+  "physical_startup_proof": {
+    "job": "8261_120",
+    "state_exit": "COMPLETED|0:0",
+    "first_physical_request": {
+      "arm": "oracle_k4",
+      "index": 0,
+      "sim_steps": 290,
+      "source": "public_execution_budget"
+    },
+    "episode": {
+      "case": {
+        "name": "microwave_close_libero_90_t33_s0",
+        "category": "microwave_close",
+        "episode": {
+          "suite": "libero_90",
+          "task": 33,
+          "seed": 0
+        },
+        "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+          "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": false,
+      "decisions": 1,
+      "sim_steps": 290,
+      "skill_sim_steps": {
+        "move_to": 252,
+        "descend": 38
+      },
+      "wall_s": 105.13140844600275,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "startup_physical",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null
+    }
+  },
+  "full_physical_job": "8265",
+  "full_physical_array_tasks": [
+    120,
+    140
+  ]
+}

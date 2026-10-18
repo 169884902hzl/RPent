@@ -23,6 +23,8 @@ jobs.update({f'8192_{i}':'9cacb71' for i in range(101,120)})
 jobs.update({'8243_6':'276456d', '8246_140':'276456d', '8249_60':'11ec9aa'})
 jobs.update({f'8252_{i}':'9cacb71' for i in [*range(81,100),*range(181,200),*range(201,220)]})
 jobs.update({'8255_120':'af76e3d', '8256_140':'e425264'})
+jobs.update({f'8262_{i}':'e6b0b47' for i in (14,16,60,160)})
+jobs.update({f'8265_{i}':'124314e' for i in (120,140)})
 rows=[]
 for j,source in jobs.items():
  p=base/('job'+j)/'episodes.jsonl'
