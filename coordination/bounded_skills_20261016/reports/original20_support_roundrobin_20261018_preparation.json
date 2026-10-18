@@ -1,0 +1,121 @@
+{
+  "source_commit": "ec89f74",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+  "archive_sha256": "68aa74bc9188156b3bde2147bd2455d4fa658a9ab1bfea772cffe36486bacf68",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_support_roundrobin_20261018.json",
+    "sha256": "4adcaba891379c4e4f50e911c97953156caeaa03926ca73d61236800fe2b7033"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_support_plane_20261018.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/support_plane_exclusion_validation_CPU_20261018.json",
+    "sha256": "e2e96dad854cc75e2438952e4a0c07c4df76ee1c9f6283436189d8907b83fc3a",
+    "results": {
+      "scope": "CPU measured support-plane correction; no physical outcome",
+      "unit_tests": {
+        "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_offline_labels.py",
+        "passed": 252,
+        "seconds": 122.13,
+        "exit": 0,
+        "log": {
+          "path": "coordination/bounded_skills_20261016/reports/support_exclusion_validation_CPU_20261018.log",
+          "sha256": "b230cd77f9377696807105266735ce88a978e1b87d793f4f6772c40afb671715"
+        }
+      },
+      "focused_freshness_regressions": {
+        "passed": 6,
+        "seconds": 0.4,
+        "overlapping_full_suite": true
+      },
+      "rejected_initial_variant": {
+        "failed": 3,
+        "passed": 249,
+        "seconds": 124.64,
+        "gpu_admitted": false,
+        "reasons": [
+          "added null diagnostic replaced last substantive view evidence",
+          "attempted fresh capture without source-step evidence",
+          "attempted new-frame work on stale cached target"
+        ],
+        "tests": [
+          "test_instance_recovers_unsegmented_view_surface_but_not_neighbour[False]",
+          "test_scene_instance_subtraction_precedes_voxel_centroids",
+          "test_old_instance_pixels_are_not_extended_with_a_new_capture"
+        ]
+      },
+      "sources": [
+        {
+          "path": "robots/libero/bounded_skills.py",
+          "sha256": "b4367c8e74ca7c3b2fc502b7f75394c32fa35ebdf89c55947887458b265f1ea9"
+        },
+        {
+          "path": "tests/unit_tests/robots/libero/test_bounded_skills.py",
+          "sha256": "1985a1ccd9d62feb84543745d93f907f29ddbf1efd69419a0ca89fe18d9255e2"
+        }
+      ],
+      "existing_warnings": [
+        "pytest unknown timeout configuration",
+        "7 pre-existing Ruff findings in adapter/tests; new diagnostic scripts clean"
+      ],
+      "runtime_public_schema_changed": false,
+      "training": false,
+      "confirmation": false,
+      "physical_validation": "pending final snapshot and same-launcher startup"
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false,
+  "roundrobin_preflight": {
+    "source_commit": "ec89f74",
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+    "canonical_manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_support_plane_20261018.json",
+      "sha256": "f0f75a2b182560aa9800496cf52a01779ac5a1f540c526d3a7405f3b8c0e765c"
+    },
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_support_roundrobin_20261018.json",
+      "sha256": "4adcaba891379c4e4f50e911c97953156caeaa03926ca73d61236800fe2b7033"
+    },
+    "case_set_unchanged": true,
+    "change": "Only round-robin order across eleven categories; no case, state, goal, budget or limit changes.",
+    "categories": {
+      "bowl_transfer": 20,
+      "box_transfer": 20,
+      "container": 20,
+      "cup_transfer": 20,
+      "drawer_close": 20,
+      "drawer_open": 20,
+      "microwave_close": 20,
+      "microwave_open": 20,
+      "plate_push": 20,
+      "stove_off": 20,
+      "stove_on": 20
+    },
+    "preflight": {
+      "command": [
+        "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+        "-m",
+        "scripts.v5_probe_preflight",
+        "--manifest",
+        "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_support_roundrobin_20261018.json",
+        "--states"
+      ],
+      "exit_code": 0,
+      "log": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/original20_support_roundrobin_preflight_CPU_20261018.log",
+      "sha256": "26cc3b843892616c476b497bfff0b415a399f4d372ea7f06bfe1e30977ff9323"
+    },
+    "gpu_used": false,
+    "training": false,
+    "confirmation": false
+  }
+}

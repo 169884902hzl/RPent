@@ -11,20 +11,50 @@ from pathlib import Path
 parser = argparse.ArgumentParser()
 parser.add_argument('--indices', default='0-119,160-219')
 parser.add_argument('--tag', default='original20_panel_recovery_20261018')
+parser.add_argument('--source-tag', default='chunk_v3_panel_recovery_20261018')
+parser.add_argument('--manifest', type=Path,
+    help='Optional absolute manifest with the same registered cases in a different order')
+parser.add_argument('--startup-receipt', type=Path,
+    help='Actual startup submission for this manifest and source')
 args = parser.parse_args()
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 reports = root / 'coordination/bounded_skills_20261016/reports'
 output = reports / (args.tag + '_full_submission.json')
 assert not output.exists(), 'Inspect the existing receipt instead of duplicating a submission'
-prior = json.loads((reports / 'chunk_v3_panel_recovery_20261018_full_submission.json').read_text())
+prior = json.loads((reports / (args.source_tag + '_full_submission.json')).read_text())
 startup = prior['startup_proof']
 assert startup['first_physical_request']['sim_steps'] > 0
 assert subprocess.check_output(['sacct', '-X', '-n', '-j', startup['job'],
     '--format=State,ExitCode', '-P'], text=True).strip() == 'COMPLETED|0:0'
-manifest = Path(prior['manifest']['path'])
-assert hashlib.sha256(manifest.read_bytes()).hexdigest() == prior['manifest']['sha256']
+registered = Path(prior['manifest']['path'])
+assert hashlib.sha256(registered.read_bytes()).hexdigest() == prior['manifest']['sha256']
+manifest = args.manifest or registered
+assert manifest.is_absolute() and manifest.is_file()
 plan = json.loads(manifest.read_text())
 assert not plan['training'] and not plan['confirmation']
+canonical_plan = json.loads(registered.read_text())
+assert {k: v for k, v in plan.items() if k != 'cases'} == {
+    k: v for k, v in canonical_plan.items() if k != 'cases'}
+def case_bytes(case):
+    return json.dumps(case, sort_keys=True)
+
+
+assert sorted(map(case_bytes, plan['cases'])) == sorted(map(case_bytes, canonical_plan['cases']))
+if args.startup_receipt:
+    actual = json.loads(args.startup_receipt.read_text())
+    assert actual['snapshot'] == prior['snapshot'] and actual['source_commit'] == prior['source_commit']
+    assert actual['manifest'] == {'path': str(manifest),
+        'sha256': hashlib.sha256(manifest.read_bytes()).hexdigest()}
+    job = actual['job']+'_'+str(actual['indices'][0])
+    directory = root/'results/bounded_skills/feasibility_20261017'/('job'+job)
+    rows = [json.loads(line) for line in (directory/'episodes.jsonl').read_text().splitlines()]
+    assert len(rows) == 1 and rows[0]['status'] == 'startup_physical'
+    physical = json.loads(next(directory.glob('*oracle*/first_physical_request.json')).read_text())
+    assert physical['sim_steps'] > 0
+    assert subprocess.check_output(['sacct', '-X', '-n', '-j', job,
+        '--format=State,ExitCode', '-P'], text=True).strip() == 'COMPLETED|0:0'
+    startup = {'job': job, 'summary': rows[0], 'first_physical_request': physical,
+        'submission': str(args.startup_receipt), 'state_exit': 'COMPLETED|0:0'}
 indices = []
 for part in args.indices.split(','):
     ends = [int(value) for value in part.split('-')]
@@ -53,7 +83,8 @@ arguments = ['sbatch', '--parsable', '--nodelist=node02', '--nice=500',
     str(launcher)]
 job = subprocess.check_output(arguments, text=True).strip().split(';')[0]
 report = {'job': job, 'mode': 'full', 'arguments': arguments, 'source_commit': prior['source_commit'],
-    'snapshot': str(source), 'manifest': prior['manifest'], 'indices': indices,
+    'snapshot': str(source), 'manifest': {'path': str(manifest),
+        'sha256': hashlib.sha256(manifest.read_bytes()).hexdigest()}, 'indices': indices,
     'registered_unique_states': len(indices), 'same_source_state_reuse': [], 'startup_proof': startup,
     'scope': 'original-state oracle K4 development cohorts; pi0.5 disabled',
     'submission_script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

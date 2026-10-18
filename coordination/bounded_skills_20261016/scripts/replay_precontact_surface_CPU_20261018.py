@@ -100,9 +100,12 @@ adapter._cloud_and_ik()
 instance = adapter._instance_pixels(key)
 baseline_dist = cKDTree(instance).query(blockers)[0]
 
-earlier = rows[0]
+earlier = next(record for record in rows[:args.row]
+    if f'bounded_screen_{key}_1_target' in record['public_geometry_evidence']
+    and key in record['perception_evidence'])
 old_step = earlier['public_geometry_evidence'][f'bounded_screen_{key}_1_target']['capture_step']
-old_robot = next(control['before'] for detail in rows[0]['execution_details'] for control in detail.get('execution', {}).get('trace', []))
+old_robot = next(control['before'] for detail in earlier['execution_details']
+    for control in detail.get('execution', {}).get('trace', []))
 old_obs = {'robot0_eef_pos': old_robot['eef_xyz_m'], 'robot0_eef_quat': old_robot['eef_quat_xyzw'],
     'robot0_gripper_qpos': old_robot['finger_positions_m'], 'robot0_joint_pos': old_robot['joint_positions_rad']}
 old = copy.copy(adapter)
@@ -149,8 +152,17 @@ for name, implementation in [('baseline', MeasuredSkillAdapter), ('registered', 
     surfaces[name] = surface
     screen = adapter._cloud_and_ik(key, contact=True)
     _, _, _, evidence = SmoothMotion(adapter.p, screen, adapter.config).prepare([waypoint])
+    remaining = np.unique([point for cloud in evidence.get('public_scene_collision_points', {}).values()
+        for point in cloud], axis=0).reshape(-1, 3)
+    stationary = adapter.committed_grasps[key]['instance_reference']['stationary_scene']
+    trees = {label: cKDTree(points) for label, points in (
+        ('current_instance', instance), ('old_reference', reference), ('stationary_scene', stationary))}
+    neighbourhoods = [{'xyz_m': point.tolist(),
+        **{label+'_distance_m': float(tree.query(point)[0]) for label, tree in trees.items()}}
+        for point in remaining]
     stages.append({'name': name, 'route_screen': evidence,
         'blocker_distances_m': cKDTree(surface).query(blockers)[0].tolist(),
+        'remaining_scene_blocker_neighbourhoods': neighbourhoods,
         'boundary': copy.deepcopy(adapter.instance_boundary_evidence[key])})
 before, after = surfaces['baseline'], surfaces['registered']
 added = after[cKDTree(before).query(after)[0] > 1e-6]

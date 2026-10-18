@@ -34,8 +34,8 @@ def control_sequence(rows):
     return np.asarray(controls)
 
 
-def inspect(root, index):
-    directory = root/'results/bounded_skills/feasibility_20261017'/f'job8822_{index}'
+def inspect(root, index, job='8822'):
+    directory = root/'results/bounded_skills/feasibility_20261017'/f'job{job}_{index}'
     new_path, = [p for p in directory.glob('*/choices.jsonl') if not p.parent.name.endswith('_legacy')]
     old_path = new_path.with_name('choices.jsonl').parent.with_name(new_path.parent.name+'_legacy')/'choices.jsonl'
     new = [json.loads(s) for s in new_path.read_bytes().splitlines()]
@@ -96,8 +96,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--root', type=Path, default=Path('/public/home/sunyihan/rpent_libero_eval'))
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--job', default='8822')
+    parser.add_argument('--indices', default='0,24,40')
     args = parser.parse_args()
-    report = dict(pairs=[inspect(args.root, i) for i in (0,24,40)],
+    report = dict(job=args.job, pairs=[inspect(args.root, int(i), args.job)
+        for i in args.indices.split(',')],
         controls=0, gpu_used=False, training=False, confirmation=False, model_visible=False,
         script_sha256=digest(Path(__file__).read_bytes()),
         scope='private equal-tick saved-snapshot audit; not runtime input or new physics')

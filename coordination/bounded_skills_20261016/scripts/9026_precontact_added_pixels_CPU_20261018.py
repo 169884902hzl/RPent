@@ -21,6 +21,7 @@ base = root/'coordination/bounded_skills_20261016'
 parser = argparse.ArgumentParser()
 parser.add_argument('--jobs', default='9026_17')
 parser.add_argument('--delta-tag', default='precontact_membership_CPU_20261018')
+parser.add_argument('--row', type=int, default=1)
 parser.add_argument('--include-blockers', action='store_true')
 parser.add_argument('--output', type=Path, default=base/'reports/9026_17_precontact_added_pixels_CPU_20261018.json')
 args = parser.parse_args()
@@ -42,10 +43,10 @@ cases = {case['job']: case for case in diagnosis['cases']}
 for job in args.jobs.split(','):
     if job not in cases:
         directory, = (root/'results/bounded_skills/feasibility_20261017'/('job'+job)).glob('*oracle_k4')
-        row = json.loads((directory/'choices.jsonl').read_bytes().splitlines()[1])
+        row = json.loads((directory/'choices.jsonl').read_bytes().splitlines()[args.row])
         lift = next(candidate for candidate in row['candidate_screen_diagnostics'] if candidate.get('skill') == 'lift')
         key = 'bounded_screen_'+lift['parameters']['anchor_id']+'_1_scene'
-        cases[job] = {'job': job, 'row': 1, 'capture_step': row['public_geometry_evidence'][key]['capture_step']}
+        cases[job] = {'job': job, 'row': args.row, 'capture_step': row['public_geometry_evidence'][key]['capture_step']}
 results = []
 for case in cases.values():
     if case['job'] not in args.jobs.split(','):

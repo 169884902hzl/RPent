@@ -16,6 +16,8 @@ parser.add_argument('--tag', default='chunk_v3_final_20261018')
 parser.add_argument('--indices', default='0,24,40')
 parser.add_argument('--following-tag', default='chunk_v2_brakejoin_20261018')
 parser.add_argument('--replace-array', default='8600')
+parser.add_argument('--follow-through', action='store_true',
+    help='Keep resource/accounting checks active until the following array also exits')
 args = parser.parse_args()
 tag = args.tag
 receipt = json.loads((base/'reports'/f'{tag}_startup_submission.json').read_text())
@@ -24,6 +26,7 @@ full_path = base/'reports'/f'{tag}_full_submission.json'
 last = None
 last_accounting = 0.
 watched_arrays = {receipt['job']}
+full_reported = False
 while True:
     rows = [line.split('|') for line in subprocess.check_output(['squeue','-r','-h','-u','sunyihan',
         '-o','%i|%j|%T|%N|%b|%E|%R'],text=True).splitlines()]
@@ -86,10 +89,14 @@ while True:
         if not any(r[0].split('_')[0]==full for r in ours):
             subprocess.run([str(root/'.venv/bin/python'),str(base/'scripts/rebalance_chunk_v2_20261018.py'),
                 '--tag',args.following_tag],check=True,stdout=subprocess.DEVNULL)
-            print(subprocess.check_output(['sacct','-X','-n','-j',full,
-                '--format=JobID,State,ExitCode,Elapsed','-P'],text=True),flush=True)
-            print('TIMING_ARRAY_FINISHED: inspect all physical rows and failures before proceeding',flush=True)
-            break
+            if not full_reported:
+                print(subprocess.check_output(['sacct','-X','-n','-j',full,
+                    '--format=JobID,State,ExitCode,Elapsed','-P'],text=True),flush=True)
+                print('TIMING_ARRAY_FINISHED: inspect all physical rows and failures before proceeding',flush=True)
+                full_reported = True
+            following = json.loads((base/'reports'/f'{args.following_tag}_full_submission.json').read_text())['job']
+            if not args.follow_through or not any(r[0].split('_')[0] == following for r in ours):
+                break
     # Preserve priority while this array still has work waiting for a slot.
     # Once its remaining tasks are all running, the independently startup-
     # gated following array can fill spare capacity instead of idling a GPU.
