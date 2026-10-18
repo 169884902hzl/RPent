@@ -927,7 +927,10 @@ class MeasuredSkillAdapter:
                         completed, continuation = complete_moving_boundary(
                             world, np.zeros(world.shape[:2], bool), moving,
                             self.payload_reference['scene'],
-                            surface_extent=[moving.min(0), moving.max(0)],
+                            # Preserve the measured association interval;
+                            # sampled extrema are not exact object edges.
+                            surface_extent=[moving.min(0)-temporal['surface_residual_m'],
+                                            moving.max(0)+temporal['surface_residual_m']],
                             rgb=self.ex.toolkit._state.load(camera+'_high.png'),
                             semantic_mask=semantic_masks.get(camera))
                         guided = world[completed]
@@ -935,7 +938,11 @@ class MeasuredSkillAdapter:
                     seeds.append(guided)
                     records.append(evidence)
                 measured = np.concatenate(seeds)
-                lower, upper = measured.min(0), measured.max(0)
+                # The same interval bounds cross-view depth connectivity.
+                # Membership still requires a seeded 3 mm component and
+                # the pre-lift static-scene veto; bounds alone own nothing.
+                lower = measured.min(0)-temporal['surface_residual_m']
+                upper = measured.max(0)+temporal['surface_residual_m']
                 member, evidence = complete_spatial_payload_component(scene, measured,
                     self.payload_reference['scene'], lower, upper)
                 result = np.concatenate([result, scene[member]])

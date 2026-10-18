@@ -1,0 +1,31 @@
+{
+  "scope": "held payload measured interval propagation; CPU verification before physical rerun",
+  "pytest": {
+    "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_payload.py",
+    "passed": 241,
+    "elapsed_s": 104.72,
+    "warnings": [
+      "Existing pytest timeout option is not registered"
+    ]
+  },
+  "ruff": {
+    "new_findings": 0,
+    "existing_findings": 7,
+    "comparison": "Same code/message multiset before and after in both changed files"
+  },
+  "source_files": [
+    {
+      "path": "robots/libero/bounded_skills.py",
+      "sha256": "23c444e512ff2a23fb9d5f6afdbba990c02290730d4107bb251b8cdd5ab11833"
+    },
+    {
+      "path": "tests/unit_tests/robots/libero/test_bounded_skills.py",
+      "sha256": "ff97fb720febae6df03b2f95096acb22b28587e2053060250de9764df501caf4"
+    }
+  ],
+  "saved_sensor_comparison": "reports/9026_payload_extent_CPU_20261018.json",
+  "private_added_pixel_diagnostic": "reports/9026_extent_added_pixels_CPU_20261018.json",
+  "physical_result": "pending",
+  "training": false,
+  "confirmation": false
+}

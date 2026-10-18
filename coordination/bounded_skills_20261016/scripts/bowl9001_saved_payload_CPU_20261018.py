@@ -89,7 +89,7 @@ for job in args.job:
     step = row["public_geometry_evidence"][f"bounded_screen_{key}_1_scene"]["capture_step"]
     robot = next(control["after"] for old in reversed(rows[:index])
                  for detail in reversed(old["execution_details"])
-                 for control in reversed(detail["execution"].get("trace", [])))
+                 for control in reversed(detail.get("execution", {}).get("trace", [])))
     for field in ("eef_xyz_m", "eef_quat_xyzw"):
         np.testing.assert_allclose(robot[field], row["request"]["robot"][field], atol=1e-10)
 
@@ -179,7 +179,9 @@ for job in args.job:
         adapter.config = MotionConfig()
         adapter.target_cache = {}
         held_screen = adapter._cloud_and_ik(key, contact=True)
-    np.savez_compressed(root/"coordination/bounded_skills_20261016/reports"/(job+"_saved_instance_CPU_20261018.npz"), points=instance)
+    instance_output = (args.output.with_suffix(".npz") if args.output else
+        root/"coordination/bounded_skills_20261016/reports"/(job+"_saved_instance_CPU_20261018.npz"))
+    np.savez_compressed(instance_output, points=instance)
     tree = cKDTree(instance)
     scene_tree = cKDTree(adapter._base_geometry[0])
     candidates = []

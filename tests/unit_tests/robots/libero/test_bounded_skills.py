@@ -2473,6 +2473,33 @@ def test_temporal_payload_refines_a_depth_view_without_a_sam_mask(adapter):
     assert all(e['added_pixels'] > 0 for e in refined)
 
 
+def test_held_payload_interval_recovers_connected_edge_without_owning_neighbours(adapter, monkeypatch):
+    # Image occlusion separates these pixels; their measured 3D component
+    # still joins the omitted edge just outside the sampled mask extrema.
+    seeds = np.array([[.1, .1, 1.], [.1, .11, 1.], [.11, .1, 1.], [.11, .11, 1.]])
+    rim = [[.0995, .1, 1.], [.097, .1, 1.]]
+    outside = [.0945, .1, 1.]  # Connected, but beyond the measured interval.
+    disconnected = [.105, .105, 1.]
+    stationary = [.1045, .105, 1.]
+    points = np.vstack([seeds, rim, outside, disconnected, stationary])
+    world = np.full((1, len(points)*3, 3), np.nan)
+    world[0, ::3] = points
+    adapter._base_geometry = points, None
+    adapter.held = 'e1'
+    adapter.payload_reference = {'robot': adapter.robot(), 'target': seeds,
+        'scene': [stationary], 'capture_step': 0}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=1,
+        load=lambda name: np.zeros((*world.shape[:2], 3), np.uint8)
+            if name.endswith('.png') else world))
+    monkeypatch.setattr('robots.libero.bounded_payload.moving_payload_pixels',
+        lambda *args, **kwargs: (np.arange(len(points)) < len(seeds), {'surface_residual_m': .004}))
+    payload = adapter._instance_pixels('e1')
+    for point in rim:
+        assert np.linalg.norm(payload-point, axis=1).min() < 1e-9
+    for point in (outside, disconnected, stationary):
+        assert np.linalg.norm(payload-point, axis=1).min() > 1e-6
+
+
 def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):
     for _ in range(2):
         request = adapter.request(k=1)
