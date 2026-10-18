@@ -4,6 +4,7 @@ import itertools
 import json
 import subprocess
 import time
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -21,6 +22,7 @@ receipt = json.loads((base/'reports'/f'{tag}_startup_submission.json').read_text
 startup = receipt['job']+'_24'
 full_path = base/'reports'/f'{tag}_full_submission.json'
 last = None
+last_accounting = 0.
 while True:
     rows = [line.split('|') for line in subprocess.check_output(['squeue','-r','-h','-u','sunyihan',
         '-o','%i|%j|%T|%N|%b|%E|%R'],text=True).splitlines()]
@@ -31,6 +33,30 @@ while True:
     active = [r for r in ours if r[2]=='RUNNING']
     cap = 3 if c2 else 4
     assert len(active)<=4 and all(r[3]=='node02' for r in active), active
+    watched = [receipt['job']]
+    if full_path.exists():
+        watched.append(json.loads(full_path.read_text())['job'])
+    accounting = [line.split('|') for line in subprocess.check_output(
+        ['sacct', '-X', '-n', '-j', ','.join(watched),
+         '--format=JobID%32,State%32,ExitCode', '-P'], text=True).splitlines()]
+    failed = [row for row in accounting if row[1].split()[0] in {
+        'FAILED', 'TIMEOUT', 'OUT_OF_MEMORY', 'NODE_FAIL', 'BOOT_FAIL', 'DEADLINE'}]
+    if failed or time.monotonic()-last_accounting >= 600:
+        audit = dict(time_pacific=datetime.now(ZoneInfo('America/Los_Angeles')).isoformat(),
+            jobs=accounting, failures=failed)
+        with (base/'reports'/f'{tag}_monitor_sacct.jsonl').open('a') as stream:
+            stream.write(json.dumps(audit)+'\n')
+        print(json.dumps(dict(accounting_jobs=watched,
+            states=dict(Counter(row[1] for row in accounting)), failures=failed)), flush=True)
+        last_accounting = time.monotonic()
+    if failed:
+        for job, state, code in failed:
+            log = root/'results'/f'slurm-{job.strip()}.log'
+            if log.exists():
+                with log.open('rb') as stream:
+                    stream.seek(max(0, log.stat().st_size-12000))
+                    print(stream.read().decode('utf8', 'replace'), flush=True)
+        raise SystemExit('PHYSICAL_JOB_FAILED: inspect preserved log and repair before resubmission')
     pending_start = [r for r in ours if r[0]==startup and r[2]=='PENDING']
     if pending_start:
         dependency = ('?'.join('afterany:'+':'.join(row[0] for row in group)
