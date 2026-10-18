@@ -157,7 +157,12 @@ def collision_counts(points, xyz, rotation, geometry, opening, *, clearance_m=.0
         slide = np.asarray(box.get('slide_per_half_opening', [0, 0, 0])) * opening / 2
         lower = np.asarray(box['lower']) + slide - clearance_m
         upper = np.asarray(box['upper']) + slide + clearance_m
-        inside = ((local >= lower) & (local <= upper)).all(axis=1)
+        # The public cloud has three columns. Keep the identical inclusive
+        # comparisons without allocating/reducing an N-by-3 boolean array
+        # for every sampled pose along every candidate route.
+        inside = ((local[:, 0] >= lower[0]) & (local[:, 0] <= upper[0])
+                  & (local[:, 1] >= lower[1]) & (local[:, 1] <= upper[1])
+                  & (local[:, 2] >= lower[2]) & (local[:, 2] <= upper[2]))
         if box.get('convex_halfspaces'):
             equations = np.asarray(box['convex_halfspaces'])
             # MuJoCo collides mesh convex hulls. An AABB corner need not be

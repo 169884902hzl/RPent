@@ -85,8 +85,12 @@ class PublicRouteScreen:
         counts, hits, retained_margin = {}, {}, 0
         for box in self.geometry['boxes']:
             shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2
-            near = np.flatnonzero(((local >= np.asarray(box['lower'])+shift-.004)
-                & (local <= np.asarray(box['upper'])+shift+.004)).all(axis=1))
+            lower = np.asarray(box['lower'])+shift-.004
+            upper = np.asarray(box['upper'])+shift+.004
+            near = np.flatnonzero(
+                (local[:, 0] >= lower[0]) & (local[:, 0] <= upper[0])
+                & (local[:, 1] >= lower[1]) & (local[:, 1] <= upper[1])
+                & (local[:, 2] >= lower[2]) & (local[:, 2] <= upper[2]))
             distance = self._halfspace_distance(local[near], box)
             baseline = self.initial_margin.get(box['name'], {})
             bound = np.array([baseline.get(index, .004) for index in ids[near]])

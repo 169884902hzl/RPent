@@ -1,8 +1,15 @@
 """Compare one physical-startup public request and its function profiles."""
+import argparse
 import hashlib
 import json
 import pstats
 from pathlib import Path
+
+parser=argparse.ArgumentParser()
+parser.add_argument('--jobs', nargs=2, default=['9000_24','9006_24'])
+parser.add_argument('--output-name', default='visual_profile_startup_pair_20261018.json')
+parser.add_argument('--source-only-changes', default='public legal_after labels, actual-refresh profiler, conservative self-filter broad phase')
+args=parser.parse_args()
 
 root=Path('/public/home/sunyihan/rpent_libero_eval')
 base=root/'coordination/bounded_skills_20261016'
@@ -19,7 +26,7 @@ def profile(path):
  return dict(path=str(path),sha256=hashlib.sha256(path.read_bytes()).hexdigest(),self_total_s=stats.total_tt,top15=rows)
 
 items=[]
-for job in ('9000_24','9006_24'):
+for job in args.jobs:
  directory,=[d for d in (result/('job'+job)).glob('*oracle*') if not d.name.endswith('_legacy')]
  raw=(directory/'choices.jsonl').read_bytes()
  row=json.loads(raw.splitlines()[0])
@@ -36,10 +43,10 @@ for job in ('9000_24','9006_24'):
 report=dict(jobs=items,request_bytes_equal=items[0]['request_sha256']==items[1]['request_sha256'],
  request_changed_fields=differences,decision_bytes_equal=items[0]['decision_sha256']==items[1]['decision_sha256'],
  canonical_serializer='json.dumps(sort_keys=True,separators=(comma,colon),ensure_ascii=False,allow_nan=False).encode(utf8)',
- source_only_changes='public legal_after labels, actual-refresh profiler, conservative self-filter broad phase',
+ source_only_changes=args.source_only_changes,
  controls_in_analysis=0,training=False,confirmation=False,pi05=False,
  limitation='Single matched physical startup; profile cumulative times overlap; not episode throughput')
-path=base/'reports/visual_profile_startup_pair_20261018.json'
+path=base/'reports'/args.output_name
 path.write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(dict(output=str(path),request_bytes_equal=report['request_bytes_equal'],request_changed_fields=differences,decision_bytes_equal=report['decision_bytes_equal'],
  planning_s=[item['planning']['self_total_s'] for item in items],
