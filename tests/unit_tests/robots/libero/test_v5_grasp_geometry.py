@@ -8,7 +8,28 @@ from robots.libero.v5_grasp_geometry import (
     complete_cylindrical_contact_surface,
     depth_components,
     measure_pan_handle,
+    measured_handle_axis,
 )
+
+
+@pytest.mark.parametrize('direction', [[1., 0., 0.], [0., 0., 1.], [.6, 0., .8]])
+def test_handle_axis_uses_measured_3d_length_including_vertical_handles(direction):
+    from scipy.spatial.transform import Rotation
+
+    rotation, _ = Rotation.align_vectors([direction], [[1., 0., 0.]])
+    x, angle = np.meshgrid(np.linspace(-.06, .06, 60), np.linspace(.1, 2.9, 60))
+    cloud = np.stack([x, .008*np.cos(angle), .008*np.sin(angle)], axis=-1).reshape(-1, 3)
+    axis, evidence = measured_handle_axis(rotation.apply(cloud)+[.2, .1, 1.])
+    assert abs(np.dot(axis, direction)) > .999
+    assert evidence['private_pose_used'] is False
+
+
+@pytest.mark.parametrize('sparse', [False, True])
+def test_handle_axis_does_not_invent_an_axis_for_a_round_or_missing_surface(sparse):
+    x, y = np.meshgrid(np.linspace(-.03, .03, 25), np.linspace(-.03, .03, 25))
+    cloud = np.stack([x, y, np.zeros_like(x)], axis=-1).reshape(-1, 3)
+    axis, _ = measured_handle_axis(cloud[:10] if sparse else cloud)
+    assert axis is None
 
 
 def test_curved_handle_completion_keeps_other_radius_and_unobserved_axial_span():

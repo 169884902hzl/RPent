@@ -8,6 +8,24 @@ import numpy as np
 VERSION = 'public-grasp-geometry/1-dev'
 
 
+def measured_handle_axis(points):
+    """Measure an elongated handle's 3D axis, rejecting ambiguous surfaces."""
+    points = np.asarray(points, float).reshape(-1, 3)
+    points = points[np.isfinite(points).all(axis=1)]
+    evidence = {'source': 'segmented_rgbd_handle_principal_axis',
+        'private_pose_used': False, 'points': len(points),
+        'minimum_variance_ratio': 4., 'axis_xyz': None}
+    if len(points) < 40:
+        return None, {**evidence, 'reason': 'handle_axis_samples_missing'}
+    values, axes = np.linalg.eigh(np.cov(points.T))
+    evidence['axis_variances_m2'] = values.tolist()
+    if values[-1] <= 4*max(values[-2], 1e-6):
+        return None, {**evidence, 'reason': 'handle_long_axis_ambiguous'}
+    direction = axes[:, -1]
+    return direction, {**evidence, 'axis_xyz': direction.tolist(),
+                       'reason': 'measured_elongated_handle_axis'}
+
+
 def complete_cylindrical_contact_surface(world, reference, axis, *, max_residual_m=.001):
     """Associate current handle pixels with locally measured curved sections.
 

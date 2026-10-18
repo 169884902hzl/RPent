@@ -1067,6 +1067,31 @@ def test_partial_current_handle_keeps_still_measured_committed_side(adapter, tmp
     assert not any(np.array_equal(point, world[9, 7]) for point in pixels)
 
 
+def test_vertical_handle_recovers_curved_side_from_measured_axis_not_backing_tangent(adapter, tmp_path):
+    from robots.libero.bounded_motion import measured_robot
+
+    z, angle = np.meshgrid(np.linspace(-.06, .06, 40),
+                           np.linspace(0., 2*np.pi, 100, endpoint=False), indexing='ij')
+    world = np.stack([.1+.008*np.cos(angle), .1+.008*np.sin(angle), .9+z], axis=-1)
+    path = tmp_path/'vertical_handle.npz'
+    np.savez(path, world[(angle >= .1) & (angle <= 2.9)])
+    handle = {'source_step': 3, 'pose': {'handle_tangent_xy': [1., 0.]},
+        'views': {'agentview': {'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
+            'path': str(path), 'source': 'perception', 'source_step': 3}}}}
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
+    adapter.active = 'e1'
+    adapter.plans['e1'] = {'handle_measurement': handle}
+    adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p),
+        'plan': {'handle_measurement': handle}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    pixels = adapter._contact_pixels('e1', handle_only=True)
+    assert any(np.array_equal(point, world[20, 75]) for point in pixels)
+    fits = [e for e in adapter.instance_boundary_evidence['e1'] if 'handle_axis_measurement' in e]
+    assert fits and all(abs(e['handle_axis_measurement']['axis_xyz'][2]) > .99 for e in fits)
+
+
 def test_contacted_thin_surface_recovers_only_current_stationary_pixels(adapter):
     y, x = np.mgrid[:10, :10]
     world = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .9)], axis=-1)

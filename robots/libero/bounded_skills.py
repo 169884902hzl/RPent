@@ -43,6 +43,7 @@ from robots.libero.v5_grasp_geometry import (
     complete_planar_boundary,
     complete_sparse_instance_boundary,
     depth_components,
+    measured_handle_axis,
     retain_crossview_semantic_fragments,
 )
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
@@ -538,13 +539,17 @@ class MeasuredSkillAdapter:
                                 'surface_residual_m': .001, 'matched_pixels': len(matched),
                                 'private_pose_used': False})
                         current = np.concatenate(recovered)
-                    tangent = tracked.get('pose', {}).get('handle_tangent_xy')
+                    tangent, axis_evidence = measured_handle_axis(old)
                     if tangent is not None and len(current) >= 40:
                         # A bar's newly exposed curved side is not coplanar
                         # with its old visible side. Current measured arcs,
                         # along the measured handle axis, can own those raw
                         # depth pixels without carving a proximity halo.
-                        axis = rotation@old_rotation.T@np.r_[tangent,0.]
+                        # The backing plane's horizontal tangent is not the
+                        # long axis of a vertical handle. Use the segmented
+                        # handle's measured 3D axis, with the same public
+                        # EEF transform used for its contact surface.
+                        axis = rotation@old_rotation.T@tangent
                         curved = [current]
                         for camera in ('agentview','wrist'):
                             world = self._self_filtered_world(np.asarray(
@@ -552,7 +557,7 @@ class MeasuredSkillAdapter:
                             member, cylinder = complete_cylindrical_contact_surface(world,current,axis)
                             curved.append(world[member])
                             records.append({'camera':camera,'capture_step':self.ex.toolkit._state.latest_step,
-                                **cylinder})
+                                'handle_axis_measurement': axis_evidence, **cylinder})
                         current = np.concatenate(curved)
                     self.instance_boundary_evidence.setdefault(anchor_id, []).extend(records)
             if handle_only:
