@@ -212,6 +212,30 @@ def test_precontact_surface_tracks_small_contact_motion_only(adapter, shift_m, h
     assert evidence['private_pose_used'] is False
 
 
+def test_precontact_current_depth_connects_an_occluded_curved_patch_but_not_static_neighbour(adapter):
+    y, x = np.mgrid[:30, :40]
+    world = np.stack([.08+x*.001, .08+y*.001,
+        .9+.004*np.sin(x*.2)+.002*np.cos(y*.2)], axis=-1)
+    reference = world.reshape(-1, 3).copy()
+    world[15, 20, 2] += .002
+    missing = world[15, 20].copy()
+    world[15, 21] = missing+[.001, 0., .006]
+    other = world[15, 21].copy()
+    current = world.copy()
+    current[12:19, 17:24] = np.nan
+    current = current[np.isfinite(current).all(axis=2)]
+    adapter._instance_pixels = lambda key: current
+    adapter._self_filtered_world = lambda points: points
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter._base_geometry = (world.reshape(-1, 3), None)
+    adapter.active = 'e1'
+    adapter.committed_grasps['e1'] = {'plan': {}, 'instance_reference': {
+        'xyz_world': reference, 'source_step': 0, 'stationary_scene': np.array([other])}}
+    pixels = adapter._contact_pixels('e1')
+    assert (np.linalg.norm(pixels-missing, axis=1) < 1e-9).any()
+    assert not (np.linalg.norm(pixels-other, axis=1) < 1e-9).any()
+
+
 @pytest.mark.parametrize('mode', ['continuous', 'depth_jump', 'filtered_robot'])
 def test_precontact_rim_recovers_one_current_plane_edge_beyond_old_extent(adapter, mode):
     y, x = np.mgrid[:8, :20]

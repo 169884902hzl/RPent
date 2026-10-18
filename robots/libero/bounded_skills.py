@@ -405,7 +405,7 @@ class MeasuredSkillAdapter:
                 stationary = reference.get('stationary_scene')
                 registration = {'accepted': False, 'reason': 'precontact_stationary_scene_missing'}
                 if stationary is not None:
-                    old, registration = _surface_registration(old, pixels)
+                    old, registration = _surface_registration(old, pixels, reciprocal=True)
                 overlap = cKDTree(old).query(pixels,
                     distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001
                 recovered, evidence = [pixels], []
@@ -414,9 +414,11 @@ class MeasuredSkillAdapter:
                 # before the old surface can establish contact identity.
                 if overlap.sum() >= 40:
                     lower, upper = old.min(0)-.001, old.max(0)+.001
+                    current_views = []
                     for camera in ('agentview', 'wrist'):
                         world = self._self_filtered_world(np.asarray(
                             self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                        current_views.append(world.reshape(-1, 3))
                         member, detail = complete_contact_surface(world, old, current_boundary=True)
                         extent = ((world >= lower).all(axis=2) & (world <= upper).all(axis=2))
                         # A current rim can lie just beyond the precontact
@@ -434,6 +436,21 @@ class MeasuredSkillAdapter:
                     recovered.append(scene[member[:, 0] & extent])
                     evidence.append({'source': 'current_rgbd_matches_precontact_circular_sections',
                         'fit': curved, 'axis_xyz': axes[:, -1].tolist()})
+                    if stationary is not None:
+                        from robots.libero.bounded_payload import (
+                            complete_spatial_payload_component,
+                        )
+
+                        # A curved rim can connect to the current instance
+                        # through several pixels without fitting one plane
+                        # or the old partial-view circular axis. Reuse the
+                        # measured 3mm graph, bounded by the contact surface
+                        # and with the same 4mm stationary-scene veto.
+                        current = np.concatenate(current_views)
+                        member, connected = complete_spatial_payload_component(
+                            current, pixels, stationary, lower, upper)
+                        recovered.append(current[member])
+                        evidence.append(connected)
                 recovered = np.concatenate(recovered)
                 retained = 0
                 if stationary is not None and len(stationary):

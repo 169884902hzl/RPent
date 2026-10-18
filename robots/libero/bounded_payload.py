@@ -241,13 +241,15 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     return current, evidence
 
 
-def _surface_registration(predicted, measured):
+def _surface_registration(predicted, measured, *, reciprocal=False):
     """Refine EEF motion by a bounded rigid fit of the measured surface.
 
     Grip compliance can translate and tilt an object relative to the fingers.
-    Fit only the current clean instance; a distant/weak fit supplies no
-    correction. Bound the displacement of every predicted point, including
-    those outside the matched patch, rather than just the fitted centroid.
+    Pre-lift fits may restrict matches to mutually nearest surface pairs
+    so an occluded reference cannot rotate toward the visible silhouette.
+    Held-payload fits retain their motion-predicted correspondences. A
+    distant/weak fit supplies no correction. Bound every predicted point,
+    including those outside the patch, rather than just its centroid.
     """
     def voxel(points):
         points = np.asarray(points, float).reshape(-1, 3)
@@ -272,6 +274,14 @@ def _surface_registration(predicted, measured):
         supported = distance <= .008
         if supported.sum() < 40 or supported.mean() < .5:
             return predicted, {**evidence, 'reason': 'surface_overlap_insufficient'}
+        # One-sided ICP maps hidden parts of the old surface to a visible
+        # silhouette and can invent rotation under finger occlusion. Keep
+        # the original overlap gate, but fit only reciprocal pairs.
+        if reciprocal:
+            reverse = cKDTree(transformed).query(target[ids])[1]
+            supported &= reverse == np.arange(len(source))
+            if supported.sum() < 40:
+                return predicted, {**evidence, 'reason': 'reciprocal_surface_correspondences_missing'}
         a, b = transformed[supported], target[ids[supported]]
         ac, bc = a.mean(axis=0), b.mean(axis=0)
         u, _, vt = np.linalg.svd((a-ac).T@(b-bc))
@@ -301,7 +311,9 @@ def _surface_registration(predicted, measured):
         'rotation_rad': angle, 'rotation_matrix': rotation.tolist(),
         'maximum_surface_displacement_m': float(displacement.max()),
         'median_residual_before_m': float(np.median(before)),
-        'median_residual_after_m': float(np.median(after)), 'samples': len(source)}
+        'median_residual_after_m': float(np.median(after)), 'samples': len(source),
+        **({'correspondences': 'mutual_nearest_surface_pixels',
+            'reciprocal_pairs': int(supported.sum())} if reciprocal else {})}
 
 
 def contact_axis_registration(reference, current_scene, axis, distance_m, *, endpoint_tolerance_m=.012):

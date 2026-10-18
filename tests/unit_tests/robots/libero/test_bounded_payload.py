@@ -442,6 +442,23 @@ def test_curved_partial_view_validates_the_final_fit_instead_of_an_intermediate_
     assert np.max(np.linalg.norm(corrected-source, axis=1)) <= .015
 
 
+def test_precontact_reciprocal_fit_does_not_rotate_toward_an_occluded_silhouette():
+    # Public RGB-D from original can init2/5 before and after finger contact.
+    # Occluded reference points attracted by the remaining silhouette made
+    # the one-sided fit exceed its rotation bound. These points are sampled
+    # every 32 rows; no private pose or correspondence labels are stored.
+    with np.load(Path(__file__).parent/'fixtures/public_precontact_occlusion_fit.npz') as capture:
+        for case in (22, 25):
+            source, measured = capture[f'can{case}_reference'], capture[f'can{case}_current']
+            corrected, fit = _surface_registration(source, measured, reciprocal=True)
+            assert fit['accepted']
+            assert fit['correspondences'] == 'mutual_nearest_surface_pixels'
+            assert fit['reciprocal_pairs'] >= 40
+            assert fit['rotation_rad'] <= fit['max_rotation_rad'] == .1
+            assert np.max(np.linalg.norm(corrected-source, axis=1)) <= .015
+            assert fit['median_residual_after_m'] < fit['median_residual_before_m']
+
+
 def test_static_destination_pixels_cannot_remain_in_the_initial_payload_mask():
     y, x = np.mgrid[:8, :12]
     world = np.stack([x*.002, y*.002, np.ones_like(x)], axis=-1)
