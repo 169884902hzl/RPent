@@ -127,6 +127,48 @@ def test_precontact_instance_reference_preserves_exact_public_pixels(adapter):
     np.testing.assert_allclose(saved['stationary_scene'], neighbour)
 
 
+def test_current_support_plane_cannot_become_contact_payload(adapter, monkeypatch):
+    from robots.libero.v5_perception_geometry import measured_work_surface
+
+    y, x = np.mgrid[:80, :80]
+    world = np.stack([-.1+x*.005, -.1+y*.005, np.full(x.shape, .88)], axis=-1)
+    adapter.ex.toolkit._state.load = lambda _: world
+    calls = []
+    def measure(*args):
+        calls.append(True)
+        return measured_work_surface(*args)
+    monkeypatch.setattr('robots.libero.v5_perception_geometry.measured_work_surface', measure)
+    support = world[20:25, 20:25].reshape(-1, 3)
+    object_pixels = np.array([[.1, .1, .90], [.1, .12, .91]])
+    pixels = np.concatenate([support, object_pixels])
+    original = world.copy()
+    result, evidence = adapter._exclude_measured_support(pixels)
+    np.testing.assert_array_equal(result, object_pixels)
+    assert evidence['retained_as_obstacles'] == len(support)
+    assert evidence['private_pose_used'] is False
+    assert evidence['measurement']['source_step'] == 0
+    # Instance subtraction never removes the support from the source scene.
+    np.testing.assert_array_equal(world, original)
+    adapter._exclude_measured_support(pixels)
+    assert len(calls) == 1
+    world[:, :, 2] += .005
+    adapter.ex.toolkit._state.latest_step += 1
+    result, evidence = adapter._exclude_measured_support(pixels+[0., 0., .005])
+    np.testing.assert_allclose(result, object_pixels+[0., 0., .005])
+    assert len(calls) == 2
+    assert evidence['measurement']['source_step'] == 1
+
+
+def test_missing_support_measurement_does_not_invent_a_plane(adapter):
+    y, x = np.mgrid[:8, :8]
+    world = np.stack([x*.005, y*.005, np.full(x.shape, .9)], axis=-1)
+    adapter.ex.toolkit._state.load = lambda _: world
+    pixels = world.reshape(-1, 3)
+    result, evidence = adapter._exclude_measured_support(pixels)
+    np.testing.assert_array_equal(result, pixels)
+    assert evidence is None
+
+
 def test_rejected_zero_step_nudge_keeps_measured_contact_for_recovery(adapter, monkeypatch):
     original_obs = adapter.p.env.raw_obs
     adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.02, -.02]}

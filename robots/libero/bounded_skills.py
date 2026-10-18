@@ -366,6 +366,34 @@ class MeasuredSkillAdapter:
                     clouds.append(np.asarray(stored[stored.files[0]]).reshape(-1, 3))
         return np.concatenate(clouds) if clouds else np.empty((0, 3))
 
+    def _exclude_measured_support(self, pixels):
+        """Keep a currently measured support plane in the obstacle cloud."""
+        if not len(pixels):
+            return pixels, None
+        state = self.ex.toolkit._state
+        cache_key = ('support_plane', state.latest_step)
+        if cache_key not in self._instance_cache:
+            from robots.libero.v5_perception_geometry import measured_work_surface
+
+            anchors = [e for e in self.scene.entities.values()
+                if e.visible and not e.part_of and not fixture_actions(e.name)]
+            surface = None
+            for camera in ('agentview', 'wrist'):
+                world = self._self_filtered_world(np.asarray(state.load(camera+'_world_high.npz')))
+                surface = measured_work_surface(world, anchors)
+                if surface is not None:
+                    surface = {**surface, 'camera': camera, 'source_step': state.latest_step}
+                    break
+            self._instance_cache[cache_key] = surface
+        surface = self._instance_cache[cache_key]
+        if surface is None or surface['normal_residual_p95_m'] > .001:
+            return pixels, None
+        distance = abs((pixels-np.asarray(surface['centroid_xyz']))@np.asarray(surface['normal_xyz']))
+        support = distance <= .001
+        return pixels[~support], {'source': 'current_rgbd_measured_support_plane',
+            'measurement': surface, 'surface_residual_m': .001,
+            'retained_as_obstacles': int(support.sum()), 'private_pose_used': False}
+
     def _contact_pixels(self, anchor_id, *, handle_only=False):
         pixels = self._instance_pixels(anchor_id)
         committed = self.committed_grasps.get(anchor_id, {})
@@ -462,7 +490,7 @@ class MeasuredSkillAdapter:
                         distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
                     retained = int((added & static).sum())
                     recovered = recovered[~(added & static)]
-                pixels = recovered
+                pixels, support = self._exclude_measured_support(recovered)
                 self._instance_cache[cache_key] = pixels
                 self.instance_boundary_evidence.setdefault(anchor_id, []).append({
                     'source': 'current_rgbd_matches_exact_precontact_instance_surface',
@@ -471,6 +499,7 @@ class MeasuredSkillAdapter:
                     'shared_current_pixels': int(overlap.sum()), 'minimum_shared_pixels': 40,
                     'surface_registration': registration,
                     'stationary_pixels_retained_as_obstacles': retained,
+                    'measured_support': support,
                     'surface_residual_m': .001, 'private_pose_used': False, 'matches': evidence})
             pixels = self._instance_cache[cache_key]
         if (surface and 'anchor_xyz' in committed and self.active is None and entity is not None
@@ -895,6 +924,11 @@ class MeasuredSkillAdapter:
             result = np.empty((0, 3))
         else:
             result = self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
+        if clean_instance and current_views and len(result):
+            result, support = self._exclude_measured_support(result)
+            if support is not None:
+                records.append({'source': 'instance_support_plane_exclusion',
+                    'measurement': support, 'private_pose_used': False})
         if anchor_id == self.held and self.payload_reference is not None and self._base_geometry is not None:
             from scipy.spatial import cKDTree
 
