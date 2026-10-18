@@ -867,6 +867,31 @@ def test_contacted_thin_surface_recovers_only_current_stationary_pixels(adapter)
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+def test_tracked_handle_does_not_grow_onto_connected_backing_surface(adapter, tmp_path):
+    from robots.libero.bounded_motion import measured_robot
+
+    y, x = np.mgrid[:10, :60]
+    world = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .9)], axis=-1)
+    original = world[:, :10].reshape(-1, 3).copy()
+    path = tmp_path/'handle.npz'
+    np.savez(path, original)
+    handle = {'source_step': 3, 'views': {'agentview': {
+        'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
+            'path': str(path), 'source': 'perception', 'source_step': 3}}}}
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
+    adapter.active = 'e1'
+    adapter.plans['e1'] = {'handle_measurement': handle}
+    adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p),
+        'plan': {'handle_measurement': handle}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    pixels = adapter._contact_pixels('e1', handle_only=True)
+    assert len(pixels) > 0
+    assert pixels[:, 0].max() <= original[:, 0].max()+.001
+    assert not any(np.array_equal(point, world[5, 40]) for point in pixels)
+
+
 @pytest.mark.parametrize('moved', [False, True])
 def test_precontact_surface_keeps_measured_extent_without_owning_neighbour(adapter, moved):
     from dataclasses import replace
@@ -960,10 +985,18 @@ def test_current_handle_view_recovers_another_views_new_surface_but_not_its_neig
     raw = adapter.p.env.raw_obs
     adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
     adapter.active = 'e1'
-    adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p)}
-    adapter.plans['e1'] = {'handle_measurement': {'source_step': 3, 'views': {
+    old_handle = {'source_step': 3, 'views': {
         'main': {'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
-            'path': str(path), 'source': 'perception', 'source_step': 3}}}}}
+            'path': str(path), 'source': 'perception', 'source_step': 3}}}}
+    adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p),
+        'plan': {'handle_measurement': old_handle}}
+    current_path = tmp_path/'current_handle.npz'
+    np.savez(current_path, main.reshape(-1, 3))
+    # A newly observed side needs an independent CURRENT handle measurement;
+    # smooth continuation from an old patch could instead be the backing.
+    adapter.plans['e1'] = {'handle_measurement': {'source_step': 4, 'views': {
+        'main': {'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
+            'path': str(current_path), 'source': 'perception', 'source_step': 4}}}}}
     adapter._instance_pixels = lambda key: np.empty((0, 3))
     adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4,
         load=lambda name: wrist if name.startswith('wrist') else main))

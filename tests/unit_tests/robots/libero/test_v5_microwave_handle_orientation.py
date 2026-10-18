@@ -7,9 +7,9 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
+from robots.libero.v5_fixture_parts import measured_handle_backing_face
 from robots.libero.v5_runtime import MeasuredScene
 from robots.libero.v5_state import Entity
-from robots.libero.v5_fixture_parts import measured_handle_backing_face
 from rpent.robots.components.sam3_client import Sam3Client
 
 
@@ -60,6 +60,24 @@ def test_current_unique_door_cloud_orients_thin_handle_in_both_views(tmp_path, m
         assert view["current_door_orientation"]["door"] == door.id
         assert view["current_door_orientation"]["source_step"] == 3
         assert view["current_door_orientation"]["normal_gap_m"] == pytest.approx(.03)
+
+
+def test_handle_cloud_excludes_disconnected_sam_tail_before_tracking(tmp_path, monkeypatch):
+    scene, parent, _, handle, _ = scene_with_door(tmp_path, monkeypatch)
+    world = handle.reshape(10, 10, 3).copy()
+    world[:2, :, 0] -= .15
+    world[:2, :, 2] = .92
+    load = scene.toolkit._state.load
+    scene.toolkit._state.load = lambda name: load(name) if name.endswith('.json') else world
+    result = scene.measure_fixture_handle_pose(parent, 'open the microwave')
+    assert result['pose'] is not None
+    for view in result['views'].values():
+        assert view['cloud']['points'] == 80
+        cleanup = view['depth_components'][0]
+        assert cleanup['input_pixels'] == 100 and cleanup['retained_pixels'] == 80
+        with np.load(view['cloud']['path']) as stored:
+            cloud = stored[stored.files[0]]
+        assert cloud[:, 0].min() > 0. and cloud[:, 2].min() > 1.
 
 
 def test_missing_microwave_handle_query_uses_measured_alias_then_stops(tmp_path, monkeypatch):

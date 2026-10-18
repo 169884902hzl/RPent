@@ -464,8 +464,13 @@ class MeasuredSkillAdapter:
                     for camera in ('agentview', 'wrist'):
                         world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
                         world = self._self_filtered_world(world)
-                        full_contact = any(view.get('contact_cloud') for view in tracked.get('views', {}).values())
-                        extended, boundary = complete_contact_surface(world, predicted, current_boundary=not full_contact)
+                        # A handle touches its backing surface. Local depth
+                        # continuity alone can therefore grow through the
+                        # attachment onto the door, cabinet or even table.
+                        # Retain only CURRENT depth supported by the tracked
+                        # measured handle extent; a new silhouette requires
+                        # an independent current handle measurement above.
+                        extended, boundary = complete_contact_surface(world, predicted)
                         recovered.append(world[extended])
                         records.append({'camera': camera, 'source': 'current_rgbd_matches_contacted_handle_surface',
                             'reference_capture_step': tracked['source_step'],
@@ -482,11 +487,14 @@ class MeasuredSkillAdapter:
                         # residual; do not expand a box or substitute the old
                         # predicted surface for present depth measurements.
                         tree = cKDTree(current)
+                        extent = np.concatenate([predicted, self._handle_pixels(measured, contact_surface=True)])
+                        lower, upper = extent.min(0)-.001, extent.max(0)+.001
                         for camera in ('agentview', 'wrist'):
                             world = self._self_filtered_world(np.asarray(
                                 self.ex.toolkit._state.load(camera+'_world_high.npz')))
                             flat = world.reshape(-1, 3)
-                            valid = np.isfinite(flat).all(axis=1)
+                            valid = (np.isfinite(flat).all(axis=1)
+                                & (flat >= lower).all(axis=1) & (flat <= upper).all(axis=1))
                             ids = np.flatnonzero(valid)
                             matched = ids[tree.query(flat[ids],
                                 distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001]

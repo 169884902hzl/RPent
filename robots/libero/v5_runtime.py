@@ -1704,7 +1704,7 @@ class MeasuredScene:
             else:
                 image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
                 query = f"handle of the {obj.name}" if "stove" not in obj.name else f"knob of the {obj.name}"
-                samples, query_records = [], []
+                samples, query_records, component_records = [], [], []
                 queries = [query]
                 if parent.name == 'microwave':
                     queries += ['microwave door handle', 'microwave handle']
@@ -1716,6 +1716,16 @@ class MeasuredScene:
                         mask = Sam3Client._decode_result(item).mask
                         if mask is None or mask.shape != world.shape[:2]:
                             continue
+                        if parent.name == 'microwave':
+                            from robots.libero.v5_grasp_geometry import (
+                                clean_object_mask,
+                            )
+
+                            # Disconnected SAM tails otherwise enlarge the
+                            # handle's tracked extent onto the backing/table.
+                            # Keep the existing 3 mm depth discontinuity rule.
+                            mask, cleanup = clean_object_mask(world, mask, max_gap_m=.003)
+                            component_records.append({'query': text, **cleanup})
                         points = measured_points(world, mask)
                         if len(points) < 10:
                             continue
@@ -1726,7 +1736,8 @@ class MeasuredScene:
                                           'accepted_instances': len(samples)})
                     if samples:
                         break  # Preserve ambiguity rather than query for a preferred answer.
-                detail = {"query": query, "queries": query_records, "accepted_instances": len(samples)}
+                detail = {"query": query, "queries": query_records, "accepted_instances": len(samples),
+                          "depth_components": component_records}
                 cloud, pose = np.empty((0, 3)), None
                 if len(samples) == 1:
                     cloud = samples[0]
