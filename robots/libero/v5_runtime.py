@@ -178,6 +178,7 @@ class MeasuredScene:
                  appliance_support_crop_v5: bool = False,
                  microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False,
                  door_plane_consensus_v1: bool = False,
+                 microwave_door_tracking_v1: bool = False,
                  microwave_shell_front_hint_v1: bool = False,
                  region_anchor_cache_v1: bool = False,
                  record_sam_masks_v6: bool = False,
@@ -227,6 +228,8 @@ class MeasuredScene:
         self.microwave_door_cloud_v6 = microwave_door_cloud_v6
         self.door_point_recall_v7 = door_point_recall_v7
         self.door_plane_consensus_v1 = door_plane_consensus_v1
+        self.microwave_door_tracking_v1 = bool(microwave_door_tracking_v1)
+        self._microwave_door_history: dict = {}
         self.microwave_shell_front_hint_v1 = bool(microwave_shell_front_hint_v1)
         self.region_anchor_cache_v1 = region_anchor_cache_v1
         self.record_sam_masks_v6 = record_sam_masks_v6
@@ -1220,6 +1223,48 @@ class MeasuredScene:
                                         "source": "perception", "source_step": state.latest_step}})
                 if measured is not None:
                     measurements.append((measured, cloud))
+            if self.microwave_door_tracking_v1:
+                from robots.libero.v5_microwave_capture import _public_rgbd, points_mask
+
+                rgb, _ = _public_rgbd(state, view)
+                key = (parent.id, view)
+                previous = self._microwave_door_history.pop(key, None)
+                if (not measurements and previous is not None
+                        and previous['source_step'] < state.latest_step):
+                    from pathlib import Path
+
+                    import robosuite
+
+                    from robots.libero.bounded_motion import measured_robot
+                    from robots.libero.bounded_self_filter import public_robot_mask
+                    from robots.libero.v5_microwave_identity import track_measured_door
+
+                    xml = Path(robosuite.__file__).parent/'models/assets/grippers/panda_gripper.xml'
+                    robot_mask = public_robot_mask(world, measured_robot(self.toolkit.primitives), xml)
+                    tracked, face, tracking = track_measured_door(
+                        previous['rgb'], rgb, previous['world'], world, previous['mask'],
+                        self._microwave_frame_anchors.get(key), robot_mask=robot_mask)
+                    tracking.update(previous_source_step=previous['source_step'],
+                                    source_step=state.latest_step)
+                    diagnostic = {'camera': view, 'identity_tracking': tracking}
+                    if face is not None:
+                        cloud = measured_points(world, tracked)
+                        measured, binding = measured_microwave_door(parent, cloud)
+                        diagnostic.update(binding)
+                        if measured is not None:
+                            measurements.append((measured, cloud))
+                            digest = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                            filename = f'microwave_door_tracked_{parent.id}_{view}_{digest}.npz'
+                            if state.save(filename, cloud, step=state.latest_step) is None:
+                                raise RuntimeError('could not persist tracked current microwave door')
+                            path = state.artifact_path(filename, step=state.latest_step)
+                            diagnostic['candidate_cloud'] = {'path': str(path), 'points': len(cloud),
+                                'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+                                'source': 'perception', 'source_step': state.latest_step}
+                    diagnostics.append(diagnostic)
+                if len(measurements) == 1:
+                    self._microwave_door_history[key] = {'rgb': rgb, 'world': world,
+                        'mask': points_mask(world, measurements[0][1]), 'source_step': state.latest_step}
             views[view] = measurements
         evidence = {"query": query, "source_step": state.latest_step,
                     "source": "perception", "accepted_instances": sum(map(len, views.values())),

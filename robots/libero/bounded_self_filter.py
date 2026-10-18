@@ -12,6 +12,30 @@ from scipy.spatial.transform import Rotation
 from robots.libero.v5_geometric_grasp import _rotation, _vector, stl_vertices
 
 
+def public_robot_mask(world, robot, gripper_xml):
+    """Locate robot pixels using only current proprioception and static meshes."""
+    from scipy.spatial import cKDTree
+
+    from robots.libero.v5_geometric_grasp import panda_geometry
+    from robots.libero.v5_grasp_kinematics import PublicPoseScreen
+
+    xml = Path(gripper_xml)
+    geometry = {**panda_geometry(xml), 'visual_boxes': gripper_visual_boxes(str(xml))}
+    hand = gripper_at_measured_fingers(geometry, robot['finger_positions_m'])
+    points = np.asarray(world, float).reshape(-1, 3)
+    valid = np.isfinite(points).all(axis=1) & (np.abs(points).sum(axis=1) > 1e-6)
+    cloud, _ = remove_current_gripper(points[valid], robot['eef_xyz_m'], robot['eef_quat_xyzw'],
+                                     hand, robot['gripper_opening_m'])
+    ik = PublicPoseScreen(xml.parent.parent/'robots/panda/robot.xml', robot['joint_positions_rad'],
+        robot['eef_xyz_m'], robot['eef_quat_xyzw'], geometry['site_offset_in_gripper_m'])
+    cloud, _ = ik.remove_measured_arm(cloud)
+    cloud, _ = remove_visual_robot(cloud, ik)
+    removed = np.zeros(len(points), bool)
+    removed[valid] = cKDTree(cloud).query(points[valid],
+        distance_upper_bound=np.nextafter(1e-6, np.inf))[0] > 1e-6
+    return removed.reshape(np.shape(world)[:2])
+
+
 def gripper_at_measured_fingers(geometry, finger_qpos):
     """Place Panda finger shells from each public joint, without symmetry.
 

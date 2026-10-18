@@ -254,7 +254,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                 drawer_frontmost_panel_v7=True, microwave_recall_geometry_v3=True,
                 microwave_instance_geometry_v4=True, appliance_support_crop_v5=True,
                 microwave_door_cloud_v6=True, door_point_recall_v7=True,
-                door_plane_consensus_v1=True, microwave_shell_front_hint_v1=True,
+                door_plane_consensus_v1=True, microwave_door_tracking_v1=True,
+                microwave_shell_front_hint_v1=True,
                 region_anchor_cache_v1=True, record_sam_masks_v6=True)
         write(output/'public_scene_flags.json', scene_flags)
         scene = MeasuredScene(toolkit, endpoints["sam3"], ep["seed"], **scene_flags)

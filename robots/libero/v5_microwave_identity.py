@@ -133,6 +133,22 @@ def track_measured_door(previous_rgb, current_rgb, previous_world, current_world
                                  (shape[1], shape[0]), flags=cv2.INTER_NEAREST).astype(bool)
     if robot_mask is not None:
         mapped &= ~np.asarray(robot_mask, dtype=bool)
+    # A raster homography can include depth from newly revealed background.
+    # Gate those CURRENT pixels by the independently measured old door plane
+    # transported using mutually supported rigid tracks, then refit as usual.
+    previous_face = vertical_face(previous_world[previous_mask])
+    if previous_face is None:
+        return empty, None, {**evidence, "reason": "previous_door_depth_plane_not_measured"}
+    rotation, translation = _rigid_fit(a[best], b[best])
+    normal = rotation @ np.r_[previous_face["normal_xy"], 0.]
+    centre = rotation @ np.asarray(previous_face["centre"]) + translation
+    residual = np.abs((current_world - centre) @ normal)
+    eligible = np.isfinite(current_world).all(axis=-1) & (residual <= .008)
+    evidence["tracked_plane_depth_support"] = {
+        "basis": "current_depth_matches_independent_door_plane_and_current_rigid_tracks",
+        "residual_m": .008, "mapped_pixels": int(mapped.sum()),
+        "retained_pixels": int((mapped & eligible).sum())}
+    mapped &= eligible
     points_now = current_world[mapped]
     points_now = points_now[np.isfinite(points_now).all(axis=1) & (np.abs(points_now).sum(axis=1) > 1e-6)]
     cloud, consensus = moving_panel_points(points_now, fixed_anchor)
