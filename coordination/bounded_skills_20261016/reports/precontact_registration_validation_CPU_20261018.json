@@ -1,0 +1,35 @@
+{
+  "scope": "precontact surface registration CPU regression; physical validation pending",
+  "files": [
+    {
+      "path": "robots/libero/bounded_skills.py",
+      "sha256": "7bcd71805ecc70cfecde4b2fdbc37da3c7833fed803ed1292c15988dd1e28488"
+    },
+    {
+      "path": "tests/unit_tests/robots/libero/test_bounded_skills.py",
+      "sha256": "4411e2d2e3e7e73b2eb5ec86fc0ab3303f9bab1203ae94a34fab9de177c3c12e"
+    }
+  ],
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py -q -k precontact",
+      "exit_code": 0,
+      "passed": 15,
+      "deselected": 195,
+      "seconds": 1.4
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_payload.py -q",
+      "exit_code": 0,
+      "passed": 244,
+      "seconds": 110.04
+    }
+  ],
+  "checks_overlap": true,
+  "pytest_warning": "existing unknown timeout configuration option",
+  "lint": "existing five adapter and two test findings; no added finding",
+  "training": false,
+  "confirmation": false,
+  "gpu_used": false,
+  "private_truth_used": false
+}

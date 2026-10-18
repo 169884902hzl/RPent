@@ -396,7 +396,13 @@ class MeasuredSkillAdapter:
             if cache_key not in self._instance_cache:
                 from scipy.spatial import cKDTree
 
+                from robots.libero.bounded_payload import _surface_registration
+
                 old = np.asarray(reference['xyz_world'])
+                # Finger contact can move the object before lift. Register
+                # its old measured surface to the current clean instance;
+                # never infer this displacement from commanded hand motion.
+                old, registration = _surface_registration(old, pixels)
                 overlap = cKDTree(old).query(pixels,
                     distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001
                 recovered, evidence = [pixels], []
@@ -432,6 +438,7 @@ class MeasuredSkillAdapter:
                     'reference_capture_step': reference['source_step'],
                     'capture_step': self.ex.toolkit._state.latest_step,
                     'shared_current_pixels': int(overlap.sum()), 'minimum_shared_pixels': 40,
+                    'surface_registration': registration,
                     'surface_residual_m': .001, 'private_pose_used': False, 'matches': evidence})
             pixels = self._instance_cache[cache_key]
         if (surface and 'anchor_xyz' in committed and self.active is None and entity is not None

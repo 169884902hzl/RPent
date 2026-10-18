@@ -176,6 +176,35 @@ def test_precontact_curved_instance_recovers_occluded_rim_but_keeps_other_depth(
         assert evidence['private_pose_used'] is False
 
 
+@pytest.mark.parametrize('shift_m', [.006, .03])
+def test_precontact_surface_tracks_small_contact_motion_only(adapter, shift_m):
+    y, x = np.mgrid[:30, :40]
+    old = np.stack([.08+x*.001, .08+y*.001,
+                    .9+.004*np.sin(x*.2)+.002*np.cos(y*.3)], axis=-1)
+    world = old + [0., 0., shift_m]
+    missing = world[15, 20].copy()
+    current = world.copy()
+    current[14:17, 19:22] = np.nan
+    current = current[np.isfinite(current).all(axis=2)]
+    # A separate nearby depth surface remains an obstacle after association.
+    other = world[15, 21] + [0., 0., .006]
+    world[15, 21] = other
+    adapter._instance_pixels = lambda key: current
+    adapter._self_filtered_world = lambda points: points
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter._base_geometry = (world.reshape(-1, 3), None)
+    adapter.active = 'e1'
+    adapter.committed_grasps['e1'] = {'plan': {}, 'instance_reference': {
+        'xyz_world': old.reshape(-1, 3), 'source_step': 0}}
+    pixels = adapter._contact_pixels('e1')
+    evidence = adapter.instance_boundary_evidence['e1'][-1]
+    accepted = shift_m < .015
+    assert evidence['surface_registration']['accepted'] is accepted
+    assert bool((np.linalg.norm(pixels-missing, axis=1) < 1e-9).any()) is accepted
+    assert not (np.linalg.norm(pixels-other, axis=1) < 1e-9).any()
+    assert evidence['private_pose_used'] is False
+
+
 @pytest.mark.parametrize('mode', ['continuous', 'depth_jump', 'filtered_robot'])
 def test_precontact_rim_recovers_one_current_plane_edge_beyond_old_extent(adapter, mode):
     y, x = np.mgrid[:8, :20]
