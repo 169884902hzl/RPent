@@ -96,7 +96,9 @@ while True:
     primary_pending = any(r[0].split('_')[0] == barrier and r[2] == 'PENDING' for r in ours)
     following_command = [str(root/'.venv/bin/python'),str(base/'scripts/rebalance_chunk_v2_20261018.py'),
         '--tag',args.following_tag]
-    if not full_path.exists() or primary_pending:
+    # A running startup already owns its slot. Other verified shards can
+    # fill the remaining capacity while its physical request is measured.
+    if primary_pending:
         following_command += ['--after',barrier]
     subprocess.run(following_command,check=True,stdout=subprocess.DEVNULL)
     status = dict(startup=[r for r in ours if r[0]==startup], running=active,cap=cap,codex2=c2,

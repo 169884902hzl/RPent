@@ -1,0 +1,57 @@
+{
+  "source_commit": "87ef92e",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_payload_interval_20261018_87ef92e",
+  "archive_sha256": "4d3a530fd1d1897f8116dac4c527805b0cdf751a5d40afa1330cd367025bbeeb",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_payload_interval_20261018.json",
+    "sha256": "25d3556cd74e25914333347923d5c40154a567b97f0fcb519bd1c9246d2349c9"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_payload_interval_20261018.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/payload_interval_CPU_tests_20261018.json",
+    "sha256": "a095f6d6d7bf6dd544ee32b0d4a644e1a96954873704a189fecd6d42c5286484",
+    "results": {
+      "scope": "held payload measured interval propagation; CPU verification before physical rerun",
+      "pytest": {
+        "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_payload.py",
+        "passed": 241,
+        "elapsed_s": 104.72,
+        "warnings": [
+          "Existing pytest timeout option is not registered"
+        ]
+      },
+      "ruff": {
+        "new_findings": 0,
+        "existing_findings": 7,
+        "comparison": "Same code/message multiset before and after in both changed files"
+      },
+      "source_files": [
+        {
+          "path": "robots/libero/bounded_skills.py",
+          "sha256": "23c444e512ff2a23fb9d5f6afdbba990c02290730d4107bb251b8cdd5ab11833"
+        },
+        {
+          "path": "tests/unit_tests/robots/libero/test_bounded_skills.py",
+          "sha256": "ff97fb720febae6df03b2f95096acb22b28587e2053060250de9764df501caf4"
+        }
+      ],
+      "saved_sensor_comparison": "reports/9026_payload_extent_CPU_20261018.json",
+      "private_added_pixel_diagnostic": "reports/9026_extent_added_pixels_CPU_20261018.json",
+      "physical_result": "pending",
+      "training": false,
+      "confirmation": false
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}
