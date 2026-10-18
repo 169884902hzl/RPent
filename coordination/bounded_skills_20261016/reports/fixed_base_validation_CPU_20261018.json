@@ -1,0 +1,57 @@
+{
+  "source_base_commit": "4167f4eaa25e15539b58d32e12cdeaf3c566ca16",
+  "tests": [
+    {
+      "files": [
+        "test_bounded_chunk.py",
+        "test_v5_grasp_kinematics.py",
+        "test_bounded_offline_labels.py"
+      ],
+      "passed": 41,
+      "seconds": 52.63,
+      "scope": "before adding second angular-residual case"
+    },
+    {
+      "selector": "test_bounded_chunk.py -k conditional_ik_residual",
+      "passed": 2,
+      "seconds": 1.38,
+      "scope": "both final position/orientation regression cases"
+    }
+  ],
+  "warnings": [
+    "existing pytest timeout configuration warning"
+  ],
+  "lint": [
+    {
+      "path": "robots/libero/bounded_chunk.py",
+      "baseline_findings": 5,
+      "current_findings": 5,
+      "new_findings": []
+    },
+    {
+      "path": "robots/libero/bounded_oracle.py",
+      "baseline_findings": 2,
+      "current_findings": 2,
+      "new_findings": []
+    },
+    {
+      "path": "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+      "baseline_findings": 3,
+      "current_findings": 3,
+      "new_findings": []
+    }
+  ],
+  "hashes": {
+    "robots/libero/bounded_chunk.py": "3b1e840a5067a83231538fef9f7f905304ca594ae206f797a8f3622e12071db9",
+    "robots/libero/bounded_oracle.py": "bf63631ddf08ac6105bf8a285ddfade13ec6e6839222172472608e8977388f6c",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py": "2b1f8577e2d0291c0dbc99a23bc19a134ec0d9473c6e0d78c5cce0d75d567343",
+    "SKILL_PACKAGE_SPEC.md": "af82ae6a9176cdbb4a10a13309d565cc1e01ed40e2448bca2c1d240476fe10df",
+    "rpent/skill_package/schema.json": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+    "rpent/skill_package/contract.py": "7e898e3bd4e8f4c7a4e9951d897cc1fe682037ee35ee4d6d5cc1f52606e2f49c"
+  },
+  "public_schema_changed": false,
+  "public_legal_contract_changed": false,
+  "judge_version": "libero-private-task-progress-rules/9",
+  "physical_validation": "pending own same-launcher startup",
+  "training": false
+}

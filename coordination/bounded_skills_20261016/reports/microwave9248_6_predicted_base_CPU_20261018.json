@@ -1,0 +1,2416 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+  "context": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_6/microwave_close_libero_90_t33_s0_oracle_k4/private_prefix_state_0009.pkl.gz",
+    "sha256": "0f3015de3f0def2e1f936bdb0a54c265489dfda25ca8caba7d8312347c8b783f",
+    "version": "libero-offline-prefix-label/1",
+    "request_sha256": "68a0d6107525f8ef2315d82314843f726b65507ed5f2ed102b3d63630367aa49",
+    "model_visible": false
+  },
+  "records": [
+    {
+      "arm": "recalibrated_base",
+      "candidate_id": "f72537752ef750d0",
+      "parameters": {
+        "axis": "x",
+        "distance_m": -0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.007536161706443018,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0006309903479202577,
+      "implicit_rotation_change_rad": 0.0007276881733975765,
+      "fixed_base_endpoint_error_m": 0.000652941171169221,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.11911396592682905,
+              0.14374341859243536,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 10.134213956072927
+    },
+    {
+      "arm": "fixed_capture_base",
+      "candidate_id": "f72537752ef750d0",
+      "parameters": {
+        "axis": "x",
+        "distance_m": -0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.007536161706443018,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0006309903479202577,
+      "implicit_rotation_change_rad": 0.0007276881733975765,
+      "fixed_base_endpoint_error_m": 0.000652941171169221,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.11911396592682905,
+              0.14374341859243536,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 12.268908840604126
+    },
+    {
+      "arm": "recalibrated_base",
+      "candidate_id": "f2ebf3511c61912b",
+      "parameters": {
+        "axis": "x",
+        "distance_m": 0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.0011865449893316638,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": false,
+      "implicit_offset_change_m": 0.0006245432241609476,
+      "implicit_rotation_change_rad": 0.0007357842432481742,
+      "fixed_base_endpoint_error_m": 0.0006519967665671271,
+      "plan": null,
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": null,
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": null
+      },
+      "elapsed_s": 12.303249882534146
+    },
+    {
+      "arm": "fixed_capture_base",
+      "candidate_id": "f2ebf3511c61912b",
+      "parameters": {
+        "axis": "x",
+        "distance_m": 0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.0011865449893316638,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0006245432241609476,
+      "implicit_rotation_change_rad": 0.0007357842432481742,
+      "fixed_base_endpoint_error_m": 0.0006519967665671271,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.07911396592682904,
+              0.14374341859243536,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 12.27343078237027
+    },
+    {
+      "arm": "recalibrated_base",
+      "candidate_id": "25c428d919219ac9",
+      "parameters": {
+        "axis": "y",
+        "distance_m": -0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.007807968748593269,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0008444015298678734,
+      "implicit_rotation_change_rad": 0.0008771654795361053,
+      "fixed_base_endpoint_error_m": 0.0005023356297642605,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.09911396592682904,
+              0.12374341859243536,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 9.286145694553852
+    },
+    {
+      "arm": "fixed_capture_base",
+      "candidate_id": "25c428d919219ac9",
+      "parameters": {
+        "axis": "y",
+        "distance_m": -0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.007807968748593269,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0008444015298678734,
+      "implicit_rotation_change_rad": 0.0008771654795361053,
+      "fixed_base_endpoint_error_m": 0.0005023356297642605,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.09911396592682904,
+              0.12374341859243536,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 9.471083192154765
+    },
+    {
+      "arm": "recalibrated_base",
+      "candidate_id": "f395c81b7408c9d5",
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.0007954631226092419,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0008224463497080062,
+      "implicit_rotation_change_rad": 0.0008805855562339409,
+      "fixed_base_endpoint_error_m": 0.0005046960258672904,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.09911396592682904,
+              0.16374341859243535,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 11.828612556681037
+    },
+    {
+      "arm": "fixed_capture_base",
+      "candidate_id": "f395c81b7408c9d5",
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.0007954631226092419,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0008224463497080062,
+      "implicit_rotation_change_rad": 0.0008805855562339409,
+      "fixed_base_endpoint_error_m": 0.0005046960258672904,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.09911396592682904,
+              0.16374341859243535,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2814344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 11.669768850319088
+    },
+    {
+      "arm": "recalibrated_base",
+      "candidate_id": "ddc57af16afe47d4",
+      "parameters": {
+        "axis": "z",
+        "distance_m": -0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.007819088792602201,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0005189178668854349,
+      "implicit_rotation_change_rad": 0.0003827855945363937,
+      "fixed_base_endpoint_error_m": 0.0005530213035678774,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.09911396592682904,
+              0.14374341859243536,
+              1.2614344423454333
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2614344423454333
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 9.282870730385184
+    },
+    {
+      "arm": "fixed_capture_base",
+      "candidate_id": "ddc57af16afe47d4",
+      "parameters": {
+        "axis": "z",
+        "distance_m": -0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.007819088792602201,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0005189178668854349,
+      "implicit_rotation_change_rad": 0.0003827855945363937,
+      "fixed_base_endpoint_error_m": 0.0005530213035678774,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.09911396592682904,
+              0.14374341859243536,
+              1.2614344423454333
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.2614344423454333
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 10.557279681786895
+    },
+    {
+      "arm": "recalibrated_base",
+      "candidate_id": "ba5417f0b7c390e9",
+      "parameters": {
+        "axis": "z",
+        "distance_m": 0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.008702034545310986,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0004865960086539883,
+      "implicit_rotation_change_rad": 0.00039824554641966253,
+      "fixed_base_endpoint_error_m": 0.0005534009122174276,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.09911396592682904,
+              0.14374341859243536,
+              1.3014344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.3014344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 9.468271872028708
+    },
+    {
+      "arm": "fixed_capture_base",
+      "candidate_id": "ba5417f0b7c390e9",
+      "parameters": {
+        "axis": "z",
+        "distance_m": 0.02
+      },
+      "initial_consequences": {
+        "path_min_clearance_m": 0.008702034545310986,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 18,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": []
+      },
+      "plan_available": true,
+      "implicit_offset_change_m": 0.0004865960086539883,
+      "implicit_rotation_change_rad": 0.00039824554641966253,
+      "fixed_base_endpoint_error_m": 0.0005534009122174276,
+      "plan": {
+        "xyz_m": [
+          -0.07093766436688728,
+          0.14598754134221542,
+          1.0768988627763645
+        ],
+        "quat_xyzw": [
+          -0.6523289211357138,
+          0.2712450589429019,
+          -0.2728863841416718,
+          0.6530131070652879
+        ],
+        "approach_xyz_m": [
+          -0.1561708465931691,
+          0.06151708079785785,
+          1.0766845195806098
+        ],
+        "approach_route": [
+          {
+            "xyz_m": [
+              -0.09911396592682904,
+              0.14374341859243536,
+              1.3014344423454334
+            ],
+            "quat_xyzw": [
+              0.4854384416094452,
+              0.5147971453381707,
+              0.515633692576925,
+              0.48317213665416203
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.3014344423454334
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.1561708465931691,
+              0.06151708079785785,
+              1.0766845195806098
+            ],
+            "quat_xyzw": [
+              -0.6523289211357138,
+              0.2712450589429019,
+              -0.2728863841416718,
+              0.6530131070652879
+            ]
+          }
+        ],
+        "preferred_approach": "left",
+        "preferred_path": "over",
+        "width_m": null,
+        "contact_kind": "surface",
+        "surface_measurement": {
+          "source_step": 14,
+          "normal_xyz": [
+            -0.7102765185523486,
+            -0.7039205045363132,
+            -0.00178619329795464
+          ],
+          "xyz_world_summary": {
+            "n": 82422,
+            "shape": [
+              82422,
+              3
+            ],
+            "min": [
+              -0.18868105113506317,
+              0.05088524520397186,
+              0.9251627922058105
+            ],
+            "max": [
+              0.005185896065086126,
+              0.26527100801467896,
+              1.1072182655334473
+            ],
+            "float64_c_order_sha256": "43fe2c459a689213fade32ac877748d0582a32ee1266637d9b9779c8930e3a28"
+          }
+        }
+      },
+      "diagnostics": {
+        "stage": "measured_surface_contact",
+        "anchor_id": "e114",
+        "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+        "contact_xyz_m": [
+          -0.06436829268932343,
+          0.15249812602996826,
+          1.0769153833389282
+        ],
+        "contact_patches_xyz_m": [
+          [
+            -0.06436829268932343,
+            0.15249812602996826,
+            1.0769153833389282
+          ]
+        ],
+        "measured_extent_m": [
+          0.17771914526820182,
+          0.1832364588975906,
+          0.17818449735641473
+        ],
+        "surface_normal_xyz": [
+          -0.7102765185523486,
+          -0.7039205045363132,
+          -0.00178619329795464
+        ],
+        "grasp_verified": false,
+        "candidates": [
+          {
+            "yaw_deg": 90,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 90,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 45,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 135,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 0,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 180,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 315,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 225,
+            "path": "over"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "direct"
+          },
+          {
+            "yaw_deg": 270,
+            "path": "over"
+          }
+        ],
+        "selected_yaw_deg": 270
+      },
+      "elapsed_s": 9.747911895625293
+    }
+  ],
+  "choices_sha256": "6c1e34b8e780a86f6ef9468fb7ac808ae7cdcfb522877f42b44dac2cf95392d8",
+  "script_sha256": "443b3db058ee858958986dbebc38a55387066c947a6657de140a52fe5f591f7b",
+  "scope": "same public measured state, conditional CPU prediction; no physical success claim",
+  "controls": 0,
+  "gpu_used": false,
+  "training": false,
+  "raw_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/microwave9248_6_predicted_base_CPU_20261018.json",
+    "sha256": "3a5c2df69dfd2f515459c3906cf0f3686c50c3ad9e3d9709e2cacf0727ce598f",
+    "bytes": 120814904,
+    "representation": "original full diagnostic retained remotely; this file omits per-sample route/IK arrays"
+  }
+}

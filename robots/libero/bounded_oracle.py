@@ -20,7 +20,7 @@ from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 from robots.libero.bounded_chunk import PublicPrefixPrediction
 from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
-JUDGE_VERSION = 'libero-private-task-progress-rules/8'
+JUDGE_VERSION = 'libero-private-task-progress-rules/9'
 
 
 class NoPublicOption(ValueError):

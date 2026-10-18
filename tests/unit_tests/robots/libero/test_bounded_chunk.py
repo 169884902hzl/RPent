@@ -173,6 +173,43 @@ def test_prefix_consequences_start_from_predicted_not_initial_pose(adapter):
     assert plan[1]['conditional_on'] == first['expected_receipt']
 
 
+@pytest.mark.parametrize('angular_residual_rad', [0., .02])
+def test_conditional_ik_residual_cannot_move_the_captured_robot_base(adapter, angular_residual_rad):
+    from scipy.spatial.transform import Rotation
+
+    from robots.libero.v5_grasp_kinematics import PublicPoseScreen
+    from tests.unit_tests.robots.libero.test_v5_grasp_kinematics import (
+        measured_pose,
+        robot_fixture,
+    )
+
+    path, model, body, addresses = robot_fixture()
+    joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])
+    xyz, quat, _ = measured_pose(model, body, addresses, joints)
+    ik = PublicPoseScreen(path, joints, xyz, quat, [0., 0., .097], warm_start=True)
+    measured = {'robot0_joint_pos': joints, 'robot0_eef_pos': xyz,
+                'robot0_eef_quat': quat, 'robot0_gripper_qpos': [.04, -.04]}
+    adapter.p.env.raw_obs = lambda: measured
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}],
+                'max_opening_m': .08}
+    adapter._cloud_and_ik = lambda *args, **kwargs: PublicRouteScreen(
+        np.empty((0, 3)), geometry, ik)
+    candidate = {'id': 'nudge', 'skill': 'nudge', 'parameters': {'axis': 'x', 'distance_m': .01},
+                 'consequences': {'expected_steps': 1}, 'expected_receipt': []}
+    prediction = PublicPrefixPrediction(adapter, {'candidates': [candidate]})
+    # Warm IK accepts small pose residuals. They are numerical error, not a
+    # new base/hand calibration or permission to move captured scene pixels.
+    desired = Rotation.from_rotvec([0., 0., angular_residual_rad])*Rotation.from_quat(quat)
+    endpoint = {'xyz_m': (xyz+[.004, 0., 0.]).tolist(), 'quat_xyzw': desired.as_quat().tolist()}
+    prediction.advance(candidate, commanded_endpoint=endpoint)
+    np.testing.assert_array_equal(prediction.ik.world_rotation, ik.world_rotation)
+    np.testing.assert_array_equal(prediction.ik.world_offset, ik.world_offset)
+    np.testing.assert_array_equal(prediction.sensor['eef_xyz_m'], endpoint['xyz_m'])
+    np.testing.assert_array_equal(prediction.ik.joints, prediction.sensor['joint_positions_rad'])
+    np.testing.assert_array_equal(adapter.p.env.raw_obs()['robot0_eef_pos'], xyz)
+    assert not adapter.p.actions
+
+
 def test_prediction_screens_payload_instead_of_hand_alone(adapter):
     # A payload point 6cm ahead of the hand reaches an obstacle; the 1cm
     # hand hull remains clear. Both geometry sources are public point clouds.

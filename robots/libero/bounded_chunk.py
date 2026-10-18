@@ -234,7 +234,13 @@ class PublicPrefixPrediction:
             self.sensor.update(eef_xyz_m=route[-1]['xyz_m'], eef_quat_xyzw=route[-1]['quat_xyzw'])
             if self.ik is not None and self.ik.last_solution is not None:
                 self.sensor['joint_positions_rad'] = self.ik.last_solution.tolist()
-                self.ik = self.ik.with_measured_robot(self.sensor)
+                previous = self.ik
+                self.ik = previous.with_measured_robot(self.sensor)
+                # This endpoint is a command plus an approximate IK solution,
+                # not a fresh paired EEF/joint measurement. Reseed the joints
+                # without absorbing its residual into the captured base frame.
+                self.ik.world_rotation = previous.world_rotation.copy()
+                self.ik.world_offset = previous.world_offset.copy()
             if skill == 'descend':
                 self.adapter.active = params['anchor_id']
             if skill == 'lift' and self.pending == params['anchor_id']:
