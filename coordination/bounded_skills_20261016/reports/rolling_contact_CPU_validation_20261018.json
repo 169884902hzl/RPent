@@ -1,0 +1,33 @@
+{
+  "scope": "current public RGB-D rolling contact reference, zero-control rejection retention; no full task result",
+  "test_command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_screen.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_payload.py -q",
+  "exit_code": 0,
+  "passed": 264,
+  "warnings": [
+    "pytest-timeout plugin absent; unknown timeout setting"
+  ],
+  "log": {
+    "path": "coordination/bounded_skills_20261016/reports/rolling_contact_CPU_tests_20261018.log",
+    "sha256": "b4609b240236f900141166d644a51058626d404a1731300596f32f1a70df2ea8"
+  },
+  "source_files": {
+    "robots/libero/bounded_skills.py": "86f7087be7abbbbc71a1fd23da28fd466057cb46d4d5ce45687312e82f7c7c14",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "1f18feb3243210e5ce1c2b2e6eb6b3316a8668f54add06b8513d1fa1e4b78872",
+    "SKILL_PACKAGE_SPEC.md": "5cb789892d9d1a0c720f76555c48491b87938bc8cba7cbe0087de94c4a3828ba",
+    "rpent/skill_package/schema.json": "7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3"
+  },
+  "public_CPU_replay": {
+    "path": "coordination/bounded_skills_20261016/reports/microwave8862_contact_commit_CPU_20261018_rolling_runtime.json",
+    "sha256": "0a405b6a18135b7edf0542859b0411bfde81dbfc4215ea18725b1bf97561fe87",
+    "controls": 0,
+    "private_truth_used": false,
+    "original_routes_passed": 0,
+    "original_routes": 6,
+    "current_routes_passed": 5,
+    "current_routes": 6
+  },
+  "schema_version": "bounded-skills/3",
+  "training": false,
+  "confirmation": false,
+  "physical_validation": "pending same-source launcher startup then same original open/close microwave states"
+}

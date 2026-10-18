@@ -497,7 +497,8 @@ class MeasuredSkillAdapter:
                         'camera': camera, 'source': 'current_rgbd_matches_current_handle_surface',
                         'capture_step': self.ex.toolkit._state.latest_step, **evidence})
                 current = np.concatenate(recovered)
-            reference = committed.get('contact_robot')
+            rolling_surface = committed.get('contact_surface_reference')
+            reference = rolling_surface['robot'] if rolling_surface else committed.get('contact_robot')
             entity = self.scene.entities.get(anchor_id)
             if (not len(current) and reference is None and committed and self.active is None
                     and measured_robot(self.p)['gripper_opening_m'] >= .075 and entity is not None
@@ -528,7 +529,8 @@ class MeasuredSkillAdapter:
                 # opposite side of the committed handle. Track that original
                 # surface, supplementing (rather than replacing) current IDs.
                 tracked = committed.get('plan', {}).get('handle_measurement', measured)
-                old = self._stored_handle_pixels(tracked, contact_surface=True)
+                old = (np.asarray(rolling_surface['xyz_world']) if rolling_surface
+                    else self._stored_handle_pixels(tracked, contact_surface=True))
                 robot = measured_robot(self.p)
                 if len(old):
                     old_rotation = Rotation.from_quat(reference['eef_quat_xyzw']).as_matrix()
@@ -572,7 +574,8 @@ class MeasuredSkillAdapter:
                         extended, boundary = complete_contact_surface(world, predicted)
                         recovered.append(world[extended])
                         records.append({'camera': camera, 'source': 'current_rgbd_matches_contacted_handle_surface',
-                            'reference_capture_step': tracked['source_step'],
+                            'reference_capture_step': (rolling_surface['source_step'] if rolling_surface
+                                else tracked['source_step']),
                             'capture_step': self.ex.toolkit._state.latest_step,
                             'registration': registration,
                             'boundary': boundary, 'private_pose_used': False})
@@ -2132,7 +2135,12 @@ class MeasuredSkillAdapter:
                             if margin < .02:
                                 self.failed_contact_poses.setdefault(key, []).append({
                                     **copy.deepcopy(self.plans[key]), 'measured_joint_margin_rad': margin})
-                    self.committed_grasps.pop(key, None)
+                    # A rejected nudge issues no control and cannot break
+                    # measured contact. Keep its handle identity through
+                    # the recovery decision instead of inventing obstacles
+                    # at the unchanged fingers after a zero-step rejection.
+                    if skill != 'nudge' or detail.get('executed'):
+                        self.committed_grasps.pop(key, None)
         elif skill in {"release", "set_gripper"}:
             opening = skill == "release" or parameters.get("mode") == "open"
             if opening:
@@ -2337,10 +2345,28 @@ class MeasuredSkillAdapter:
                 'operation': (f"paired_contact_axis:{parameters['axis']}:compatible_interval_m="
                     + json.dumps(fit['compatible_axis_interval_m']))})
         check_receipt(candidate, receipt, detail)
+        if (receipt['outcome'] == 'success' and (skill == 'nudge'
+                or (skill == 'set_gripper' and parameters.get('mode') == 'close'))):
+            self._update_contact_surface_reference(self.active)
         validate(receipt)
         self.details.append({"candidate_id": candidate["id"], "execution": detail})
         self.ex.held = self.held
         return receipt
+
+    def _update_contact_surface_reference(self, anchor_id):
+        """Advance a contacted handle from fresh public depth, never prediction."""
+        committed = self.committed_grasps.get(anchor_id)
+        if (self.p.env.terminated or self.held is not None or committed is None
+                or not committed['plan'].get('handle_measurement')):
+            return
+        self._cloud_and_ik(anchor_id, contact=True)
+        points = np.unique(self._contact_pixels(anchor_id, handle_only=True), axis=0)
+        if len(points) < 40:
+            return
+        committed['contact_surface_reference'] = {
+            'xyz_world': points.copy(), 'robot': measured_robot(self.p),
+            'source_step': self.ex.toolkit._state.latest_step,
+            'artifact': self._record_public_geometry('bounded_contact_'+anchor_id+'_tracked', points)}
 
     def _capture_payload_reference(self, anchor_id):
         """Retain a public capture before the next measured held-object move."""

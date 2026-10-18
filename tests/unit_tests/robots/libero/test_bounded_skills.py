@@ -124,6 +124,27 @@ def test_precontact_instance_reference_preserves_exact_public_pixels(adapter):
     assert saved['source_step'] == 0
 
 
+def test_rejected_zero_step_nudge_keeps_measured_contact_for_recovery(adapter, monkeypatch):
+    original_obs = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.02, -.02]}
+    adapter.p.env.position[:] = [.1, .1, .9]
+    initial = adapter.request(k=1)
+    descend = next(c for c in initial['candidates'] if c['skill'] == 'descend')
+    adapter._commit_grasp(descend)
+    adapter.active = 'e1'
+    committed = adapter.committed_grasps['e1']
+    adapter.grasp_geometry = lambda entity: None
+    request = adapter.request(k=1)
+    nudge = next(c for c in request['candidates'] if c['skill'] == 'nudge')
+    monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion.run',
+        lambda *args, **kwargs: dict(executed=False, stop_reason='measured_sweep_collision'))
+    receipt = adapter.execute(request, decision(request, [nudge['id']]))[0]
+    assert receipt['outcome'] == 'failure' and receipt['steps_used'] == 0
+    assert adapter.active == 'e1' and adapter.held is None
+    assert adapter.committed_grasps['e1'] is committed
+    assert any(c['skill'] == 'lift' for c in adapter.request(k=1)['candidates'])
+
+
 @pytest.mark.parametrize('state', ['active', 'lost_identity', 'held'])
 def test_precontact_curved_instance_recovers_occluded_rim_but_keeps_other_depth(adapter, state):
     angles = np.linspace(0., 2*np.pi, 80, endpoint=False)
@@ -1319,8 +1340,9 @@ def test_contact_surface_boundary_uses_current_measurement_but_not_depth_or_robo
 
 @pytest.mark.parametrize('force_normal_fit', [False, True])
 @pytest.mark.parametrize('shift_m,accepted', [(.004, True), (.02, False)])
+@pytest.mark.parametrize('rolling', [False, True])
 def test_contacted_handle_refines_small_public_depth_motion_without_owning_neighbour(
-        adapter, tmp_path, monkeypatch, shift_m, accepted, force_normal_fit):
+        adapter, tmp_path, monkeypatch, shift_m, accepted, force_normal_fit, rolling):
     from robots.libero.bounded_motion import measured_robot
 
     if force_normal_fit:
@@ -1335,6 +1357,13 @@ def test_contacted_handle_refines_small_public_depth_motion_without_owning_neigh
     adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
     adapter.active = 'e1'
     adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p)}
+    if rolling:
+        # Earlier public frames already measured most of this change.
+        # Association must continue from that frame, not the initial fit.
+        latest = old.copy()
+        latest[..., 2] += max(0., shift_m-.004)
+        adapter.committed_grasps['e1']['contact_surface_reference'] = {
+            'robot': measured_robot(adapter.p), 'xyz_world': latest.reshape(-1, 3), 'source_step': 2}
     adapter.plans['e1'] = {'handle_measurement': {'source_step': 3,
         'pose': {'approach_normal_xyz': [0., 0., 1.]}, 'views': {
         'main': {'pose': {'xyz': [.105, .105, .9]}, 'cloud': {
@@ -1348,11 +1377,13 @@ def test_contacted_handle_refines_small_public_depth_motion_without_owning_neigh
     adapter._instance_pixels = lambda key: np.empty((0, 3))
     adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: current))
     pixels = adapter._contact_pixels('e1')
-    assert bool(len(pixels)) is accepted
-    if accepted:
-        np.testing.assert_allclose(pixels[:, 2], .904)
+    expected = accepted or rolling
+    assert bool(len(pixels)) is expected
+    if expected:
+        np.testing.assert_allclose(pixels[:, 2], .9+shift_m)
     evidence = next(v for v in adapter.instance_boundary_evidence['e1'] if 'registration' in v)
-    assert evidence['registration']['accepted'] is accepted
+    assert evidence['registration']['accepted'] is expected
+    assert evidence['reference_capture_step'] == (2 if rolling else 3)
     assert evidence['private_pose_used'] is False
 
 
