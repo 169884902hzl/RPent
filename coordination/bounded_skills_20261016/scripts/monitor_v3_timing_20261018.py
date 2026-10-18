@@ -1,4 +1,5 @@
-"""Admit the real-startup-gated timing pairs and honor the returning C2 lane."""
+"""Admit startup-gated original-state pairs and honor the returning C2 lane."""
+import argparse
 import itertools
 import json
 import subprocess
@@ -9,7 +10,13 @@ from zoneinfo import ZoneInfo
 
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 base = root/'coordination/bounded_skills_20261016'
-tag = 'chunk_v3_final_20261018'
+parser = argparse.ArgumentParser()
+parser.add_argument('--tag', default='chunk_v3_final_20261018')
+parser.add_argument('--indices', default='0,24,40')
+parser.add_argument('--following-tag', default='chunk_v2_brakejoin_20261018')
+parser.add_argument('--replace-array', default='8600')
+args = parser.parse_args()
+tag = args.tag
 receipt = json.loads((base/'reports'/f'{tag}_startup_submission.json').read_text())
 startup = receipt['job']+'_24'
 full_path = base/'reports'/f'{tag}_full_submission.json'
@@ -39,7 +46,7 @@ while True:
             print((root/'results'/f'slurm-{startup}.log').read_text()[-16000:],flush=True)
             raise SystemExit(1)
         command = [str(root/'.venv/bin/python'),str(base/'scripts/submit_chunk_v2_20261018.py'),
-            '--tag',tag,'--full','--indices','0,24,40','--replace-array','8600']
+            '--tag',tag,'--full','--indices',args.indices,'--replace-array',args.replace_array]
         subprocess.run(command,check=True)
         continue  # Refresh the queue; these rows predate the submitted array.
     barrier = startup
@@ -54,7 +61,7 @@ while True:
             print('TIMING_ARRAY_FINISHED: inspect all physical rows and failures before proceeding',flush=True)
             break
     subprocess.run([str(root/'.venv/bin/python'),str(base/'scripts/rebalance_chunk_v2_20261018.py'),
-        '--tag','chunk_v2_brakejoin_20261018','--after',barrier],check=True,stdout=subprocess.DEVNULL)
+        '--tag',args.following_tag,'--after',barrier],check=True,stdout=subprocess.DEVNULL)
     status = dict(startup=[r for r in ours if r[0]==startup], running=active,cap=cap,codex2=c2,
         full_job=full if full_path.exists() else None)
     if status != last:
