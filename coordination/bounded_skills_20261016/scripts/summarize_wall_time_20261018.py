@@ -37,6 +37,7 @@ for job in args.job:
                     ('perception_s', 'perception.'), ('consequence_planning_s', 'planning.'),
                     ('simulation_step_render_s', 'simulation.'), ('oracle_decision_s', 'decision.oracle'),
                     ('model_decision_s', 'decision.model'), ('pi05_inference_s', 'vla.'),
+                    ('private_label_capture_s', 'private_labels.'),
                     ('artifact_io_s', 'artifact_io'), ('execution_other_s', 'execution.other'))}
                 accounted = sum(buckets.values())
                 assert abs(accounted-sum(main.values())) < 1e-6, 'an instrumented category is missing'
@@ -60,17 +61,17 @@ report = dict(rows=rows, scope='Per-episode client wall time; initial simulator 
     oracle='oracle_decision_s is exclusive selector work; oracle_root_inclusive_s also includes its nested planning and is not additive.',
     training=False, confirmation=False)
 args.output.write_text(json.dumps(report, indent=2)+'\n')
-lines = ['| Job / state / arm | Success | Wall s | Perception | Plan | Sim/render | Oracle exclusive | pi05 | Other + IO | Residual |',
-    '| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |']
+lines = ['| Job / state / arm | Success | Wall s | Perception | Plan | Sim/render | Oracle exclusive | pi05 | Private label capture | Other + IO | Residual |',
+    '| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |']
 for row in rows:
     values = [f"{row['job']} / {row['case']} / {row['arm']}", str(row['success']), f"{row['wall_s']:.3f}"]
     if row['instrumented']:
         values += [f"{row[k]:.3f}" for k in ('perception_s', 'consequence_planning_s',
-            'simulation_step_render_s', 'oracle_decision_s', 'pi05_inference_s')]
+            'simulation_step_render_s', 'oracle_decision_s', 'pi05_inference_s', 'private_label_capture_s')]
         values += [f"{row['execution_other_s']+row['artifact_io_s']+row['model_decision_s']:.3f}",
                    f"{row['unattributed_s']:.3f}"]
     else:
-        values += ['unmeasured']*6+[f"{row['unseparated_residual_s']:.3f} (request {row['measured_request_generation_s']:.3f})"]
+        values += ['unmeasured']*7+[f"{row['unseparated_residual_s']:.3f} (request {row['measured_request_generation_s']:.3f})"]
     lines.append('| '+' | '.join(values)+' |')
 lines += ['', 'Perception components below are already included in the table above.', '',
     '| Job / state / arm | Segmentation s | Depth s | Entity measurement s | Capture / transport s |',

@@ -93,7 +93,8 @@ while True:
     # Preserve priority while this array still has work waiting for a slot.
     # Once its remaining tasks are all running, the independently startup-
     # gated following array can fill spare capacity instead of idling a GPU.
-    primary_pending = any(r[0].split('_')[0] == barrier and r[2] == 'PENDING' for r in ours)
+    primary_pending = any((r[0] == barrier or r[0].split('_')[0] == barrier)
+                          and r[2] == 'PENDING' for r in ours)
     following_command = [str(root/'.venv/bin/python'),str(base/'scripts/rebalance_chunk_v2_20261018.py'),
         '--tag',args.following_tag]
     # A running startup already owns its slot. Other verified shards can

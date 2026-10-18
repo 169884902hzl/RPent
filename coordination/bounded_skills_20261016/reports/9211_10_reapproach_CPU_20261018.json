@@ -1,0 +1,293 @@
+{
+  "records": [
+    {
+      "arm": "oracle_k4",
+      "row": 3,
+      "candidate": {
+        "id": "2e49e2f67a50372b",
+        "skill": "move_to",
+        "parameters": {
+          "anchor_id": "e9",
+          "approach": "above",
+          "path": "over"
+        },
+        "consequences": {
+          "path_min_clearance_m": 0.0069406186180927185,
+          "collision": false,
+          "ik_reachable": true,
+          "expected_width_m": 0.012371991116243687,
+          "expected_gripper_opening_m": null,
+          "expected_steps": 610,
+          "screen_scope": "hand_mesh_observed_space",
+          "evidence_ids": [
+            "rgbd:8:e9"
+          ]
+        },
+        "history": null,
+        "recent_failures": 0,
+        "last_failure": null,
+        "expected_receipt": [
+          {
+            "metric": "endpoint_error_m",
+            "anchor_id": "e9",
+            "minimum": 0.0,
+            "maximum": 0.012
+          },
+          {
+            "metric": "angular_error_rad",
+            "anchor_id": "e9",
+            "minimum": 0.0,
+            "maximum": 0.05
+          }
+        ]
+      },
+      "route": [
+        {
+          "xyz_m": [
+            0.07924942915476053,
+            0.23922556760921387,
+            1.11687893762308
+          ],
+          "quat_xyzw": [
+            0.9902677931682745,
+            -0.13748566305536913,
+            -0.01795081814948945,
+            0.012048169803873346
+          ]
+        },
+        {
+          "xyz_m": [
+            0.037553919307017486,
+            0.24147123590426317,
+            1.11687893762308
+          ],
+          "quat_xyzw": [
+            0.832805108020127,
+            0.5535663032154184,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "xyz_m": [
+            0.037553919307017486,
+            0.24147123590426317,
+            1.1025970460982415
+          ],
+          "quat_xyzw": [
+            0.832805108020127,
+            0.5535663032154184,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "recorded_steps": 610,
+      "recorded_duration_s": 30.48888632986671,
+      "legs": [
+        {
+          "index": 0,
+          "translation_m": 0.02738842028698271,
+          "rotation_rad": 0.0022075086190121705,
+          "recorded_reference_duration_s": 1.4249066486435962,
+          "velocity_lower_bound_s": 0.18258946857988473
+        },
+        {
+          "index": 1,
+          "translation_m": 0.04175594050616783,
+          "rotation_rad": 1.4497188156708287,
+          "recorded_reference_duration_s": 28.283591491408,
+          "velocity_lower_bound_s": 3.6242970391770717
+        },
+        {
+          "index": 2,
+          "translation_m": 0.014281891524838608,
+          "rotation_rad": 0.0,
+          "recorded_reference_duration_s": 0.7803881898151133,
+          "velocity_lower_bound_s": 0.09521261016559072
+        }
+      ],
+      "annotation_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9211_10/bowl_transfer_libero_spatial_t0_s10_oracle_k4/private_prefix_state_0003.pkl.gz",
+        "sha256": "efe003e31e127babb80ff8619b52a5fc5bc25d458382a5556bfbc2a95ad9cf11",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "4b47462779a9d34223d522dd49241a666b407363b70fa806e6bf4ee4d523e1ec",
+        "model_visible": false
+      },
+      "ledger_sha256": "5f58b939fd9c04c876eba103b7414a5f060b045e469b27e87e62f860d8db8556",
+      "limits": {
+        "hz": 20.0,
+        "translation_speed_m_s": 0.15,
+        "translation_acceleration_m_s2": 0.5,
+        "translation_jerk_m_s3": 2.0,
+        "rotation_speed_rad_s": 0.4,
+        "rotation_acceleration_rad_s2": 1.0,
+        "rotation_jerk_rad_s3": 4.0,
+        "translation_action_scale_m": 0.05,
+        "rotation_action_scale_rad": 0.5,
+        "tracking_error_stop_m": 0.03,
+        "endpoint_tolerance_m": 0.012,
+        "reference_lead_s": 0.05
+      },
+      "metrics": {
+        "waypoint_stops": 2,
+        "jerk_rms_m_s3": 0.12202610719706314,
+        "path_length_m": 0.08688103189383695,
+        "endpoint_chord_m": 0.04403913827765695,
+        "path_to_chord_ratio": 1.9728140761081974,
+        "reference_max_acceleration_jump": 4.3569782890115285e-15,
+        "reference_max_translation_acceleration_jump": 4.2342140718146884e-15,
+        "reference_max_rotation_acceleration_jump": 1.0269815017634478e-15,
+        "reference_max_jerk_limit_ratio": 0.9970059900149799
+      }
+    },
+    {
+      "arm": "oracle_k4_legacy",
+      "row": 5,
+      "candidate": {
+        "id": "2e49e2f67a50372b",
+        "skill": "move_to",
+        "parameters": {
+          "anchor_id": "e9",
+          "approach": "above",
+          "path": "over"
+        },
+        "consequences": {
+          "path_min_clearance_m": 0.007014746983390205,
+          "collision": false,
+          "ik_reachable": true,
+          "expected_width_m": 0.009767455869872824,
+          "expected_gripper_opening_m": null,
+          "expected_steps": 88,
+          "screen_scope": "hand_mesh_observed_space",
+          "evidence_ids": [
+            "rgbd:7:e9"
+          ]
+        },
+        "history": null,
+        "recent_failures": 0,
+        "last_failure": null,
+        "expected_receipt": [
+          {
+            "metric": "endpoint_error_m",
+            "anchor_id": "e9",
+            "minimum": 0.0,
+            "maximum": 0.012
+          },
+          {
+            "metric": "angular_error_rad",
+            "anchor_id": "e9",
+            "minimum": 0.0,
+            "maximum": 0.05
+          }
+        ]
+      },
+      "route": [
+        {
+          "xyz_m": [
+            0.07896420879235386,
+            0.24153112782868025,
+            1.1172998243907712
+          ],
+          "quat_xyzw": [
+            0.9902992566314013,
+            -0.13712503729836073,
+            -0.018838746196374746,
+            0.01221507687102076
+          ]
+        },
+        {
+          "xyz_m": [
+            0.07164168813208349,
+            0.25868628703941476,
+            1.1172998243907712
+          ],
+          "quat_xyzw": [
+            0.9842839363899086,
+            -0.17659312717313275,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "xyz_m": [
+            0.07164168813208349,
+            0.25868628703941476,
+            1.1108783409780811
+          ],
+          "quat_xyzw": [
+            0.9842839363899086,
+            -0.17659312717313275,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "recorded_steps": 88,
+      "recorded_duration_s": 4.390454099134499,
+      "legs": [
+        {
+          "index": 0,
+          "translation_m": 0.06785047175623027,
+          "rotation_rad": 0.0,
+          "recorded_reference_duration_s": 2.5416179794541636,
+          "velocity_lower_bound_s": 0.45233647837486846
+        },
+        {
+          "index": 1,
+          "translation_m": 0.018652581493341227,
+          "rotation_rad": 0.091616320978035,
+          "recorded_reference_duration_s": 1.2869495372438364,
+          "velocity_lower_bound_s": 0.22904080244508748
+        },
+        {
+          "index": 2,
+          "translation_m": 0.00642148341269011,
+          "rotation_rad": 0.0,
+          "recorded_reference_duration_s": 0.5618865824364998,
+          "velocity_lower_bound_s": 0.042809889417934066
+        }
+      ],
+      "annotation_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9211_10/bowl_transfer_libero_spatial_t0_s10_oracle_k4_legacy/private_prefix_state_0005.pkl.gz",
+        "sha256": "a9012c0aeab2bb3ae72f55140e5b00c2da1bd2afc29e8aed82de8bc03efe5097",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "c6a910956ea0c0afbb976379b7355a56a6cb7570cda73a6319ea6c5fa8b9a206",
+        "model_visible": false
+      },
+      "ledger_sha256": "7861762b24611feac09af60fe58e563f8c8b4302ec37ea2b1cd69f6c5132fa45",
+      "limits": {
+        "hz": 20.0,
+        "translation_speed_m_s": 0.15,
+        "translation_acceleration_m_s2": 0.5,
+        "translation_jerk_m_s3": 2.0,
+        "rotation_speed_rad_s": 0.4,
+        "rotation_acceleration_rad_s2": 1.0,
+        "rotation_jerk_rad_s3": 4.0,
+        "translation_action_scale_m": 0.05,
+        "rotation_action_scale_rad": 0.5,
+        "tracking_error_stop_m": 0.03,
+        "endpoint_tolerance_m": 0.012,
+        "reference_lead_s": 0.05
+      },
+      "metrics": {
+        "waypoint_stops": 0,
+        "jerk_rms_m_s3": 0.22578865148581137,
+        "path_length_m": 0.09920942513308734,
+        "endpoint_chord_m": 0.06398829679201577,
+        "path_to_chord_ratio": 1.5504307835470679,
+        "reference_max_acceleration_jump": 1.9647774480443024e-14,
+        "reference_max_translation_acceleration_jump": 1.9157423808521866e-14,
+        "reference_max_rotation_acceleration_jump": 4.362127354288011e-15,
+        "reference_max_jerk_limit_ratio": 0.9970059900149797
+      }
+    }
+  ],
+  "controls": 0,
+  "gpu_used": false,
+  "training": false,
+  "runtime_private_fields_used": false,
+  "scope": "Read only public adapter route and recorded control references; no retiming change",
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_payload_interval_20261018_87ef92e",
+  "script_sha256": "68859b18f7e4f496a0f46fe1f22087fef3920e6762e9d1c4c66f6953c528c902"
+}

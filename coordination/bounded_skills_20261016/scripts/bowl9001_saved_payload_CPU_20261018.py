@@ -21,7 +21,11 @@ parser.add_argument("--sam-report", type=Path)
 parser.add_argument("--compare-spatial-candidate", type=Path)
 parser.add_argument("--candidate-skills", type=Path)
 parser.add_argument("--screen-routes", action="store_true")
+parser.add_argument("--registration-diagnostics", action="store_true")
+parser.add_argument("--candidate-registration", type=Path)
 args = parser.parse_args()
+if args.registration_diagnostics and args.output is None:
+    parser.error('--registration-diagnostics requires --output')
 sys.path.insert(0, str(args.source))
 
 import numpy as np
@@ -44,6 +48,46 @@ if args.candidate_skills:
 
 root = Path("/public/home/sunyihan/rpent_libero_eval")
 spatial_comparison = []
+registration_diagnostics = []
+if args.candidate_registration:
+    import importlib.util
+
+    from robots.libero import bounded_payload
+
+    spec = importlib.util.spec_from_file_location('candidate_registration', args.candidate_registration)
+    candidate_registration = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(candidate_registration)
+    bounded_payload._surface_registration = candidate_registration._surface_registration
+if args.registration_diagnostics:
+    from robots.libero import bounded_payload
+
+    original_registration = bounded_payload._surface_registration
+
+    def diagnose_registration(predicted, current):
+        corrected, forward = original_registration(predicted, current)
+        _, reverse = original_registration(current, predicted)
+        record = {'predicted_points': len(predicted), 'current_points': len(current),
+            'forward': forward, 'reverse': reverse}
+        path = args.output.with_name(args.output.stem+f'_registration_{len(registration_diagnostics)}.npz')
+        np.savez_compressed(path, predicted=predicted, current=current)
+        record['public_inputs'] = {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+        if reverse['accepted']:
+            # Invert the measured-to-prior diagnostic fit. Check the entire
+            # prior surface against the unchanged displacement constraint.
+            source = np.asarray(current, float).reshape(-1, 3)
+            source = source[np.isfinite(source).all(axis=1)]
+            _, ids = np.unique(np.floor(source/.001).astype(int), axis=0, return_index=True)
+            source = source[np.sort(ids)]
+            source = source[::max(1, len(source)//8000)]
+            centre = source.mean(0)
+            restored = (np.asarray(predicted)-centre-reverse['translation_m'])@np.asarray(reverse['rotation_matrix'])+centre
+            record['inverse_maximum_prior_displacement_m'] = float(np.linalg.norm(restored-predicted, axis=1).max())
+            record['current_to_prior_median_before_m'] = float(np.median(cKDTree(predicted).query(current)[0]))
+            record['current_to_prior_median_after_m'] = float(np.median(cKDTree(restored).query(current)[0]))
+        registration_diagnostics.append(record)
+        return corrected, forward  # Diagnostics never change membership.
+
+    bounded_payload._surface_registration = diagnose_registration
 if args.compare_spatial_candidate:
     import importlib.util
     import time
@@ -238,6 +282,10 @@ report = {"scope": "CPU saved-sensor membership diagnostic; not a physical or co
 if args.compare_spatial_candidate:
     report['spatial_comparison'] = spatial_comparison
     report['candidate_payload_sha256'] = hashlib.sha256(args.compare_spatial_candidate.read_bytes()).hexdigest()
+if args.registration_diagnostics:
+    report['registration_diagnostics'] = registration_diagnostics
+if args.candidate_registration:
+    report['candidate_registration_sha256'] = hashlib.sha256(args.candidate_registration.read_bytes()).hexdigest()
 if args.candidate_skills:
     report['candidate_skills_sha256'] = hashlib.sha256(args.candidate_skills.read_bytes()).hexdigest()
 if args.screen_routes:

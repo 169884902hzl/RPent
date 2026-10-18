@@ -3,7 +3,7 @@
 1. Source87ef92e preserves the existing measured4mm surface interval through guided and cross-view completion; the previous sampled extrema discarded current bowl pixels.
 2. Saved-public CPU comparisons recover3pixels in9026_10,row5 and1pixel in9026_14,row2. All34recorded rejected-pose checks then pass. Full nudge routes still reject other measured blockers.
 3. All4added pixels are bowl pixels in a separate CPU sensor diagnostic; private identity is used only for diagnosis. Runtime uses RGB-D, static geometry and proprioception.
-4. CPU tests:241passed; no new Ruff findings,7preexisting. The same-source220-state preflight passed. Startup9210_10 passed with196controls. Matched physical checks9211_10/14 are running or queued; no task success claimed.
+4. CPU tests:241passed; no new Ruff findings,7preexisting. The same-source220-state preflight passed. Startup9210_10 passed with196controls. Matched physical checks9211_10/14 are now closed: both rules succeed in both states; this is a targeted development result.
 5. Existing9026sourceff00387 remains a retained development cohort, not relabeled as87ef92e. Its bowl result is15/20, below the stage diagnostic threshold; these failures still require repair.
 
 ## Evidence and limits
@@ -26,3 +26,14 @@ Public schema remains bounded-skills/3, SHA `df17c6c49e4992247ab8ff37ebf528f893a
 The same-snapshot/launcher startup9210_10 completed0:0 with196controls in178.203s. The gated10/14new-versus-legacy chunk pairs are submitted as9211. Verified9026shards fill the remaining capacity while the startup or pairs run; pending replacements give priority to the paired diagnostic. All jobs are development diagnostics, pi0.5 disabled, node02only, nice500. No confirmation-state reuse or training.
 
 The three other bowl failures remain separate:16/19after lift and17before lift have7retained blockers, all bowl pixels in a CPU diagnostic with transparent sites disabled for identity only. Disabling the sites changes none of these depth values (all seven residuals are0); robot debug sites are not the measurement cause. The interval patch does not clear these saved blockers. No sensor or self-filter change was made from this rejected hypothesis. Evidence: `reports/9026_contact_blocker_sites_CPU_20261018.json`.
+
+## Closed targeted physical comparisons
+
+| State | New success / decisions / sim / wall s | Legacy success / decisions / sim / wall s |
+| --- | --- | --- |
+| spatial0/init10 | true / 6 / 1041 / 740.839 | true / 7 / 434 / 627.727 |
+| spatial0/init14 | true / 2 / 316 / 355.908 | true / 4 / 289 / 422.763 |
+
+These four arms use source87ef92e and identical registered states. Init10 still needs recovery after a lower-route collision and a predicted-anchor change; its additional607simulation steps and113.112wall seconds remain a regression against the legacy rule. Init14 uses27more simulation steps but66.855fewer wall seconds. Two pairs do not establish a general speed or success improvement. Evidence: `reports/chunk_v3_payload_interval_20261018_paired_latest.json` and `reports/wall_payload_interval_pair_20261018.json`.
+
+The independent c916ab1 microwave-close pair9209_120 fails under both rules: new16decisions/772sim/1681.834s, legacy20/585/1484.322s. It is not included in the two bowl pairs or presented as a repair success.
