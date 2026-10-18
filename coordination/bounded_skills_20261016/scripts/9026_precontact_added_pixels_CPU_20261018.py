@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Independently identify precontact-registration additions at an unchanged saved state."""
 # ruff: noqa: E402 -- CPU GL selected before simulator imports
+import argparse
 import hashlib
 import json
 import os
@@ -17,6 +18,12 @@ os.environ.update(CUDA_VISIBLE_DEVICES='', LIBERO_TYPE='standard', OPENBLAS_NUM_
     EGL_PLATFORM='surfaceless', LIBGL_ALWAYS_SOFTWARE='1', GALLIUM_DRIVER='llvmpipe')
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 base = root/'coordination/bounded_skills_20261016'
+parser = argparse.ArgumentParser()
+parser.add_argument('--jobs', default='9026_17')
+parser.add_argument('--delta-tag', default='precontact_membership_CPU_20261018')
+parser.add_argument('--include-blockers', action='store_true')
+parser.add_argument('--output', type=Path, default=base/'reports/9026_17_precontact_added_pixels_CPU_20261018.json')
+args = parser.parse_args()
 sys.path.insert(0, str(root/'source_bounded_chunk_v3_offline_labels_20261018_c916ab1'))
 import mujoco
 import numpy as np
@@ -31,9 +38,17 @@ from robots.libero.v5_branch_state import restore_actuators
 from robots.libero.v5_reset_seed import attach_reset_seed
 
 diagnosis = json.loads((base/'reports/9026_contact_blocker_pixels_CPU_20261018.json').read_text())
+cases = {case['job']: case for case in diagnosis['cases']}
+for job in args.jobs.split(','):
+    if job not in cases:
+        directory, = (root/'results/bounded_skills/feasibility_20261017'/('job'+job)).glob('*oracle_k4')
+        row = json.loads((directory/'choices.jsonl').read_bytes().splitlines()[1])
+        lift = next(candidate for candidate in row['candidate_screen_diagnostics'] if candidate.get('skill') == 'lift')
+        key = 'bounded_screen_'+lift['parameters']['anchor_id']+'_1_scene'
+        cases[job] = {'job': job, 'row': 1, 'capture_step': row['public_geometry_evidence'][key]['capture_step']}
 results = []
-for case in diagnosis['cases']:
-    if case['job'] not in {'9026_17'}:
+for case in cases.values():
+    if case['job'] not in args.jobs.split(','):
         continue
     directory, = (root/'results/bounded_skills/feasibility_20261017'/('job'+case['job'])).glob('*oracle_k4')
     rows = [json.loads(line) for line in (directory/'choices.jsonl').read_bytes().splitlines()]
@@ -118,9 +133,16 @@ for case in diagnosis['cases']:
                 normal.con = original_buffer
                 diagnostic_buffer.free()
                 mujoco.mjr_setBuffer(mujoco.mjtFramebuffer.mjFB_OFFSCREEN, original_buffer)
-            delta_path = base/'reports/9026_17_precontact_membership_CPU_20261018.npz'
+            delta_path = base/'reports'/(case['job']+'_'+args.delta_tag+'.npz')
             with np.load(delta_path) as delta:
                 additions = delta['added']
+            original_additions = additions.copy()
+            if args.include_blockers:
+                replay = json.loads(delta_path.with_suffix('.json').read_text())
+                screen = replay['stages'][-1]['route_screen']
+                blockers = np.asarray([point for points in screen.get('public_scene_collision_points', {}).values()
+                    for point in points]).reshape(-1, 3)
+                additions = np.unique(np.concatenate([additions, blockers]), axis=0)
             raw_world = old.reshape(-1,3)
             valid_ids = np.flatnonzero(np.isfinite(raw_world).all(axis=1))
             distance, nearest = cKDTree(raw_world[valid_ids]).query(additions)
@@ -132,6 +154,8 @@ for case in diagnosis['cases']:
                 kind, object_id = map(int, no_sites_seg[::-1][ay,ax])
                 identity = mujoco.mj_id2name(sim.model._model,kind,object_id) if object_id >= 0 else None
                 added_pixels.append({'xyz_m':addition.tolist(),'pixel':[int(ax),int(ay)],
+                    'audit_kind': 'membership_addition' if len(original_additions) and
+                        np.min(np.linalg.norm(original_additions-addition, axis=1)) < 1e-6 else 'remaining_obstacle',
                     'private_diagnostic_only_identity_without_sites':identity})
             views.append({'new_payload_pixels': added_pixels, 'camera': camera, 'uv': [u, v], 'saved_point_m': old[v, u].tolist(),
                 'multisample_point_m': worlds[0][v, u].tolist(), 'single_point_m': worlds[1][v, u].tolist(),
@@ -153,6 +177,6 @@ report = {'results': results, 'source_commit': 'c916ab1', 'controls': 0,
     'training': False, 'gpu_used': False,
     'scope': 'CPU sensor diagnostic at saved states; no runtime truth or branch outcome',
     'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
-output = base/'reports/9026_17_precontact_added_pixels_CPU_20261018.json'
+output = args.output
 output.write_text(json.dumps(report, indent=2)+'\n')
 print(json.dumps(report))

@@ -19,6 +19,7 @@ parser.add_argument('--job', default='8173_24')
 parser.add_argument('--row', type=int, default=2)
 parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--working-adapter', type=Path, required=True)
+parser.add_argument('--working-payload', type=Path)
 args = parser.parse_args()
 sys.path.insert(0, str(args.source))
 
@@ -31,6 +32,14 @@ from robots.libero.bounded_self_filter import gripper_visual_boxes
 from robots.libero.bounded_skills import MeasuredSkillAdapter
 from robots.libero.v5_geometric_grasp import _voxel, panda_geometry
 from robots.libero.v5_state import Entity
+
+if args.working_payload:
+    import robots.libero.bounded_payload as payload
+
+    spec = importlib.util.spec_from_file_location('precontact_candidate_payload', args.working_payload)
+    candidate_payload = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(candidate_payload)
+    payload._surface_registration = candidate_payload._surface_registration
 
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 directory = next((root/'results/bounded_skills/feasibility_20261017'/('job'+args.job)).glob('*oracle*'))
@@ -154,6 +163,9 @@ report = {'scope': 'CPU saved-public precontact membership and lift-route replay
     'source': str(args.source), 'source_sha256': hashlib.sha256(
         (args.source/'robots/libero/bounded_skills.py').read_bytes()).hexdigest(),
     'candidate_sha256': hashlib.sha256(args.working_adapter.read_bytes()).hexdigest(),
+    'candidate_payload': None if args.working_payload is None else {
+        'path': str(args.working_payload),
+        'sha256': hashlib.sha256(args.working_payload.read_bytes()).hexdigest()},
     'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     'membership_delta': {'path': str(delta_path), 'sha256': hashlib.sha256(delta_path.read_bytes()).hexdigest(),
         'added': len(np.unique(added, axis=0)), 'removed': len(np.unique(removed, axis=0))},

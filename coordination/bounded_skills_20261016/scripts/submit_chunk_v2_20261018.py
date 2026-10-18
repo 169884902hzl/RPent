@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Insert a startup, then paired v2/legacy-boundary originals in GPU lane 3."""
 import argparse
 import hashlib
@@ -12,7 +14,9 @@ parser.add_argument('--tag', default='chunk_v2_20261018')
 parser.add_argument('--replace-array', action='append', default=[])
 parser.add_argument('--indices', default='0-219', help='Registered original-state indices for the paired full run')
 parser.add_argument('--startup-index', type=int, default=24)
+parser.add_argument('--after', help='Ordinary startup waits for this existing job; never releases held jobs')
 args = parser.parse_args()
+assert not (args.full and args.after), '--after applies only to startup submission'
 indices = []
 for part in args.indices.split(','):
     ends = [int(value) for value in part.split('-')]
@@ -65,6 +69,10 @@ if args.full:
 else:
     dependency = (release_barrier
                   if len(running) >= aggregate_cap else None)
+    if args.after:
+        assert all(part.isdigit() for part in args.after.split('_'))
+        dependency = ('?'.join(part+':'+args.after for part in dependency.split('?'))
+                      if dependency else 'afterany:'+args.after)
 arguments = ['sbatch','--parsable','--nodelist=node02','--nice=500',
     '--array='+(args.indices+'%'+str(capacity) if args.full else str(args.startup_index)+'%1'),
     *(['--dependency='+dependency] if dependency else []),

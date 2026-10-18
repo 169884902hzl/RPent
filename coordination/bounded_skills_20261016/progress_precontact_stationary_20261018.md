@@ -4,7 +4,7 @@
 2. Source c1bc859 registers the reference to current clean RGB-D, with the existing 0.1 rad / 15 mm bounds, and excludes additions matching the saved non-target scene within 4 mm. No hand-motion or private-pose correction is used.
 3. Saved-state CPU comparison adds 30 current bowl pixels, removes none, and clears the lift route. Independent saved-pixel identities confirm all 30 are bowl. A rejected predecessor added 29 plate pixels; that result is retained and was never submitted to GPU.
 4. CPU tests: 245 adapter/payload checks pass; the final 16 focused precontact checks also pass. One existing pytest timeout-configuration warning and seven existing Ruff findings remain. Physical success is not yet established for c1bc859.
-5. The e5bbb18 init16/19 physical pair continues separately. Next is the same-launcher startup and new/legacy-rule init17 pair on c1bc859; no training, confirmation or freeze admission.
+5. The e5bbb18 init16/19 physical pair is closed: new2/2,legacy1/2. The same-launcher init17 startup9216_17 completed0:0 with203actual controls; formal9239_17 is pending Priority. The later68573bc geometry correction and startup9240_22 have separate identities; see progress_precontact_reciprocal_20261018.md. No training, confirmation or freeze admission.
 
 ## Cause and correction
 
@@ -22,6 +22,8 @@ The current trajectory code scales every leg's time by the largest derivative-li
 
 ## Runtime and coordination
 
-Source c1bc859 is pushed to harness-v5. Archive SHA `b9067c8fccf602dd8d9bbc4a30daeaba26013a19af4307e1a7a1816971533e22`. The planned snapshot is `/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_precontact_stationary_20261018_c1bc859`; entry `scripts.probe_bounded_feasibility:episode`, interpreter `/public/home/sunyihan/rpent_libero_eval/.venv/bin/python`. Public schema bounded-skills/3 and public-request-legal/2 bytes are unchanged. Candidate order is nonsemantic; detailed source history remains three receipts. The arbitrary-prefix CPU interface and its missing-historical-context limitation are unchanged.
+Source c1bc859 is pushed to harness-v5. Archive SHA `b9067c8fccf602dd8d9bbc4a30daeaba26013a19af4307e1a7a1816971533e22`. The snapshot is `/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_precontact_stationary_20261018_c1bc859`; entry `scripts.probe_bounded_feasibility:episode`, interpreter `/public/home/sunyihan/rpent_libero_eval/.venv/bin/python`. Public schema bounded-skills/3 and public-request-legal/2 bytes are unchanged. Candidate order is nonsemantic; detailed source history remains three receipts. The arbitrary-prefix CPU interface and its missing-historical-context limitation are unchanged.
 
 The queue monitor also compared a startup element ID to array parent IDs, so its following array could repeatedly overtake the startup. It now recognizes both IDs. Startup9213_16 subsequently completed0:0 in3:17, with168actual control steps; its two-state physical array is9214. No running GPU task was cancelled. Node02/nice500 and Codex2's returning GPU share continue to govern admission.
+
+The exact runtime replay with the same1mm stationary-scene voxelization independently reproduces30additions,0removals and all3recovered bowl blockers: `reports/9026_17_stationary_voxel_runtime_CPU_20261018.json`. Generic can init2/5 CPU checks under c1bc859 retain their failures. The later68573bc uses reciprocal pre-lift fitting and connected-depth completion to clear their saved-public routes; physical can success remains unverified and is not attributed to c1bc859.

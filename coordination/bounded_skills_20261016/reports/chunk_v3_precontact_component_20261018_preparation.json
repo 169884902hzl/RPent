@@ -1,0 +1,80 @@
+{
+  "source_commit": "68573bc",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_precontact_component_20261018_68573bc",
+  "archive_sha256": "a18a58c10f614242927cbdb198d1c617acd61f5d5c32df39311971808b69867a",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_precontact_component_20261018.json",
+    "sha256": "33153fc50ca8200b24bd8aab23c700fded5b49ee6a2ddaa5407d3317f1263e50"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_precontact_component_20261018.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/reciprocal_precontact_validation_CPU_20261018.json",
+    "sha256": "60b67a8d6b478d2ecd63d1acf0bc04eeadd8a7662c2f823458525f233f359197",
+    "results": {
+      "scope": "CPU unit tests and saved-public geometry only; no physical admission",
+      "final_adapter_payload_tests": {
+        "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_skills.py",
+        "passed": 247,
+        "seconds": 108.92,
+        "exit": 0
+      },
+      "focused_new_regression": {
+        "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_skills.py -k \"precontact or curved_partial\"",
+        "passed": 19,
+        "seconds": 1.72,
+        "exit": 0,
+        "overlaps_final_suite": true
+      },
+      "rejected_global_reciprocal_variant": {
+        "failed": 1,
+        "passed": 33,
+        "test": "test_curved_partial_view_validates_the_final_fit_instead_of_an_intermediate_iterate",
+        "gpu_admitted": false
+      },
+      "warning": "pre-existing pytest unknown timeout option",
+      "scoped_lint_new_code": "pass; adapter/unchanged adapter tests retain 7 pre-existing findings",
+      "sources": [
+        {
+          "path": "robots/libero/bounded_payload.py",
+          "sha256": "8ee11fbbf679929761dd619a7834ded0939fb839a0ae8f7f5649d31d626c9a75"
+        },
+        {
+          "path": "robots/libero/bounded_skills.py",
+          "sha256": "3f74d033f1d6dc18f559528c879fbe0fde01a8ecac59e3c00a8fcb9ec8872376"
+        },
+        {
+          "path": "tests/unit_tests/robots/libero/test_bounded_payload.py",
+          "sha256": "8662349249797d4c41b286858f71c0fdf3e96ad819b2ac296c63c68cc95644dc"
+        },
+        {
+          "path": "tests/unit_tests/robots/libero/fixtures/public_precontact_occlusion_fit.npz",
+          "sha256": "577269cf73eecf4ac7280fd7c24c18db4715ea31c1c6885ab72b1022ae848b52"
+        },
+        {
+          "path": "tests/unit_tests/robots/libero/test_bounded_skills.py",
+          "sha256": "2119774ceb45a8efcc3913a2d82e531d5e359ec990cbd5aa914cb4d5a564cdc1"
+        }
+      ],
+      "training": false,
+      "confirmation": false,
+      "source_commit": "68573bc5fe3a752ce8bfb6034a89ea2eb5606fab",
+      "raw_pair_variant": {
+        "runtime_admitted": false,
+        "can_init5_route_passed": false,
+        "reason": "removing voxelization did not clear the remaining blocker; variant not retained"
+      }
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}
