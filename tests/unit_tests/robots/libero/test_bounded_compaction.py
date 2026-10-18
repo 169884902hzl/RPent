@@ -3,8 +3,9 @@ import copy
 
 import pytest
 
-from rpent.skill_package.contract import compact_candidate, validate
+from rpent.skill_package.contract import compact_candidate, committed_candidate_ids, selected, validate
 from tests.unit_tests.robots.libero.test_bounded_skills import adapter as adapter
+from tests.unit_tests.robots.libero.test_bounded_skills import decision
 
 
 def test_compression_preserves_ids_order_and_unknown_consequences(adapter):
@@ -62,3 +63,23 @@ def test_execution_prefix_requires_real_anchor_identities_and_budget(adapter, mu
         prefix['steps'][0].update(skill='observe', parameters={'mode': 'refresh'})
     with pytest.raises(ValueError):
         validate(request)
+
+
+def test_committed_actions_are_not_reselected_even_with_a_regenerated_id(adapter):
+    request = adapter.request()
+    request['revision'] = 1
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'nudge')
+    request['execution_prefix'] = dict(source_revision=0, source_observation_id='public-0',
+        steps=[{key: candidate[key] for key in ('id', 'skill', 'parameters')}],
+        predicted_state=dict(robot=copy.deepcopy(request['robot']),
+            anchors=copy.deepcopy(request['anchors']), remaining_sim_steps=request['remaining_sim_steps']),
+        assumptions=[])
+    replacement = copy.deepcopy(candidate)
+    replacement['id'] = 'regenerated-id'
+    request['candidates'].append(replacement)
+    assert committed_candidate_ids(request) == {candidate['id'], 'regenerated-id'}
+    for cid in committed_candidate_ids(request):
+        with pytest.raises(ValueError, match='already committed'):
+            selected(request, decision(request, [cid]))
+    context = adapter.prefix_context(request, [])
+    assert not committed_candidate_ids(request) & {c['id'] for c in context['candidates']}

@@ -18,7 +18,7 @@ from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_geometric_grasp import _voxel
 from robots.libero.bounded_self_filter import gripper_at_measured_fingers
 from rpent.skill_package import VERSION
-from rpent.skill_package.contract import compact_candidate, is_boundary, validate
+from rpent.skill_package.contract import compact_candidate, committed_candidate_ids, is_boundary, validate
 
 
 def expected_receipt(adapter, skill, parameters, route=None):
@@ -273,8 +273,9 @@ class PublicPrefixPrediction:
 
     def context(self):
         candidates = []
+        committed = committed_candidate_ids(self.request)
         for original in self.original.values():
-            if original['id'] in self.prefix:
+            if original['id'] in self.prefix or original['id'] in committed:
                 continue
             candidate = self.candidate(original) if self.prefix else original
             if candidate is not None and candidate['consequences']['screen_scope'] != 'conditional_on_prefix':

@@ -119,11 +119,13 @@ def test_moving_prefetch_rejects_a_new_collision_and_contact_transition(adapter,
     move = next(c for c in request['candidates'] if c['skill'] == 'nudge'
         and c['parameters'] == {'axis': 'x', 'distance_m': .01})
     frozen = moving_request(adapter, request, move, monkeypatch)
+    following = next(c for c in frozen['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'y', 'distance_m': .01})
     adapter.execute(request, decision(request, [move['id']]))
     adapter._cloud_and_ik = lambda *args, **kwargs: lambda poses: {
         'passed': False, 'reason': 'measured_sweep_collision', 'collision': True,
         'ik_reachable': None, 'path_min_clearance_m': 0.}
-    assert not adapter.adopt_prefetched(frozen, decision(frozen, [move['id']]))
+    assert not adapter.adopt_prefetched(frozen, decision(frozen, [following['id']]))
 
     request = adapter.request(k=1)
     frozen = copy.deepcopy(request)
@@ -139,7 +141,9 @@ def test_moving_prefetch_rejects_unfulfilled_or_different_commitment(adapter, mo
     move = next(c for c in request['candidates'] if c['skill'] == 'nudge'
         and c['parameters'] == {'axis': 'x', 'distance_m': .02})
     frozen = moving_request(adapter, request, move, monkeypatch)
-    chosen = decision(frozen, [move['id']])
+    following = next(c for c in frozen['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'y', 'distance_m': .01})
+    chosen = decision(frozen, [following['id']])
     adapter.execute(request, decision(request, [move['id']]))
     valid = copy.deepcopy(frozen)
     frozen['execution_prefix']['predicted_state']['robot']['eef_xyz_m'][0] += .03

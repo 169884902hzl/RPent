@@ -1625,6 +1625,9 @@ class MeasuredSkillAdapter:
         clone.target_cache = dict(self.target_cache)
         clone.memory = copy.deepcopy(self.memory)
         template = copy.deepcopy(self.latest_request)
+        template['execution_prefix'] = None
+        template['anchors'] = clone.anchors()
+        template['receipts'] = copy.deepcopy(self.receipts[-3:])
         template["robot"] = clone.robot()
         template["remaining_sim_steps"] = budget["remaining_sim_steps"]
         template["revision"] = self.revision+1

@@ -31,6 +31,14 @@ def is_boundary(candidate: dict) -> bool:
     return candidate['skill'] in BOUNDARIES
 
 
+def committed_candidate_ids(request: dict) -> set[str]:
+    """Actions already promised by this observation cannot be selected twice."""
+    steps = (request.get('execution_prefix') or {}).get('steps', [])
+    ids = {step['id'] for step in steps}
+    identities = {identity(step) for step in steps}
+    return {c['id'] for c in request['candidates'] if c['id'] in ids or identity(c) in identities}
+
+
 def validate(value: dict) -> None:
     kind = value.get("kind")
     if kind not in {"request", "decision", "receipt", "prefix_context", "oracle_labels"}:
@@ -85,6 +93,8 @@ def selected(request: dict, decision: dict) -> list[dict]:
     if len(candidates) != len(request["candidates"]) or any(i not in candidates for i in ids):
         raise ValueError("unknown or duplicate candidate ID")
     result = [candidates[i] for i in ids]
+    if set(ids) & committed_candidate_ids(request):
+        raise ValueError('decision reselects an already committed action')
     if any(is_boundary(c) for c in result[:-1]):
         raise ValueError("decision crosses a control-handoff boundary")
     return result
@@ -106,7 +116,7 @@ def validate_labels(request: dict, labels: dict) -> None:
         if position['prefix'] != prefix:
             raise ValueError('oracle labels do not follow the selected prefix')
         legal = set(position['legal'])
-        if not legal <= ids or position['selected'] not in legal:
+        if not legal <= ids or position['selected'] not in legal or legal & committed_candidate_ids(request):
             raise ValueError('oracle labels reference an illegal candidate')
         for field in ('rule_acceptable', 'measured_success', 'measured_failure'):
             if not set(position[field]) <= legal:
