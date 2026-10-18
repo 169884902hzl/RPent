@@ -88,3 +88,42 @@ def test_side_route_can_rotate_at_lower_pregrasp_without_assuming_high_wrist_rea
         np.empty((0,3)),geometry(),pose_screen=PoseScreen())
     assert valid is True
     assert any('route_orient_at_pregrasp' in w['phase'] for w in evidence['execution_waypoints'])
+
+
+def test_distal_pad_placement_retains_observed_flanks_and_clears_low_support():
+    from robots.libero.v5_geometric_grasp import collision_counts
+    from robots.libero.v5_grasp_route import sample_unified_grasps
+
+    # Two measured vertical faces of a thin object above a support plane.
+    cloud = np.array([[x, y, z] for x in (-.02, .02)
+        for y in np.linspace(-.015, .015, 31) for z in np.linspace(.005, .018, 15)]
+        + [[x, y, z] for y in (-.015, .015)
+        for x in np.linspace(-.02, .02, 41) for z in np.linspace(.005, .018, 15)])
+    pads = [{'name': name+'_pad', 'lower': [-.004, -.008, -.0116],
+        'upper': [.004, .008, .0044], 'slide_per_half_opening': [sign, 0., 0.]}
+        for name, sign in (('leftfinger', -1.), ('rightfinger', 1.))]
+    fingers = [{'name': name, 'lower': [-.004, -.008, -.0445],
+        'upper': [.004, .008, .00925], 'slide_per_half_opening': [sign, 0., 0.]}
+        for name, sign in (('leftfinger', -1.), ('rightfinger', 1.))]
+    hand = {'boxes': [*pads, *fingers]}
+    _, rows = sample_unified_grasps(cloud, np.empty((0, 3)), 'box',
+        [0., 0., .3], [1., 0., 0., 0.], hand, None, .3, candidate_only=True)
+    catalog = {row['id']: row for row in rows if not row['rejected']}
+    table = np.array([[x, y, 0.] for x in np.linspace(-.08, .08, 81)
+        for y in np.linspace(-.08, .08, 81)])
+    recovered = []
+    for cid, row in catalog.items():
+        if not cid.endswith('_top_distal_pad'):
+            continue
+        centred = catalog[cid.removesuffix('_distal_pad')]
+        site = Rotation.from_quat(row['body_quat_xyzw']).as_matrix()@Rotation.from_euler('z', -np.pi/2).as_matrix()
+        patch_centre = np.mean(row['measured_contact_patch_centres_xyz'], axis=0)
+        np.testing.assert_allclose(np.asarray(row['xyz'])+site@row['pad_contact_local_xyz_m'], patch_centre)
+        assert row['route'][-1]['xyz'] == row['xyz']
+        assert row['route'][-2]['xyz'] == row['approach_xyz']
+        assert row['measured_contact_patch_centres_xyz'] == centred['measured_contact_patch_centres_xyz']
+        before = collision_counts(table, centred['xyz'], site, hand, .08, clearance_m=.004)
+        after = collision_counts(table, row['xyz'], site, hand, .08, clearance_m=.004)
+        if any(before.values()) and not any(after.values()):
+            recovered.append(cid)
+    assert recovered, 'a supported distal contact must survive without deleting support pixels'

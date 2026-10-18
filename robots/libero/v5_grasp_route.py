@@ -7,7 +7,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation, Slerp
 
-VERSION = 'public-full-route-grasp/5-collision-first-dev'
+VERSION = 'public-full-route-grasp/6-pad-contact-dev'
 
 
 def separate_target_points(target_points, scene_points):
@@ -51,6 +51,11 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
     if len(pads) != 2 or (pose_screen is None and not candidate_only):
         raise ValueError('two measured finger pads and public IK screen required')
     pad_centre = np.mean([(np.asarray(b['lower'])+b['upper'])/2 for b in pads], axis=0)
+    distal_contact = pad_centre.copy()
+    distal_contact[2] = min(b['upper'][2] for b in pads)-.002
+    pad_contacts = [('', pad_centre)]
+    if distal_contact[2] > pad_centre[2]:
+        pad_contacts.append(('_distal_pad', distal_contact))
     base_axis = math.atan2(*region['closing_axis_xy'][::-1])
     records = []
     for seed_index, seed in enumerate(region['seeds']):
@@ -69,27 +74,33 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
             for approach, direction in approaches:
                 site = side_site_rotation(closing, direction)
                 body = site @ Rotation.from_euler('z', math.pi/2).as_matrix()
-                contact = centre-site@pad_centre
-                pregrasp = contact-direction*.15
-                route = approach_route(eef_xyz, body_quat, contact, Rotation.from_matrix(body).as_quat(),
-                                       approach, pregrasp, max(height, region['top_z']+.15))
-                clearance = min(float(obstacle_tree.query(contact)[0]), .2) if obstacle_tree else .2
-                confidence = min(fit['normal_quality'])*min(1., min(fit['normal_patch_support_counts'])/8)
-                row = {'id':f's{seed_index}_a{axis_index}_{approach}', 'source':'perception',
-                       'rejected':[], 'approach':approach, 'xyz':contact.tolist(),
-                       'body_quat_xyzw':Rotation.from_matrix(body).as_quat().tolist(),
-                       'closing_axis_xy':closing[:2].tolist(), 'approach_xyz':pregrasp.tolist(),
-                       'route':route, 'clearance_m':clearance, 'measurement_confidence':confidence,
-                       'score':clearance/.2+confidence, **fit}
-                records.append(row)
-                if approach != 'top':
-                    # A horizontal wrist can be unreachable at the raised
-                    # transit height even when its lower pregrasp is reachable.
-                    # Screen an alternate route that rotates at that pregrasp;
-                    # neither collision nor IK limits are relaxed.
-                    records.append({**row, 'id':row['id']+'_orient_at_pregrasp', 'rejected':[],
-                        'route':approach_route(eef_xyz,body_quat,contact,Rotation.from_matrix(body).as_quat(),
-                            approach,pregrasp,max(height,region['top_z']+.15),orient_at_pregrasp=True)})
+                for suffix, pad_contact in pad_contacts:
+                    # A low measured flank can meet the distal pad without
+                    # centring the longer finger body through its support.
+                    # Both placements retain the same observed flank patches
+                    # and undergo the full route and closure collision tests.
+                    contact = centre-site@pad_contact
+                    pregrasp = contact-direction*.15
+                    route = approach_route(eef_xyz, body_quat, contact, Rotation.from_matrix(body).as_quat(),
+                                           approach, pregrasp, max(height, region['top_z']+.15))
+                    clearance = min(float(obstacle_tree.query(contact)[0]), .2) if obstacle_tree else .2
+                    confidence = min(fit['normal_quality'])*min(1., min(fit['normal_patch_support_counts'])/8)
+                    row = {'id':f's{seed_index}_a{axis_index}_{approach}'+suffix, 'source':'perception',
+                           'rejected':[], 'approach':approach, 'xyz':contact.tolist(),
+                           'body_quat_xyzw':Rotation.from_matrix(body).as_quat().tolist(),
+                           'closing_axis_xy':closing[:2].tolist(), 'approach_xyz':pregrasp.tolist(),
+                           'pad_contact_local_xyz_m': pad_contact.tolist(),
+                           'route':route, 'clearance_m':clearance, 'measurement_confidence':confidence,
+                           'score':clearance/.2+confidence, **fit}
+                    records.append(row)
+                    if approach != 'top':
+                        # A horizontal wrist can be unreachable at the raised
+                        # transit height even when its lower pregrasp is reachable.
+                        # Screen an alternate route that rotates at that pregrasp;
+                        # neither collision nor IK limits are relaxed.
+                        records.append({**row, 'id':row['id']+'_orient_at_pregrasp', 'rejected':[],
+                            'route':approach_route(eef_xyz,body_quat,contact,Rotation.from_matrix(body).as_quat(),
+                                approach,pregrasp,max(height,region['top_z']+.15),orient_at_pregrasp=True)})
     # Checking routes in score order avoids hundreds of expensive numerical
     # IK solves after a higher-ranked feasible candidate is already found.
     # Unscreened candidates are explicitly untested, never marked feasible.
