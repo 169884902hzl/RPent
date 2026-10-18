@@ -1,0 +1,933 @@
+{
+  "scope": "saved public RGB-D curved-surface hypothesis only; no route or physical result",
+  "private_truth_used": false,
+  "controls": 0,
+  "training": false,
+  "gpu_used": false,
+  "job": "8173_25",
+  "row": 2,
+  "capture_step": 3,
+  "anchor_id": "e66",
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_124314e_20261018",
+  "instance_points": 96371,
+  "prefix_sha256": "df7d4277a1800898fc304631160190a391f8080f8a955b3f9e6e4489fb1a88f5",
+  "script_sha256": "b05533669862387d0ad3a99511b4d8af9f29f180ad023b28cdbaaac701cf2ad5",
+  "blockers_m": [
+    [
+      -0.10382760316133499,
+      -0.2721284031867981,
+      0.07726835459470749
+    ]
+  ],
+  "baseline_distances_m": [
+    0.002117862714910996
+  ],
+  "trials": [
+    {
+      "axis": [
+        0.8112457809318896,
+        0.5766605065312734,
+        0.09665890092124857
+      ],
+      "axis_variance_m2": 8.288065761054023e-05,
+      "blocker_distances_after_m": [
+        0.002117862714910996
+      ],
+      "recovered_blockers": 0,
+      "continuation_distances_m": [
+        0.002117862714910996
+      ],
+      "continuation_recovered": 0,
+      "cameras": [
+        {
+          "camera": "agentview",
+          "matched_blockers": [
+            false
+          ],
+          "continuation": {
+            "linear": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 833,
+              "added_pixels_per_round": [
+                228,
+                207,
+                205
+              ],
+              "rounds": 3,
+              "max_step_m": 0.003,
+              "spacing_source": "fixed_metric_limit",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "planar": {
+              "version": "public-local-plane-instance-boundary/1-dev",
+              "candidate_pixels": 294,
+              "added_pixels": 198,
+              "max_step_m": 0.003,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": null,
+              "spacing_source": "fixed_metric_limit",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "source": "current_rgbd_and_measured_handle_circular_sections",
+          "private_pose_used": false,
+          "max_surface_residual_m": 0.001,
+          "minimum_arc_deg": 90.0,
+          "sections": [
+            {
+              "axial_span_m": [
+                -0.04125839725170969,
+                -0.031529816652801745
+              ],
+              "radius_m": 0.03572382918805849,
+              "observed_arc_deg": 143.22845123042634,
+              "support_points": 109,
+              "matched_pixels": 113
+            },
+            {
+              "axial_span_m": [
+                -0.0363554352486438,
+                -0.026591254724127378
+              ],
+              "radius_m": 0.04944416845499924,
+              "observed_arc_deg": 135.35453339195215,
+              "support_points": 143,
+              "matched_pixels": 151
+            },
+            {
+              "axial_span_m": [
+                -0.03147044250384978,
+                -0.021516004865495268
+              ],
+              "radius_m": 0.04429771012155982,
+              "observed_arc_deg": 235.332264177592,
+              "support_points": 197,
+              "matched_pixels": 200
+            },
+            {
+              "axial_span_m": [
+                -0.026491189179755657,
+                -0.016501397947595826
+              ],
+              "radius_m": 0.04274901177271661,
+              "observed_arc_deg": 241.67183454892003,
+              "support_points": 230,
+              "matched_pixels": 226
+            },
+            {
+              "axial_span_m": [
+                -0.021453870500132834,
+                -0.011570066976035832
+              ],
+              "radius_m": 0.04178249656596503,
+              "observed_arc_deg": 243.49209894080266,
+              "support_points": 240,
+              "matched_pixels": 219
+            },
+            {
+              "axial_span_m": [
+                -0.016471211514961694,
+                -0.006532305329332261
+              ],
+              "radius_m": 0.039763894203215036,
+              "observed_arc_deg": 235.65988547066738,
+              "support_points": 295,
+              "matched_pixels": 223
+            },
+            {
+              "axial_span_m": [
+                0.013566811808906497,
+                0.021978355775309374
+              ],
+              "radius_m": 0.04020243890382538,
+              "observed_arc_deg": 185.6904046018978,
+              "support_points": 122,
+              "matched_pixels": 30
+            }
+          ],
+          "matched_pixels": 833
+        },
+        {
+          "camera": "wrist",
+          "matched_blockers": [
+            false
+          ],
+          "continuation": {
+            "linear": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 10016,
+              "added_pixels_per_round": [
+                992,
+                982,
+                989
+              ],
+              "rounds": 3,
+              "max_step_m": 0.003,
+              "spacing_source": "fixed_metric_limit",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "planar": {
+              "version": "public-local-plane-instance-boundary/1-dev",
+              "candidate_pixels": 1106,
+              "added_pixels": 70,
+              "max_step_m": 0.003,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": null,
+              "spacing_source": "fixed_metric_limit",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "source": "current_rgbd_and_measured_handle_circular_sections",
+          "private_pose_used": false,
+          "max_surface_residual_m": 0.001,
+          "minimum_arc_deg": 90.0,
+          "sections": [
+            {
+              "axial_span_m": [
+                -0.04125839725170969,
+                -0.031529816652801745
+              ],
+              "radius_m": 0.03572382918805849,
+              "observed_arc_deg": 143.22845123042634,
+              "support_points": 109,
+              "matched_pixels": 0
+            },
+            {
+              "axial_span_m": [
+                -0.0363554352486438,
+                -0.026591254724127378
+              ],
+              "radius_m": 0.04944416845499924,
+              "observed_arc_deg": 135.35453339195215,
+              "support_points": 143,
+              "matched_pixels": 243
+            },
+            {
+              "axial_span_m": [
+                -0.03147044250384978,
+                -0.021516004865495268
+              ],
+              "radius_m": 0.04429771012155982,
+              "observed_arc_deg": 235.332264177592,
+              "support_points": 197,
+              "matched_pixels": 428
+            },
+            {
+              "axial_span_m": [
+                -0.026491189179755657,
+                -0.016501397947595826
+              ],
+              "radius_m": 0.04274901177271661,
+              "observed_arc_deg": 241.67183454892003,
+              "support_points": 230,
+              "matched_pixels": 456
+            },
+            {
+              "axial_span_m": [
+                -0.021453870500132834,
+                -0.011570066976035832
+              ],
+              "radius_m": 0.04178249656596503,
+              "observed_arc_deg": 243.49209894080266,
+              "support_points": 240,
+              "matched_pixels": 1125
+            },
+            {
+              "axial_span_m": [
+                -0.016471211514961694,
+                -0.006532305329332261
+              ],
+              "radius_m": 0.039763894203215036,
+              "observed_arc_deg": 235.65988547066738,
+              "support_points": 295,
+              "matched_pixels": 5490
+            },
+            {
+              "axial_span_m": [
+                0.013566811808906497,
+                0.021978355775309374
+              ],
+              "radius_m": 0.04020243890382538,
+              "observed_arc_deg": 185.6904046018978,
+              "support_points": 122,
+              "matched_pixels": 2828
+            }
+          ],
+          "matched_pixels": 10016
+        }
+      ]
+    },
+    {
+      "axis": [
+        -0.5810025233943178,
+        0.8135922684956638,
+        0.022443004556321915
+      ],
+      "axis_variance_m2": 0.00029562100677616907,
+      "blocker_distances_after_m": [
+        0.002117862714910996
+      ],
+      "recovered_blockers": 0,
+      "continuation_distances_m": [
+        0.002117862714910996
+      ],
+      "continuation_recovered": 0,
+      "cameras": [
+        {
+          "camera": "agentview",
+          "matched_blockers": [
+            false
+          ],
+          "continuation": {
+            "linear": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 628,
+              "added_pixels_per_round": [
+                180,
+                176,
+                185
+              ],
+              "rounds": 3,
+              "max_step_m": 0.003,
+              "spacing_source": "fixed_metric_limit",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "planar": {
+              "version": "public-local-plane-instance-boundary/1-dev",
+              "candidate_pixels": 256,
+              "added_pixels": 201,
+              "max_step_m": 0.003,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": null,
+              "spacing_source": "fixed_metric_limit",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "source": "current_rgbd_and_measured_handle_circular_sections",
+          "private_pose_used": false,
+          "max_surface_residual_m": 0.001,
+          "minimum_arc_deg": 90.0,
+          "sections": [
+            {
+              "axial_span_m": [
+                -0.04405079538974832,
+                -0.03408468136198466
+              ],
+              "radius_m": 0.021476301990576475,
+              "observed_arc_deg": 188.88143885833685,
+              "support_points": 130,
+              "matched_pixels": 10
+            },
+            {
+              "axial_span_m": [
+                -0.009040439804437524,
+                0.0009004852775386672
+              ],
+              "radius_m": 0.02769839385846796,
+              "observed_arc_deg": 133.49853518275887,
+              "support_points": 328,
+              "matched_pixels": 274
+            },
+            {
+              "axial_span_m": [
+                0.020947452681079174,
+                0.030897869801068602
+              ],
+              "radius_m": 0.03975518515712002,
+              "observed_arc_deg": 202.79253875094176,
+              "support_points": 254,
+              "matched_pixels": 179
+            },
+            {
+              "axial_span_m": [
+                0.025986175869335573,
+                0.035857751485037975
+              ],
+              "radius_m": 0.040044429306185556,
+              "observed_arc_deg": 209.94250013634485,
+              "support_points": 200,
+              "matched_pixels": 168
+            },
+            {
+              "axial_span_m": [
+                0.03102919484560175,
+                0.04093434314809605
+              ],
+              "radius_m": 0.04073728414890406,
+              "observed_arc_deg": 176.99391562066188,
+              "support_points": 112,
+              "matched_pixels": 119
+            }
+          ],
+          "matched_pixels": 628
+        },
+        {
+          "camera": "wrist",
+          "matched_blockers": [
+            false
+          ],
+          "continuation": {
+            "linear": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 17780,
+              "added_pixels_per_round": [
+                843,
+                815,
+                811
+              ],
+              "rounds": 3,
+              "max_step_m": 0.003,
+              "spacing_source": "fixed_metric_limit",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "planar": {
+              "version": "public-local-plane-instance-boundary/1-dev",
+              "candidate_pixels": 1083,
+              "added_pixels": 119,
+              "max_step_m": 0.003,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": null,
+              "spacing_source": "fixed_metric_limit",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "source": "current_rgbd_and_measured_handle_circular_sections",
+          "private_pose_used": false,
+          "max_surface_residual_m": 0.001,
+          "minimum_arc_deg": 90.0,
+          "sections": [
+            {
+              "axial_span_m": [
+                -0.04405079538974832,
+                -0.03408468136198466
+              ],
+              "radius_m": 0.021476301990576475,
+              "observed_arc_deg": 188.88143885833685,
+              "support_points": 130,
+              "matched_pixels": 1961
+            },
+            {
+              "axial_span_m": [
+                -0.009040439804437524,
+                0.0009004852775386672
+              ],
+              "radius_m": 0.02769839385846796,
+              "observed_arc_deg": 133.49853518275887,
+              "support_points": 328,
+              "matched_pixels": 4940
+            },
+            {
+              "axial_span_m": [
+                0.020947452681079174,
+                0.030897869801068602
+              ],
+              "radius_m": 0.03975518515712002,
+              "observed_arc_deg": 202.79253875094176,
+              "support_points": 254,
+              "matched_pixels": 7636
+            },
+            {
+              "axial_span_m": [
+                0.025986175869335573,
+                0.035857751485037975
+              ],
+              "radius_m": 0.040044429306185556,
+              "observed_arc_deg": 209.94250013634485,
+              "support_points": 200,
+              "matched_pixels": 5644
+            },
+            {
+              "axial_span_m": [
+                0.03102919484560175,
+                0.04093434314809605
+              ],
+              "radius_m": 0.04073728414890406,
+              "observed_arc_deg": 176.99391562066188,
+              "support_points": 112,
+              "matched_pixels": 2650
+            }
+          ],
+          "matched_pixels": 17780
+        }
+      ]
+    },
+    {
+      "axis": [
+        -0.06569894009528397,
+        -0.07436585810151815,
+        0.9950645046524277
+      ],
+      "axis_variance_m2": 0.0007301154314350185,
+      "blocker_distances_after_m": [
+        0.002117862714910996
+      ],
+      "recovered_blockers": 0,
+      "continuation_distances_m": [
+        0.002117862714910996
+      ],
+      "continuation_recovered": 0,
+      "cameras": [
+        {
+          "camera": "agentview",
+          "matched_blockers": [
+            false
+          ],
+          "continuation": {
+            "linear": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 3932,
+              "added_pixels_per_round": [
+                135,
+                104,
+                93
+              ],
+              "rounds": 3,
+              "max_step_m": 0.003,
+              "spacing_source": "fixed_metric_limit",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "planar": {
+              "version": "public-local-plane-instance-boundary/1-dev",
+              "candidate_pixels": 329,
+              "added_pixels": 94,
+              "max_step_m": 0.003,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": null,
+              "spacing_source": "fixed_metric_limit",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "source": "current_rgbd_and_measured_handle_circular_sections",
+          "private_pose_used": false,
+          "max_surface_residual_m": 0.001,
+          "minimum_arc_deg": 90.0,
+          "sections": [
+            {
+              "axial_span_m": [
+                -0.05973277067046105,
+                -0.051463976933615686
+              ],
+              "radius_m": 0.036503806172303935,
+              "observed_arc_deg": 149.9416429185166,
+              "support_points": 480,
+              "matched_pixels": 78
+            },
+            {
+              "axial_span_m": [
+                -0.056382453172327374,
+                -0.046419805173456896
+              ],
+              "radius_m": 0.0314594414517737,
+              "observed_arc_deg": 107.87562116213304,
+              "support_points": 588,
+              "matched_pixels": 77
+            },
+            {
+              "axial_span_m": [
+                -0.05141210928368806,
+                -0.04142196219626968
+              ],
+              "radius_m": 0.03161094534505697,
+              "observed_arc_deg": 166.7216016534275,
+              "support_points": 608,
+              "matched_pixels": 94
+            },
+            {
+              "axial_span_m": [
+                -0.04639664469866075,
+                -0.03642363634171928
+              ],
+              "radius_m": 0.03221987107631027,
+              "observed_arc_deg": 170.34605181227005,
+              "support_points": 660,
+              "matched_pixels": 162
+            },
+            {
+              "axial_span_m": [
+                -0.04141781792469889,
+                -0.03141929112264309
+              ],
+              "radius_m": 0.032320327640172966,
+              "observed_arc_deg": 171.12030560402948,
+              "support_points": 790,
+              "matched_pixels": 361
+            },
+            {
+              "axial_span_m": [
+                -0.0364031650532053,
+                -0.026435375406711314
+              ],
+              "radius_m": 0.03247647807698285,
+              "observed_arc_deg": 170.08214145032917,
+              "support_points": 917,
+              "matched_pixels": 564
+            },
+            {
+              "axial_span_m": [
+                -0.03138949746858141,
+                -0.021441629475393915
+              ],
+              "radius_m": 0.03259300671750479,
+              "observed_arc_deg": 171.0217645236586,
+              "support_points": 975,
+              "matched_pixels": 622
+            },
+            {
+              "axial_span_m": [
+                -0.026403471883028568,
+                -0.016425435502063983
+              ],
+              "radius_m": 0.032578780561118834,
+              "observed_arc_deg": 165.0183827577792,
+              "support_points": 982,
+              "matched_pixels": 623
+            },
+            {
+              "axial_span_m": [
+                -0.021413451641224154,
+                -0.011430046272094398
+              ],
+              "radius_m": 0.03256516845291401,
+              "observed_arc_deg": 166.6127959284347,
+              "support_points": 978,
+              "matched_pixels": 626
+            },
+            {
+              "axial_span_m": [
+                -0.01641292562293545,
+                -0.00642136971089072
+              ],
+              "radius_m": 0.03261064506306379,
+              "observed_arc_deg": 165.66464322536703,
+              "support_points": 998,
+              "matched_pixels": 629
+            },
+            {
+              "axial_span_m": [
+                -0.011413639281514027,
+                -0.0014190843194318427
+              ],
+              "radius_m": 0.032613045323879805,
+              "observed_arc_deg": 164.278740659217,
+              "support_points": 1013,
+              "matched_pixels": 625
+            },
+            {
+              "axial_span_m": [
+                -0.006417041287322801,
+                0.003578098933149715
+              ],
+              "radius_m": 0.032421098688756644,
+              "observed_arc_deg": 157.54024642240836,
+              "support_points": 973,
+              "matched_pixels": 586
+            },
+            {
+              "axial_span_m": [
+                -0.001401015480072902,
+                0.008579974820039308
+              ],
+              "radius_m": 0.03196382374907866,
+              "observed_arc_deg": 143.102311315298,
+              "support_points": 928,
+              "matched_pixels": 546
+            },
+            {
+              "axial_span_m": [
+                0.003590537962882411,
+                0.013569228253456947
+              ],
+              "radius_m": 0.03161270983803072,
+              "observed_arc_deg": 133.55943309530102,
+              "support_points": 741,
+              "matched_pixels": 553
+            },
+            {
+              "axial_span_m": [
+                0.008582198308240975,
+                0.018546095697713934
+              ],
+              "radius_m": 0.02979158226331686,
+              "observed_arc_deg": 305.75191009353335,
+              "support_points": 367,
+              "matched_pixels": 632
+            },
+            {
+              "axial_span_m": [
+                0.013596012805595876,
+                0.022749972282133088
+              ],
+              "radius_m": 0.030214772181987856,
+              "observed_arc_deg": 302.1175307184426,
+              "support_points": 333,
+              "matched_pixels": 590
+            },
+            {
+              "axial_span_m": [
+                0.018589068344724353,
+                0.024906562573931673
+              ],
+              "radius_m": 0.030635724949538156,
+              "observed_arc_deg": 298.14302320247975,
+              "support_points": 397,
+              "matched_pixels": 272
+            },
+            {
+              "axial_span_m": [
+                0.023637547773101945,
+                0.024906562573931673
+              ],
+              "radius_m": 0.036036117348358765,
+              "observed_arc_deg": 116.94881356699231,
+              "support_points": 23,
+              "matched_pixels": 22
+            }
+          ],
+          "matched_pixels": 3932
+        },
+        {
+          "camera": "wrist",
+          "matched_blockers": [
+            false
+          ],
+          "continuation": {
+            "linear": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 30137,
+              "added_pixels_per_round": [
+                1231,
+                1159,
+                1102
+              ],
+              "rounds": 3,
+              "max_step_m": 0.003,
+              "spacing_source": "fixed_metric_limit",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "planar": {
+              "version": "public-local-plane-instance-boundary/1-dev",
+              "candidate_pixels": 1404,
+              "added_pixels": 72,
+              "max_step_m": 0.003,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": null,
+              "spacing_source": "fixed_metric_limit",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "source": "current_rgbd_and_measured_handle_circular_sections",
+          "private_pose_used": false,
+          "max_surface_residual_m": 0.001,
+          "minimum_arc_deg": 90.0,
+          "sections": [
+            {
+              "axial_span_m": [
+                -0.05973277067046105,
+                -0.051463976933615686
+              ],
+              "radius_m": 0.036503806172303935,
+              "observed_arc_deg": 149.9416429185166,
+              "support_points": 480,
+              "matched_pixels": 3323
+            },
+            {
+              "axial_span_m": [
+                -0.056382453172327374,
+                -0.046419805173456896
+              ],
+              "radius_m": 0.0314594414517737,
+              "observed_arc_deg": 107.87562116213304,
+              "support_points": 588,
+              "matched_pixels": 1076
+            },
+            {
+              "axial_span_m": [
+                -0.05141210928368806,
+                -0.04142196219626968
+              ],
+              "radius_m": 0.03161094534505697,
+              "observed_arc_deg": 166.7216016534275,
+              "support_points": 608,
+              "matched_pixels": 1190
+            },
+            {
+              "axial_span_m": [
+                -0.04639664469866075,
+                -0.03642363634171928
+              ],
+              "radius_m": 0.03221987107631027,
+              "observed_arc_deg": 170.34605181227005,
+              "support_points": 660,
+              "matched_pixels": 1293
+            },
+            {
+              "axial_span_m": [
+                -0.04141781792469889,
+                -0.03141929112264309
+              ],
+              "radius_m": 0.032320327640172966,
+              "observed_arc_deg": 171.12030560402948,
+              "support_points": 790,
+              "matched_pixels": 1450
+            },
+            {
+              "axial_span_m": [
+                -0.0364031650532053,
+                -0.026435375406711314
+              ],
+              "radius_m": 0.03247647807698285,
+              "observed_arc_deg": 170.08214145032917,
+              "support_points": 917,
+              "matched_pixels": 1602
+            },
+            {
+              "axial_span_m": [
+                -0.03138949746858141,
+                -0.021441629475393915
+              ],
+              "radius_m": 0.03259300671750479,
+              "observed_arc_deg": 171.0217645236586,
+              "support_points": 975,
+              "matched_pixels": 1792
+            },
+            {
+              "axial_span_m": [
+                -0.026403471883028568,
+                -0.016425435502063983
+              ],
+              "radius_m": 0.032578780561118834,
+              "observed_arc_deg": 165.0183827577792,
+              "support_points": 982,
+              "matched_pixels": 2042
+            },
+            {
+              "axial_span_m": [
+                -0.021413451641224154,
+                -0.011430046272094398
+              ],
+              "radius_m": 0.03256516845291401,
+              "observed_arc_deg": 166.6127959284347,
+              "support_points": 978,
+              "matched_pixels": 2275
+            },
+            {
+              "axial_span_m": [
+                -0.01641292562293545,
+                -0.00642136971089072
+              ],
+              "radius_m": 0.03261064506306379,
+              "observed_arc_deg": 165.66464322536703,
+              "support_points": 998,
+              "matched_pixels": 2550
+            },
+            {
+              "axial_span_m": [
+                -0.011413639281514027,
+                -0.0014190843194318427
+              ],
+              "radius_m": 0.032613045323879805,
+              "observed_arc_deg": 164.278740659217,
+              "support_points": 1013,
+              "matched_pixels": 2902
+            },
+            {
+              "axial_span_m": [
+                -0.006417041287322801,
+                0.003578098933149715
+              ],
+              "radius_m": 0.032421098688756644,
+              "observed_arc_deg": 157.54024642240836,
+              "support_points": 973,
+              "matched_pixels": 3330
+            },
+            {
+              "axial_span_m": [
+                -0.001401015480072902,
+                0.008579974820039308
+              ],
+              "radius_m": 0.03196382374907866,
+              "observed_arc_deg": 143.102311315298,
+              "support_points": 928,
+              "matched_pixels": 3805
+            },
+            {
+              "axial_span_m": [
+                0.003590537962882411,
+                0.013569228253456947
+              ],
+              "radius_m": 0.03161270983803072,
+              "observed_arc_deg": 133.55943309530102,
+              "support_points": 741,
+              "matched_pixels": 4122
+            },
+            {
+              "axial_span_m": [
+                0.008582198308240975,
+                0.018546095697713934
+              ],
+              "radius_m": 0.02979158226331686,
+              "observed_arc_deg": 305.75191009353335,
+              "support_points": 367,
+              "matched_pixels": 3322
+            },
+            {
+              "axial_span_m": [
+                0.013596012805595876,
+                0.022749972282133088
+              ],
+              "radius_m": 0.030214772181987856,
+              "observed_arc_deg": 302.1175307184426,
+              "support_points": 333,
+              "matched_pixels": 9847
+            },
+            {
+              "axial_span_m": [
+                0.018589068344724353,
+                0.024906562573931673
+              ],
+              "radius_m": 0.030635724949538156,
+              "observed_arc_deg": 298.14302320247975,
+              "support_points": 397,
+              "matched_pixels": 8706
+            },
+            {
+              "axial_span_m": [
+                0.023637547773101945,
+                0.024906562573931673
+              ],
+              "radius_m": 0.036036117348358765,
+              "observed_arc_deg": 116.94881356699231,
+              "support_points": 23,
+              "matched_pixels": 0
+            }
+          ],
+          "matched_pixels": 30137
+        }
+      ]
+    }
+  ]
+}

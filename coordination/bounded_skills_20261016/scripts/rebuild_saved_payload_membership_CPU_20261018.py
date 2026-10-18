@@ -14,6 +14,9 @@ os.environ.update(CUDA_VISIBLE_DEVICES="", OPENBLAS_NUM_THREADS="1")
 parser = argparse.ArgumentParser()
 parser.add_argument("--job", action="append", required=True)
 parser.add_argument("--source", type=Path, required=True)
+parser.add_argument("--row", type=int)
+parser.add_argument("--output", type=Path)
+parser.add_argument("--save-queries", action="store_true")
 args = parser.parse_args()
 sys.path.insert(0, str(args.source))
 
@@ -32,7 +35,8 @@ for job in args.job:
     directory = next((root / "results/bounded_skills/feasibility_20261017" / ("job" + job)).glob("*oracle*"))
     prefix = (directory / "choices.jsonl").read_bytes().splitlines()
     rows = [json.loads(line) for line in prefix]
-    row = next(row for row in rows if row["request"]["robot"]["held_anchor_id"])
+    row = (rows[args.row] if args.row is not None else
+           next(row for row in rows if row["request"]["robot"]["held_anchor_id"]))
     index = row["index"]
     key = row["request"]["robot"]["held_anchor_id"]
     step = row["public_geometry_evidence"][f"bounded_screen_{key}_1_scene"]["capture_step"]
@@ -87,6 +91,23 @@ for job in args.job:
         "target": load(directory / "bounded_payload_reference_target.npz" / f"{reference_step:02d}.npz"),
         "scene": load(directory / "bounded_payload_reference_scene.npz" / f"{reference_step:02d}.npz"),
         "robot": load(reference_file), "capture_step": reference_step}
+    queries = []
+    if args.save_queries:
+        import base64
+
+        def save_query(method, *, kwargs, timeout_s):
+            assert method == 'sam3.segment'
+            raw = base64.b64decode(kwargs['image_base64'])
+            camera = next(camera for camera in ('agentview', 'wrist')
+                if raw == (directory/(camera+'_high.png')/(f'{step:02d}.png')).read_bytes())
+            queries.append({'camera': camera, 'point': kwargs['point'],
+                'image': str(directory/(camera+'_high.png')/(f'{step:02d}.png')),
+                'image_sha256': hashlib.sha256(raw).hexdigest()})
+            return {'found': False, 'reason': 'CPU_query_registration_only'}
+        adapter.scene.rpc = SimpleNamespace(call=save_query)
+        adapter.scene.calls = 0
+        adapter.ex.toolkit._state.load_bytes = lambda name: (
+            directory/name/(f'{step:02d}'+Path(name).suffix)).read_bytes()
     instance = adapter._instance_pixels(key)
     tree = cKDTree(instance)
     scene_tree = cKDTree(adapter._base_geometry[0])
@@ -96,6 +117,8 @@ for job in args.job:
             continue
         groups = diagnostic.get("public_scene_collision_points", {})
         points = [point for values in groups.values() for point in values]
+        if not points and diagnostic.get("obstacle_point") is not None:
+            points = [diagnostic["obstacle_point"]]
         if not points:
             continue
         distances = tree.query(np.asarray(points))[0]
@@ -106,17 +129,33 @@ for job in args.job:
             "now_in_self_filtered_scene": int((scene_distances <= 1e-6).sum()),
             "nearest_current_scene_m": scene_distances.tolist(),
             "nearest_current_member_m": distances.tolist(), "points_m": points})
+    points = np.unique([point for candidate in candidates for point in candidate['points_m']], axis=0)
+    pixels = []
+    for camera, artifact in row['perception_evidence'][key]['sam_mask_files'].items():
+        world = frame(camera+'_world_high.npz')
+        mask = load(artifact['path']).astype(bool)
+        for point in points:
+            distances = np.linalg.norm(world-point, axis=2)
+            y, x = np.unravel_index(np.argmin(distances), distances.shape)
+            if distances[y, x] > 1e-6:
+                continue
+            pixels.append({'camera': camera, 'xy': [int(x), int(y)], 'xyz_m': point.tolist(),
+                'raw_sam_member': bool(mask[y, x]),
+                'stationary_scene_distance_m': float(cKDTree(adapter.payload_reference['scene']).query(point)[0]),
+                'current_member_distance_m': float(tree.query(point)[0])})
     reports.append({"job": job, "index": index, "anchor_id": key, "capture_step": step,
         "reference_step": reference_step, "instance_points": len(instance),
         "prefix_sha256": hashlib.sha256(b"\n".join(prefix[:index+1])).hexdigest(),
-        "candidate_blockers": candidates, "membership_evidence": adapter.instance_boundary_evidence[key]})
+        "candidate_blockers": candidates, "blocker_pixels": pixels, "queries": queries,
+        "membership_evidence": adapter.instance_boundary_evidence[key]})
 report = {"scope": "CPU saved-sensor membership diagnostic; not a physical or complete route replay",
     "source": str(args.source), "source_sha256": hashlib.sha256((args.source / "robots/libero/bounded_skills.py").read_bytes()).hexdigest(),
     "private_truth_used": False, "new_segmentation_queries": 0, "controls": 0, "training": False,
     "limitation": "No live SAM service or new point prompt; this measures only support in saved public captures.",
     "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), "cases": reports}
-output = root / "coordination/bounded_skills_20261016/reports/bowl_saved_membership_CPU_20261018.json"
+output = args.output or root / "coordination/bounded_skills_20261016/reports/bowl_saved_membership_CPU_20261018.json"
 output.write_text(json.dumps(report, indent=2) + "\n")
 print(json.dumps({"output": str(output), "cases": [
-    {key: case[key] for key in ("job", "index", "anchor_id", "instance_points", "candidate_blockers")}
+    {**{key: case[key] for key in ("job", "index", "anchor_id", "instance_points", "blocker_pixels", "queries")},
+     "blocked_candidates": len(case['candidate_blockers'])}
     for case in reports]}))

@@ -1,0 +1,5691 @@
+{
+  "scope": "saved current public RGB-D matches cleaned precontact target surface; no controls",
+  "private_truth_used": false,
+  "controls": 0,
+  "training": false,
+  "gpu_used": false,
+  "job": "8173_24",
+  "row": 2,
+  "capture_step": 3,
+  "reference_points": 24833,
+  "reference": [
+    {
+      "source": "exact_rebuilt_public_instance_pixels",
+      "capture_step": 0,
+      "points": 24833,
+      "boundary": [
+        {
+          "camera": "agentview",
+          "source_step": 0,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 5736,
+                "lower": [
+                  -0.14753435254096986,
+                  -0.2710661649703979,
+                  0.012980584520846605
+                ],
+                "upper": [
+                  -0.08690723925828933,
+                  -0.21099935919046403,
+                  0.07989158108830452
+                ],
+                "stationary_prior_fraction": 0.9735006973500697
+              },
+              {
+                "label": 1,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 2,
+                "points": 2,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 3,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 4,
+                "points": 9,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 5,
+                "points": 3,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 6,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 7,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 5736,
+            "input_pixels": 5754
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 5846,
+                "lower": [
+                  -0.14765893965959548,
+                  -0.2718308061361313,
+                  0.010962617490440607
+                ],
+                "upper": [
+                  -0.08690868020057678,
+                  -0.2109556645154953,
+                  0.07994067966938019
+                ],
+                "stationary_prior_fraction": 0.9615121450564489
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 5846,
+            "input_pixels": 5846
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 303,
+            "added_pixels": 24,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "version": "public-extent-bounded-sparse-instance/1-dev",
+            "source": "current_rgbd_mask_and_measured_pixel_tangents",
+            "added_pixels": 76,
+            "private_pose_used": false,
+            "measured_extent_m": [
+              [
+                -0.14936746656894684,
+                -0.27530866861343384,
+                0.0016451681731268764
+              ],
+              [
+                -0.08607935905456543,
+                -0.20524875819683075,
+                0.08050982654094696
+              ]
+            ],
+            "directional": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 5736,
+              "added_pixels_per_round": [
+                42,
+                13,
+                9
+              ],
+              "rounds": 3,
+              "max_step_m": null,
+              "spacing_source": "measured_two_pixel_tangent",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "local_plane": {
+              "version": "public-local-plane-instance-boundary/2-dev",
+              "candidate_pixels": 22,
+              "added_pixels": 12,
+              "max_step_m": null,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": 2,
+              "spacing_source": "measured_two_axis_pixel_tangents",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.14936746656894684,
+              -0.27530866861343384,
+              0.0016451681731268764
+            ],
+            "upper": [
+              -0.08607935905456543,
+              -0.20524875819683075,
+              0.08050982654094696
+            ],
+            "added_pixels": 9
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 5736,
+          "added_pixels_per_round": [
+            49,
+            15,
+            10
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "fused_extent_component": {
+            "source": "current_self_filtered_rgbd_component_within_two_current_mask_extents",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.1511010229587555,
+              -0.2754831910133362,
+              -1.0665032277756836e-05
+            ],
+            "upper": [
+              -0.08607935905456543,
+              -0.20413261651992798,
+              0.08050982654094696
+            ],
+            "added_pixels": 307
+          },
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 134,
+            "added_pixels": 8,
+            "shared_opposite_view_components": [
+              0,
+              1
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 0,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 6161,
+                  "lower": [
+                    -0.14785448908805848,
+                    -0.27177551984786985,
+                    0.0004124797123949975
+                  ],
+                  "upper": [
+                    -0.08690887838602065,
+                    -0.20681411325931548,
+                    0.07992469072341919
+                  ],
+                  "stationary_prior_fraction": 0.9123518909267976
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 6161,
+              "input_pixels": 6161
+            },
+            "semantic_fragments": {
+              "source": "current_semantic_fragment_and_opposite_current_local_surface",
+              "candidate_pixels": 18,
+              "added_pixels": 0,
+              "patch_points": 8,
+              "max_support_distance_m": 0.003,
+              "max_plane_residual_m": 0.001,
+              "private_pose_used": false
+            }
+          }
+        },
+        {
+          "camera": "wrist",
+          "source_step": 0,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 15711,
+                "lower": [
+                  -0.14577977657318114,
+                  -0.23360834419727325,
+                  0.0037889078259468073
+                ],
+                "upper": [
+                  -0.08854043632745742,
+                  -0.20791248083114625,
+                  0.07912454307079315
+                ],
+                "stationary_prior_fraction": 0.9922983896632932
+              },
+              {
+                "label": 1,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 2,
+                "points": 5,
+                "rejected": "too_few_depth_points"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 15711,
+            "input_pixels": 15717
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 17197,
+                "lower": [
+                  -0.14722790241241454,
+                  -0.23364936530590058,
+                  -9.849891866906547e-06
+                ],
+                "upper": [
+                  -0.08811858594417572,
+                  -0.2062784230709076,
+                  0.07910633087158203
+                ],
+                "stationary_prior_fraction": 0.9140547769959877
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 17197,
+            "input_pixels": 17197
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 342,
+            "added_pixels": 179,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "version": "public-extent-bounded-sparse-instance/1-dev",
+            "source": "current_rgbd_mask_and_measured_pixel_tangents",
+            "added_pixels": 334,
+            "private_pose_used": false,
+            "measured_extent_m": [
+              [
+                -0.14892488718032837,
+                -0.2387342005968094,
+                -1.0122776984644588e-05
+              ],
+              [
+                -0.08660605549812317,
+                -0.20413261651992798,
+                0.07961971312761307
+              ]
+            ],
+            "directional": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 15711,
+              "added_pixels_per_round": [
+                147,
+                63,
+                48
+              ],
+              "rounds": 3,
+              "max_step_m": null,
+              "spacing_source": "measured_two_pixel_tangent",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "local_plane": {
+              "version": "public-local-plane-instance-boundary/2-dev",
+              "candidate_pixels": 84,
+              "added_pixels": 76,
+              "max_step_m": null,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": 2,
+              "spacing_source": "measured_two_axis_pixel_tangents",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.14892488718032837,
+              -0.2387342005968094,
+              -1.0122776984644588e-05
+            ],
+            "upper": [
+              -0.08660605549812317,
+              -0.20413261651992798,
+              0.07961971312761307
+            ],
+            "added_pixels": 904
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 15711,
+          "added_pixels_per_round": [
+            154,
+            120,
+            128
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "fused_extent_component": {
+            "source": "current_self_filtered_rgbd_component_within_two_current_mask_extents",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.1511010229587555,
+              -0.2754831910133362,
+              -1.0665032277756836e-05
+            ],
+            "upper": [
+              -0.08607935905456543,
+              -0.20413261651992798,
+              0.08050982654094696
+            ],
+            "added_pixels": 1457
+          },
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 1822,
+            "added_pixels": 18,
+            "shared_opposite_view_components": [
+              0
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 0,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 18672,
+                  "lower": [
+                    -0.14802573263645172,
+                    -0.2337379789352417,
+                    -1.0437244909553556e-05
+                  ],
+                  "upper": [
+                    -0.08757749393582344,
+                    -0.2053684201836586,
+                    0.07909073784947396
+                  ],
+                  "stationary_prior_fraction": 0.8444194515852613
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 18672,
+              "input_pixels": 18672
+            },
+            "semantic_fragments": {
+              "source": "current_semantic_fragment_and_opposite_current_local_surface",
+              "candidate_pixels": 6,
+              "added_pixels": 0,
+              "patch_points": 8,
+              "max_support_distance_m": 0.003,
+              "max_plane_residual_m": 0.001,
+              "private_pose_used": false
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "cameras": [
+    {
+      "camera": "agentview",
+      "cylinder": {
+        "source": "current_rgbd_and_measured_handle_circular_sections",
+        "private_pose_used": false,
+        "max_surface_residual_m": 0.001,
+        "minimum_arc_deg": 90.0,
+        "sections": [
+          {
+            "axial_span_m": [
+              -0.048292270090655585,
+              -0.0399773626190019
+            ],
+            "radius_m": 0.03282072621014359,
+            "observed_arc_deg": 161.86288668054763,
+            "support_points": 483,
+            "matched_pixels": 78
+          },
+          {
+            "axial_span_m": [
+              -0.04493355201936509,
+              -0.03500050056692751
+            ],
+            "radius_m": 0.032543540214232766,
+            "observed_arc_deg": 165.46800129859508,
+            "support_points": 839,
+            "matched_pixels": 60
+          },
+          {
+            "axial_span_m": [
+              -0.039953595657344625,
+              -0.029961397025090177
+            ],
+            "radius_m": 0.03231022711035775,
+            "observed_arc_deg": 160.18985664768348,
+            "support_points": 825,
+            "matched_pixels": 62
+          },
+          {
+            "axial_span_m": [
+              -0.03492757450942317,
+              -0.02496809043733356
+            ],
+            "radius_m": 0.03231883463009497,
+            "observed_arc_deg": 161.27337304687035,
+            "support_points": 846,
+            "matched_pixels": 90
+          },
+          {
+            "axial_span_m": [
+              -0.029927876684509417,
+              -0.019963508703325698
+            ],
+            "radius_m": 0.03239371872846484,
+            "observed_arc_deg": 231.98236744409712,
+            "support_points": 875,
+            "matched_pixels": 150
+          },
+          {
+            "axial_span_m": [
+              -0.024949460147654264,
+              -0.014967626124272198
+            ],
+            "radius_m": 0.03220698196966677,
+            "observed_arc_deg": 208.65118433769626,
+            "support_points": 1000,
+            "matched_pixels": 267
+          },
+          {
+            "axial_span_m": [
+              -0.019954459582429477,
+              -0.009964007291800647
+            ],
+            "radius_m": 0.03253444577886589,
+            "observed_arc_deg": 234.94701737197363,
+            "support_points": 1043,
+            "matched_pixels": 372
+          },
+          {
+            "axial_span_m": [
+              -0.01495262379835747,
+              -0.004966907721256341
+            ],
+            "radius_m": 0.03254226462895644,
+            "observed_arc_deg": 230.75238620499806,
+            "support_points": 1045,
+            "matched_pixels": 441
+          },
+          {
+            "axial_span_m": [
+              -0.009946235786647703,
+              3.767273949455206e-05
+            ],
+            "radius_m": 0.0326953387877275,
+            "observed_arc_deg": 233.0144588062026,
+            "support_points": 1049,
+            "matched_pixels": 382
+          },
+          {
+            "axial_span_m": [
+              -0.0049396037041887384,
+              0.00503789078116134
+            ],
+            "radius_m": 0.03246144155829679,
+            "observed_arc_deg": 232.07873737814734,
+            "support_points": 1058,
+            "matched_pixels": 339
+          },
+          {
+            "axial_span_m": [
+              5.583420043770522e-05,
+              0.010042850820426703
+            ],
+            "radius_m": 0.03251286548422372,
+            "observed_arc_deg": 234.43291004970905,
+            "support_points": 1035,
+            "matched_pixels": 341
+          },
+          {
+            "axial_span_m": [
+              0.005057393542401409,
+              0.015028936542196933
+            ],
+            "radius_m": 0.032509406273213554,
+            "observed_arc_deg": 233.83853601810526,
+            "support_points": 1056,
+            "matched_pixels": 259
+          },
+          {
+            "axial_span_m": [
+              0.010047010573391125,
+              0.0200267174959983
+            ],
+            "radius_m": 0.032433136472390954,
+            "observed_arc_deg": 238.6373812952704,
+            "support_points": 1063,
+            "matched_pixels": 286
+          },
+          {
+            "axial_span_m": [
+              0.015051465284846443,
+              0.025036918061989138
+            ],
+            "radius_m": 0.03248929937206349,
+            "observed_arc_deg": 236.65048743788046,
+            "support_points": 918,
+            "matched_pixels": 274
+          },
+          {
+            "axial_span_m": [
+              0.020072393118624084,
+              0.03004538371097808
+            ],
+            "radius_m": 0.03234717288867397,
+            "observed_arc_deg": 231.95985110935996,
+            "support_points": 479,
+            "matched_pixels": 255
+          },
+          {
+            "axial_span_m": [
+              0.02509621108314253,
+              0.035007687372435384
+            ],
+            "radius_m": 0.03234763329687629,
+            "observed_arc_deg": 221.78256197826835,
+            "support_points": 372,
+            "matched_pixels": 260
+          },
+          {
+            "axial_span_m": [
+              0.030080169251856533,
+              0.040025589745026124
+            ],
+            "radius_m": 0.030742158684038207,
+            "observed_arc_deg": 323.06038689551417,
+            "support_points": 571,
+            "matched_pixels": 159
+          },
+          {
+            "axial_span_m": [
+              0.03504561492235564,
+              0.044308813205554895
+            ],
+            "radius_m": 0.03151682334656622,
+            "observed_arc_deg": 199.25362337006297,
+            "support_points": 399,
+            "matched_pixels": 27
+          },
+          {
+            "axial_span_m": [
+              0.04006177764492336,
+              0.04418265173798278
+            ],
+            "radius_m": 0.033795821247633605,
+            "observed_arc_deg": 113.16285981270136,
+            "support_points": 119,
+            "matched_pixels": 1
+          }
+        ],
+        "matched_pixels": 2949
+      },
+      "version": "public-contact-surface-continuation/1-dev",
+      "source": "current_rgbd_continuity_within_measured_contact_extent",
+      "max_surface_residual_m": 0.001,
+      "matched_pixels": 3542,
+      "added_pixels": 625938,
+      "private_pose_used": false,
+      "lower": [
+        -0.1521010229587555,
+        -0.2764831910133362,
+        -0.0010106650322777569
+      ],
+      "upper": [
+        -0.08507935905456543,
+        -0.20274009013175964,
+        0.08150982654094696
+      ],
+      "current_boundary": {
+        "version": "public-depth-continuous-instance-boundary/1-dev",
+        "source": "current_instance_mask_and_same_view_rgbd",
+        "input_pixels": 4466,
+        "added_pixels_per_round": [
+          57,
+          59,
+          61,
+          63,
+          65,
+          67,
+          69,
+          70,
+          73,
+          75,
+          77,
+          79,
+          81,
+          83,
+          85,
+          87,
+          89,
+          91,
+          92,
+          95,
+          97,
+          99,
+          99,
+          96,
+          93,
+          92,
+          93,
+          94,
+          95,
+          97,
+          99,
+          101,
+          103,
+          105,
+          107,
+          109,
+          111,
+          113,
+          116,
+          117,
+          119,
+          121,
+          123,
+          124,
+          125,
+          127,
+          128,
+          130,
+          132,
+          132,
+          134,
+          136,
+          137,
+          139,
+          141,
+          142,
+          140,
+          141,
+          138,
+          134,
+          131,
+          129,
+          128,
+          125,
+          121,
+          118,
+          114,
+          112,
+          111,
+          111,
+          111,
+          111,
+          109,
+          107,
+          106,
+          105,
+          103,
+          104,
+          102,
+          101,
+          100,
+          98,
+          98,
+          96,
+          94,
+          93,
+          92,
+          92,
+          92,
+          90,
+          90,
+          89,
+          88,
+          89,
+          89,
+          87,
+          87,
+          86,
+          86,
+          86,
+          86,
+          86,
+          86,
+          85,
+          86,
+          86,
+          86,
+          86,
+          86,
+          87,
+          87,
+          88,
+          89,
+          89,
+          90,
+          90,
+          90,
+          92,
+          92,
+          94,
+          94,
+          95,
+          97,
+          98,
+          100,
+          101,
+          102,
+          104,
+          105,
+          108,
+          109,
+          110,
+          112,
+          114,
+          116,
+          118,
+          120,
+          123,
+          124,
+          128,
+          129,
+          131,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          141,
+          140,
+          139,
+          140,
+          140,
+          142,
+          143,
+          143,
+          144,
+          146,
+          148,
+          149,
+          151,
+          153,
+          154,
+          156,
+          158,
+          160,
+          162,
+          163,
+          164,
+          167,
+          170,
+          173,
+          177,
+          180,
+          184,
+          188,
+          191,
+          195,
+          199,
+          202,
+          207,
+          213,
+          219,
+          224,
+          230,
+          238,
+          244,
+          249,
+          253,
+          258,
+          264,
+          271,
+          277,
+          285,
+          293,
+          301,
+          308,
+          317,
+          324,
+          332,
+          340,
+          348,
+          355,
+          362,
+          368,
+          374,
+          381,
+          387,
+          393,
+          401,
+          408,
+          415,
+          421,
+          428,
+          434,
+          441,
+          448,
+          454,
+          461,
+          468,
+          475,
+          481,
+          488,
+          494,
+          502,
+          508,
+          516,
+          522,
+          528,
+          537,
+          542,
+          553,
+          556,
+          565,
+          572,
+          578,
+          588,
+          590,
+          594,
+          601,
+          603,
+          609,
+          613,
+          617,
+          622,
+          628,
+          633,
+          639,
+          645,
+          647,
+          653,
+          658,
+          661,
+          667,
+          673,
+          677,
+          683,
+          687,
+          692,
+          696,
+          701,
+          708,
+          712,
+          718,
+          720,
+          726,
+          732,
+          737,
+          742,
+          747,
+          752,
+          758,
+          761,
+          766,
+          771,
+          776,
+          781,
+          785,
+          791,
+          796,
+          801,
+          804,
+          807,
+          810,
+          813,
+          815,
+          818,
+          821,
+          823,
+          826,
+          829,
+          832,
+          835,
+          838,
+          840,
+          843,
+          845,
+          846,
+          848,
+          849,
+          849,
+          847,
+          845,
+          843,
+          842,
+          840,
+          842,
+          842,
+          840,
+          839,
+          836,
+          834,
+          833,
+          831,
+          828,
+          826,
+          827,
+          826,
+          827,
+          827,
+          826,
+          824,
+          823,
+          820,
+          821,
+          820,
+          820,
+          821,
+          822,
+          820,
+          819,
+          820,
+          822,
+          825,
+          823,
+          821,
+          821,
+          820,
+          822,
+          824,
+          824,
+          826,
+          826,
+          828,
+          827,
+          826,
+          823,
+          824,
+          825,
+          827,
+          828,
+          826,
+          826,
+          824,
+          822,
+          822,
+          821,
+          821,
+          818,
+          818,
+          817,
+          815,
+          814,
+          813,
+          809,
+          808,
+          805,
+          803,
+          800,
+          802,
+          805,
+          807,
+          812,
+          815,
+          817,
+          819,
+          824,
+          825,
+          831,
+          837,
+          843,
+          842,
+          847,
+          849,
+          853,
+          857,
+          862,
+          867,
+          869,
+          871,
+          872,
+          873,
+          874,
+          875,
+          879,
+          882,
+          885,
+          888,
+          892,
+          897,
+          905,
+          910,
+          913,
+          916,
+          920,
+          925,
+          930,
+          935,
+          940,
+          944,
+          950,
+          955,
+          960,
+          965,
+          970,
+          976,
+          981,
+          985,
+          989,
+          993,
+          998,
+          1002,
+          1005,
+          1007,
+          1010,
+          1013,
+          1016,
+          1020,
+          1022,
+          1024,
+          1029,
+          1032,
+          1035,
+          1038,
+          1041,
+          1045,
+          1050,
+          1054,
+          1059,
+          1062,
+          1066,
+          1071,
+          1075,
+          1079,
+          1082,
+          1085,
+          1087,
+          1089,
+          1091,
+          1094,
+          1097,
+          1098,
+          1099,
+          1099,
+          1100,
+          1100,
+          1101,
+          1102,
+          1103,
+          1102,
+          1103,
+          1103,
+          1104,
+          1103,
+          1104,
+          1105,
+          1104,
+          1102,
+          1101,
+          1098,
+          1094,
+          1094,
+          1089,
+          1086,
+          1086,
+          1083,
+          1079,
+          1081,
+          1080,
+          1074,
+          1071,
+          1067,
+          1063,
+          1059,
+          1056,
+          1051,
+          1046,
+          1041,
+          1038,
+          1033,
+          1029,
+          1027,
+          1022,
+          1018,
+          1013,
+          1010,
+          1007,
+          1005,
+          1003,
+          1001,
+          996,
+          993,
+          989,
+          985,
+          983,
+          979,
+          979,
+          976,
+          973,
+          973,
+          972,
+          971,
+          971,
+          970,
+          971,
+          968,
+          968,
+          968,
+          966,
+          964,
+          962,
+          962,
+          963,
+          964,
+          964,
+          952,
+          939,
+          936,
+          934,
+          931,
+          929,
+          925,
+          923,
+          921,
+          919,
+          917,
+          915,
+          912,
+          910,
+          907,
+          905,
+          903,
+          904,
+          901,
+          900,
+          900,
+          900,
+          903,
+          902,
+          903,
+          904,
+          905,
+          906,
+          905,
+          902,
+          902,
+          901,
+          903,
+          903,
+          903,
+          903,
+          903,
+          902,
+          902,
+          903,
+          903,
+          899,
+          897,
+          897,
+          894,
+          894,
+          893,
+          896,
+          897,
+          894,
+          887,
+          879,
+          881,
+          878,
+          878,
+          880,
+          880,
+          879,
+          880,
+          880,
+          879,
+          877,
+          877,
+          876,
+          863,
+          855,
+          848,
+          840,
+          834,
+          828,
+          823,
+          819,
+          818,
+          814,
+          810,
+          808,
+          805,
+          801,
+          800,
+          796,
+          794,
+          791,
+          788,
+          786,
+          784,
+          781,
+          779,
+          778,
+          777,
+          776,
+          776,
+          776,
+          775,
+          774,
+          774,
+          774,
+          774,
+          773,
+          773,
+          772,
+          771,
+          767,
+          768,
+          766,
+          764,
+          761,
+          763,
+          763,
+          767,
+          770,
+          772,
+          772,
+          771,
+          771,
+          771,
+          771,
+          771,
+          768,
+          765,
+          763,
+          763,
+          764,
+          758,
+          757,
+          754,
+          751,
+          749,
+          747,
+          744,
+          742,
+          740,
+          735,
+          733,
+          732,
+          731,
+          732,
+          732,
+          730,
+          722,
+          725,
+          724,
+          723,
+          721,
+          719,
+          717,
+          717,
+          715,
+          717,
+          715,
+          714,
+          713,
+          710,
+          713,
+          713,
+          711,
+          714,
+          715,
+          714,
+          713,
+          715,
+          713,
+          711,
+          710,
+          713,
+          713,
+          709,
+          708,
+          700,
+          700,
+          699,
+          697,
+          697,
+          697,
+          689,
+          685,
+          685,
+          686,
+          685,
+          684,
+          684,
+          685,
+          686,
+          683,
+          684,
+          682,
+          687,
+          687,
+          686,
+          686,
+          681,
+          683,
+          685,
+          685,
+          680,
+          683,
+          688,
+          692,
+          693,
+          696,
+          696,
+          699,
+          700,
+          697,
+          700,
+          694,
+          694,
+          688,
+          683,
+          681,
+          679,
+          677,
+          677,
+          674,
+          668,
+          663,
+          662,
+          659,
+          662,
+          665,
+          665,
+          657,
+          655,
+          653,
+          654,
+          654,
+          655,
+          659,
+          661,
+          663,
+          664,
+          662,
+          658,
+          652,
+          648,
+          645,
+          643,
+          635,
+          635,
+          628,
+          630,
+          629,
+          631,
+          630,
+          637,
+          642,
+          646,
+          648,
+          638,
+          634,
+          631,
+          629,
+          628,
+          627,
+          624,
+          622,
+          621,
+          615,
+          620,
+          610,
+          612,
+          615,
+          622,
+          627,
+          630,
+          633,
+          630,
+          632,
+          630,
+          636,
+          636,
+          642,
+          641,
+          648,
+          651,
+          654,
+          655,
+          658,
+          662,
+          666,
+          669,
+          673,
+          669,
+          673,
+          680,
+          680,
+          671,
+          672,
+          671,
+          665,
+          666,
+          664,
+          666,
+          669,
+          662,
+          658,
+          655,
+          650,
+          648,
+          651,
+          654,
+          651,
+          656,
+          656,
+          658,
+          662,
+          661,
+          663,
+          655,
+          651,
+          651,
+          648,
+          649,
+          654,
+          654,
+          652,
+          648,
+          648,
+          646,
+          650,
+          647,
+          646,
+          649,
+          652,
+          651,
+          651,
+          649,
+          644,
+          639,
+          630,
+          627,
+          625,
+          627,
+          624,
+          622,
+          619,
+          620,
+          614,
+          612,
+          612,
+          610,
+          608,
+          603,
+          600,
+          592,
+          595,
+          593,
+          595,
+          595,
+          596,
+          600,
+          603,
+          603,
+          605,
+          603,
+          608,
+          608,
+          612,
+          614,
+          614,
+          597,
+          579,
+          579,
+          575,
+          572,
+          571,
+          566,
+          564,
+          559,
+          558,
+          553,
+          552,
+          546,
+          543,
+          538,
+          536,
+          534,
+          533,
+          531,
+          531,
+          529,
+          527,
+          526,
+          523,
+          521,
+          518,
+          516,
+          513,
+          509,
+          506,
+          501,
+          495,
+          491,
+          486,
+          480,
+          474,
+          466,
+          459,
+          451,
+          445,
+          437,
+          431,
+          425,
+          419,
+          413,
+          408,
+          402,
+          397,
+          392,
+          387,
+          382,
+          377,
+          372,
+          367,
+          362,
+          357,
+          352,
+          347,
+          342,
+          337,
+          332,
+          327,
+          322,
+          317,
+          312,
+          307,
+          304,
+          301,
+          298,
+          295,
+          292,
+          289,
+          286,
+          283,
+          280,
+          277,
+          274,
+          271,
+          268,
+          265,
+          262,
+          259,
+          256,
+          253,
+          250,
+          247,
+          244,
+          241,
+          238,
+          235,
+          232,
+          229,
+          226,
+          225,
+          224,
+          223,
+          222,
+          221,
+          220,
+          219,
+          218,
+          217,
+          216,
+          215,
+          214,
+          213,
+          212,
+          211,
+          210,
+          209,
+          208,
+          207,
+          206,
+          205,
+          204,
+          203,
+          202,
+          201,
+          200,
+          199,
+          198,
+          197,
+          196,
+          195,
+          194,
+          193,
+          192,
+          191,
+          190,
+          189,
+          188,
+          187,
+          186,
+          185,
+          184,
+          183,
+          182,
+          181,
+          180,
+          179,
+          178,
+          177,
+          176,
+          175,
+          174,
+          173,
+          172,
+          171,
+          170,
+          169,
+          168,
+          167,
+          166,
+          165,
+          164,
+          163,
+          162,
+          161,
+          160,
+          159,
+          158,
+          157,
+          156,
+          155,
+          154,
+          153,
+          152,
+          151,
+          150,
+          149,
+          148,
+          147,
+          146,
+          145,
+          144,
+          143,
+          142,
+          141,
+          140,
+          139,
+          138,
+          137,
+          136,
+          135,
+          134,
+          133,
+          132,
+          131,
+          130,
+          129,
+          128,
+          127,
+          126,
+          125,
+          124,
+          123,
+          122,
+          121,
+          120,
+          119,
+          118,
+          117,
+          116,
+          115,
+          114,
+          113,
+          112,
+          111,
+          110,
+          109,
+          108,
+          107,
+          106,
+          105,
+          104,
+          103,
+          102,
+          101,
+          100,
+          99,
+          98,
+          97,
+          96,
+          95,
+          94,
+          93,
+          92,
+          91,
+          90,
+          89,
+          88,
+          87,
+          86,
+          85,
+          84,
+          83,
+          82,
+          81,
+          80,
+          79,
+          78,
+          77,
+          76,
+          75,
+          74,
+          73,
+          72,
+          71,
+          70,
+          69,
+          68,
+          67,
+          66,
+          65,
+          64,
+          63,
+          62,
+          61,
+          60,
+          59,
+          58,
+          57,
+          56,
+          55,
+          54,
+          53,
+          52,
+          51,
+          50,
+          49,
+          48,
+          47,
+          46,
+          45,
+          44,
+          43,
+          42,
+          41,
+          40,
+          39,
+          38,
+          37,
+          36,
+          35,
+          34,
+          33,
+          32,
+          31,
+          30,
+          29,
+          28,
+          27,
+          26,
+          25,
+          24,
+          23,
+          22,
+          21,
+          20,
+          19,
+          18,
+          17,
+          16,
+          15,
+          14,
+          13,
+          12,
+          11,
+          10,
+          9,
+          8,
+          7,
+          6,
+          5,
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "rounds": 2048,
+        "max_step_m": 0.003,
+        "spacing_source": "fixed_metric_limit",
+        "max_extrapolation_error_m": 0.001,
+        "private_target_pose_used": false
+      },
+      "boundary": {
+        "version": "public-depth-continuous-instance-boundary/1-dev",
+        "source": "current_instance_mask_and_same_view_rgbd",
+        "input_pixels": 3542,
+        "added_pixels_per_round": [
+          138,
+          94,
+          78,
+          69,
+          58,
+          51,
+          46,
+          44,
+          41,
+          37,
+          33,
+          31,
+          29,
+          27,
+          26,
+          25,
+          22,
+          19,
+          17,
+          16,
+          10,
+          6,
+          3,
+          2,
+          1,
+          1,
+          0
+        ],
+        "rounds": 179,
+        "max_step_m": 0.003,
+        "spacing_source": "fixed_metric_limit",
+        "max_extrapolation_error_m": 0.001,
+        "private_target_pose_used": false
+      }
+    },
+    {
+      "camera": "wrist",
+      "cylinder": {
+        "source": "current_rgbd_and_measured_handle_circular_sections",
+        "private_pose_used": false,
+        "max_surface_residual_m": 0.001,
+        "minimum_arc_deg": 90.0,
+        "sections": [
+          {
+            "axial_span_m": [
+              -0.048292270090655585,
+              -0.0399773626190019
+            ],
+            "radius_m": 0.03282072621014359,
+            "observed_arc_deg": 161.86288668054763,
+            "support_points": 483,
+            "matched_pixels": 3025
+          },
+          {
+            "axial_span_m": [
+              -0.04493355201936509,
+              -0.03500050056692751
+            ],
+            "radius_m": 0.032543540214232766,
+            "observed_arc_deg": 165.46800129859508,
+            "support_points": 839,
+            "matched_pixels": 2675
+          },
+          {
+            "axial_span_m": [
+              -0.039953595657344625,
+              -0.029961397025090177
+            ],
+            "radius_m": 0.03231022711035775,
+            "observed_arc_deg": 160.18985664768348,
+            "support_points": 825,
+            "matched_pixels": 1966
+          },
+          {
+            "axial_span_m": [
+              -0.03492757450942317,
+              -0.02496809043733356
+            ],
+            "radius_m": 0.03231883463009497,
+            "observed_arc_deg": 161.27337304687035,
+            "support_points": 846,
+            "matched_pixels": 2000
+          },
+          {
+            "axial_span_m": [
+              -0.029927876684509417,
+              -0.019963508703325698
+            ],
+            "radius_m": 0.03239371872846484,
+            "observed_arc_deg": 231.98236744409712,
+            "support_points": 875,
+            "matched_pixels": 2267
+          },
+          {
+            "axial_span_m": [
+              -0.024949460147654264,
+              -0.014967626124272198
+            ],
+            "radius_m": 0.03220698196966677,
+            "observed_arc_deg": 208.65118433769626,
+            "support_points": 1000,
+            "matched_pixels": 2634
+          },
+          {
+            "axial_span_m": [
+              -0.019954459582429477,
+              -0.009964007291800647
+            ],
+            "radius_m": 0.03253444577886589,
+            "observed_arc_deg": 234.94701737197363,
+            "support_points": 1043,
+            "matched_pixels": 3012
+          },
+          {
+            "axial_span_m": [
+              -0.01495262379835747,
+              -0.004966907721256341
+            ],
+            "radius_m": 0.03254226462895644,
+            "observed_arc_deg": 230.75238620499806,
+            "support_points": 1045,
+            "matched_pixels": 3481
+          },
+          {
+            "axial_span_m": [
+              -0.009946235786647703,
+              3.767273949455206e-05
+            ],
+            "radius_m": 0.0326953387877275,
+            "observed_arc_deg": 233.0144588062026,
+            "support_points": 1049,
+            "matched_pixels": 3897
+          },
+          {
+            "axial_span_m": [
+              -0.0049396037041887384,
+              0.00503789078116134
+            ],
+            "radius_m": 0.03246144155829679,
+            "observed_arc_deg": 232.07873737814734,
+            "support_points": 1058,
+            "matched_pixels": 4299
+          },
+          {
+            "axial_span_m": [
+              5.583420043770522e-05,
+              0.010042850820426703
+            ],
+            "radius_m": 0.03251286548422372,
+            "observed_arc_deg": 234.43291004970905,
+            "support_points": 1035,
+            "matched_pixels": 5085
+          },
+          {
+            "axial_span_m": [
+              0.005057393542401409,
+              0.015028936542196933
+            ],
+            "radius_m": 0.032509406273213554,
+            "observed_arc_deg": 233.83853601810526,
+            "support_points": 1056,
+            "matched_pixels": 4844
+          },
+          {
+            "axial_span_m": [
+              0.010047010573391125,
+              0.0200267174959983
+            ],
+            "radius_m": 0.032433136472390954,
+            "observed_arc_deg": 238.6373812952704,
+            "support_points": 1063,
+            "matched_pixels": 6557
+          },
+          {
+            "axial_span_m": [
+              0.015051465284846443,
+              0.025036918061989138
+            ],
+            "radius_m": 0.03248929937206349,
+            "observed_arc_deg": 236.65048743788046,
+            "support_points": 918,
+            "matched_pixels": 6311
+          },
+          {
+            "axial_span_m": [
+              0.020072393118624084,
+              0.03004538371097808
+            ],
+            "radius_m": 0.03234717288867397,
+            "observed_arc_deg": 231.95985110935996,
+            "support_points": 479,
+            "matched_pixels": 6438
+          },
+          {
+            "axial_span_m": [
+              0.02509621108314253,
+              0.035007687372435384
+            ],
+            "radius_m": 0.03234763329687629,
+            "observed_arc_deg": 221.78256197826835,
+            "support_points": 372,
+            "matched_pixels": 9494
+          },
+          {
+            "axial_span_m": [
+              0.030080169251856533,
+              0.040025589745026124
+            ],
+            "radius_m": 0.030742158684038207,
+            "observed_arc_deg": 323.06038689551417,
+            "support_points": 571,
+            "matched_pixels": 6216
+          },
+          {
+            "axial_span_m": [
+              0.03504561492235564,
+              0.044308813205554895
+            ],
+            "radius_m": 0.03151682334656622,
+            "observed_arc_deg": 199.25362337006297,
+            "support_points": 399,
+            "matched_pixels": 79
+          },
+          {
+            "axial_span_m": [
+              0.04006177764492336,
+              0.04418265173798278
+            ],
+            "radius_m": 0.033795821247633605,
+            "observed_arc_deg": 113.16285981270136,
+            "support_points": 119,
+            "matched_pixels": 0
+          }
+        ],
+        "matched_pixels": 43561
+      },
+      "version": "public-contact-surface-continuation/1-dev",
+      "source": "current_rgbd_continuity_within_measured_contact_extent",
+      "max_surface_residual_m": 0.001,
+      "matched_pixels": 64999,
+      "added_pixels": 788776,
+      "private_pose_used": false,
+      "lower": [
+        -0.1521010229587555,
+        -0.2764831910133362,
+        -0.0010106650322777569
+      ],
+      "upper": [
+        -0.08507935905456543,
+        -0.20274009013175964,
+        0.08150982654094696
+      ],
+      "current_boundary": {
+        "version": "public-depth-continuous-instance-boundary/1-dev",
+        "source": "current_instance_mask_and_same_view_rgbd",
+        "input_pixels": 79355,
+        "added_pixels_per_round": [
+          572,
+          573,
+          576,
+          578,
+          580,
+          582,
+          585,
+          587,
+          590,
+          592,
+          595,
+          598,
+          600,
+          603,
+          606,
+          608,
+          611,
+          613,
+          616,
+          619,
+          621,
+          624,
+          627,
+          629,
+          632,
+          634,
+          637,
+          640,
+          642,
+          645,
+          648,
+          650,
+          653,
+          656,
+          658,
+          658,
+          657,
+          658,
+          660,
+          661,
+          663,
+          664,
+          665,
+          667,
+          668,
+          670,
+          672,
+          673,
+          674,
+          676,
+          677,
+          679,
+          680,
+          682,
+          684,
+          685,
+          687,
+          689,
+          690,
+          692,
+          693,
+          695,
+          698,
+          699,
+          701,
+          704,
+          705,
+          707,
+          708,
+          710,
+          713,
+          714,
+          717,
+          719,
+          720,
+          723,
+          725,
+          727,
+          728,
+          729,
+          732,
+          734,
+          736,
+          738,
+          740,
+          739,
+          739,
+          739,
+          738,
+          739,
+          742,
+          744,
+          746,
+          748,
+          750,
+          752,
+          754,
+          757,
+          759,
+          761,
+          763,
+          765,
+          767,
+          769,
+          772,
+          774,
+          777,
+          779,
+          782,
+          784,
+          787,
+          789,
+          792,
+          794,
+          797,
+          799,
+          802,
+          804,
+          806,
+          809,
+          811,
+          814,
+          816,
+          819,
+          821,
+          824,
+          826,
+          829,
+          831,
+          834,
+          836,
+          839,
+          842,
+          845,
+          848,
+          851,
+          854,
+          857,
+          860,
+          862,
+          866,
+          868,
+          872,
+          874,
+          878,
+          880,
+          883,
+          886,
+          889,
+          892,
+          895,
+          898,
+          901,
+          904,
+          907,
+          910,
+          913,
+          916,
+          918,
+          922,
+          924,
+          927,
+          930,
+          933,
+          936,
+          939,
+          942,
+          945,
+          948,
+          951,
+          954,
+          957,
+          960,
+          963,
+          966,
+          969,
+          972,
+          974,
+          977,
+          980,
+          983,
+          986,
+          989,
+          992,
+          995,
+          998,
+          1001,
+          1004,
+          1007,
+          1010,
+          1013,
+          1016,
+          1018,
+          1020,
+          1023,
+          1025,
+          1028,
+          1030,
+          1033,
+          1035,
+          1038,
+          1040,
+          1043,
+          1046,
+          1049,
+          1051,
+          1054,
+          1057,
+          1060,
+          1062,
+          1064,
+          1068,
+          1070,
+          1073,
+          1075,
+          1079,
+          1081,
+          1084,
+          1086,
+          1090,
+          1092,
+          1094,
+          1096,
+          1099,
+          1101,
+          1103,
+          1105,
+          1108,
+          1110,
+          1112,
+          1114,
+          1117,
+          1120,
+          1122,
+          1124,
+          1127,
+          1130,
+          1132,
+          1135,
+          1137,
+          1140,
+          1142,
+          1145,
+          1147,
+          1150,
+          1152,
+          1155,
+          1157,
+          1160,
+          1162,
+          1165,
+          1167,
+          1170,
+          1172,
+          1175,
+          1177,
+          1180,
+          1182,
+          1185,
+          1187,
+          1190,
+          1192,
+          1195,
+          1197,
+          1200,
+          1202,
+          1205,
+          1207,
+          1210,
+          1212,
+          1215,
+          1217,
+          1220,
+          1223,
+          1225,
+          1227,
+          1230,
+          1233,
+          1235,
+          1238,
+          1240,
+          1243,
+          1245,
+          1248,
+          1250,
+          1253,
+          1255,
+          1258,
+          1260,
+          1263,
+          1265,
+          1268,
+          1270,
+          1273,
+          1275,
+          1278,
+          1280,
+          1283,
+          1285,
+          1288,
+          1290,
+          1293,
+          1295,
+          1298,
+          1300,
+          1303,
+          1305,
+          1308,
+          1310,
+          1313,
+          1314,
+          1314,
+          1314,
+          1313,
+          1312,
+          1311,
+          1311,
+          1310,
+          1309,
+          1309,
+          1309,
+          1308,
+          1305,
+          1302,
+          1299,
+          1295,
+          1291,
+          1288,
+          1285,
+          1281,
+          1278,
+          1274,
+          1271,
+          1267,
+          1264,
+          1260,
+          1257,
+          1253,
+          1250,
+          1246,
+          1243,
+          1239,
+          1237,
+          1234,
+          1231,
+          1228,
+          1226,
+          1223,
+          1220,
+          1217,
+          1215,
+          1212,
+          1209,
+          1206,
+          1204,
+          1201,
+          1198,
+          1195,
+          1193,
+          1190,
+          1187,
+          1184,
+          1182,
+          1179,
+          1176,
+          1173,
+          1171,
+          1168,
+          1165,
+          1162,
+          1160,
+          1157,
+          1154,
+          1151,
+          1148,
+          1144,
+          1141,
+          1138,
+          1135,
+          1132,
+          1129,
+          1126,
+          1123,
+          1120,
+          1117,
+          1114,
+          1111,
+          1108,
+          1105,
+          1102,
+          1099,
+          1096,
+          1093,
+          1090,
+          1087,
+          1084,
+          1081,
+          1078,
+          1075,
+          1072,
+          1069,
+          1066,
+          1064,
+          1062,
+          1060,
+          1058,
+          1056,
+          1054,
+          1052,
+          1050,
+          1048,
+          1046,
+          1044,
+          1042,
+          1040,
+          1038,
+          1036,
+          1034,
+          1032,
+          1030,
+          1028,
+          1027,
+          1026,
+          1025,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1024,
+          1023,
+          1020,
+          1017,
+          1014,
+          1011,
+          1008,
+          1005,
+          1002,
+          999,
+          996,
+          993,
+          990,
+          987,
+          984,
+          981,
+          978,
+          975,
+          972,
+          969,
+          966,
+          963,
+          960,
+          957,
+          954,
+          951,
+          948,
+          945,
+          942,
+          939,
+          936,
+          933,
+          930,
+          927,
+          924,
+          921,
+          918,
+          915,
+          912,
+          909,
+          906,
+          903,
+          900,
+          897,
+          894,
+          891,
+          888,
+          885,
+          882,
+          879,
+          876,
+          873,
+          870,
+          867,
+          864,
+          861,
+          858,
+          855,
+          852,
+          849,
+          846,
+          843,
+          840,
+          837,
+          834,
+          831,
+          828,
+          825,
+          822,
+          819,
+          816,
+          813,
+          810,
+          807,
+          804,
+          801,
+          798,
+          795,
+          792,
+          789,
+          786,
+          783,
+          780,
+          777,
+          774,
+          771,
+          768,
+          765,
+          761,
+          758,
+          755,
+          752,
+          749,
+          746,
+          743,
+          740,
+          737,
+          734,
+          731,
+          728,
+          725,
+          722,
+          719,
+          716,
+          713,
+          710,
+          707,
+          704,
+          701,
+          698,
+          695,
+          692,
+          689,
+          686,
+          683,
+          680,
+          677,
+          674,
+          671,
+          668,
+          665,
+          662,
+          659,
+          656,
+          653,
+          650,
+          647,
+          644,
+          641,
+          638,
+          635,
+          632,
+          629,
+          626,
+          623,
+          620,
+          617,
+          614,
+          611,
+          608,
+          605,
+          602,
+          599,
+          596,
+          593,
+          591,
+          589,
+          587,
+          585,
+          583,
+          581,
+          579,
+          577,
+          575,
+          573,
+          571,
+          569,
+          567,
+          565,
+          563,
+          561,
+          559,
+          557,
+          555,
+          553,
+          551,
+          549,
+          547,
+          545,
+          543,
+          541,
+          539,
+          537,
+          535,
+          533,
+          531,
+          529,
+          527,
+          525,
+          523,
+          521,
+          519,
+          517,
+          515,
+          513,
+          511,
+          509,
+          507,
+          505,
+          503,
+          501,
+          499,
+          497,
+          495,
+          493,
+          491,
+          489,
+          487,
+          485,
+          483,
+          481,
+          479,
+          477,
+          475,
+          473,
+          471,
+          469,
+          467,
+          465,
+          463,
+          461,
+          459,
+          457,
+          455,
+          453,
+          451,
+          449,
+          447,
+          445,
+          443,
+          441,
+          439,
+          437,
+          435,
+          433,
+          431,
+          429,
+          427,
+          425,
+          423,
+          421,
+          419,
+          417,
+          415,
+          413,
+          411,
+          409,
+          407,
+          405,
+          403,
+          401,
+          399,
+          397,
+          395,
+          393,
+          391,
+          389,
+          387,
+          385,
+          383,
+          381,
+          379,
+          377,
+          375,
+          373,
+          371,
+          369,
+          367,
+          365,
+          363,
+          361,
+          359,
+          357,
+          355,
+          353,
+          351,
+          349,
+          347,
+          345,
+          343,
+          341,
+          339,
+          337,
+          335,
+          333,
+          331,
+          329,
+          327,
+          325,
+          323,
+          321,
+          319,
+          317,
+          315,
+          313,
+          311,
+          309,
+          307,
+          305,
+          303,
+          301,
+          299,
+          297,
+          295,
+          293,
+          291,
+          289,
+          287,
+          285,
+          283,
+          281,
+          279,
+          277,
+          275,
+          273,
+          271,
+          269,
+          267,
+          265,
+          263,
+          261,
+          259,
+          257,
+          255,
+          253,
+          251,
+          249,
+          247,
+          245,
+          243,
+          241,
+          239,
+          237,
+          235,
+          233,
+          231,
+          229,
+          227,
+          225,
+          223,
+          221,
+          219,
+          217,
+          215,
+          213,
+          211,
+          209,
+          207,
+          205,
+          203,
+          201,
+          199,
+          197,
+          195,
+          193,
+          191,
+          189,
+          187,
+          185,
+          183,
+          181,
+          179,
+          177,
+          175,
+          173,
+          171,
+          169,
+          167,
+          165,
+          163,
+          161,
+          159,
+          157,
+          155,
+          153,
+          151,
+          149,
+          147,
+          145,
+          143,
+          141,
+          139,
+          137,
+          135,
+          133,
+          131,
+          129,
+          127,
+          125,
+          123,
+          121,
+          119,
+          117,
+          115,
+          113,
+          111,
+          109,
+          107,
+          105,
+          103,
+          101,
+          99,
+          97,
+          95,
+          93,
+          91,
+          89,
+          87,
+          85,
+          83,
+          81,
+          79,
+          77,
+          75,
+          73,
+          71,
+          69,
+          67,
+          65,
+          63,
+          61,
+          59,
+          57,
+          55,
+          53,
+          51,
+          49,
+          47,
+          45,
+          43,
+          41,
+          39,
+          37,
+          35,
+          33,
+          31,
+          29,
+          28,
+          27,
+          26,
+          25,
+          24,
+          23,
+          22,
+          21,
+          20,
+          19,
+          18,
+          17,
+          16,
+          15,
+          14,
+          13,
+          12,
+          11,
+          10,
+          9,
+          8,
+          7,
+          6,
+          5,
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "rounds": 2048,
+        "max_step_m": 0.003,
+        "spacing_source": "fixed_metric_limit",
+        "max_extrapolation_error_m": 0.001,
+        "private_target_pose_used": false
+      },
+      "boundary": {
+        "version": "public-depth-continuous-instance-boundary/1-dev",
+        "source": "current_instance_mask_and_same_view_rgbd",
+        "input_pixels": 64999,
+        "added_pixels_per_round": [
+          1447,
+          964,
+          577,
+          452,
+          364,
+          324,
+          306,
+          295,
+          259,
+          226,
+          194,
+          173,
+          151,
+          144,
+          133,
+          118,
+          109,
+          99,
+          87,
+          79,
+          77,
+          80,
+          78,
+          77,
+          77,
+          76,
+          76,
+          72,
+          71,
+          70,
+          69,
+          66,
+          64,
+          62,
+          61,
+          61,
+          59,
+          59,
+          58,
+          58,
+          57,
+          56,
+          56,
+          54,
+          54,
+          53,
+          52,
+          51,
+          51,
+          50,
+          50,
+          51,
+          51,
+          51,
+          51,
+          50,
+          50,
+          51,
+          51,
+          50,
+          51,
+          51,
+          50,
+          50,
+          50,
+          50,
+          50,
+          51,
+          49,
+          50,
+          50,
+          49,
+          49,
+          49,
+          49,
+          50,
+          49,
+          49,
+          48,
+          49,
+          49,
+          48,
+          49,
+          48,
+          48,
+          49,
+          48,
+          48,
+          49,
+          47,
+          48,
+          48,
+          48,
+          48,
+          48,
+          47,
+          48,
+          47,
+          47,
+          48,
+          47,
+          47,
+          46,
+          47,
+          47,
+          46,
+          47,
+          46,
+          46,
+          47,
+          45,
+          46,
+          46,
+          45,
+          45,
+          46,
+          44,
+          45,
+          46,
+          44,
+          44,
+          44,
+          43,
+          44,
+          44,
+          43,
+          43,
+          43,
+          43,
+          42,
+          42,
+          42,
+          42,
+          42,
+          41,
+          41,
+          41,
+          40,
+          41,
+          42,
+          41,
+          42,
+          43,
+          42,
+          43,
+          44,
+          43,
+          44,
+          44,
+          44,
+          45,
+          45,
+          45,
+          46,
+          46,
+          46,
+          47,
+          47,
+          47,
+          48,
+          46,
+          45,
+          43,
+          42,
+          41,
+          40,
+          39,
+          38,
+          36,
+          35,
+          34,
+          32,
+          31,
+          29,
+          28,
+          27,
+          25,
+          24,
+          23,
+          21,
+          20,
+          19,
+          17,
+          16,
+          14,
+          13,
+          12,
+          10,
+          9,
+          8,
+          6,
+          5,
+          3,
+          2,
+          1,
+          0
+        ],
+        "rounds": 712,
+        "max_step_m": 0.003,
+        "spacing_source": "fixed_metric_limit",
+        "max_extrapolation_error_m": 0.001,
+        "private_target_pose_used": false
+      }
+    }
+  ],
+  "blocker_distances_m": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.011909746403986107,
+    0.011072351153391185,
+    0.010420916600337357
+  ],
+  "recovered_blockers": 5,
+  "curved_reference_distances_m": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "curved_reference_recovered": 8,
+  "route_stages": [
+    {
+      "name": "baseline",
+      "route_screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 2,
+        "geometry_evaluations": 2,
+        "clearance_certified_samples": 0,
+        "ik_checks": [
+          {
+            "xyz_m": [
+              -0.10904938101652524,
+              -0.23699592464088887,
+              0.055281083504907146
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 5.763878168445254e-17,
+                "orientation_error_rad": 2.2820532940739735e-16,
+                "joint_positions_rad": [
+                  -0.22870252524808324,
+                  0.5013900119955119,
+                  -0.19940901728312602,
+                  -2.215676412634452,
+                  0.22826848086343807,
+                  2.6998626805106354,
+                  -0.2865272930142973
+                ],
+                "function_evaluations": 1,
+                "joint_margin_min_rad": 0.8561235873655479,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.22870252524808324,
+                0.5013900119955119,
+                -0.19940901728312602,
+                -2.215676412634452,
+                0.22826848086343807,
+                2.6998626805106354,
+                -0.2865272930142973
+              ],
+              "numerical_search_bound_only": true
+            }
+          }
+        ],
+        "reason": "measured_sweep_collision",
+        "counts": {
+          "palm": 0,
+          "leftfinger": 3,
+          "leftfinger_pad": 0,
+          "rightfinger": 5,
+          "rightfinger_pad": 3
+        },
+        "target_counts": {
+          "palm": 0
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [
+            [
+              -0.10536440461874008,
+              -0.27161625027656555,
+              0.06883914023637772
+            ],
+            [
+              -0.10623273253440857,
+              -0.2721206545829773,
+              0.06616702675819397
+            ],
+            [
+              -0.10571008920669556,
+              -0.2718443274497986,
+              0.0675555020570755
+            ]
+          ],
+          "leftfinger_pad": [],
+          "rightfinger": [
+            [
+              -0.11550368368625641,
+              -0.21014317870140076,
+              0.060652829706668854
+            ],
+            [
+              -0.11622089892625809,
+              -0.2100529968738556,
+              0.06249641254544258
+            ],
+            [
+              -0.11561395972967148,
+              -0.2101188451051712,
+              0.06487111002206802
+            ],
+            [
+              -0.13119004666805267,
+              -0.21627308428287506,
+              0.07257406413555145
+            ],
+            [
+              -0.13203398883342743,
+              -0.21740418672561646,
+              0.07209991663694382
+            ]
+          ],
+          "rightfinger_pad": [
+            [
+              -0.11550368368625641,
+              -0.21014317870140076,
+              0.060652829706668854
+            ],
+            [
+              -0.11622089892625809,
+              -0.2100529968738556,
+              0.06249641254544258
+            ],
+            [
+              -0.11561395972967148,
+              -0.2101188451051712,
+              0.06487111002206802
+            ]
+          ]
+        },
+        "public_target_collision_points": {
+          "palm": [],
+          "leftfinger": [
+            [
+              -0.09331398457288742,
+              -0.26111742854118347,
+              0.04326997324824333
+            ],
+            [
+              -0.09675203263759613,
+              -0.2656611502170563,
+              0.04226760193705559
+            ],
+            [
+              -0.09552544355392456,
+              -0.264392226934433,
+              0.043018046766519547
+            ],
+            [
+              -0.09257201850414276,
+              -0.2599831521511078,
+              0.04372474551200867
+            ],
+            [
+              -0.09482591599225998,
+              -0.26326557993888855,
+              0.043446026742458344
+            ],
+            [
+              -0.0939786285161972,
+              -0.2621011435985565,
+              0.043964408338069916
+            ],
+            [
+              -0.0938744843006134,
+              -0.2619422376155853,
+              0.045128725469112396
+            ],
+            [
+              -0.09351059794425964,
+              -0.2613220810890198,
+              0.049740713089704514
+            ],
+            [
+              -0.0934135690331459,
+              -0.2611658275127411,
+              0.050894130021333694
+            ],
+            [
+              -0.09367304295301437,
+              -0.2616266906261444,
+              0.04744918644428253
+            ],
+            [
+              -0.09411457180976868,
+              -0.2621564269065857,
+              0.05156417936086655
+            ],
+            [
+              -0.09363491088151932,
+              -0.26137641072273254,
+              0.05730626732110977
+            ],
+            [
+              -0.09381617605686188,
+              -0.26168516278266907,
+              0.05501969903707504
+            ],
+            [
+              -0.09391333907842636,
+              -0.26184147596359253,
+              0.0538705550134182
+            ],
+            [
+              -0.0940171629190445,
+              -0.2619997262954712,
+              0.05271609127521515
+            ],
+            [
+              -0.09425600618124008,
+              -0.2622130215167999,
+              0.05910920724272728
+            ],
+            [
+              -0.09389347583055496,
+              -0.2615959942340851,
+              0.06366024911403656
+            ],
+            [
+              -0.09331212937831879,
+              -0.2607712745666504,
+              0.06184040382504463
+            ],
+            [
+              -0.09346053004264832,
+              -0.2610701024532318,
+              0.059583596885204315
+            ],
+            [
+              -0.09416522085666656,
+              -0.2620584964752197,
+              0.060248974710702896
+            ],
+            [
+              -0.09407446533441544,
+              -0.26190412044525146,
+              0.06138744577765465
+            ],
+            [
+              -0.09433151036500931,
+              -0.26212194561958313,
+              0.06772049516439438
+            ],
+            [
+              -0.09373204410076141,
+              -0.2612936496734619,
+              0.06591642647981644
+            ],
+            [
+              -0.09451274573802948,
+              -0.26243022084236145,
+              0.06545597314834595
+            ],
+            [
+              -0.09362904727458954,
+              -0.26113682985305786,
+              0.06705576181411743
+            ],
+            [
+              -0.09488575905561447,
+              -0.2629377543926239,
+              0.06954936683177948
+            ],
+            [
+              -0.09402211755514145,
+              -0.26165077090263367,
+              0.07112972438335419
+            ],
+            [
+              -0.09411873668432236,
+              -0.2618059515953064,
+              0.06999841332435608
+            ],
+            [
+              -0.09472350031137466,
+              -0.2626344561576843,
+              0.0717943012714386
+            ],
+            [
+              -0.0950721949338913,
+              -0.26339441537857056,
+              0.07373735308647156
+            ],
+            [
+              -0.09494832903146744,
+              -0.2631013095378876,
+              0.07595126330852509
+            ],
+            [
+              -0.09551320225000381,
+              -0.26391735672950745,
+              0.0777631476521492
+            ]
+          ],
+          "leftfinger_pad": [
+            [
+              -0.09351059794425964,
+              -0.2613220810890198,
+              0.049740713089704514
+            ],
+            [
+              -0.0934135690331459,
+              -0.2611658275127411,
+              0.050894130021333694
+            ],
+            [
+              -0.09367304295301437,
+              -0.2616266906261444,
+              0.04744918644428253
+            ],
+            [
+              -0.09411457180976868,
+              -0.2621564269065857,
+              0.05156417936086655
+            ],
+            [
+              -0.09230789542198181,
+              -0.25952309370040894,
+              0.04718320071697235
+            ],
+            [
+              -0.09215361624956131,
+              -0.2592228949069977,
+              0.04946912080049515
+            ],
+            [
+              -0.09363491088151932,
+              -0.26137641072273254,
+              0.05730626732110977
+            ],
+            [
+              -0.09381617605686188,
+              -0.26168516278266907,
+              0.05501969903707504
+            ],
+            [
+              -0.09391333907842636,
+              -0.26184147596359253,
+              0.0538705550134182
+            ],
+            [
+              -0.0940171629190445,
+              -0.2619997262954712,
+              0.05271609127521515
+            ],
+            [
+              -0.09235286712646484,
+              -0.2594321072101593,
+              0.05589878559112549
+            ],
+            [
+              -0.09250681847333908,
+              -0.2597316801548004,
+              0.053626760840415955
+            ],
+            [
+              -0.0922759622335434,
+              -0.25928255915641785,
+              0.05703287199139595
+            ],
+            [
+              -0.09253164380788803,
+              -0.259505957365036,
+              0.06338582187891006
+            ],
+            [
+              -0.09425600618124008,
+              -0.2622130215167999,
+              0.05910920724272728
+            ],
+            [
+              -0.09389347583055496,
+              -0.2615959942340851,
+              0.06366024911403656
+            ],
+            [
+              -0.09331212937831879,
+              -0.2607712745666504,
+              0.06184040382504463
+            ],
+            [
+              -0.09346053004264832,
+              -0.2610701024532318,
+              0.059583596885204315
+            ],
+            [
+              -0.09416522085666656,
+              -0.2620584964752197,
+              0.060248974710702896
+            ],
+            [
+              -0.09407446533441544,
+              -0.26190412044525146,
+              0.06138744577765465
+            ],
+            [
+              -0.09267254918813705,
+              -0.25980129837989807,
+              0.06113750860095024
+            ],
+            [
+              -0.09433151036500931,
+              -0.26212194561958313,
+              0.06772049516439438
+            ],
+            [
+              -0.09373204410076141,
+              -0.2612936496734619,
+              0.06591642647981644
+            ],
+            [
+              -0.09451274573802948,
+              -0.26243022084236145,
+              0.06545597314834595
+            ],
+            [
+              -0.09362904727458954,
+              -0.26113682985305786,
+              0.06705576181411743
+            ],
+            [
+              -0.09343630075454712,
+              -0.26082712411880493,
+              0.06932277232408524
+            ],
+            [
+              -0.09488575905561447,
+              -0.2629377543926239,
+              0.06954936683177948
+            ],
+            [
+              -0.09269661456346512,
+              -0.25970473885536194,
+              0.06975662708282471
+            ],
+            [
+              -0.09411873668432236,
+              -0.2618059515953064,
+              0.06999841332435608
+            ]
+          ],
+          "rightfinger": [
+            [
+              -0.12024238705635071,
+              -0.21067574620246887,
+              0.04361208900809288
+            ],
+            [
+              -0.11970225721597672,
+              -0.21066874265670776,
+              0.04281948134303093
+            ],
+            [
+              -0.1163155809044838,
+              -0.21081605553627014,
+              0.04595386981964111
+            ],
+            [
+              -0.11773573607206345,
+              -0.2105872929096222,
+              0.05065317824482918
+            ],
+            [
+              -0.11737943440675735,
+              -0.21061794459819794,
+              0.049757059663534164
+            ],
+            [
+              -0.11813215911388397,
+              -0.2105650007724762,
+              0.051525313407182693
+            ],
+            [
+              -0.11684773117303848,
+              -0.21071694791316986,
+              0.04785637930035591
+            ],
+            [
+              -0.11579882353544235,
+              -0.21071752905845642,
+              0.05620643123984337
+            ],
+            [
+              -0.1185217872262001,
+              -0.21054132282733917,
+              0.05240120738744736
+            ],
+            [
+              -0.1171182170510292,
+              -0.21057458221912384,
+              0.05982958525419235
+            ],
+            [
+              -0.11778725683689117,
+              -0.21050524711608887,
+              0.061633508652448654
+            ],
+            [
+              -0.11813495308160782,
+              -0.21047337353229523,
+              0.06252730637788773
+            ],
+            [
+              -0.11610713601112366,
+              -0.21067726612091064,
+              0.057125385850667953
+            ],
+            [
+              -0.11681956052780151,
+              -0.2105233371257782,
+              0.069830521941185
+            ],
+            [
+              -0.11745895445346832,
+              -0.21044883131980896,
+              0.07163780182600021
+            ],
+            [
+              -0.11779176443815231,
+              -0.2104143649339676,
+              0.07253340631723404
+            ],
+            [
+              -0.11875628679990768,
+              -0.2103041261434555,
+              0.07523727416992188
+            ],
+            [
+              -0.12095638364553452,
+              -0.21118633449077606,
+              0.07940389215946198
+            ],
+            [
+              -0.11896858364343643,
+              -0.20993566513061523,
+              0.0794404000043869
+            ],
+            [
+              -0.11812450736761093,
+              -0.21037991344928741,
+              0.0734286904335022
+            ],
+            [
+              -0.11699327081441879,
+              -0.209630087018013,
+              0.07947304844856262
+            ]
+          ],
+          "rightfinger_pad": [
+            [
+              -0.11773573607206345,
+              -0.2105872929096222,
+              0.05065317824482918
+            ],
+            [
+              -0.11737943440675735,
+              -0.21061794459819794,
+              0.049757059663534164
+            ],
+            [
+              -0.11813215911388397,
+              -0.2105650007724762,
+              0.051525313407182693
+            ],
+            [
+              -0.11684773117303848,
+              -0.21071694791316986,
+              0.04785637930035591
+            ],
+            [
+              -0.11579882353544235,
+              -0.21071752905845642,
+              0.05620643123984337
+            ],
+            [
+              -0.11549700051546097,
+              -0.21075919270515442,
+              0.055283237248659134
+            ],
+            [
+              -0.11489985138177872,
+              -0.2108439952135086,
+              0.05343171954154968
+            ],
+            [
+              -0.1185217872262001,
+              -0.21054132282733917,
+              0.05240120738744736
+            ],
+            [
+              -0.1148502305150032,
+              -0.21084122359752655,
+              0.06333708763122559
+            ],
+            [
+              -0.1171182170510292,
+              -0.21057458221912384,
+              0.05982958525419235
+            ],
+            [
+              -0.11406534165143967,
+              -0.2103642374277115,
+              0.058735862374305725
+            ],
+            [
+              -0.11778725683689117,
+              -0.21050524711608887,
+              0.061633508652448654
+            ],
+            [
+              -0.11813495308160782,
+              -0.21047337353229523,
+              0.06252730637788773
+            ],
+            [
+              -0.11610713601112366,
+              -0.21067726612091064,
+              0.057125385850667953
+            ],
+            [
+              -0.11592601984739304,
+              -0.21064899861812592,
+              0.06707895547151566
+            ],
+            [
+              -0.11539839208126068,
+              -0.2107471525669098,
+              0.06520308554172516
+            ],
+            [
+              -0.11681956052780151,
+              -0.2105233371257782,
+              0.069830521941185
+            ]
+          ]
+        },
+        "public_nearby_points": [
+          [
+            -0.2661427855491638,
+            -0.43911468982696533,
+            0.0004536894557531923
+          ],
+          [
+            -0.2639344334602356,
+            -0.43957003951072693,
+            0.0004576887877192348
+          ],
+          [
+            -0.25955358147621155,
+            -0.4436986446380615,
+            0.00045600070734508336
+          ],
+          [
+            -0.2551971673965454,
+            -0.4392542839050293,
+            0.00045432292972691357
+          ],
+          [
+            -0.2551971673965454,
+            -0.44352924823760986,
+            0.0004543235991150141
+          ],
+          [
+            -0.25955358147621155,
+            -0.4394117295742035,
+            0.0004560000670608133
+          ],
+          [
+            -0.2551971673965454,
+            -0.44780421257019043,
+            0.0004543242393992841
+          ],
+          [
+            -0.17094407975673676,
+            -0.48725438117980957,
+            0.00043086829828098416
+          ],
+          [
+            -0.16706755757331848,
+            -0.487988144159317,
+            0.0004293590027373284
+          ],
+          [
+            -0.15555959939956665,
+            -0.4871654808521271,
+            0.00042480725096538663
+          ],
+          [
+            -0.15937545895576477,
+            -0.48743826150894165,
+            0.0004263368318788707
+          ],
+          [
+            -0.163211390376091,
+            -0.48771247267723083,
+            0.00042785139521583915
+          ],
+          [
+            -0.23166505992412567,
+            -0.4599819481372833,
+            0.00044519497896544635
+          ],
+          [
+            -0.23166504502296448,
+            -0.46313971281051636,
+            0.0004451954737305641
+          ],
+          [
+            -0.20678386092185974,
+            -0.47529780864715576,
+            0.00044025207171216607
+          ],
+          [
+            -0.21912670135498047,
+            -0.4677042067050934,
+            0.0004403594939503819
+          ],
+          [
+            -0.22746263444423676,
+            -0.46396973729133606,
+            0.00044360969332046807
+          ],
+          [
+            -0.21912671625614166,
+            -0.4635283052921295,
+            0.0004403588536661118
+          ],
+          [
+            -0.2232833355665207,
+            -0.4679357707500458,
+            0.00044194507063366473
+          ],
+          [
+            -0.22328335046768188,
+            -0.46374842524528503,
+            0.0004419444303493947
+          ],
+          [
+            -0.21498467028141022,
+            -0.4633060097694397,
+            0.0004434670845512301
+          ],
+          [
+            -0.21498465538024902,
+            -0.4716350734233856,
+            0.00044346836511977017
+          ],
+          [
+            -0.21087311208248138,
+            -0.4672415256500244,
+            0.00044187737512402236
+          ],
+          [
+            -0.20678387582302094,
+            -0.46701377630233765,
+            0.000440250791143626
+          ],
+          [
+            -0.20678387582302094,
+            -0.46390727162361145,
+            0.00044025032548233867
+          ],
+          [
+            -0.21498465538024902,
+            -0.46747055649757385,
+            0.0004434677248355001
+          ],
+          [
+            -0.20678386092185974,
+            -0.4711557924747467,
+            0.000440251431427896
+          ],
+          [
+            -0.21087311208248138,
+            -0.47139477729797363,
+            0.0004418780154082924
+          ],
+          [
+            -0.21087311208248138,
+            -0.4630882740020752,
+            0.0004418767348397523
+          ],
+          [
+            -0.21087312698364258,
+            -0.45997336506843567,
+            0.000441876269178465
+          ],
+          [
+            -0.24655695259571075,
+            -0.4516957998275757,
+            0.00045095826499164104
+          ],
+          [
+            -0.25086504220962524,
+            -0.4476238787174225,
+            0.00045263199717737734
+          ],
+          [
+            -0.25086504220962524,
+            -0.45188695192337036,
+            0.00045263266656547785
+          ],
+          [
+            -0.24227263033390045,
+            -0.4515056610107422,
+            0.0004493359010666609
+          ],
+          [
+            -0.24227261543273926,
+            -0.455745130777359,
+            0.00044933654135093093
+          ],
+          [
+            -0.23801203072071075,
+            -0.45131659507751465,
+            0.0004476825997699052
+          ],
+          [
+            -0.23801201581954956,
+            -0.45977213978767395,
+            0.0004476838803384453
+          ],
+          [
+            -0.23589056730270386,
+            -0.44752824306488037,
+            0.0004468400729820132
+          ],
+          [
+            -0.23589056730270386,
+            -0.4517501890659332,
+            0.0004468407132662833
+          ],
+          [
+            -0.23801201581954956,
+            -0.4555443525314331,
+            0.00044768324005417526
+          ],
+          [
+            -0.23589055240154266,
+            -0.4591386020183563,
+            0.0004468418483156711
+          ],
+          [
+            -0.23166505992412567,
+            -0.4557715952396393,
+            0.0004451943386811763
+          ],
+          [
+            -0.23166507482528687,
+            -0.45156124234199524,
+            0.00044519369839690626
+          ],
+          [
+            -0.23589055240154266,
+            -0.45597216486930847,
+            0.0004468413535505533
+          ],
+          [
+            -0.24655695259571075,
+            -0.4474445581436157,
+            0.00045095759560354054
+          ],
+          [
+            -0.25086507201194763,
+            -0.4390977621078491,
+            0.00045263071660883725
+          ],
+          [
+            -0.25086507201194763,
+            -0.4359004497528076,
+            0.0004526302218437195
+          ],
+          [
+            -0.24655696749687195,
+            -0.4389420747756958,
+            0.00045095631503500044
+          ],
+          [
+            -0.25086504220962524,
+            -0.4433608055114746,
+            0.0004526313568931073
+          ],
+          [
+            -0.24655696749687195,
+            -0.44319331645965576,
+            0.0004509569553192705
+          ],
+          [
+            -0.24227264523506165,
+            -0.43984708189964294,
+            0.000449334125733003
+          ],
+          [
+            -0.24227264523506165,
+            -0.44302669167518616,
+            0.0004493346204981208
+          ],
+          [
+            -0.24227263033390045,
+            -0.447266161441803,
+            0.00044933526078239083
+          ],
+          [
+            -0.23801204562187195,
+            -0.4396902024745941,
+            0.00044768082443624735
+          ],
+          [
+            -0.23801203072071075,
+            -0.4470888078212738,
+            0.0004476819303818047
+          ],
+          [
+            -0.23801203072071075,
+            -0.44391798973083496,
+            0.0004476814647205174
+          ],
+          [
+            -0.23589058220386505,
+            -0.43908435106277466,
+            0.00044683879241347313
+          ],
+          [
+            -0.23589058220386505,
+            -0.4359178841114044,
+            0.0004468383267521858
+          ],
+          [
+            -0.23589056730270386,
+            -0.4433062970638275,
+            0.0004468394326977432
+          ],
+          [
+            -0.23166508972644806,
+            -0.4399828016757965,
+            0.00044519195216707885
+          ],
+          [
+            -0.23166508972644806,
+            -0.44314056634902954,
+            0.00044519241782836616
+          ],
+          [
+            -0.23166507482528687,
+            -0.4473509192466736,
+            0.0004451930581126362
+          ],
+          [
+            -0.22746267914772034,
+            -0.4398265779018402,
+            0.0004436060262378305
+          ],
+          [
+            -0.21912673115730286,
+            -0.4551764726638794,
+            0.0004403576022014022
+          ],
+          [
+            -0.21912671625614166,
+            -0.45935237407684326,
+            0.00044035824248567224
+          ],
+          [
+            -0.22328335046768188,
+            -0.45537376403808594,
+            0.00044194317888468504
+          ],
+          [
+            -0.22746264934539795,
+            -0.45557209849357605,
+            0.00044360841275192797
+          ],
+          [
+            -0.22746263444423676,
+            -0.45977091789245605,
+            0.000443609053036198
+          ],
+          [
+            -0.22328335046768188,
+            -0.4595611095428467,
+            0.0004419438191689551
+          ],
+          [
+            -0.22328336536884308,
+            -0.4511864483356476,
+            0.000441942538600415
+          ],
+          [
+            -0.22746264934539795,
+            -0.45137330889701843,
+            0.0004436077724676579
+          ],
+          [
+            -0.21912673115730286,
+            -0.45100054144859314,
+            0.00044035696191713214
+          ],
+          [
+            -0.21912674605846405,
+            -0.44786861538887024,
+            0.00044035649625584483
+          ],
+          [
+            -0.22746266424655914,
+            -0.4471744894981384,
+            0.0004436071321833879
+          ],
+          [
+            -0.22328336536884308,
+            -0.44699910283088684,
+            0.00044194189831614494
+          ],
+          [
+            -0.22328338027000427,
+            -0.44385862350463867,
+            0.00044194143265485764
+          ],
+          [
+            -0.21912674605846405,
+            -0.443692684173584,
+            0.0004403558559715748
+          ],
+          [
+            -0.22746266424655914,
+            -0.4429756999015808,
+            0.00044360649189911783
+          ],
+          [
+            -0.22328338027000427,
+            -0.43967127799987793,
+            0.0004419407923705876
+          ],
+          [
+            -0.21912676095962524,
+            -0.4395167827606201,
+            0.00044035521568730474
+          ],
+          [
+            -0.2149847149848938,
+            -0.4393599331378937,
+            0.000443463446572423
+          ],
+          [
+            -0.2149847000837326,
+            -0.4476889967918396,
+            0.0004434647271409631
+          ],
+          [
+            -0.20678389072418213,
+            -0.4597652554512024,
+            0.0004402496851980686
+          ],
+          [
+            -0.2149846851825714,
+            -0.4549769461154938,
+            0.00044346583308652043
+          ],
+          [
+            -0.2149846851825714,
+            -0.45185354351997375,
+            0.00044346533832140267
+          ],
+          [
+            -0.21498467028141022,
+            -0.45914149284362793,
+            0.0004434664733707905
+          ],
+          [
+            -0.21087314188480377,
+            -0.45166686177253723,
+            0.00044187501771375537
+          ],
+          [
+            -0.21087312698364258,
+            -0.45582011342048645,
+            0.00044187562889419496
+          ],
+          [
+            -0.20678390562534332,
+            -0.4514812231063843,
+            0.000440248433733359
+          ],
+          [
+            -0.20678389072418213,
+            -0.45562323927879333,
+            0.00044024907401762903
+          ],
+          [
+            -0.2027166187763214,
+            -0.45129653811454773,
+            0.00043868954526260495
+          ],
+          [
+            -0.21087314188480377,
+            -0.447513610124588,
+            0.0004418743774294853
+          ],
+          [
+            -0.20678390562534332,
+            -0.4473392069339752,
+            0.0004402478225529194
+          ],
+          [
+            -0.2027166187763214,
+            -0.44716569781303406,
+            0.0004386889049783349
+          ],
+          [
+            -0.2149847000837326,
+            -0.44352447986602783,
+            0.00044346408685669303
+          ],
+          [
+            -0.20678392052650452,
+            -0.44319719076156616,
+            0.00044024718226864934
+          ],
+          [
+            -0.2027166336774826,
+            -0.43993669748306274,
+            0.00043868779903277755
+          ],
+          [
+            -0.20678392052650452,
+            -0.4390551745891571,
+            0.0004402465419843793
+          ],
+          [
+            -0.21087315678596497,
+            -0.43920713663101196,
+            0.0004418731259647757
+          ],
+          [
+            -0.21087315678596497,
+            -0.4433603584766388,
+            0.0004418737371452153
+          ],
+          [
+            -0.2027166336774826,
+            -0.443034827709198,
+            0.00043868826469406486
+          ],
+          [
+            -0.20678392052650452,
+            -0.4359486699104309,
+            0.000440246076323092
+          ],
+          [
+            -0.20271657407283783,
+            -0.47504889965057373,
+            0.0004386931541375816
+          ],
+          [
+            -0.19464755058288574,
+            -0.4796909987926483,
+            0.0004355336131993681
+          ],
+          [
+            -0.19464756548404694,
+            -0.4755823314189911,
+            0.00043553297291509807
+          ],
+          [
+            -0.19867119193077087,
+            -0.4758312702178955,
+            0.0004371254181023687
+          ],
+          [
+            -0.20271657407283783,
+            -0.4719507694244385,
+            0.0004386926593724638
+          ],
+          [
+            -0.19867119193077087,
+            -0.47171154618263245,
+            0.0004371248069219291
+          ],
+          [
+            -0.19464756548404694,
+            -0.4714736342430115,
+            0.0004355323617346585
+          ],
+          [
+            -0.19464758038520813,
+            -0.46736493706703186,
+            0.00043553172145038843
+          ],
+          [
+            -0.19867120683193207,
+            -0.4675918221473694,
+            0.00043712416663765907
+          ],
+          [
+            -0.20271658897399902,
+            -0.4678199291229248,
+            0.00043869204819202423
+          ],
+          [
+            -0.20271658897399902,
+            -0.46368905901908875,
+            0.0004386914079077542
+          ],
+          [
+            -0.19867120683193207,
+            -0.46347206830978394,
+            0.0004371235554572195
+          ],
+          [
+            -0.19464758038520813,
+            -0.46325623989105225,
+            0.00043553111026994884
+          ],
+          [
+            -0.18666455149650574,
+            -0.4791750907897949,
+            0.00043246097629889846
+          ],
+          [
+            -0.18666455149650574,
+            -0.4832618534564972,
+            0.00043246158747933805
+          ],
+          [
+            -0.18270498514175415,
+            -0.47993817925453186,
+            0.0004308927746023983
+          ],
+          [
+            -0.18270498514175415,
+            -0.4829951226711273,
+            0.0004308932402636856
+          ],
+          [
+            -0.19064542651176453,
+            -0.4794323742389679,
+            0.0004339627339504659
+          ],
+          [
+            -0.18666456639766693,
+            -0.47508832812309265,
+            0.0004324603360146284
+          ],
+          [
+            -0.18270500004291534,
+            -0.4758622944355011,
+            0.0004308921634219587
+          ],
+          [
+            -0.19064544141292572,
+            -0.47533467411994934,
+            0.0004339621227700263
+          ],
+          [
+            -0.18270500004291534,
+            -0.47178637981414795,
+            0.0004308915522415191
+          ],
+          [
+            -0.18666456639766693,
+            -0.471001535654068,
+            0.0004324597248341888
+          ],
+          [
+            -0.1787663996219635,
+            -0.4634206295013428,
+            0.00042936569661833346
+          ],
+          [
+            -0.1787663996219635,
+            -0.4674856960773468,
+            0.00042936630779877305
+          ],
+          [
+            -0.18270501494407654,
+            -0.4677104949951172,
+            0.0004308909410610795
+          ],
+          [
+            -0.18666458129882812,
+            -0.4638496935367584,
+            0.0004324586479924619
+          ],
+          [
+            -0.18270501494407654,
+            -0.4636346101760864,
+            0.00043089030077680945
+          ],
+          [
+            -0.18666458129882812,
+            -0.4679364562034607,
+            0.0004324592591729015
+          ],
+          [
+            -0.19064544141292572,
+            -0.4712369740009308,
+            0.00043396151158958673
+          ],
+          [
+            -0.19064545631408691,
+            -0.46713927388191223,
+            0.0004339608713053167
+          ],
+          [
+            -0.17094409465789795,
+            -0.4791671931743622,
+            0.000430867075920105
+          ],
+          [
+            -0.17484112083911896,
+            -0.48347601294517517,
+            0.0004323883622419089
+          ],
+          [
+            -0.1787663847208023,
+            -0.47968095541000366,
+            0.0004293681704439223
+          ],
+          [
+            -0.1787663698196411,
+            -0.4837460219860077,
+            0.00042936878162436187
+          ],
+          [
+            -0.17094407975673676,
+            -0.4832107722759247,
+            0.00043086768710054457
+          ],
+          [
+            -0.17484867572784424,
+            -0.4794251024723053,
+            0.0004278140841051936
+          ],
+          [
+            -0.17484867572784424,
+            -0.47537076473236084,
+            0.000427813472924754
+          ],
+          [
+            -0.1787663847208023,
+            -0.47561585903167725,
+            0.0004293675592634827
+          ],
+          [
+            -0.17094409465789795,
+            -0.4751235842704773,
+            0.0004308664647396654
+          ],
+          [
+            -0.16706758737564087,
+            -0.47185635566711426,
+            0.00042935655801557004
+          ],
+          [
+            -0.1787663847208023,
+            -0.4715507924556732,
+            0.00042936691897921264
+          ],
+          [
+            -0.17094410955905914,
+            -0.4710800051689148,
+            0.0004308658535592258
+          ],
+          [
+            -0.17094410955905914,
+            -0.4670364260673523,
+            0.0004308652423787862
+          ],
+          [
+            -0.17484869062900543,
+            -0.47131645679473877,
+            0.00042781286174431443
+          ],
+          [
+            -0.16706758737564087,
+            -0.4678233861923218,
+            0.00042935594683513045
+          ],
+          [
+            -0.17484869062900543,
+            -0.4672621190547943,
+            0.0004278122214600444
+          ],
+          [
+            -0.16706760227680206,
+            -0.4637904465198517,
+            0.00042935533565469086
+          ],
+          [
+            -0.17484870553016663,
+            -0.46320781111717224,
+            0.0004278116102796048
+          ],
+          [
+            -0.16706757247447968,
+            -0.47992223501205444,
+            0.00042935778037644923
+          ],
+          [
+            -0.15937547385692596,
+            -0.48342642188072205,
+            0.00042633622069843113
+          ],
+          [
+            -0.16706755757331848,
+            -0.4839552044868469,
+            0.0004293583915568888
+          ],
+          [
+            -0.1632114052772522,
+            -0.4836901128292084,
+            0.00042785078403539956
+          ],
+          [
+            -0.15555959939956665,
+            -0.48316413164138794,
+            0.0004248066688887775
+          ],
+          [
+            -0.16706757247447968,
+            -0.47588929533958435,
+            0.00042935716919600964
+          ],
+          [
+            -0.1632114052772522,
+            -0.4796677529811859,
+            0.00042785017285495996
+          ],
+          [
+            -0.15555961430072784,
+            -0.4791627824306488,
+            0.0004248060577083379
+          ],
+          [
+            -0.15937547385692596,
+            -0.47941458225250244,
+            0.000426335638621822
+          ],
+          [
+            -0.1632114201784134,
+            -0.47564539313316345,
+            0.0004278495616745204
+          ],
+          [
+            -0.15937547385692596,
+            -0.4754027724266052,
+            0.0004263350274413824
+          ],
+          [
+            -0.1632114201784134,
+            -0.471623033285141,
+            0.0004278489504940808
+          ],
+          [
+            -0.15555961430072784,
+            -0.47516143321990967,
+            0.0004248054465278983
+          ],
+          [
+            -0.15555962920188904,
+            -0.47116008400917053,
+            0.0004248048353474587
+          ],
+          [
+            -0.15937548875808716,
+            -0.4713909327983856,
+            0.0004263344162609428
+          ],
+          [
+            -0.15555962920188904,
+            -0.4671587347984314,
+            0.00042480422416701913
+          ],
+          [
+            -0.15937550365924835,
+            -0.4633672833442688,
+            0.00042633319390006363
+          ],
+          [
+            -0.16321143507957458,
+            -0.46760067343711853,
+            0.0004278483393136412
+          ],
+          [
+            -0.15937548875808716,
+            -0.4673791229724884,
+            0.0004263338050805032
+          ],
+          [
+            -0.15555964410305023,
+            -0.46315738558769226,
+            0.00042480361298657954
+          ],
+          [
+            -0.16321143507957458,
+            -0.46357831358909607,
+            0.0004278477281332016
+          ],
+          [
+            -0.19867122173309326,
+            -0.4593523442745209,
+            0.00043712291517294943
+          ],
+          [
+            -0.19867123663425446,
+            -0.45111286640167236,
+            0.0004371216637082398
+          ],
+          [
+            -0.20271660387516022,
+            -0.4554273784160614,
+            0.00043869015644304454
+          ],
+          [
+            -0.19867122173309326,
+            -0.4552325904369354,
+            0.00043712230399250984
+          ],
+          [
+            -0.20271660387516022,
+            -0.4595582187175751,
+            0.0004386907967273146
+          ],
+          [
+            -0.1906454861164093,
+            -0.45177289843559265,
+            0.00043395854299888015
+          ],
+          [
+            -0.19464759528636932,
+            -0.459147572517395,
+            0.0004355304699856788
+          ],
+          [
+            -0.19464761018753052,
+            -0.4519573450088501,
+            0.0004355293931439519
+          ],
+          [
+            -0.19464759528636932,
+            -0.4550388753414154,
+            0.0004355298588052392
+          ],
+          [
+            -0.1906454712152481,
+            -0.4558705985546112,
+            0.00043395915417931974
+          ],
+          [
+            -0.1906454712152481,
+            -0.45996829867362976,
+            0.0004339597944635898
+          ],
+          [
+            -0.19064545631408691,
+            -0.4630415737628937,
+            0.0004339602601248771
+          ],
+          [
+            -0.18270502984523773,
+            -0.4595586955547333,
+            0.00043088968959636986
+          ],
+          [
+            -0.18666459619998932,
+            -0.45976293087005615,
+            0.00043245800770819187
+          ],
+          [
+            -0.1866646111011505,
+            -0.4515894055366516,
+            0.0004324567853473127
+          ],
+          [
+            -0.18666459619998932,
+            -0.4556761682033539,
+            0.0004324573965277523
+          ],
+          [
+            -0.18270504474639893,
+            -0.45140692591667175,
+            0.0004308884672354907
+          ],
+          [
+            -0.18270502984523773,
+            -0.4554828107357025,
+            0.00043088907841593027
+          ],
+          [
+            -0.1787664294242859,
+            -0.4512253701686859,
+            0.00042936383397318423
+          ],
+          [
+            -0.1906454861164093,
+            -0.4476751983165741,
+            0.00043395793181844056
+          ],
+          [
+            -0.1906455010175705,
+            -0.439479798078537,
+            0.0004339566803537309
+          ],
+          [
+            -0.19867123663425446,
+            -0.4469931125640869,
+            0.0004371210525278002
+          ],
+          [
+            -0.19867125153541565,
+            -0.4439032971858978,
+            0.0004371205868665129
+          ],
+          [
+            -0.1906455010175705,
+            -0.44357749819755554,
+            0.0004339572915341705
+          ],
+          [
+            -0.19867125153541565,
+            -0.43978357315063477,
+            0.00043711994658224285
+          ],
+          [
+            -0.1946476250886917,
+            -0.44373998045921326,
+            0.00043552814167924225
+          ],
+          [
+            -0.1946476250886917,
+            -0.43963128328323364,
+            0.00043552753049880266
+          ],
+          [
+            -0.19464761018753052,
+            -0.44784867763519287,
+            0.0004355287819635123
+          ],
+          [
+            -0.1866646260023117,
+            -0.4393290877342224,
+            0.00043245492270216346
+          ],
+          [
+            -0.1866646260023117,
+            -0.4434158504009247,
+            0.00043245553388260305
+          ],
+          [
+            -0.1866646111011505,
+            -0.44750261306762695,
+            0.00043245614506304264
+          ],
+          [
+            -0.18270505964756012,
+            -0.44325512647628784,
+            0.00043088721577078104
+          ],
+          [
+            -0.18270505964756012,
+            -0.4391792416572571,
+            0.00043088660459034145
+          ],
+          [
+            -0.18270504474639893,
+            -0.4473310112953186,
+            0.00043088782695122063
+          ],
+          [
+            -0.17876645922660828,
+            -0.4359813332557678,
+            0.00042936153477057815
+          ],
+          [
+            -0.17876644432544708,
+            -0.44309520721435547,
+            0.00042936261161230505
+          ],
+          [
+            -0.1787664294242859,
+            -0.4471603035926819,
+            0.00042936322279274464
+          ],
+          [
+            -0.17876644432544708,
+            -0.43903014063835144,
+            0.00042936200043186545
+          ],
+          [
+            -0.17484870553016663,
+            -0.4591534733772278,
+            0.0004278109990991652
+          ],
+          [
+            -0.1787664145231247,
+            -0.45935553312301636,
+            0.00042936508543789387
+          ],
+          [
+            -0.1787664145231247,
+            -0.45529046654701233,
+            0.0004293644742574543
+          ],
+          [
+            -0.17484872043132782,
+            -0.4550991654396057,
+            0.0004278103879187256
+          ],
+          [
+            -0.17094413936138153,
+            -0.45187294483184814,
+            0.0004308629431761801
+          ],
+          [
+            -0.17094413936138153,
+            -0.45591652393341064,
+            0.0004308635543566197
+          ],
+          [
+            -0.17094412446022034,
+            -0.4629928171634674,
+            0.0004308646311983466
+          ],
+          [
+            -0.17094412446022034,
+            -0.45996013283729553,
+            0.0004308641655370593
+          ],
+          [
+            -0.16706761717796326,
+            -0.4557245671749115,
+            0.0004293541132938117
+          ],
+          [
+            -0.16706761717796326,
+            -0.451691597700119,
+            0.0004293535021133721
+          ],
+          [
+            -0.16321146488189697,
+            -0.4515112340450287,
+            0.0004278458945918828
+          ],
+          [
+            -0.16706760227680206,
+            -0.4597575068473816,
+            0.00042935472447425127
+          ],
+          [
+            -0.15555965900421143,
+            -0.455154687166214,
+            0.00042480239062570035
+          ],
+          [
+            -0.16321144998073578,
+            -0.45553359389305115,
+            0.0004278465057723224
+          ],
+          [
+            -0.16321144998073578,
+            -0.4595559537410736,
+            0.000427847116952762
+          ],
+          [
+            -0.15937550365924835,
+            -0.4593554735183716,
+            0.00042633258271962404
+          ],
+          [
+            -0.15937551856040955,
+            -0.455343633890152,
+            0.00042633197153918445
+          ],
+          [
+            -0.15937551856040955,
+            -0.45133182406425476,
+            0.00042633136035874486
+          ],
+          [
+            -0.15555964410305023,
+            -0.4591560363769531,
+            0.00042480300180613995
+          ],
+          [
+            -0.17484872043132782,
+            -0.45104482769966125,
+            0.000427809776738286
+          ],
+          [
+            -0.174848735332489,
+            -0.4398954510688782,
+            0.00042780808871611953
+          ],
+          [
+            -0.174848735332489,
+            -0.44394975900650024,
+            0.0004278086998965591
+          ],
+          [
+            -0.174848735332489,
+            -0.4469905197620392,
+            0.0004278091655578464
+          ],
+          [
+            -0.16706761717796326,
+            -0.4476586580276489,
+            0.0004293528909329325
+          ],
+          [
+            -0.16706763207912445,
+            -0.43959274888038635,
+            0.0004293516685720533
+          ],
+          [
+            -0.1709516942501068,
+            -0.4397452771663666,
+            0.0004262753063812852
+          ],
+          [
+            -0.16706763207912445,
+            -0.44362571835517883,
+            0.0004293522797524929
+          ],
+          [
+            -0.17094415426254272,
+            -0.44782933592796326,
+            0.00043086233199574053
+          ],
+          [
+            -0.17094415426254272,
+            -0.44378575682640076,
+            0.0004308616917114705
+          ],
+          [
+            -0.16321147978305817,
+            -0.44346651434898376,
+            0.00042784467223100364
+          ],
+          [
+            -0.16321147978305817,
+            -0.4394441545009613,
+            0.00042784406105056405
+          ],
+          [
+            -0.16321146488189697,
+            -0.4474888741970062,
+            0.00042784528341144323
+          ],
+          [
+            -0.15937553346157074,
+            -0.44330817461013794,
+            0.0004263301379978657
+          ],
+          [
+            -0.15937554836273193,
+            -0.43929633498191833,
+            0.0004263295268174261
+          ],
+          [
+            -0.15937553346157074,
+            -0.44731998443603516,
+            0.00042633074917830527
+          ],
+          [
+            -0.15555967390537262,
+            -0.4471519887447357,
+            0.00042480119736865163
+          ],
+          [
+            -0.15555967390537262,
+            -0.4431506395339966,
+            0.00042480058618821204
+          ],
+          [
+            -0.1555596888065338,
+            -0.43914932012557983,
+            0.00042479997500777245
+          ],
+          [
+            -0.15555965900421143,
+            -0.45115333795547485,
+            0.00042480177944526076
+          ],
+          [
+            -0.29531171917915344,
+            -0.4111073613166809,
+            0.00046483721234835684
+          ],
+          [
+            -0.29531171917915344,
+            -0.4154925048351288,
+            0.00046483788173645735
+          ],
+          [
+            -0.29531174898147583,
+            -0.4078185260295868,
+            0.0004648367175832391
+          ],
+          [
+            -0.29075372219085693,
+            -0.41977235674858093,
+            0.0004631051269825548
+          ],
+          [
+            -0.2862217128276825,
+            -0.42293781042099,
+            0.0004613639321178198
+          ],
+          [
+            -0.28396540880203247,
+            -0.4234252870082855,
+            0.000460483250208199
+          ],
+          [
+            -0.27947187423706055,
+            -0.42765235900878906,
+            0.0004587614967022091
+          ]
+        ],
+        "initial_margin_policy": "positive_clearance_no_further_incursion",
+        "initial_margin_pairs_retained": 0,
+        "at": {
+          "xyz_m": [
+            -0.10906986882967024,
+            -0.23702344570126893,
+            0.0552716988410812
+          ],
+          "quat_xyzw": [
+            0.9735089072435623,
+            0.2286468664431499,
+            0.00096980081709221,
+            -0.0002783335209989115
+          ]
+        }
+      }
+    },
+    {
+      "name": "runtime_precontact_surface",
+      "route_screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": true,
+        "collision": false,
+        "ik_reachable": true,
+        "path_min_clearance_m": 0.0059501523076028115,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 46,
+        "geometry_evaluations": 15,
+        "clearance_certified_samples": 31,
+        "ik_checks": [
+          {
+            "xyz_m": [
+              -0.10904938101652524,
+              -0.23699592464088887,
+              0.055281083504907146
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 5.763878168445254e-17,
+                "orientation_error_rad": 2.2820532940739735e-16,
+                "joint_positions_rad": [
+                  -0.22870252524808324,
+                  0.5013900119955119,
+                  -0.19940901728312602,
+                  -2.215676412634452,
+                  0.22826848086343807,
+                  2.6998626805106354,
+                  -0.2865272930142973
+                ],
+                "function_evaluations": 1,
+                "joint_margin_min_rad": 0.8561235873655479,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.22870252524808324,
+                0.5013900119955119,
+                -0.19940901728312602,
+                -2.215676412634452,
+                0.22826848086343807,
+                2.6998626805106354,
+                -0.2865272930142973
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              -0.10916347718010921,
+              -0.23715427145132,
+              0.07672964274616205
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.0005876504638028225,
+                "orientation_error_rad": 0.000497199274851481,
+                "joint_positions_rad": [
+                  -0.21456733511211884,
+                  0.44839989144678327,
+                  -0.21839375995735602,
+                  -2.229208574100452,
+                  0.2092685005290012,
+                  2.660317711376637,
+                  -0.27254497650605597
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 0.8425914258995482,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.22870252524808324,
+                0.5013900119955119,
+                -0.19940901728312602,
+                -2.215676412634452,
+                0.22826848086343807,
+                2.6998626805106354,
+                -0.2865272930142973
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              -0.10913784764859905,
+              -0.23711924227369768,
+              0.10036808801750972
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.0007161073631026819,
+                "orientation_error_rad": 0.0005353212684721467,
+                "joint_positions_rad": [
+                  -0.1990162744362426,
+                  0.39214155798033146,
+                  -0.23890539932913463,
+                  -2.238288216445552,
+                  0.18456684840984144,
+                  2.6139365630576514,
+                  -0.25480997963118535
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 0.8335117835544481,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.21456733511211884,
+                0.44839989144678327,
+                -0.21839375995735602,
+                -2.229208574100452,
+                0.2092685005290012,
+                2.660317711376637,
+                -0.27254497650605597
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              -0.10910510926338648,
+              -0.23707378719696978,
+              0.12236856247099817
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.0006225476154762874,
+                "orientation_error_rad": 0.00046617393558944523,
+                "joint_positions_rad": [
+                  -0.1864006714788293,
+                  0.34179375368766335,
+                  -0.2558301717023071,
+                  -2.2419544804209193,
+                  0.16014727162236148,
+                  2.5686392907533873,
+                  -0.23764676881391433
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 0.8298455195790808,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.1990162744362426,
+                0.39214155798033146,
+                -0.23890539932913463,
+                -2.238288216445552,
+                0.18456684840984144,
+                2.6139365630576514,
+                -0.25480997963118535
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              -0.1090683286439598,
+              -0.2370224446798679,
+              0.1444998952186154
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.0006319355305014245,
+                "orientation_error_rad": 0.0005312508773167203,
+                "joint_positions_rad": [
+                  -0.17578127633814927,
+                  0.2929238640726923,
+                  -0.2702819988942393,
+                  -2.2419570870694887,
+                  0.13541600568600876,
+                  2.5215793688646206,
+                  -0.22042235972714067
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 0.8298429129305114,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.1864006714788293,
+                0.34179375368766335,
+                -0.2558301717023071,
+                -2.2419544804209193,
+                0.16014727162236148,
+                2.5686392907533873,
+                -0.23764676881391433
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              -0.10904938101652523,
+              -0.23699592464088887,
+              0.15528108350490713
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.00015228232980612163,
+                "orientation_error_rad": 0.00014445211953195678,
+                "joint_positions_rad": [
+                  -0.17171492040638717,
+                  0.2707752553496775,
+                  -0.27571138591242295,
+                  -2.2389302982419395,
+                  0.12401985788849375,
+                  2.4974485812173897,
+                  -0.21255724626927341
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 0.8328697017580606,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.17578127633814927,
+                0.2929238640726923,
+                -0.2702819988942393,
+                -2.2419570870694887,
+                0.13541600568600876,
+                2.5215793688646206,
+                -0.22042235972714067
+              ],
+              "numerical_search_bound_only": true
+            }
+          }
+        ],
+        "reason": "public_route_screen_passed"
+      }
+    }
+  ],
+  "working_adapter_sha256": "a8e8364aca218e125e9d9c89e5953774bc7020ff13be2a06df52cef14849fa4d",
+  "script_sha256": "11884452a9fde821a19bd8771e3d8bb2dd685439ce56318c00e82aa3ee9b6ed8"
+}

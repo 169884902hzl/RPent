@@ -25,6 +25,11 @@ jobs.update({f'8252_{i}':'9cacb71' for i in [*range(81,100),*range(181,200),*ran
 jobs.update({'8255_120':'af76e3d', '8256_140':'e425264'})
 jobs.update({f'8262_{i}':'e6b0b47' for i in (14,16,60,160)})
 jobs.update({f'8265_{i}':'124314e' for i in (120,140)})
+receipts = root/'coordination/bounded_skills_20261016/reports'
+full_receipt = receipts/'precontact_full_submission_20261018.json'
+if full_receipt.exists():
+ receipt=json.loads(full_receipt.read_text())
+ jobs.update({f"{receipt['job']}_{i}":receipt['source_commit'] for i in (24,25)})
 rows=[]
 for j,source in jobs.items():
  p=base/('job'+j)/'episodes.jsonl'
@@ -38,5 +43,6 @@ for source in sorted(set(r['source_commit'] for r in rows)):
  paths=sorted({Path(r['episodes_file']) for r in rows if r['source_commit']==source})
  groups[source]=feasibility(paths)
 report={'cohorts_by_source':groups,'scope':'original-scene development, full physical results only, each source/case reported separately; repeated cases are not independent trials','training':False,'pi05_disabled':True,'rows':rows}
+report['excluded_startup_jobs']=['8270_24']
 p=root/'coordination/bounded_skills_20261016/reports/oracle_closed_progress_20261018.json';p.write_text(json.dumps(report,indent=2)+'\n')
 for r in rows[-8:]:print(r['job'],r['source_commit'],r['case']['category'],r['success'],r['decisions'],r['sim_steps'],round(r['wall_s'],1),r['failure_phase'])

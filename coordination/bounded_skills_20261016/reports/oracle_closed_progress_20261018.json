@@ -1956,6 +1956,22 @@
           "sha256": "6837e4217f4f7ff35710ce7b08c3f397841c10308192235f56d58e7b4013dcc6"
         },
         {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_26/episodes.jsonl",
+          "sha256": "278c7184c3ee3b2ae376b3e4b3aafb2653dc13428c6c647241d297eabff6932c"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_27/episodes.jsonl",
+          "sha256": "e529f3040749d975ed0c90d064df278280862623810f3eb23c530fd60f445326"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_28/episodes.jsonl",
+          "sha256": "edcb5a020a7ae136685b7fa17aaf578707293470acdeba4896ddedb342260127"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_29/episodes.jsonl",
+          "sha256": "fd4c4ece23623860a72a742281e9aba935b166ba9baa01e7c1e3496d19f0a7fc"
+        },
+        {
           "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_3/episodes.jsonl",
           "sha256": "2b5b8f2b4bed44b1a7079fbebc8cc19dfd0722703d3b10f3456bac463f654281"
         },
@@ -2021,33 +2037,33 @@
         {
           "arm": "oracle_k4",
           "category": "box_transfer",
-          "n": 6,
-          "success": 4,
-          "rate": 0.6666666666666666,
+          "n": 10,
+          "success": 7,
+          "rate": 0.7,
           "wilson95": [
-            0.299993315138392,
-            0.9032285888942195
+            0.39677814746114537,
+            0.8922087325936989
           ],
           "decisions": {
-            "n": 6,
-            "median": 7.0,
-            "p90": 9.0,
-            "max": 10
+            "n": 10,
+            "median": 8.0,
+            "p90": 11.1,
+            "max": 12
           },
           "sim_steps": {
-            "n": 6,
+            "n": 10,
             "median": 494.0,
-            "p90": 633.0,
-            "max": 705
+            "p90": 775.3,
+            "max": 1012
           },
           "wall_s": {
-            "n": 6,
-            "median": 285.99513702839613,
-            "p90": 418.3521747379564,
-            "max": 447.9360266979784
+            "n": 10,
+            "median": 347.8413173519075,
+            "p90": 452.284836767381,
+            "max": 491.4241273920052
           },
           "failure_phases": {
-            "collision": 1,
+            "collision": 2,
             "planning_unreachable": 1
           }
         },
@@ -2846,6 +2862,173 @@
           "k": 4,
           "terminal_diagnostic": "upper-bound selector has no remaining public option",
           "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_25/episodes.jsonl",
+          "report_category": "box_transfer"
+        },
+        {
+          "case": {
+            "name": "box_transfer_libero_object_t0_s6",
+            "category": "box_transfer",
+            "episode": {
+              "suite": "libero_object",
+              "task": 0,
+              "seed": 6
+            },
+            "state_sha256": "00807a6ba9dbbac9b3b21e413ce7301c65bd69a2bb392f87c45f5013a0cacfc7",
+            "bddl": {
+              "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+              "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+            },
+            "purpose": "development_feasibility_no_training"
+          },
+          "arm": "oracle_k4",
+          "success": false,
+          "decisions": 12,
+          "sim_steps": 344,
+          "skill_sim_steps": {
+            "move_to": 131,
+            "align": 100,
+            "descend": 45,
+            "set_gripper": 45,
+            "observe": 23
+          },
+          "wall_s": 393.47154842410237,
+          "failure_phase": "collision",
+          "source": "official_original_task_predicates_private",
+          "status": "physical_result",
+          "training": false,
+          "pi05_calls": 0,
+          "fusion_version": "rgbd_dual_view/1",
+          "k": 4,
+          "terminal_diagnostic": "upper-bound selector has no remaining public option",
+          "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_26/episodes.jsonl",
+          "report_category": "box_transfer"
+        },
+        {
+          "case": {
+            "name": "box_transfer_libero_object_t0_s7",
+            "category": "box_transfer",
+            "episode": {
+              "suite": "libero_object",
+              "task": 0,
+              "seed": 7
+            },
+            "state_sha256": "b547d4ec9158ada6e317f0271636f20c0b2ea8fd222d07e943cb49c98929ed0a",
+            "bddl": {
+              "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+              "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+            },
+            "purpose": "development_feasibility_no_training"
+          },
+          "arm": "oracle_k4",
+          "success": true,
+          "decisions": 6,
+          "sim_steps": 460,
+          "skill_sim_steps": {
+            "move_to": 144,
+            "align": 8,
+            "descend": 47,
+            "set_gripper": 15,
+            "lift": 32,
+            "carry_to": 181,
+            "lower": 23,
+            "release": 10
+          },
+          "wall_s": 259.76584519073367,
+          "failure_phase": null,
+          "source": "official_original_task_predicates_private",
+          "status": "physical_result",
+          "training": false,
+          "pi05_calls": 0,
+          "fusion_version": "rgbd_dual_view/1",
+          "k": 4,
+          "terminal_diagnostic": null,
+          "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_27/episodes.jsonl",
+          "report_category": "box_transfer"
+        },
+        {
+          "case": {
+            "name": "box_transfer_libero_object_t0_s8",
+            "category": "box_transfer",
+            "episode": {
+              "suite": "libero_object",
+              "task": 0,
+              "seed": 8
+            },
+            "state_sha256": "706ad2dac4ccce35cf8f5ec117bcad7ba3ae44e8866bb359c8fdaef470ed1e65",
+            "bddl": {
+              "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+              "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+            },
+            "purpose": "development_feasibility_no_training"
+          },
+          "arm": "oracle_k4",
+          "success": true,
+          "decisions": 11,
+          "sim_steps": 749,
+          "skill_sim_steps": {
+            "move_to": 294,
+            "align": 19,
+            "descend": 94,
+            "set_gripper": 45,
+            "observe": 46,
+            "lift": 32,
+            "carry_to": 189,
+            "lower": 21,
+            "release": 9
+          },
+          "wall_s": 491.4241273920052,
+          "failure_phase": null,
+          "source": "official_original_task_predicates_private",
+          "status": "physical_result",
+          "training": false,
+          "pi05_calls": 0,
+          "fusion_version": "rgbd_dual_view/1",
+          "k": 4,
+          "terminal_diagnostic": null,
+          "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_28/episodes.jsonl",
+          "report_category": "box_transfer"
+        },
+        {
+          "case": {
+            "name": "box_transfer_libero_object_t0_s9",
+            "category": "box_transfer",
+            "episode": {
+              "suite": "libero_object",
+              "task": 0,
+              "seed": 9
+            },
+            "state_sha256": "3668c3fb4286512ee868fdc5db8223e6fa7125484974299225c3a87b37759f40",
+            "bddl": {
+              "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+              "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+            },
+            "purpose": "development_feasibility_no_training"
+          },
+          "arm": "oracle_k4",
+          "success": true,
+          "decisions": 10,
+          "sim_steps": 1012,
+          "skill_sim_steps": {
+            "move_to": 585,
+            "align": 18,
+            "descend": 94,
+            "set_gripper": 45,
+            "observe": 23,
+            "lift": 32,
+            "carry_to": 187,
+            "lower": 21,
+            "release": 7
+          },
+          "wall_s": 437.04606740223244,
+          "failure_phase": null,
+          "source": "official_original_task_predicates_private",
+          "status": "physical_result",
+          "training": false,
+          "pi05_calls": 0,
+          "fusion_version": "rgbd_dual_view/1",
+          "k": 4,
+          "terminal_diagnostic": null,
+          "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_29/episodes.jsonl",
           "report_category": "box_transfer"
         },
         {
@@ -6021,6 +6204,14 @@
         {
           "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8192_104/episodes.jsonl",
           "sha256": "49aae5fe39e26303fecc4ea96e13982bbd4fb45725ffea37dcf3a7e35ca0fc42"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8192_105/episodes.jsonl",
+          "sha256": "860a0327bb6431db6cada7146b9232a6a440418aa48bbb79f44c5be01aa77649"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8192_106/episodes.jsonl",
+          "sha256": "3b4094019b1e205896a3dbb8a7aba4af41a5d2fd8ee70c77238ede1cc7ff2cec"
         }
       ],
       "summary": [
@@ -6057,29 +6248,29 @@
         {
           "arm": "oracle_k4",
           "category": "drawer_open",
-          "n": 5,
-          "success": 5,
+          "n": 7,
+          "success": 7,
           "rate": 1.0,
           "wilson95": [
-            0.5655175352168251,
+            0.6456695649333126,
             1.0
           ],
           "decisions": {
-            "n": 5,
+            "n": 7,
             "median": 10,
             "p90": 11.0,
             "max": 11
           },
           "sim_steps": {
-            "n": 5,
-            "median": 724,
-            "p90": 1035.8,
+            "n": 7,
+            "median": 720,
+            "p90": 1024.2,
             "max": 1059
           },
           "wall_s": {
-            "n": 5,
-            "median": 962.078435299918,
-            "p90": 1006.5916178966872,
+            "n": 7,
+            "median": 882.4618273302913,
+            "p90": 997.6214617434889,
             "max": 1024.531930203084
           },
           "failure_phases": {}
@@ -6527,6 +6718,84 @@
           "k": 4,
           "terminal_diagnostic": null,
           "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8192_104/episodes.jsonl",
+          "report_category": "drawer_open"
+        },
+        {
+          "case": {
+            "name": "drawer_open_libero_goal_t0_s5",
+            "category": "drawer_open",
+            "episode": {
+              "suite": "libero_goal",
+              "task": 0,
+              "seed": 5
+            },
+            "state_sha256": "89a52c58afa55544eb487f423a9af7566030424ab7452b3b156682714452c3c7",
+            "bddl": {
+              "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+              "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+            },
+            "purpose": "development_feasibility_no_training"
+          },
+          "arm": "oracle_k4",
+          "success": true,
+          "decisions": 10,
+          "sim_steps": 584,
+          "skill_sim_steps": {
+            "move_to": 391,
+            "align": 5,
+            "descend": 38,
+            "set_gripper": 15,
+            "nudge": 135
+          },
+          "wall_s": 882.4618273302913,
+          "failure_phase": null,
+          "source": "official_original_task_predicates_private",
+          "status": "physical_result",
+          "training": false,
+          "pi05_calls": 0,
+          "fusion_version": "rgbd_dual_view/1",
+          "k": 4,
+          "terminal_diagnostic": null,
+          "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8192_105/episodes.jsonl",
+          "report_category": "drawer_open"
+        },
+        {
+          "case": {
+            "name": "drawer_open_libero_goal_t0_s6",
+            "category": "drawer_open",
+            "episode": {
+              "suite": "libero_goal",
+              "task": 0,
+              "seed": 6
+            },
+            "state_sha256": "0c5fb57980a8090c685fe9c961b3311a094861ed3be220676f4dc8b4d0a1ca7f",
+            "bddl": {
+              "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+              "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+            },
+            "purpose": "development_feasibility_no_training"
+          },
+          "arm": "oracle_k4",
+          "success": true,
+          "decisions": 10,
+          "sim_steps": 720,
+          "skill_sim_steps": {
+            "move_to": 527,
+            "align": 6,
+            "descend": 38,
+            "set_gripper": 15,
+            "nudge": 134
+          },
+          "wall_s": 881.9658846133389,
+          "failure_phase": null,
+          "source": "official_original_task_predicates_private",
+          "status": "physical_result",
+          "training": false,
+          "pi05_calls": 0,
+          "fusion_version": "rgbd_dual_view/1",
+          "k": 4,
+          "terminal_diagnostic": null,
+          "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8192_106/episodes.jsonl",
           "report_category": "drawer_open"
         }
       ],
@@ -8472,6 +8741,136 @@
           "terminal_diagnostic": "upper-bound selector has no remaining public option",
           "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8256_140/episodes.jsonl",
           "report_category": "microwave_open"
+        }
+      ],
+      "training": false
+    },
+    "e6b0b47": {
+      "sources": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8262_14/episodes.jsonl",
+          "sha256": "9dd3d9f1d682410fe2b4c6fcc59748cb1ebcc9b0a628f20c5ea88f1c759c7b2b"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8262_16/episodes.jsonl",
+          "sha256": "de985b64085ad1bc1d96fab278dbdb3b306547cf27a4ee17aec441c4c8ef8550"
+        }
+      ],
+      "summary": [
+        {
+          "arm": "oracle_k4",
+          "category": "bowl_transfer",
+          "n": 2,
+          "success": 1,
+          "rate": 0.5,
+          "wilson95": [
+            0.09453120573423074,
+            0.9054687942657693
+          ],
+          "decisions": {
+            "n": 2,
+            "median": 9.5,
+            "p90": 10.7,
+            "max": 11
+          },
+          "sim_steps": {
+            "n": 2,
+            "median": 591.0,
+            "p90": 613.4,
+            "max": 619
+          },
+          "wall_s": {
+            "n": 2,
+            "median": 868.802943843184,
+            "p90": 963.2262917881366,
+            "max": 986.8321287743747
+          },
+          "failure_phases": {
+            "collision": 1
+          }
+        }
+      ],
+      "rows": [
+        {
+          "case": {
+            "name": "bowl_transfer_libero_spatial_t0_s14",
+            "category": "bowl_transfer",
+            "episode": {
+              "suite": "libero_spatial",
+              "task": 0,
+              "seed": 14
+            },
+            "state_sha256": "a695298e9ef752b05e4d30c817ab1e2061a6136d65242dac7a2cce63f858b9fd",
+            "bddl": {
+              "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+              "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+            },
+            "purpose": "development_feasibility_no_training"
+          },
+          "arm": "oracle_k4",
+          "success": true,
+          "decisions": 8,
+          "sim_steps": 619,
+          "skill_sim_steps": {
+            "move_to": 369,
+            "align": 18,
+            "descend": 95,
+            "set_gripper": 45,
+            "lift": 31,
+            "carry_to": 57,
+            "release": 4
+          },
+          "wall_s": 750.7737589119934,
+          "failure_phase": null,
+          "source": "official_original_task_predicates_private",
+          "status": "physical_result",
+          "training": false,
+          "pi05_calls": 0,
+          "fusion_version": "rgbd_dual_view/1",
+          "k": 4,
+          "terminal_diagnostic": null,
+          "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8262_14/episodes.jsonl",
+          "report_category": "bowl_transfer"
+        },
+        {
+          "case": {
+            "name": "bowl_transfer_libero_spatial_t0_s16",
+            "category": "bowl_transfer",
+            "episode": {
+              "suite": "libero_spatial",
+              "task": 0,
+              "seed": 16
+            },
+            "state_sha256": "db2c9ab25c6b23526efa6be860e4bd8330fab9a84131628f2dea6fe4062f993d",
+            "bddl": {
+              "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+              "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+            },
+            "purpose": "development_feasibility_no_training"
+          },
+          "arm": "oracle_k4",
+          "success": false,
+          "decisions": 11,
+          "sim_steps": 563,
+          "skill_sim_steps": {
+            "move_to": 373,
+            "align": 20,
+            "descend": 94,
+            "set_gripper": 45,
+            "lift": 31,
+            "observe": 0
+          },
+          "wall_s": 986.8321287743747,
+          "failure_phase": "collision",
+          "source": "official_original_task_predicates_private",
+          "status": "physical_result",
+          "training": false,
+          "pi05_calls": 0,
+          "fusion_version": "rgbd_dual_view/1",
+          "k": 4,
+          "terminal_diagnostic": "upper-bound selector has no remaining public option",
+          "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8262_16/episodes.jsonl",
+          "report_category": "bowl_transfer"
         }
       ],
       "training": false
@@ -13368,6 +13767,177 @@
       "terminal_diagnostic": "upper-bound selector has no remaining public option"
     },
     {
+      "job": "8173_26",
+      "source_commit": "3d71f44",
+      "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_26/episodes.jsonl",
+      "case": {
+        "name": "box_transfer_libero_object_t0_s6",
+        "category": "box_transfer",
+        "episode": {
+          "suite": "libero_object",
+          "task": 0,
+          "seed": 6
+        },
+        "state_sha256": "00807a6ba9dbbac9b3b21e413ce7301c65bd69a2bb392f87c45f5013a0cacfc7",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+          "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": false,
+      "decisions": 12,
+      "sim_steps": 344,
+      "skill_sim_steps": {
+        "move_to": 131,
+        "align": 100,
+        "descend": 45,
+        "set_gripper": 45,
+        "observe": 23
+      },
+      "wall_s": 393.47154842410237,
+      "failure_phase": "collision",
+      "source": "official_original_task_predicates_private",
+      "status": "physical_result",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": "upper-bound selector has no remaining public option"
+    },
+    {
+      "job": "8173_27",
+      "source_commit": "3d71f44",
+      "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_27/episodes.jsonl",
+      "case": {
+        "name": "box_transfer_libero_object_t0_s7",
+        "category": "box_transfer",
+        "episode": {
+          "suite": "libero_object",
+          "task": 0,
+          "seed": 7
+        },
+        "state_sha256": "b547d4ec9158ada6e317f0271636f20c0b2ea8fd222d07e943cb49c98929ed0a",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+          "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": true,
+      "decisions": 6,
+      "sim_steps": 460,
+      "skill_sim_steps": {
+        "move_to": 144,
+        "align": 8,
+        "descend": 47,
+        "set_gripper": 15,
+        "lift": 32,
+        "carry_to": 181,
+        "lower": 23,
+        "release": 10
+      },
+      "wall_s": 259.76584519073367,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "physical_result",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null
+    },
+    {
+      "job": "8173_28",
+      "source_commit": "3d71f44",
+      "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_28/episodes.jsonl",
+      "case": {
+        "name": "box_transfer_libero_object_t0_s8",
+        "category": "box_transfer",
+        "episode": {
+          "suite": "libero_object",
+          "task": 0,
+          "seed": 8
+        },
+        "state_sha256": "706ad2dac4ccce35cf8f5ec117bcad7ba3ae44e8866bb359c8fdaef470ed1e65",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+          "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": true,
+      "decisions": 11,
+      "sim_steps": 749,
+      "skill_sim_steps": {
+        "move_to": 294,
+        "align": 19,
+        "descend": 94,
+        "set_gripper": 45,
+        "observe": 46,
+        "lift": 32,
+        "carry_to": 189,
+        "lower": 21,
+        "release": 9
+      },
+      "wall_s": 491.4241273920052,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "physical_result",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null
+    },
+    {
+      "job": "8173_29",
+      "source_commit": "3d71f44",
+      "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8173_29/episodes.jsonl",
+      "case": {
+        "name": "box_transfer_libero_object_t0_s9",
+        "category": "box_transfer",
+        "episode": {
+          "suite": "libero_object",
+          "task": 0,
+          "seed": 9
+        },
+        "state_sha256": "3668c3fb4286512ee868fdc5db8223e6fa7125484974299225c3a87b37759f40",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+          "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": true,
+      "decisions": 10,
+      "sim_steps": 1012,
+      "skill_sim_steps": {
+        "move_to": 585,
+        "align": 18,
+        "descend": 94,
+        "set_gripper": 45,
+        "observe": 23,
+        "lift": 32,
+        "carry_to": 187,
+        "lower": 21,
+        "release": 7
+      },
+      "wall_s": 437.04606740223244,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "physical_result",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null
+    },
+    {
       "job": "8183_100",
       "source_commit": "9cacb71",
       "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8183_100/episodes.jsonl",
@@ -13728,6 +14298,86 @@
       "terminal_diagnostic": null
     },
     {
+      "job": "8192_105",
+      "source_commit": "9cacb71",
+      "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8192_105/episodes.jsonl",
+      "case": {
+        "name": "drawer_open_libero_goal_t0_s5",
+        "category": "drawer_open",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 0,
+          "seed": 5
+        },
+        "state_sha256": "89a52c58afa55544eb487f423a9af7566030424ab7452b3b156682714452c3c7",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+          "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": true,
+      "decisions": 10,
+      "sim_steps": 584,
+      "skill_sim_steps": {
+        "move_to": 391,
+        "align": 5,
+        "descend": 38,
+        "set_gripper": 15,
+        "nudge": 135
+      },
+      "wall_s": 882.4618273302913,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "physical_result",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null
+    },
+    {
+      "job": "8192_106",
+      "source_commit": "9cacb71",
+      "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8192_106/episodes.jsonl",
+      "case": {
+        "name": "drawer_open_libero_goal_t0_s6",
+        "category": "drawer_open",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 0,
+          "seed": 6
+        },
+        "state_sha256": "0c5fb57980a8090c685fe9c961b3311a094861ed3be220676f4dc8b4d0a1ca7f",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+          "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": true,
+      "decisions": 10,
+      "sim_steps": 720,
+      "skill_sim_steps": {
+        "move_to": 527,
+        "align": 6,
+        "descend": 38,
+        "set_gripper": 15,
+        "nudge": 134
+      },
+      "wall_s": 881.9658846133389,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "physical_result",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null
+    },
+    {
       "job": "8243_6",
       "source_commit": "276456d",
       "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8243_6/episodes.jsonl",
@@ -13933,6 +14583,92 @@
       "fusion_version": "rgbd_dual_view/1",
       "k": 4,
       "terminal_diagnostic": "upper-bound selector has no remaining public option"
+    },
+    {
+      "job": "8262_14",
+      "source_commit": "e6b0b47",
+      "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8262_14/episodes.jsonl",
+      "case": {
+        "name": "bowl_transfer_libero_spatial_t0_s14",
+        "category": "bowl_transfer",
+        "episode": {
+          "suite": "libero_spatial",
+          "task": 0,
+          "seed": 14
+        },
+        "state_sha256": "a695298e9ef752b05e4d30c817ab1e2061a6136d65242dac7a2cce63f858b9fd",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+          "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": true,
+      "decisions": 8,
+      "sim_steps": 619,
+      "skill_sim_steps": {
+        "move_to": 369,
+        "align": 18,
+        "descend": 95,
+        "set_gripper": 45,
+        "lift": 31,
+        "carry_to": 57,
+        "release": 4
+      },
+      "wall_s": 750.7737589119934,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "physical_result",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null
+    },
+    {
+      "job": "8262_16",
+      "source_commit": "e6b0b47",
+      "episodes_file": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8262_16/episodes.jsonl",
+      "case": {
+        "name": "bowl_transfer_libero_spatial_t0_s16",
+        "category": "bowl_transfer",
+        "episode": {
+          "suite": "libero_spatial",
+          "task": 0,
+          "seed": 16
+        },
+        "state_sha256": "db2c9ab25c6b23526efa6be860e4bd8330fab9a84131628f2dea6fe4062f993d",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+          "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": false,
+      "decisions": 11,
+      "sim_steps": 563,
+      "skill_sim_steps": {
+        "move_to": 373,
+        "align": 20,
+        "descend": 94,
+        "set_gripper": 45,
+        "lift": 31,
+        "observe": 0
+      },
+      "wall_s": 986.8321287743747,
+      "failure_phase": "collision",
+      "source": "official_original_task_predicates_private",
+      "status": "physical_result",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": "upper-bound selector has no remaining public option"
     }
+  ],
+  "excluded_startup_jobs": [
+    "8270_24"
   ]
 }

@@ -1,0 +1,29 @@
+{
+  "job": "8273",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--dependency=afterany:8262_60",
+    "--export=ALL,PUBLIC_QUERY_FILE=/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/bowl8262_16_registered_points_CPU_20261018.json,PUBLIC_QUERY_STEM=bowl8262_16_interior_query",
+    "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/run_saved_point_query_20261018.sbatch"
+  ],
+  "scope": "saved original public images; zero controls",
+  "training": false,
+  "confirmation": false,
+  "lane": 1,
+  "aggregate_cap": 3,
+  "query_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/bowl8262_16_registered_points_CPU_20261018.json",
+    "sha256": "7d79b7971b460f1320e3bf0dbfa72e42eaca89836269cf333c1ec906835152eb"
+  },
+  "script_sha256": "9a451b4885fd19def05888f48847c9bcc8e740c26d22e059682ac4dabca8079b",
+  "launcher_sha256": "77367e2594600ffc61192e80a2e055abb0f82d1633a004eb8619d9e264a6c86b",
+  "following_update": [
+    "scontrol",
+    "update",
+    "JobId=8262_160",
+    "Dependency=afterany:8273"
+  ]
+}
