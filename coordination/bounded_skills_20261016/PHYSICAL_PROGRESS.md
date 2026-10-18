@@ -12,6 +12,8 @@ The existing220-state controls have now been checked on the remote host against 
 
 Onlynode02,Nice500 is used. Four cards are temporarily borrowed while Codex2 has no GPU work; the live monitor lowers replacement concurrency when its lane returns. Running tasks, protected c5/c6/rf work and historical held jobs are not cancelled or released. No training or confirmation run is started.
 
+Coverage correction: the registered can cases do not establish real-box grab/place coverage. A separate20-state original cream-cheese-box cohort is CPU-preflighted,with known confirmation states skipped; startup8861_0 is queued. The existing220 cases stay unchanged. The registered130 original task sentences contain no plate grab/place task;the original push task remains plate_push. See [supplemental coverage and provenance](progress_real_box_coverage_20261018.md). No new physical outcome is claimed for this supplement.
+
 ## Historical progress follows
 
 Latest pushed runtime is `cbffa78f6fc06b0275e61899b30a64656dc1e635`: fresh raw RGB-D can verify an anchored nudge despite lost/cached SAM identity, while stale raw captures remain unmeasured. Existing receipt evidence now carries the paired capture IDs and compatible axis interval; schema remains bounded-skills/1. Full adapter regression: 162 passed in 81.21 seconds. Saved-public drawer decisions2–5 change from no_effect/unmeasured to measured 18–20,18–20,8–10,8–10mm intervals. This is a CPU measurement recomputation, not a new task result. The old-source drawer-open and stove-off complete episodes both succeed natively. See [fresh-contact delivery](progress_fresh_contact_20261018.md).

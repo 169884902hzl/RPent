@@ -1,0 +1,45 @@
+{
+  "job": "8861",
+  "mode": "startup",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=0%1",
+    "--dependency=afterany:8846:8860_24",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0,SOURCE_COMMIT=b6cf6d0,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_real_box_r2_20261018.json,SHARD_COUNT=20,STARTUP=1,PAIR_LEGACY=0",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_self_filter_20261018_b6cf6d0",
+  "source_commit": "b6cf6d0",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_real_box_r2_20261018.json",
+    "sha256": "328b9ad82950340c81f691afe306f17b2484aa7f1750d2537bb79bf4ee7fc697"
+  },
+  "case": {
+    "name": "box_grab_place_libero_object_t1_s0",
+    "category": "box_grab_place",
+    "episode": {
+      "suite": "libero_object",
+      "task": 1,
+      "seed": 0
+    },
+    "state_sha256": "4404ff0ecec75d07dbe02cdb0a6284fb3b24c79f2c164987433f00d3b885948c",
+    "bddl": {
+      "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl",
+      "sha256": "7019f37ee158d67a21338a6df0c441dd8f84979b946b5e20bb49463ef0508ea2"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/init_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init",
+      "sha256": "5ea5483bca8abd80a8f1935e2c60570d60eaaf6a985c283d62805b46fb76aa94"
+    },
+    "purpose": "development_feasibility_no_training"
+  },
+  "physical_validation": "pending first physical request",
+  "formal_array_submitted": false,
+  "training": false,
+  "confirmation": false,
+  "scope": "supplemental original real-box feasibility; existing220 unchanged",
+  "submission_script_sha256": "ee2948b4ae6f06a813151f208a6a4dee8e67439db9e976fbee75bb4e343bc858"
+}
