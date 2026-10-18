@@ -237,6 +237,48 @@ def test_prefix_reuses_exact_pixel_subtraction_but_rechecks_moved_surfaces(adapt
     assert not adapter.p.actions
 
 
+def test_relative_suffix_inherits_contact_from_measured_anchor_prefix(adapter):
+    request = adapter.request(k=4)
+    descend = next(c for c in request['candidates'] if c['skill'] == 'descend'
+                   and c['parameters']['anchor_id'] == 'e1')
+    relative = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+                    and c['parameters'] == {'axis': 'y', 'distance_m': .02})
+    prediction = PublicPrefixPrediction(adapter, request)
+    prediction.advance(prediction.candidate(descend))
+    candidate = prediction.candidate(relative)
+    assert candidate['parameters'] == relative['parameters']
+    assert any(c['metric'] == 'contact_progress_m' and c['anchor_id'] == 'e1'
+               for c in candidate['expected_receipt'])
+    assert not prediction.adapter._free_motion(candidate)
+    before = np.array(prediction.adapter.scene.entities['e1'].xyz)
+    prediction.advance(candidate)
+    np.testing.assert_allclose(prediction.adapter.scene.entities['e1'].xyz, before+[0., .02, 0.])
+    assert 'e1' in prediction.moved
+    assert adapter.active is None and not adapter.p.actions
+
+
+def test_relative_contact_cannot_succeed_on_eef_arrival_without_surface_progress(adapter):
+    request = adapter.request(k=4)
+    relative = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+                    and c['parameters'] == {'axis': 'y', 'distance_m': .02})
+    screen = adapter._cloud_and_ik()
+    surface = np.random.default_rng(978).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
+    def geometry(*args, **kwargs):
+        screen.target = surface
+        adapter._base_geometry = (surface, None)
+        return screen
+    adapter._cloud_and_ik = geometry
+    adapter.active = 'e1'
+    receipts = adapter.execute(request, decision(request, [relative['id']]))
+    assert receipts[0]['steps_used'] > 0
+    assert receipts[0]['outcome'] == 'no_effect'
+    assert receipts[0]['stop_reason'] == 'contact_no_measured_progress'
+    assert any(c['condition']['metric'] == 'contact_progress_m'
+               and c['condition']['anchor_id'] == 'e1' and c['passed'] is False
+               for c in receipts[0]['expectation_checks'])
+    assert adapter._last_free_chunk is None
+
+
 def test_oracle_returns_prefix_specific_private_sets_without_public_labels(adapter):
     physical_grip(adapter)
     request = adapter.request(k=4)

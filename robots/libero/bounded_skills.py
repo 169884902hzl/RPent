@@ -1311,6 +1311,8 @@ class MeasuredSkillAdapter:
     def _candidate(self, skill, parameters, *, screen_options=True):
         cid = hashlib.sha256(identity({"skill": skill, "parameters": parameters}).encode()).hexdigest()[:16]
         key = parameters.get("anchor_id", parameters.get("target_id"))
+        if key is None and skill in {'nudge', 'rotate_wrist'}:
+            key = self.active
         entity = self.scene.entities.get(key)
         if key is not None and not self._has_anchor(entity):
             return None
@@ -1774,7 +1776,9 @@ class MeasuredSkillAdapter:
         """Contact still permits a suffix, but requires a measured checkpoint."""
         skill = candidate['skill']
         return (skill in MOTION_SKILLS and skill not in {'descend', 'lower', 'lift'}
-            and not (skill in {'nudge', 'rotate_wrist'} and candidate['parameters'].get('anchor_id')))
+            and not (skill in {'nudge', 'rotate_wrist'} and (
+                candidate['parameters'].get('anchor_id') or any(
+                    check['anchor_id'] is not None for check in candidate['expected_receipt']))))
 
     def execute(self, request, decision, *, async_decisions=None):
         choices = selected(request, decision)
@@ -1804,6 +1808,9 @@ class MeasuredSkillAdapter:
             # of that anchor invalidates the prediction before its suffix.
             parameters = candidate['parameters']
             keys = [parameters.get('anchor_id'), parameters.get('target_id')]
+            if candidate['skill'] in {'nudge', 'rotate_wrist'}:
+                keys += [check['anchor_id'] for check in candidate['expected_receipt']]
+            keys = list(dict.fromkeys(keys))
             stale_keys = [key for key in keys if key is not None and key != self.held
                 and key in row['predicted_anchors']
                 and (entity := self.scene.entities.get(key)) is not None and entity.visible
@@ -1991,6 +1998,8 @@ class MeasuredSkillAdapter:
             eid: np.asarray(entity.xyz) for eid, entity in entities_before.items() if entity.visible}
         skill, parameters = candidate["skill"], candidate["parameters"]
         key = parameters.get("anchor_id", parameters.get("target_id"))
+        if key is None and skill in {'nudge', 'rotate_wrist'}:
+            key = self.active
         phase, outcome, reason, detail = None, "unmeasured", "measurement_missing", {}
         contact_reference = None
         contact_capture_step = None

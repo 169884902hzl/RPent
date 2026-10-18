@@ -25,6 +25,8 @@ from rpent.skill_package.contract import compact_candidate, committed_candidate_
 def expected_receipt(adapter, skill, parameters, route=None):
     """Derive checks from measured geometry and fixed execution tolerances."""
     anchor = parameters.get('anchor_id')
+    if anchor is None and skill in {'nudge', 'rotate_wrist'}:
+        anchor = adapter.active
     def condition(metric, minimum=None, maximum=None, key=anchor):
         return dict(metric=metric, anchor_id=key, minimum=minimum, maximum=maximum)
     checks = []
@@ -245,10 +247,9 @@ class PublicPrefixPrediction:
                     lower=tuple(bounds.min(0)), upper=tuple(bounds.max(0)))
                 self.clouds[key] = move(self._target(key))
                 self.moved.add(key)
-            elif skill == 'nudge' and params.get('anchor_id'):
+            elif skill == 'nudge' and (key := params.get('anchor_id') or self.adapter.active):
                 # Contact progress is a conditional effect of this bounded
                 # command, not an unexplained moved anchor at the next step.
-                key = params['anchor_id']
                 entity = self.adapter.scene.entities[key]
                 delta = np.zeros(3)
                 delta['xyz'.index(params['axis'])] = params['distance_m']
