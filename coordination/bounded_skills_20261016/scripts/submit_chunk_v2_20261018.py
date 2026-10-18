@@ -41,9 +41,7 @@ ours = [line.split('|') for line in raw.splitlines() if '|rd-bounded-' in line a
 running = [row for row in ours if row[2] == 'RUNNING']
 assert len(running) <= 4 and all(row[3]=='node02' for row in running), running
 # Do not touch held jobs, c5/c6/rf, or Codex2's model jobs.
-active = [row[0] for row in running if args.full or row[0].startswith('8173_')]
-if not args.full:
-    assert len(active) == 1, active
+active = [row[0] for row in running]
 lane_arrays = ({'8173', '8192', '8252', '8265'} | set(args.replace_array)) if args.full else {'8173'}
 following = [row[0] for row in ours if row[0].split('_')[0] in lane_arrays
     and row[2]=='PENDING' and 'JobHeld' not in row[4]]
@@ -52,9 +50,11 @@ if args.full:
     dependency = ('?'.join('afterany:'+child for child in active)
                   if len(running) >= aggregate_cap else 'afterany:'+startup_proof['job'])
 else:
-    dependency = 'afterany:'+':'.join(active)
+    dependency = ('?'.join('afterany:'+child for child in active)
+                  if len(running) >= aggregate_cap else None)
 arguments = ['sbatch','--parsable','--nodelist=node02','--nice=500',
-    '--array='+('0-219%'+str(capacity) if args.full else '24%1'),'--dependency='+dependency,
+    '--array='+('0-219%'+str(capacity) if args.full else '24%1'),
+    *(['--dependency='+dependency] if dependency else []),
     '--export=ALL,SOURCE='+str(source)+',SOURCE_COMMIT='+prep['source_commit']+',MANIFEST='+str(manifest)
         +',STARTUP='+('0' if args.full else '1')+',PAIR_LEGACY='+('1' if args.full else '0'),str(launcher)]
 job = subprocess.check_output(arguments,text=True).strip().split(';')[0]

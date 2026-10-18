@@ -1,0 +1,53 @@
+{
+  "scope": "CPU synthetic feedback-lag reproduction; not physical validation",
+  "reference_before": "9a1de6849fbd4084821ca0c44b7bcd4edc7d92f6",
+  "source_sha256_before": "56ece3e6ccd930272ab340d1c8b34c60ab52d265d972d6b36ac3c43a4a6765b6",
+  "source_sha256_after": "29c14dc74dad04ca0f0542eae48748cc058e6851c606e3f538db01d6165f74a1",
+  "script_sha256": "9bda55f22df37c3d06c42a41fc5b0a8a3a7c56d55eba1650789c815fac3ecc0d",
+  "training": false,
+  "controls_to_simulator": 0,
+  "rows": [
+    {
+      "version": "before_9a1de68",
+      "steps": 13,
+      "stop": "public_contact_stop",
+      "brake_completed": null,
+      "next_reference_source": "public_20hz_sensor_stream",
+      "nominal_max_translation_acceleration_jump": 3.885780586188048e-16,
+      "nominal_max_rotation_acceleration_jump": 0.0,
+      "nominal_max_jerk_limit_ratio": 0.8820870915818922,
+      "stop_reason": "public_contact_stop",
+      "braking": {
+        "executed": true,
+        "reason": "screened_brake",
+        "reference_translation_acceleration_jump": 0.09647777895705281,
+        "reference_rotation_acceleration_jump": null,
+        "initial_derivatives_source": null,
+        "reference_position_jump_m": 0.00036938376952948314,
+        "max_jerk_limit_ratio": 1.0000000000000007,
+        "internal_max_translation_acceleration_jump": 2.7755575615628914e-17
+      }
+    },
+    {
+      "version": "after_working_tree",
+      "steps": 17,
+      "stop": "public_contact_stop",
+      "brake_completed": true,
+      "next_reference_source": "previous_rest_reference",
+      "nominal_max_translation_acceleration_jump": 3.885780586188048e-16,
+      "nominal_max_rotation_acceleration_jump": 0.0,
+      "nominal_max_jerk_limit_ratio": 0.8820870915818922,
+      "stop_reason": "public_contact_stop",
+      "braking": {
+        "executed": true,
+        "reason": "screened_brake",
+        "reference_translation_acceleration_jump": 0.0,
+        "reference_rotation_acceleration_jump": 0.0,
+        "initial_derivatives_source": "last_command_reference",
+        "reference_position_jump_m": 0.0,
+        "max_jerk_limit_ratio": 1.000000000000005,
+        "internal_max_translation_acceleration_jump": 3.944304526105059e-31
+      }
+    }
+  ]
+}

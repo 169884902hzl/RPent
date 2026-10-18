@@ -216,7 +216,10 @@ class SmoothMotion:
                           "action": action.tolist(), "tracking_error_m": error,
                           "reference_velocity": trajectory.at(pose["time_s"], 1).tolist(),
                           "reference_acceleration": trajectory.at(pose["time_s"], 2).tolist(),
-                          "reference_jerk": trajectory.at(pose["time_s"], 3).tolist(), "braking": False})
+                          "reference_jerk": trajectory.at(pose["time_s"], 3).tolist(),
+                          **{'command_reference_'+name: trajectory.at(lead_time, order).tolist()
+                             for order, name in enumerate(('velocity', 'acceleration', 'jerk'), 1)},
+                          "braking": False})
             if contact_stop is not None and contact_stop(after):
                 stop = "public_contact_stop"
                 break
@@ -233,11 +236,12 @@ class SmoothMotion:
                     break
             if stop.startswith('expected_receipt_'):
                 break
-        # The nominal trajectory ends at zero v/a. An interrupted reference or
-        # a late decision uses a p/v/a-continuous measured braking tail.
+        # The nominal trajectory ends at zero v/a. An interrupted motion
+        # continues the last commanded p/v/a reference into its braking tail.
         braking = None
         if (stop in {"tracking_error", "public_contact_stop"} or stop.startswith('expected_receipt_')) and not (self.p.env.terminated or self.p.env.truncated):
-            braking = self._brake(trace, gripper)
+            braking = self._brake(trace, gripper, reference_state=(
+                lead, tuple(trajectory.at(lead_time, order) for order in (1, 2, 3)), origin))
             if not braking["executed"]:
                 stop = "braking_screen_rejected"
         if lookahead is not None and lookahead.pending is not None and not lookahead.pending[1].done():
@@ -259,13 +263,17 @@ class SmoothMotion:
         metrics['reference_max_jerk_limit_ratio'] = max((segment.maximum(3, axes)/limit.jerk
             for segment in trajectory.segments for axes, limit in self.config.groups()), default=0.)
         end_error = float(np.linalg.norm(np.asarray(waypoints[-1]["xyz_m"])-measured_robot(self.p)["eef_xyz_m"]))
-        if (trace and stop in {'endpoint', 'decision_pending_at_rest_endpoint'}
-                and end_error <= self.config.endpoint_tolerance_m
+        rested = (trace and ((stop in {'endpoint', 'decision_pending_at_rest_endpoint'}
+                              and end_error <= self.config.endpoint_tolerance_m)
+                             or (braking is not None and braking.get('completed')
+                                 and trace[-1]['tracking_error_m'] <= self.config.endpoint_tolerance_m)))
+        if (rested
                 and not (self.p.env.terminated or self.p.env.truncated)):
             self.p._bounded_rest_reference = {
                 'control_index': getattr(self.p, '_bounded_control_index', 0),
                 'measured_robot': measured_robot(self.p),
-                'pose': {'eef_xyz_m': poses[-1]['xyz_m'], 'eef_quat_xyzw': poses[-1]['quat_xyzw']}}
+                'pose': {'eef_xyz_m': trace[-1]['desired']['xyz_m'],
+                         'eef_quat_xyzw': trace[-1]['desired']['quat_xyzw']}}
         return {"executed": bool(trace), "stop_reason": stop, "steps_used": len(trace), "screen": screen,
                 "endpoint_error_m": end_error, "max_tracking_error_m": max((row["tracking_error_m"] for row in trace), default=0.),
                 "metrics": metrics, "trace": trace, "config": asdict(self.config),
@@ -276,8 +284,8 @@ class SmoothMotion:
                 "waypoint_times_s": list(trajectory.waypoint_times), "braking": braking,
                 "checked_waypoints": checked_waypoints}
 
-    def _brake(self, trace: list[dict], gripper: float) -> dict:
-        """Brake translation AND rotation, retaining early-interrupt evidence."""
+    def _brake(self, trace: list[dict], gripper: float, *, reference_state=None) -> dict:
+        """Continue a commanded reference; use sensors for external handoffs."""
         if not trace:
             return {"executed": False, "steps_used": 0, "reason": "no_motion_evidence"}
         state = measured_robot(self.p)
@@ -291,8 +299,15 @@ class SmoothMotion:
                 derivatives.append(np.diff(recent, n=order, axis=0)[-1]*self.config.hz**order)
             else:
                 derivatives.append(np.asarray(trace[-1].get(name, np.zeros(6)), float))
+        measured_initial = dict(zip(('velocity', 'acceleration', 'jerk'),
+                                    (d.tolist() for d in derivatives)))
+        if reference_state is None:
+            current = np.r_[state["eef_xyz_m"], np.zeros(3)]
+            source = 'public_20hz_sensor_stream'
+        else:
+            current, derivatives, origin = reference_state
+            source = 'last_command_reference'
         velocity, acceleration, jerk = derivatives
-        current = np.r_[state["eef_xyz_m"], np.zeros(3)]
         tails = [brake(current[indices], velocity[indices], acceleration[indices], jerk=jerk[indices], limits=limit)
                  for indices, limit in self.config.groups()]
         duration = max(t.duration for t in tails)
@@ -305,9 +320,14 @@ class SmoothMotion:
         # than the joints captured before that motion. Collision evidence
         # and margins remain the original immutable public capture.
         screen = self.screen.with_measured_robot(state) if hasattr(self.screen, 'with_measured_robot') else self.screen
-        evidence = screen(poses)
+        evidence = screen([{'xyz_m': state['eef_xyz_m'],
+            'quat_xyzw': state['eef_quat_xyzw'], 'time_s': 0.}, *poses])
         result = {"executed": False, "steps_used": 0, "screen": evidence,
                   "initial_derivatives": {"velocity": velocity.tolist(), "acceleration": acceleration.tolist(), "jerk": jerk.tolist()},
+                  "initial_derivatives_source": source,
+                  "measured_initial_derivatives": measured_initial,
+                  "reference_start_pose": {"eef_xyz_m": poses[0]['xyz_m'],
+                                           "eef_quat_xyzw": poses[0]['quat_xyzw']},
                   "reference_duration_s": duration}
         if not evidence["passed"]:
             # Cannot claim a safe Cartesian stop without a screened tail.
@@ -325,4 +345,5 @@ class SmoothMotion:
                              for d, name in enumerate(("reference_velocity", "reference_acceleration", "reference_jerk"), 1)},
                           "braking": True})
             result["steps_used"] += 1
-        return {**result, "executed": result["steps_used"] > 0, "reason": "screened_brake"}
+        return {**result, "executed": result["steps_used"] > 0,
+                "completed": result["steps_used"] == len(times)-1, "reason": "screened_brake"}

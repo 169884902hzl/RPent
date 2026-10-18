@@ -129,6 +129,43 @@ def test_second_tick_interruption_keeps_measured_velocity():
     assert result["braking"]["steps_used"] > 0
 
 
+def test_interrupt_brake_preserves_commanded_position_velocity_and_acceleration():
+    from robots.libero.bounded_motion import MotionConfig, measured_derivatives
+    from rpent.skill_package.trajectory import brake
+
+    p = FakePrimitives()
+    p._step_env = lambda action: setattr(p.env, 'position', p.env.position+action[:3]*.05*.3)
+    checks, screens = [], []
+    def contact(_):
+        checks.append(True)
+        return len(checks) == 6
+    def screen(poses):
+        screens.append(poses)
+        return {'passed': True}
+    config = MotionConfig(tracking_error_stop_m=.2)
+    result = SmoothMotion(p, screen, config).run([{'xyz_m': [.1, 0., 1.]}], contact_stop=contact)
+    tail = result['braking']
+    assert tail['executed'] and tail['completed']
+    previous = next(row for row, following in zip(result['trace'], result['trace'][1:])
+                    if not row['braking'] and following['braking'])
+    assert np.linalg.norm(np.array(previous['after']['eef_xyz_m'])-previous['command_reference']['xyz_m']) > 1e-5
+    np.testing.assert_allclose(tail['reference_start_pose']['eef_xyz_m'],
+                               previous['command_reference']['xyz_m'], atol=1e-12)
+    for name in ('velocity', 'acceleration', 'jerk'):
+        np.testing.assert_allclose(tail['initial_derivatives'][name],
+                                   previous['command_reference_'+name], atol=1e-12)
+    assert tail['initial_derivatives_source'] == 'last_command_reference'
+    np.testing.assert_allclose(screens[-1][0]['xyz_m'], previous['after']['eef_xyz_m'])
+    np.testing.assert_allclose(screens[-1][1]['xyz_m'], previous['command_reference']['xyz_m'])
+    initial = tail['initial_derivatives']
+    for axes, limit in config.groups():
+        trajectory = brake(np.array(tail['reference_start_pose']['eef_xyz_m'])[axes]
+            if axes.start == 0 else np.zeros(3), np.array(initial['velocity'])[axes],
+            np.array(initial['acceleration'])[axes], jerk=np.array(initial['jerk'])[axes], limits=limit)
+        assert max(segment.maximum(3, slice(None)) for segment in trajectory.segments) <= limit.jerk*1.000001
+    assert measured_derivatives(p, config.hz) is not None
+
+
 def test_rejected_brake_is_not_reported_as_a_smooth_stop():
     p = FakePrimitives()
     calls = []

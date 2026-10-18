@@ -29,13 +29,18 @@ def audit_motion(result):
             previous = trace[first-1]
             initial = braking['initial_derivatives']
             acceleration = np.asarray(initial['acceleration'])
-            # This is the actual reference reset from the last commanded
-            # nominal state to the measured-state brake, not an adjacent-
-            # sample acceleration delta within a continuous polynomial.
+            commanded = braking.get('initial_derivatives_source') == 'last_command_reference'
+            reference_acceleration = previous.get('command_reference_acceleration',
+                previous['reference_acceleration']) if commanded else previous['reference_acceleration']
+            previous_pose = previous.get('command_reference', previous['desired']) if commanded else previous['desired']
+            start_pose = braking.get('reference_start_pose', trace[first]['before'])
             report['braking']['reference_translation_acceleration_jump'] = float(np.linalg.norm(
-                acceleration[:3]-np.asarray(previous['reference_acceleration'])[:3]))
+                acceleration[:3]-np.asarray(reference_acceleration)[:3]))
+            report['braking']['reference_rotation_acceleration_jump'] = (float(np.linalg.norm(
+                acceleration[3:]-np.asarray(reference_acceleration)[3:])) if commanded else None)
+            report['braking']['initial_derivatives_source'] = braking.get('initial_derivatives_source')
             report['braking']['reference_position_jump_m'] = float(np.linalg.norm(
-                np.asarray(trace[first]['before']['eef_xyz_m'])-previous['desired']['xyz_m']))
+                np.asarray(start_pose['eef_xyz_m'])-previous_pose['xyz_m']))
             tails = [brake(np.zeros(3), np.asarray(initial['velocity'])[axes], acceleration[axes],
                 jerk=np.asarray(initial['jerk'])[axes], limits=limit) for axes, limit in config.groups()]
             report['braking']['max_jerk_limit_ratio'] = max(segment.maximum(3, slice(None))/limit.jerk
@@ -86,6 +91,8 @@ def audit_choices(paths):
         'nominal_rotation_acceleration_jump': distribution([r['nominal_max_rotation_acceleration_jump'] for r in motions]),
         'nominal_jerk_limit_ratio': distribution([r['nominal_max_jerk_limit_ratio'] for r in motions]),
         'brake_translation_acceleration_jump': distribution([r['reference_translation_acceleration_jump'] for r in brake_joins]),
+        'brake_rotation_acceleration_jump': distribution([r['reference_rotation_acceleration_jump'] for r in brake_joins
+                                                         if r['reference_rotation_acceleration_jump'] is not None]),
         'brake_jerk_limit_ratio': distribution([r['max_jerk_limit_ratio'] for r in brake_joins]),
         'adjacent_motion_translation_acceleration_jump': distribution([r['reference_translation_acceleration_jump'] for r in joins])}
     return {'sources': sources, 'summary': summary, 'motions': motions, 'adjacent_motion_joins': joins,

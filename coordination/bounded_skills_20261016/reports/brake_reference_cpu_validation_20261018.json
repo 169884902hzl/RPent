@@ -1,0 +1,25 @@
+{
+  "scope": "Interrupted smooth-reference brake continuity. No public schema changes. Current physical comparison remains source 9a1de68.",
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_motion.py tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_payload.py tests/unit_tests/robots/libero/test_bounded_screen.py tests/unit_tests/robots/libero/test_bounded_motion_summary.py -q",
+      "exit_code": 0,
+      "passed": 245,
+      "duration_s": 97.1
+    },
+    {
+      "command": "focused brake-reference before/after CPU replay",
+      "exit_code": 0,
+      "report": "brake_reference_pair_CPU_20261018.json"
+    },
+    {
+      "command": "ruff check --select E9,F63,F7,F82 changed Python files; git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "warnings": [
+    "pytest config option timeout is unknown"
+  ],
+  "physical_validation": "not yet run for this brake change",
+  "training": false
+}
