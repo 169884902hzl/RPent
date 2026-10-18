@@ -1,0 +1,7 @@
+已定位并修复碗8870_2搬运前的语义碎片丢失：原SAM当帧包含的两个像素，在掩码清理后被删，随后又因全局配准被拒而不能恢复。新增恢复只接受当前公开语义像素、≤1mm的原末端运动预测匹配、至少40点独立clean测量支撑，并保持4mm静止场景veto；全局transform和extent仍被拒。没有扩大碰撞/IK/夹持/真值阈值，没有新增模型字段，schema仍bounded-skills/3（7082085b2c59e592e92bfdfedb85e82e3197c3f366d3f0e9e2959435fb415cb3）。
+
+同一保存公开状态完整路线CPU配对：0/7→6/7可行，另1条仍measured_payload_collision。两点到原预测0.943/0.532mm，到旧静止scene150.3/147.6mm；当前原语义像素中17611点有独立严格时序支持。合成反例覆盖静止邻物、无语义像素、时序不吻合和clean支撑不足，300项相关CPU测试通过（137.90秒）。bounded_skills全量Ruff仍有5处HEAD已有问题，本次未改那些位置；本次新增文件/改动函数检查和E9/F通过。初次额外选错一个测试路径，错误原日志保留，已用真实5文件完整重跑。
+
+限制：CPU路线回放从保存的静止参考起步，不是原执行器导数前缀，也不是新的物理成功。8870_3的阻挡像素不在当帧SAM内，本改动不声称修好；正在单独核对接触前表面边界。
+
+证据：reports/semantic_fragments_CPU_validation_20261018.json、bowl8870_semantic_fragments_{baseline,dev}_CPU_20261018.json及collision_pixels/self_surface报告。固定源码后执行同launcher真实启动，再跑原状态新旧chunk规则配对。仅原版开发诊断；无训练、无确认批。

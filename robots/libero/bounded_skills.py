@@ -863,8 +863,11 @@ class MeasuredSkillAdapter:
             current_tree = cKDTree(scene)
             present = current_tree.query(result,
                 distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+            semantic = [world[semantic_masks[camera]] for camera, (world, _) in current_views.items()
+                        if camera in semantic_masks]
             member, temporal = moving_payload_pixels(scene, self.payload_reference, measured_robot(self.p),
-                                                     current_target=result[present])
+                current_target=result[present],
+                current_semantic_target=np.concatenate(semantic) if semantic else None)
             boundary_seeds = np.concatenate([result[present], scene[member]])
             result = np.concatenate([result, scene[member]])
             records.append(temporal)

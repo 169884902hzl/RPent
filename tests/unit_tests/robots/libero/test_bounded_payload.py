@@ -447,3 +447,35 @@ def test_partial_view_preserves_independently_co_moving_pixels_but_not_static_ne
     assert evidence['partial_view_support']['rigid_prediction_retained']
     assert owned.tolist() == [True, False, False]
     assert evidence['stationary_points_retained'] == 1
+
+
+def test_rejected_global_fit_keeps_only_independently_measured_semantic_fragments():
+    old = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    patch = np.array([[x, y, 0.] for x in np.linspace(-.02, .02, 15)
+                      for y in np.linspace(-.02, .02, 15)])
+    current = {**old, 'eef_xyz_m': [0., 0., .1]}
+    predicted = patch+[0., 0., .1]
+    # Most current pixels contradict rigid motion. A small clean patch
+    # supports it, and the current raw semantic mask contains two fragments.
+    visible = np.vstack([patch+[0., 0., .13], predicted[:50]])
+    fragment, static = predicted[-1], predicted[0]
+    unsegmented = predicted[-3]
+    mismatched = predicted[-4]+[0., 0., .002]
+    points = np.array([fragment, static, unsegmented, mismatched])
+    semantic = points[[0, 1, 3]]
+    reference = {'robot': old, 'target': patch, 'scene': [static], 'capture_step': 1}
+    owned, evidence = moving_payload_pixels(points, reference, current,
+        current_target=visible, current_semantic_target=semantic)
+    assert evidence['temporal_prediction_rejected']
+    assert not evidence['surface_registration']['accepted']
+    assert owned.tolist() == [True, False, False, False]
+    assert evidence['associated_points'] == 1
+    assert evidence['stationary_points_retained'] == 1
+    # The rejected transform must not extend current measurement bounds.
+    np.testing.assert_allclose(evidence['measured_surface_extent_m'],
+        [visible.min(0)-.004, visible.max(0)+.004])
+    weak = np.vstack([patch+[0., 0., .13], predicted[:39]])
+    owned, evidence = moving_payload_pixels(points, reference, current,
+        current_target=weak, current_semantic_target=semantic)
+    assert evidence['temporal_prediction_rejected'] and not owned.any()
+    assert evidence['current_semantic_temporal_fragments']['clean_supported_points'] == 39

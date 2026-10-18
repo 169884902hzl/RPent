@@ -418,7 +418,8 @@ def contact_normal_registration(predicted, measured, normal):
         'median_residual_after_m': float(np.median(after))}
 
 
-def moving_payload_pixels(points, reference, robot, *, current_target=None, surface_residual_m=.004,
+def moving_payload_pixels(points, reference, robot, *, current_target=None, current_semantic_target=None,
+                          surface_residual_m=.004,
                           stationary_residual_m=.004):
     """Associate only measured co-moving points absent from the stationary scene.
 
@@ -426,13 +427,16 @@ def moving_payload_pixels(points, reference, robot, *, current_target=None, surf
     lift. EEF poses come from proprioception. A nearby static obstacle wins
     over a moving-target match, including at a segmentation boundary. No
     object simulator pose, RGB category rule or bounding-box carve is used.
+    When a global fit is rejected, current semantic pixels still require
+    independent clean-surface support and a stricter temporal match; they
+    cannot reinstate the rejected transform or its predicted extent.
     """
     points = np.asarray(points, float).reshape(-1, 3)
     reference_robot = reference['robot']
     rotation = Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
     old_rotation = Rotation.from_quat(reference_robot['eef_quat_xyzw']).as_matrix()
     old_target = np.asarray(reference['target'], float).reshape(-1, 3)
-    evidence = {'version': 'public-rigid-payload-membership/4-dev',
+    evidence = {'version': 'public-rigid-payload-membership/5-dev',
         'source': 'pre_lift_rgbd_target_and_scene_with_measured_eef_motion',
         'reference_capture_step': reference['capture_step'],
         'surface_residual_m': surface_residual_m,
@@ -472,6 +476,30 @@ def moving_payload_pixels(points, reference, robot, *, current_target=None, surf
             evidence.update(temporal_prediction_rejected=True,
                 measured_surface_extent_m=[(surface.min(0)-surface_residual_m).tolist(),
                                            (surface.max(0)+surface_residual_m).tolist()])
+            if current_semantic_target is not None and len(current_semantic_target):
+                # Reject the global transform, but do not discard a current
+                # SAM fragment independently matching the old moving surface.
+                # Require exact current semantic pixels, a stricter 1 mm
+                # temporal match and an independently supported clean patch.
+                prior = cKDTree(moved_target)
+                clean_support = int((prior.query(surface)[0] <= surface_residual_m).sum())
+                ids = np.flatnonzero(np.isfinite(points).all(axis=1))
+                semantic = cKDTree(current_semantic_target).query(points[ids],
+                    distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+                consistent = prior.query(points[ids],
+                    distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001
+                static = cKDTree(reference['scene']).query(points[ids],
+                    distance_upper_bound=np.nextafter(stationary_residual_m, np.inf))[0] <= stationary_residual_m
+                if clean_support >= 40:
+                    matched[ids[semantic & consistent & ~static]] = True
+                evidence.update(candidate_points=int((semantic & consistent).sum()),
+                    stationary_points_retained=int((semantic & consistent & static).sum()),
+                    associated_points=int(matched.sum()))
+                evidence['current_semantic_temporal_fragments'] = {
+                    'clean_supported_points': clean_support, 'minimum_clean_supported_points': 40,
+                    'temporal_residual_m': .001, 'exact_semantic_residual_m': 1e-6,
+                    'associated_points': int(matched.sum()),
+                    'stationary_semantic_matches_retained': int((semantic & consistent & static).sum())}
             return matched, evidence
     # Current instance pixels already form part of the payload. A compliant
     # grip can reveal a surface beyond the old rigid prediction even when a
