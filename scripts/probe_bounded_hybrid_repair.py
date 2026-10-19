@@ -64,10 +64,10 @@ def first_self_chunk(facade, adapter, policy, spec, output):
         policy.rpc = original
 
 
-def run_trial(facade, adapter, policy, timings, spec, method, seed, output, request):
+def run_trial(facade, adapter, policy, timings, spec, method, seed, output, request, *, decision_limit=160):
     start_event, started = len(timings.events), time.perf_counter()
     result, endpoint = probe.trial(facade, adapter, policy, timings, spec, method,
-        seed, output, request)
+        seed, output, request, decision_limit=decision_limit)
     result['wall_time_breakdown'] = timings.summary(time.perf_counter()-started, start_event=start_event)
     write(output / 'summary.json', result)
     return result, endpoint
@@ -119,7 +119,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             trials = [result]
         elif diagnostic['kind'] == 'original_fork':
             subtask_plan, unsupported = probe.split_subtasks(facade.goal_status()['goals'], adapter.ex.instruction)
-            matches = [s for s in subtask_plan if s['mode'] == diagnostic['subtask_mode']]
+            matches = [s for s in subtask_plan if s['mode'] == diagnostic['subtask_mode']
+                and s['goal_index'] == diagnostic.get('goal_index', 0)]
             if not matches:
                 report = {'case':case, 'status':'oracle_rule_uncovered', 'unsupported':unsupported,
                     'reason':'requested_original_subtask_not_in_existing_progress_rules', 'training':False}
@@ -127,6 +128,27 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 return report
             spec = matches[0]
             adapter.vla_budget = budget
+            prefix = []
+            prefix_decisions = 0
+            position = subtask_plan.index(spec)
+            for index, prerequisite in enumerate(subtask_plan[:position]):
+                if facade.goal_status()['satisfied'][prerequisite['goal_index']]:
+                    continue
+                request = adapter.request(k=4)
+                row, endpoint = run_trial(facade, adapter, policy, timings, prerequisite, 'self',
+                    diagnostic['trial_seed_base']+500000000+1000*index,
+                    output/f'prefix_{index:02d}_{prerequisite["mode"]}', request,
+                    decision_limit=max(0, 160-prefix_decisions))
+                prefix.append(row)
+                prefix_decisions += row['decisions']
+                probe.restore_checkpoint(facade, adapter, policy, endpoint)
+                if row['success'] is not True:
+                    report = {'case': case, 'status': 'prefix_not_reached', 'prefix': prefix,
+                        'requested_subtask': spec, 'trials': [], 'training': False,
+                        'confirmation': False, 'source_commit': plan['source_commit'],
+                        'reason': 'bounded_prefix_failed_before_registered_fork'}
+                    write(output/'summary.json', report)
+                    return report
             request = adapter.request(k=4)
             saved, _ = probe.save_checkpoint(facade, adapter, policy, output / 'private_branchpoint.pkl', request)
             trials = []
@@ -135,7 +157,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 probe.restore_checkpoint(facade, adapter, policy, saved)
                 adapter.vla_budget = budget
                 row, _ = run_trial(facade, adapter, policy, timings, spec, method,
-                    diagnostic['trial_seed_base']+index*1000, output / f'{method}_{index}', request)
+                    diagnostic['trial_seed_base']+index*1000, output / f'{method}_{index}', request,
+                    decision_limit=max(0, 160-prefix_decisions))
                 trials.append(row)
             continuation = None
         else:
@@ -144,5 +167,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             'scope':'subtask diagnostic; not a D2 whole-episode score', 'trials':trials,
             'continuation':continuation, 'source_commit':plan['source_commit'],
             'training':False, 'confirmation':False, 'actual_full_replay_success':None}
+        if diagnostic['kind'] == 'original_fork':
+            report['prefix'] = prefix
         write(output / 'summary.json', report)
         return report

@@ -5,6 +5,7 @@ import math
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 from prepare_hybrid_repair_20261019 import ROOT, BASE, read, ref, write
@@ -18,6 +19,8 @@ def main():
     parser.add_argument('--submit-startup', action='store_true')
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
+    sys.path.insert(0, str(source))
+    from robots.libero.bounded_offline_labels import load_annotation_state
     baseline = read(args.baseline_report)
     assert baseline['source_commit'] == 'ec89f74' and not baseline['worker_errors']
     original = read(BASE/'reports/original20_support_roundrobin_20261018_full_submission.json')
@@ -28,6 +31,19 @@ def main():
     failed_cups = {r['result']['case']['name'] for r in baseline['records']
         if r['result']['case']['category'] == 'cup_transfer' and not r['result']['success']}
     assert len(failed_cups) == 11
+    cup_stages = {}
+    for entry in baseline['records']:
+        case = entry['result']['case']
+        if case['name'] not in failed_cups:
+            continue
+        directory = Path(entry['record']).parent/(case['name']+'_oracle_k4')
+        rows = [json.loads(line) for line in (directory/'choices.jsonl').read_bytes().splitlines()]
+        annotation = rows[-1]['private_prefix_annotation_state']
+        state = load_annotation_state(annotation['path'], annotation['sha256'])
+        goal_index = next(i for i, satisfied in enumerate(state['private_status']['satisfied']) if not satisfied)
+        cup_stages[case['name']] = {'goal_index': goal_index,
+            'subtask_mode': 'on' if state['adapter'].held else 'pick',
+            'old_failed_annotation': annotation, 'old_failed_choices': ref(directory/'choices.jsonl')}
     cases = []
     for case in cohort['cases']:
         if case['category'] not in selected and case['name'] not in failed_cups:
@@ -35,8 +51,9 @@ def main():
         mode = {'microwave_open': 'open', 'microwave_close': 'close',
             'plate_push': 'push', 'cup_transfer': 'pick'}[case['category']]
         controls = {'libero_90': 400, 'libero_goal': 300, 'libero_10': 520}[case['episode']['suite']]
-        cases.append({**case, 'diagnostic': {'kind': 'original_fork', 'domain': 'original',
-            'subtask_mode': mode, 'trial_seed_base': 20500000+10000*len(cases),
+        stage = cup_stages.get(case['name'], {'goal_index': 0, 'subtask_mode': mode})
+        cases.append({**case, 'diagnostic': {'kind': 'original_fork', 'domain': 'original', **stage,
+            'trial_seed_base': 20500000+10000*len(cases),
             'budget': {'blocks': math.ceil(controls/5), 'no_progress_blocks': None,
                 'controls_per_check': 1, 'minimum_progress_m': .005, 'max_controls': controls}}})
     assert len(cases) == 71
@@ -54,8 +71,9 @@ def main():
     batches = [{**batch, 'indices': list(range(i, min(i+8, len(cases))))}
         for i in range(0, len(cases), 8)]
     full = {'selected_n': 8, 'batches': batches, 'training': False, 'confirmation': False}
-    startup_indices = [next(i for i, c in enumerate(cases) if c['diagnostic']['subtask_mode'] == mode)
-        for mode in ('open', 'close', 'push', 'pick')]
+    startup_indices = [next(i for i, c in enumerate(cases) if c['diagnostic']['subtask_mode'] == mode
+        and c['diagnostic']['goal_index'] == 0)
+        for mode in ('open', 'push')]
     startup = {**full, 'batches': [{**batch, 'indices': startup_indices}]}
     write(directory/'batch_plan.json', full)
     write(directory/'startup_plan.json', startup)

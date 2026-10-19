@@ -43,3 +43,39 @@ def test_original_microwave_fork_accepts_its_libero90_task_only():
     value['cases'][0]['episode']['task'] = 90
     with pytest.raises(ValueError):
         validate_plan(value)
+
+
+@pytest.mark.parametrize('prefix_success', [False, True])
+def test_original_fork_reaches_the_registered_second_goal_and_phase_before_branching(tmp_path, monkeypatch, prefix_success):
+    from contextlib import contextmanager
+
+    from scripts import probe_bounded_hybrid_repair as repair
+
+    goals = [['on', 'white_cup', 'left_plate'], ['on', 'yellow_cup', 'right_plate']]
+    satisfied = [False, False]
+    facade = SimpleNamespace(goal_status=lambda: {'goals': goals, 'satisfied': satisfied})
+    adapter = SimpleNamespace(ex=SimpleNamespace(instruction='put the cups on their plates'),
+        request=lambda **_: {})
+    @contextmanager
+    def runtime(*args, **kwargs):
+        yield facade, adapter, object(), object()
+    monkeypatch.setattr(repair.probe, 'runtime', runtime)
+    monkeypatch.setattr(repair.probe, 'save_checkpoint', lambda *args: ({}, {}))
+    monkeypatch.setattr(repair.probe, 'restore_checkpoint', lambda *args: None)
+    calls = []
+    def run_trial(facade, adapter, policy, timings, spec, method, seed, output, request, **kwargs):
+        calls.append((spec['id'], method))
+        if spec['mode'] == 'on' and prefix_success:
+            satisfied[spec['goal_index']] = True
+        return {'success': prefix_success, 'decisions': 1}, {}
+    monkeypatch.setattr(repair, 'run_trial', run_trial)
+    case = {'diagnostic': {'domain': 'original', 'kind': 'original_fork',
+        'budget': {}, 'subtask_mode': 'on', 'goal_index': 1, 'trial_seed_base': 1000}}
+    result = repair.evaluate_case(case, {}, tmp_path/'case', {'source_commit': 'test'})
+    if prefix_success:
+        assert calls == [('g0:pick', 'self'), ('g0:on', 'self'), ('g1:pick', 'self'),
+            ('g1:on', 'self'), ('g1:on', 'call_vla'), ('g1:on', 'call_vla'), ('g1:on', 'call_vla')]
+        assert result['status'] == 'physical_result' and len(result['prefix']) == 3
+    else:
+        assert calls == [('g0:pick', 'self')]
+        assert result['status'] == 'prefix_not_reached' and result['trials'] == []
