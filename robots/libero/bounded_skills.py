@@ -1269,6 +1269,14 @@ class MeasuredSkillAdapter:
             selected = max(feasible, key=lambda option: (
                 option['screen']['contact_joint_margin_rad'] or 0.,
                 option['screen']['route_joint_margin_rad'] or 0.)) if feasible else None
+            if selected is None:
+                from robots.libero.bounded_joint_routes import contact_guides
+
+                for option in contact_guides(screen, robot, choices):
+                    choices.append(option)
+                    if screened(option):
+                        selected = option
+                        break
         right_axis, front = map(np.asarray, self.scene.view_axes)
         directions = {'above': np.array([0., 0., 1.]), 'front': front,
                       'left': -right_axis, 'right': right_axis}
@@ -1302,7 +1310,8 @@ class MeasuredSkillAdapter:
         def contact_plan(option, approach=None):
             normal = np.asarray(option['normal_xyz'])
             return {k: option[k] for k in ('xyz_m', 'quat_xyzw', 'approach_xyz_m')} | {
-                'approach_route': option['route'][:-1],
+                'approach_route': option.get('approach_route', option['route'][:-1]),
+                **({'contact_route': option['contact_route']} if 'contact_route' in option else {}),
                 'preferred_approach': approach or max(directions, key=lambda key: np.dot(normal, directions[key])),
                 'preferred_path': option['path'],
                 'width_m': None, 'contact_kind': 'surface',
@@ -1557,7 +1566,8 @@ class MeasuredSkillAdapter:
                 if skill == "align":
                     return [{"xyz_m": start.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
                 if skill == "descend":
-                    return [{"xyz_m": goal.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
+                    return copy.deepcopy(contact.get('contact_route',
+                        [{"xyz_m": goal.tolist(), "quat_xyzw": contact["quat_xyzw"]}]))
                 preferred = approach == contact.get('preferred_approach')
                 if preferred and parameters['path'] == contact.get('preferred_path', 'over'):
                     return copy.deepcopy(contact['approach_route'])

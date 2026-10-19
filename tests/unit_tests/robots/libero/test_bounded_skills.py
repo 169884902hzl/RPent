@@ -1989,6 +1989,17 @@ def test_thin_rim_keeps_measured_incline_separate_from_contour_approach(adapter)
     assert plan['width_m'] is None
 
 
+def test_contact_descent_follows_the_screened_guide_instead_of_a_new_straight_line(adapter):
+    route = [{'xyz_m': [.08, .09, .95], 'quat_xyzw': [0., 0., 0., 1.]},
+             {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.]}]
+    adapter.plans['e1'] = {'xyz_m': route[-1]['xyz_m'],
+        'quat_xyzw': route[-1]['quat_xyzw'], 'contact_route': route}
+    result = adapter._route('descend', {'anchor_id': 'e1'})
+    assert result == route
+    result[0]['xyz_m'][0] = 99.
+    assert adapter.plans['e1']['contact_route'][0]['xyz_m'][0] == .08
+
+
 def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
     from scipy.spatial.transform import Rotation
 
