@@ -1,8 +1,8 @@
-交还已有真实完整分支：e120c61f 的 t2/13402000 停稳后生成并执行首个 bounded chunk（23仿真步）；其余五例仍在跑，不能宣称六例通过。
-该分支25个VLA控制步共961.88秒：公开观测893.27秒、推理1.16秒、交还0.23秒、私有计量0.13秒；完整SAM细分另见原始计时。
-发现旧快照漏采样缓存/相位，物理哈希相同仍能改变π输入；已补时钟与观测缓存，CPU八种历史重复的qpos和公开夹爪差异均为0，50项聚焦测试通过。
-新停止规则对照及原版71状态尚未正式放行，必须使用修复后的完整分叉状态；旧记录和缺项如实保留。Codex3继续源登记、真实预检和物理验证。
-三个绑定失败已归因并修观察恢复；D2不进训练/history/memory，确认状态永久排除，无训练。
+e120c61f 六条已闭合：6/6 停稳且生成后继请求；3 条后继技能实际步进，3 条 observe 在零步时被碰撞检查拒绝。17401000 交还后 carry_to→release 原生成功，不代表 D2 整局上限。
+六分支 SAM RPC 占墙钟约 91–95%；25 控制步例共 961.88 秒，其中 SAM 877.40 秒、推理 1.16 秒、交还 0.23 秒、私有计量 0.13 秒。
+旧快照漏采样缓存/相位，不能复原历史 π 输入；bb1a691c 补时钟与缓存，CPU 八种历史完整恢复的 qpos 和公开夹爪差异均为 0，50 项聚焦测试通过。
+bb1a691c 三设置真实首步预检通过，实际输入和预测哈希相同；12 条正式诊断 10593 排队。原版 71 状态 CPU 预检通过，startup10590 排队；按需测量 startup10594 排队，两个正式数组均未提交。
+三个绑定失败归因为公开同类误检歧义，已接合法观察恢复，物理恢复待验证；D2 不进训练/history/memory，确认状态永久排除，无训练。
 
 ## 当前指令与身份
 
@@ -71,3 +71,14 @@ D2真实首步已在自有10446_6分配中完成：`owned_startup_10446_6_r2`三
 `D2_preparation_history_fixed_CPU_20261019.json`：8/8完整恢复身份一致，物理qpos最大差0、公开夹爪最大差0。新分支还记录实际Pi05VLAClient.encode_obs的各字段SHA、states和采样seed，以及预测actions SHA/首动作，便于直接核查首输入/首动作。50项聚焦CPU测试通过；新源码快照待登记。10554仍排队，因原版分叉源缺完整观测恢复已取消，耗时0，未提交正式71状态。
 
 窄测量实验源6a14b147已提交推送、默认off；330项CPU测试通过。仅逐步重测选中源/目标及父部件所需类别，保留双视角每控制步检查，handoff后与普通回执均全场景复测。2状态选择的CPU准备脚本未提交GPU。此实验不能代替新完整状态恢复验证。已登记e120c61f的12条仍用旧全场景监测；6个预算对照尚未运行，下一版将重登记。
+
+## 10/20 当前续接点
+
+- 最新物理源码仍 bb1a691cc4715b657f31baa84a444ddb6bb2d606，未修改技能/规划或停止阈值。修复版快照 `/public/home/sunyihan/rpent_libero_eval/source_bounded_hybrid_handoff_20261019_bb1a691c`。归档 SHA256 `1842c9f8e3fd617d7f3442938838ae5c439f72c0b84e077fdc92c26c1df73641`。
+- 六个 e120 分支全部闭合，汇总 `reports/D2_handoff_e120_closed_20261020.json`，逐条检查与耗时表同名 `.md`。6/6 停稳，6/6 后继请求；3 条后继实际步进，3 条扫描零步碰撞拒绝。旧快照观测相位缺失，历史动作不相同；不能当成停止设置因果比较。
+- bb1a 三设置真实启动在自有 step10446.4 完成（1:38，3 worker 均首推理＋首物理步）；`reports/bb1a_startup_wire_identity_20261020.json` 证明三个首输入、预测动作哈希均相同。CPU 比较器 `scripts/compare_vla_fork_inputs_20261020.py` 实跑 3 对均一致，报告 `reports/bb1a_startup_prefix_compare_CPU_20261020.json`。重复 pending10585 已取消，10590 对其依赖已解除。
+- 正式 12 条：10593，准备目录 `results/bounded_skills/hybrid_repair_20261019/bb1a691c/preparation`，manifest SHA `287cf97256694891bc0739a271d8bcf418e50f5376884a701ee1cf85ea72c745`。两个6条分片。保持 full-scene 监测；预算对照仍120/220控制步、no_progress关闭，不改成功/区域/原生停止条件。
+- 按需监测试点两状态准备完成，startup10594；目录 `results/bounded_skills/targeted_vla_pilot_20261019/bb1a691c/preparation`，manifest SHA `f16b60fc3c2f5ea65fb67a288fa84b18d894a32ef11c6fd281efdd05f57cac54`。正式未提交。需与新源 full monitor 对照输入/动作前缀、停止、真值、SAM 调用和墙钟，未验证不能推广。
+- 原版71状态10项CPU预检通过，独立 startup10590；目录 `results/bounded_skills/original_hybrid_forks_20261019/bb1a691c/preparation`，manifest SHA `b4f09cb09df18a00ab3f4a2816808cee97986f5fce790ee37d624ae6cb664726`。正式未提交。附加原版startup10446.5在父原版10446_6自然COMPLETED后被Slurm终止（45秒、CANCELLED 0:15，无首物理证据），收据 `reports/original_owned_startup_interrupted_20261020.json`；后续长分支只用独立分配。
+- 唯一资源控制器 PID2224026，优先10446/10593/10590/10594；日志 `reports/monitor_hybrid_repair_bb1a691c_20261020.log`。旧PID2198110已结束。资源仍仅node02、nice500，≤3 GPU（C2无GPU R/PD才可借第四）、≤80 CPU/600GB，保护rf/c5/c6/held。共享 COORDINATION 已追加六条闭合、wire一致性、新作业ID与附加startup中断，不能整读大文件。
+- 下一步刷新10590/10593/10594的sacct与日志，真实startup通过再放正式；核对完整分支输入/预测共有前缀，不能只看初始物理SHA。原版220已闭合：131/220，worker错误0；分类/Wilson/逐局在 reports/original220_shared_closed_20261020.json 和同名.md，仅登记old164+10446 new56，不混入startup/D2/诊断。
