@@ -96,3 +96,40 @@ def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, mo
     assert row["success"] is False and row["vla_inference_calls"] == 0
     assert row["sim_steps"] == 0 and row["selected_candidate_id"] is None
     assert (tmp_path / "branch/choices.jsonl").read_text() == ""
+
+
+@pytest.mark.parametrize('physical', [False, True])
+def test_startup_calls_vla_before_any_full_oracle_branch(tmp_path, monkeypatch, physical):
+    from contextlib import contextmanager, nullcontext
+
+    from robots.libero import bounded_offline_labels
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    case = {'name': 'D2', 'episode': {'suite': 'libero_spatial_swap', 'task': 0, 'seed': 40}}
+    plan = {'cases': [case], 'source_commit': 'tested', 'trial_seed_base': 1000}
+    facade = SimpleNamespace(goal_status=lambda: {'goals': [['on', 'bowl_1', 'plate_1']],
+                                                  'satisfied': [False]})
+    adapter = SimpleNamespace(request=lambda **kwargs: {'candidates': []})
+    timings = SimpleNamespace(measure=lambda *_: nullcontext())
+
+    @contextmanager
+    def runtime(*_):
+        yield facade, adapter, object(), timings
+
+    methods = []
+
+    def trial(*args, **kwargs):
+        methods.append(args[5])
+        return {'sim_steps': int(physical), 'vla_inference_calls': int(physical),
+                'request_sha256': 'same'}, {}
+
+    monkeypatch.setattr(probe, 'runtime', runtime)
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({}, {}))
+    monkeypatch.setattr(probe, 'restore_checkpoint', lambda *_: None)
+    monkeypatch.setattr(probe, 'trial', trial)
+    monkeypatch.setattr(bounded_offline_labels, 'capture_annotation_state', lambda *_: {})
+    monkeypatch.setattr(bounded_offline_labels, 'save_annotation_state', lambda *_: {})
+    result = probe.evaluate_case(case, {}, tmp_path / 'episode', plan, startup=True)
+    assert methods == ['call_vla']
+    assert result['status'] == ('startup_physical' if physical else 'startup_no_vla_physics')
+    assert (tmp_path / 'episode/first_physical_vla_request.json').exists() is physical

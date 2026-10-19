@@ -308,7 +308,10 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             )
             annotation = save_annotation_state(directory / "private_annotation.pkl", capture_annotation_state(policy, request))
             trials, endpoints_saved = [], []
-            for j, method in enumerate(("self", "call_vla", "call_vla", "call_vla")):
+            # Startup proves the VLA service/control path directly; it must
+            # not spend a full oracle branch's budget before its first call.
+            methods = ("call_vla",) if startup else ("self", "call_vla", "call_vla", "call_vla")
+            for j, method in enumerate(methods):
                 restore_checkpoint(facade, adapter, policy, branchpoint)
                 seed = plan["trial_seed_base"] + 1000000 * plan["cases"].index(case) + 10000 * index + 1000 * j
                 row, endpoint = trial(facade, adapter, policy, timings, spec, method, seed,
@@ -323,6 +326,11 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                               "training": False, "source_commit": plan["source_commit"]}
                     write(output / "summary.json", result)
                     return result
+            if startup:
+                result = {"case": case, "status": "startup_no_vla_physics", "trials": trials,
+                          "training": False, "source_commit": plan["source_commit"]}
+                write(output / "summary.json", result)
+                return result
             selection = choose_branch(trials[0]["success"], [row["success"] for row in trials[1:]])
             row = {"subtask": spec, "trials": trials, "selection": selection}
             rows.append(row)
