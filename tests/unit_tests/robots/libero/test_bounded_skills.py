@@ -3136,7 +3136,8 @@ def test_vla_pick_uses_calibrated_aperture_and_observed_motion(
     from dataclasses import replace
 
     adapter.allow_vla = True
-    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: {'capture_step': 17})
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: {
+        'capture_step': 17, 'scene': np.empty((0, 3)), 'artifacts': {'scene': None}})
     monkeypatch.setattr(adapter, '_refresh_held_measurement', lambda: None)
     adapter.ex.grasp_measurement_calibration = {'opening_calibration': {
         'closed_empty_max_m': .0018488315399736166, 'tolerance_m': .000853613018989563,
@@ -3174,7 +3175,7 @@ def test_vla_handoff_retains_the_measured_payload_before_settling(adapter, monke
     from dataclasses import replace
 
     adapter.allow_vla = True
-    reference = {'capture_step': 17}
+    reference = {'capture_step': 17, 'scene': np.empty((0, 3)), 'artifacts': {'scene': None}}
     monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: reference)
     monkeypatch.setattr(adapter, '_refresh_held_measurement', lambda: None)
     original = adapter.p.env.raw_obs
@@ -3207,6 +3208,46 @@ def test_vla_handoff_retains_the_measured_payload_before_settling(adapter, monke
     result = adapter.call_vla({'anchor_id': 'e1', 'mode': 'pick'})
     assert result['outcome'] == 'success' and braking == [True]
     assert result['payload_reference_capture_step'] == 17
+
+
+def test_vla_static_obstacles_precede_contact_while_target_motion_reference_stays_lifted(adapter, monkeypatch):
+    from dataclasses import replace
+
+    adapter.allow_vla = True
+    before_scene = np.array([[.1, .1, .9]])
+    lifted_target = np.array([[.1, .1, .95]])
+    lifted_robot = {**adapter.robot(), 'eef_xyz_m': [.1, .1, .95]}
+    initial = {'capture_step': 1, 'scene': before_scene, 'artifacts': {'scene': {'path': 'before'}}}
+    lifted = {'capture_step': 56, 'target': lifted_target, 'scene': np.array([[.1, .1, .949]]),
+        'robot': lifted_robot, 'artifacts': {'scene': {'path': 'after'}}}
+    references = iter([initial, lifted])
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda _: next(references))
+    monkeypatch.setattr(adapter, '_refresh_held_measurement', lambda: None)
+    monkeypatch.setattr(adapter.scene, 'refresh', lambda names, **kwargs: None)
+    original = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original(), 'robot0_gripper_qpos': [.01, -.01]}
+    def fallback(**kwargs):
+        observe = kwargs['observe']
+        assert observe()['completed'] is False
+        for distance in (.04, .01):
+            source = adapter.scene.entities['e1']
+            delta = np.array([0., 0., distance])
+            adapter.scene.entities['e1'] = replace(source,
+                xyz=tuple(np.array(source.xyz)+delta), lower=tuple(np.array(source.lower)+delta),
+                upper=tuple(np.array(source.upper)+delta))
+            adapter.p.env.position += delta
+            measured = observe()
+        assert measured['completed'] is True
+        assert adapter.payload_reference is lifted
+        assert lifted['scene'] is before_scene
+        assert lifted['target'] is lifted_target
+        assert lifted['robot'] is lifted_robot
+        assert lifted['artifacts']['scene'] == {'path': 'before'}
+        return {'outcome': 'success', 'stop_reason': 'measured_success'}
+    monkeypatch.setattr('robots.libero.bounded_skills.run_fallback', fallback)
+    result = adapter.call_vla({'anchor_id': 'e1', 'mode': 'pick'})
+    assert result['payload_stationary_capture_step'] == 1
+    assert result['payload_reference_capture_step'] == 56
 
 
 def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypatch):

@@ -2768,9 +2768,10 @@ class MeasuredSkillAdapter:
         hold_frames = []
         hold_verified = False
         vla_payload_reference = None
+        stationary_reference = None
         previous_push_measurement = None
         def observe(*, full=False):
-            nonlocal hold_verified, vla_payload_reference, previous_push_measurement
+            nonlocal hold_verified, vla_payload_reference, stationary_reference, previous_push_measurement
             if monitor_names is not None and not full:
                 self.refresh(names=monitor_names)
             else:
@@ -2781,6 +2782,12 @@ class MeasuredSkillAdapter:
             completed = False
             hold_evidence = None
             if mode == "pick" and current and current.visible:
+                if not checks:
+                    # Static obstacles must precede contact. Capturing them
+                    # only after the 3cm lift makes omitted moving rim pixels
+                    # part of the supposedly stationary scene. Keep the
+                    # later target/EEF pair for rigid-motion registration.
+                    stationary_reference = self._capture_payload_reference(source.id)
                 aperture, aperture_evidence = self.holding_aperture(robot['gripper_opening_m'])
                 rise = current.lower[2]-initial.lower[2]
                 raised = rise >= .03 and aperture
@@ -2791,6 +2798,10 @@ class MeasuredSkillAdapter:
                         # screen can identify the co-moving object's omitted
                         # edge pixels after the next observed movement.
                         vla_payload_reference = self._capture_payload_reference(source.id)
+                        if vla_payload_reference is not None and stationary_reference is not None:
+                            vla_payload_reference['scene'] = stationary_reference['scene']
+                            vla_payload_reference['stationary_capture_step'] = stationary_reference['capture_step']
+                            vla_payload_reference['artifacts']['scene'] = stationary_reference['artifacts']['scene']
                     hold_frames.append((np.array(current.xyz), np.array(robot["eef_xyz_m"])))
                 else:
                     hold_frames.clear()
@@ -2890,6 +2901,8 @@ class MeasuredSkillAdapter:
         result['payload_reference_capture_step'] = (vla_payload_reference['capture_step']
             if vla_payload_reference is not None else None)
         result['payload_reference_artifacts'] = (vla_payload_reference.get('artifacts')
+            if vla_payload_reference is not None else None)
+        result['payload_stationary_capture_step'] = (vla_payload_reference.get('stationary_capture_step')
             if vla_payload_reference is not None else None)
         result['public_measurement_scope'] = {
             'version': 'selected-subtask-entities/1' if targeted else 'full-scene/1',

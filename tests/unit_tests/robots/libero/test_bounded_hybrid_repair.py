@@ -96,7 +96,7 @@ def test_original_fork_reaches_the_registered_second_goal_and_phase_before_branc
     result = repair.evaluate_case(case, {}, tmp_path/'case', {'source_commit': 'test'})
     if prefix_success:
         assert calls == [('g0:pick', 'self'), ('g0:on', 'self'), ('g1:pick', 'self'),
-            ('g1:on', 'self'), ('g1:on', 'call_vla'), ('g1:on', 'call_vla'), ('g1:on', 'call_vla')]
+            ('g1:on', 'call_vla'), ('g1:on', 'call_vla'), ('g1:on', 'call_vla'), ('g1:on', 'self')]
         assert result['status'] == 'physical_result' and len(result['prefix']) == 3
     else:
         assert calls == [('g0:pick', 'self')]

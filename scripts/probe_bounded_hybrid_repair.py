@@ -182,8 +182,11 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             request = adapter.request(k=4)
             saved, _ = probe.save_checkpoint(facade, adapter, policy, output / 'private_branchpoint.pkl', request)
             trials = []
-            methods = ['call_vla'] if startup else ['self', 'call_vla', 'call_vla', 'call_vla']
-            for index, method in enumerate(methods):
+            # Trial identities/seeds are fixed independently of scheduling.
+            # Diagnose fallback contact before a slow bounded-self branch.
+            methods = ([(1, 'call_vla')] if startup else
+                [(1, 'call_vla'), (2, 'call_vla'), (3, 'call_vla'), (0, 'self')])
+            for index, method in methods:
                 probe.restore_checkpoint(facade, adapter, policy, saved)
                 adapter.vla_budget = budget
                 adapter.targeted_vla_measurement_v1 = diagnostic.get('targeted_vla_measurement_v1', False)
