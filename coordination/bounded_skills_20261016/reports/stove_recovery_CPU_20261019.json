@@ -1,0 +1,996 @@
+{
+  "scope": "cross-source CPU diagnosis; no replacement physical results or relabeled training rows",
+  "diagnostic_source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_spawn_planning_20261019_7ffe2118",
+  "host": "master",
+  "cohort": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/original20_support_interim_r18_20261019.json",
+    "sha256": "e58c46de1336f66b78ee87d19d8a0dd8d4172e1b97662dfacac4ed4ced4e7555"
+  },
+  "robot_xml": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+    "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+  },
+  "static_joint_limits_rad": {
+    "joint1": [
+      -2.8973,
+      2.8973
+    ],
+    "joint2": [
+      -1.7628,
+      1.7628
+    ],
+    "joint3": [
+      -2.8973,
+      2.8973
+    ],
+    "joint4": [
+      -3.0718,
+      -0.0698
+    ],
+    "joint5": [
+      -2.8973,
+      2.8973
+    ],
+    "joint6": [
+      -0.0175,
+      3.7525
+    ],
+    "joint7": [
+      -2.8973,
+      2.8973
+    ]
+  },
+  "records": [
+    {
+      "case": {
+        "name": "stove_off_libero_90_t39_s2",
+        "category": "stove_off",
+        "episode": {
+          "suite": "libero_90",
+          "task": 39,
+          "seed": 2
+        },
+        "state_sha256": "4ca97b58f4909530509ce75e659561285bb2915dd6661fd50e7f09aa240fc058",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+          "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "source_commit": "ec89f74",
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_31/stove_off_libero_90_t39_s2_oracle_k4/choices.jsonl",
+      "choices_sha256": "675836722b4eabe6250242a206e0bbfc1232f8219087fd648d6dce3a556809fe",
+      "rotations": [
+        {
+          "row": 0,
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 93,
+          "endpoint_error_m": 0.004427826295486112,
+          "angular_error_rad": 0.003510498805902031,
+          "trace_samples": 93,
+          "joint7_final_rad": 2.5308643030172853,
+          "joint7_min_upper_margin_rad": 0.3664356969827147,
+          "joint7_samples_within_0p01rad_of_upper_limit": 0,
+          "screen_passed": true,
+          "screen_reason": "public_route_screen_passed"
+        },
+        {
+          "row": 1,
+          "outcome": "failure",
+          "stop_reason": "endpoint",
+          "steps_used": 92,
+          "endpoint_error_m": 0.017729765291869905,
+          "angular_error_rad": 0.13505456756921863,
+          "trace_samples": 92,
+          "joint7_final_rad": 2.8977572697248126,
+          "joint7_min_upper_margin_rad": -0.0015885954634891064,
+          "joint7_samples_within_0p01rad_of_upper_limit": 45,
+          "screen_passed": true,
+          "screen_reason": "public_route_screen_passed"
+        }
+      ],
+      "saved_terminal_context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_31/stove_off_libero_90_t39_s2_oracle_k4/private_prefix_state_0006.pkl.gz",
+        "sha256": "b7f752328e0f4de980b000f6334c6700f10d9b5a1e1c60ac1511adbc6cdc3e71",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "0237032eef382411672bc0c04a5d88f906c644a530cd1a2bafcd436a2a8d6860",
+        "model_visible": false
+      },
+      "current_source_cpu_diagnosis": {
+        "label": {
+          "version": "libero-offline-prefix-label/1",
+          "legality_version": "public-request-legal/2",
+          "request_sha256": "0237032eef382411672bc0c04a5d88f906c644a530cd1a2bafcd436a2a8d6860",
+          "observation_id": "public-6",
+          "revision": 6,
+          "prefix": [],
+          "legal": [
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "987434631f6c114e",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "rule_acceptable": [
+            "af866c584b96de88"
+          ],
+          "selected": "af866c584b96de88",
+          "measured_success": [],
+          "measured_failure": [],
+          "judge": "libero-private-task-progress-rules/13",
+          "model_visible": false,
+          "physics_steps": 0,
+          "gpu_used": false,
+          "conditional_on_receipt_checks": [],
+          "requires_measurement": false,
+          "status": "labeled",
+          "predicted_robot": {
+            "eef_xyz_m": [
+              -0.221453931201001,
+              -0.21895974596147752,
+              0.9486779545958194
+            ],
+            "eef_quat_xyzw": [
+              0.03235835278540744,
+              -0.9991231501795155,
+              0.010399627397799238,
+              -0.024448221415099093
+            ],
+            "gripper_opening_m": 0.030895032466374595,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          }
+        },
+        "selected_public_option": {
+          "id": "af866c584b96de88",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "open"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.08,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.075,
+              "maximum": 0.085
+            },
+            {
+              "metric": "released",
+              "anchor_id": null,
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        "wall_s": 0.1906167846173048
+      }
+    },
+    {
+      "case": {
+        "name": "stove_on_libero_goal_t7_s5",
+        "category": "stove_on",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 5
+        },
+        "state_sha256": "a8414698f12bf2415f6fae32a3e6e6021e00b5932e1fde9eaf90e8e868f4510b",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "source_commit": "ec89f74",
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_65/stove_on_libero_goal_t7_s5_oracle_k4/choices.jsonl",
+      "choices_sha256": "987b23c24ff6cbdee50a77cebf05653fbbf21e63042d69c3efd67d91087ab8d7",
+      "rotations": [],
+      "saved_terminal_context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_65/stove_on_libero_goal_t7_s5_oracle_k4/private_prefix_state_0004.pkl.gz",
+        "sha256": "52a8fdfc235ad3284e8aff75114c7db7a4dc0cc4d651119cb0fd3ad068928bb9",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "d445543ee102df89207d7dd359206381299ec416adfff98a35b1201c8656eafd",
+        "model_visible": false
+      },
+      "current_source_cpu_diagnosis": {
+        "label": {
+          "version": "libero-offline-prefix-label/1",
+          "legality_version": "public-request-legal/2",
+          "request_sha256": "d445543ee102df89207d7dd359206381299ec416adfff98a35b1201c8656eafd",
+          "observation_id": "public-4",
+          "revision": 4,
+          "prefix": [],
+          "legal": [
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "058d2cacfdbbe9ee",
+            "c839f7047168985f",
+            "b72a74bd885f119f",
+            "c6879ac9fab32978",
+            "f72537752ef750d0",
+            "edd9ac4d0212063f",
+            "47151ff6c459c6e1",
+            "f2ebf3511c61912b",
+            "25c428d919219ac9",
+            "e6e9f48f9eae056f",
+            "78fc3aade1371307",
+            "f395c81b7408c9d5",
+            "ddc57af16afe47d4",
+            "f3cd747ecda3e7bd",
+            "3f2b6fae234e9b1a",
+            "ba5417f0b7c390e9",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "rule_acceptable": [],
+          "selected": null,
+          "measured_success": [],
+          "measured_failure": [],
+          "judge": "libero-private-task-progress-rules/13",
+          "model_visible": false,
+          "physics_steps": 0,
+          "gpu_used": false,
+          "conditional_on_receipt_checks": [],
+          "requires_measurement": false,
+          "status": "no_acceptable_public_option"
+        },
+        "selected_public_option": null,
+        "wall_s": 0.16419929917901754
+      }
+    },
+    {
+      "case": {
+        "name": "stove_off_libero_90_t39_s6",
+        "category": "stove_off",
+        "episode": {
+          "suite": "libero_90",
+          "task": 39,
+          "seed": 6
+        },
+        "state_sha256": "004763b0c2b6ba77f9cbe57ebc3e1ace21e183dfd2617d5aff70b2853ff30e38",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+          "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "source_commit": "ec89f74",
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_75/stove_off_libero_90_t39_s6_oracle_k4/choices.jsonl",
+      "choices_sha256": "88334d78bc2b0ec0cbcd298cf8ae785a0eb4e23b3acb3026646b6fdf605330bd",
+      "rotations": [
+        {
+          "row": 0,
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 93,
+          "endpoint_error_m": 0.003172064663098659,
+          "angular_error_rad": 0.002624071722998622,
+          "trace_samples": 93,
+          "joint7_final_rad": 2.6006296385671144,
+          "joint7_min_upper_margin_rad": 0.2966703614328856,
+          "joint7_samples_within_0p01rad_of_upper_limit": 0,
+          "screen_passed": true,
+          "screen_reason": "public_route_screen_passed"
+        },
+        {
+          "row": 1,
+          "outcome": "failure",
+          "stop_reason": "endpoint",
+          "steps_used": 92,
+          "endpoint_error_m": 0.02181030261516968,
+          "angular_error_rad": 0.1618281614443092,
+          "trace_samples": 92,
+          "joint7_final_rad": 2.8977587632718076,
+          "joint7_min_upper_margin_rad": -0.001856100769513258,
+          "joint7_samples_within_0p01rad_of_upper_limit": 49,
+          "screen_passed": true,
+          "screen_reason": "public_route_screen_passed"
+        }
+      ],
+      "saved_terminal_context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_75/stove_off_libero_90_t39_s6_oracle_k4/private_prefix_state_0006.pkl.gz",
+        "sha256": "da02969961bbffc5a2574f8de452664561cc52c055fd28bc003d852648a437ad",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "2dbf387ccd7d0b02efddd2ac520d5930a23c3097765c47e05cead6e14b2302e8",
+        "model_visible": false
+      },
+      "current_source_cpu_diagnosis": {
+        "label": {
+          "version": "libero-offline-prefix-label/1",
+          "legality_version": "public-request-legal/2",
+          "request_sha256": "2dbf387ccd7d0b02efddd2ac520d5930a23c3097765c47e05cead6e14b2302e8",
+          "observation_id": "public-6",
+          "revision": 6,
+          "prefix": [],
+          "legal": [
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "987434631f6c114e",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "rule_acceptable": [
+            "af866c584b96de88"
+          ],
+          "selected": "af866c584b96de88",
+          "measured_success": [],
+          "measured_failure": [],
+          "judge": "libero-private-task-progress-rules/13",
+          "model_visible": false,
+          "physics_steps": 0,
+          "gpu_used": false,
+          "conditional_on_receipt_checks": [],
+          "requires_measurement": false,
+          "status": "labeled",
+          "predicted_robot": {
+            "eef_xyz_m": [
+              -0.23090790761557645,
+              -0.22451686664900378,
+              0.9473893304143102
+            ],
+            "eef_quat_xyzw": [
+              0.016124819536023238,
+              -0.9996421245966818,
+              0.009245452465341286,
+              -0.019238880826923977
+            ],
+            "gripper_opening_m": 0.030826467634928665,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          }
+        },
+        "selected_public_option": {
+          "id": "af866c584b96de88",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "open"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.08,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.075,
+              "maximum": 0.085
+            },
+            {
+              "metric": "released",
+              "anchor_id": null,
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        "wall_s": 0.16343331336975098
+      }
+    },
+    {
+      "case": {
+        "name": "stove_on_libero_goal_t7_s8",
+        "category": "stove_on",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 8
+        },
+        "state_sha256": "cd1e2e5df5080f094078796979bb93e9b2bb0dc982fcded0026759dcb76fa068",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "source_commit": "ec89f74",
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_98/stove_on_libero_goal_t7_s8_oracle_k4/choices.jsonl",
+      "choices_sha256": "1eb4659c828899534bd9d12fa48cc38e2fc6020a190993ce20f4bfd3514b5396",
+      "rotations": [],
+      "saved_terminal_context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_98/stove_on_libero_goal_t7_s8_oracle_k4/private_prefix_state_0004.pkl.gz",
+        "sha256": "b7c360e7d509a04653da8df2069185d959ab2e11de9c90ad3172e5fb8a5a5458",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "bc9f4b44dff8c69b9b1ae167e1c2f00e055ce5c69d32c28b47836d9e38736182",
+        "model_visible": false
+      },
+      "current_source_cpu_diagnosis": {
+        "label": {
+          "version": "libero-offline-prefix-label/1",
+          "legality_version": "public-request-legal/2",
+          "request_sha256": "bc9f4b44dff8c69b9b1ae167e1c2f00e055ce5c69d32c28b47836d9e38736182",
+          "observation_id": "public-4",
+          "revision": 4,
+          "prefix": [],
+          "legal": [
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "058d2cacfdbbe9ee",
+            "c839f7047168985f",
+            "b72a74bd885f119f",
+            "c6879ac9fab32978",
+            "f72537752ef750d0",
+            "edd9ac4d0212063f",
+            "47151ff6c459c6e1",
+            "f2ebf3511c61912b",
+            "25c428d919219ac9",
+            "e6e9f48f9eae056f",
+            "78fc3aade1371307",
+            "f395c81b7408c9d5",
+            "ddc57af16afe47d4",
+            "f3cd747ecda3e7bd",
+            "3f2b6fae234e9b1a",
+            "ba5417f0b7c390e9",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "rule_acceptable": [],
+          "selected": null,
+          "measured_success": [],
+          "measured_failure": [],
+          "judge": "libero-private-task-progress-rules/13",
+          "model_visible": false,
+          "physics_steps": 0,
+          "gpu_used": false,
+          "conditional_on_receipt_checks": [],
+          "requires_measurement": false,
+          "status": "no_acceptable_public_option"
+        },
+        "selected_public_option": null,
+        "wall_s": 0.15600545518100262
+      }
+    },
+    {
+      "case": {
+        "name": "stove_off_libero_90_t39_s9",
+        "category": "stove_off",
+        "episode": {
+          "suite": "libero_90",
+          "task": 39,
+          "seed": 9
+        },
+        "state_sha256": "4fc3742a0b14b121e6092457157e8f3e4f260a5d1a20631a8891edbc9d23b6a4",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+          "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "source_commit": "ec89f74",
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_108/stove_off_libero_90_t39_s9_oracle_k4/choices.jsonl",
+      "choices_sha256": "325d45cccb6ebb0bbed4a1d852934a4f71c91ef02ebdb498381f9126edc22f59",
+      "rotations": [
+        {
+          "row": 0,
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 93,
+          "endpoint_error_m": 0.0026167247676464433,
+          "angular_error_rad": 0.0023662267541370405,
+          "trace_samples": 93,
+          "joint7_final_rad": 2.570875056730577,
+          "joint7_min_upper_margin_rad": 0.32642494326942284,
+          "joint7_samples_within_0p01rad_of_upper_limit": 0,
+          "screen_passed": true,
+          "screen_reason": "public_route_screen_passed"
+        },
+        {
+          "row": 1,
+          "outcome": "failure",
+          "stop_reason": "endpoint",
+          "steps_used": 92,
+          "endpoint_error_m": 0.018682147963252557,
+          "angular_error_rad": 0.15635843260825164,
+          "trace_samples": 92,
+          "joint7_final_rad": 2.8977603105307397,
+          "joint7_min_upper_margin_rad": -0.0014815839166075762,
+          "joint7_samples_within_0p01rad_of_upper_limit": 47,
+          "screen_passed": true,
+          "screen_reason": "public_route_screen_passed"
+        }
+      ],
+      "saved_terminal_context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_108/stove_off_libero_90_t39_s9_oracle_k4/private_prefix_state_0006.pkl.gz",
+        "sha256": "47e5674b981433978581e7fb1bba98a288e9806fd3c0a80acafe6c794b9a2a2a",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "6b2dfac733d54e93a5acc8ef514b70c6c8c6c9293864a6ac151da21c022f248a",
+        "model_visible": false
+      },
+      "current_source_cpu_diagnosis": {
+        "label": {
+          "version": "libero-offline-prefix-label/1",
+          "legality_version": "public-request-legal/2",
+          "request_sha256": "6b2dfac733d54e93a5acc8ef514b70c6c8c6c9293864a6ac151da21c022f248a",
+          "observation_id": "public-6",
+          "revision": 6,
+          "prefix": [],
+          "legal": [
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "987434631f6c114e",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "rule_acceptable": [
+            "af866c584b96de88"
+          ],
+          "selected": "af866c584b96de88",
+          "measured_success": [],
+          "measured_failure": [],
+          "judge": "libero-private-task-progress-rules/13",
+          "model_visible": false,
+          "physics_steps": 0,
+          "gpu_used": false,
+          "conditional_on_receipt_checks": [],
+          "requires_measurement": false,
+          "status": "labeled",
+          "predicted_robot": {
+            "eef_xyz_m": [
+              -0.22484122479955299,
+              -0.22248710792465232,
+              0.9489608336313319
+            ],
+            "eef_quat_xyzw": [
+              0.03825942440808622,
+              -0.9991155864051597,
+              0.00944314197877331,
+              -0.014665896351877535
+            ],
+            "gripper_opening_m": 0.030221241794533747,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          }
+        },
+        "selected_public_option": {
+          "id": "af866c584b96de88",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "open"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.08,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.075,
+              "maximum": 0.085
+            },
+            {
+              "metric": "released",
+              "anchor_id": null,
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        "wall_s": 0.16786549612879753
+      }
+    },
+    {
+      "case": {
+        "name": "stove_on_libero_goal_t7_s9",
+        "category": "stove_on",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 9
+        },
+        "state_sha256": "1cde84ad59e478fbfae6e9a53101ca31aaeaf7ed6f058a06f343587ab8807c19",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "source_commit": "ec89f74",
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_109/stove_on_libero_goal_t7_s9_oracle_k4/choices.jsonl",
+      "choices_sha256": "c259451c0ed02f26c29cd57bc17e18d2f8102efa8ce57e3cb932591346c0f1ed",
+      "rotations": [
+        {
+          "row": 0,
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0,
+          "endpoint_error_m": null,
+          "angular_error_rad": 0.7853981633974486,
+          "trace_samples": 0,
+          "joint7_final_rad": null,
+          "joint7_min_upper_margin_rad": null,
+          "joint7_samples_within_0p01rad_of_upper_limit": 0,
+          "screen_passed": false,
+          "screen_reason": "measured_sweep_collision"
+        }
+      ],
+      "saved_terminal_context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_109/stove_on_libero_goal_t7_s9_oracle_k4/private_prefix_state_0005.pkl.gz",
+        "sha256": "bc5fda2909b642917f0db21d71e6e978df08cc23c79238d9e1ae16382ea5d98a",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "04a960d839f1c594e07d19f201d6619daef25e75c54fa450cd2c683cbdfc2a59",
+        "model_visible": false
+      },
+      "current_source_cpu_diagnosis": {
+        "label": {
+          "version": "libero-offline-prefix-label/1",
+          "legality_version": "public-request-legal/2",
+          "request_sha256": "04a960d839f1c594e07d19f201d6619daef25e75c54fa450cd2c683cbdfc2a59",
+          "observation_id": "public-5",
+          "revision": 5,
+          "prefix": [],
+          "legal": [
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "987434631f6c114e",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "rule_acceptable": [
+            "af866c584b96de88"
+          ],
+          "selected": "af866c584b96de88",
+          "measured_success": [],
+          "measured_failure": [],
+          "judge": "libero-private-task-progress-rules/13",
+          "model_visible": false,
+          "physics_steps": 0,
+          "gpu_used": false,
+          "conditional_on_receipt_checks": [],
+          "requires_measurement": false,
+          "status": "labeled",
+          "predicted_robot": {
+            "eef_xyz_m": [
+              -0.42773681388525875,
+              0.21493148203634393,
+              0.9504917011260052
+            ],
+            "eef_quat_xyzw": [
+              0.01743914340824021,
+              0.9992924778645291,
+              0.03173390412251176,
+              0.010167560656240592
+            ],
+            "gripper_opening_m": 0.02644493393316103,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          }
+        },
+        "selected_public_option": {
+          "id": "af866c584b96de88",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "open"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.08,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.075,
+              "maximum": 0.085
+            },
+            {
+              "metric": "released",
+              "anchor_id": null,
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        "wall_s": 0.2088183593004942
+      }
+    },
+    {
+      "case": {
+        "name": "stove_off_libero_90_t39_s11",
+        "category": "stove_off",
+        "episode": {
+          "suite": "libero_90",
+          "task": 39,
+          "seed": 11
+        },
+        "state_sha256": "0e7e8f24aff15d72809b3f3f54e90dd668f85f580fb4d28e78c67188026ec610",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+          "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "source_commit": "ec89f74",
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9544_130/stove_off_libero_90_t39_s11_oracle_k4/choices.jsonl",
+      "choices_sha256": "873eb4a4ec75e745f9f519067a6c59df9dde6f46091b4c7b0600ebffc52b4f86",
+      "rotations": [
+        {
+          "row": 0,
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 101,
+          "endpoint_error_m": 0.006285750451009212,
+          "angular_error_rad": 0.0031629296528901756,
+          "trace_samples": 101,
+          "joint7_final_rad": 2.5782728166937066,
+          "joint7_min_upper_margin_rad": 0.3190271833062934,
+          "joint7_samples_within_0p01rad_of_upper_limit": 0,
+          "screen_passed": true,
+          "screen_reason": "public_route_screen_passed"
+        },
+        {
+          "row": 1,
+          "outcome": "failure",
+          "stop_reason": "endpoint",
+          "steps_used": 92,
+          "endpoint_error_m": 0.02516455937104421,
+          "angular_error_rad": 0.16765230792832375,
+          "trace_samples": 92,
+          "joint7_final_rad": 2.8977564347687985,
+          "joint7_min_upper_margin_rad": -0.002289627542001238,
+          "joint7_samples_within_0p01rad_of_upper_limit": 48,
+          "screen_passed": true,
+          "screen_reason": "public_route_screen_passed"
+        }
+      ],
+      "saved_terminal_context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9544_130/stove_off_libero_90_t39_s11_oracle_k4/private_prefix_state_0006.pkl.gz",
+        "sha256": "997e600c2d6d144d1cac2aa0654415eef82a26c41537941455e8c5c868719d0e",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "fb380e6a726ddfcbe44dfbbd6214d72dd3419ce0bc346f4c3a1deda3569a8fd3",
+        "model_visible": false
+      },
+      "current_source_cpu_diagnosis": {
+        "label": {
+          "version": "libero-offline-prefix-label/1",
+          "legality_version": "public-request-legal/2",
+          "request_sha256": "fb380e6a726ddfcbe44dfbbd6214d72dd3419ce0bc346f4c3a1deda3569a8fd3",
+          "observation_id": "public-6",
+          "revision": 6,
+          "prefix": [],
+          "legal": [
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "987434631f6c114e",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "rule_acceptable": [
+            "af866c584b96de88"
+          ],
+          "selected": "af866c584b96de88",
+          "measured_success": [],
+          "measured_failure": [],
+          "judge": "libero-private-task-progress-rules/13",
+          "model_visible": false,
+          "physics_steps": 0,
+          "gpu_used": false,
+          "conditional_on_receipt_checks": [],
+          "requires_measurement": false,
+          "status": "labeled",
+          "predicted_robot": {
+            "eef_xyz_m": [
+              -0.2185962829860021,
+              -0.2329694238545862,
+              0.9440651802113046
+            ],
+            "eef_quat_xyzw": [
+              0.07533893919426687,
+              -0.9971569326713651,
+              -0.0013468488855622076,
+              -0.0005309092155539321
+            ],
+            "gripper_opening_m": 0.036413324078349824,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          }
+        },
+        "selected_public_option": {
+          "id": "af866c584b96de88",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "open"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.08,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.075,
+              "maximum": 0.085
+            },
+            {
+              "metric": "released",
+              "anchor_id": null,
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        "wall_s": 0.16730811726301908
+      }
+    },
+    {
+      "case": {
+        "name": "stove_on_libero_goal_t7_s13",
+        "category": "stove_on",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 13
+        },
+        "state_sha256": "33b5958d2c703e96e4ce13c330e8979232cfa991e7774153d590ac8db1d1280a",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "source_commit": "ec89f74",
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9544_153/stove_on_libero_goal_t7_s13_oracle_k4/choices.jsonl",
+      "choices_sha256": "c7e2c65240a244c3f2fb6f149b1255cc9900a4a15df6d207c06dd50353c6df85",
+      "rotations": [
+        {
+          "row": 0,
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0,
+          "endpoint_error_m": null,
+          "angular_error_rad": 0.7853981633974484,
+          "trace_samples": 0,
+          "joint7_final_rad": null,
+          "joint7_min_upper_margin_rad": null,
+          "joint7_samples_within_0p01rad_of_upper_limit": 0,
+          "screen_passed": false,
+          "screen_reason": "measured_sweep_collision"
+        }
+      ],
+      "saved_terminal_context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9544_153/stove_on_libero_goal_t7_s13_oracle_k4/private_prefix_state_0005.pkl.gz",
+        "sha256": "9a0a508ea450300a786ee2793e4836642ec81ae96e84dca6fd6e76f65223d3e5",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "f269e8dfd4c5abe4b4ad6650da1c08ce368fcb142f7e0a1b3431b34f7d294aa2",
+        "model_visible": false
+      },
+      "current_source_cpu_diagnosis": {
+        "label": {
+          "version": "libero-offline-prefix-label/1",
+          "legality_version": "public-request-legal/2",
+          "request_sha256": "f269e8dfd4c5abe4b4ad6650da1c08ce368fcb142f7e0a1b3431b34f7d294aa2",
+          "observation_id": "public-5",
+          "revision": 5,
+          "prefix": [],
+          "legal": [
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "987434631f6c114e",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "rule_acceptable": [
+            "af866c584b96de88"
+          ],
+          "selected": "af866c584b96de88",
+          "measured_success": [],
+          "measured_failure": [],
+          "judge": "libero-private-task-progress-rules/13",
+          "model_visible": false,
+          "physics_steps": 0,
+          "gpu_used": false,
+          "conditional_on_receipt_checks": [],
+          "requires_measurement": false,
+          "status": "labeled",
+          "predicted_robot": {
+            "eef_xyz_m": [
+              -0.4233149657015273,
+              0.2029864365899825,
+              0.9521219133627753
+            ],
+            "eef_quat_xyzw": [
+              0.017341760038048715,
+              0.9994980900385333,
+              0.02577658717013353,
+              0.006196686369819607
+            ],
+            "gripper_opening_m": 0.026190315946015064,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          }
+        },
+        "selected_public_option": {
+          "id": "af866c584b96de88",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "open"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.08,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.075,
+              "maximum": 0.085
+            },
+            {
+              "metric": "released",
+              "anchor_id": null,
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        "wall_s": 0.18506017979234457
+      }
+    }
+  ],
+  "physics_steps": 0,
+  "rpc_calls": 0,
+  "gpu_used": false,
+  "training": false,
+  "script_sha256": "f06f44699d3e6f2d7a96577d63904c3b018a08474e2e2dc346b0dfcb79545716"
+}
