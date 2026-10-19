@@ -1,0 +1,1919 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_inclined_rim_20261018_2997335",
+  "results": [
+    {
+      "job": "9502_160",
+      "case": {
+        "name": "plate_push_libero_goal_t5_s0",
+        "category": "plate_push",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 5,
+          "seed": 0
+        },
+        "state_sha256": "cea30572c1ece1c5d5a53c64fef51544c3a02dbb6bf6bc06d02d3a03ea719aa7",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/push_the_plate_to_the_front_of_the_stove.bddl",
+          "sha256": "26f22f8ad39a4b2b344b049115c45661a877fa0b4821fb78246725e7e87d8c0b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "captured_decisions": 20,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9502_160/plate_push_libero_goal_t5_s0_oracle_k4/choices.jsonl",
+      "choices_sha256_at_capture": "8b02193acc5008f383caf87c72e734e838165e4b82f7ee3d9b1ad47dfbd64630",
+      "records": [
+        {
+          "index": 0,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9502_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/000.pkl",
+            "sha256": "450981b8cb9db9ba2e85cf5a61a0a72a74d84048c76ad3f2367913d9728a8386",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_residual": 0.0,
+          "private_plate_position_world_m": [
+            0.051859218508715825,
+            -0.028493060325616923,
+            0.9024998343030154
+          ],
+          "private_plate_quat_wxyz": [
+            0.7071068091222135,
+            -2.66099462815384e-05,
+            1.2067199165973974e-05,
+            0.7071067526472182
+          ],
+          "public_robot": {
+            "eef_xyz_m": [
+              -0.21531765676051706,
+              -0.003897127606630346,
+              1.1692127952999158
+            ],
+            "eef_quat_xyzw": [
+              0.9987128604386619,
+              -0.0038791297733371533,
+              -0.049835024732425105,
+              -0.008604943727025319
+            ],
+            "gripper_opening_m": 0.0780791838623438,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          },
+          "decision_in_execution_order": [
+            {
+              "id": "7cf7cc6e22bbb7f2",
+              "skill": "move_to",
+              "parameters": {
+                "anchor_id": "e99",
+                "approach": "above",
+                "path": "over"
+              }
+            },
+            {
+              "id": "1f9311eb6c9f6bb8",
+              "skill": "observe",
+              "parameters": {
+                "mode": "wrist_scan"
+              }
+            }
+          ],
+          "plate_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "distance_m": -6.034678462310506e-06,
+              "position_world_m": [
+                0.020517586426945653,
+                -0.05692887269768311,
+                0.8999939653215376
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "distance_m": -6.034678462310506e-06,
+              "position_world_m": [
+                0.020517586426945653,
+                -0.05692887269768311,
+                0.8999939653215376
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "distance_m": -6.988772145067484e-06,
+              "position_world_m": [
+                0.009533698243100377,
+                -0.02857776943584565,
+                0.8999930112278549
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "distance_m": -7.477655512372176e-06,
+              "position_world_m": [
+                0.021445410770879546,
+                0.0009348507064191455,
+                0.8999925223444877
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "distance_m": -7.843460061671863e-06,
+              "position_world_m": [
+                0.050780623560885585,
+                0.013815273595643197,
+                0.8999921565399384
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "distance_m": -6.968505047062214e-06,
+              "position_world_m": [
+                0.08181818169106006,
+                0.0014050389789004372,
+                0.8999930314949529
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "distance_m": -6.021671044870321e-06,
+              "position_world_m": [
+                0.09416372869352246,
+                -0.029569222649185777,
+                0.8999939783289551
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "distance_m": -5.366928100537913e-06,
+              "position_world_m": [
+                0.08112721156368517,
+                -0.059063257174423636,
+                0.8999946330718994
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "distance_m": -5.3661535785358774e-06,
+              "position_world_m": [
+                0.050149761468142054,
+                -0.07077700791118363,
+                0.8999946338464214
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          ],
+          "nearest_private_finger_plate_distance": {
+            "geoms": [
+              "gripper0_right_finger1_collision",
+              "plate_1_g10"
+            ],
+            "distance_m": 0.30986358453172436
+          },
+          "finger_collision_geoms": [
+            [
+              78,
+              "gripper0_right_finger1_collision"
+            ],
+            [
+              79,
+              "gripper0_right_finger1_pad_collision"
+            ],
+            [
+              81,
+              "gripper0_right_finger2_collision"
+            ],
+            [
+              82,
+              "gripper0_right_finger2_pad_collision"
+            ]
+          ],
+          "plate_collision_geoms": [
+            [
+              156,
+              "plate_1_g1"
+            ],
+            [
+              157,
+              "plate_1_g2"
+            ],
+            [
+              158,
+              "plate_1_g3"
+            ],
+            [
+              159,
+              "plate_1_g4"
+            ],
+            [
+              160,
+              "plate_1_g5"
+            ],
+            [
+              161,
+              "plate_1_g6"
+            ],
+            [
+              162,
+              "plate_1_g7"
+            ],
+            [
+              163,
+              "plate_1_g8"
+            ],
+            [
+              164,
+              "plate_1_g9"
+            ],
+            [
+              165,
+              "plate_1_g10"
+            ]
+          ],
+          "receipts": [
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 216
+            },
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9502_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/001.pkl",
+            "sha256": "23e50cbdf0db71552b9d0e361c56153867b9f52a6f5f3dd3ce94b108e1f2d1f3",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_residual": 0.0,
+          "private_plate_position_world_m": [
+            0.05185921850871936,
+            -0.028493060325529663,
+            0.9024998346667837
+          ],
+          "private_plate_quat_wxyz": [
+            0.7071068091222135,
+            -2.6609958600378443e-05,
+            1.2067212470608763e-05,
+            0.7071067526472182
+          ],
+          "public_robot": {
+            "eef_xyz_m": [
+              0.058235415647289825,
+              -0.032618001795912815,
+              1.0726100330133073
+            ],
+            "eef_quat_xyzw": [
+              0.8998013123130701,
+              -0.37482633067020804,
+              0.20992687397666904,
+              -0.07611522698098765
+            ],
+            "gripper_opening_m": 0.07969369293683831,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              0.00025380405461904355,
+              -0.0004855915129157765,
+              0.03475681814606407
+            ]
+          },
+          "decision_in_execution_order": [
+            {
+              "id": "7cf7cc6e22bbb7f2",
+              "skill": "move_to",
+              "parameters": {
+                "anchor_id": "e99",
+                "approach": "above",
+                "path": "over"
+              }
+            },
+            {
+              "id": "75ed3d7dd24e32c5",
+              "skill": "descend",
+              "parameters": {
+                "anchor_id": "e99"
+              }
+            },
+            {
+              "id": "7f56ae3f4c8b42af",
+              "skill": "set_gripper",
+              "parameters": {
+                "mode": "close"
+              }
+            },
+            {
+              "id": "78fc3aade1371307",
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": 0.01
+              }
+            }
+          ],
+          "plate_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "distance_m": -6.0344960410290294e-06,
+              "position_world_m": [
+                0.020517586426945643,
+                -0.056928872697686886,
+                0.8999939655039589
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "distance_m": -6.0344960410290294e-06,
+              "position_world_m": [
+                0.020517586426945643,
+                -0.056928872697686886,
+                0.8999939655039589
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "distance_m": -6.988590229879872e-06,
+              "position_world_m": [
+                0.00953369824310037,
+                -0.028577769435849464,
+                0.8999930114097702
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "distance_m": -7.477474140173341e-06,
+              "position_world_m": [
+                0.021445410770879556,
+                0.0009348507064153167,
+                0.8999925225258598
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "distance_m": -7.843278943344876e-06,
+              "position_world_m": [
+                0.05078062356088563,
+                0.013815273595639332,
+                0.8999921567210567
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "distance_m": -6.968323725515082e-06,
+              "position_world_m": [
+                0.08181818169106012,
+                0.0014050389788966243,
+                0.8999930316762745
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "distance_m": -6.0214891707120635e-06,
+              "position_world_m": [
+                0.09416372869352252,
+                -0.029569222649189562,
+                0.8999939785108293
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "distance_m": -5.36674568286092e-06,
+              "position_world_m": [
+                0.08112721156368521,
+                -0.05906325717442741,
+                0.8999946332543172
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "distance_m": -5.365970927027322e-06,
+              "position_world_m": [
+                0.05014976146814207,
+                -0.07077700791118739,
+                0.899994634029073
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          ],
+          "nearest_private_finger_plate_distance": {
+            "geoms": [
+              "gripper0_right_finger1_collision",
+              "plate_1_g10"
+            ],
+            "distance_m": 0.12980406888698343
+          },
+          "finger_collision_geoms": [
+            [
+              78,
+              "gripper0_right_finger1_collision"
+            ],
+            [
+              79,
+              "gripper0_right_finger1_pad_collision"
+            ],
+            [
+              81,
+              "gripper0_right_finger2_collision"
+            ],
+            [
+              82,
+              "gripper0_right_finger2_pad_collision"
+            ]
+          ],
+          "plate_collision_geoms": [
+            [
+              156,
+              "plate_1_g1"
+            ],
+            [
+              157,
+              "plate_1_g2"
+            ],
+            [
+              158,
+              "plate_1_g3"
+            ],
+            [
+              159,
+              "plate_1_g4"
+            ],
+            [
+              160,
+              "plate_1_g5"
+            ],
+            [
+              161,
+              "plate_1_g6"
+            ],
+            [
+              162,
+              "plate_1_g7"
+            ],
+            [
+              163,
+              "plate_1_g8"
+            ],
+            [
+              164,
+              "plate_1_g9"
+            ],
+            [
+              165,
+              "plate_1_g10"
+            ]
+          ],
+          "receipts": [
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 194
+            },
+            {
+              "skill": "descend",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 38
+            },
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            },
+            {
+              "skill": "nudge",
+              "outcome": "failure",
+              "stop_reason": "predicted_anchor_changed",
+              "steps_used": 0
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9502_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/002.pkl",
+            "sha256": "9ad0c77c30d45b627e567520cdd2b5ef8e4f8a48fd313302c5da3fee12753ea6",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_residual": 0.0,
+          "private_plate_position_world_m": [
+            0.06483868948590908,
+            -0.027283401709112438,
+            0.908518696135935
+          ],
+          "private_plate_quat_wxyz": [
+            0.7048692414642513,
+            0.02839734962650808,
+            -0.07377466128357413,
+            0.7049186068790457
+          ],
+          "public_robot": {
+            "eef_xyz_m": [
+              0.03710168154969018,
+              -0.08632041683294776,
+              0.9249980698456427
+            ],
+            "eef_quat_xyzw": [
+              0.698484721836,
+              -0.6788520707754051,
+              0.10888289800132557,
+              0.19855345347906322
+            ],
+            "gripper_opening_m": 0.0029176713061142374,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              0.000690224300122925,
+              -0.0004919462065927452,
+              0.0017339621191676535
+            ]
+          },
+          "decision_in_execution_order": [
+            {
+              "id": "c8b9f546abd9b7c1",
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": 0.02,
+                "anchor_id": "e99"
+              }
+            },
+            {
+              "id": "8865c890ef9481af",
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": 0.01,
+                "anchor_id": "e99"
+              }
+            }
+          ],
+          "plate_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "distance_m": -3.185421798454881e-05,
+              "position_world_m": [
+                0.03385609685788517,
+                -0.054917154125592116,
+                0.8999681457820154
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "distance_m": -3.185421798454881e-05,
+              "position_world_m": [
+                0.03385609685788517,
+                -0.054917154125592116,
+                0.8999681457820154
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "distance_m": -8.130674013534143e-05,
+              "position_world_m": [
+                0.06349242696304315,
+                -0.06875604151011541,
+                0.8999186932598646
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "plate_1_g9",
+                "gripper0_right_finger2_collision"
+              ],
+              "distance_m": -3.21082430886777e-06,
+              "position_world_m": [
+                0.051469122421225505,
+                -0.08495471785902073,
+                0.9122183665684116
+              ],
+              "normal_world": [
+                -0.04530995936811847,
+                0.19529308015673522,
+                0.979697718903619
+              ]
+            }
+          ],
+          "nearest_private_finger_plate_distance": {
+            "geoms": [
+              "gripper0_right_finger2_collision",
+              "plate_1_g9"
+            ],
+            "distance_m": -3.21082430886777e-06
+          },
+          "finger_collision_geoms": [
+            [
+              78,
+              "gripper0_right_finger1_collision"
+            ],
+            [
+              79,
+              "gripper0_right_finger1_pad_collision"
+            ],
+            [
+              81,
+              "gripper0_right_finger2_collision"
+            ],
+            [
+              82,
+              "gripper0_right_finger2_pad_collision"
+            ]
+          ],
+          "plate_collision_geoms": [
+            [
+              156,
+              "plate_1_g1"
+            ],
+            [
+              157,
+              "plate_1_g2"
+            ],
+            [
+              158,
+              "plate_1_g3"
+            ],
+            [
+              159,
+              "plate_1_g4"
+            ],
+            [
+              160,
+              "plate_1_g5"
+            ],
+            [
+              161,
+              "plate_1_g6"
+            ],
+            [
+              162,
+              "plate_1_g7"
+            ],
+            [
+              163,
+              "plate_1_g8"
+            ],
+            [
+              164,
+              "plate_1_g9"
+            ],
+            [
+              165,
+              "plate_1_g10"
+            ]
+          ],
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_motion_unmeasured",
+              "steps_used": 18
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9502_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/003.pkl",
+            "sha256": "f2b9ce56b372db34f1e52c0523631baff9e85706881e953b63e8c89c11a958c9",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_residual": 0.0,
+          "private_plate_position_world_m": [
+            0.06519095203445863,
+            -0.026322646517964367,
+            0.9024992040228342
+          ],
+          "private_plate_quat_wxyz": [
+            0.7068057760664366,
+            -2.2723892500331902e-05,
+            2.0437803697340115e-05,
+            0.7074076575674342
+          ],
+          "public_robot": {
+            "eef_xyz_m": [
+              0.03697229631602679,
+              -0.06683707717053052,
+              0.9249226680331382
+            ],
+            "eef_quat_xyzw": [
+              0.6985165201115308,
+              -0.6787781234817392,
+              0.10934445485961637,
+              0.1984407226487001
+            ],
+            "gripper_opening_m": 0.0011514351424676227,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.00014376137073709994,
+              0.021648155180463608,
+              -8.377979167170955e-05
+            ]
+          },
+          "decision_in_execution_order": [
+            {
+              "id": "c8b9f546abd9b7c1",
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": 0.02,
+                "anchor_id": "e99"
+              }
+            },
+            {
+              "id": "8865c890ef9481af",
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": 0.01,
+                "anchor_id": "e99"
+              }
+            }
+          ],
+          "plate_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "distance_m": -5.987589556920964e-06,
+              "position_world_m": [
+                0.03387349422684864,
+                -0.05478514469169282,
+                0.8999940124104431
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "distance_m": -5.987589556920964e-06,
+              "position_world_m": [
+                0.03387349422684864,
+                -0.05478514469169282,
+                0.8999940124104431
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "distance_m": -6.936268122958761e-06,
+              "position_world_m": [
+                0.022865475596195037,
+                -0.026443401949458562,
+                0.899993063731877
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "distance_m": -7.622148650688048e-06,
+              "position_world_m": [
+                0.034752060631640797,
+                0.0030793475545338564,
+                0.8999923778513493
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "distance_m": -8.283429080510585e-06,
+              "position_world_m": [
+                0.06407629807999973,
+                0.01598473790502434,
+                0.8999917165709195
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "distance_m": -7.638510470325485e-06,
+              "position_world_m": [
+                0.09512440942923585,
+                0.0036009290817865768,
+                0.8999923614895297
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "distance_m": -6.700590472853447e-06,
+              "position_world_m": [
+                0.10749631939621199,
+                -0.027362811939469028,
+                0.8999932994095271
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "distance_m": -5.839146286473816e-06,
+              "position_world_m": [
+                0.09448491435083702,
+                -0.05686793334142343,
+                0.8999941608537135
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "distance_m": -5.532342045581407e-06,
+              "position_world_m": [
+                0.06351744702854333,
+                -0.06860804995119232,
+                0.8999944676579544
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          ],
+          "nearest_private_finger_plate_distance": {
+            "geoms": [
+              "gripper0_right_finger1_collision",
+              "plate_1_g10"
+            ],
+            "distance_m": 0.00013579348879312942
+          },
+          "finger_collision_geoms": [
+            [
+              78,
+              "gripper0_right_finger1_collision"
+            ],
+            [
+              79,
+              "gripper0_right_finger1_pad_collision"
+            ],
+            [
+              81,
+              "gripper0_right_finger2_collision"
+            ],
+            [
+              82,
+              "gripper0_right_finger2_pad_collision"
+            ]
+          ],
+          "plate_collision_geoms": [
+            [
+              156,
+              "plate_1_g1"
+            ],
+            [
+              157,
+              "plate_1_g2"
+            ],
+            [
+              158,
+              "plate_1_g3"
+            ],
+            [
+              159,
+              "plate_1_g4"
+            ],
+            [
+              160,
+              "plate_1_g5"
+            ],
+            [
+              161,
+              "plate_1_g6"
+            ],
+            [
+              162,
+              "plate_1_g7"
+            ],
+            [
+              163,
+              "plate_1_g8"
+            ],
+            [
+              164,
+              "plate_1_g9"
+            ],
+            [
+              165,
+              "plate_1_g10"
+            ]
+          ],
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 18
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9502_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/005.pkl",
+            "sha256": "97c4b2c030faa8bb87bc76a915dd78758e351b07318e351b562e479b4d791586",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_residual": 0.0,
+          "private_plate_position_world_m": [
+            0.06519091009072418,
+            -0.02632266178085784,
+            0.9024998346667837
+          ],
+          "private_plate_quat_wxyz": [
+            0.70680577631455,
+            -2.661509240745853e-05,
+            1.205588527146136e-05,
+            0.7074076573763395
+          ],
+          "public_robot": {
+            "eef_xyz_m": [
+              0.03625099402720173,
+              -0.038126205364709245,
+              0.9244882222636449
+            ],
+            "eef_quat_xyzw": [
+              0.6988612841880959,
+              -0.6785612875946069,
+              0.11019308369871356,
+              0.19749675629205093
+            ],
+            "gripper_opening_m": 0.0009995958023403064,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.00042174924505411694,
+              0.013101768148796907,
+              -0.00020144582598072676
+            ]
+          },
+          "decision_in_execution_order": [
+            {
+              "id": "8865c890ef9481af",
+              "skill": "nudge",
+              "parameters": {
+                "axis": "y",
+                "distance_m": 0.01,
+                "anchor_id": "e99"
+              }
+            }
+          ],
+          "plate_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "distance_m": -6.034496041028813e-06,
+              "position_world_m": [
+                0.03387349586635987,
+                -0.05478514398310765,
+                0.8999939655039589
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "distance_m": -6.034496041028813e-06,
+              "position_world_m": [
+                0.03387349586635987,
+                -0.05478514398310765,
+                0.8999939655039589
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "distance_m": -6.988590229882637e-06,
+              "position_world_m": [
+                0.022865477271027775,
+                -0.026443401227881552,
+                0.8999930114097702
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "distance_m": -7.47747414017513e-06,
+              "position_world_m": [
+                0.03475206232925701,
+                0.003079348282615414,
+                0.8999925225258598
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "distance_m": -7.843278943355176e-06,
+              "position_world_m": [
+                0.06407629979648768,
+                0.01598473863725601,
+                0.8999921567210567
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "distance_m": -6.968323725472744e-06,
+              "position_world_m": [
+                0.09512441111834255,
+                0.0036009298018342475,
+                0.8999930316762745
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "distance_m": -6.021489170724423e-06,
+              "position_world_m": [
+                0.10749632105009702,
+                -0.027362811232409346,
+                0.8999939785108293
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "distance_m": -5.366745682869052e-06,
+              "position_world_m": [
+                0.09448491597601491,
+                -0.05686793264294784,
+                0.8999946332543172
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "distance_m": -5.365970927029816e-06,
+              "position_world_m": [
+                0.06351744864743043,
+                -0.06860804925215866,
+                0.899994634029073
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          ],
+          "nearest_private_finger_plate_distance": {
+            "geoms": [
+              "gripper0_right_finger2_collision",
+              "plate_1_g1"
+            ],
+            "distance_m": 0.004286262282562225
+          },
+          "finger_collision_geoms": [
+            [
+              78,
+              "gripper0_right_finger1_collision"
+            ],
+            [
+              79,
+              "gripper0_right_finger1_pad_collision"
+            ],
+            [
+              81,
+              "gripper0_right_finger2_collision"
+            ],
+            [
+              82,
+              "gripper0_right_finger2_pad_collision"
+            ]
+          ],
+          "plate_collision_geoms": [
+            [
+              156,
+              "plate_1_g1"
+            ],
+            [
+              157,
+              "plate_1_g2"
+            ],
+            [
+              158,
+              "plate_1_g3"
+            ],
+            [
+              159,
+              "plate_1_g4"
+            ],
+            [
+              160,
+              "plate_1_g5"
+            ],
+            [
+              161,
+              "plate_1_g6"
+            ],
+            [
+              162,
+              "plate_1_g7"
+            ],
+            [
+              163,
+              "plate_1_g8"
+            ],
+            [
+              164,
+              "plate_1_g9"
+            ],
+            [
+              165,
+              "plate_1_g10"
+            ]
+          ],
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 14
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9502_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/010.pkl",
+            "sha256": "9108352cb9490cb450b4b47c978c460c9c387357ccd7d72c19de4c09081ad4aa",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_residual": 0.0,
+          "private_plate_position_world_m": [
+            0.04808283878876174,
+            -0.021906200759127973,
+            0.9024998346663388
+          ],
+          "private_plate_quat_wxyz": [
+            0.724001288939314,
+            -2.631033505451236e-05,
+            1.2707243556206174e-05,
+            0.6897986175402961
+          ],
+          "public_robot": {
+            "eef_xyz_m": [
+              0.07935227684244252,
+              -0.08461299487383649,
+              0.9641175543365509
+            ],
+            "eef_quat_xyzw": [
+              0.6803220688792082,
+              -0.6979032038724844,
+              0.19063072738992135,
+              0.11727287152288592
+            ],
+            "gripper_opening_m": 0.0009990536131587418,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.00044009900292215823,
+              -0.00044437320576705104,
+              0.0341837944101563
+            ]
+          },
+          "decision_in_execution_order": [
+            {
+              "id": "af866c584b96de88",
+              "skill": "set_gripper",
+              "parameters": {
+                "mode": "open"
+              }
+            },
+            {
+              "id": "7cf7cc6e22bbb7f2",
+              "skill": "move_to",
+              "parameters": {
+                "anchor_id": "e99",
+                "approach": "above",
+                "path": "over"
+              }
+            },
+            {
+              "id": "75ed3d7dd24e32c5",
+              "skill": "descend",
+              "parameters": {
+                "anchor_id": "e99"
+              }
+            },
+            {
+              "id": "7f56ae3f4c8b42af",
+              "skill": "set_gripper",
+              "parameters": {
+                "mode": "close"
+              }
+            }
+          ],
+          "plate_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "distance_m": -6.034496212905215e-06,
+              "position_world_m": [
+                0.01540283843840135,
+                -0.04879320326804944,
+                0.8999939655037871
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "distance_m": -6.034496212905215e-06,
+              "position_world_m": [
+                0.01540283843840135,
+                -0.04879320326804944,
+                0.8999939655037871
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "distance_m": -6.988590535004125e-06,
+              "position_world_m": [
+                0.005802735551011056,
+                -0.019944132566376855,
+                0.899993011409465
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "distance_m": -7.4774745383339035e-06,
+              "position_world_m": [
+                0.019127615577758026,
+                0.008957964507691355,
+                0.8999925225254617
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "distance_m": -7.84327933470852e-06,
+              "position_world_m": [
+                0.04905135275351131,
+                0.02040479623863864,
+                0.8999921567206652
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "distance_m": -6.968324007079025e-06,
+              "position_world_m": [
+                0.07945249755266418,
+                0.006508237929924259,
+                0.8999930316759929
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "distance_m": -6.021489306004774e-06,
+              "position_world_m": [
+                0.09028582182642839,
+                -0.025026766420394305,
+                0.899993978510694
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "distance_m": -5.366745727487495e-06,
+              "position_world_m": [
+                0.07583835173493592,
+                -0.053855908957207495,
+                0.8999946332542725
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "distance_m": -5.3659709861888735e-06,
+              "position_world_m": [
+                0.044330713568644535,
+                -0.06405802187203398,
+                0.8999946340290138
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            }
+          ],
+          "nearest_private_finger_plate_distance": {
+            "geoms": [
+              "gripper0_right_finger1_collision",
+              "plate_1_g8"
+            ],
+            "distance_m": 0.033968044790829176
+          },
+          "finger_collision_geoms": [
+            [
+              78,
+              "gripper0_right_finger1_collision"
+            ],
+            [
+              79,
+              "gripper0_right_finger1_pad_collision"
+            ],
+            [
+              81,
+              "gripper0_right_finger2_collision"
+            ],
+            [
+              82,
+              "gripper0_right_finger2_pad_collision"
+            ]
+          ],
+          "plate_collision_geoms": [
+            [
+              156,
+              "plate_1_g1"
+            ],
+            [
+              157,
+              "plate_1_g2"
+            ],
+            [
+              158,
+              "plate_1_g3"
+            ],
+            [
+              159,
+              "plate_1_g4"
+            ],
+            [
+              160,
+              "plate_1_g5"
+            ],
+            [
+              161,
+              "plate_1_g6"
+            ],
+            [
+              162,
+              "plate_1_g7"
+            ],
+            [
+              163,
+              "plate_1_g8"
+            ],
+            [
+              164,
+              "plate_1_g9"
+            ],
+            [
+              165,
+              "plate_1_g10"
+            ]
+          ],
+          "receipts": [
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            },
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 126
+            },
+            {
+              "skill": "descend",
+              "outcome": "failure",
+              "stop_reason": "measured_sweep_collision",
+              "steps_used": 0
+            }
+          ]
+        },
+        {
+          "index": 19,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9502_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/019.pkl",
+            "sha256": "abc7d3f6b5a689d6521caa8cc69b7f9c7f5ab6da942f9e0a26f2d8d09b70c005",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_residual": 0.0,
+          "private_plate_position_world_m": [
+            0.05583442664136208,
+            -0.02512203233633749,
+            0.9029583562241511
+          ],
+          "private_plate_quat_wxyz": [
+            0.6650042048609281,
+            0.0005780320977268581,
+            0.008115679555595686,
+            0.746795292661604
+          ],
+          "public_robot": {
+            "eef_xyz_m": [
+              0.107262297541086,
+              0.00625468157776736,
+              0.927400582061093
+            ],
+            "eef_quat_xyzw": [
+              0.3972077767730158,
+              -0.8837165310515067,
+              -0.042046891505796144,
+              -0.24393264179282703
+            ],
+            "gripper_opening_m": 0.002861506931400834,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              0.00025907753649155135,
+              0.00032027519513118846,
+              0.0002743571680730028
+            ]
+          },
+          "decision_in_execution_order": [
+            {
+              "id": "1f9311eb6c9f6bb8",
+              "skill": "observe",
+              "parameters": {
+                "mode": "wrist_scan"
+              }
+            }
+          ],
+          "plate_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "distance_m": -0.00011857452373237234,
+              "position_world_m": [
+                0.08210697389775894,
+                0.008003439281707856,
+                0.8998814254762676
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "distance_m": -4.437443961415673e-05,
+              "position_world_m": [
+                0.09794770931714356,
+                -0.02133708723954338,
+                0.8999556255603859
+              ],
+              "normal_world": [
+                0.0,
+                0.0,
+                1.0
+              ]
+            },
+            {
+              "geoms": [
+                "plate_1_g6",
+                "gripper0_right_finger1_collision"
+              ],
+              "distance_m": -2.6100730795020717e-05,
+              "position_world_m": [
+                0.0961143118480058,
+                0.015579415782070007,
+                0.9147225727169521
+              ],
+              "normal_world": [
+                -0.19752665411726483,
+                -0.25145282278867814,
+                0.947499181437559
+              ]
+            }
+          ],
+          "nearest_private_finger_plate_distance": {
+            "geoms": [
+              "gripper0_right_finger1_collision",
+              "plate_1_g6"
+            ],
+            "distance_m": -2.6100730795019552e-05
+          },
+          "finger_collision_geoms": [
+            [
+              78,
+              "gripper0_right_finger1_collision"
+            ],
+            [
+              79,
+              "gripper0_right_finger1_pad_collision"
+            ],
+            [
+              81,
+              "gripper0_right_finger2_collision"
+            ],
+            [
+              82,
+              "gripper0_right_finger2_pad_collision"
+            ]
+          ],
+          "plate_collision_geoms": [
+            [
+              156,
+              "plate_1_g1"
+            ],
+            [
+              157,
+              "plate_1_g2"
+            ],
+            [
+              158,
+              "plate_1_g3"
+            ],
+            [
+              159,
+              "plate_1_g4"
+            ],
+            [
+              160,
+              "plate_1_g5"
+            ],
+            [
+              161,
+              "plate_1_g6"
+            ],
+            [
+              162,
+              "plate_1_g7"
+            ],
+            [
+              163,
+              "plate_1_g8"
+            ],
+            [
+              164,
+              "plate_1_g9"
+            ],
+            [
+              165,
+              "plate_1_g10"
+            ]
+          ],
+          "receipts": [
+            {
+              "skill": "observe",
+              "outcome": "success",
+              "stop_reason": "fresh_public_views",
+              "steps_used": 23
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "script_sha256": "4e02e940001eabe8ab9097c19b7e52f604e94e085ca37aeb3d064fc1a2673ae5",
+  "scope": "private exact-state restoration and forward contact diagnosis; no action commands or rollout",
+  "gpu_used": false,
+  "model_visible": false,
+  "used_for_control": false,
+  "training": false
+}

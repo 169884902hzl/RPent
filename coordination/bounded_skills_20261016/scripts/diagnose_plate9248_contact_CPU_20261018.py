@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Inspect privately saved plate contact states without issuing actions."""
 # ruff: noqa: E402 -- pin the recorded source and disable GPUs before imports
+import argparse
 import hashlib
 import json
 import os
@@ -11,7 +12,16 @@ from pathlib import Path
 
 os.environ.update(CUDA_VISIBLE_DEVICES='', LIBERO_TYPE='standard', OPENBLAS_NUM_THREADS='1')
 root = Path('/public/home/sunyihan/rpent_libero_eval')
-source = root/'source_bounded_chunk_v3_support_plane_20261018_ec89f74'
+parser = argparse.ArgumentParser()
+parser.add_argument('--source', type=Path, default=root/'source_bounded_chunk_v3_support_plane_20261018_ec89f74')
+parser.add_argument('--tag', default='original20_support_roundrobin_20261018')
+parser.add_argument('--jobs', default='9248_8,9248_19')
+parser.add_argument('--rows', default='0,1,2,5,10,20,-1')
+parser.add_argument('--output', type=Path,
+    default=root/'coordination/bounded_skills_20261016/reports/plate9248_contact_private_CPU_20261018.json')
+args = parser.parse_args()
+assert not args.output.exists(), 'Preserve the previous physical diagnosis'
+source = args.source
 os.environ['LIBERO_CONFIG_PATH'] = str(root/'runtime_config')
 sys.path.insert(0, str(source))
 import mujoco
@@ -22,10 +32,10 @@ from robots.libero.v5_branch_state import restore_actuators
 from robots.libero.v5_reset_seed import attach_reset_seed
 
 base = root/'coordination/bounded_skills_20261016'
-submission = json.loads((base/'reports/original20_support_roundrobin_20261018_full_submission.json').read_text())
+submission = json.loads((base/'reports'/f'{args.tag}_full_submission.json').read_text())
 manifest = json.loads(Path(submission['manifest']['path']).read_text())
 results = []
-for job in ('9248_8', '9248_19'):
+for job in args.jobs.split(','):
     index = int(job.split('_')[1])
     case = manifest['cases'][index]
     assert case['category'] == 'plate_push' and case['episode']['suite'] == 'libero_goal'
@@ -39,7 +49,8 @@ for job in ('9248_8', '9248_19'):
     env.reset()
     records = []
     try:
-        for index in sorted({0, 1, 2, 5, 10, 20, len(rows)-1}):
+        selected = {index if index >= 0 else len(rows)+index for index in map(int, args.rows.split(','))}
+        for index in sorted(index for index in selected if 0 <= index < len(rows)):
             row = rows[index]
             if 'private_pre_execution_snapshot' not in row:
                 continue
@@ -93,11 +104,12 @@ for job in ('9248_8', '9248_19'):
     results.append({'job': job, 'case': case, 'captured_decisions': len(rows),
         'choices': str(choices), 'choices_sha256_at_capture': hashlib.sha256(captured).hexdigest(),
         'records': records})
-output = base/'reports/plate9248_contact_private_CPU_20261018.json'
-output.write_text(json.dumps({'source': str(source), 'results': results,
+output = args.output
+with output.open('x') as stream:
+    stream.write(json.dumps({'source': str(source), 'results': results,
     'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     'scope': 'private exact-state restoration and forward contact diagnosis; no action commands or rollout',
-    'gpu_used': False, 'model_visible': False, 'used_for_control': False, 'training': False}, indent=2)+'\n')
+        'gpu_used': False, 'model_visible': False, 'used_for_control': False, 'training': False}, indent=2)+'\n')
 print(json.dumps({'output': str(output), 'results': [{'job': item['job'], 'records': [
     {key: row[key] for key in ('index', 'nearest_private_finger_plate_distance', 'plate_contacts')}
     for row in item['records']]} for item in results]}))

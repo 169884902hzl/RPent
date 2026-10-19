@@ -1,0 +1,56 @@
+{
+  "source_commit": "ee42501",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_pad_edge_20261018_ee42501",
+  "archive_sha256": "3145d9368eec59db0920af43d49a40958e99f58d871f73d924afdd00b80bce1c",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_pad_edge_20261018.json",
+    "sha256": "3be03f1582d6fe5707c75a5d47b07921dab2f4bcf6d62eb44328a3555c78b4ca"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_pad_edge_20261018.log"
+  },
+  "n_states": 20,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/pad_edge_cell_cpu_validation_20261018.json",
+    "sha256": "99fff14d37e59f07d607253e6289f510bc46a29cad1d569da6256b4c49da950f",
+    "results": {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit_tests/robots/libero/test_v5_grasp_route.py",
+        "tests/unit_tests/robots/libero/test_bounded_skills.py",
+        "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "seconds": 157.0017769341357,
+      "raw_log_sha256": "82c8ae1ecce0b80673ee2c628006d63f599d0abc8375e780cbb6007561460695",
+      "compressed_log_sha256": "bdb4cbee7ef6e5284c8e275e2833b38cc7bdda8b3ba69d6ee5dae3b299832b14",
+      "log": "coordination/bounded_skills_20261016/reports/pad_edge_cell_cpu_tests_20261018.log.gz",
+      "grasp_route_sha256": "3ba3a507b841409016ed60ec4b51d32e1cd5126084daaf61934c17cf88de8fdd",
+      "physics_steps": 0,
+      "gpu_used": false,
+      "scope": "CPU regression; physical effectiveness requires separate original-state pairs",
+      "source_commit": "ee425010e0be8c8c5f9f05d37739bd04ab494724",
+      "archive": "bounded_chunk_v3_pad_edge_20261018_ee42501.tar.gz",
+      "archive_sha256": "3145d9368eec59db0920af43d49a40958e99f58d871f73d924afdd00b80bce1c",
+      "ruff_added_diagnostics": 0,
+      "strict_all_openings_regression": {
+        "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_v5_grasp_route.py -q",
+        "passed": 8,
+        "seconds": 1.48,
+        "exit_code": 0
+      }
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}

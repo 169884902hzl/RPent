@@ -22,6 +22,8 @@ parser.add_argument('--oracle-only', action='store_true',
     help='The startup-gated priority array uses only the oracle K4 arm')
 parser.add_argument('--expected-case-names',
     help='Forward the exact requested case identities to full-array submission')
+parser.add_argument('--peer-tag', action='append', default=[],
+    help='Also rebalance an independently startup-gated array within the aggregate GPU cap')
 args = parser.parse_args()
 tag = args.tag
 receipt = json.loads((base/'reports'/f'{tag}_startup_submission.json').read_text())
@@ -66,6 +68,10 @@ while True:
                     stream.seek(max(0, log.stat().st_size-12000))
                     print(stream.read().decode('utf8', 'replace'), flush=True)
         raise SystemExit('PHYSICAL_JOB_FAILED: inspect preserved log and repair before resubmission')
+    for peer_tag in args.peer_tag:
+        subprocess.run([str(root/'.venv/bin/python'),
+            str(base/'scripts/rebalance_chunk_v2_20261018.py'), '--tag', peer_tag],
+            check=True, stdout=subprocess.DEVNULL)
     pending_start = [r for r in ours if r[0]==startup and r[2]=='PENDING']
     if pending_start:
         dependency = ('?'.join('afterany:'+':'.join(row[0] for row in group)

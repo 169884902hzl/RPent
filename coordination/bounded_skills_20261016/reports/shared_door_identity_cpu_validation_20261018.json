@@ -1,0 +1,49 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit_tests/robots/libero/test_v5_microwave_identity.py",
+    "tests/unit_tests/robots/libero/test_v5_fixture_parts.py",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "wall_s": 151.86944753676653,
+  "log": "coordination/bounded_skills_20261016/reports/shared_door_identity_cpu_tests_20261018.log.gz",
+  "raw_log_sha256": "db55e93a2ce492bbaf8b4d235464a7ab62d4c00b04cab09a22f65237c3144b57",
+  "log_sha256": "c672c0c04f6590d41c98f9664854849dd1b6b91d4b2f3348c900b46a2f50ff5b",
+  "source_sha256": {
+    "robots/libero/v5_fixture_parts.py": "2462477463e12bff2f54f747fd5d156eadf16ee3dd4097b6ad68cdb92bfc793a",
+    "robots/libero/v5_runtime.py": "eb1c55dfd20790beb55d6761816f66f12221b8ad93d2d8a934461a4ab26a8873",
+    "tests/unit_tests/robots/libero/test_v5_microwave_identity.py": "be62eb39831073da56d41b0181491a48829c4bf3a341ae3f0f5c7e80b5161886"
+  },
+  "scope": "CPU regression; physical success not established",
+  "gpu_used": false,
+  "physics_steps": 0,
+  "final_metadata_regression": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/unit_tests/robots/libero/test_v5_microwave_identity.py",
+      "-q"
+    ],
+    "exit_code": 0,
+    "wall_s": 0.7716394020244479,
+    "log": "coordination/bounded_skills_20261016/reports/shared_door_identity_final_metadata_tests_20261018.log.gz",
+    "raw_log_sha256": "bc99b176a6e8731eb8b15b449a2001dae9aff029921a05208a4c76e650374933",
+    "log_sha256": "a26c61f8718cc743f2c802da5a3115585c376785c80866d4c60ac0c068b019b6",
+    "change": "canonical ID propagated to each camera measurement and provenance",
+    "source_sha256": {
+      "robots/libero/v5_fixture_parts.py": "2462477463e12bff2f54f747fd5d156eadf16ee3dd4097b6ad68cdb92bfc793a",
+      "robots/libero/v5_runtime.py": "b63d021fcad3762a480d5a9c90e434d21a1dd6cd7222a64ec115b09009b86d47",
+      "tests/unit_tests/robots/libero/test_v5_microwave_identity.py": "c59b42f1e4329faa8bef75c97d6b2152b54b4d1b999ab267b0c60340a95706a2"
+    }
+  },
+  "source_commit": "452e7751cc73a60d21e70660726b278a86522392",
+  "archive": "bounded_chunk_v3_shared_door_20261018_452e775.tar.gz",
+  "archive_sha256": "27797b90f32d9f0d62e22fba0c59ccc03e27fa04d54e6498fe4d9ae3c12b6e26",
+  "ruff_added_diagnostics": 0
+}
