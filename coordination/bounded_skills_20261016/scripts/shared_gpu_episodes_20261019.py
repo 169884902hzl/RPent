@@ -1,6 +1,7 @@
 """Run isolated episode processes against one owned SAM3 service per GPU job.
 
-This launcher imports immutable skill/planning code; it never patches it.
+This launcher imports immutable skill/planning code. Its D2-only snapshot
+compatibility hook restores solver warmstart after observation rebuilding.
 """
 from __future__ import annotations
 
@@ -54,11 +55,40 @@ class TimedRPC:
             self.log.flush()
 
 
+def bootstrap_source(domain):
+    if domain=='d2':
+        # The frozen environment module sets/checks its GL bootstrap before
+        # importing MuJoCo. Load it before the diagnostic's helper imports.
+        import robots.libero.env_server
+
+
+def install_d2_restore_compatibility():
+    """Preserve saved solver input after the diagnostic rebuilds observations.
+
+    MuJoCo forward rewrites qacc_warmstart. Restoring it last changes neither
+    the observation nor a control, and keeps the frozen strict snapshot check.
+    This hook is private to the owned D2 launcher, never an action/skill patch.
+    """
+    from functools import wraps
+    from robots.libero import v5_branch_state
+
+    original = v5_branch_state.restore_actuators
+
+    @wraps(original)
+    def restore(wrapper, saved):
+        observed = original(wrapper, saved)
+        wrapper.env.sim.data.qacc_warmstart[:] = saved['data']['qacc_warmstart']
+        return observed
+
+    v5_branch_state.restore_actuators = restore
+
+
 def worker(args):
+    assignment = json.loads(args.assignment.read_bytes())
+    bootstrap_source(assignment['domain'])
     from rpent.utils.rpc.http_rpc import HttpRpcClient
     from scripts.probe_bounded_feasibility import episode, probe_config
 
-    assignment = json.loads(args.assignment.read_bytes())
     manifest = Path(assignment['manifest']['path'])
     assert digest(manifest) == assignment['manifest']['sha256']
     plan = json.loads(manifest.read_bytes())
@@ -83,6 +113,7 @@ def worker(args):
                 result = episode(case, 'oracle_k4', endpoints, output/(case['name']+'_oracle_k4'),
                                  config, startup=assignment['startup'])
             else:
+                install_d2_restore_compatibility()
                 from scripts.probe_bounded_hybrid_d2 import evaluate_case
                 result = evaluate_case(case, endpoints, output/case['name'], plan,
                                        startup=assignment['startup'])
@@ -378,6 +409,7 @@ def main():
     sys.path.insert(0,str(args.source))
     if args.worker:
         return worker(args)
+    bootstrap_source(args.domain)
     from scripts.probe_bounded_feasibility import services, probe_config
     from scripts.v5_probe_preflight import load_pinned_manifest, validate_registered_states
     import psutil

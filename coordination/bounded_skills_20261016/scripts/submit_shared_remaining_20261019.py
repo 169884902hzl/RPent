@@ -14,19 +14,25 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--preparation',type=Path,required=True)
     parser.add_argument('--full',action='store_true')
+    parser.add_argument('--domain',choices=('original','d2'),
+        help='Admit a domain as soon as its own real startup has passed')
     args=parser.parse_args()
     root=args.preparation.resolve(strict=True)
     prep=json.loads((root/'preparation.json').read_bytes())
     mode='full' if args.full else 'startup'
-    receipt=root/(mode+'_submission.json')
+    receipt=root/(mode+('_'+args.domain if args.domain else '')+'_submission.json')
     assert not receipt.exists(),'Use existing submission receipt'
     plan_path=root/('batch_plan.json' if args.full else 'startup_plan.json')
     plan=json.loads(plan_path.read_bytes())
     startup_proofs=[]
     if args.full:
-        startup=json.loads((root/'startup_submission.json').read_bytes())
+        domain_receipt=root/f'startup_{args.domain}_submission.json'
+        startup_path=domain_receipt if args.domain and domain_receipt.exists() else root/'startup_submission.json'
+        startup=json.loads(startup_path.read_bytes())
         startup_plan=json.loads((root/'startup_plan.json').read_bytes())
         for index,batch in enumerate(startup_plan['batches']):
+            if args.domain and batch['domain']!=args.domain:
+                continue
             job=startup['job']+'_'+str(index)
             state=subprocess.check_output(['sacct','-X','-n','-j',job,
                 '--format=State,ExitCode','-P'],text=True).strip()
@@ -51,16 +57,18 @@ def main():
     assert len(active)<=4 and all(row[3]=='node02' for row in active)
     dependency=('?'.join('afterany:'+':'.join(row[0] for row in group)
         for group in itertools.combinations(active,len(active)-cap+1)) if len(active)>=cap else None)
-    throttle=max(1,min(len(plan['batches']),cap-len(active)))
+    indices=[i for i,batch in enumerate(plan['batches']) if not args.domain or batch['domain']==args.domain]
+    assert indices and (not args.full or startup_proofs)
+    throttle=max(1,min(len(indices),cap-len(active)))
     arguments=['sbatch','--parsable','--nodelist=node02','--nice=500','--export=ALL',
-        '--array=0-'+str(len(plan['batches'])-1)+'%'+str(throttle),
+        '--array='+','.join(map(str,indices))+'%'+str(throttle),
         *(['--dependency='+dependency] if dependency else []),
         str(Path(prep['launcher_directory'])/'run_shared_batch_20261019.sbatch')]
     env=dict(os.environ,BATCH_PLAN=str(plan_path),
         LAUNCHER=str(Path(prep['launcher_directory'])/'shared_gpu_episodes_20261019.py'),
         STARTUP='0' if args.full else '1')
     job=subprocess.check_output(arguments,cwd=ROOT,env=env,text=True).strip().split(';')[0]
-    report={'job':job,'mode':mode,'command':arguments,'plan':str(plan_path),
+    report={'job':job,'mode':mode,'domain':args.domain,'indices':indices,'command':arguments,'plan':str(plan_path),
         'launcher_directory':prep['launcher_directory'],'source_commits':prep['source_commits'],
         'aggregate_cap':cap,'startup_proofs':startup_proofs,'codex2_gpu':c2,
         'cpu_per_job':20,'memory_per_job':'140G','training':False,'confirmation':False}

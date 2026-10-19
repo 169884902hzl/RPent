@@ -91,10 +91,16 @@ def build(args):
         'selection':'all uncompleted original indices; no filtering by task success; all 40 D2 registered cases'}
     write_new(args.output/'batch_plan.json',production)
     startup={'selected_n':min(n,4),'batches':[],'training':False,'confirmation':False}
+    study_launch=json.loads((args.study_output/'launch.json').read_bytes())
     for domain,ref,indices in domains:
         if indices:
             batch=next(batch for batch in batches if batch['domain']==domain)
-            startup['batches'].append({**batch,'indices':batch['indices'][:4]})
+            # Startup is an interface check, not a new cohort result. Keep
+            # the same registered original smoke states already exercised
+            # by the throughput study, and the first two fixed D2 cases.
+            startup_indices=study_launch['indices'][:4] if domain=='original' else indices[:2]
+            startup['batches'].append({**batch,'indices':startup_indices})
+    startup['scope']='physical interface startup only; excluded from original220 and D2 outcome counts'
     write_new(args.output/'startup_plan.json',startup)
     launcher=BASE/'scripts/shared_gpu_episodes_20261019.py'
     frozen=ROOT/('launcher_shared_20261019_'+sha(launcher)[:12])

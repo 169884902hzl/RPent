@@ -127,6 +127,50 @@ def test_offline_finalizer_recounts_failed_episodes_and_requires_complete_n1(tmp
     with pytest.raises(FileNotFoundError):module.finalize(root,study_path,launcher)
 
 
+def test_d2_worker_bootstraps_environment_before_helper_imports(tmp_path):
+    source=tmp_path/'source';source.mkdir()
+    for package in ['scripts','rpent','rpent/utils','rpent/utils/rpc','robots','robots/libero']:
+        p=source/package;p.mkdir(parents=True,exist_ok=True);(p/'__init__.py').write_text('')
+    (source/'rpent/utils/rpc/http_rpc.py').write_text('class HttpRpcClient:\n    def __init__(self,url):self._base_url=url\n')
+    (source/'robots/libero/env_server.py').write_text("import sys\nassert 'mujoco' not in sys.modules, 'environment imported too late'\nBOOTSTRAPPED=True\n")
+    (source/'robots/libero/v5_branch_state.py').write_text('def restore_actuators(*a): raise AssertionError()\n')
+    (source/'mujoco.py').write_text('SIMULATOR_IMPORTED=True\n')
+    (source/'scripts/probe_bounded_feasibility.py').write_text('import mujoco\ndef probe_config(base):return base\ndef episode(*a,**kw):raise AssertionError()\n')
+    (source/'scripts/probe_bounded_hybrid_d2.py').write_text('''
+from robots.libero.env_server import BOOTSTRAPPED
+def evaluate_case(case,endpoints,output,plan,*,startup):
+    assert BOOTSTRAPPED
+    return {'status':'physical_result','actual_full_replay_success':True}
+''')
+    cases=[{'name':f'case{i}'} for i in range(2)]
+    plan={'source_commit':'pinned','cases':cases};manifest=tmp_path/'manifest.json';manifest.write_text(json.dumps(plan))
+    output=tmp_path/'out';output.mkdir()
+    args=SimpleNamespace(source=source,manifest=manifest,output=output,domain='d2',startup=False)
+    result=launcher.run_level(args,plan,[0,1],{'sam3':SimpleNamespace(_base_url='http://127.0.0.1:1234')},
+        2,SimpleNamespace(stage=None,summary=lambda _:{}))
+    assert result['worker_errors']==0 and result['physical_episodes']==2
+    assert result['successful_episodes']==2
+
+
+def test_d2_restore_preserves_warmstart_after_forward(monkeypatch):
+    import numpy as np
+    original_values = np.array([.125, -.25])
+    data=SimpleNamespace(qacc_warmstart=original_values.copy())
+    wrapper=SimpleNamespace(env=SimpleNamespace(sim=SimpleNamespace(data=data)))
+    observation={'rgb':'unchanged'}
+    def original_restore(wrapper,saved):
+        # The actual MuJoCo CPU reproduction showed forward changes solver input.
+        wrapper.env.sim.data.qacc_warmstart[:]=[.12,-.24]
+        return observation
+    state=SimpleNamespace(restore_actuators=original_restore)
+    package=SimpleNamespace(v5_branch_state=state)
+    monkeypatch.setitem(sys.modules,'robots.libero',package)
+    launcher.install_d2_restore_compatibility()
+    assert state.restore_actuators(wrapper,{'data':{'qacc_warmstart':original_values}}) is observation
+    assert np.array_equal(data.qacc_warmstart,original_values)
+    assert state.restore_actuators.__wrapped__ is original_restore
+
+
 @pytest.mark.parametrize('with_failure',[False,True])
 def test_real_subprocesses_isolate_episode_globals_and_retain_failures(tmp_path,with_failure):
     source=tmp_path/'source';source.mkdir()
@@ -189,6 +233,7 @@ def validate_registered_states(cases):
 ''')
     (source/'robots').mkdir();(source/'robots/__init__.py').write_text('')
     (source/'robots/libero').mkdir();(source/'robots/libero/__init__.py').write_text('')
+    (source/'robots/libero/env_server.py').write_text('')
     (source/'robots/libero/bounded_hybrid_diagnostic.py').write_text(
         'def validate_d2_episode(episode): pass\n')
     bddl=tmp_path/'original.bddl';bddl.write_text('registered original scene')
