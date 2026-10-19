@@ -1,0 +1,40 @@
+{
+  "tested_parent_commit": "de839610f576058e4128d8653e0a878af4993249",
+  "root_cause": "event-count-only snapshots cannot restore success event contents after sibling truncation or replacement; client stop flags were reset unconditionally",
+  "reproduction": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit_tests/robots/libero/test_bounded_hybrid_diagnostic.py",
+      "-k",
+      "checkpoint_restores"
+    ],
+    "exit_code": 1,
+    "summary": "1 failed, 8 deselected; sibling event persisted instead of saved endpoint event"
+  },
+  "verification": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit_tests/robots/libero/test_bounded_hybrid_diagnostic.py",
+      "tests/unit_tests/robots/libero/test_bounded_hybrid_summary.py"
+    ],
+    "exit_code": 0,
+    "summary": "15 passed, 1 warning in 0.42s"
+  },
+  "warning": "PytestConfigWarning: Unknown config option: timeout",
+  "raw_log_saved": false,
+  "files": {
+    "scripts/probe_bounded_hybrid_d2.py": "e8614e0508f4315bbf91b4b6dfca7ff4e1bd4e85802009317c4e0d64a30b1179",
+    "tests/unit_tests/robots/libero/test_bounded_hybrid_diagnostic.py": "884eccbea7393e1b924d3e9ef43a595338ee6490849b9d2320a948fde8adad2d",
+    "SKILL_PACKAGE_SPEC.md": "f392ba89edb29df73f4d20894e8c5ba46d1b4ac3dc9bd3d19adae9d5dcb53365"
+  },
+  "public_schema_changed": false,
+  "gpu_used": false,
+  "physics_steps": 0,
+  "training": false
+}

@@ -122,15 +122,22 @@ def runtime(case, endpoints, output):
 
 def save_checkpoint(facade, adapter, policy, path, request=None):
     saved = {"physics": facade.snapshot(), "public_runtime": capture_runtime(adapter, policy),
+             "private_native_success_events": copy.deepcopy(facade._native_success_events),
+             "client_stop_flags": {"terminated": adapter.p.env.terminated,
+                                   "truncated": adapter.p.env.truncated},
              "request": request, "model_visible": False, "training": False}
     path.write_bytes(pickle.dumps(saved, protocol=5))
     return saved, {**reference(path), "physics_sha256": snapshot_digest(saved["physics"])}
 
 
 def restore_checkpoint(facade, adapter, policy, saved):
+    # The facade can truncate history to a prefix, but a count cannot restore
+    # an endpoint after sibling branches removed or replaced those events.
+    facade._native_success_events = copy.deepcopy(saved["private_native_success_events"])
     observed = facade.restore(saved["physics"])
     adapter.p.env.last_obs = observed
-    adapter.p.env.terminated = adapter.p.env.truncated = False
+    adapter.p.env.terminated = saved["client_stop_flags"]["terminated"]
+    adapter.p.env.truncated = saved["client_stop_flags"]["truncated"]
     adapter.p.set_obs(observed)
     restore_runtime(adapter, policy, saved["public_runtime"])
     if snapshot_digest(facade.snapshot()) != snapshot_digest(saved["physics"]):

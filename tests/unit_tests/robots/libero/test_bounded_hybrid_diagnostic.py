@@ -77,6 +77,48 @@ def test_physical_identity_includes_controller_and_counter_state():
     assert snapshot_digest(first) != snapshot_digest(first | {"counter": 11})
 
 
+def test_checkpoint_restores_success_history_and_client_stops_after_sibling(tmp_path):
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    class Facade:
+        def __init__(self):
+            self._native_success_events = []
+            self.steps = 0
+
+        def snapshot(self):
+            return {"sim_state": [1.], "counters": {"_elapsed_steps": self.steps},
+                    "native_success_event_count": len(self._native_success_events)}
+
+        def restore(self, state):
+            self.steps = state['counters']['_elapsed_steps']
+            self._native_success_events = self._native_success_events[
+                :state['native_success_event_count']]
+            return {"restored": True}
+
+    facade = Facade()
+    env = SimpleNamespace(terminated=False, truncated=False)
+    primitive = SimpleNamespace(env=env, set_obs=lambda *_: None)
+    scene = SimpleNamespace(toolkit=object(), rpc=object(), entities={})
+    adapter = SimpleNamespace(ex=object(), p=primitive, scene=scene, held=None)
+    policy = SimpleNamespace(binding=SimpleNamespace(rpc=object()), private_trace=[])
+    initial, _ = probe.save_checkpoint(facade, adapter, policy, tmp_path/'initial.pkl')
+    facade.steps = 12
+    facade._native_success_events.append({'elapsed_steps': 12, 'raw_termination': True})
+    env.terminated = True
+    endpoint, _ = probe.save_checkpoint(facade, adapter, policy, tmp_path/'endpoint.pkl')
+    probe.restore_checkpoint(facade, adapter, policy, initial)
+    assert not env.terminated and facade._native_success_events == []
+    # A sibling branch can replace the diagnostics after the endpoint was saved.
+    facade._native_success_events.append({'elapsed_steps': 7, 'raw_termination': False})
+    env.truncated = True
+    probe.restore_checkpoint(facade, adapter, policy, endpoint)
+    assert facade._native_success_events == [{'elapsed_steps': 12, 'raw_termination': True}]
+    assert env.terminated and not env.truncated and facade.steps == 12
+    facade._native_success_events[0]['elapsed_steps'] = 99
+    probe.restore_checkpoint(facade, adapter, policy, endpoint)
+    assert facade._native_success_events[0]['elapsed_steps'] == 12
+
+
 def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, monkeypatch):
     from scripts import probe_bounded_hybrid_d2 as probe
 
