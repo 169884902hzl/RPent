@@ -1,0 +1,126 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_lost_binding_20261018_3df760d0",
+  "before_report": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/drawer9248_192_terminal_CPU_20261018.json",
+  "before_report_sha256": "c67f0c444d94601dce8f565747721bd7c5147640521fd47457330516c0627177",
+  "context": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_192/drawer_open_libero_goal_t0_s17_oracle_k4/private_prefix_state_0009.pkl.gz",
+    "sha256": "a30f4f18b04c8841f36394e1b891721d2de53dbc66809ef26743d9279407df10",
+    "version": "libero-offline-prefix-label/1",
+    "request_sha256": "9f3ee2246abfee3eb0dd42ec8a9550b2d8bd3e85076afd95bf7ed2f677b30040",
+    "model_visible": false
+  },
+  "request_sha256": "9f3ee2246abfee3eb0dd42ec8a9550b2d8bd3e85076afd95bf7ed2f677b30040",
+  "before": {
+    "version": "libero-offline-prefix-label/1",
+    "legality_version": "public-request-legal/2",
+    "request_sha256": "9f3ee2246abfee3eb0dd42ec8a9550b2d8bd3e85076afd95bf7ed2f677b30040",
+    "observation_id": "public-9",
+    "revision": 9,
+    "prefix": [],
+    "legal": [
+      "af866c584b96de88",
+      "7f56ae3f4c8b42af",
+      "987434631f6c114e",
+      "1491d75e66b081aa",
+      "825cb73a9c032a28"
+    ],
+    "rule_acceptable": [],
+    "selected": null,
+    "measured_success": [],
+    "measured_failure": [],
+    "judge": "libero-private-task-progress-rules/12",
+    "model_visible": false,
+    "physics_steps": 0,
+    "gpu_used": false,
+    "conditional_on_receipt_checks": [],
+    "requires_measurement": false,
+    "status": "no_acceptable_public_option"
+  },
+  "after": {
+    "version": "libero-offline-prefix-label/1",
+    "legality_version": "public-request-legal/2",
+    "request_sha256": "9f3ee2246abfee3eb0dd42ec8a9550b2d8bd3e85076afd95bf7ed2f677b30040",
+    "observation_id": "public-9",
+    "revision": 9,
+    "prefix": [],
+    "legal": [
+      "af866c584b96de88",
+      "7f56ae3f4c8b42af",
+      "987434631f6c114e",
+      "1491d75e66b081aa",
+      "825cb73a9c032a28"
+    ],
+    "rule_acceptable": [
+      "af866c584b96de88"
+    ],
+    "selected": "af866c584b96de88",
+    "measured_success": [],
+    "measured_failure": [],
+    "judge": "libero-private-task-progress-rules/13",
+    "model_visible": false,
+    "physics_steps": 0,
+    "gpu_used": false,
+    "conditional_on_receipt_checks": [],
+    "requires_measurement": false,
+    "status": "labeled",
+    "predicted_robot": {
+      "eef_xyz_m": [
+        0.041057371708756916,
+        -0.13083314109952765,
+        1.0173591612548882
+      ],
+      "eef_quat_xyzw": [
+        -0.0036356588690790725,
+        0.7107699052708989,
+        -0.7034007760693064,
+        0.004502440547266978
+      ],
+      "gripper_opening_m": 0.01748162699637444,
+      "held_anchor_id": null,
+      "velocity_m_s": null
+    }
+  },
+  "cpu_s": 0.8054860830307007,
+  "selected_candidate": {
+    "id": "af866c584b96de88",
+    "skill": "set_gripper",
+    "parameters": {
+      "mode": "open"
+    },
+    "consequences": {
+      "path_min_clearance_m": null,
+      "collision": null,
+      "ik_reachable": null,
+      "expected_width_m": null,
+      "expected_gripper_opening_m": 0.08,
+      "expected_steps": 15,
+      "screen_scope": "nonmotion",
+      "evidence_ids": []
+    },
+    "history": null,
+    "recent_failures": 0,
+    "last_failure": null,
+    "expected_receipt": [
+      {
+        "metric": "gripper_opening_m",
+        "anchor_id": null,
+        "minimum": 0.075,
+        "maximum": 0.085
+      },
+      {
+        "metric": "released",
+        "anchor_id": null,
+        "minimum": 1.0,
+        "maximum": 1.0
+      }
+    ]
+  },
+  "public_legal_unchanged": true,
+  "physics_steps": 0,
+  "rpc_calls": 0,
+  "gpu_used": false,
+  "training": false,
+  "confirmation": false,
+  "scope": "cross-source frozen-context CPU regression; not physical replay or training labels",
+  "script_sha256": "71408b11e0c957c6856cf5ed522f2f2fd0ae7b7c5fe3352f9423f48fc69e79da"
+}
