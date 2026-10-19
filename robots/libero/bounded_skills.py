@@ -51,7 +51,7 @@ from robots.libero.v5_grasp_geometry import (
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_state import fixture_actions
-from robots.libero.v5_subtasks import measured_instance_description, subtask_phrase
+from robots.libero.v5_subtasks import PI05_PROMPT_VERSION, pi05_instance_description, subtask_phrase
 from rpent.skill_package import VERSION
 from rpent.skill_package.contract import (
     FailureMemory,
@@ -2753,11 +2753,11 @@ class MeasuredSkillAdapter:
             raise ValueError("call_vla disabled for the oracle upper-bound diagnostic")
         source = self.scene.entities[parameters["anchor_id"]]
         mode = parameters["mode"]
-        name = measured_instance_description(source, self.scene.entities, self.scene.view_axes)
+        name = pi05_instance_description(source, self.scene.entities, self.scene.view_axes)
         target = self.scene.entities.get(parameters.get("target_id"))
         targeted = getattr(self, 'targeted_vla_measurement_v1', False)
         monitor_names = self._vla_measurement_names(source, target) if targeted else None
-        target_name = measured_instance_description(target, self.scene.entities, self.scene.view_axes) if target else None
+        target_name = pi05_instance_description(target, self.scene.entities, self.scene.view_axes) if target else None
         prompt = f"pick up the {name}" if mode == "pick" else subtask_phrase(name, mode, target_name)
         initial = source
         initial_step = self.p.env.execution_budget()["used_sim_steps"]
@@ -2886,7 +2886,7 @@ class MeasuredSkillAdapter:
                     self.held = self.active = None
             elif mode == 'pick':
                 self.held = None
-        result["template"] = {"version": "measured-libero-subtask/2-selected-instance", "mode": mode, "prompt": prompt}
+        result["template"] = {"version": PI05_PROMPT_VERSION, "mode": mode, "prompt": prompt}
         result['payload_reference_capture_step'] = (vla_payload_reference['capture_step']
             if vla_payload_reference is not None else None)
         result['payload_reference_artifacts'] = (vla_payload_reference.get('artifacts')

@@ -1,8 +1,8 @@
-e120c61f 六条已闭合：6/6 停稳且生成后继请求；3 条后继技能实际步进，3 条 observe 在零步时被碰撞检查拒绝。17401000 交还后 carry_to→release 原生成功，不代表 D2 整局上限。
-六分支 SAM RPC 占墙钟约 91–95%；25 控制步例共 961.88 秒，其中 SAM 877.40 秒、推理 1.16 秒、交还 0.23 秒、私有计量 0.13 秒。
-旧快照漏采样缓存/相位，不能复原历史 π 输入；bb1a691c 补时钟与缓存，CPU 八种历史完整恢复的 qpos 和公开夹爪差异均为 0，50 项聚焦测试通过。
-bb1a691c 三设置真实首步预检通过，实际输入和预测哈希相同；12 条正式诊断 10593 排队。原版 71 状态 CPU 预检通过，startup10590 排队；按需测量 startup10594 排队，两个正式数组均未提交。
-三个绑定失败归因为公开同类误检歧义，已接合法观察恢复，物理恢复待验证；D2 不进训练/history/memory，确认状态永久排除，无训练。
+e120c61f 六条已闭合：6/6 停稳且生成后继请求；3 条后继实际步进，3 条扫描零步拒绝。17401000 交还后 carry_to→release 原生成功，不能当 D2 整局上限。
+发现新的通用提示词坐标系错误：测量图与实际 Pi0.5 图精确左右镜像，e75 在 Pi 图为右侧却叫 leftmost；端点双指接触另一只碗。已修提示方向转换，333 项 CPU 回归通过，物理验证待新快照。
+bb1a691c 的10593/10598已停且保留全部部分记录；旧10597窄监测两状态闭合0/2，但旧方向词有错，不能用于停止规则结论或推广窄测量。原版220仍独立闭合131/220。
+观测缓存/采样相位修复已完成；新源三设置首步输入与预测相同。历史旧快照仍无法补回原相位，不能把旧新动作差异归因于单一修复。
+三个绑定失败归因公开同类误检歧义，已接合法观察恢复；D2不进训练/history/memory，确认状态永久排除，无训练。
 
 ## 当前指令与身份
 
@@ -82,3 +82,13 @@ D2真实首步已在自有10446_6分配中完成：`owned_startup_10446_6_r2`三
 - 原版71状态10项CPU预检通过，独立 startup10590；目录 `results/bounded_skills/original_hybrid_forks_20261019/bb1a691c/preparation`，manifest SHA `b4f09cb09df18a00ab3f4a2816808cee97986f5fce790ee37d624ae6cb664726`。正式未提交。附加原版startup10446.5在父原版10446_6自然COMPLETED后被Slurm终止（45秒、CANCELLED 0:15，无首物理证据），收据 `reports/original_owned_startup_interrupted_20261020.json`；后续长分支只用独立分配。
 - 唯一资源控制器 PID2224026，优先10446/10593/10590/10594；日志 `reports/monitor_hybrid_repair_bb1a691c_20261020.log`。旧PID2198110已结束。资源仍仅node02、nice500，≤3 GPU（C2无GPU R/PD才可借第四）、≤80 CPU/600GB，保护rf/c5/c6/held。共享 COORDINATION 已追加六条闭合、wire一致性、新作业ID与附加startup中断，不能整读大文件。
 - 下一步刷新10590/10593/10594的sacct与日志，真实startup通过再放正式；核对完整分支输入/预测共有前缀，不能只看初始物理SHA。原版220已闭合：131/220，worker错误0；分类/Wilson/逐局在 reports/original220_shared_closed_20261020.json 和同名.md，仅登记old164+10446 new56，不混入startup/D2/诊断。
+
+## 10/20 13:27 PDT 提示词坐标系修复（优先于上文在途状态）
+
+证据 `reports/D2_pi05_prompt_frame_CPU_20261020.json`：原始保存的测量图与policy图同为256×256，逐像素精确水平镜像。标定右轴为(0,1,0)，目标e75投影在测量图u126.45 / policy图u128.55，另一碗e118在测量图u233.54 / policy图u21.46。旧提示却为pick up the leftmost bowl。`reports/D2_endpoint_actual_objects_CPU_20261020_r1.json`从8个保存端点恢复真实物理几何，qpos/速度状态最大差0、无物理步/GPU；spatial t2确有另一碗双指接触，目标仍约29cm外。不能继续把这类失败只归因于no_progress阈值。
+
+已停止唯一控制器2282060，并取消自有10593、10598在途/余片，收据 `reports/D2_prompt_frame_stop_old_source_20261020.json`；所有已完成和部分记录保留，不与新方向规则合并。10597旧提示试点两状态均false（253.57秒/522.09秒），完整控制记录保留；旧完整监测对照没闭合，不能宣布窄监测通过或停止规则选定。
+
+新代码只为bounded call_vla生成Pi图方向描述：右轴取反，front/back不变；测量中的area left/right名字同时交换。源/目标ID、公开状态关系、像素输入和机器人状态不动。提示版本为measured-libero-subtask/3-pi05-view，公共schema仍bounded-skills/4。旧v5渲染接口未改。新source待CPU回归通过后提交、快照登记，三设置/原版/窄监测均重新真实startup，再跑原状态原采样种子。无新训练，无PRO专用规则。
+
+提示框架修复 CPU 验证：v5_subtasks、bounded_skills、hybrid diagnostic/repair、branch state、shared launcher 共333项通过（187.98秒），py_compile和diff-check通过。此前两次新测试fixture错误（缺replace导入、错误假设e2存在）已修正；未放宽任何物理判据。

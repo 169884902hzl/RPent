@@ -16,6 +16,7 @@ from robots.libero.v5_state import Candidate, Entity, fixture_actions, relations
 TRANSFER_MODES = ("on", "in")
 FIXTURE_MODES = ("open", "close", "turn_on", "turn_off")
 PROMPT_VERSION = "measured-libero-subtask/2-selected-instance"
+PI05_PROMPT_VERSION = "measured-libero-subtask/3-pi05-view"
 _ALIASES = {"frypan": "frying pan", "barbecue sauce": "bbq sauce"}
 _RELATION_THRESHOLD_M = .02
 
@@ -96,6 +97,26 @@ def measured_instance_description(
             if matching == [selected.id]:
                 return f"{name} that is {words} the {anchor_name}"
     raise SubtaskBindingError(f"cannot uniquely bind selected {selected.id}: {name} has no unique measured description")
+
+
+def pi05_instance_description(
+    selected: Entity, entities: Sequence[Entity] | Mapping[str, Entity],
+    view_axes: tuple[tuple, tuple],
+) -> str:
+    """Name the selected ID in the image orientation actually sent to Pi0.5.
+
+    Calibrated RGB-D uses raw[::-1]; the LIBERO policy uses raw[::-1, ::-1].
+    They differ by a horizontal mirror, so only the measured right axis flips.
+    Public state relations and their camera calibration keep their own axes.
+    """
+    right, front = view_axes
+    policy_axes = (tuple(-value for value in right), tuple(front))
+    description = measured_instance_description(selected, entities, policy_axes)
+    # Relative-area names were already constructed in the measurement frame.
+    for before, after in (("area left of ", "area right of "), ("area right of ", "area left of ")):
+        if description.startswith(before):
+            return after+description[len(before):]
+    return description
 
 
 def _allows_in(target: Entity) -> bool:

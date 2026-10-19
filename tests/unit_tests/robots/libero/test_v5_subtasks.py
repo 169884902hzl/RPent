@@ -3,7 +3,13 @@
 import pytest
 
 from robots.libero.v5_state import Candidate, Entity, relations
-from robots.libero.v5_subtasks import SubtaskBindingError, subtask_candidates, subtask_prompt
+from robots.libero.v5_subtasks import (
+    SubtaskBindingError,
+    measured_instance_description,
+    pi05_instance_description,
+    subtask_candidates,
+    subtask_prompt,
+)
 
 
 def entity(eid, name, x=0, y=0, z=1, **kwargs):
@@ -113,6 +119,27 @@ def test_selected_instance_order_rotates_with_same_public_axes_as_state_relation
     opposite = ((0, -1, 0), (-1, 0, 0))
     assert subtask_prompt(Candidate("vla_subtask", "e98", "e22", "on"), measured, opposite) == (
         "put the rightmost bowl on the plate")
+
+
+def test_pi05_direction_uses_policy_image_instead_of_calibrated_rgbd_image():
+    measured = [entity('target', 'bowl', y=0.), entity('peer', 'bowl', y=.32)]
+    axes = ((0., 1., 0.), (1., 0., 0.))
+    assert measured_instance_description(measured[0], measured, axes) == 'leftmost bowl'
+    assert pi05_instance_description(measured[0], measured, axes) == 'rightmost bowl'
+    assert pi05_instance_description(measured[1], measured, axes) == 'leftmost bowl'
+    assert 'rel target left_of peer' in relations(measured, right_axis=axes[0], front_axis=axes[1])
+    # Front/back is unaffected by the horizontal image mirror.
+    depth_peers = [entity('front', 'bowl', x=.3), entity('back', 'bowl', x=0.)]
+    assert measured_instance_description(depth_peers[0], depth_peers, axes) == 'frontmost bowl'
+    assert pi05_instance_description(depth_peers[0], depth_peers, axes) == 'frontmost bowl'
+
+
+@pytest.mark.parametrize('side,policy_side', [('left', 'right'), ('right', 'left'), ('front', 'front')])
+def test_pi05_relative_area_name_uses_policy_directions_without_changing_anchor(side, policy_side):
+    target = entity('region', f'area {side} of stove')
+    axes = ((0., 1., 0.), (1., 0., 0.))
+    assert pi05_instance_description(target, [target], axes) == f'area {policy_side} of stove'
+    assert target.name == f'area {side} of stove'
 
 
 def test_front_and_ordinal_descriptions_follow_measured_positions():

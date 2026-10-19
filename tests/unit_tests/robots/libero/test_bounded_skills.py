@@ -3110,6 +3110,24 @@ def test_vla_success_lost_during_handoff_is_not_final_success(adapter, monkeypat
     assert adapter.held is None
 
 
+def test_vla_prompt_preserves_selected_identity_in_the_policy_image_frame(adapter, monkeypatch):
+    from dataclasses import replace
+
+    adapter.allow_vla = True
+    adapter.scene.view_axes = ((0., 1., 0.), (1., 0., 0.))
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='bowl', xyz=(0., 0., 1.))
+    adapter.scene.entities['e2'] = replace(adapter.scene.entities['e1'], id='e2', xyz=(0., .32, 1.))
+    captured = {}
+    def fallback(**kwargs):
+        captured['prompt'] = kwargs['prompt']
+        return {'outcome': 'failure', 'stop_reason': 'probe'}
+    monkeypatch.setattr('robots.libero.bounded_skills.run_fallback', fallback)
+    result = adapter.call_vla({'anchor_id': 'e1', 'mode': 'pick'})
+    assert captured['prompt'] == 'pick up the rightmost bowl'
+    assert result['template']['version'] == 'measured-libero-subtask/3-pi05-view'
+    assert adapter.scene.view_axes == ((0., 1., 0.), (1., 0., 0.))
+
+
 @pytest.mark.parametrize('opening,move_after_lift,expected', [
     (.00458, True, True), (.0018, True, False), (.079, True, False), (.00458, False, False),
 ])
