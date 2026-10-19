@@ -1,0 +1,36 @@
+{
+  "time_pacific": "2026-10-18T21:06:20.569637-07:00",
+  "scope": "CPU regression, physical replay pending; semantic door identity unresolved",
+  "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_v5_format_repair.py tests/unit_tests/robots/libero/test_v5_microwave_door_temporal.py tests/unit_tests/robots/libero/test_v5_microwave_identity.py tests/unit_tests/robots/libero/test_v5_microwave_door_tracking.py tests/unit_tests/robots/libero/test_v5_microwave_capture.py tests/unit_tests/robots/libero/test_v5_fixture_parts.py tests/unit_tests/robots/libero/test_v5_microwave_handle_orientation.py tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_offline_labels.py",
+  "exit_code": 0,
+  "passed": 458,
+  "wall_s": 215.76,
+  "warning": "existing pytest-timeout plugin unavailable; unknown timeout config",
+  "focused": {
+    "passed": 5,
+    "deselected": 28,
+    "wall_s": 0.11
+  },
+  "measurement_basis": "measured_static_patch_exclusion_and_panel_consensus/2-dev",
+  "fields_added_to_geometry_diagnostics": [
+    "fixed_reference_available",
+    "motion_established"
+  ],
+  "public_schema": "bounded-skills/3",
+  "public_legality": "public-request-legal/2",
+  "private_judge": "libero-private-task-progress-rules/13",
+  "files": {
+    "robots/libero/v5_verification.py": "c55f8f7c5166d108642ec7c14c71d2385bf4336700fffeb7cf9f0c07cbd55a44",
+    "tests/unit_tests/robots/libero/test_v5_format_repair.py": "9336090793a599ceb76ef05b18f75d5dc27ea53c25f5a842816eb163805a5f35",
+    "rpent/skill_package/schema.json": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+    "rpent/skill_package/contract.py": "7e898e3bd4e8f4c7a4e9951d897cc1fe682037ee35ee4d6d5cc1f52606e2f49c",
+    "robots/libero/bounded_oracle.py": "c6057acd0056d940b1c03235c2d54a27e3750161e16f8a8936f0af45db70cc89"
+  },
+  "log": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/panel_consensus_cpu_20261019.log",
+    "sha256": "28c01add9954ebcfd9c36a8898bd86851ad4eae80be2126748462ce50bd71acb"
+  },
+  "training": false,
+  "confirmation": false,
+  "gpu_used": false
+}

@@ -235,19 +235,37 @@ def test_door_panel_separates_a_fixed_reference_and_a_protruding_handle():
     assert measured_fixture_endpoint(before, after, "close", drawer=False)[0] is True
 
 
-def test_panel_consensus_preserves_unknown_without_a_reference_or_unique_plane():
+def test_panel_consensus_fits_without_a_fixed_frame_but_does_not_prove_motion():
+    from robots.libero.v5_verification import moving_panel_points
+
+    panel = np.array([(x, .246, z) for x in np.linspace(-.17, .08, 25)
+                      for z in np.linspace(.94, 1.10, 25)])
+    handle = np.array([(x, .285, z) for x in np.linspace(-.10, -.03, 15)
+                       for z in np.linspace(.94, 1.10, 15)])
+    cloud = np.concatenate([panel, handle])
+    assert vertical_face(cloud) is None
+    selected, evidence = moving_panel_points(cloud, None)
+    assert np.array_equal(selected, panel)
+    assert vertical_face(selected) is not None
+    assert evidence['fixed_reference_available'] is False
+    assert evidence['motion_established'] is False
+    assert 'fixed_patch_source_step' not in evidence
+    # A planar semantic mask alone still cannot establish an open endpoint.
+    sample = {'source_step': 1, 'moving': vertical_face(selected), 'frame': None}
+    assert measured_fixture_endpoint(sample, {**sample, 'source_step': 2},
+                                     'open', drawer=False)[0] is None
+
+
+@pytest.mark.parametrize('reference', [False, True])
+def test_panel_consensus_preserves_unknown_without_a_unique_plane(reference):
     from robots.libero.v5_verification import moving_panel_points
 
     def patch(depth):
         return np.array([(x, depth, z) for x in np.linspace(-.17, .08, 25)
                          for z in np.linspace(.94, 1.10, 25)])
     cloud = np.concatenate([patch(.246), patch(.286)])
-    unchanged, evidence = moving_panel_points(cloud, None)
-    assert np.array_equal(unchanged, cloud)
-    assert evidence["reason"] == "no_independent_fixed_patch"
-    assert vertical_face(unchanged) is None
     anchor = {"lower": [.09, .243, .947], "upper": [.17, .252, 1.095], "source_step": 0}
-    selected, evidence = moving_panel_points(cloud, anchor)
+    selected, evidence = moving_panel_points(cloud, anchor if reference else None)
     assert len(selected) == 0
     assert evidence["reason"] == "dominant_vertical_panel_not_measured"
     assert evidence["panel_fraction"] < .55

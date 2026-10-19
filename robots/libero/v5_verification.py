@@ -150,27 +150,28 @@ def vertical_face(points):
 
 
 def moving_panel_points(points, fixed_anchor):
-    """Remove an observed static frame and fit the dominant moving panel.
+    """Fit a segmented panel, excluding an observed static frame when available.
 
     A SAM door mask can include its handle and the fixed appliance front.
-    The reference patch must have been independently measured while the door
-    was open. Keep the existing plane residual and extent checks; an ambiguous
-    or weakly supported plane stays unknown.
+    A reference patch must be independently measured; none is invented when
+    missing. Plane fitting alone establishes neither motion nor door identity.
+    Keep the existing plane residual and extent checks; an ambiguous or weakly
+    supported plane stays unknown.
     """
     points = np.asarray(points, dtype=float)
     points = points[np.isfinite(points).all(axis=1)]
-    evidence = {"basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
-                "input_points": len(points)}
-    if fixed_anchor is None:
-        return points, {**evidence, "reason": "no_independent_fixed_patch"}
-    lo, hi = np.asarray(fixed_anchor["lower"]), np.asarray(fixed_anchor["upper"])
-    static = ((points[:, :2] >= lo[:2] - .01)
-              & (points[:, :2] <= hi[:2] + .01)).all(axis=1)
-    points = points[~static]
-    evidence.update(fixed_patch_excluded=int(static.sum()),
-                    fixed_patch_source_step=fixed_anchor["source_step"])
-    if np.mean(static) >= .5:
-        return points[:0], {**evidence, "reason": "mask_is_mostly_the_fixed_reference"}
+    evidence = {"basis": "measured_static_patch_exclusion_and_panel_consensus/2-dev",
+                "input_points": len(points), "fixed_reference_available": fixed_anchor is not None,
+                "motion_established": False}
+    if fixed_anchor is not None:
+        lo, hi = np.asarray(fixed_anchor["lower"]), np.asarray(fixed_anchor["upper"])
+        static = ((points[:, :2] >= lo[:2] - .01)
+                  & (points[:, :2] <= hi[:2] + .01)).all(axis=1)
+        points = points[~static]
+        evidence.update(fixed_patch_excluded=int(static.sum()),
+                        fixed_patch_source_step=fixed_anchor["source_step"])
+        if np.mean(static) >= .5:
+            return points[:0], {**evidence, "reason": "mask_is_mostly_the_fixed_reference"}
     if len(points) < 60:
         return points[:0], {**evidence, "reason": "moving_panel_not_measured"}
     # Use two horizontally separated measured points for a vertical plane.
