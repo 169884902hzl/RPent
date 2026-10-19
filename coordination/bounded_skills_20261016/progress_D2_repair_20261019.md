@@ -1,3 +1,5 @@
+最新增量：原版杯子首个π分支闭合成功（20531000，56π+134预备+12交还=202步），公开measured_success与私有v3一致，1311.45秒中SAM1055.52秒。该状态1/3采样，全队列只1/213个π结果已知，其余未知。报告original_first_cup_branch_closed_20261020.json。自有step10641.0时限已延长12小时，父分配仍原18小时，仿真预算不变；session71229继续监测。原版全场/目标监测7对实际共有前缀相同（r3报告），完整轨迹尚未闭合。
+
 ## 最新续接（覆盖下文队列号）：10662 + 自有step10641.0
 
 - 10653_0仅pending取消后，batch0在raw JobID10641的step0执行，工具session71229；输出results/bounded_skills/original_measured_forks_20261020/59f7daf8/owned10641_batch0。8个独立进程共用现有模型RPC；不新增GPU，父分配剩余十余小时，父0..3旧任务继续保留。
