@@ -38,6 +38,8 @@ D2 的10439_1在首次动作前恢复哈希失败；CPU重现定位到forward改
 - 同BDD L和保存物理状态的CPU MuJoCo重现：restore中的forward改写`qacc_warmstart`。状态0差39个标量，状态1差50个标量；D2诊断启动层在观测重建后原样写回保存warmstart。完整哈希检查和所有字段保持原样，不改变动作执行规则。
 - 两状态修复后物理/控制器/RNG哈希与保存值精确相同；每个状态重复同一组5步控制，后继哈希也一致。相机关闭、wrapper计数复制的CPU证明不能替代完整GPU分叉检查。
 - 证据：[状态0](reports/D2_restore_CPU_corrected_0_20261019.json)、[状态1](reports/D2_restore_CPU_corrected_1_20261019.json)。复现脚本`check_shared_d2_restore_CPU_20261019.py`。
-- 当前11项CPU测试通过：`.venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_shared_gpu_launcher.py`。包含真实子进程隔离、错误非零退出、固定source预检、GL导入顺序、warmstart恢复、登录节点收尾；既有unknown timeout warning保留。
+- 当前12项CPU测试通过：`.venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_shared_gpu_launcher.py`。包含真实子进程隔离、错误非零退出、固定source预检、GL导入顺序、warmstart恢复、登录节点收尾及正式分母去重；既有unknown timeout warning保留。
 
 所有确认状态永久排除训练。新启动预检和研究重复状态不进入原220或D2结果分母；物理结果以各生产worker完整summary为准。
+
+正式原版汇总脚本：`scripts/summarize_shared_original_20261019.py`（本coordination目录内）。按已登记batch和assignment读取164局旧记录及56局新记录；拒绝重复、startup和错配状态。首个中间快照为172/220已完成、131成功、worker_error=0；尚未完成的48局不记失败。

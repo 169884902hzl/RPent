@@ -171,6 +171,42 @@ def test_d2_restore_preserves_warmstart_after_forward(monkeypatch):
     assert state.restore_actuators.__wrapped__ is original_restore
 
 
+def test_registered_original_join_excludes_startup_and_rejects_duplicates(tmp_path):
+    spec=importlib.util.spec_from_file_location('shared_original_summary',
+        _PATH.with_name('summarize_shared_original_20261019.py'))
+    summary=importlib.util.module_from_spec(spec);spec.loader.exec_module(summary)
+    prep=tmp_path/'preparation';prep.mkdir()
+    results=tmp_path/'results';results.mkdir()
+    cases=[{'name':'bowl','category':'transfer'},{'name':'drawer','category':'open'}]
+    manifest=tmp_path/'manifest.json';manifest.write_text(json.dumps({'cases':cases}))
+    def row(index,success):
+        return {'case':cases[index],'arm':'oracle_k4','status':'physical_result',
+            'pi05_calls':0,'success':success,'failure_phase':None if success else 'contact_failure'}
+    old=tmp_path/'old.jsonl';old.write_text(json.dumps(row(0,True))+'\n')
+    plan={'selected_n':8,'already_completed':[{'index':0,'record':str(old)}],
+        'batches':[{'domain':'original','manifest':{'path':str(manifest),'sha256':launcher.digest(manifest)},
+            'source_commit':'pinned','indices':[1]}]}
+    plan_path=prep/'batch_plan.json';plan_path.write_text(json.dumps(plan))
+    (prep/'full_original_submission.json').write_text(json.dumps({'job':'123','indices':[0]}))
+    directory=results/'job123_0/N8/000_drawer';directory.mkdir(parents=True)
+    assignment=directory/'assignment.json'
+    assignment.write_text(json.dumps({'case_index':1,'case':cases[1],'startup':False}))
+    (directory/'worker_summary.json').write_text(json.dumps({'source_commit':'pinned',
+        'exit_code':0,'result':row(1,False)}))
+    # A separate smoke/study directory must not be scanned into the cohort.
+    extra=results/'job999_0/N8/000_bowl';extra.mkdir(parents=True)
+    (extra/'worker_summary.json').write_text(json.dumps({'result':row(0,True)}))
+    report=summary.summarize(*summary.collect(prep,results))
+    assert (report['registered_n'],report['n'],report['success'])==(2,2,1)
+    assert report['missing_indices']==[]
+    assignment.write_text(json.dumps({'case_index':1,'case':cases[1],'startup':True}))
+    with pytest.raises(AssertionError):summary.collect(prep,results)
+    assignment.write_text(json.dumps({'case_index':1,'case':cases[1],'startup':False}))
+    plan['already_completed'].append({'index':0,'record':str(old)})
+    plan_path.write_text(json.dumps(plan))
+    with pytest.raises(AssertionError,match='duplicate registered result'):summary.collect(prep,results)
+
+
 @pytest.mark.parametrize('with_failure',[False,True])
 def test_real_subprocesses_isolate_episode_globals_and_retain_failures(tmp_path,with_failure):
     source=tmp_path/'source';source.mkdir()
