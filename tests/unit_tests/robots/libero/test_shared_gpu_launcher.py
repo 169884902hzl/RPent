@@ -199,6 +199,38 @@ def test_d2_diagnostic_reuses_only_identical_restored_request():
     assert diagnostic.copy is copy
 
 
+def test_d2_startup_requires_inference_and_completed_physics_then_restores_hooks():
+    import copy
+    used=0
+    predictions=[]
+    def physics(action):
+        nonlocal used
+        used+=1
+        return 'physical'
+    def predict(obs,**kwargs):
+        predictions.append(obs)
+        return [[0.]*7]
+    model=SimpleNamespace(predict=predict)
+    env=SimpleNamespace(step=physics,execution_budget=lambda:{'used_sim_steps':used})
+    request={'observation_id':'public-1'}
+    adapter=SimpleNamespace(latest_request=copy.deepcopy(request),p=SimpleNamespace(model=model,env=env))
+    def trial(facade,adapter,policy,timings,spec,method,seed,output,first_request,**kwargs):
+        assert diagnostic.copy.deepcopy(first_request) is adapter.latest_request
+        assert env.step('scripted preparation')=='physical'
+        model.predict('actual policy request')
+        env.step('policy control')
+        raise AssertionError('startup should stop after first physical policy control')
+    diagnostic=SimpleNamespace(copy=copy,trial=trial)
+    launcher.install_d2_request_compatibility(diagnostic,startup=True)
+    with pytest.raises(launcher.StartupPhysicalReached) as caught:
+        diagnostic.trial(None,adapter,None,None,None,'call_vla',123,None,request)
+    assert caught.value.proof['vla_inference_calls']==1
+    assert caught.value.proof['sim_steps_before']==1 and caught.value.proof['sim_steps_after']==2
+    assert caught.value.proof['success'] is None
+    assert predictions==['actual policy request']
+    assert env.step is physics and model.predict is predict and diagnostic.copy is copy
+
+
 def test_registered_original_join_excludes_startup_and_rejects_duplicates(tmp_path):
     spec=importlib.util.spec_from_file_location('shared_original_summary',
         _PATH.with_name('summarize_shared_original_20261019.py'))

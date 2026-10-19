@@ -25,6 +25,13 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+class StartupPhysicalReached(Exception):
+    """The startup-only probe has completed a real VLA control step."""
+    def __init__(self, proof):
+        self.proof=proof
+        super().__init__('first VLA physical request completed')
+
+
 def percentile(values, quantile):
     if not values:
         return None
@@ -99,7 +106,7 @@ def install_d2_spawn_bootstrap():
     LiberoEnv.get_env_fns=get_env_fns
 
 
-def install_d2_request_compatibility(diagnostic):
+def install_d2_request_compatibility(diagnostic, *, startup=False):
     """Give the diagnostic's copied first request its restored cache identity.
 
     Only a byte-equivalent canonical request may reuse the cache object. The
@@ -120,9 +127,33 @@ def install_d2_request_compatibility(diagnostic):
                 return adapter.latest_request
             return original_copy.deepcopy(value,*args,**options)
         diagnostic.copy=SimpleNamespace(deepcopy=deepcopy)
+        model=adapter.p.model if startup and method=='call_vla' else None
+        if model is not None:
+            env=adapter.p.env
+            original_predict,original_step=model.predict,env.step
+            inference_calls=0
+            def predict(*args,**options):
+                nonlocal inference_calls
+                value=original_predict(*args,**options)
+                inference_calls+=1
+                return value
+            def step(*args,**options):
+                before=env.execution_budget()['used_sim_steps']
+                value=original_step(*args,**options)
+                after=env.execution_budget()['used_sim_steps']
+                if inference_calls and after>before:
+                    raise StartupPhysicalReached({'method':'call_vla','trial_seed':seed,
+                        'vla_inference_calls':inference_calls,'sim_steps':after-before,
+                        'sim_steps_before':before,'sim_steps_after':after,
+                        'reason':'first_vla_physical_request','success':None,
+                        'scope':'startup interface only; not a completed subtask or outcome label'})
+                return value
+            model.predict,env.step=predict,step
         try:
             return original(facade,adapter,policy,timings,spec,method,seed,output,first_request,**kwargs)
         finally:
+            if model is not None:
+                model.predict,env.step=original_predict,original_step
             diagnostic.copy=original_copy
     diagnostic.trial=trial
 
@@ -160,9 +191,15 @@ def worker(args):
                 install_d2_restore_compatibility()
                 install_d2_spawn_bootstrap()
                 from scripts import probe_bounded_hybrid_d2
-                install_d2_request_compatibility(probe_bounded_hybrid_d2)
-                result = probe_bounded_hybrid_d2.evaluate_case(case, endpoints, output/case['name'], plan,
-                                       startup=assignment['startup'])
+                install_d2_request_compatibility(probe_bounded_hybrid_d2,startup=assignment['startup'])
+                try:
+                    result = probe_bounded_hybrid_d2.evaluate_case(case, endpoints, output/case['name'], plan,
+                                           startup=assignment['startup'])
+                except StartupPhysicalReached as reached:
+                    result={'case':case,'status':'startup_physical','trials':[reached.proof],
+                        'training':False,'source_commit':plan['source_commit']}
+                    dump(output/case['name']/'first_physical_vla_request.json',reached.proof)
+                    dump(output/case['name']/'summary.json',result)
         status = result['status']
         if assignment['startup'] and status != 'startup_physical':
             raise RuntimeError('same-launcher startup produced no physical request')
