@@ -160,6 +160,10 @@ def install_d2_request_compatibility(diagnostic, *, startup=False):
 
 def worker(args):
     assignment = json.loads(args.assignment.read_bytes())
+    if assignment['domain']=='d2':
+        # Private v3 scoring archives the exact live MuJoCo model before its
+        # isolated support intervention. Each episode owns its archive.
+        os.environ['LIBERO_GRASP_DIAGNOSTIC_MODELS']=str(args.assignment.parent.resolve()/'private_grasp_models')
     bootstrap_source(assignment['domain'])
     from rpent.utils.rpc.http_rpc import HttpRpcClient
     from scripts.probe_bounded_feasibility import episode, probe_config
@@ -205,7 +209,8 @@ def worker(args):
             raise RuntimeError('same-launcher startup produced no physical request')
         dump(output/'worker_summary.json', {'case':case, 'result':result,
             'wall_s':time.perf_counter()-started, 'pid':os.getpid(), 'exit_code':0,
-            'source_commit':plan['source_commit'], 'independent_process_and_egl':True})
+            'source_commit':plan['source_commit'], 'independent_process_and_egl':True,
+            'private_grasp_model_archive':os.environ.get('LIBERO_GRASP_DIAGNOSTIC_MODELS')})
         return 0
     except BaseException as exc:
         dump(output/'worker_summary.json', {'case':case, 'result':result,

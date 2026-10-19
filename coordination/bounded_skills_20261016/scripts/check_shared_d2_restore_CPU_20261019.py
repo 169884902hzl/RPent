@@ -17,7 +17,11 @@ def main():
     parser.add_argument('--index',type=int,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--spawn',action='store_true',help='Exercise the actual RLinf spawned-worker transport')
+    parser.add_argument('--private-grasp-record',type=Path,
+        help='Check the owned model archive on saved private samples; CPU diagnostic only')
     args=parser.parse_args()
+    if args.spawn and args.private_grasp_record:
+        parser.error('Private model archive check uses the direct CPU environment')
     os.environ.update(LIBERO_TYPE='pro',CUDA_VISIBLE_DEVICES='')
     sys.path.insert(0,str(args.source))
     spec=importlib.util.spec_from_file_location('shared_launcher',Path(__file__).with_name('shared_gpu_episodes_20261019.py'))
@@ -85,8 +89,30 @@ def main():
             'successor_control_steps':5,'successor_digest_twice':endpoints,
             'successor_control_identical':endpoints[0]==endpoints[1],
             'launcher_sha256':launcher.digest(Path(__file__).with_name('shared_gpu_episodes_20261019.py'))}
+        if args.private_grasp_record:
+            from robots.libero.v5_grasp_truth import enrich_registered_samples, sustained_grasp_v3
+            record=json.loads(args.private_grasp_record.read_bytes())
+            samples=copy.deepcopy(record['samples'])
+            archive=args.output.parent/(args.output.stem+'_private_models')
+            os.environ['LIBERO_GRASP_DIAGNOSTIC_MODELS']=str(archive.resolve())
+            enrich_registered_samples(env.env,record['reference']['target'],record['reference'],
+                samples,[np.asarray(s['integration_state']) for s in samples])
+            truth=sustained_grasp_v3(samples,record['reference'])
+            evidence=[s['counterfactual_support_evidence'] for s in samples
+                if 'counterfactual_support_evidence' in s]
+            report['private_archive_check']={'raw_record':str(args.private_grasp_record),
+                'archive':str(archive),'before_status':record['truth_v3']['status'],
+                'after_status':truth['status'],'after_success':truth['success'],
+                'counterfactual_known':sum(e['status']=='known' for e in evidence),
+                'counterfactual_n':len(evidence),'evidence':evidence,
+                'scope':'CPU reconstruction verifies archive plumbing only; not an adopted episode label'}
+            assert evidence and all(e['status']=='known' for e in evidence)
         args.output.write_text(json.dumps(report,indent=2)+'\n')
-        print(json.dumps(report),flush=True)
+        brief={key:value for key,value in report.items() if key!='private_archive_check'}
+        if 'private_archive_check' in report:
+            brief['private_archive_check']={key:value for key,value in report['private_archive_check'].items()
+                if key!='evidence'}
+        print(json.dumps(brief),flush=True)
         assert report['exact_physics_controller_rng_restore']
         assert report['successor_control_identical']
     finally:

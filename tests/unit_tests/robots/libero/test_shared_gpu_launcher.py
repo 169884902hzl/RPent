@@ -140,10 +140,14 @@ def test_d2_worker_bootstraps_environment_before_helper_imports(tmp_path):
     (source/'scripts/probe_bounded_feasibility.py').write_text('import mujoco\ndef probe_config(base):return base\ndef episode(*a,**kw):raise AssertionError()\n')
     (source/'scripts/probe_bounded_hybrid_d2.py').write_text('''
 import copy
+import os
+from pathlib import Path
 from robots.libero.env_server import BOOTSTRAPPED
 def trial(*a,**kw):raise AssertionError()
 def evaluate_case(case,endpoints,output,plan,*,startup):
     assert BOOTSTRAPPED
+    archive=Path(os.environ['LIBERO_GRASP_DIAGNOSTIC_MODELS'])
+    assert archive.is_absolute() and archive.parent==output.parent
     return {'status':'physical_result','actual_full_replay_success':True}
 ''')
     cases=[{'name':f'case{i}'} for i in range(2)]
