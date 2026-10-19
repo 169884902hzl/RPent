@@ -7,7 +7,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation, Slerp
 
-VERSION = 'public-full-route-grasp/7-pad-edge-dev'
+VERSION = 'public-full-route-grasp/8-band-seeds-dev'
 
 
 def separate_target_points(target_points, scene_points):
@@ -41,7 +41,10 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
                           pose_screen, height, *, candidate_only=False):
     """All categories share opposition, sweep/IK screening and ranking."""
     from robots.libero.v5_geometric_grasp import _opposition, side_site_rotation
-    from robots.libero.v5_grasp_geometry import measured_grasp_regions
+    from robots.libero.v5_grasp_geometry import (
+        measured_band_seeds,
+        measured_grasp_regions,
+    )
     target, obstacles = separate_target_points(target_points, scene_points)
     region, perception = measured_grasp_regions(target, name)
     if region is None:
@@ -63,7 +66,15 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
         pad_contacts.append(('_distal_pad_edge_cell', edge_contact))
     base_axis = math.atan2(*region['closing_axis_xy'][::-1])
     records = []
-    for seed_index, seed in enumerate(region['seeds']):
+    def seeds():
+        yield from region['seeds']
+        # Preserve the existing catalogue when it has any measured grasp.
+        # Otherwise sample lower side contours; never relax opposition or
+        # remove obstacles to turn an unmeasured contact into an option.
+        if not any(not row['rejected'] for row in records):
+            yield from measured_band_seeds(region['points'])
+
+    for seed_index, seed in enumerate(seeds()):
         for axis_index, offset in enumerate((0., math.pi/4, -math.pi/4, math.pi/2)):
             angle = base_axis+offset
             closing = np.array([math.cos(angle), math.sin(angle), 0.])

@@ -142,3 +142,42 @@ def test_distal_pad_placement_retains_observed_flanks_and_clears_low_support():
             edge_recovered.append(cid)
     assert recovered, 'a supported distal contact must survive without deleting support pixels'
     assert edge_recovered, 'the new pad-face cell must clear support that blocks the former sample'
+
+
+def test_side_band_sampling_recovers_measured_flanks_missing_from_primary_seeds(monkeypatch):
+    from robots.libero.v5_grasp_route import sample_unified_grasps
+
+    # The original centroid/top seeds need not hit a narrow side feature.
+    # Its two observed faces remain subject to the original normal test.
+    cloud = np.array([[x, y, z] for x in (-.02, .02)
+        for y in np.linspace(-.018, .018, 37) for z in np.linspace(.9, .96, 61)])
+    monkeypatch.setattr('robots.libero.v5_grasp_geometry.measured_grasp_regions', lambda *args:
+        ({'points': cloud, 'seeds': [np.array([.2, 0., .93])],
+          'closing_axis_xy': np.array([1., 0.]), 'top_z': .96}, {}))
+    pads = [{'name': name + '_pad', 'lower': [-.004, -.008, -.0116],
+        'upper': [.004, .008, .0044], 'slide_per_half_opening': [sign, 0., 0.]}
+        for name, sign in (('leftfinger', -1.), ('rightfinger', 1.))]
+    _, rows = sample_unified_grasps(cloud, np.empty((0, 3)), 'unseen object',
+        [0., 0., 1.2], [1., 0., 0., 0.], {'boxes': pads}, None, 1.2, candidate_only=True)
+    assert all(row['rejected'] for row in rows if row['id'].startswith('s0_'))
+    recovered = [row for row in rows if not row['rejected']]
+    assert recovered
+    assert all(min(row['normal_quality']) >= .65 for row in recovered)
+    assert all(row['width_m'] + .008 < .08 for row in recovered)
+    assert all(row['route_status'] == 'not_screened' for row in recovered)
+
+
+def test_successful_primary_sampling_does_not_expand_catalogue(monkeypatch):
+    from robots.libero.v5_grasp_route import sample_unified_grasps
+
+    cloud = np.array([[x, y, z] for x in (-.02, .02)
+        for y in np.linspace(-.018, .018, 37) for z in np.linspace(.9, .96, 61)])
+    def unexpected(*args):
+        raise AssertionError('primary observed flanks already suffice')
+    monkeypatch.setattr('robots.libero.v5_grasp_geometry.measured_band_seeds', unexpected)
+    pads = [{'name': name + '_pad', 'lower': [-.004, -.008, -.0116],
+        'upper': [.004, .008, .0044], 'slide_per_half_opening': [sign, 0., 0.]}
+        for name, sign in (('leftfinger', -1.), ('rightfinger', 1.))]
+    _, rows = sample_unified_grasps(cloud, np.empty((0, 3)), 'unseen object',
+        [0., 0., 1.2], [1., 0., 0., 0.], {'boxes': pads}, None, 1.2, candidate_only=True)
+    assert any(not row['rejected'] for row in rows)

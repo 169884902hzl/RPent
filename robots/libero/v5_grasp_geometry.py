@@ -480,6 +480,30 @@ def measured_grasp_regions(points, name):
             'top_z': float(upper[2])}, evidence
 
 
+def measured_band_seeds(points):
+    """Sample actual side-contour pixels when central/top seeds lack flanks.
+
+    Concave shapes can expose a graspable side patch below their top rim.
+    These are proposals only: the shared opposition, closure and full-route
+    screens still decide whether any contact is usable.
+    """
+    cloud = np.asarray(points, dtype=float)
+    centre = np.median(cloud[:, :2], axis=0)
+    seen = set()
+    for quantile in (.2, .4, .6, .8):
+        height = np.quantile(cloud[:, 2], quantile)
+        band = cloud[abs(cloud[:, 2] - height) <= .005]
+        if not len(band):
+            continue
+        for angle in np.linspace(0., 2 * np.pi, 24, endpoint=False):
+            direction = np.array([np.cos(angle), np.sin(angle)])
+            point = band[np.argmax((band[:, :2] - centre) @ direction)]
+            key = tuple(point)
+            if key not in seen:
+                seen.add(key)
+                yield point
+
+
 def oblique_target_view(before, narrow_axis, eef_xyz, body_quat_xyzw, camera_meta, sign):
     """Aim the calibrated wrist camera at a stationary measured target flank."""
     from scipy.spatial.transform import Rotation

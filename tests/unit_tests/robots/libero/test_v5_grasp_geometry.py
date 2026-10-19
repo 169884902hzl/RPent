@@ -12,6 +12,26 @@ from robots.libero.v5_grasp_geometry import (
 )
 
 
+def test_band_seeds_are_observed_pixels_and_include_lower_side_contours():
+    from robots.libero.v5_grasp_geometry import measured_band_seeds
+
+    cloud = np.array([[x, y, z] for x in (-.02, .02)
+        for y in (-.01, .01) for z in np.linspace(.9, .96, 61)])
+    seeds = list(measured_band_seeds(cloud))
+    assert seeds
+    assert len({tuple(point) for point in seeds}) == len(seeds)
+    assert min(point[2] for point in seeds) < np.quantile(cloud[:, 2], .4)
+    assert all(np.any(np.all(cloud == point, axis=1)) for point in seeds)
+
+
+def test_empty_quantile_band_does_not_invent_surface_pixels():
+    from robots.libero.v5_grasp_geometry import measured_band_seeds
+
+    cloud = np.array([[0., 0., height] for height in (0., 1., 2., 3., 4., 5.)])
+    seeds = list(measured_band_seeds(cloud))
+    assert all(np.any(np.all(cloud == point, axis=1)) for point in seeds)
+
+
 @pytest.mark.parametrize('direction', [[1., 0., 0.], [0., 0., 1.], [.6, 0., .8]])
 def test_handle_axis_uses_measured_3d_length_including_vertical_handles(direction):
     from scipy.spatial.transform import Rotation
