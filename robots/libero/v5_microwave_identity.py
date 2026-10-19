@@ -12,6 +12,33 @@ from robots.libero.v5_verification import moving_panel_points, vertical_face
 VERSION = "microwave-public-RGBD-door-identity/1-dev"
 
 
+def resolve_door_views_from_current_handle(views, handles):
+    """Disambiguate conflicting segmented panels using current door-handle depth.
+
+    The caller owns capture provenance. A unique supporting view supplies
+    identity only; it cannot establish motion or an articulation endpoint.
+    The existing backing-plane gates also reject a remote fixed control panel.
+    """
+    from robots.libero.v5_fixture_parts import measured_handle_backing_face
+
+    evidence = {"basis": "current_independent_handle_disambiguates_door_planes/1-dev",
+                "source": "perception", "stop_admitted": False, "views": {}}
+    supported = []
+    for camera, points in views.items():
+        matches = []
+        for cloud in handles:
+            face, detail = measured_handle_backing_face(points, cloud)
+            matches.append({"supported": face is not None, "geometry": detail})
+        accepted = any(item["supported"] for item in matches)
+        evidence["views"][camera] = {"supported": accepted, "handle_comparisons": matches}
+        if accepted:
+            supported.append(camera)
+    if len(supported) != 1:
+        return None, {**evidence, "reason": "current_handle_door_support_missing_or_ambiguous"}
+    return supported[0], {**evidence, "selected_camera": supported[0],
+                          "reason": "unique_current_handle_supported_door_view"}
+
+
 def match_current_door_across_views(source_world, source_mask, target_world, fixed_anchor, *, robot_mask=None):
     """Match actual same-instant world points to a second camera's depth.
 

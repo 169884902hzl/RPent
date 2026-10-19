@@ -6,6 +6,81 @@ import pytest
 from robots.libero.v5_microwave_identity import match_current_door_across_views, track_measured_door
 
 
+@pytest.mark.parametrize('case', ['unique', 'missing', 'remote', 'competing'])
+def test_current_handle_can_resolve_conflicting_views_only_with_unique_support(case):
+    from robots.libero.v5_microwave_identity import resolve_door_views_from_current_handle
+
+    x, z = np.mgrid[-.12:.12:25j, 1.:1.2:25j]
+    door = np.stack((x.ravel(), np.zeros(x.size), z.ravel()), axis=-1)
+    control = door + [0., -.13, 0.]
+    handle = np.array([(px, .03, pz) for px in np.linspace(.01, .02, 10)
+                       for pz in np.linspace(1.08, 1.1, 10)])
+    handles = [] if case == 'missing' else [handle + ([0., .5, 0.] if case == 'remote' else 0.)]
+    if case == 'competing':
+        control = door.copy()
+    selected, evidence = resolve_door_views_from_current_handle(
+        {'agentview': door, 'wrist': control}, handles)
+    assert selected == ('agentview' if case == 'unique' else None)
+    assert evidence['stop_admitted'] is False
+    if case == 'unique':
+        assert evidence['views']['agentview']['supported'] is True
+        assert evidence['views']['wrist']['supported'] is False
+
+
+@pytest.mark.parametrize('provenance', ['current', 'stale', 'changed', 'private'])
+def test_scene_conflicting_panels_require_current_hash_pinned_public_handle(tmp_path, monkeypatch, provenance):
+    import hashlib
+    from types import SimpleNamespace
+
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    x, z = np.mgrid[-.12:.12:25j, 1.:1.2:25j]
+    door = np.stack((x, np.zeros(x.shape), z), axis=-1)
+    frames = {'agentview': door, 'wrist': door + [0., -.13, 0.]}
+    state = SimpleNamespace(latest_step=3, load_bytes=lambda _: b'RGB',
+        load=lambda name: ({'extrinsic_cam2world': np.eye(4)} if name.endswith('.json')
+                           else frames[name.removesuffix('_world_high.npz')]),
+        artifact_path=lambda name, step: tmp_path / name)
+
+    def save(name, value, *, step):
+        np.savez_compressed(tmp_path / name, value)
+        return tmp_path / name
+
+    state.save = save
+    rpc = SimpleNamespace(call=lambda *args, **kwargs: {'instances': [{'score': .9}]})
+    monkeypatch.setattr(Sam3Client, '_decode_result', staticmethod(
+        lambda _: SimpleNamespace(mask=np.ones(x.shape, bool))))
+    scene = MeasuredScene(SimpleNamespace(_state=state), rpc, 0, dual_view_fusion_v1=True)
+    parent = Entity('e1', 'microwave', (0., -.06, 1.1), (-.2, -.2, 1.), (.2, .05, 1.2), source_step=3)
+    scene.entities[parent.id] = parent
+    scene.fixture_measurement_evidence[parent.id] = {}
+    scene._microwave_door_history[(parent.id, 'wrist')] = {'source_step': 2}
+    handle = np.array([(px, .03, pz) for px in np.linspace(.01, .02, 10)
+                       for pz in np.linspace(1.08, 1.1, 10)])
+    path = save('handle.npz', handle, step=3)
+    ref = {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+           'source': 'private' if provenance == 'private' else 'perception',
+           'source_step': 2 if provenance == 'stale' else 3}
+    if provenance == 'changed':
+        ref['sha256'] = 'changed'
+    monkeypatch.setattr(scene, 'measure_fixture_handle_pose',
+        lambda _: {'views': {'agentview': {'cloud': ref}}})
+    clouds, views = {}, {}
+    measured = scene._measure_microwave_door(parent, 'agentview', measured_clouds=clouds, measured_views=views)
+    evidence = scene.fixture_measurement_evidence[parent.id]['door_measurement']
+    assert bool(measured) is (provenance == 'current')
+    assert evidence['current_handle_association']['stop_admitted'] is False
+    if measured:
+        assert evidence['source_cameras'] == ['agentview']
+        assert set(views) == {'agentview'}
+        assert np.allclose(clouds['microwave door'][:, 1], 0.)
+        assert (parent.id, 'wrist') not in scene._microwave_door_history
+    else:
+        assert evidence['reason'] == 'door_views_not_one_adjacent_plane'
+
+
 def translated_public_panel():
     import cv2
     rng = np.random.default_rng(7)

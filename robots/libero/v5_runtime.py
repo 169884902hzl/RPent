@@ -1320,9 +1320,41 @@ class MeasuredScene:
             measured, plane = measured_microwave_door(parent, combined) if joined is not None else (None, {})
             evidence.update(fusion=fusion, fused_plane=plane)
             if measured is None:
-                evidence["reason"] = "door_views_not_one_adjacent_plane"
-                return []
-            cloud = combined
+                # SAM can label the fixed control panel in one view and the
+                # actual door in the other. Current independent handle depth
+                # can resolve that disagreement; cross-view pixel count alone
+                # cannot. Keep missing or competing handle support unknown.
+                from pathlib import Path
+
+                from robots.libero.v5_microwave_identity import resolve_door_views_from_current_handle
+
+                handle = self.measure_fixture_handle_pose(parent)
+                handle_clouds, references = [], []
+                for detail in handle.get('views', {}).values():
+                    ref = detail.get('cloud', {})
+                    if (ref.get('source') != 'perception'
+                            or ref.get('source_step') != state.latest_step):
+                        continue
+                    path = Path(ref['path'])
+                    if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != ref['sha256']:
+                        continue
+                    with np.load(path) as saved:
+                        handle_clouds.append(saved[saved.files[0]])
+                    references.append(ref)
+                selected, association = resolve_door_views_from_current_handle(
+                    {view: item[1] for view, item in visible}, handle_clouds)
+                evidence['current_handle_association'] = {**association,
+                    'source_step': state.latest_step, 'handle_clouds': references}
+                if selected is None:
+                    evidence["reason"] = "door_views_not_one_adjacent_plane"
+                    return []
+                for view, _ in visible:
+                    if view != selected:
+                        self._microwave_door_history.pop((parent.id, view), None)
+                visible = [(view, item) for view, item in visible if view == selected]
+                measured, cloud = visible[0][1]
+            else:
+                cloud = combined
         evidence["source_cameras"] = [view for view, _ in visible]
         identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
         filename = f"microwave_door_{parent.id}_{camera}_{identity}.npz"
