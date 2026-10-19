@@ -98,9 +98,13 @@ def build(args):
     write_new(args.output/'startup_plan.json',startup)
     launcher=BASE/'scripts/shared_gpu_episodes_20261019.py'
     frozen=ROOT/('launcher_shared_20261019_'+sha(launcher)[:12])
-    frozen.mkdir(exist_ok=False)
+    frozen.mkdir(exist_ok=True)
     for name in (launcher.name,'run_shared_batch_20261019.sbatch'):
-        shutil.copy2(BASE/'scripts'/name,frozen/name)
+        target=frozen/name
+        if target.exists():
+            assert target.read_bytes()==(BASE/'scripts'/name).read_bytes()
+        else:
+            shutil.copy2(BASE/'scripts'/name,target)
     for label,value in [('batch',production),('startup',startup)]:
         for index,batch in enumerate(value['batches']):
             command=[str(ROOT/'.venv/bin/python'),str(frozen/launcher.name),

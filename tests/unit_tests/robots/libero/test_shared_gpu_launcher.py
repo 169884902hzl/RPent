@@ -41,6 +41,33 @@ def test_choice_comparison_keeps_chunk_boundaries_and_serial_difference():
     assert launcher.edit_distance([['a'],['b']],[['a'],['b'],['c']])==1
 
 
+def test_consistency_reads_external_serial_results_and_enforces_zero_baseline(tmp_path):
+    serial=tmp_path/'serial';parallel=tmp_path/'parallel'
+    study={'consistency_cases':[]}
+    for i in range(3):
+        name=f'case{i}'
+        historical=tmp_path/f'historical{i}.jsonl'
+        choices=json.dumps({'decision':{'candidate_ids':['move','close','lift']}})+'\n'
+        historical.write_text(choices)
+        result={'success':True,'sim_steps':100+i}
+        study['consistency_cases'].append({'case':{'name':name},
+            'choices':{'path':str(historical),'sha256':launcher.digest(historical)},
+            'historical_result':result})
+        for directory in [serial/'measurements/N1'/f'{i:03d}_{name}',
+                          parallel/'consistency/N8'/f'{i:03d}_{name}']:
+            (directory/(name+'_oracle_k4')).mkdir(parents=True)
+            (directory/'worker_summary.json').write_text(json.dumps({'result':result}))
+            (directory/(name+'_oracle_k4')/'choices.jsonl').write_text(choices)
+    compared=launcher.compare_three(study,parallel,8,serial)
+    assert compared['all_three_within_serial_baseline']
+    changed=parallel/'consistency/N8/001_case1/case1_oracle_k4/choices.jsonl'
+    changed.write_text(json.dumps({'decision':{'candidate_ids':['observe']}})+'\n')
+    rejected=launcher.compare_three(study,parallel,8,serial)
+    assert not rejected['all_three_within_serial_baseline']
+    assert rejected['cases'][1]['choice_sequence_edit_parallel']==1
+    assert rejected['cases'][1]['choice_sequence_edit_baseline']==0
+
+
 @pytest.mark.parametrize('with_failure',[False,True])
 def test_real_subprocesses_isolate_episode_globals_and_retain_failures(tmp_path,with_failure):
     source=tmp_path/'source';source.mkdir()

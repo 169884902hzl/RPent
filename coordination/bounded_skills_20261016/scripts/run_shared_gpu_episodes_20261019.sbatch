@@ -25,6 +25,7 @@ test ! -e "$OUT"
 ARGS=(--source "$SOURCE" --manifest "$MANIFEST" --domain "${DOMAIN:-original}" \
       --indices "${CASE_INDICES:?CASE_INDICES required}" --levels "${LEVELS:-4,8,12}")
 if [[ -n "${STUDY_PLAN:-}" ]]; then ARGS+=(--study-plan "$STUDY_PLAN"); fi
+if [[ -n "${SERIAL_REFERENCE:-}" ]]; then ARGS+=(--serial-reference "$SERIAL_REFERENCE"); fi
 "$ROOT/.venv/bin/python" -u "$LAUNCHER" "${ARGS[@]}" --preflight
 if [[ "${STARTUP:-0}" == 1 ]]; then ARGS+=(--startup); fi
 exec "$ROOT/.venv/bin/python" -u "$LAUNCHER" "${ARGS[@]}" --output "$OUT"

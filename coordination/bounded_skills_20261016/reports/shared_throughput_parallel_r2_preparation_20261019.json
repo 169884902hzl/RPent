@@ -1,0 +1,61 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+  "source_commit": "ec89f74",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_support_roundrobin_20261018.json",
+    "sha256": "4adcaba891379c4e4f50e911c97953156caeaa03926ca73d61236800fe2b7033"
+  },
+  "serial_reference": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/job10240_0",
+  "study_plan": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/preparation/throughput_study_parallel_r2.json",
+    "sha256": "4a50b40d87b6f7fe2ce5148ebcbf027649ff2d1eb669256caf4d9561cd95a60d"
+  },
+  "launcher_directory": "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261019_c133c49d192c",
+  "launcher_sha256": "c133c49d192c31812f98638cf08bb7fa5e6baaa0043d34515c1177bc3ce55f04",
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/preparation/preflight_study_parallel_r2.log",
+    "command": [
+      "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+      "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261019_c133c49d192c/shared_gpu_episodes_20261019.py",
+      "--source",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+      "--manifest",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_support_roundrobin_20261018.json",
+      "--study-plan",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/preparation/throughput_study_parallel_r2.json",
+      "--serial-reference",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/job10240_0",
+      "--levels",
+      "4,8,12",
+      "--preflight"
+    ]
+  },
+  "case_indices": [
+    0,
+    2,
+    10,
+    11,
+    13,
+    21,
+    22,
+    24,
+    32,
+    33,
+    35,
+    43,
+    44,
+    46,
+    54,
+    55,
+    57,
+    65,
+    66,
+    68,
+    76,
+    77,
+    79,
+    87
+  ],
+  "training": false
+}

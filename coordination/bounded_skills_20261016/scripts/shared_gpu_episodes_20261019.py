@@ -246,11 +246,11 @@ def edit_distance(left, right):
     return previous[-1]
 
 
-def compare_three(study, root, selected):
+def compare_three(study, root, selected, serial_root=None):
     rows=[]
     for index,reference in enumerate(study['consistency_cases']):
         name=reference['case']['name']
-        serial=root/'measurements/N1'/f'{index:03d}_{name}'
+        serial=(serial_root or root)/'measurements/N1'/f'{index:03d}_{name}'
         parallel=root/'consistency'/f'N{selected}'/f'{index:03d}_{name}'
         historical=Path(reference['choices']['path'])
         assert digest(historical)==reference['choices']['sha256']
@@ -287,7 +287,7 @@ def run_study(args, plan, study, endpoints, sampler):
         raise RuntimeError('shared-service real startup failed; no full study admitted')
     actual=copy(args);actual.output=root/'measurements';actual.output.mkdir();actual.startup=False
     reports=[]
-    for n in (1,4,8,12):
+    for n in ((4,8,12) if args.serial_reference else (1,4,8,12)):
         report=run_level(actual,plan,study['indices'],endpoints,n,sampler)
         reports.append(report)
         if report['worker_errors']:
@@ -307,7 +307,24 @@ def run_study(args, plan, study, endpoints, sampler):
     comparison=run_level(verify,plan,study['indices'],endpoints,selected,sampler)
     if comparison['worker_errors']:
         raise RuntimeError('parallel consistency replay worker failed')
-    consistency=compare_three(study,root,selected)
+    if args.serial_reference:
+        serial_summary=args.serial_reference/'measurements/N1/summary.json'
+        last_check=0.
+        while not serial_summary.exists():
+            # This is a real running serial measurement on a different GPU,
+            # not a simulated baseline or a replacement for its failures.
+            if time.monotonic()-last_check>=60:
+                job=json.loads((args.serial_reference/'launch.json').read_bytes())['slurm_job_id']
+                states=subprocess.check_output(['sacct','-X','-n','-j',job,
+                    '--format=State','-P'],text=True).splitlines()
+                if states and all(s.strip().split()[0]!='RUNNING' for s in states):
+                    raise RuntimeError('external serial job ended without N1 summary: '+str(states))
+                last_check=time.monotonic()
+            time.sleep(5)
+        serial_report=json.loads(serial_summary.read_bytes())
+        assert serial_report['worker_errors']==0 and serial_report['source_commit']==plan['source_commit']
+        reports.insert(0,serial_report)
+    consistency=compare_three(study,root,selected,args.serial_reference)
     serial=reports[0]['completed_episodes_per_hour']
     chosen=next(r for r in reports if r['n']==selected)
     report={'levels':reports,'selected_n':selected,'serial_episodes_per_hour':serial,
@@ -317,6 +334,7 @@ def run_study(args, plan, study, endpoints, sampler):
         'adoption_ready':consistency['all_three_within_serial_baseline']
             and chosen['completed_episodes_per_hour']>serial,
         'source_commit':plan['source_commit'],'plateau_fraction':.10,
+        'serial_reference':str(args.serial_reference) if args.serial_reference else None,
         'training':False,'workload':f'{len(study["indices"])} registered original development states; not an all-category rate estimate'}
     dump(root/'study_summary.json',report)
     return report
@@ -338,6 +356,8 @@ def main():
     parser.add_argument('--startup',action='store_true')
     parser.add_argument('--preflight',action='store_true')
     parser.add_argument('--study-plan',type=Path)
+    parser.add_argument('--serial-reference',type=Path,
+        help='Reuse a concurrently running identical N1 workload on another allocated GPU')
     args=parser.parse_args()
     if args.batch_plan:
         batches=json.loads(args.batch_plan.read_bytes())
@@ -372,6 +392,14 @@ def main():
         assert study['source']==str(args.source) and study['source_commit']==os.environ['SOURCE_COMMIT']
         assert len(study['consistency_cases'])==3 and study['plateau_fraction']==.10
         indices=study['indices']
+    if args.serial_reference:
+        assert study,'External N1 reference requires a registered study'
+        args.serial_reference=args.serial_reference.resolve(strict=True)
+        serial_launch=json.loads((args.serial_reference/'launch.json').read_bytes())
+        assert serial_launch['source']==str(args.source)
+        assert serial_launch['source_commit']==study['source_commit']
+        assert serial_launch['manifest']==study['manifest']
+        assert serial_launch['indices']==indices and serial_launch['domain']=='original'
     if args.domain=='original':
         _,plan,base=load_pinned_manifest(args.manifest)
         config=probe_config(base)
@@ -401,6 +429,7 @@ def main():
         'launcher':{'path':str(Path(__file__).resolve()),'sha256':digest(__file__)},
         'manifest':{'path':str(args.manifest),'sha256':digest(args.manifest)},
         'indices':indices,'levels':levels,'domain':args.domain,'startup':args.startup,
+        'serial_reference':str(args.serial_reference) if args.serial_reference else None,
         'slurm_job_id':os.environ.get('SLURM_JOB_ID'),'cuda_visible_devices':os.environ.get('CUDA_VISIBLE_DEVICES'),
         'cpu_affinity':sorted(os.sched_getaffinity(0)),'sam_services_per_gpu_job':1,
         'episode_isolation':'fresh exec process, fresh simulator/EGL/RNG/IK per episode','training':False})
