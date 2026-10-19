@@ -1,0 +1,22 @@
+{
+  "job": "10240",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--array=0%1",
+    "--nodelist=node02",
+    "--nice=500",
+    "--export=ALL",
+    "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261019_ad3599a8b0e1/run_shared_gpu_episodes_20261019.sbatch"
+  ],
+  "preparation": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/shared_throughput_r1_preparation_20261019.json",
+  "source_commit": "ec89f74",
+  "launcher_directory": "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261019_ad3599a8b0e1",
+  "node": "node02",
+  "cpu": 20,
+  "mem": "140G",
+  "gpu": 1,
+  "nice": 500,
+  "physical_evidence": "pending; no completed episode claimed",
+  "created_time": 1792407926.0087254
+}

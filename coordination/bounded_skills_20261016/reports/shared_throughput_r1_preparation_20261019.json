@@ -1,0 +1,64 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+  "source_commit": "ec89f74",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_support_roundrobin_20261018.json",
+    "sha256": "4adcaba891379c4e4f50e911c97953156caeaa03926ca73d61236800fe2b7033"
+  },
+  "study_plan": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/preparation/throughput_study_r1.json",
+    "sha256": "70cabe22543b2b70753f0f918162e405b1064bccffa9393a8bf92c6e82e0e7e9"
+  },
+  "launcher_directory": "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261019_ad3599a8b0e1",
+  "launcher_files": {
+    "shared_gpu_episodes_20261019.py": "ad3599a8b0e1e1940b3f37c217b57c4eb254a0c0a0169ad5001130bc4224fc78",
+    "run_shared_gpu_episodes_20261019.sbatch": "67fd97c57d503b13f2e8e3ef8e3fa6ccd3142e96aa024843fd4aefc981140bae"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/preparation/preflight_study_r1.log",
+    "command": [
+      "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+      "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261019_ad3599a8b0e1/shared_gpu_episodes_20261019.py",
+      "--source",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74",
+      "--manifest",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_support_roundrobin_20261018.json",
+      "--indices",
+      "0,2,10,11,13,21,22,24,32,33,35,43,44,46,54,55,57,65,66,68,76,77,79,87",
+      "--levels",
+      "1,4,8,12",
+      "--study-plan",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/preparation/throughput_study_r1.json",
+      "--preflight"
+    ]
+  },
+  "case_indices": [
+    0,
+    2,
+    10,
+    11,
+    13,
+    21,
+    22,
+    24,
+    32,
+    33,
+    35,
+    43,
+    44,
+    46,
+    54,
+    55,
+    57,
+    65,
+    66,
+    68,
+    76,
+    77,
+    79,
+    87
+  ],
+  "physical_evidence": "not yet submitted",
+  "training": false
+}

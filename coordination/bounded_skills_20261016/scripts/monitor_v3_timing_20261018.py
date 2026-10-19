@@ -26,6 +26,8 @@ parser.add_argument('--peer-tag', action='append', default=[],
     help='Also rebalance an independently startup-gated array within the aggregate GPU cap')
 parser.add_argument('--peer-startup-receipt', type=Path, action='append', default=[],
     help='Rebalance an ordinary queued startup while preserving its prerequisite job')
+parser.add_argument('--launcher-priority-job', action='append', default=[],
+    help='Give pending shared-service startup/study jobs the next C3 GPU slot')
 args = parser.parse_args()
 tag = args.tag
 receipt = json.loads((base/'reports'/f'{tag}_startup_submission.json').read_text())
@@ -70,6 +72,32 @@ while True:
                     stream.seek(max(0, log.stat().st_size-12000))
                     print(stream.read().decode('utf8', 'replace'), flush=True)
         raise SystemExit('PHYSICAL_JOB_FAILED: inspect preserved log and repair before resubmission')
+    launcher_waiting = [r for r in ours if r[2]=='PENDING' and 'JobHeld' not in r[6]
+        and r[0].split('_')[0] in args.launcher_priority_job]
+    for job in {r[0].split('_')[0] for r in launcher_waiting}:
+        other_active=sum(r[0].split('_')[0]!=job for r in active)
+        subprocess.run(['scontrol','update','JobId='+job,
+            'ArrayTaskThrottle='+str(max(1,cap-other_active))],check=True)
+    if launcher_waiting:
+        # Temporarily defer only ordinary C3 pending jobs. The normal receipt-
+        # based rebalance below restores their prerequisites once the study
+        # owns a slot. Running/protected/held work is never changed.
+        for row in launcher_waiting:
+            dependency = ('?'.join('afterany:'+':'.join(r[0] for r in group)
+                for group in itertools.combinations(active,len(active)-cap+1)) if len(active)>=cap else '')
+            subprocess.run(['scontrol','update','JobId='+row[0],'Dependency='+dependency],check=True)
+        for row in ours:
+            if row[2]=='PENDING' and 'JobHeld' not in row[6] and row not in launcher_waiting:
+                subprocess.run(['scontrol','update','JobId='+row[0],
+                    'Dependency=afterany:'+':'.join(r[0] for r in launcher_waiting)],check=True)
+        priority_status={'launcher_priority':[r[0] for r in launcher_waiting],
+                         'running':[r[0] for r in active],'cap':cap}
+        if priority_status!=last:
+            print(json.dumps(dict(time_pacific=datetime.now(ZoneInfo('America/Los_Angeles')).isoformat(),
+                                  **priority_status)),flush=True)
+            last=priority_status
+        time.sleep(60)
+        continue
     priority_barrier = startup
     if full_path.exists():
         priority_barrier = json.loads(full_path.read_text())['job']
