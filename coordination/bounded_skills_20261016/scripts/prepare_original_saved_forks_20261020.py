@@ -47,6 +47,8 @@ def main():
     parser.add_argument('--original-manifest', type=Path, required=True)
     parser.add_argument('--original-manifest-sha256', required=True)
     parser.add_argument('--targeted-vla-measurement', action='store_true')
+    parser.add_argument('--include-original-cohort', action='store_true',
+        help='Include the other sixty registered original states, retaining their initial starts')
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     sys.path.insert(0, str(source))
@@ -60,11 +62,13 @@ def main():
     old = read(args.original_manifest)
     cases = []
     for original in old['cases']:
-        if original['category'] != 'cup_transfer':
-            continue
         case = copy.deepcopy(original)
         diagnostic = case['diagnostic']
         diagnostic['targeted_vla_measurement_v1'] = args.targeted_vla_measurement
+        if original['category'] != 'cup_transfer':
+            if args.include_original_cohort:
+                cases.append(case)
+            continue
         final = load(diagnostic['old_failed_annotation'])
         diagnostic['subtask_mode'] = recorded_phase(final, diagnostic['goal_index'])
         choices = diagnostic['old_failed_choices']
@@ -73,20 +77,25 @@ def main():
         rows = [json.loads(line) for line in Path(choices['path']).read_bytes().splitlines()]
         diagnostic['original_subtask_start'] = select_start(rows, diagnostic, load)
         cases.append(case)
-    if len(cases) != 11:
-        raise ValueError('expected exactly the eleven registered original failed cup states')
+    expected = 71 if args.include_original_cohort else 11
+    if len(cases) != expected or sum(c['category'] == 'cup_transfer' for c in cases) != 11:
+        raise ValueError('registered original diagnostic cohort differs')
     root = Path('/public/home/sunyihan/rpent_libero_eval')
-    directory = root/'results/bounded_skills/original_saved_forks_20261020'/args.commit[:8]/'preparation'
+    tag = 'original_measured_forks_20261020' if args.include_original_cohort else 'original_saved_forks_20261020'
+    directory = root/'results/bounded_skills'/tag/args.commit[:8]/'preparation'
     directory.mkdir(parents=True)
     manifest = directory/'manifest.json'
     manifest.write_text(json.dumps({**old, 'source_commit': args.commit, 'cases': cases,
         'parent_manifest': reference(args.original_manifest),
-        'scope': 'eleven original failed-cup subtask starts; fresh public observation/recovery epoch shared by self and pi branches; separate from the from-init cohort'}, indent=2))
+        'scope': 'registered original subtask diagnostic; eleven saved cup starts and optional sixty initial states; fresh public observation/recovery epoch shared by self and pi branches; not a whole-episode score'}, indent=2))
     batch = {'domain': 'original', 'source': str(source), 'source_commit': args.commit,
         'manifest': reference(manifest)}
-    plan = {'selected_n': 8, 'batches': [{**batch, 'indices': list(range(i, min(i+8, 11)))}
-        for i in range(0, 11, 8)], 'training': False, 'confirmation': False}
-    startup = {**plan, 'batches': [{**batch, 'indices': [0]}]}
+    plan = {'selected_n': 8, 'batches': [{**batch, 'indices': list(range(i, min(i+8, len(cases))))}
+        for i in range(0, len(cases), 8)], 'training': False, 'confirmation': False}
+    categories = (['microwave_close', 'microwave_open', 'plate_push', 'cup_transfer']
+        if args.include_original_cohort else ['cup_transfer'])
+    startup_indices = [next(i for i, c in enumerate(cases) if c['category'] == name) for name in categories]
+    startup = {**plan, 'batches': [{**batch, 'indices': startup_indices}]}
     launcher = root/'launcher_shared_20261019_3fa8bb8f1740/shared_gpu_episodes_20261019.py'
     checks = []
     for name, value in (('startup', startup), ('batch', plan)):

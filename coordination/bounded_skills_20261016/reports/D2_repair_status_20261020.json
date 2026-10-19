@@ -1,0 +1,901 @@
+{
+  "training": false,
+  "scope": "D2 development subtask repair; no mixed whole-episode success claim",
+  "execution_source_commit": "7484079b91021a7eebbcd48756c4eb3a047d1563",
+  "evaluation_source_commit": "59f7daf807f0022e3645dc83b2b5c6a158915cb5",
+  "six_handoffs": [
+    {
+      "sampling_seed": 13401000,
+      "case": {
+        "suite": "libero_spatial_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "old_stop_reason": "no_progress_blocks",
+      "old_rejected_check": {
+        "reason": "measured_sweep_collision",
+        "at": {
+          "xyz_m": [
+            -0.010741091544139002,
+            0.28231869296095646,
+            0.9215805597743325
+          ],
+          "quat_xyzw": [
+            0.9968253119514514,
+            -0.07082544682258828,
+            0.01011822673520077,
+            -0.03493815998313992
+          ]
+        },
+        "counts": {
+          "palm": 7,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0
+        },
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0
+      },
+      "old_public_pose": {
+        "eef_xyz_m": [
+          0.0028169060570555635,
+          0.277396903170531,
+          0.9403926316256968
+        ],
+        "eef_quat_xyzw": [
+          0.996766502067877,
+          -0.07205454398192213,
+          0.008589666960280563,
+          -0.03450942868893865
+        ],
+        "gripper_opening_m": 0.07826824616112332,
+        "finger_positions_m": [
+          0.039215811005396416,
+          -0.039052435155726914
+        ],
+        "joint_positions_rad": [
+          0.2406492212791697,
+          0.9383098075851806,
+          0.17882812906538453,
+          -1.4773716548244928,
+          -0.1374929664399423,
+          2.447328620968784,
+          1.3781290402632487
+        ]
+      },
+      "controls": 55,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "handoff_completed": true,
+      "handoff_steps": 9,
+      "next_request_generated": true,
+      "next_sim_steps": 103,
+      "next_receipts": [
+        {
+          "skill": "carry_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 99
+        },
+        {
+          "skill": "release",
+          "outcome": "success",
+          "stop_reason": "native_success",
+          "steps_used": 4
+        }
+      ]
+    },
+    {
+      "sampling_seed": 13402000,
+      "case": {
+        "suite": "libero_spatial_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "old_stop_reason": "no_progress_blocks",
+      "old_rejected_check": {
+        "reason": "measured_sweep_collision",
+        "at": {
+          "xyz_m": [
+            0.02308342490335292,
+            0.26843367267868273,
+            0.9643152978218629
+          ],
+          "quat_xyzw": [
+            0.9976094041249114,
+            -0.0642048226313999,
+            0.012828111908088935,
+            -0.0221055897293703
+          ]
+        },
+        "counts": {
+          "palm": 0,
+          "leftfinger": 4,
+          "leftfinger_pad": 0,
+          "rightfinger": 5,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0
+        },
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0
+      },
+      "old_public_pose": {
+        "eef_xyz_m": [
+          0.024545172457518596,
+          0.26779415573234333,
+          0.9675362330198362
+        ],
+        "eef_quat_xyzw": [
+          0.9975934192781575,
+          -0.06419940001179658,
+          0.013242388700276504,
+          -0.022593051864429677
+        ],
+        "gripper_opening_m": 0.07980126426037981,
+        "finger_positions_m": [
+          0.039973907413700493,
+          -0.03982735684667931
+        ],
+        "joint_positions_rad": [
+          0.23203068619592163,
+          0.9344775182923437,
+          0.1750534020929556,
+          -1.3985625901319463,
+          -0.15565870991407635,
+          2.361719043059582,
+          1.3570329407233421
+        ]
+      },
+      "controls": 57,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "handoff_completed": true,
+      "handoff_steps": 10,
+      "next_request_generated": true,
+      "next_sim_steps": 102,
+      "next_receipts": [
+        {
+          "skill": "carry_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 98
+        },
+        {
+          "skill": "release",
+          "outcome": "success",
+          "stop_reason": "native_success",
+          "steps_used": 4
+        }
+      ]
+    },
+    {
+      "sampling_seed": 14401000,
+      "case": {
+        "suite": "libero_spatial_swap",
+        "task": 3,
+        "seed": 40
+      },
+      "old_stop_reason": "no_progress_blocks",
+      "old_rejected_check": {
+        "reason": "measured_sweep_collision",
+        "at": {
+          "xyz_m": [
+            0.1155741901915022,
+            0.07449474149613014,
+            1.1016579077914253
+          ],
+          "quat_xyzw": [
+            0.9969167370640534,
+            0.03255578696206579,
+            0.05832085063022306,
+            -0.041180316640464926
+          ]
+        },
+        "counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 5,
+          "rightfinger_pad": 2
+        },
+        "target_counts": {
+          "palm": 0
+        },
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0
+      },
+      "old_public_pose": {
+        "eef_xyz_m": [
+          0.11523101348979595,
+          0.07502827508772339,
+          1.1021044555784987
+        ],
+        "eef_quat_xyzw": [
+          0.9969613407558348,
+          0.03292180843309639,
+          0.05784448475880196,
+          -0.040475364739686895
+        ],
+        "gripper_opening_m": 0.07407644986671785,
+        "finger_positions_m": [
+          0.04000286009442465,
+          -0.0340735897722932
+        ],
+        "joint_positions_rad": [
+          0.04173384807540035,
+          0.8291275193325315,
+          0.06045491074917913,
+          -1.2239205668430382,
+          0.0373448741772505,
+          2.171440390479479,
+          0.7805467026676363
+        ]
+      },
+      "controls": 45,
+      "skill_stop_reason": "no_progress_blocks",
+      "private_endpoint_success": false,
+      "handoff_completed": true,
+      "handoff_steps": 12,
+      "next_request_generated": true,
+      "next_sim_steps": 0,
+      "next_receipts": [
+        {
+          "skill": "observe",
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 16401000,
+      "case": {
+        "suite": "libero_object_swap",
+        "task": 1,
+        "seed": 40
+      },
+      "old_stop_reason": "measured_success",
+      "old_rejected_check": {
+        "reason": "measured_sweep_collision",
+        "at": {
+          "xyz_m": [
+            -0.10886942893364965,
+            -0.2588801147678343,
+            0.051652364250520805
+          ],
+          "quat_xyzw": [
+            0.9980565475402586,
+            -0.05630208661138052,
+            0.016480602940724096,
+            -0.021014106736531476
+          ]
+        },
+        "counts": {
+          "palm": 0,
+          "leftfinger": 2,
+          "leftfinger_pad": 2,
+          "rightfinger": 1,
+          "rightfinger_pad": 3
+        },
+        "target_counts": {
+          "palm": 0
+        },
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0
+      },
+      "old_public_pose": {
+        "eef_xyz_m": [
+          -0.10866463658019154,
+          -0.2589184722408179,
+          0.048647245168265046
+        ],
+        "eef_quat_xyzw": [
+          0.9980676295134968,
+          -0.05573205281559773,
+          0.017073430753733285,
+          -0.02152773022325228
+        ],
+        "gripper_opening_m": 0.02080845589234758,
+        "finger_positions_m": [
+          0.012111066353414954,
+          -0.008697389538932626
+        ],
+        "joint_positions_rad": [
+          -0.24951417428226247,
+          0.5384199404781327,
+          -0.21530799895674368,
+          -2.1738802100235195,
+          0.3789240971389631,
+          2.689725681703113,
+          0.12066718109324727
+        ]
+      },
+      "controls": 73,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "handoff_completed": true,
+      "handoff_steps": 11,
+      "next_request_generated": true,
+      "next_sim_steps": 0,
+      "next_receipts": [
+        {
+          "skill": "observe",
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 17401000,
+      "case": {
+        "suite": "libero_object_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "old_stop_reason": "measured_success",
+      "old_rejected_check": {
+        "reason": "measured_payload_collision",
+        "at": {
+          "xyz_m": [
+            -0.1880502011008512,
+            -0.08393975141493108,
+            0.16838056450101255
+          ],
+          "quat_xyzw": [
+            0.9994305108668902,
+            0.019926994569858563,
+            -0.026625948239600204,
+            -0.005712067585557619
+          ]
+        },
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0012362969879193425
+      },
+      "old_public_pose": {
+        "eef_xyz_m": [
+          -0.18838500450610896,
+          -0.08486786617598271,
+          0.16496735996168543
+        ],
+        "eef_quat_xyzw": [
+          0.9994328278901999,
+          0.020166779738948537,
+          -0.026319443387915774,
+          -0.005883062986923318
+        ],
+        "gripper_opening_m": 0.036924338568766375,
+        "finger_positions_m": [
+          0.01816811049023505,
+          -0.018756228078531324
+        ],
+        "joint_positions_rad": [
+          -0.04755097131741193,
+          -0.04862357204418338,
+          -0.15719559884279036,
+          -2.6214164922249927,
+          -0.013584220061571681,
+          2.519335672973561,
+          0.5524974719900995
+        ]
+      },
+      "controls": 120,
+      "skill_stop_reason": "block_budget",
+      "private_endpoint_success": false,
+      "handoff_completed": true,
+      "handoff_steps": 7,
+      "next_request_generated": true,
+      "next_sim_steps": 23,
+      "next_receipts": [
+        {
+          "skill": "observe",
+          "outcome": "no_effect",
+          "stop_reason": "no_measured_scene_change",
+          "steps_used": 23
+        }
+      ]
+    },
+    {
+      "sampling_seed": 17402000,
+      "case": {
+        "suite": "libero_object_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "old_stop_reason": "measured_success",
+      "old_rejected_check": {
+        "reason": "measured_sweep_collision",
+        "at": {
+          "xyz_m": [
+            -0.20953205696085278,
+            -0.08516455891854881,
+            0.16140389479833145
+          ],
+          "quat_xyzw": [
+            0.9991561598495876,
+            0.023468097258594126,
+            -0.03286846646398517,
+            -0.0074753299587665715
+          ]
+        },
+        "counts": {
+          "palm": 31,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0
+        },
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0
+      },
+      "old_public_pose": {
+        "eef_xyz_m": [
+          -0.20942574976435863,
+          -0.08553819157370138,
+          0.15857422299039226
+        ],
+        "eef_quat_xyzw": [
+          0.9991498404450663,
+          0.024079180581271065,
+          -0.032537812282636386,
+          -0.007815380540460059
+        ],
+        "gripper_opening_m": 0.03676949613242047,
+        "finger_positions_m": [
+          0.017390135703254,
+          -0.019379360429166468
+        ],
+        "joint_positions_rad": [
+          -0.05171472460371057,
+          -0.080804795880314,
+          -0.16742598059498465,
+          -2.6799878766609755,
+          -0.024505927371902853,
+          2.533146906393488,
+          0.5403211527052724
+        ]
+      },
+      "controls": 110,
+      "skill_stop_reason": "no_progress_blocks",
+      "private_endpoint_success": false,
+      "handoff_completed": true,
+      "handoff_steps": 11,
+      "next_request_generated": true,
+      "next_sim_steps": 0,
+      "next_receipts": [
+        {
+          "skill": "observe",
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ]
+    }
+  ],
+  "stop_comparison": [
+    {
+      "sampling_seed": 13401000,
+      "variant": "handoff",
+      "controls": 55,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.08090784908218648,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "plate",
+          "distance_m": 0.16248575556328648,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.299558350820538,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 13402000,
+      "variant": "handoff",
+      "controls": 57,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.07709872212217363,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "plate",
+          "distance_m": 0.17285474451311328,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.3070467189860955,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 14401000,
+      "variant": "handoff",
+      "controls": 45,
+      "skill_stop_reason": "no_progress_blocks",
+      "private_endpoint_success": false,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.16210479038247136,
+          "capture_step": 0
+        },
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.16547713560888053,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "cookie box",
+          "distance_m": 0.2018195407623791,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 16401000,
+      "variant": "handoff",
+      "controls": 73,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "cream cheese",
+          "distance_m": 0.059524362835387555,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "basket",
+          "distance_m": 0.5252678994517451,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 17401000,
+      "variant": "handoff",
+      "controls": 120,
+      "skill_stop_reason": "block_budget",
+      "private_endpoint_success": false,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "salad dressing",
+          "distance_m": 0.08917400687274107,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "basket",
+          "distance_m": 0.4170353642888191,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 17402000,
+      "variant": "handoff",
+      "controls": 110,
+      "skill_stop_reason": "no_progress_blocks",
+      "private_endpoint_success": false,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "salad dressing",
+          "distance_m": 0.10686800821952219,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "basket",
+          "distance_m": 0.49649645929737796,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 13401000,
+      "variant": "progress_off_120",
+      "controls": 55,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.08090784908218648,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "plate",
+          "distance_m": 0.16248575556328648,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.299558350820538,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 13401000,
+      "variant": "progress_off_220",
+      "controls": 55,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.08090784908218648,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "plate",
+          "distance_m": 0.16248575556328648,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.299558350820538,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 13402000,
+      "variant": "progress_off_120",
+      "controls": 57,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.07709872212217363,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "plate",
+          "distance_m": 0.17285474451311328,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.3070467189860955,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 13402000,
+      "variant": "progress_off_220",
+      "controls": 57,
+      "skill_stop_reason": "measured_success",
+      "private_endpoint_success": true,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.07709872212217363,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "plate",
+          "distance_m": 0.17285474451311328,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.3070467189860955,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 14401000,
+      "variant": "progress_off_120",
+      "controls": 120,
+      "skill_stop_reason": "block_budget",
+      "private_endpoint_success": false,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.16202701323394247,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "cookie box",
+          "distance_m": 0.1797426207417151,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.19537169216763345,
+          "capture_step": 0
+        }
+      ]
+    },
+    {
+      "sampling_seed": 14401000,
+      "variant": "progress_off_220",
+      "controls": 220,
+      "skill_stop_reason": "block_budget",
+      "private_endpoint_success": false,
+      "nearest_initial_public_entities_at_vla_end": [
+        {
+          "id": "e75",
+          "label": "bowl",
+          "distance_m": 0.16655957861486545,
+          "capture_step": 0
+        },
+        {
+          "id": "e113",
+          "label": "cookie box",
+          "distance_m": 0.1822790514601447,
+          "capture_step": 0
+        },
+        {
+          "id": "e118",
+          "label": "bowl",
+          "distance_m": 0.182857130181078,
+          "capture_step": 0
+        }
+      ]
+    }
+  ],
+  "stopping_decision": {
+    "production_pick": {
+      "blocks": 24,
+      "controls_per_check": 1,
+      "no_progress_blocks": 3,
+      "minimum_progress_m": 0.005,
+      "max_controls": null
+    },
+    "decision": "retain existing pick defaults; no observed rescue from disabling progress or extending this cohort to 220 controls",
+    "limits": "three same-canonical-state seeds only; other subtask modes remain exploratory, not validated general thresholds",
+    "original_diagnostic": "no_progress disabled; goal 300, LIBERO-90 400, LIBERO-10 520 controls; actual manifest VLABudget loaded",
+    "official_reference": {
+      "url": "https://github.com/Physical-Intelligence/openpi/blob/main/examples/libero/main.py",
+      "replan_steps": 5,
+      "num_steps_wait": 10,
+      "max_steps": {
+        "spatial": 220,
+        "object": 280,
+        "goal": 300,
+        "10": 520,
+        "90": 400
+      }
+    }
+  },
+  "bindings": [
+    {
+      "case": "libero_object_task_t3_s40",
+      "reason": "multiple_public_category_hypotheses_without_language_disambiguator",
+      "cpu_recovery_observe": true,
+      "physical_recovery_verified": false
+    },
+    {
+      "case": "libero_object_task_t4_s40",
+      "reason": "multiple_public_category_hypotheses_without_language_disambiguator",
+      "cpu_recovery_observe": true,
+      "physical_recovery_verified": false
+    },
+    {
+      "case": "libero_goal_swap_t4_s40",
+      "reason": "multiple_public_category_hypotheses_without_language_disambiguator",
+      "cpu_recovery_observe": true,
+      "physical_recovery_verified": false
+    }
+  ],
+  "time_example": {
+    "preparation_and_planning": 0.0431093848310411,
+    "pi05_inference": 1.7815082119777799,
+    "sam_rpc": 2077.2147028078325,
+    "private_metrology": 2.814389738254249,
+    "handoff": 0.13494376884773374,
+    "other_rgbd_geometry_control_io": 159.870394540485
+  },
+  "original_forks": {
+    "registered_states": 71,
+    "categories": {
+      "microwave_open": 20,
+      "microwave_close": 20,
+      "plate_push": 20,
+      "failed_cup": 11
+    },
+    "pi_branches_each": 3,
+    "self_branches_each": 1,
+    "job": "10653",
+    "startup_step": "10644.1",
+    "startup_categories_physical": 4,
+    "manifest_sha256": "9a66314ef33e8a079d4dca44252ab23a935bc49b1db553b90595e6355d5b3908",
+    "status": "submitted; waiting for slots; not physical results"
+  },
+  "remaining": [
+    "three next-route collision rejections after successful control handoff",
+    "physical binding recovery not run",
+    "new 71-state original fork outcomes pending"
+  ],
+  "evidence": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/selected_handoff_closed_20261020.json",
+      "sha256": "1606f1002645497d2578d34c4310951a1a4b42fa34073b8d76a4cac17de1cd6f"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/calibrated_D2_stop_comparison_closed_20261020.json",
+      "sha256": "f3b0d7d868cef90dcd504b0cafd94a85f31de87ca0316ae01b1ee7b50edf19e2"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/old10477_handoff_rejections_CPU_20261020.json",
+      "sha256": "af0b1dbf5f12387ed2e6fef5f984c836a06f35ba0a77536c0cee46dfb4a71d65"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/D2_binding_recovery_CPU_20261019.json",
+      "sha256": "86e60954b7a2015c99508ed1078c8769afd51ed3e66992897cfe843f4ce833b7"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/six_full_selected_actual_inputs_CPU_20261020_closed.json",
+      "sha256": "c80d73c81e2599e7673cac0404926d04509fe55d5f0fa6d2fa7f7349da21faf7"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/selected164_blocker_public_CPU_20261020.json",
+      "sha256": "6c3d6d0012b4eedeb352274e7c2ac2b7e7fc774f06c2da71d094d174097274ea"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/D2_handoff_e120_closed_20261020.json",
+      "sha256": "1c4a0f35a87c06f45d2c1bfbe859b35f186ae80fa07518ea9e957e3e73469429"
+    }
+  ]
+}
