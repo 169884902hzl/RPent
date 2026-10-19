@@ -107,6 +107,27 @@ def strict_place_verified_v6(first, second, target, opening, eef_xyz, interval_s
                                     interval_s, relation=relation)
 
 
+def measured_push_endpoint(initial, previous, current, target) -> tuple[bool, dict]:
+    """Stop at a public planar destination after two stable RGB-D measures.
+
+    An anchor-derived area supplies a measured relative destination, not a
+    support claim. Neither a simulator position nor a private goal is read.
+    """
+    if (previous is None or current is None or target is None
+            or not (previous.visible and current.visible and target.visible)
+            or current.source_step <= previous.source_step):
+        return False, {'reason': 'two_fresh_visible_measurements_required'}
+    inside = all(target.lower[i] <= point.xyz[i] <= target.upper[i]
+        for point in (previous, current) for i in (0, 1))
+    motion = math.dist(previous.xyz, current.xyz)
+    displacement = math.dist(initial.xyz, current.xyz)
+    rise = abs(current.lower[2]-initial.lower[2])
+    return bool(inside and motion <= .01 and displacement >= .02 and rise <= .02), {
+        'inside_measured_destination_twice': inside, 'inter_frame_motion_m': motion,
+        'displacement_m': displacement, 'lower_edge_height_change_m': rise,
+        'before_step': previous.source_step, 'after_step': current.source_step}
+
+
 def placement_unknown_reason(first, second, target=None) -> str:
     """Name the absent evidence identically in runtime and offline receipts."""
     if first is None or second is None or not (first.visible and second.visible):

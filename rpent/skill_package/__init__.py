@@ -1,3 +1,3 @@
 """Robot-independent, publicly measured bounded skills."""
 
-VERSION = "bounded-skills/3"
+VERSION = "bounded-skills/4"

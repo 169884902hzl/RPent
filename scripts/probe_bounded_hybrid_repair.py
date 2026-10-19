@@ -22,8 +22,10 @@ def validate_plan(plan):
             validate_d2_episode(case['episode'])
         elif diagnostic['domain'] == 'original':
             ep = case['episode']
-            if ep['suite'] not in {'libero_spatial', 'libero_object', 'libero_goal', 'libero_10'} or not 0 <= ep['task'] < 10:
-                raise ValueError('original fork requires one of the forty original tasks')
+            suites = {'libero_spatial': 10, 'libero_object': 10, 'libero_goal': 10,
+                'libero_10': 10, 'libero_90': 90}
+            if ep['suite'] not in suites or not 0 <= ep['task'] < suites[ep['suite']]:
+                raise ValueError('original fork requires an original40/90 task')
         else:
             raise ValueError('unregistered diagnostic domain')
         VLABudget(**diagnostic['budget'])
@@ -106,7 +108,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                     if old_trace[i]['action'] != new_trace[i]['action']), None)}
             write(output / 'replay/summary.json', result)
             probe.restore_checkpoint(facade, adapter, policy, endpoint)
-            subtask_plan, _ = probe.split_subtasks(facade.goal_status()['goals'])
+            subtask_plan, _ = probe.split_subtasks(facade.goal_status()['goals'], adapter.ex.instruction)
             next_spec = spec
             if result['success'] is True:
                 position = next(i for i, value in enumerate(subtask_plan) if value['id'] == spec['id'])
@@ -116,7 +118,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 if not (adapter.p.env.terminated or adapter.p.env.truncated) else {'status':'native_stop'})
             trials = [result]
         elif diagnostic['kind'] == 'original_fork':
-            subtask_plan, unsupported = probe.split_subtasks(facade.goal_status()['goals'])
+            subtask_plan, unsupported = probe.split_subtasks(facade.goal_status()['goals'], adapter.ex.instruction)
             matches = [s for s in subtask_plan if s['mode'] == diagnostic['subtask_mode']]
             if not matches:
                 report = {'case':case, 'status':'oracle_rule_uncovered', 'unsupported':unsupported,

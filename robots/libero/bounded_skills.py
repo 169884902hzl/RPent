@@ -1903,6 +1903,12 @@ class MeasuredSkillAdapter:
                 if self.held and entity.id != self.held:
                     for mode in ("on", "in"):
                         add("call_vla", anchor_id=self.held, target_id=entity.id, mode=mode)
+                if (self.held is None and entity.visible and not entity.part_of
+                        and not fixture_actions(entity.name) and not entity.name.startswith('area ')
+                        and entity.name != 'table' and not entity.name.endswith('surface')):
+                    for target in entities:
+                        if target.visible and target.name.startswith('area '):
+                            add('call_vla', anchor_id=entity.id, target_id=target.id, mode='push')
         add("set_gripper", mode="open")
         add("set_gripper", mode="close")
         if measured_robot(self.p)["gripper_opening_m"] < .075 or self.held:
@@ -2739,8 +2745,9 @@ class MeasuredSkillAdapter:
         hold_frames = []
         hold_verified = False
         vla_payload_reference = None
+        previous_push_measurement = None
         def observe():
-            nonlocal hold_verified, vla_payload_reference
+            nonlocal hold_verified, vla_payload_reference, previous_push_measurement
             self.refresh()
             current = self.scene.entities.get(source.id)
             robot = self.robot()
@@ -2799,6 +2806,11 @@ class MeasuredSkillAdapter:
                 verdict, _ = measured_stove_endpoint(initial_stove, stove, mode)
                 completed = verdict is True
                 displacement = np.array([float(stove.get("red_fraction", 0.)), 0., 0.])
+            elif mode == 'push':
+                from robots.libero.v5_verification import measured_push_endpoint
+                completed, push_evidence = measured_push_endpoint(
+                    initial, previous_push_measurement, current, target)
+                previous_push_measurement = current
             elif target and current and current.visible:
                 from robots.libero.v5_verification import strict_place_verified_v6
                 elapsed = (self.p.env.execution_budget()["used_sim_steps"]-initial_step)/self.config.hz
@@ -2811,6 +2823,8 @@ class MeasuredSkillAdapter:
                       "outside_region": distance > .6, "evidence": [self._evidence(current)] if current else []}
             if mode == 'pick':
                 result['public_hold'] = hold_evidence
+            elif mode == 'push':
+                result['public_push'] = push_evidence
             checks.append(result)
             return result
         def prepare():

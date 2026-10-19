@@ -110,6 +110,9 @@ def subtask_phrase(source_name: str, mode: str, target_name: str | None = None) 
     source = _ALIASES.get(source_name, source_name)
     if mode in TRANSFER_MODES and target_name is not None:
         return f"put the {source} {mode} the {_ALIASES.get(target_name, target_name)}"
+    if mode == 'push' and target_name is not None:
+        target = _ALIASES.get(target_name, target_name).removeprefix('area ')
+        return f"push the {source} to the {target}"
     if mode in FIXTURE_MODES and target_name is None:
         return f"{mode.replace('_', ' ')} the {source}"
     raise ValueError("unsupported subtask template argument shape")

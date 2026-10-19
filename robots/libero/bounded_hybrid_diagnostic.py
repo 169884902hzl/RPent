@@ -20,7 +20,7 @@ import numpy as np
 D2_SUITES = tuple(f"libero_{family}_{variant}"
                   for family in ("spatial", "object", "goal", "10")
                   for variant in ("swap", "task"))
-SPLIT_VERSION = "private-hybrid-call-vla-subtasks/2"
+SPLIT_VERSION = "private-hybrid-call-vla-subtasks/3"
 MODES = {"on": "on", "in": "in", "open": "open", "close": "close",
          "turnon": "turn_on", "turnoff": "turn_off"}
 
@@ -34,7 +34,7 @@ def validate_d2_episode(episode: dict) -> None:
         raise ValueError("hybrid diagnostic admits only registered D2 task0--4/init40")
 
 
-def split_subtasks(goals: list) -> tuple[list[dict], list[dict]]:
+def split_subtasks(goals: list, instruction: str = '') -> tuple[list[dict], list[dict]]:
     """Split existing flat goal rules into the existing call_vla modes.
 
     A transfer is pick followed by on/in; articulation remains one subtask.
@@ -52,8 +52,11 @@ def split_subtasks(goals: list) -> tuple[list[dict], list[dict]]:
             unsupported.append({"index": index, "goal": goal, "reason": "existing_oracle_rule_not_covered"})
             continue
         common = {"goal_index": index, "goal": list(goal), "source_symbol": goal[1]}
-        if mode in {"on", "in"}:
+        pushing = mode in {"on", "in"} and instruction.lower().strip().startswith('push ')
+        if mode in {"on", "in"} and not pushing:
             subtasks.append({**common, "id": f"g{index}:pick", "mode": "pick", "target_symbol": None})
+        if pushing:
+            mode = 'push'
         subtasks.append({**common, "id": f"g{index}:{mode}", "mode": mode,
                          "target_symbol": goal[2] if len(goal) == 3 else None})
     # The current bounded selector has no storage-opening prerequisite or

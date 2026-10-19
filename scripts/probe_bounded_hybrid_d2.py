@@ -316,7 +316,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
     with runtime(case, endpoints, output) as (facade, adapter, policy, timings):
         initial, initial_ref = save_checkpoint(facade, adapter, policy, output / "private_initial.pkl")
         status = facade.goal_status()
-        subtasks, unsupported = split_subtasks(status["goals"])
+        subtasks, unsupported = split_subtasks(status["goals"], adapter.ex.instruction)
         write(output / "private_subtask_plan.json", {"version": SPLIT_VERSION,
             "subtasks": subtasks, "unsupported": unsupported, "initial": initial_ref})
         if unsupported:

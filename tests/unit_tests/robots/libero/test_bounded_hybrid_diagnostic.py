@@ -39,6 +39,13 @@ def test_split_only_uses_existing_modes_and_reports_uncovered_rules():
     assert [t["index"] for t in unsupported] == [3, 4]
 
 
+def test_original_push_is_one_contact_subtask_without_a_pick_prerequisite():
+    tasks, unsupported = split_subtasks([['on', 'plate_1', 'stove_front_region']],
+        'push the plate to the front of the stove')
+    assert [task['mode'] for task in tasks] == ['push']
+    assert tasks[0]['target_symbol'] == 'stove_front_region' and not unsupported
+
+
 def test_unknown_is_not_failure_and_tie_prefers_self():
     assert choose_branch(True, [True, True, True])["method"] == "self"
     assert choose_branch(False, [False, True, False])["rate"] == 1 / 3
@@ -206,7 +213,8 @@ def test_startup_calls_vla_before_any_full_oracle_branch(tmp_path, monkeypatch, 
     plan = {'cases': [case], 'source_commit': 'tested', 'trial_seed_base': 1000}
     facade = SimpleNamespace(goal_status=lambda: {'goals': [['on', 'bowl_1', 'plate_1']],
                                                   'satisfied': [False]})
-    adapter = SimpleNamespace(request=lambda **kwargs: {'candidates': []})
+    adapter = SimpleNamespace(request=lambda **kwargs: {'candidates': []},
+        ex=SimpleNamespace(instruction='put the bowl on the plate'))
     timings = SimpleNamespace(measure=lambda *_: nullcontext())
 
     @contextmanager

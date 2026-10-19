@@ -33,3 +33,13 @@ def test_self_continuation_cannot_silently_call_vla_again(tmp_path):
     with pytest.raises(ValueError, match='bounded skills'):
         first_self_chunk(object(), adapter, policy, {}, tmp_path)
     assert policy.rpc is rpc
+
+
+def test_original_microwave_fork_accepts_its_libero90_task_only():
+    value = plan()
+    value['cases'][0] = {'episode': {'suite': 'libero_90', 'task': 35, 'seed': 0},
+        'diagnostic': {'domain': 'original', 'budget': {}}}
+    validate_plan(value)
+    value['cases'][0]['episode']['task'] = 90
+    with pytest.raises(ValueError):
+        validate_plan(value)

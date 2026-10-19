@@ -47,6 +47,43 @@ def decision(request, ids):
             "observation_id": request["observation_id"], "candidate_ids": ids}
 
 
+def test_public_push_fallback_has_measured_source_and_region_without_goal_filter(adapter):
+    from jsonschema import ValidationError
+
+    from robots.libero.v5_subtasks import subtask_phrase
+
+    adapter.allow_vla = True
+    adapter.scene.entities['dest'] = Entity('dest', 'area front of plate', (.2, .1, .9),
+        (.16, .06, .9), (.24, .14, .9))
+    adapter.ex.instruction = 'observe the box'
+    request = adapter.request()
+    push = next(c for c in request['candidates'] if c['skill'] == 'call_vla'
+        and c['parameters']['mode'] == 'push')
+    assert push['parameters'] == {'anchor_id': 'e1', 'target_id': 'dest', 'mode': 'push'}
+    assert subtask_phrase('plate', 'push', 'area front of stove') == 'push the plate to the front of stove'
+    validate(request)
+    del push['parameters']['target_id']
+    with pytest.raises(ValidationError):
+        validate(request)
+
+
+def test_push_endpoint_requires_fresh_stable_planar_motion_in_public_region():
+    from dataclasses import replace
+
+    from robots.libero.v5_verification import measured_push_endpoint
+
+    initial = Entity('e1', 'plate', (0., 0., .9), (-.06, -.06, .89), (.06, .06, .91))
+    previous = replace(initial, xyz=(.2, 0., .9), source_step=1)
+    current = replace(previous, xyz=(.205, 0., .9), source_step=2)
+    target = Entity('dest', 'area front of stove', (.2, 0., .89), (.16, -.04, .89), (.24, .04, .89))
+    assert measured_push_endpoint(initial, previous, current, target)[0] is True
+    assert measured_push_endpoint(initial, current, current, target)[0] is False
+    assert measured_push_endpoint(initial, previous, replace(current, visible=False), target)[0] is False
+    assert measured_push_endpoint(initial, previous, replace(current, xyz=(.3, 0., .9)), target)[0] is False
+    assert measured_push_endpoint(initial, previous, replace(current,
+        lower=(-.06, -.06, .94), upper=(.06, .06, .96)), target)[0] is False
+
+
 def test_measured_anchor_still_has_screened_approaches_without_a_contact_fit(adapter):
     adapter.grasp_geometry = lambda entity: None
     request = adapter.request(k=4)
@@ -3078,7 +3115,7 @@ def test_vla_pick_uses_calibrated_aperture_and_observed_motion(
     assert (adapter.held == 'e1') is expected
 
 
-def test_vla_handoff_screens_the_measured_payload_before_braking(adapter, monkeypatch):
+def test_vla_handoff_retains_the_measured_payload_before_settling(adapter, monkeypatch):
     from dataclasses import replace
 
     adapter.allow_vla = True
@@ -3088,12 +3125,12 @@ def test_vla_handoff_screens_the_measured_payload_before_braking(adapter, monkey
     original = adapter.p.env.raw_obs
     adapter.p.env.raw_obs = lambda: {**original(), 'robot0_gripper_qpos': [.01, -.01]}
     braking = []
-    def brake(motion, rows, gripper):
+    def settle(primitives, gripper, config):
         assert adapter.held == adapter.active == 'e1'
         assert adapter.payload_reference is reference
         braking.append(True)
-        return {'executed': True, 'steps_used': 1, 'reason': 'screened_brake'}
-    monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion._brake', brake)
+        return {'executed': True, 'completed': True, 'steps_used': 1, 'reason': 'osc_hold_settled'}
+    monkeypatch.setattr('robots.libero.bounded_skills.settle_osc_hold', settle)
     def fallback(**kwargs):
         observe = kwargs['observe']
         assert not observe()['completed']

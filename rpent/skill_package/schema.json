@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:robot-decider:bounded-skills:3",
+  "$id": "urn:robot-decider:bounded-skills:4",
   "title": "Robot-independent bounded skill request, selection and receipt",
   "oneOf": [
     {
@@ -341,6 +341,7 @@
             "in",
             "turn_on",
             "turn_off",
+            "push",
             null
           ]
         }
@@ -832,7 +833,8 @@
                       "open",
                       "close",
                       "turn_on",
-                      "turn_off"
+                      "turn_off",
+                      "push"
                     ]
                   }
                 }
@@ -874,7 +876,8 @@
                   "mode": {
                     "enum": [
                       "on",
-                      "in"
+                      "in",
+                      "push"
                     ]
                   }
                 }
@@ -972,7 +975,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/3"
+          "const": "bounded-skills/4"
         },
         "kind": {
           "const": "receipt"
@@ -1102,7 +1105,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/3"
+          "const": "bounded-skills/4"
         },
         "kind": {
           "const": "request"
@@ -1216,7 +1219,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/3"
+          "const": "bounded-skills/4"
         },
         "kind": {
           "const": "decision"
@@ -1294,7 +1297,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/3"
+          "const": "bounded-skills/4"
         },
         "kind": {
           "const": "prefix_context"
@@ -1418,7 +1421,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/3"
+          "const": "bounded-skills/4"
         },
         "kind": {
           "const": "oracle_labels"
