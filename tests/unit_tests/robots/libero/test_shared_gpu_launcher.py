@@ -139,7 +139,9 @@ def test_d2_worker_bootstraps_environment_before_helper_imports(tmp_path):
     (source/'mujoco.py').write_text('SIMULATOR_IMPORTED=True\n')
     (source/'scripts/probe_bounded_feasibility.py').write_text('import mujoco\ndef probe_config(base):return base\ndef episode(*a,**kw):raise AssertionError()\n')
     (source/'scripts/probe_bounded_hybrid_d2.py').write_text('''
+import copy
 from robots.libero.env_server import BOOTSTRAPPED
+def trial(*a,**kw):raise AssertionError()
 def evaluate_case(case,endpoints,output,plan,*,startup):
     assert BOOTSTRAPPED
     return {'status':'physical_result','actual_full_replay_success':True}
@@ -171,6 +173,30 @@ def test_d2_restore_preserves_warmstart_after_forward(monkeypatch):
     assert state.restore_actuators(wrapper,{'data':{'qacc_warmstart':original_values}}) is observation
     assert np.array_equal(data.qacc_warmstart,original_values)
     assert state.restore_actuators.__wrapped__ is original_restore
+
+
+def test_d2_diagnostic_reuses_only_identical_restored_request():
+    import copy
+    import pickle
+    adapter=SimpleNamespace(latest_request={'observation_id':'public-4','candidates':[{'id':'lift'}]})
+    request=copy.deepcopy(adapter.latest_request)
+    def original_trial(facade,adapter,policy,timings,spec,method,seed,output,first_request,**kwargs):
+        current=diagnostic.copy.deepcopy(first_request)
+        assert current is adapter.latest_request
+        # The launcher must not inject a bound execute function into snapshots.
+        pickle.dumps(vars(adapter))
+        values=[1,2]
+        assert diagnostic.copy.deepcopy(values)==values
+        assert diagnostic.copy.deepcopy(values) is not values
+        return 'executed'
+    diagnostic=SimpleNamespace(trial=original_trial,copy=copy)
+    launcher.install_d2_request_compatibility(diagnostic)
+    assert diagnostic.trial(None,adapter,None,None,None,'call_vla',1,None,request)=='executed'
+    assert diagnostic.copy is copy
+    adapter.latest_request['observation_id']='public-5'
+    with pytest.raises(ValueError,match='differs from the current public request'):
+        diagnostic.trial(None,adapter,None,None,None,'call_vla',1,None,request)
+    assert diagnostic.copy is copy
 
 
 def test_registered_original_join_excludes_startup_and_rejects_duplicates(tmp_path):

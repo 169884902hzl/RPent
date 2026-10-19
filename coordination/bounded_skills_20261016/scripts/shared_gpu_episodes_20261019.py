@@ -99,6 +99,34 @@ def install_d2_spawn_bootstrap():
     LiberoEnv.get_env_fns=get_env_fns
 
 
+def install_d2_request_compatibility(diagnostic):
+    """Give the diagnostic's copied first request its restored cache identity.
+
+    Only a byte-equivalent canonical request may reuse the cache object. The
+    adapter and its stale-request guard remain unchanged; later requests use
+    the ordinary copy implementation.
+    """
+    from functools import wraps
+    from types import SimpleNamespace
+    original=diagnostic.trial
+    @wraps(original)
+    def trial(facade,adapter,policy,timings,spec,method,seed,output,first_request,**kwargs):
+        original_copy=diagnostic.copy
+        def deepcopy(value,*args,**options):
+            if value is first_request:
+                encode=lambda obj: json.dumps(obj,sort_keys=True,separators=(',',':'),allow_nan=False)
+                if encode(value)!=encode(adapter.latest_request):
+                    raise ValueError('restored D2 request differs from the current public request')
+                return adapter.latest_request
+            return original_copy.deepcopy(value,*args,**options)
+        diagnostic.copy=SimpleNamespace(deepcopy=deepcopy)
+        try:
+            return original(facade,adapter,policy,timings,spec,method,seed,output,first_request,**kwargs)
+        finally:
+            diagnostic.copy=original_copy
+    diagnostic.trial=trial
+
+
 def worker(args):
     assignment = json.loads(args.assignment.read_bytes())
     bootstrap_source(assignment['domain'])
@@ -131,8 +159,9 @@ def worker(args):
             else:
                 install_d2_restore_compatibility()
                 install_d2_spawn_bootstrap()
-                from scripts.probe_bounded_hybrid_d2 import evaluate_case
-                result = evaluate_case(case, endpoints, output/case['name'], plan,
+                from scripts import probe_bounded_hybrid_d2
+                install_d2_request_compatibility(probe_bounded_hybrid_d2)
+                result = probe_bounded_hybrid_d2.evaluate_case(case, endpoints, output/case['name'], plan,
                                        startup=assignment['startup'])
         status = result['status']
         if assignment['startup'] and status != 'startup_physical':
