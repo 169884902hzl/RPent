@@ -68,14 +68,19 @@ while True:
                     stream.seek(max(0, log.stat().st_size-12000))
                     print(stream.read().decode('utf8', 'replace'), flush=True)
         raise SystemExit('PHYSICAL_JOB_FAILED: inspect preserved log and repair before resubmission')
+    priority_barrier = startup
+    if full_path.exists():
+        priority_barrier = json.loads(full_path.read_text())['job']
+    priority_waiting = any((r[0] == priority_barrier or r[0].split('_')[0] == priority_barrier)
+                          and r[2] == 'PENDING' for r in ours)
     for peer_tag in args.peer_tag:
         command = [str(root/'.venv/bin/python'),
             str(base/'scripts/rebalance_chunk_v2_20261018.py'), '--tag', peer_tag]
         # Older peer arrays must not repeatedly take the startup's next
         # released slot. Keep their running tasks; defer only replacements
-        # until this same-launcher physical check has finished.
-        if any(r[0] == startup and r[2] == 'PENDING' for r in ours):
-            command += ['--after', startup]
+        # while the priority startup/full array still needs a slot.
+        if priority_waiting:
+            command += ['--after', priority_barrier]
         subprocess.run(command,
             check=True, stdout=subprocess.DEVNULL)
     pending_start = [r for r in ours if r[0]==startup and r[2]=='PENDING']

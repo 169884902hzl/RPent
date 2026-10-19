@@ -16,6 +16,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--replacement-receipt", type=Path, action="append", default=[],
+                        help="Same-source, same-manifest replacement of unstarted cancelled shards")
     args = parser.parse_args()
     args.receipt = args.receipt.resolve()
     args.output = args.output.resolve()
@@ -33,29 +35,42 @@ def main() -> None:
     root = args.receipt.parents[3]
     results = root / "results/bounded_skills/feasibility_20261017"
     indices = submission["indices"]
+    replacements = []
+    for path in args.replacement_receipt:
+        replacement = json.loads(path.read_text())
+        for key in ("source_commit", "snapshot", "manifest"):
+            if replacement[key] != submission[key]:
+                raise ValueError(f"Replacement {key} differs: {path}")
+        if not set(replacement['indices']) <= set(indices):
+            raise ValueError(f"Replacement has unregistered indices: {path}")
+        replacements.append(replacement)
     paths, incomplete, errors = [], [], []
     for index in indices:
         case = plan["cases"][index]
         ledger = results / f"job{submission['job']}_{index}/episodes.jsonl"
-        rows = []
-        if ledger.exists():
-            lines = ledger.read_bytes().splitlines(keepends=True)
-            for line in lines:
-                if not line.endswith(b"\n"):
-                    continue  # A writer may still be completing its final line.
-                rows.append(json.loads(line))
-        physical = [r for r in rows if r.get("status") == "physical_result"]
+        ledgers = [ledger, *(results / f"job{replacement['job']}_{index}/episodes.jsonl"
+                    for replacement in replacements if index in replacement['indices'])]
+        physical = []
+        for candidate_ledger in ledgers:
+            rows = []
+            if candidate_ledger.exists():
+                for line in candidate_ledger.read_bytes().splitlines(keepends=True):
+                    if line.endswith(b"\n"):
+                        rows.append(json.loads(line))
+            physical.extend((candidate_ledger, row) for row in rows
+                            if row.get("status") == "physical_result")
+            errors.extend({"index": index, "ledger": str(candidate_ledger), "record": row}
+                          for row in rows if row.get("status") != "physical_result")
         if len(physical) > 1:
             raise ValueError(f"Repeated result for {ledger}")
         if physical:
-            row = physical[0]
+            physical_ledger, row = physical[0]
             if row["case"] != case or row["arm"] != "oracle_k4" or row["pi05_calls"]:
-                raise ValueError(f"Unexpected case or policy in {ledger}")
-            paths.append(ledger)
+                raise ValueError(f"Unexpected case or policy in {physical_ledger}")
+            paths.append(physical_ledger)
         else:
-            incomplete.append({"index": index, "case": case["name"], "ledger": str(ledger)})
-        errors.extend({"index": index, "ledger": str(ledger), "record": row}
-                      for row in rows if row.get("status") != "physical_result")
+            incomplete.append({"index": index, "case": case["name"], "ledger": str(ledger),
+                               "replacement_ledgers": [str(p) for p in ledgers[1:]]})
     counted = feasibility(paths)
     # This historic manifest calls alphabet-soup cans "box_transfer". Keep
     # the case identity while correcting the table's physical-object label.
@@ -72,6 +87,7 @@ def main() -> None:
         "source_commit": submission["source_commit"],
         "snapshot": submission["snapshot"],
         "manifest": submission["manifest"],
+        "replacement_submissions": [str(p.resolve()) for p in args.replacement_receipt],
         "registered": len(indices),
         "completed_physical": len(paths),
         "incomplete": incomplete,
