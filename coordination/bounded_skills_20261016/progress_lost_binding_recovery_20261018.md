@@ -1,9 +1,9 @@
 # 抽屉恢复遗漏与物理验证进度
 
 1. 10:05 五项已有直接答案：函数级 profile、碗 init2 共同失败修复、CPU 任意前缀接口、候选顺序无语义、最近三条详细回执。详见 `progress_prefix_judge9_and_door_identity_20261018.md`。
-2. 抽屉恢复遗漏已在 CPU 修复：失去接触拟合并清空 active 后，无已验证持物的闭合夹爪仍可选既有开夹爪恢复。旧终态请求的 legal 不变，acceptable 从空变为该 open 选项；物理修复尚待验证。
+2. 抽屉恢复遗漏已在 CPU 修复；完整复验 9603_117 现已原生成功：14 决策 / 1456 tick / 2004.666 秒。旧终态请求的 legal 不变，acceptable 从空变为既有 open；完整回合是跨源码开发复验，不是隔离 oracle 消融。
 3. 源码 `3df760d0c3a4347d1e8737f7392708e657c8977a` 已普通推送 harness-v5；269 项 CPU 回归、220 个登记初态的路径预检通过。私有 judge 升为 13，公开 schema / legal 不变。
-4. 固定 ec89f74 上限批已完成 49/220，原生成功 40；新源盒子 9579 首三局成功。盘子 9576 两局均完整失败，旧源同状态也是 0/2；新源微波炉 9600 两局仍在执行，不能宣称类别通过。
+4. 固定 ec89f74 上限批 r14 已完成 52/220，原生成功 43；新源盒子 9579 首三局成功。盘子 9576 两局均完整失败，旧源同状态也是 0/2；微波炉 9600 两局已完整失败。后续修复与启动/完整复验分开见 `progress_panel_surface_recovery_20261019.md`，不能宣称类别通过。
 5. Codex3 继续同状态物理复验；Codex1 核源码与分母；Codex2 仅用匹配源/judge 的保存上下文标注。未训练、未冻结，确认状态永久训练排除不变。
 
 ## 抽屉根因与 CPU 复现
@@ -18,7 +18,9 @@
 - 修复对照：`reports/drawer9248_192_recovery_CPU_20261018.json`
 - 测试：`reports/lost_binding_recovery_cpu_20261018.json`，269 passed / 1 warning，198.09 秒。warning 是当前环境缺 pytest-timeout 插件；没有测试失败。
 - 原状态在当前 manifest 中的索引为 117，提交前按完整 case 名核对，未沿用旧 manifest 的索引 192。
-- 同快照同 launcher 的启动作业为 `9602_117`，待首次物理请求后再启动完整复验。启动不计任务成功率。
+- 同快照同 launcher 的启动作业 `9602_117` 已 COMPLETED 0:0，实际执行 626 tick，墙钟 171.350 秒；完整复验 `9603_117` 已原生成功，14 决策 / 1456 tick / 2004.666 秒。逐状态配对及原始四文件 SHA 见 `reports/drawer9603_117_closed_paired_20261019.json`。启动不计任务成功率。
+
+同源 judge13 的真实保存上下文另做 CPU 标签复核：2 个 oracle 位置的 legal / rule_acceptable / selected 零差异；另一个非 oracle nudge 前缀也可标注。三个调用分别耗时 1.584 / 53.605 / 48.774 秒，上下文文件 142,328,583 字节。该接口功能可用，不代表标签吞吐已解决。详见 `reports/offline_prefix_9602_117_CPU_20261018.json`。无上下文的历史 unknown 仍不能补；其他源码的上下文不能冒充匹配训练标签。
 
 ## 快照与版本
 
@@ -67,6 +69,8 @@
 
 两局汇总 failure_phase 都是 verification_error，但这不是已证明的验证器漏判：前期私有零控制复查显示盘子几乎没随 nudge 移动，后续重接近才产生位移。真实接触不足与公开测量不确定均保留；缩短失败回合不算提高成功率。
 
-闭合夹爪 + direct 接近 + 向内倾斜接近的组合检查仍未得到需要的 left 路线；该方向只有原垂直接近。33.042 秒的 CPU 输出保留在 `reports/plate9575_inward_rim_closed_direct_CPU_20261018.json`。未部署，没有降低碰撞/IK 门槛。之前的闭合手指侧面、direct、倾斜等检查及完整失败均保留。障碍点只能确认来自较高的公开测量表面，尚未从图像核定具体物体，不能猜成柜体。
+闭合夹爪 + direct 接近 + 向内倾斜接近的组合检查仍未得到需要的 left 路线；该方向只有原垂直接近。33.042 秒的 CPU 输出保留在 `reports/plate9575_inward_rim_closed_direct_CPU_20261018.json`。未部署，没有降低碰撞/IK 门槛。之前的闭合手指侧面、direct、倾斜等检查及完整失败均保留。
 
-资源仅 node02 / nice500；唯一控制器替换为本轮抽屉启动监控，原仿真作业不取消。Codex2 没有普通 GPU 作业时借第 4 卡，出现排队后限制替补并发至 3；用户 c5/c6/rf 与旧 held 作业未动。
+随后用原 capture0 的公开高分辨率 world map，把 patch2/3 的碰撞点按最近表面 ≤1 mm 对应回同帧 RGB。主视角叠图已核对：这些掌部/手指阻挡点位于左侧柜体的把手，不能当作盘子漏分割或虚假障碍删掉。两视角图片、输入 SHA 和逐组件匹配数见 `reports/plate9575_blocker_overlay_CPU_20261018.json`；代表图为 `reports/plate9575_blockers_patch2_agentview_CPU_20261018.png` 和 `reports/plate9575_blockers_patch2_wrist_CPU_20261018.png`。该诊断零仿真、零 RPC、零 GPU，未使用仿真真值坐标。尚缺绕开这些障碍且能在正确推送侧形成稳定水平接触的可行路线，不等于所有盘子接触都不可行。
+
+资源仅 node02 / nice500；当前唯一控制器 session26201 继续 f75b516d 微波炉启动与完整复验监控，旧 session32385 已主动停止，原仿真作业不取消。Codex2 没有普通 GPU 作业时借第 4 卡，出现排队后限制替补并发至 3；用户 c5/c6/rf 与旧 held 作业未动。
