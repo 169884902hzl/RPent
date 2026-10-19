@@ -1177,8 +1177,23 @@ class MeasuredSkillAdapter:
                     if (values[1] > 1e-8 and values[0] <= .2*values[1]
                             and fitted@normal >= .5 and fitted@normal < .999):
                         normals.insert(0, fitted)
-            for patch_normal in normals:
+            approaches = [(value, 'measured_surface_normal', value) for value in normals]
+            if horizontal:
+                # The measured upper contour is also a contact point. A
+                # fixed oblique approach can keep the palm above its support
+                # while placing the fingertip against that contour. This is
+                # an approach direction, not an inferred unseen side plane.
+                radial = np.r_[patch[:2]-centre[:2], 0.]
+                if np.linalg.norm(radial) >= .02:
+                    radial /= np.linalg.norm(radial)
+                    for angle in (30., 45., 60.):
+                        direction = radial*math.cos(math.radians(angle))
+                        direction[2] = math.sin(math.radians(angle))
+                        approaches.append((direction, 'measured_contour_fixed_incline', normals[0]))
+            for patch_normal, approach_basis, measured_normal in approaches:
                 tangent = right-patch_normal*(right@patch_normal)
+                if np.linalg.norm(tangent) < .1:
+                    tangent = np.cross(patch_normal, [0., 0., 1.])
                 tangent /= np.linalg.norm(tangent)
                 for yaw in range(0, 360, 45):
                     closing = Rotation.from_rotvec(patch_normal*math.radians(yaw)).apply(tangent)
@@ -1198,11 +1213,14 @@ class MeasuredSkillAdapter:
                     for path, route in routes:
                         choices.append({'patch_index': patch_index, 'contact_xyz_m': patch.tolist(),
                             'normal_xyz': patch_normal.tolist(),
-                            'local_normal': bool(not np.array_equal(patch_normal, normal)),
+                            'measured_normal_xyz': measured_normal.tolist(), 'approach_basis': approach_basis,
+                            'local_normal': bool(approach_basis == 'measured_surface_normal'
+                                and not np.array_equal(patch_normal, normal)),
                             'yaw_deg': yaw, 'path': path, 'xyz_m': xyz.tolist(),
                             'quat_xyzw': orientation.as_quat().tolist(), 'approach_xyz_m': entry.tolist(), 'route': route,
                             'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
-        choices.sort(key=lambda item: (not item['local_normal'], item['patch_index'], item['wrist_change_rad'], item['yaw_deg']))
+        choices.sort(key=lambda item: (abs(item['normal_xyz'][2]) if horizontal else 0.,
+            not item['local_normal'], item['patch_index'], item['wrist_change_rad'], item['yaw_deg']))
         selected = None
         screen = self._cloud_and_ik(entity.id, contact=True)
         for option in choices:
@@ -1226,7 +1244,9 @@ class MeasuredSkillAdapter:
             'source': 'fused_rgbd_shape_and_static_finger_tip_geometry',
             'contact_xyz_m': selected['contact_xyz_m'] if selected else None,
             'contact_patches_xyz_m': [patch.tolist() for patch in contacts], 'measured_extent_m': extent.tolist(),
-            'surface_normal_xyz': selected['normal_xyz'] if selected else normal.tolist(),
+            'surface_normal_xyz': selected['measured_normal_xyz'] if selected else normal.tolist(),
+            'contact_approach_xyz': selected['normal_xyz'] if selected else None,
+            'approach_basis': selected['approach_basis'] if selected else None,
             'object_plane_normal_xyz': normal.tolist(),
             'grasp_verified': False, 'candidates': choices,
             'selected_yaw_deg': selected['yaw_deg'] if selected else None})
@@ -1241,8 +1261,9 @@ class MeasuredSkillAdapter:
             'preferred_approach': max(directions, key=lambda key: np.dot(normal, directions[key])),
             'preferred_path': selected['path'],
             'width_m': None, 'contact_kind': 'surface',
+            'contact_approach_xyz': normal.tolist(), 'approach_basis': selected['approach_basis'],
             'surface_measurement': {'xyz_world': self._instance_pixels(entity.id).tolist(),
-                'source_step': entity.source_step, 'normal_xyz': normal.tolist()}}
+                'source_step': entity.source_step, 'normal_xyz': selected['measured_normal_xyz']}}
 
     def _refresh_contact_normal(self, entity, plan):
         """Refit a contacted panel's normal from its current measured surface.

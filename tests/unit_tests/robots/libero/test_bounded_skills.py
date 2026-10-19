@@ -1943,7 +1943,7 @@ def test_thin_surface_contact_is_available_without_pretending_opposition(adapter
         np.concatenate([points, points+[0., 0., .08]])) is None
 
 
-def test_thin_rim_contact_follows_measured_incline_instead_of_flat_support(adapter):
+def test_thin_rim_keeps_measured_incline_separate_from_contour_approach(adapter):
     from scipy.spatial.transform import Rotation
 
     adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.002, -.002, .003],
@@ -1958,13 +1958,19 @@ def test_thin_rim_contact_follows_measured_incline_instead_of_flat_support(adapt
     radial = contact[:2]-[.1, .1]
     # The observed upper face points upward and toward the rim's centre.
     assert normal[:2]@radial < 0
+    approach = np.asarray(plan['contact_approach_xyz'])
+    assert approach[:2]@radial > 0
+    assert approach[2] == pytest.approx(.5)
+    assert plan['approach_basis'] == 'measured_contour_fixed_incline'
     rotation = Rotation.from_quat(plan['quat_xyzw']).as_matrix()
-    np.testing.assert_allclose(rotation[:, 2], -normal, atol=1e-12)
-    np.testing.assert_allclose(np.asarray(plan['approach_xyz_m'])-plan['xyz_m'], normal*.12)
+    np.testing.assert_allclose(rotation[:, 2], -approach, atol=1e-12)
+    np.testing.assert_allclose(np.asarray(plan['approach_xyz_m'])-plan['xyz_m'], approach*.12)
     assert plan['width_m'] is None
 
 
 def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
+    from scipy.spatial.transform import Rotation
+
     adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
         'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
     y, x = np.mgrid[:20, :20]
@@ -1979,7 +1985,9 @@ def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
     adapter._cloud_and_ik = lambda *args, **kwargs: screen
     plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
     assert len(checks) == 2
-    np.testing.assert_allclose(plan['quat_xyzw'], checks[-1][-1]['quat_xyzw'], atol=1e-12)
+    # SmoothMotion may choose the equivalent antipodal quaternion for continuity.
+    difference = Rotation.from_quat(plan['quat_xyzw'])*Rotation.from_quat(checks[-1][-1]['quat_xyzw']).inv()
+    assert difference.magnitude() < 1e-12
     np.testing.assert_allclose(plan['xyz_m'], checks[-1][-1]['xyz_m'], atol=1e-12)
     assert adapter.candidate_diagnostics[-1]['candidates'][0]['screen']['collision'] is True
 
@@ -2025,7 +2033,12 @@ def test_thin_surface_uses_another_measured_patch_when_nearest_rim_is_blocked(ad
     report = adapter.candidate_diagnostics[-1]
     assert plan is not None
     assert np.linalg.norm(np.array(report['contact_xyz_m'])-first_contact) >= .01
-    assert all(c.get('closure') for c in report['candidates'] if c['patch_index'] == 0)
+    # Oblique routes across the contour are ranked before top-face fallbacks.
+    # Unvisited fallback poses make no collision claim; every screened pose
+    # at the obstructed preferred patch must still have been rejected.
+    attempted = [c for c in report['candidates'] if c['patch_index'] == 0
+        and (c.get('closure') or c.get('screen') is not None)]
+    assert attempted and all(c.get('closure') or not c['screen']['passed'] for c in attempted)
     assert not np.allclose(original['xyz_m'], plan['xyz_m'])
     assert any(np.allclose(report['contact_xyz_m'], p) for p in report['contact_patches_xyz_m'])
 
@@ -2047,6 +2060,30 @@ def test_thin_surface_contact_keeps_finger_tip_above_support(adapter):
     pad_world = np.asarray(plan['xyz_m'])+site@[0., 0., .004]
     assert pad_world[2] > .9
     assert plan['contact_kind'] == 'surface' and plan['width_m'] is None
+
+
+def test_contour_approach_does_not_invent_a_side_surface_and_keeps_screened_top_fallback(adapter):
+    from scipy.spatial.transform import Rotation
+
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.001, -.001, .003],
+        'upper': [.001, .001, .005]} for name in ('leftfinger', 'rightfinger')]
+    y, x = np.mgrid[:20, :20]
+    points = np.stack([x.ravel()*.003, y.ravel()*.003, np.full(x.size, .9)], axis=-1)
+    checked = []
+    def screen(poses):
+        direction = -Rotation.from_quat(poses[-1]['quat_xyzw']).as_matrix()[:, 2]
+        passed = direction[2] > .99
+        checked.append((direction, passed))
+        return {'passed': passed, 'reason': 'clear' if passed else 'measured_sweep_collision',
+            'collision': not passed, 'ik_reachable': True, 'path_min_clearance_m': .01 if passed else 0.}
+    screen.points = screen.target = np.empty((0, 3))
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    assert any(not passed and direction[2] < .9 for direction, passed in checked)
+    assert plan['approach_basis'] == 'measured_surface_normal'
+    np.testing.assert_allclose(plan['surface_measurement']['normal_xyz'], [0., 0., 1.], atol=1e-12)
+    np.testing.assert_allclose(plan['contact_approach_xyz'], [0., 0., 1.], atol=1e-12)
+    assert plan['width_m'] is None
 
 
 def test_measured_vertical_panel_has_bounded_push_options_without_a_visible_handle(adapter):
