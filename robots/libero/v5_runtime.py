@@ -1098,7 +1098,12 @@ class MeasuredScene:
                    and e.id in self.measurement_clouds]
         doors = {e.id: self.fixture_measurement_evidence.get(e.id, {}).get("door_measurement", {})
                  for e in parents}
-        groups, association = measured_microwave_parent_groups(parents, doors, state.latest_step)
+        door_clouds = {part.part_of: self.measurement_clouds[part.id]
+            for part in self.entities.values() if part.name == 'microwave door'
+            and part.visible and part.source_step == state.latest_step
+            and part.id in self.measurement_clouds}
+        groups, association = measured_microwave_parent_groups(
+            parents, doors, state.latest_step, door_clouds=door_clouds)
         for group in groups:
             # Preserve a previous composite identity. On the first capture,
             # carry the parent with most measured support and retain every
@@ -1106,7 +1111,8 @@ class MeasuredScene:
             previous = {self._microwave_parent_ids[e.id] for e in group
                         if e.id in self._microwave_parent_ids}
             candidates = [e for e in group if e.id in previous]
-            canonical = max(candidates or group, key=lambda e: len(self.measurement_clouds[e.id]))
+            canonical = (min(candidates, key=lambda e: list(self._microwave_parent_ids).index(e.id))
+                         if candidates else max(group, key=lambda e: len(self.measurement_clouds[e.id])))
             points = self.measurement_clouds[canonical.id]
             fusion = []
             for other in group:
@@ -1135,13 +1141,26 @@ class MeasuredScene:
             masks = [instance_masks[e.id] for e in group if e.id in instance_masks]
             if masks:
                 instance_masks[parent.id] = np.logical_or.reduce(masks)
-            parts = [e for e in self.entities.values() if e.visible and e.name == "microwave door"
+            parts = [e for e in self.entities.values() if e.name == "microwave door"
                      and e.part_of in {member.id for member in group}]
-            retained = next((part for part in parts if part.part_of == parent.id), parts[0] if parts else None)
+            current_parts = [part for part in parts if part.visible and part.source_step == state.latest_step]
+            retained = next((part for part in parts if part.part_of == parent.id),
+                            current_parts[0] if current_parts else None)
+            measured = next((part for part in current_parts if part.id == getattr(retained, 'id', None)),
+                            current_parts[0] if current_parts else None)
+            if retained is not None and measured is not None:
+                # Same current door, stable identity: a fresh alias can restore
+                # an occluded canonical part without invalidating its binding.
+                self.entities[retained.id] = replace(measured, id=retained.id, part_of=parent.id)
+                if measured.id in self.measurement_clouds:
+                    self.measurement_clouds[retained.id] = self.measurement_clouds[measured.id]
+                if measured.id in self.measurement_clouds_by_view:
+                    self.cache_independent_views(self.entities[retained.id],
+                        {view: sample['xyz_world'] for view, sample
+                         in self.measurement_clouds_by_view[measured.id].items()
+                         if sample['source_step'] == state.latest_step})
             for part in parts:
-                if part is retained:
-                    self.entities[part.id] = replace(part, part_of=parent.id)
-                else:
+                if part is not retained:
                     self.entities.pop(part.id)
             for member in group:
                 self._microwave_parent_ids[member.id] = parent.id
@@ -1166,6 +1185,10 @@ class MeasuredScene:
             self.fixture_measurement_evidence[parent.id].update(provenance,
                 point_selection=association["basis"], door_measurement=doors[canonical.id])
             self.perception_evidence[parent.id]["appliance_identity"] = provenance
+        # Register a singleton's established identity before a later capture
+        # adds another mask. Initial multi-mask captures still use support size.
+        for parent in parents:
+            self._microwave_parent_ids.setdefault(parent.id, parent.id)
 
     def _measure_microwave_door(self, parent: Entity, camera: str, *,
                                measured_clouds=None, measured_views=None) -> list[dict]:

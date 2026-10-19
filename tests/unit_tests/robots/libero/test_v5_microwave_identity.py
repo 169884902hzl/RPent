@@ -29,6 +29,28 @@ def test_shared_current_door_and_adjacent_rigid_surfaces_can_join():
     assert evidence["source"] == "perception"
 
 
+@pytest.mark.parametrize('case', ['overlap', 'nearby', 'small_overlap', 'stale', 'duplicated_pixels'])
+def test_same_current_pixel_overlap_can_join_different_cloud_files(case):
+    first, second, doors = parents_and_doors()
+    doors[second.id]['sha256'] = 'different-file-of-the-same-door'
+    y, z = np.mgrid[:20, :10]
+    pixels = np.stack([np.full(y.size, -.1), y.ravel()*.01, 1.+z.ravel()*.02], axis=-1)
+    clouds = {first.id: pixels[:190], second.id: pixels[10:]}
+    if case == 'nearby':
+        clouds[second.id] = pixels[10:]+[.0001, 0., 0.]
+    elif case == 'small_overlap':
+        clouds[second.id] = pixels[100:]
+    elif case == 'stale':
+        doors[second.id]['source_step'] = 4
+    elif case == 'duplicated_pixels':
+        clouds = {first.id: np.repeat(pixels[:2], 100, axis=0),
+                  second.id: np.repeat(pixels[:2], 100, axis=0)}
+    groups, evidence = measured_microwave_parent_groups([first, second], doors, 5, door_clouds=clouds)
+    assert bool(groups) is (case == 'overlap')
+    if groups:
+        assert evidence['comparisons'][0]['current_door_point_iou'] == pytest.approx(.9)
+
+
 @pytest.mark.parametrize("difference", ["different_door", "stale", "remote", "high_robot"])
 def test_two_appliances_or_stale_and_robot_surfaces_remain_unmerged(difference):
     first, second, doors = parents_and_doors()
@@ -96,7 +118,7 @@ def test_runtime_joins_measured_clouds_and_retains_one_stable_parent_and_door(tm
     evidence = scene.fixture_measurement_evidence[second.id]
     assert len(evidence["source_parents"]) == len(evidence["source_clouds"]) == 2
     assert scene._microwave_parent_ids[first.id] == second.id
-    assert evidence["point_selection"] == "shared_current_measured_microwave_door_adjacent_surfaces/1-dev"
+    assert evidence["point_selection"] == "shared_current_measured_microwave_door_adjacent_surfaces/2-dev"
     assert scene.measurement_clouds_by_view[second.id]["agentview"]["src"] == "perception"
     # A retired alias must not masquerade as an unmeasured second instance in
     # typed binding. The original clouds/provenance remain available privately.
@@ -129,3 +151,37 @@ def test_runtime_joins_measured_clouds_and_retains_one_stable_parent_and_door(tm
     scene.entities[other.id] = other
     with pytest.raises(SubtaskBindingError, match="measurement unavailable"):
         subtask_prompt(Candidate("vla_subtask", second.id, mode="open"), scene.entities)
+
+
+def test_fresh_door_alias_restores_existing_part_id_and_public_clouds(tmp_path):
+    first, second, doors = parents_and_doors()
+    state = SimpleNamespace(latest_step=5,
+        load=lambda _: {'extrinsic_cam2world': np.eye(4)},
+        save=lambda name, points, step: np.savez_compressed(tmp_path/name, array=points) or tmp_path/name,
+        artifact_path=lambda name, step: tmp_path/name)
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(), 0,
+        microwave_instance_geometry_v4=True, microwave_door_cloud_v6=True)
+    y, z = np.mgrid[:20, :10]
+    samples = np.stack([np.full(y.size, -.1), y.ravel()*.01, 1.+z.ravel()*.02], axis=-1)
+    child = Entity('old-door', 'microwave door', first.xyz, first.lower, first.upper,
+        visible=False, source_step=4, part_of=first.id, geometry='measured_door_surface')
+    fresh = replace(child, id='fresh-door', visible=True, source_step=5, part_of=second.id)
+    scene.entities = {e.id: e for e in (first, child)}
+    scene.measurement_clouds.update({first.id: samples, second.id: samples,
+        child.id: samples+[.01, 0., 0.], fresh.id: samples})
+    scene.cache_independent_views(fresh, {'agentview': samples})
+    for parent in (first, second):
+        scene.fixture_measurement_evidence[parent.id] = {'door_measurement': doors[parent.id],
+            'path': parent.id+'.npz', 'sha256': parent.id}
+        scene.perception_evidence[parent.id] = {}
+    scene._consolidate_microwave_parents({}, 'agentview')
+    assert scene._microwave_parent_ids == {first.id: first.id}
+    scene.entities.update({e.id: e for e in (second, fresh)})
+    scene._consolidate_microwave_parents({}, 'agentview')
+    assert set(scene.entities) == {first.id, child.id}
+    restored = scene.entities[child.id]
+    assert restored.visible and restored.source_step == 5 and restored.part_of == first.id
+    np.testing.assert_array_equal(scene.measurement_clouds[child.id], samples)
+    assert scene.measurement_clouds_by_view[child.id]['agentview']['src'] == 'perception'
+    assert scene.measurement_clouds_by_view[child.id]['agentview']['object_id'] == child.id
+    assert scene.measurement_views[child.id]['agentview'].id == child.id

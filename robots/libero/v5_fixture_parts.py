@@ -102,24 +102,43 @@ def measured_handle_backing_face(points, handle_points):
     return max(accepted, key=lambda face: face['points']), evidence
 
 
-def measured_microwave_parent_groups(parents, door_measurements, source_step):
-    """Join adjacent appliance surfaces only with the same current door cloud.
+def measured_microwave_parent_groups(parents, door_measurements, source_step, *, door_clouds=None):
+    """Join adjacent surfaces with the same current measured door pixels.
 
-    A door and shell may receive disjoint SAM masks. An identical immutable
-    door measurement can associate them, but neither a nearby second door nor
-    a tall robot mask is sufficient evidence for joining the parents.
+    An identical immutable cloud or 70% IoU of its actual current depth points
+    establishes a shared mask. The latter uses the category-mask association
+    threshold, with 1 um numerical equality, not nearby predicted geometry.
+    Neither a nearby second door nor a tall robot mask establishes identity.
     """
     groups, comparisons = [], []
-    shared = {}
+    current = []
     for parent in parents:
         door = door_measurements.get(parent.id, {})
         if (parent.visible and parent.source_step == source_step
                 and door.get("source_step") == source_step and door.get("sha256")):
-            shared.setdefault(door["sha256"], []).append(parent)
-    for digest, items in shared.items():
+            current.append(parent)
+    if current:
+        from scipy.spatial import cKDTree
+
+        clouds = {key: np.unique(np.asarray(points).reshape(-1, 3), axis=0)
+                  for key, points in (door_clouds or {}).items()}
+        clouds = {key: points[np.isfinite(points).all(1)] for key, points in clouds.items()}
+        items = current
         edges = {item.id: set() for item in items}
         for index, first in enumerate(items):
             for second in items[index + 1:]:
+                a, b = door_measurements[first.id], door_measurements[second.id]
+                overlap = None
+                same = a['sha256'] == b['sha256']
+                if not same and first.id in clouds and second.id in clouds:
+                    left, right = clouds[first.id], clouds[second.id]
+                    if len(left) >= 60 and len(right) >= 60:
+                        shared = min(int(np.sum(cKDTree(other).query(points, workers=1)[0] <= 1e-6))
+                                     for points, other in ((left, right), (right, left)))
+                        overlap = shared/(len(left)+len(right)-shared)
+                        same = overlap >= .7
+                if not same:
+                    continue
                 lower = np.maximum(first.lower, second.lower)
                 upper = np.minimum(first.upper, second.upper)
                 gap = float(np.linalg.norm(np.maximum(lower - upper, 0.)))
@@ -127,7 +146,10 @@ def measured_microwave_parent_groups(parents, door_measurements, source_step):
                                        abs(first.upper[2] - second.upper[2])))
                 union = np.maximum(first.upper, second.upper) - np.minimum(first.lower, second.lower)
                 accepted = bool(gap <= .02 and height_gap <= .02 and max(union) <= .6)
-                comparisons.append({"parents": [first.id, second.id], "door_cloud_sha256": digest,
+                comparisons.append({"parents": [first.id, second.id],
+                    "door_cloud_sha256": [a['sha256'], b['sha256']],
+                    "current_door_point_iou": overlap,
+                    "point_equality_tolerance_m": 1e-6 if overlap is not None else None,
                     "surface_gap_m": gap, "vertical_boundary_disagreement_m": height_gap,
                     "accepted": accepted})
                 if accepted:
@@ -143,7 +165,7 @@ def measured_microwave_parent_groups(parents, door_measurements, source_step):
             # A bridge between incompatible surfaces is still ambiguous.
             if len(component) > 1 and all(component - {eid} <= edges[eid] for eid in component):
                 groups.append([item for item in items if item.id in component])
-    return groups, {"basis": "shared_current_measured_microwave_door_adjacent_surfaces/1-dev",
+    return groups, {"basis": "shared_current_measured_microwave_door_adjacent_surfaces/2-dev",
                     "source": "perception", "source_step": source_step, "comparisons": comparisons}
 
 
