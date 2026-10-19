@@ -20,7 +20,7 @@ from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 from robots.libero.bounded_chunk import PublicPrefixPrediction
 from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
-JUDGE_VERSION = 'libero-private-task-progress-rules/12'
+JUDGE_VERSION = 'libero-private-task-progress-rules/13'
 
 
 class NoPublicOption(ValueError):
@@ -208,9 +208,10 @@ class BoundedOracle:
                     self.private_trace[-1]['push_contact_acceptable_approaches'] = [item[1] for item in options]
             if contact is None:
                 # A failed contact can invalidate its fit while the hand
-                # stays closed at that source. Reopen before reapproaching;
+                # stays closed, even after the active binding is cleared.
+                # Reopen before reapproaching when no payload is verified;
                 # exhausting scans must not hide this existing public option.
-                if (ex.active == source.id and ex.held is None
+                if (ex.held is None
                         and request['robot']['gripper_opening_m'] < .075):
                     chosen = find('set_gripper', mode='open')
                     if chosen is not None:

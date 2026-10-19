@@ -3149,10 +3149,12 @@ def test_held_anchor_and_lower_route_use_the_cleaned_current_payload(adapter):
 
 @pytest.mark.parametrize('active,held,opening,expected', [
     ('e1', None, .025, 'set_gripper'),
-    (None, None, .025, 'move_to'),
-    ('another', None, .025, 'move_to'),
+    (None, None, .025, 'set_gripper'),
+    ('another', None, .025, 'set_gripper'),
     ('e1', 'another', .025, 'observe'),
+    (None, 'another', .025, 'observe'),
     ('e1', None, .08, 'move_to'),
+    (None, None, .08, 'move_to'),
 ])
 def test_oracle_reopens_lost_active_contact_without_dropping_a_held_payload(
         adapter, active, held, opening, expected):
