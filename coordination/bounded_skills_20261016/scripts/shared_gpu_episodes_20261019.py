@@ -83,6 +83,22 @@ def install_d2_restore_compatibility():
     v5_branch_state.restore_actuators = restore
 
 
+def d2_spawn_factory(factory):
+    """Carry the diagnostic bootstrap into RLinf's spawned environment process."""
+    def create():
+        install_d2_restore_compatibility()
+        return factory()
+    return create
+
+
+def install_d2_spawn_bootstrap():
+    from rlinf.envs.libero.libero_env import LiberoEnv
+    original=LiberoEnv.get_env_fns
+    def get_env_fns(env):
+        return [d2_spawn_factory(factory) for factory in original(env)]
+    LiberoEnv.get_env_fns=get_env_fns
+
+
 def worker(args):
     assignment = json.loads(args.assignment.read_bytes())
     bootstrap_source(assignment['domain'])
@@ -114,6 +130,7 @@ def worker(args):
                                  config, startup=assignment['startup'])
             else:
                 install_d2_restore_compatibility()
+                install_d2_spawn_bootstrap()
                 from scripts.probe_bounded_hybrid_d2 import evaluate_case
                 result = evaluate_case(case, endpoints, output/case['name'], plan,
                                        startup=assignment['startup'])

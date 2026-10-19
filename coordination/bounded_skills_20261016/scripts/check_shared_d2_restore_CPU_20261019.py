@@ -16,6 +16,7 @@ def main():
     parser.add_argument('--manifest',type=Path,required=True)
     parser.add_argument('--index',type=int,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--spawn',action='store_true',help='Exercise the actual RLinf spawned-worker transport')
     args=parser.parse_args()
     os.environ.update(LIBERO_TYPE='pro',CUDA_VISIBLE_DEVICES='')
     sys.path.insert(0,str(args.source))
@@ -29,35 +30,56 @@ def main():
 
     case=json.loads(args.manifest.read_bytes())['cases'][args.index]
     saved=pickle.loads(args.checkpoint.read_bytes())['physics']
-    env=ControlEnv(bddl_file_name=case['bddl']['path'],has_renderer=False,
-        has_offscreen_renderer=False,use_camera_obs=False,camera_names=[],
-        ignore_done=True,hard_reset=False,horizon=10015)
+    def factory():
+        from robots.libero.v5_branch_state import attach_branch_state
+        return attach_branch_state(ControlEnv(bddl_file_name=case['bddl']['path'],has_renderer=False,
+            has_offscreen_renderer=False,use_camera_obs=False,camera_names=[],
+            ignore_done=True,hard_reset=False,horizon=10015))
+    if args.spawn:
+        from rlinf.envs.libero.venv import ReconfigureSubprocEnvWorker
+        env=ReconfigureSubprocEnvWorker(launcher.d2_spawn_factory(factory))
+    else:
+        env=factory()
     try:
-        env.seed(case['episode']['seed']);env.reset()
+        if args.spawn:
+            env.env_call('seed',args=[case['episode']['seed']],target='self')
+            env.reset()
+        else:
+            env.seed(case['episode']['seed']);env.reset()
+        def actuator_state():
+            return (env.env_call('v5_actuator_state',target='self') if args.spawn
+                else v5_branch_state.actuator_state(env))
         def capture():
             value=copy.deepcopy(saved)
             value['sim_state']=env.get_sim_state()
-            value['actuator_state']=v5_branch_state.actuator_state(env)
+            value['actuator_state']=actuator_state()
             return value
         def restore():
             env.set_init_state(saved['sim_state'])
-            v5_branch_state.restore_actuators(env,saved['actuator_state'])
+            if args.spawn:
+                env.env_call('v5_restore_actuators',args=[saved['actuator_state']],target='self')
+            else:
+                v5_branch_state.restore_actuators(env,saved['actuator_state'])
         restore()
         before=snapshot_digest(capture())
-        warmstart_before=env.env.sim.data.qacc_warmstart.copy()
-        launcher.install_d2_restore_compatibility()
+        warmstart_before=actuator_state()['data']['qacc_warmstart'].copy()
+        if not args.spawn:launcher.install_d2_restore_compatibility()
         restore()
         after=snapshot_digest(capture())
         action=np.array([.01,-.01,.01,0.,0.,0.,-1.])
         endpoints=[]
         for _ in range(2):
             restore()
-            for _ in range(5):env.step(action)
+            for _ in range(5):
+                if args.spawn:env.env_call('step',args=[action],target='self')
+                else:env.step(action)
             endpoints.append(snapshot_digest(capture()))
         report={'scope':'same saved BDDL/physics, CPU MuJoCo with cameras disabled; wrapper counters copied',
             'source':str(args.source),'checkpoint':str(args.checkpoint),'case':case['name'],
             'gpu_used':False,'training':False,'expected_digest':snapshot_digest(saved),
-            'uncorrected_digest':before,'corrected_digest':after,
+            'actual_RLinf_spawn_transport':args.spawn,
+            'uncorrected_digest':before if not args.spawn else None,'corrected_digest':after,
+            'first_spawned_restore_digest':before if args.spawn else None,
             'changed_warmstart_scalars':int(np.sum(warmstart_before!=saved['actuator_state']['data']['qacc_warmstart'])),
             'exact_physics_controller_rng_restore':after==snapshot_digest(saved),
             'successor_control_steps':5,'successor_digest_twice':endpoints,

@@ -129,11 +129,13 @@ def test_offline_finalizer_recounts_failed_episodes_and_requires_complete_n1(tmp
 
 def test_d2_worker_bootstraps_environment_before_helper_imports(tmp_path):
     source=tmp_path/'source';source.mkdir()
-    for package in ['scripts','rpent','rpent/utils','rpent/utils/rpc','robots','robots/libero']:
+    for package in ['scripts','rpent','rpent/utils','rpent/utils/rpc','robots','robots/libero',
+                    'rlinf','rlinf/envs','rlinf/envs/libero']:
         p=source/package;p.mkdir(parents=True,exist_ok=True);(p/'__init__.py').write_text('')
     (source/'rpent/utils/rpc/http_rpc.py').write_text('class HttpRpcClient:\n    def __init__(self,url):self._base_url=url\n')
     (source/'robots/libero/env_server.py').write_text("import sys\nassert 'mujoco' not in sys.modules, 'environment imported too late'\nBOOTSTRAPPED=True\n")
     (source/'robots/libero/v5_branch_state.py').write_text('def restore_actuators(*a): raise AssertionError()\n')
+    (source/'rlinf/envs/libero/libero_env.py').write_text('class LiberoEnv:\n    def get_env_fns(self):return []\n')
     (source/'mujoco.py').write_text('SIMULATOR_IMPORTED=True\n')
     (source/'scripts/probe_bounded_feasibility.py').write_text('import mujoco\ndef probe_config(base):return base\ndef episode(*a,**kw):raise AssertionError()\n')
     (source/'scripts/probe_bounded_hybrid_d2.py').write_text('''
