@@ -1,8 +1,8 @@
-e120c61f 六条已闭合：6/6 停稳且生成后继请求；3 条后继实际步进，3 条扫描零步拒绝。17401000 交还后 carry_to→release 原生成功，不能当 D2 整局上限。
-发现新的通用提示词坐标系错误：测量图与实际 Pi0.5 图精确左右镜像，e75 在 Pi 图为右侧却叫 leftmost；端点双指接触另一只碗。已修提示方向转换，333 项 CPU 回归通过，物理验证待新快照。
-bb1a691c 的10593/10598已停且保留全部部分记录；旧10597窄监测两状态闭合0/2，但旧方向词有错，不能用于停止规则结论或推广窄测量。原版220仍独立闭合131/220。
-观测缓存/采样相位修复已完成；新源三设置首步输入与预测相同。历史旧快照仍无法补回原相位，不能把旧新动作差异归因于单一修复。
-三个绑定失败归因公开同类误检歧义，已接合法观察恢复；D2不进训练/history/memory，确认状态永久排除，无训练。
+最新修复在接线：hybrid runtime 没传已登记空夹爪标定，3.76mm 的真夹持被旧5mm下限排除。已有标定lower=2.702mm；离线公开轨迹在控制57已满足抬升/随动，53个样本被旧gate挡住，尚未冒称57步私有成功。
+源码已把SHA固定的机器人标定经manifest传入真实V5Executor，45项相关CPU回归通过；新快照/真实重放待提交。
+e247的10610/10612已取消余片与在途并保留，控制器2378133已停。10613两状态已闭合：t2真值true但block_budget，salad真值false；旧数据不混下一版。
+提示词镜像修复e247已推送、333项CPU和实际首输入核对通过；六例非提示字段全同，三碗例只文本改变。旧e120交还6/6停稳/后继请求、1例续接原生成功仍保留。
+原版VLA-off220独立131/220；三个绑定失败已归因公开误检歧义。无训练，D2不入训练/history/memory，确认状态永久排除。
 
 ## 当前指令与身份
 
@@ -92,3 +92,26 @@ D2真实首步已在自有10446_6分配中完成：`owned_startup_10446_6_r2`三
 新代码只为bounded call_vla生成Pi图方向描述：右轴取反，front/back不变；测量中的area left/right名字同时交换。源/目标ID、公开状态关系、像素输入和机器人状态不动。提示版本为measured-libero-subtask/3-pi05-view，公共schema仍bounded-skills/4。旧v5渲染接口未改。新source待CPU回归通过后提交、快照登记，三设置/原版/窄监测均重新真实startup，再跑原状态原采样种子。无新训练，无PRO专用规则。
 
 提示框架修复 CPU 验证：v5_subtasks、bounded_skills、hybrid diagnostic/repair、branch state、shared launcher 共333项通过（187.98秒），py_compile和diff-check通过。此前两次新测试fixture错误（缺replace导入、错误假设e2存在）已修正；未放宽任何物理判据。
+
+## 最新续接：e2470622 正式在途
+
+源码 e2470622cea0795eece8f1ffdb95d713df30a272 已推送harness-v5；快照 `/public/home/sunyihan/rpent_libero_eval/source_bounded_hybrid_handoff_20261019_e2470622`，归档 `bounded_pi05_prompt_frame_20261020.tar.gz` SHA256 `8fd2efdf2268d0e3c885d88ebe8608cdde743750698d1a10285655845e978906`。入口 `scripts.probe_bounded_hybrid_repair:evaluate_case`，解释器 `/public/home/sunyihan/rpent_libero_eval/.venv/bin/python`，固定launcher仍`launcher_shared_20261019_3fa8bb8f1740`。首次归档在封口前启动上传，SHA预检拒绝且未占GPU；完整文件以rsync append-verify补齐后哈希通过，未绕过检查。
+
+- D2准备：`results/bounded_skills/hybrid_repair_20261019/e2470622/preparation`，manifest SHA `a86c982493d3be3b2a5ed55f4200685ddd9a456bd98cfcb9bc92853c2b174105`。Startup10607三设置真实首推理＋首物理步通过；`reports/e247_startup_wire_identity_20261020.json`核对真实rightmost提示哈希、首输入与动作三者相同。正式10610两个6条分片。
+- 原版准备：`results/bounded_skills/original_hybrid_forks_20261019/e2470622/preparation`，manifest SHA `20f736be6f71de402e5284014272b3eedc57a025a4a1e852ead30cac10089f3f`。Startup10608真实通过，正式10612九片。仍为全场景监测，窄测量尚未采用。杯子先到固定goal_index/phase的子任务起点；到不了保留prefix_not_reached，不算已测π失败。
+- 窄监测准备：`results/bounded_skills/targeted_vla_pilot_20261019/e2470622/preparation`，manifest SHA `eaab5662901682c4b91da3e05e8385f60e9913b411800c26c670d9ef016b8d36`。Startup10609真实通过，正式10613；只两状态性能/一致性对照，不估成功率，不推广到全部原版直到对照闭合。
+- 当前唯一资源控制器PID2378133，`reports/monitor_e247_formal_replacement_20261020.json`和`reports/monitor_hybrid_repair_e2470622_20261020.log`。优先10610/10612/10613。旧PID2368653已停止。node02，nice500；C2无GPU R/PD可借第四卡，有则10分钟内降throttle，不取消运行；合计≤80CPU/600GB，保护rf/c5/c6和held。
+- `reports/e247_actual_first_input_vs_bb1_CPU_20261020_r1.json`：六例实际首输入非提示字段全同；三个碗例只task_descriptions改变，三个唯一类别无字段改变，允许把新旧差异明确归因到提示转换，不能与缺旧观测相位的10477直接作相同输入声明。
+- 用户要求的最终靠近对象已补准确私有端点读取：`scripts/diagnose_vla_endpoints_CPU_20261020.py`，从保存endpoint恢复ControlEnv，不渲染、不进物理、不加载SAM/VLA，不恢复/声称旧相机采样相位；报告真实body origins/双指接触、距EEF、qpos/速度状态最大差。旧8例输出`reports/D2_endpoint_actual_objects_CPU_20261020_r1.json`，max状态差0；新源闭合后对新端点再跑。原来基于开局公开中心的nearest只是近似，不能替代新私有结果。
+
+下一步：持续查新三组worker_summary与sacct；完成一条即做中间分析，出现worker_error立即日志诊断。先用共有实际输入/预测前缀核full vs targeted及三预算设置，再汇总真实停止原因/抓取真值/最终接触对象/交还后首bounded chunk。新源完整结果尚无，不要从旧0/2或首步通过推断成功率。再决定停止配置和窄监测；确认前不报混合整局上限。共享COORDINATION已通知源路径/SHA/入口/解释器/新旧批隔离和全部作业ID。
+
+## 10/20 标定接线修复（优先于e247在途状态）
+
+`reports/e247_missing_calibration_trace_CPU_20261020.json`：已登记原版空夹爪校准 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json`，SHA256 `d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c`，lower=0.0027024445589631796m、upper=0.07729756832122803m。当前hybrid构造V5Executor没传它，holding_aperture回退.005<opening<.075。t2/13402000真抓住后的opening约.00376m，53个抬升样本全被旧gate拒，离线首公开配对57步（rise50mm、手移10.97mm、相对差.506mm）。这不是新调PRO阈值，必须接回既有机器人标定；早期私有真值时刻不能从此捏造。
+
+已停止10610、10612所有在途/待排片，保留源e247部分记录；10613已COMPLETED保留（私有t2=true、salad=false），控制器2378133已停。收据 `reports/e247_missing_calibration_stop_20261020.json`。当前没有新GPU提交，先完成代码CPU检查。
+
+新代码：manifest case顶层`grasp_measurement_calibration`保存path/SHA，三种prepare脚本默认取已登记原版标定，可显式指定；CPU validate_plan和运行时都读同一SHA固定文件，`make_executor`实际传给V5Executor，运行时落`public_gripper_calibration.json`证明加载来源。新建D2计划需要显式校准引用。没有改force/speed、3cm抬升阈值、co-motion阈值或v3私有真值。
+
+验证：hybrid diagnostic/repair/shared launcher 45项通过（2.06s），py_compile、diff-check通过；配置回归跨实际JSON加载→真实V5Executor→公开开度分类，3.76mm允许继续RGBD证据、1.8mm空闭/79mm空开仍拒，校准SHA变化拒绝。下一步逐文件提交推送，等新归档完全生成后才上传；真实三设置/原版/窄监测startup后正式重放。所有旧源记录单独保留。

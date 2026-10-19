@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from prepare_hybrid_repair_20261019 import ROOT, BASE, read, ref, write
+from prepare_hybrid_repair_20261019 import ROOT, BASE, CALIBRATION, read, ref, write
 
 
 def main():
@@ -18,6 +18,7 @@ def main():
     parser.add_argument('--baseline-report', type=Path, required=True)
     parser.add_argument('--submit-startup', action='store_true')
     parser.add_argument('--targeted-vla-measurement', action='store_true')
+    parser.add_argument('--grasp-calibration', type=Path, default=CALIBRATION)
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     sys.path.insert(0, str(source))
@@ -53,7 +54,8 @@ def main():
             'plate_push': 'push', 'cup_transfer': 'pick'}[case['category']]
         controls = {'libero_90': 400, 'libero_goal': 300, 'libero_10': 520}[case['episode']['suite']]
         stage = cup_stages.get(case['name'], {'goal_index': 0, 'subtask_mode': mode})
-        cases.append({**case, 'diagnostic': {'kind': 'original_fork', 'domain': 'original', **stage,
+        cases.append({**case, 'grasp_measurement_calibration': ref(args.grasp_calibration),
+            'diagnostic': {'kind': 'original_fork', 'domain': 'original', **stage,
             'trial_seed_base': 20500000+10000*len(cases),
             'targeted_vla_measurement_v1': args.targeted_vla_measurement,
             'budget': {'blocks': math.ceil(controls/5), 'no_progress_blocks': None,

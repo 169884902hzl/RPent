@@ -55,6 +55,30 @@ def test_unknown_is_not_failure_and_tie_prefers_self():
         choose_branch(False, [True])
 
 
+def test_hybrid_executor_loads_registered_sensor_calibration_for_thin_rim_hold(tmp_path):
+    import json
+
+    from robots.libero.bounded_skills import MeasuredSkillAdapter
+    from scripts.probe_bounded_hybrid_d2 import make_executor, reference
+    from tests.unit_tests.robots.libero.test_bounded_motion import FakePrimitives
+
+    path = tmp_path/'public_gripper.json'
+    path.write_text(json.dumps({'opening_calibration': {
+        'closed_empty_max_m': .00185, 'tolerance_m': .00085, 'open_empty_min_m': .07815},
+        'grip_site_geometry': {}, 'robot_rigid_transform_validation': {},
+        'source_report': {'sha256': '0'*64}}))
+    case = {'grasp_measurement_calibration': reference(path)}
+    executor = make_executor(SimpleNamespace(primitives=FakePrimitives()), SimpleNamespace(), case)
+    probe = SimpleNamespace(ex=executor)
+    permitted, evidence = MeasuredSkillAdapter.holding_aperture(probe, .00376)
+    assert permitted and evidence['source'] == 'original_empty_gripper_proprioception'
+    assert not MeasuredSkillAdapter.holding_aperture(probe, .0018)[0]
+    assert not MeasuredSkillAdapter.holding_aperture(probe, .079)[0]
+    path.write_text('{}')
+    with pytest.raises(ValueError, match='calibration changed'):
+        make_executor(SimpleNamespace(primitives=FakePrimitives()), SimpleNamespace(), case)
+
+
 def test_seeded_policy_fingerprints_the_actual_wire_inputs_without_changing_them(tmp_path):
     import json
 

@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path('/public/home/sunyihan/rpent_libero_eval')
 BASE = ROOT / 'coordination/bounded_skills_20261016'
+CALIBRATION = ROOT/'results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json'
 
 
 def read(path):
@@ -34,6 +35,7 @@ def main():
     parser.add_argument('--archive-sha256', required=True)
     parser.add_argument('--submit-startup', action='store_true')
     parser.add_argument('--schema-v4', action='store_true')
+    parser.add_argument('--grasp-calibration', type=Path, default=CALIBRATION)
     args = parser.parse_args()
     assert ref(args.archive)['sha256'] == args.archive_sha256
     source = ROOT / ('source_bounded_hybrid_handoff_20261019_'+args.commit[:8])
@@ -44,6 +46,7 @@ def main():
     directory.mkdir(parents=True)
     registry = BASE / 'preparation/D2_handoff_six_20261019.json'
     six = read(registry)['rows']
+    calibration = ref(args.grasp_calibration)
     cases = []
     baseline = {'blocks':24,'no_progress_blocks':3,'controls_per_check':1,'minimum_progress_m':.005,'max_controls':None}
     def case(row, variant, budget):
@@ -51,6 +54,7 @@ def main():
         old = read(path)
         original = read(path.parents[3]/'assignment.json')['case']
         return {**original, 'name':original['name']+'_'+variant+'_r'+str(row['seed']),
+            'grasp_measurement_calibration': calibration,
             'diagnostic':{'kind':'replay', 'domain':'d2', 'variant':variant,
                 'old_summary':ref(path), 'branchpoint':ref(Path(row['branchpoint'])), 'budget':budget,
                 'migrate_v3_header_to_v4':args.schema_v4}}

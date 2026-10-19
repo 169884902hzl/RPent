@@ -21,19 +21,26 @@ def test_scope_diagnostic_migrates_only_the_public_version_header():
         migrate_replay_header(adapter, request)
 
 
-def plan():
+def plan(tmp_path):
+    import json
+    from scripts.probe_bounded_hybrid_d2 import reference
+
+    path = tmp_path/'calibration.json'
+    path.write_text(json.dumps({'opening_calibration': {}, 'grip_site_geometry': {},
+        'robot_rigid_transform_validation': {}}))
     return {'evaluation':'hybrid_repair', 'training':False, 'confirmation':False,
         'cases':[{'episode':{'suite':'libero_spatial_swap','task':2,'seed':40},
+            'grasp_measurement_calibration': reference(path),
             'diagnostic':{'domain':'d2','budget':{'no_progress_blocks':None,'max_controls':220}}}]}
 
 
-def test_repair_accepts_registered_d2_replays_but_never_test_tasks_or_training():
-    value = plan()
+def test_repair_accepts_registered_d2_replays_but_never_test_tasks_or_training(tmp_path):
+    value = plan(tmp_path)
     validate_plan(value)
     value['cases'][0]['episode']['task'] = 5
     with pytest.raises(ValueError):
         validate_plan(value)
-    value = plan()
+    value = plan(tmp_path)
     value['training'] = True
     with pytest.raises(ValueError):
         validate_plan(value)
@@ -50,9 +57,9 @@ def test_self_continuation_cannot_silently_call_vla_again(tmp_path):
     assert policy.rpc is rpc
 
 
-def test_original_microwave_fork_accepts_its_libero90_task_only():
-    value = plan()
-    value['cases'][0] = {'episode': {'suite': 'libero_90', 'task': 35, 'seed': 0},
+def test_original_microwave_fork_accepts_its_libero90_task_only(tmp_path):
+    value = plan(tmp_path)
+    value['cases'][0] = {**value['cases'][0], 'episode': {'suite': 'libero_90', 'task': 35, 'seed': 0},
         'diagnostic': {'domain': 'original', 'budget': {}}}
     validate_plan(value)
     value['cases'][0]['episode']['task'] = 90

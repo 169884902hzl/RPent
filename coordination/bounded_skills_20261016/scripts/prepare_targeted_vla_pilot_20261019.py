@@ -4,13 +4,14 @@ import os
 import subprocess
 from pathlib import Path
 
-from prepare_hybrid_repair_20261019 import BASE, ROOT, read, ref, write
+from prepare_hybrid_repair_20261019 import BASE, ROOT, CALIBRATION, read, ref, write
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--commit', required=True)
+    parser.add_argument('--grasp-calibration', type=Path, default=CALIBRATION)
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     registry = BASE/'preparation/D2_handoff_six_20261019.json'
@@ -20,6 +21,7 @@ def main():
         summary = Path(selected['raw_summary'])
         original = read(summary.parents[3]/'assignment.json')['case']
         cases.append({**original, 'name': original['name']+'_targeted_scope_r'+str(seed),
+            'grasp_measurement_calibration': ref(args.grasp_calibration),
             'diagnostic': {'kind': 'replay', 'domain': 'd2', 'variant': 'targeted_scope',
                 'old_summary': ref(summary), 'branchpoint': ref(Path(selected['branchpoint'])),
                 'targeted_vla_measurement_v1': True, 'migrate_v3_header_to_v4': True,

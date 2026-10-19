@@ -43,7 +43,25 @@ def reference(path):
     return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
-def build_plan(output):
+def load_public_gripper_calibration(calibration_ref):
+    """Load the pinned robot sensor calibration, never scene truth."""
+    from harness_v5_eval import load_grasp_measurement_calibration
+
+    if reference(calibration_ref['path']) != calibration_ref:
+        raise ValueError('registered public gripper calibration changed')
+    calibration, _ = load_grasp_measurement_calibration(calibration_ref['path'])
+    return calibration
+
+
+def make_executor(toolkit, scene, case):
+    """Keep the diagnostic's verifier on the registered robot calibration."""
+    from robots.libero.v5_runtime import V5Executor
+
+    calibration = load_public_gripper_calibration(case['grasp_measurement_calibration'])
+    return V5Executor(toolkit, scene, 40, grasp_measurement_calibration=calibration)
+
+
+def build_plan(output, calibration_ref):
     """Pin D2 BDDL/init bytes before observing policy outcomes."""
     from libero.libero import get_libero_path
     from rlinf.envs.libero.utils import benchmark
@@ -60,6 +78,7 @@ def build_plan(output):
         bddl = Path(get_libero_path("bddl_files")) / task.problem_folder / task.bddl_file
         state = np.asarray(suite.get_task_init_states(ep["task"])[ep["seed"]], dtype="<f8")
         cases.append({"name": f"{ep['suite']}_t{ep['task']}_s{ep['seed']}", "episode": ep,
+            "grasp_measurement_calibration": calibration_ref,
             "bddl": reference(bddl), "state_sha256": hashlib.sha256(state.tobytes()).hexdigest()})
     plan = {"version": "D2-private-hybrid/1", "registration": reference(source),
         "cases": cases, "source_commit": os.environ.get("SOURCE_COMMIT"),
@@ -85,7 +104,7 @@ def runtime(case, endpoints, output, *, domain='d2'):
     from robots.libero.bounded_skills import MeasuredSkillAdapter
     from robots.libero.bounded_timing import EpisodeTimings, install_episode_timers
     from robots.libero.toolkit import LiberoToolkit
-    from robots.libero.v5_runtime import MeasuredScene, V5Executor
+    from robots.libero.v5_runtime import MeasuredScene
     from rpent.dashboard.events import NullDashboardEventSink
     from rpent.memory import MemoryManager
     from rpent.robots.components.pi05_vla_client import Pi05VLAClient
@@ -110,7 +129,11 @@ def runtime(case, endpoints, output, *, domain='d2'):
         scene = MeasuredScene(toolkit, endpoints["sam3"], case["episode"]["seed"],
             dual_view_fusion_v1=True, furniture_parts_v1=True, instruction_queries_v1=True,
             wrist_recall_v1=True, occluded_measurement_cache_v2=True, **BOUNDED_SCENE_FLAGS)
-        executor = V5Executor(toolkit, scene, 40)
+        executor = make_executor(toolkit, scene, case)
+        write(output/'public_gripper_calibration.json', {
+            'reference': case['grasp_measurement_calibration'],
+            'opening_calibration': executor.grasp_measurement_calibration['opening_calibration'],
+            'source': 'original_empty_gripper_proprioception', 'model_visible': False})
         install_episode_timers(timings, tools=tools, env=executor.p.env,
                                toolkit=toolkit, scene=scene, model=model)
         instruction = toolkit.execute_tool("view_env_state", {}).result["task_language"]
@@ -449,11 +472,16 @@ def main():
     parser.add_argument("--output", type=Path)
     parser.add_argument("--index", type=int, default=0)
     parser.add_argument("--startup", action="store_true")
+    parser.add_argument("--grasp-calibration", type=Path)
     args = parser.parse_args()
     if os.environ.get("LIBERO_TYPE") != "pro":
         parser.error("LIBERO_TYPE=pro is required for this isolated D2 diagnostic")
     if args.build_plan:
-        build_plan(args.build_plan.resolve())
+        if args.grasp_calibration is None:
+            parser.error('--grasp-calibration is required to build a calibrated diagnostic plan')
+        calibration_ref = reference(args.grasp_calibration)
+        load_public_gripper_calibration(calibration_ref)
+        build_plan(args.build_plan.resolve(), calibration_ref)
         return
     plan = json.loads(args.manifest.resolve(strict=True).read_text())
     if plan["training"] or plan["confirmation"] or len(plan["cases"]) != 40:
