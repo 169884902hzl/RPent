@@ -12,10 +12,13 @@ from zoneinfo import ZoneInfo
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', type=Path, required=True)
+parser.add_argument('--jobs', help='Comma-separated exact job identities; default retains the original probe set')
 args = parser.parse_args()
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 jobs = ('9472_0', '9472_1', '9472_2', '9507_0', '9507_1',
         '9502_160', '9502_161', '9504_120', '9504_140', '9248_19')
+if args.jobs:
+    jobs = tuple(args.jobs.split(','))
 records = []
 for job in jobs:
     directory = root/'results/bounded_skills/feasibility_20261017'/('job'+job)
@@ -57,5 +60,6 @@ with args.output.open('x') as stream:
 for record in records:
     summary = record['summary'] or {}
     print(json.dumps({'job': record['job'], 'status': record['status'],
-        'success': summary.get('success'), 'decisions': record['decisions_recorded'],
+        'success': summary.get('success'), 'physical_chunks_recorded': record['decisions_recorded'],
+        'summary_decisions': summary.get('decisions'),
         'sim_steps': summary.get('sim_steps'), 'wall_s': summary.get('wall_s')}))

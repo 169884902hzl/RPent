@@ -1,0 +1,88 @@
+{
+  "scope": "CPU record and source integrity checks only",
+  "pairs": [
+    {
+      "old": "9472_0",
+      "intermediate": "9507_0",
+      "new": "9510_0",
+      "case": {
+        "name": "box_grab_place_libero_object_t1_s0",
+        "category": "box_grab_place",
+        "episode": {
+          "suite": "libero_object",
+          "task": 1,
+          "seed": 0
+        },
+        "state_sha256": "4404ff0ecec75d07dbe02cdb0a6284fb3b24c79f2c164987433f00d3b885948c",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl",
+          "sha256": "7019f37ee158d67a21338a6df0c441dd8f84979b946b5e20bb49463ef0508ea2"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/init_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init",
+          "sha256": "5ea5483bca8abd80a8f1935e2c60570d60eaaf6a985c283d62805b46fb76aa94"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "new_chunk_lengths": [
+        3,
+        4
+      ]
+    },
+    {
+      "old": "9472_1",
+      "intermediate": "9507_1",
+      "new": "9510_1",
+      "case": {
+        "name": "box_grab_place_libero_object_t1_s1",
+        "category": "box_grab_place",
+        "episode": {
+          "suite": "libero_object",
+          "task": 1,
+          "seed": 1
+        },
+        "state_sha256": "33644d67933758f98da6287e62ed0fa79250d398107872e297d7db728895fdbe",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl",
+          "sha256": "7019f37ee158d67a21338a6df0c441dd8f84979b946b5e20bb49463ef0508ea2"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/init_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init",
+          "sha256": "5ea5483bca8abd80a8f1935e2c60570d60eaaf6a985c283d62805b46fb76aa94"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "new_chunk_lengths": [
+        3,
+        2,
+        1,
+        2
+      ]
+    }
+  ],
+  "overall": {
+    "success": 2,
+    "total": 2,
+    "improved_vs_original": 2,
+    "regressed_vs_original": 0,
+    "wilson95": [
+      0.3423802275066531,
+      1.0
+    ]
+  },
+  "files_sha256": {
+    "scripts/collect_contact_probe_20261018.py": "6a13b4ee6f87f98f77a16acdceb21e0c3ff26a638d72dbee948ecb067a3b4260",
+    "scripts/diagnose_thin_surface_normals_CPU_20261018.py": "edcc761dd702244486693811be373ac5024cea5b807480d638512291849dcaca"
+  },
+  "capture": {
+    "path": "coordination/bounded_skills_20261016/reports/contact_probe_interim_r6_20261018.json",
+    "sha256": "14ce425deb702fbd805e1dfe61794f77376e03dbfe602959a669b48895ba94d3"
+  },
+  "tests": [
+    "AST parse",
+    "same state/episode/BDDL identities",
+    "zero pi05 calls",
+    "normal diagnostic exact source hash",
+    "three public captures with no side patches"
+  ]
+}
