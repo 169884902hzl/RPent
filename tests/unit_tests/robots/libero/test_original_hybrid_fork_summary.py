@@ -74,3 +74,17 @@ def test_branches_from_different_inputs_cannot_be_pooled(tmp_path, monkeypatch, 
     module, _ = report_fixture(tmp_path, monkeypatch, mismatched=key)
     with pytest.raises(ValueError, match=key):
         module.main()
+
+
+def test_owned_allocation_output_keeps_all_registered_denominators(tmp_path, monkeypatch):
+    module, output = report_fixture(tmp_path, monkeypatch)
+    actual = tmp_path/'owned_allocation_step'
+    (tmp_path/'job123_0').rename(actual)
+    monkeypatch.setattr(sys, 'argv', [*sys.argv, '--batch-output', '0='+str(actual)])
+    module.main()
+    report = json.loads(output.read_bytes())
+    assert report['closed_workers'] == 2
+    assert report['overall']['registered_states'] == 2
+    assert report['overall']['vla_trials_registered'] == 6
+    assert report['overall']['vla_trials_unobserved'] == 3
+    assert report['explicit_batch_outputs'] == {'0': str(actual)}

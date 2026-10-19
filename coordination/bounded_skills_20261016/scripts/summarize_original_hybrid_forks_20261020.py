@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Summarize registered original subtask forks without calling them whole tasks."""
 
 import argparse
@@ -45,6 +47,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--preparation', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--batch-output', action='append', default=[], metavar='INDEX=PATH',
+        help='Explicit batch output from a documented step on an owned allocation')
     args = parser.parse_args()
     plan = read(args.preparation/'batch_plan.json')
     submission = read(args.preparation/'full_submission.json')
@@ -54,8 +58,12 @@ def main():
         raise ValueError('registered original manifest changed')
     manifest = json.loads(manifest_bytes)
     records, errors, pending_reads = [], [], []
+    outputs = {int(value.split('=', 1)[0]): Path(value.split('=', 1)[1])
+        for value in args.batch_output}
+    if any(index < 0 or index >= len(plan['batches']) for index in outputs):
+        raise ValueError('batch output index outside registered plan')
     for batch_index, batch in enumerate(plan['batches']):
-        root = args.preparation.parent/f'job{submission["job"]}_{batch_index}'
+        root = outputs.get(batch_index, args.preparation.parent/f'job{submission["job"]}_{batch_index}')
         if (root/'launch.json').exists():
             launch = read(root/'launch.json')
             assert launch['source_commit'] == manifest['source_commit']
@@ -120,6 +128,7 @@ def main():
         'overall': summarize(records), 'categories': groups, 'records': records,
         'errors': errors, 'pending_reads': pending_reads,
         'both_failed': [row for row in records if row['both_failed']], 'training': False,
+        'explicit_batch_outputs': {str(k): str(v) for k, v in outputs.items()},
         'scope': 'original40/90 selected subtask development forks; not whole-episode or D2 success',
         'denominators': 'prefix_not_reached and uncovered are retained as registered states, not VLA attempts; no-inference branches are separate; partial/unknown outcomes stay unknown',
         'interval_scope': 'Wilson intervals describe this fixed diagnostic cohort; each state has three VLA sampling seeds. They are not a claim about independent task generalization.'}

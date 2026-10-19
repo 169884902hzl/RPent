@@ -30,6 +30,7 @@ def main():
     import mujoco
     import numpy as np
     from libero.libero.envs.env_wrapper import ControlEnv
+    from scipy.spatial.transform import Rotation
 
     from robots.libero import v5_branch_state
 
@@ -55,6 +56,24 @@ def main():
         data = sim.data._data
         metadata = json.loads((directory/'agentview_metadata.json/76.json').read_bytes())
         origin = np.asarray(metadata['extrinsic_cam2world'])[:3, 3]
+        robot = json.loads((directory/'first_self_request.json').read_bytes())['robot']
+        instance = env.env.robots[0]
+        site_id = instance.eef_site_id
+        site_id = next(iter(site_id.values())) if isinstance(site_id, dict) else site_id
+        robot_error = float(np.linalg.norm(sim.data.site_xpos[site_id]-robot['eef_xyz_m']))
+        camera_id = sim.model.camera_name2id('agentview')
+        camera_error = float(np.linalg.norm(sim.data.cam_xpos[camera_id]-origin))
+        site_rotation = Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix() @ Rotation.from_euler('z', -np.pi/2).as_matrix()
+        geometry = pickle.loads(Path(trial['endpoint']['path']).read_bytes())['public_runtime']['adapter']['geometry']
+        finger_boxes = geometry['visual_boxes']
+        mesh_centres = []
+        for box in finger_boxes:
+            name = 'gripper0_right_'+box['name']
+            gid = sim.model.geom_name2id(name)
+            mesh_centres.append({'name': name, 'sim_geom_position_m': sim.data.geom_xpos[gid].tolist(),
+                'public_visual_aabb_centre_world_m': (site_rotation @ (
+                    (np.asarray(box['lower'])+box['upper'])/2+np.asarray(box['slide_per_half_opening'])*
+                    (abs(robot['gripper_opening_m'])/2))+robot['eef_xyz_m']).tolist()})
         rows = []
         for row in public['rows']:
             point = np.asarray(row['point_m'])
@@ -74,6 +93,8 @@ def main():
                 'private_body_name': sim.model.body_id2name(int(sim.model.geom_bodyid[gid])) if gid >= 0 else None})
         args.output.write_text(json.dumps({'source': str(source), 'directory': str(directory),
             'physical_state_max_error': error, 'rows': rows, 'physics_steps': 0,
+            'robot_eef_position_error_m': robot_error, 'camera_origin_error_m': camera_error,
+            'mesh_centres': mesh_centres,
             'gpu_used': False, 'training': False, 'model_visible': False,
             'scope': 'private diagnostic labels only; runtime still uses public RGB-D and robot geometry'}, indent=2))
         print(json.dumps({'rows': len(rows), 'output': str(args.output)}))
