@@ -1233,11 +1233,12 @@ class MeasuredSkillAdapter:
                             'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
         choices.sort(key=lambda item: (abs(item['normal_xyz'][2]) if horizontal else 0.,
             not item['local_normal'], item['patch_index'], item['wrist_change_rad'], item['yaw_deg']))
-        selected = None
         screen = self._cloud_and_ik(entity.id, contact=True)
-        for option in choices:
-            if selected is not None:
-                break
+        def screened(option):
+            if option.get('screen') is not None:
+                return option['screen']['passed']
+            if option.get('closure'):
+                return False
             from robots.libero.v5_geometric_grasp import collision_counts
             site = Rotation.from_quat(option['quat_xyzw']).as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()
             for opening in np.linspace(.08, 0., 9):
@@ -1247,11 +1248,26 @@ class MeasuredSkillAdapter:
                     option['closure'] = {'opening_m': float(opening), 'scene': external, 'target': own}
                     break
             if option.get('closure'):
-                continue
+                return False
             _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(option['route'])
             option['screen'] = {k: evidence[k] for k in ('passed', 'reason', 'collision', 'ik_reachable', 'path_min_clearance_m')}
-            if evidence['passed']:
-                selected = option
+            return evidence['passed']
+        selected = next((option for option in choices if screened(option)), None)
+        right_axis, front = map(np.asarray, self.scene.view_axes)
+        directions = {'above': np.array([0., 0., 1.]), 'front': front,
+                      'left': -right_axis, 'right': right_axis}
+        directional = {}
+        if horizontal and selected is not None:
+            directional['above'] = selected
+            for name in ('front', 'left', 'right'):
+                direction = directions[name]
+                ranked = sorted(choices, key=lambda option:
+                    -float((np.asarray(option['contact_xyz_m'])-centre)@direction))
+                option = next((option for option in ranked
+                    if (np.asarray(option['contact_xyz_m'])-centre)@direction > 0.
+                    and screened(option)), None)
+                if option is not None:
+                    directional[name] = option
         self.candidate_diagnostics.append({'stage': 'measured_surface_contact', 'anchor_id': entity.id,
             'source': 'fused_rgbd_shape_and_static_finger_tip_geometry',
             'contact_xyz_m': selected['contact_xyz_m'] if selected else None,
@@ -1261,21 +1277,28 @@ class MeasuredSkillAdapter:
             'approach_basis': selected['approach_basis'] if selected else None,
             'object_plane_normal_xyz': normal.tolist(),
             'grasp_verified': False, 'candidates': choices,
+            'directional_contact_points': {name: option['contact_xyz_m']
+                for name, option in directional.items()},
             'selected_yaw_deg': selected['yaw_deg'] if selected else None})
         if selected is None:
             return None
-        normal = np.asarray(selected['normal_xyz'])
-        right_axis, front = map(np.asarray, self.scene.view_axes)
-        directions = {'above': np.array([0., 0., 1.]), 'front': front,
-                      'left': -right_axis, 'right': right_axis}
-        return {k: selected[k] for k in ('xyz_m', 'quat_xyzw', 'approach_xyz_m')} | {
-            'approach_route': selected['route'][:-1],
-            'preferred_approach': max(directions, key=lambda key: np.dot(normal, directions[key])),
-            'preferred_path': selected['path'],
-            'width_m': None, 'contact_kind': 'surface',
-            'contact_approach_xyz': normal.tolist(), 'approach_basis': selected['approach_basis'],
-            'surface_measurement': {'xyz_world': self._instance_pixels(entity.id).tolist(),
-                'source_step': entity.source_step, 'normal_xyz': selected['measured_normal_xyz']}}
+        pixels = self._instance_pixels(entity.id).tolist()
+        def contact_plan(option, approach=None):
+            normal = np.asarray(option['normal_xyz'])
+            return {k: option[k] for k in ('xyz_m', 'quat_xyzw', 'approach_xyz_m')} | {
+                'approach_route': option['route'][:-1],
+                'preferred_approach': approach or max(directions, key=lambda key: np.dot(normal, directions[key])),
+                'preferred_path': option['path'],
+                'width_m': None, 'contact_kind': 'surface',
+                'contact_point_xyz_m': option['contact_xyz_m'],
+                'contact_approach_xyz': normal.tolist(), 'approach_basis': option['approach_basis'],
+                'surface_measurement': {'xyz_world': pixels,
+                    'source_step': entity.source_step, 'normal_xyz': option['measured_normal_xyz']}}
+        plan = contact_plan(selected)
+        if directional:
+            plan['surface_contact_options'] = {name: contact_plan(option, name)
+                for name, option in directional.items()}
+        return plan
 
     def _refresh_contact_normal(self, entity, plan):
         """Refit a contacted panel's normal from its current measured surface.
@@ -1496,6 +1519,10 @@ class MeasuredSkillAdapter:
         if skill in {"move_to", "align", "descend"}:
             contact = self.plans.get(key)
             approach = parameters.get("approach", "above")
+            if skill == 'move_to' and contact is not None and 'surface_contact_options' in contact:
+                contact = contact['surface_contact_options'].get(approach)
+                if contact is None:
+                    return None
             right, front = map(np.asarray, self.scene.view_axes)
             direction = {"above": np.array([0., 0., 1.]), "front": front,
                          "left": -right, "right": right}[approach]
@@ -2608,7 +2635,10 @@ class MeasuredSkillAdapter:
         key = candidate['parameters']['anchor_id']
         if key not in self.committed_grasps and key in self.plans:
             entity = self.scene.entities[key]
-            plan = copy.deepcopy(self.plans[key])
+            plan = self.plans[key]
+            if candidate['skill'] == 'move_to' and 'surface_contact_options' in plan:
+                plan = plan['surface_contact_options'][candidate['parameters']['approach']]
+            plan = copy.deepcopy(plan)
             plan['contact_evidence'] = self._evidence(entity)
             self.plans[key] = plan
             self.committed_grasps[key] = {'plan': plan, 'anchor_xyz': np.array(entity.xyz)}

@@ -1,0 +1,38 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+    "tests/unit_tests/robots/libero/test_bounded_offline_labels.py"
+  ],
+  "exit_code": 0,
+  "wall_s": 63.77163767116144,
+  "raw_log_sha256": "aaa193ba5a542447027d7b29b88ea9d4e9f32067f72d8a976ed42e7d7d7297b4",
+  "log": "coordination/bounded_skills_20261016/reports/directional_contact_cpu_20261018.log.gz",
+  "log_sha256": "826b773463783d6b7c83c5e25986b798db5ae86e48b6de5d95d3730868a9ad59",
+  "source_sha256": {
+    "robots/libero/bounded_skills.py": "80915640c32200a783f3fbd28299bfc4c5741935898a627ed5264b53840732ec",
+    "robots/libero/bounded_chunk.py": "98c3b844c1f996a28ff7e4409075e0b6d250faa8976c263b554af91c1249848d",
+    "robots/libero/bounded_oracle.py": "1b892fa0c7cac44690527cf05dd0bcda4141a2fb65c48fe7decf2c5c2d4f7ce3",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "72616924282de65004cecb079ee2015b614cb0ed0827d310d841a61dcc8a8b1b",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py": "9d224438eebf3209680dfd285385482f66fcc25281ba98bc1a5a0433b8a4347b"
+  },
+  "preceding_full_regression": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/unit_tests/robots/libero/test_bounded_skills.py",
+      "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+      "tests/unit_tests/robots/libero/test_bounded_offline_labels.py"
+    ],
+    "exit_code": 0,
+    "result": "265 passed, 1 warning in 205.70s",
+    "subsequent_change": "In-flight move_to commits the same directional contact as a normal prefix; affected chunk/offline tests rerun here."
+  },
+  "gpu_used": false,
+  "physical_result": "not measured by CPU tests"
+}

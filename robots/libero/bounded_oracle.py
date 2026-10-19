@@ -20,7 +20,7 @@ from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 from robots.libero.bounded_chunk import PublicPrefixPrediction
 from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
-JUDGE_VERSION = 'libero-private-task-progress-rules/11'
+JUDGE_VERSION = 'libero-private-task-progress-rules/12'
 
 
 class NoPublicOption(ValueError):
@@ -189,6 +189,23 @@ class BoundedOracle:
                     chosen = find("release")
                 continue
             contact = ex.plans.get(source.id)
+            if contact is not None and target is not None and ex.ex.instruction.lower().startswith('push '):
+                # Contact alternatives are measured and screened publicly.
+                # Only this private selector uses the task to choose a side
+                # opposite the required push, rather than moving away from
+                # the currently contacted rim.
+                delta = np.asarray(target.xyz)-source.xyz
+                options = []
+                for approach, plan in contact.get('surface_contact_options', {}).items():
+                    radial = np.asarray(plan['contact_point_xyz_m'])-source.xyz
+                    progress = -float(radial[:2]@delta[:2])
+                    option = find('move_to', anchor_id=source.id, approach=approach,
+                                  path=plan['preferred_path'])
+                    if progress > 0. and option is not None:
+                        options.append((progress/max(np.linalg.norm(radial[:2]), 1e-12), approach, plan))
+                if options:
+                    contact = max(options, key=lambda option: option[0])[2]
+                    self.private_trace[-1]['push_contact_acceptable_approaches'] = [item[1] for item in options]
             if contact is None:
                 # A failed contact can invalidate its fit while the hand
                 # stays closed at that source. Reopen before reapproaching;
@@ -305,11 +322,14 @@ class BoundedOracle:
             probe.binding = copy.deepcopy(self.binding, {id(self.binding.rpc): self.binding.rpc})
             probe.private_trace = []
             try:
-                selected.append(probe._choose_one(request, one_goal, predicted_prefix=predicted_prefix))
+                chosen = probe._choose_one(request, one_goal, predicted_prefix=predicted_prefix)
+                approaches = next((row['push_contact_acceptable_approaches'] for row in reversed(probe.private_trace)
+                    if 'push_contact_acceptable_approaches' in row), None)
+                selected.append((chosen, approaches))
             except NoPublicOption:
                 continue
         acceptable = set()
-        for chosen in selected:
+        for chosen, contact_approaches in selected:
             acceptable.add(chosen['id'])
             params = chosen['parameters']
             for candidate in request['candidates']:
@@ -320,6 +340,8 @@ class BoundedOracle:
                     continue
                 other = candidate['parameters']
                 if chosen['skill'] == 'move_to' and other.get('anchor_id') == params['anchor_id']:
+                    if contact_approaches is not None and other['approach'] not in contact_approaches:
+                        continue
                     if params['anchor_id'] not in self.adapter.plans:
                         if candidate['id'] in {receipt['candidate_id'] for receipt in self.adapter.receipts}:
                             continue

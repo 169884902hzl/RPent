@@ -2005,11 +2005,14 @@ def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
     screen.points = screen.target = np.empty((0, 3))
     adapter._cloud_and_ik = lambda *args, **kwargs: screen
     plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
-    assert len(checks) == 2
+    assert len(checks) >= 2
+    # Directional rim alternatives are screened after the default plan. Its
+    # first rejected and second clear wrist must still determine that plan.
+    default_route = checks[1]
     # SmoothMotion may choose the equivalent antipodal quaternion for continuity.
-    difference = Rotation.from_quat(plan['quat_xyzw'])*Rotation.from_quat(checks[-1][-1]['quat_xyzw']).inv()
+    difference = Rotation.from_quat(plan['quat_xyzw'])*Rotation.from_quat(default_route[-1]['quat_xyzw']).inv()
     assert difference.magnitude() < 1e-12
-    np.testing.assert_allclose(plan['xyz_m'], checks[-1][-1]['xyz_m'], atol=1e-12)
+    np.testing.assert_allclose(plan['xyz_m'], default_route[-1]['xyz_m'], atol=1e-12)
     assert adapter.candidate_diagnostics[-1]['candidates'][0]['screen']['collision'] is True
 
 
@@ -2206,16 +2209,22 @@ def test_surface_contact_screens_symmetric_wrist_instead_of_discarding_it(adapte
     nearest = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
     close_axis = Rotation.from_quat(nearest['quat_xyzw']).as_matrix()[:, 1]
     checks = []
+    screened_poses = []
     def screen(poses):
         axis = Rotation.from_quat(poses[-1]['quat_xyzw']).as_matrix()[:, 1]
         passed = np.dot(axis, close_axis) < -.99
         checks.append(passed)
+        screened_poses.append(poses[-1])
         return {'passed': passed, 'reason': 'clear' if passed else 'numerical_ik_not_found',
             'collision': False, 'ik_reachable': passed, 'path_min_clearance_m': .02}
     screen.points = screen.target = np.empty((0, 3))
     adapter._cloud_and_ik = lambda *args, **kwargs: screen
     plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
-    assert plan is not None and checks[-1] and not any(checks[:-1])
+    assert plan is not None
+    selected_index = next(i for i, pose in enumerate(screened_poses)
+        if np.allclose(plan['xyz_m'], pose['xyz_m'], atol=1e-12)
+        and (Rotation.from_quat(plan['quat_xyzw'])*Rotation.from_quat(pose['quat_xyzw']).inv()).magnitude() < 1e-12)
+    assert selected_index > 0 and checks[selected_index] and not any(checks[:selected_index])
     selected_axis = Rotation.from_quat(plan['quat_xyzw']).as_matrix()[:, 1]
     assert np.dot(selected_axis, close_axis) < -.99
 

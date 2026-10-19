@@ -45,6 +45,59 @@ def grip_sequence(request):
         for skill in ('move_to', 'descend', 'set_gripper', 'lift')]
 
 
+def directional_surface(adapter):
+    """A measured flat object with distinct screened contact sides."""
+    base = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+            'width_m': None, 'contact_kind': 'surface'}
+    options = {}
+    for name, xy in {'above': [.1, .1], 'front': [.08, .05],
+                     'left': [.05, .1], 'right': [.15, .1]}.items():
+        contact = [*xy, .9]
+        entry = [*xy, 1.02]
+        options[name] = {**base, 'xyz_m': contact, 'contact_point_xyz_m': contact,
+            'approach_xyz_m': entry, 'approach_route': [{'xyz_m': entry, 'quat_xyzw': base['quat_xyzw']}],
+            'preferred_approach': name, 'preferred_path': 'over'}
+    adapter.grasp_geometry = lambda _: {**options['above'], 'surface_contact_options': options}
+    return options
+
+
+@pytest.mark.parametrize('in_flight', [False, True])
+def test_directional_surface_prefix_and_execution_keep_selected_contact(adapter, in_flight):
+    options = directional_surface(adapter)
+    request = adapter.request(k=4)
+    move = next(c for c in request['candidates'] if c['skill'] == 'move_to'
+        and c['parameters'] == {'anchor_id': 'e1', 'approach': 'left', 'path': 'over'})
+    descend = next(c for c in request['candidates'] if c['skill'] == 'descend')
+    assert adapter._route('move_to', move['parameters'])[-1]['xyz_m'] == options['left']['approach_xyz_m']
+    prediction = PublicPrefixPrediction(adapter, request)
+    endpoint = adapter._route('move_to', move['parameters'])[-1] if in_flight else None
+    prediction.advance(move, commanded_endpoint=endpoint)
+    assert prediction.adapter._route('descend', descend['parameters'])[-1]['xyz_m'] == options['left']['xyz_m']
+    assert adapter.plans['e1']['xyz_m'] == options['above']['xyz_m']
+    receipts = adapter.execute(request, decision(request, [move['id'], descend['id']]))
+    assert all(r['outcome'] == 'success' for r in receipts)
+    np.testing.assert_allclose(adapter.robot()['eef_xyz_m'], options['left']['xyz_m'], atol=.012)
+    assert adapter.committed_grasps['e1']['plan']['xyz_m'] == options['left']['xyz_m']
+
+
+def test_push_oracle_chooses_opposite_contact_and_excludes_receding_side_from_labels(adapter):
+    from robots.libero.v5_state import Entity
+
+    directional_surface(adapter)
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .1, .9),
+        (.25, .05, .89), (.35, .15, .91), True, 0)
+    adapter.ex.instruction = 'push the box onto the plate'
+    request = adapter.request(k=4)
+    status = {'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda *_: status), adapter)
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'move_to' and chosen['parameters']['approach'] == 'left'
+    positive = oracle.last_labels['positions'][0]['rule_acceptable']
+    approaches = {c['parameters']['approach'] for c in request['candidates'] if c['id'] in positive}
+    assert approaches == {'front', 'left'}
+    assert oracle.last_legality_audit['selected_outside_legal'] == 0
+
+
 def test_four_actions_cross_gripper_only_when_actual_measurements_pass(adapter):
     physical_grip(adapter)
     request = adapter.request(k=4)
@@ -475,7 +528,7 @@ def test_oracle_executes_prefix_checks_before_blocked_contact_recovery(adapter, 
     assert choices[2]['parameters'] == {'mode': 'close'}
     assert len(oracle.last_labels['positions']) == 3
     assert oracle.private_trace[-1]['await_prefix_measurement']
-    assert all(row['judge'] == 'libero-private-task-progress-rules/11'
+    assert all(row['judge'] == 'libero-private-task-progress-rules/12'
                for row in oracle.last_labels['positions'])
     receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
     assert len(receipts) == 3 and all(r['outcome'] == 'success' for r in receipts)

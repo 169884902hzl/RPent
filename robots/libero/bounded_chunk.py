@@ -231,6 +231,13 @@ class PublicPrefixPrediction:
                         raise ValueError('committed endpoint IK prediction could not be completed')
             if route is None:
                 raise ValueError('prefix has no measured route')
+            if skill == 'move_to':
+                plan = self.adapter.plans.get(params['anchor_id'], {})
+                if 'surface_contact_options' in plan:
+                    # Commit the execution side even for an in-flight move;
+                    # its successor must not descend at the default rim.
+                    self.adapter.plans[params['anchor_id']] = copy.deepcopy(
+                        plan['surface_contact_options'][params['approach']])
             self.sensor.update(eef_xyz_m=route[-1]['xyz_m'], eef_quat_xyzw=route[-1]['quat_xyzw'])
             if self.ik is not None and self.ik.last_solution is not None:
                 self.sensor['joint_positions_rad'] = self.ik.last_solution.tolist()
