@@ -69,3 +69,21 @@ def test_both_zero_success_is_retained_with_each_branch_reason():
     assert len(failure['trials']) == 4
     assert failure['vla']['registered_n'] == 3
     assert failure['vla']['success'] == 0
+
+
+def test_optimistic_envelope_product_and_independent_replay_remain_separate():
+    plan = fixture_plan()
+    report = fixture_report(plan)
+    report.update(sampled_envelope_native_success=True, conditional_rate_product=1/3)
+    result = summarize(plan, [report])
+    assert result['sampled_envelope_native']['success'] == 1
+    assert result['sampled_envelope_native']['unknown_n'] == 39
+    assert result['independent_full_replay']['success'] == 0
+    assert result['conditional_rate_products'][0]['product'] == 1/3
+    assert result['conditional_rate_products'][1]['product'] is None
+    assert sum(row['registered_cases'] for row in result['task_suite_summary']) == 40
+    suite = next(row for row in result['task_suite_summary']
+                 if row['suite'] == report['case']['episode']['suite'])
+    assert suite['registered_cases'] == 5
+    assert suite['sampled_envelope_native']['success'] == 1
+    assert suite['independent_full_replay']['success'] == 0

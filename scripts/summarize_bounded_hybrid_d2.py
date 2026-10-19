@@ -99,10 +99,25 @@ def summarize(plan, reports):
                     for trial in row['trials']]} for row in rows]})
     physical = {name: report for name, report in by_case.items() if report['status'] == 'physical_result'}
     replay = [physical[name]['actual_full_replay_success'] if name in physical else None for name in cases]
+    envelope = [physical[name].get('sampled_envelope_native_success') if name in physical else None
+                for name in cases]
+    task_suites = []
+    for suite in sorted({case['episode']['suite'] for case in cases.values()}):
+        names = [name for name, case in cases.items() if case['episode']['suite'] == suite]
+        task_suites.append({'suite': suite, 'registered_cases': len(names),
+            'sampled_envelope_native': rate([physical[name].get('sampled_envelope_native_success')
+                if name in physical else None for name in names]),
+            'independent_full_replay': rate([physical[name]['actual_full_replay_success']
+                if name in physical else None for name in names])})
     return {'source_commit': plan['source_commit'], 'registered_cases': 40,
         'case_status': dict(Counter(report['status'] for report in by_case.values())),
         'missing_cases': [name for name in cases if name not in by_case],
-        'independent_full_replay': rate(replay), 'subtask_summary': summary,
+        'independent_full_replay': rate(replay), 'sampled_envelope_native': rate(envelope),
+        'task_suite_summary': task_suites,
+        'conditional_rate_products': [{'case': name,
+            'product': physical[name].get('conditional_rate_product') if name in physical else None,
+            'status': by_case[name]['status'] if name in by_case else 'missing'} for name in cases],
+        'subtask_summary': summary,
         'subtasks': stages, 'both_failed_subtasks': failures, 'uncovered_rules': uncovered,
         'vla_exit_counts_with_actual_inference': dict(exits),
         'planning_request_times': request_times, 'training': False,
