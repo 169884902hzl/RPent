@@ -44,3 +44,5 @@ D2已通过真实调用；另发现私有计量缺模型归档环境变量。修
 源文件完整性报告`reports/shared_source_integrity_20261019.json`：两固定源码各6个关键技能/规划/分支状态/contract文件均与指定Git commit字节相同。最新启动器修复提交35747dad已普通推送user-fork/harness-v5；没有合并或强推。
 
 所有确认状态永久排除训练。PRO D2全部是隔离开发诊断，不进入训练、手册、memory或VLA历史成功率卡。原版完整结果及分类Wilson区间以逐次记录为准；r3快照在`reports/original220_shared_interim_20261019_r3.json`。
+
+新增真实RLinf spawn CPU端到端验证：`D2_archive_CPU_spawn_0_20261019.json`，子进程内恢复哈希和5步后继一致性通过，`v5_measure_grasp_hold`实际RPC返回11/11隔离证据known。仅用于验证环境传播/归档管道，CPU重建标签不采用为回合结果。GPU启动器仍8fcc579c；仅CPU复现脚本新增此检查路径。
