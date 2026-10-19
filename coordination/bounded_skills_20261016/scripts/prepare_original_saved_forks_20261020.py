@@ -19,6 +19,13 @@ def reference(path):
     return {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
+def recorded_phase(state, index):
+    held = state['adapter'].held
+    symbol = state['private_status']['goals'][index][1]
+    source_id = state['binding']['_bindings'].get(symbol)
+    return 'on' if held is not None and held == source_id else 'pick'
+
+
 def select_start(rows, diagnostic, load):
     """Select the first recorded decision in the registered goal and mode."""
     for row in rows:
@@ -26,7 +33,7 @@ def select_start(rows, diagnostic, load):
             continue
         state = load(row['private_prefix_annotation_state'])
         index = next((i for i, done in enumerate(state['private_status']['satisfied']) if not done), None)
-        mode = 'on' if state['adapter'].held is not None else 'pick'
+        mode = recorded_phase(state, index) if index is not None else None
         if index == diagnostic['goal_index'] and mode == diagnostic['subtask_mode']:
             return {'physics': row['private_pre_execution_snapshot'],
                 'annotation': row['private_prefix_annotation_state'], 'decision_index': row['index']}
@@ -39,6 +46,7 @@ def main():
     parser.add_argument('--commit', required=True)
     parser.add_argument('--original-manifest', type=Path, required=True)
     parser.add_argument('--original-manifest-sha256', required=True)
+    parser.add_argument('--targeted-vla-measurement', action='store_true')
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     sys.path.insert(0, str(source))
@@ -56,6 +64,9 @@ def main():
             continue
         case = copy.deepcopy(original)
         diagnostic = case['diagnostic']
+        diagnostic['targeted_vla_measurement_v1'] = args.targeted_vla_measurement
+        final = load(diagnostic['old_failed_annotation'])
+        diagnostic['subtask_mode'] = recorded_phase(final, diagnostic['goal_index'])
         choices = diagnostic['old_failed_choices']
         if reference(choices['path']) != choices:
             raise ValueError('original choices changed')
@@ -93,6 +104,7 @@ def main():
             checks.append({'command': command, 'exit_code': 0, 'log': str(log)})
     prep = {'source_commit': args.commit, 'source': str(source), 'manifest': reference(manifest),
         'launcher': reference(launcher), 'preflights': checks, 'training': False,
+        'preparation_script': reference(Path(__file__)),
         'scope': 'new saved-start diagnostic; no confirmation or D2 data'}
     (directory/'preparation.json').write_text(json.dumps(prep, indent=2))
     print(json.dumps(prep))

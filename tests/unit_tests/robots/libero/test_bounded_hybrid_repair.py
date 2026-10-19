@@ -126,7 +126,9 @@ def test_saved_start_selects_the_first_matching_logged_phase_and_keeps_missing_e
     states = {'0': (0, None), '1': (1, None), '2': (1, 'held'), '3': (1, None)}
     def load(ref):
         goal, held = states[ref['path']]
-        return {'private_status': {'satisfied': [goal == 1, False]},
+        return {'private_status': {'satisfied': [goal == 1, False],
+                'goals': [['on', 'first', 'plate'], ['on', 'second', 'plate']]},
+            'binding': {'_bindings': {'second': 'held'}},
             'adapter': SimpleNamespace(held=held)}
     rows = [{'index': i, 'private_prefix_annotation_state': {'path': str(i)},
         'private_pre_execution_snapshot': {'path': f'physics{i}'}} for i in range(4)]
@@ -136,6 +138,16 @@ def test_saved_start_selects_the_first_matching_logged_phase_and_keeps_missing_e
     assert select_start(rows, {**wanted, 'subtask_mode': 'on'}, load)['decision_index'] == 2
     with pytest.raises(ValueError, match='no logged'):
         select_start(rows[:1], wanted, load)
+
+
+def test_holding_another_object_is_not_a_placement_start_for_the_requested_source():
+    from coordination.bounded_skills_20261016.scripts.prepare_original_saved_forks_20261020 import recorded_phase
+
+    state = {'private_status': {'goals': [['on', 'yellow_cup', 'plate']]},
+        'binding': {'_bindings': {'yellow_cup': 'yellow'}}, 'adapter': SimpleNamespace(held='white')}
+    assert recorded_phase(state, 0) == 'pick'
+    state['adapter'].held = 'yellow'
+    assert recorded_phase(state, 0) == 'on'
 
 
 @pytest.mark.parametrize('prefix_success', [False, True])
