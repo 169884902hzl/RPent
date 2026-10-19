@@ -1055,69 +1055,75 @@ class MeasuredSkillAdapter:
         # Fit normals/contact patches on the fused geometry estimate. Raw
         # per-camera pixels are retained by screen for instance membership
         # and obstacle checks, not substituted for the fused fit surface.
-        _, records = sample_unified_grasps(points, np.empty((0, 3)), entity.name,
-            robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.geometry, None,
-            robot['eef_xyz_m'][2], candidate_only=True)
-        proposals = [row for row in records if not row['rejected']]
-        if not proposals:
+        # Existing measured contacts may all have blocked approach/closure
+        # routes. Only then expand the same sampler to lower side contours.
+        for include_band_seeds in (False, True):
+            _, records = sample_unified_grasps(points, np.empty((0, 3)), entity.name,
+                robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.geometry, None,
+                robot['eef_xyz_m'][2], candidate_only=True, include_band_seeds=include_band_seeds)
+            proposals = [row for row in records if not row['rejected']]
+            if not proposals:
+                self.candidate_diagnostics.append({'stage': 'grasp_route_search', 'anchor_id': entity.id,
+                    'label': entity.name, 'selected': None, 'candidates': records})
+                return self._surface_contact_plan(entity, points)
+            # Do not build/subtract full-resolution clouds for surfaces whose
+            # measured flanks already rule out every grasp (e.g. the table).
+            screen = self._cloud_and_ik(entity.id, contact=True)
+            from scipy.spatial import cKDTree
+            obstacle_tree = cKDTree(screen.points) if len(screen.points) else None
+            for row in proposals:
+                clearance = min(float(obstacle_tree.query(row['xyz'])[0]), .2) if obstacle_tree else .2
+                row['score'] += (clearance-row.get('clearance_m', clearance))/.2
+                row['clearance_m'] = clearance
+            current = Rotation.from_quat(robot['eef_quat_xyzw'])
+            for row in records:
+                if row['rejected']:
+                    continue
+                original = Rotation.from_quat(row['body_quat_xyzw'])
+                best = min((original, original*Rotation.from_euler('z', math.pi)),
+                           key=lambda q: (q*current.inv()).magnitude())
+                for waypoint in row['route']:
+                    if (Rotation.from_quat(waypoint['body_quat_xyzw'])*original.inv()).magnitude() < 1e-6:
+                        waypoint['body_quat_xyzw'] = best.as_quat().tolist()
+                row['body_quat_xyzw'] = best.as_quat().tolist()
+                row['wrist_change_rad'] = float((best*current.inv()).magnitude())
+                row['score'] -= .25*row['wrist_change_rad']/math.pi
+            records.sort(key=lambda r: (bool(r['rejected']), -r.get('score', -1), r['id']))
+            chosen = None
+            for row in records:
+                if row['rejected']:
+                    continue
+                if chosen is not None:
+                    row['route_status'] = 'not_screened_lower_rank'
+                    continue
+                route = [{'xyz_m': w['xyz'], 'quat_xyzw': w['body_quat_xyzw']} for w in row['route']]
+                _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(route)
+                row['route_status'] = 'passed' if evidence['passed'] else 'rejected'
+                row['route_screen'] = {k: evidence[k] for k in (
+                    'reason', 'passed', 'path_min_clearance_m', 'collision', 'ik_reachable', 'at', 'counts',
+                    'target_counts') if k in evidence}
+                if not evidence['passed']:
+                    row['rejected'].append(evidence['reason'])
+                    continue
+                # Closing sweeps all jaw openings at the measured contact pose;
+                # only the selected object's finger contact is permitted.
+                from robots.libero.v5_geometric_grasp import collision_counts
+                site = Rotation.from_quat(row['body_quat_xyzw']).as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()
+                for opening in np.linspace(.08, 0., 9):
+                    external = collision_counts(screen.points, row['xyz'], site, self.geometry, opening, clearance_m=.004)
+                    own = collision_counts(screen.target, row['xyz'], site, self.geometry, opening, clearance_m=.004)
+                    if any(external.values()) or own.get('palm', 0):
+                        row['rejected'].append('closure_sweep_collision')
+                        row['route_status'] = 'rejected'
+                        row['closure'] = {'opening_m': float(opening), 'scene': external, 'target': own}
+                        break
+                if not row['rejected']:
+                    chosen = row
             self.candidate_diagnostics.append({'stage': 'grasp_route_search', 'anchor_id': entity.id,
-                'label': entity.name, 'selected': None, 'candidates': records})
-            return self._surface_contact_plan(entity, points)
-        # Do not build/subtract full-resolution clouds for surfaces whose
-        # measured flanks already rule out every grasp (e.g. the table).
-        screen = self._cloud_and_ik(entity.id, contact=True)
-        from scipy.spatial import cKDTree
-        obstacle_tree = cKDTree(screen.points) if len(screen.points) else None
-        for row in proposals:
-            clearance = min(float(obstacle_tree.query(row['xyz'])[0]), .2) if obstacle_tree else .2
-            row['score'] += (clearance-row.get('clearance_m', clearance))/.2
-            row['clearance_m'] = clearance
-        current = Rotation.from_quat(robot['eef_quat_xyzw'])
-        for row in records:
-            if row['rejected']:
-                continue
-            original = Rotation.from_quat(row['body_quat_xyzw'])
-            best = min((original, original*Rotation.from_euler('z', math.pi)),
-                       key=lambda q: (q*current.inv()).magnitude())
-            for waypoint in row['route']:
-                if (Rotation.from_quat(waypoint['body_quat_xyzw'])*original.inv()).magnitude() < 1e-6:
-                    waypoint['body_quat_xyzw'] = best.as_quat().tolist()
-            row['body_quat_xyzw'] = best.as_quat().tolist()
-            row['wrist_change_rad'] = float((best*current.inv()).magnitude())
-            row['score'] -= .25*row['wrist_change_rad']/math.pi
-        records.sort(key=lambda r: (bool(r['rejected']), -r.get('score', -1), r['id']))
-        chosen = None
-        for row in records:
-            if row['rejected']:
-                continue
+                'label': entity.name, 'selected': chosen['id'] if chosen else None, 'candidates': records,
+                'sampling_pass': 'route_fallback_bands' if include_band_seeds else 'primary'})
             if chosen is not None:
-                row['route_status'] = 'not_screened_lower_rank'
-                continue
-            route = [{'xyz_m': w['xyz'], 'quat_xyzw': w['body_quat_xyzw']} for w in row['route']]
-            _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(route)
-            row['route_status'] = 'passed' if evidence['passed'] else 'rejected'
-            row['route_screen'] = {k: evidence[k] for k in (
-                'reason', 'passed', 'path_min_clearance_m', 'collision', 'ik_reachable', 'at', 'counts',
-                'target_counts') if k in evidence}
-            if not evidence['passed']:
-                row['rejected'].append(evidence['reason'])
-                continue
-            # Closing sweeps all jaw openings at the measured contact pose;
-            # only the selected object's finger contact is permitted.
-            from robots.libero.v5_geometric_grasp import collision_counts
-            site = Rotation.from_quat(row['body_quat_xyzw']).as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()
-            for opening in np.linspace(.08, 0., 9):
-                external = collision_counts(screen.points, row['xyz'], site, self.geometry, opening, clearance_m=.004)
-                own = collision_counts(screen.target, row['xyz'], site, self.geometry, opening, clearance_m=.004)
-                if any(external.values()) or own.get('palm', 0):
-                    row['rejected'].append('closure_sweep_collision')
-                    row['route_status'] = 'rejected'
-                    row['closure'] = {'opening_m': float(opening), 'scene': external, 'target': own}
-                    break
-            if not row['rejected']:
-                chosen = row
-        self.candidate_diagnostics.append({'stage': 'grasp_route_search', 'anchor_id': entity.id,
-            'label': entity.name, 'selected': chosen['id'] if chosen else None, 'candidates': records})
+                break
         if chosen is None:
             return self._surface_contact_plan(entity, points)
         outward = np.asarray(chosen['approach_xyz'])-chosen['xyz']

@@ -1,0 +1,28 @@
+{
+  "tested_parent_commit": "75dc59a6e372932678124d06457808da9d75eeab",
+  "root_cause": "primary opposed-contact proposals suppressed measured side-band sampling even when every smooth approach or jaw-closing route failed",
+  "saved_state_cpu_evidence": "cup_route_band_fallback_CPU_20261019.json: init7 and init15 gain screened routes; init9 remains blocked; no physical success claim",
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit_tests/robots/libero/test_v5_grasp_route.py",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py",
+    "tests/unit_tests/robots/libero/test_bounded_cpu_planning.py"
+  ],
+  "exit_code": 0,
+  "summary": "251 passed, 1 warning in 173.45s",
+  "warning": "PytestConfigWarning: Unknown config option: timeout",
+  "raw_log_saved": false,
+  "files": {
+    "robots/libero/bounded_skills.py": "33c76d27fb0b4d5ca42f95592e878d14fcbc7d679026dcdc95146b960bc64737",
+    "robots/libero/v5_grasp_route.py": "f5b797d56b17204e67998c1c43c3505705210abc495626672d9217a80ebc33ec",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "c341441fbe0643cd2c17264538fe60413c991edf9306bb7000b2dc0fd976c60d",
+    "SKILL_PACKAGE_SPEC.md": "d24680978335ad3241b44a4740f64a8f52ab4f67ef064b41ccc3ff72a5cd3db1"
+  },
+  "public_schema_changed": false,
+  "gpu_used": false,
+  "physics_steps": 0,
+  "training": false
+}

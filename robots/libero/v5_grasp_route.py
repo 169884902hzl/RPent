@@ -38,7 +38,7 @@ def separate_target_points(target_points, scene_points):
 
 
 def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat, geometry,
-                          pose_screen, height, *, candidate_only=False):
+                          pose_screen, height, *, candidate_only=False, include_band_seeds=False):
     """All categories share opposition, sweep/IK screening and ranking."""
     from robots.libero.v5_geometric_grasp import _opposition, side_site_rotation
     from robots.libero.v5_grasp_geometry import (
@@ -71,7 +71,7 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
         # Preserve the existing catalogue when it has any measured grasp.
         # Otherwise sample lower side contours; never relax opposition or
         # remove obstacles to turn an unmeasured contact into an option.
-        if not any(not row['rejected'] for row in records):
+        if include_band_seeds or not any(not row['rejected'] for row in records):
             yield from measured_band_seeds(region['points'])
 
     for seed_index, seed in enumerate(seeds()):

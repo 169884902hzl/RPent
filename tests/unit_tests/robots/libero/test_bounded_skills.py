@@ -1192,6 +1192,44 @@ def test_no_opposition_does_not_build_full_scene_or_skip_route_checks(adapter, m
     assert adapter.candidate_diagnostics[-1]['selected'] is None
 
 
+@pytest.mark.parametrize('primary_clear,closure_clear', [(True, True), (False, True), (False, False)])
+def test_side_bands_wait_for_failed_routes_and_keep_closure_screen(adapter, monkeypatch,
+                                                                  primary_clear, closure_clear):
+    adapter.scene.measurement_clouds['e1'] = np.repeat([[.1, .1, .9]], 40, axis=0)
+    sampled = []
+    def sample(*args, include_band_seeds=False, **kwargs):
+        sampled.append(include_band_seeds)
+        entry = [0., .1, .9] if include_band_seeds else [.1, 0., 1.]
+        return None, [{'id': 'band' if include_band_seeds else 'primary', 'rejected': [],
+            'route': [{'xyz': entry, 'body_quat_xyzw': [0, 0, 0, 1]},
+                      {'xyz': [.1, .1, .9], 'body_quat_xyzw': [0, 0, 0, 1]}],
+            'approach_xyz': entry, 'xyz': [.1, .1, .9], 'body_quat_xyzw': [0, 0, 0, 1],
+            'width_m': .03, 'measurement_confidence': .9, 'score': 1.}]
+    monkeypatch.setattr('robots.libero.v5_grasp_route.sample_unified_grasps', sample)
+    class Screen:
+        points = np.array([[2., 2., 2.]])
+        target = np.empty((0, 3))
+        def __call__(self, poses):
+            blocked = not primary_clear and any(p['xyz_m'][0] > .05 and p['xyz_m'][1] < .001 for p in poses)
+            return {'passed': not blocked, 'reason': 'measured_sweep_collision' if blocked else 'clear',
+                'collision': blocked, 'ik_reachable': True, 'path_min_clearance_m': 0. if blocked else .02}
+    adapter._cloud_and_ik = lambda *args, **kwargs: Screen()
+    adapter._surface_contact_plan = lambda *args: None
+    monkeypatch.setattr('robots.libero.v5_geometric_grasp.collision_counts',
+        lambda points, *args, **kwargs: {'palm': int(not closure_clear and len(points) > 0)})
+    plan = MeasuredSkillAdapter.grasp_geometry(adapter, adapter.scene.entities['e1'])
+    if primary_clear:
+        assert sampled == [False] and plan['grasp_candidate_id'] == 'primary'
+    else:
+        assert sampled == [False, True]
+        if closure_clear:
+            assert plan['grasp_candidate_id'] == 'band'
+            assert adapter.candidate_diagnostics[-1]['sampling_pass'] == 'route_fallback_bands'
+        else:
+            assert plan is None
+            assert adapter.candidate_diagnostics[-1]['candidates'][0]['rejected'] == ['closure_sweep_collision']
+
+
 def test_fixture_stages_along_measured_normal_and_uses_pad_contact_offset(adapter):
     from dataclasses import replace
 
