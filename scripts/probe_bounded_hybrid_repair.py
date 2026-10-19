@@ -53,6 +53,65 @@ def validate_plan(plan):
         for key in ('old_summary', 'branchpoint'):
             if key in diagnostic and probe.reference(diagnostic[key]['path']) != diagnostic[key]:
                 raise ValueError('registered replay input changed')
+        if 'original_subtask_start' in diagnostic:
+            if diagnostic['domain'] != 'original' or diagnostic['kind'] != 'original_fork':
+                raise ValueError('original saved starts cannot be used for D2')
+            for key in ('physics', 'annotation'):
+                ref = diagnostic['original_subtask_start'][key]
+                if probe.reference(ref['path'])['sha256'] != ref['sha256']:
+                    raise ValueError('registered original subtask start changed')
+
+
+def restore_original_subtask(facade, adapter, policy, reference):
+    """Restore logged physics, then create one fresh public state for both arms.
+
+    Old measured anchors associate IDs only. Unobserved old anchors are dropped;
+    no simulator object location or old numerical planning screen is imported.
+    Recovery history starts fresh equally in both arms, rather than pretending
+    that the limited old annotation contains the complete live runtime.
+    """
+    from robots.libero.bounded_motion import measured_robot
+    from robots.libero.bounded_offline_labels import load_annotation_state
+
+    physics = pickle.loads(Path(reference['physics']['path']).read_bytes())
+    captured = load_annotation_state(reference['annotation']['path'], reference['annotation']['sha256'])
+    observed = facade.restore(physics)
+    adapter.p.env.last_obs = observed
+    adapter.p.env.terminated = adapter.p.env.truncated = False
+    adapter.p.set_obs(observed)
+    actual = facade.snapshot()
+    legacy = 'observation_state' not in physics['actuator_state']
+    if legacy:
+        actual = {**actual, 'actuator_state': {key: value
+            for key, value in actual['actuator_state'].items() if key != 'observation_state'}}
+    if probe.snapshot_digest(actual) != probe.snapshot_digest(physics):
+        raise ValueError('original subtask start physics did not restore exactly')
+    old_adapter = captured['adapter']
+    adapter.scene.entities = copy.deepcopy(old_adapter.scene.entities)
+    adapter.scene._ids = [key for key in adapter.scene._ids if key not in adapter.scene.entities]
+    for name in ('_bounded_motion_samples', '_bounded_control_index', '_bounded_rest_reference'):
+        if hasattr(old_adapter.p, name):
+            setattr(adapter.p, name, copy.deepcopy(getattr(old_adapter.p, name)))
+    adapter.gripper_command = -1. if measured_robot(adapter.p)['gripper_opening_m'] >= .075 else 1.
+    adapter.refresh()
+    step = adapter.ex.toolkit._state.latest_step
+    adapter.scene.entities = {key: entity for key, entity in adapter.scene.entities.items()
+        if entity.visible and entity.source_step == step}
+    old_held = old_adapter.held
+    if old_held in adapter.scene.entities and adapter.holding_aperture(
+            measured_robot(adapter.p)['gripper_opening_m'])[0]:
+        payload = (copy.deepcopy(old_adapter.payload_reference)
+            if getattr(old_adapter, 'payload_reference', None) is not None
+            else adapter._capture_payload_reference(old_held))
+        adapter.held = adapter.active = old_held
+        adapter.payload_reference = payload
+        adapter._instance_cache.clear()
+        adapter._screen_cache.clear()
+    return {'physics': reference['physics'], 'annotation': reference['annotation'],
+        'same_captured_physics': True, 'historical_observation_phase_available': not legacy,
+        'public_reconstruction': 'fresh_dual_view_rgbd; old_public_anchor_ids_associated_then_unmeasured_dropped',
+        'recovery_history': 'fresh_and_identical_in_both_arms', 'held_id_after_measurement': adapter.held,
+        'simulation_object_coordinates_imported_to_public_state': False}
 
 
 def first_self_chunk(facade, adapter, policy, spec, output):
@@ -147,6 +206,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 if not (adapter.p.env.terminated or adapter.p.env.truncated) else {'status':'native_stop'})
             trials = [result]
         elif diagnostic['kind'] == 'original_fork':
+            restored_start = (restore_original_subtask(facade, adapter, policy,
+                diagnostic['original_subtask_start']) if 'original_subtask_start' in diagnostic else None)
             subtask_plan, unsupported = probe.split_subtasks(facade.goal_status()['goals'], adapter.ex.instruction)
             matches = [s for s in subtask_plan if s['mode'] == diagnostic['subtask_mode']
                 and s['goal_index'] == diagnostic.get('goal_index', 0)]
@@ -161,7 +222,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             prefix = []
             prefix_decisions = 0
             position = subtask_plan.index(spec)
-            for index, prerequisite in enumerate(subtask_plan[:position]):
+            prerequisites = [] if restored_start is not None else subtask_plan[:position]
+            for index, prerequisite in enumerate(prerequisites):
                 if facade.goal_status()['satisfied'][prerequisite['goal_index']]:
                     continue
                 request = adapter.request(k=4)
@@ -203,5 +265,6 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             'training':False, 'confirmation':False, 'actual_full_replay_success':None}
         if diagnostic['kind'] == 'original_fork':
             report['prefix'] = prefix
+            report['restored_original_subtask_start'] = restored_start
         write(output / 'summary.json', report)
         return report

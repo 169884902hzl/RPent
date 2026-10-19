@@ -67,6 +67,77 @@ def test_original_microwave_fork_accepts_its_libero90_task_only(tmp_path):
         validate_plan(value)
 
 
+def test_original_saved_start_is_never_admitted_to_d2(tmp_path):
+    value = plan(tmp_path)
+    value['cases'][0]['diagnostic'].update(kind='original_fork', original_subtask_start={})
+    with pytest.raises(ValueError, match='cannot be used for D2'):
+        validate_plan(value)
+
+
+def test_saved_original_start_remeasures_instead_of_importing_private_object_positions(tmp_path, monkeypatch):
+    import pickle
+    from dataclasses import replace
+
+    from robots.libero.v5_state import Entity
+    from scripts import probe_bounded_hybrid_repair as repair
+    from tests.unit_tests.robots.libero.test_bounded_motion import FakePrimitives
+
+    prior = Entity('e1', 'cup', (.1, .1, .9), (.08, .08, .88), (.12, .12, .92), True, 50)
+    missing = replace(prior, id='e2', visible=False)
+    old = SimpleNamespace(scene=SimpleNamespace(entities={'e1': prior, 'e2': missing}),
+        held='e1', p=SimpleNamespace(_bounded_control_index=123))
+    monkeypatch.setattr('robots.libero.bounded_offline_labels.load_annotation_state',
+        lambda *args: {'adapter': old})
+    physics = {'actuator_state': {'model': {'private_object_position': 999}}}
+    path = tmp_path/'physics.pkl'
+    path.write_bytes(pickle.dumps(physics))
+    facade = SimpleNamespace(restore=lambda value: {'public_sensor': True},
+        snapshot=lambda: {'actuator_state': {**physics['actuator_state'], 'observation_state': {}}})
+    primitives = FakePrimitives()
+    primitives.env.raw_obs = lambda: {'robot0_eef_pos': [0., 0., 1.],
+        'robot0_eef_quat': [0., 0., 0., 1.], 'robot0_gripper_qpos': [.01, -.01],
+        'robot0_joint_pos': [0.]*7}
+    primitives.set_obs = lambda obs: None
+    scene = SimpleNamespace(entities={}, _ids=['e1', 'e2', 'e3'])
+    adapter = SimpleNamespace(p=primitives, scene=scene, held=None, active=None,
+        ex=SimpleNamespace(toolkit=SimpleNamespace(_state=SimpleNamespace(latest_step=1))),
+        holding_aperture=lambda _: (True, {}), preparation='original familiar pose',
+        _instance_cache={}, _screen_cache={})
+    def refresh():
+        assert scene.entities == {'e1': prior, 'e2': missing}
+        scene.entities['e1'] = replace(prior, xyz=(.2, .1, .9), source_step=1)
+    adapter.refresh = refresh
+    adapter._capture_payload_reference = lambda key: {'measured_id': key}
+    result = repair.restore_original_subtask(facade, adapter, object(), {
+        'physics': {'path': str(path)}, 'annotation': {'path': 'annotation', 'sha256': 'fixed'}})
+    assert scene.entities['e1'].xyz == (.2, .1, .9)
+    assert list(scene.entities) == ['e1'] and scene._ids == ['e3']
+    assert adapter.held == adapter.active == 'e1'
+    assert adapter.payload_reference == {'measured_id': 'e1'}
+    assert adapter.preparation == 'original familiar pose'
+    assert primitives._bounded_control_index == 123 and adapter.gripper_command == 1.
+    assert result['same_captured_physics'] is True
+    assert result['simulation_object_coordinates_imported_to_public_state'] is False
+
+
+def test_saved_start_selects_the_first_matching_logged_phase_and_keeps_missing_explicit():
+    from coordination.bounded_skills_20261016.scripts.prepare_original_saved_forks_20261020 import select_start
+
+    states = {'0': (0, None), '1': (1, None), '2': (1, 'held'), '3': (1, None)}
+    def load(ref):
+        goal, held = states[ref['path']]
+        return {'private_status': {'satisfied': [goal == 1, False]},
+            'adapter': SimpleNamespace(held=held)}
+    rows = [{'index': i, 'private_prefix_annotation_state': {'path': str(i)},
+        'private_pre_execution_snapshot': {'path': f'physics{i}'}} for i in range(4)]
+    wanted = {'goal_index': 1, 'subtask_mode': 'pick'}
+    selected = select_start(rows, wanted, load)
+    assert selected['decision_index'] == 1 and selected['physics']['path'] == 'physics1'
+    assert select_start(rows, {**wanted, 'subtask_mode': 'on'}, load)['decision_index'] == 2
+    with pytest.raises(ValueError, match='no logged'):
+        select_start(rows[:1], wanted, load)
+
+
 @pytest.mark.parametrize('prefix_success', [False, True])
 def test_original_fork_reaches_the_registered_second_goal_and_phase_before_branching(tmp_path, monkeypatch, prefix_success):
     from contextlib import contextmanager
