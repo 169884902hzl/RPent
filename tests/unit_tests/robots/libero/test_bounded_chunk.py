@@ -424,6 +424,29 @@ def test_oracle_refreshes_blocked_lift_before_discarding_unmeasured_grasp(adapte
         ('set_gripper', {'mode': 'open'}) if failed_lift else ('observe', {'mode': 'refresh'}))
 
 
+@pytest.mark.parametrize('steps,reason,expected', [
+    (0, 'predicted_anchor_changed', 'lift'),
+    (1, 'predicted_anchor_changed', 'set_gripper'),
+    (0, 'measured_sweep_collision', 'set_gripper'),
+    (10, 'public_hold_lost', 'set_gripper'),
+])
+def test_oracle_retries_fresh_lift_after_zero_motion_anchor_guard(adapter, steps, reason, expected):
+    physical_grip(adapter)
+    adapter.active = 'e1'
+    request = adapter.request(k=4)
+    adapter.receipts = [dict(skill='lift', outcome='failure', steps_used=steps, stop_reason=reason)]
+    request['robot']['gripper_opening_m'] = .04
+    rpc = SimpleNamespace(call=lambda *_: {'done': False, 'goals': [['on', 'box_1']], 'satisfied': [False]})
+    chosen = BoundedOracle(rpc, adapter)._choose_one(request, rpc.call())
+    assert chosen['skill'] == expected
+    if expected == 'lift':
+        assert chosen['parameters']['anchor_id'] == 'e1'
+        assert chosen['consequences']['collision'] is False
+        assert chosen['consequences']['ik_reachable'] is True
+    else:
+        assert chosen['parameters'] == {'mode': 'open'}
+
+
 @pytest.mark.parametrize('predicate', ['open', 'close', 'turnon', 'turnoff'])
 @pytest.mark.parametrize('refresh_blocked', [False, True])
 def test_oracle_executes_prefix_checks_before_blocked_contact_recovery(adapter, monkeypatch, predicate, refresh_blocked):
@@ -452,7 +475,7 @@ def test_oracle_executes_prefix_checks_before_blocked_contact_recovery(adapter, 
     assert choices[2]['parameters'] == {'mode': 'close'}
     assert len(oracle.last_labels['positions']) == 3
     assert oracle.private_trace[-1]['await_prefix_measurement']
-    assert all(row['judge'] == 'libero-private-task-progress-rules/10'
+    assert all(row['judge'] == 'libero-private-task-progress-rules/11'
                for row in oracle.last_labels['positions'])
     receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
     assert len(receipts) == 3 and all(r['outcome'] == 'success' for r in receipts)

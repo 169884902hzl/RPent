@@ -1,0 +1,21 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+    "tests/unit_tests/robots/libero/test_bounded_offline_labels.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "wall_s": 59.83819964900613,
+  "raw_log_sha256": "37f2af976cbdfd37ef6ab6361580df7ebc763d890487499951e0f6f280a9ef93",
+  "log": "coordination/bounded_skills_20261016/reports/zero_control_lift_cpu_20261018.log.gz",
+  "log_sha256": "02e96059375b1c4b8810f5d26dbfdd4bd782180b2ca8e6db76178ceda31ca91a",
+  "source_sha256": {
+    "robots/libero/bounded_oracle.py": "4f69bea58f997e49cabd6fd2e524c5f6f231e94338dae85349dc3d9cfda2c210",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py": "204e2e86e406e20cdd759cb7f7f4812ae13bd8812c01fc3f5c9de33d8dc57f26"
+  },
+  "scope": "CPU oracle/prefix regression; physical development rerun required",
+  "gpu_used": false
+}

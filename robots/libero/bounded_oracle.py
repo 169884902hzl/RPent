@@ -20,7 +20,7 @@ from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 from robots.libero.bounded_chunk import PublicPrefixPrediction
 from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
-JUDGE_VERSION = 'libero-private-task-progress-rules/10'
+JUDGE_VERSION = 'libero-private-task-progress-rules/11'
 
 
 class NoPublicOption(ValueError):
@@ -224,7 +224,11 @@ class BoundedOracle:
                         chosen = measure_contact()
                 elif predicate in {"on", "in"}:
                     last = ex.receipts[-1] if ex.receipts else None
-                    failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success'
+                    # A pre-execution anchor guard did not test the grasp.
+                    # Use the freshly measured and screened lift option;
+                    # reopening here would discard an untested contact.
+                    guarded_before_lift = last and last.get('steps_used') == 0 and last.get('stop_reason') == 'predicted_anchor_changed'
+                    failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success' and not guarded_before_lift
                     chosen = None if failed_lift else find("lift", anchor_id=source.id)
                     if chosen is None and not failed_lift:
                         # Await the prefix's actual contact measurement

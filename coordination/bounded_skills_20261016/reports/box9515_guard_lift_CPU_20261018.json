@@ -1,0 +1,229 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_transport_identity_20261018_94db13e",
+  "job": "9515_4",
+  "row": 1,
+  "context": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_4/box_grab_place_libero_object_t1_s4_oracle_k4/private_prefix_state_0001.pkl.gz",
+    "sha256": "22c4f7eb1560be7f18207495ed29a686b6e1ef7b59843d9fff945da395aec659",
+    "version": "libero-offline-prefix-label/1",
+    "request_sha256": "43afc13648dc124c3bcc14742774965230b6d0686f621f77b4725d5c9585a725",
+    "model_visible": false
+  },
+  "results": [
+    {
+      "method": "baseline",
+      "labels": {
+        "version": "libero-offline-prefix-label/1",
+        "legality_version": "public-request-legal/2",
+        "request_sha256": "43afc13648dc124c3bcc14742774965230b6d0686f621f77b4725d5c9585a725",
+        "observation_id": "public-1",
+        "revision": 1,
+        "prefix": [],
+        "legal": [
+          "cd9c12429cb6236f",
+          "39d5ef0328b50b1f",
+          "af866c584b96de88",
+          "7f56ae3f4c8b42af",
+          "987434631f6c114e",
+          "b1beb8bc3b98a368",
+          "787a1d6563fba248",
+          "e08d1b715ccbb78d",
+          "d6c642c412bbb85e",
+          "eda022a3c943535e",
+          "c16d647c90dd4a10",
+          "f87a0fab8fb3afcd",
+          "c52d292d13c9244a",
+          "3075c4e4bf1059d1",
+          "e3c7339ec4b42564",
+          "2e50cb4f24124465",
+          "027cea6b4534fa9c",
+          "1f9311eb6c9f6bb8",
+          "1491d75e66b081aa",
+          "825cb73a9c032a28"
+        ],
+        "rule_acceptable": [
+          "af866c584b96de88"
+        ],
+        "selected": "af866c584b96de88",
+        "measured_success": [],
+        "measured_failure": [],
+        "judge": "libero-private-task-progress-rules/10",
+        "model_visible": false,
+        "physics_steps": 0,
+        "gpu_used": false,
+        "conditional_on_receipt_checks": [],
+        "requires_measurement": false,
+        "status": "labeled",
+        "predicted_robot": {
+          "eef_xyz_m": [
+            0.025596293640781167,
+            -0.09423970689059948,
+            0.01531182337212704
+          ],
+          "eef_quat_xyzw": [
+            0.921814342347751,
+            -0.387631075756839,
+            -0.0005883747513760365,
+            0.0003480872449127218
+          ],
+          "gripper_opening_m": 0.056598812268058185,
+          "held_anchor_id": null,
+          "velocity_m_s": null
+        }
+      },
+      "selected": {
+        "id": "af866c584b96de88",
+        "skill": "set_gripper",
+        "parameters": {
+          "mode": "open"
+        },
+        "consequences": {
+          "path_min_clearance_m": null,
+          "collision": null,
+          "ik_reachable": null,
+          "expected_width_m": null,
+          "expected_gripper_opening_m": 0.08,
+          "expected_steps": 15,
+          "screen_scope": "nonmotion",
+          "evidence_ids": []
+        },
+        "history": null,
+        "recent_failures": 0,
+        "last_failure": null,
+        "expected_receipt": [
+          {
+            "metric": "gripper_opening_m",
+            "anchor_id": null,
+            "minimum": 0.075,
+            "maximum": 0.085
+          },
+          {
+            "metric": "released",
+            "anchor_id": null,
+            "minimum": 1.0,
+            "maximum": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "method": "zero_control_guard_is_not_failed_contact",
+      "labels": {
+        "version": "libero-offline-prefix-label/1",
+        "legality_version": "public-request-legal/2",
+        "request_sha256": "43afc13648dc124c3bcc14742774965230b6d0686f621f77b4725d5c9585a725",
+        "observation_id": "public-1",
+        "revision": 1,
+        "prefix": [],
+        "legal": [
+          "cd9c12429cb6236f",
+          "39d5ef0328b50b1f",
+          "af866c584b96de88",
+          "7f56ae3f4c8b42af",
+          "987434631f6c114e",
+          "b1beb8bc3b98a368",
+          "787a1d6563fba248",
+          "e08d1b715ccbb78d",
+          "d6c642c412bbb85e",
+          "eda022a3c943535e",
+          "c16d647c90dd4a10",
+          "f87a0fab8fb3afcd",
+          "c52d292d13c9244a",
+          "3075c4e4bf1059d1",
+          "e3c7339ec4b42564",
+          "2e50cb4f24124465",
+          "027cea6b4534fa9c",
+          "1f9311eb6c9f6bb8",
+          "1491d75e66b081aa",
+          "825cb73a9c032a28"
+        ],
+        "rule_acceptable": [
+          "39d5ef0328b50b1f"
+        ],
+        "selected": "39d5ef0328b50b1f",
+        "measured_success": [],
+        "measured_failure": [],
+        "judge": "libero-private-task-progress-rules/10",
+        "model_visible": false,
+        "physics_steps": 0,
+        "gpu_used": false,
+        "conditional_on_receipt_checks": [],
+        "requires_measurement": false,
+        "status": "labeled",
+        "predicted_robot": {
+          "eef_xyz_m": [
+            0.025596293640781167,
+            -0.09423970689059948,
+            0.01531182337212704
+          ],
+          "eef_quat_xyzw": [
+            0.921814342347751,
+            -0.387631075756839,
+            -0.0005883747513760365,
+            0.0003480872449127218
+          ],
+          "gripper_opening_m": 0.056598812268058185,
+          "held_anchor_id": null,
+          "velocity_m_s": null
+        }
+      },
+      "selected": {
+        "id": "39d5ef0328b50b1f",
+        "skill": "lift",
+        "parameters": {
+          "anchor_id": "e39"
+        },
+        "consequences": {
+          "path_min_clearance_m": 0.005639377812952437,
+          "collision": false,
+          "ik_reachable": true,
+          "expected_width_m": 0.05609922475565783,
+          "expected_gripper_opening_m": null,
+          "expected_steps": 32,
+          "screen_scope": "contact_selected_surface",
+          "evidence_ids": [
+            "rgbd:3:e39",
+            "rgbd:0:e39"
+          ]
+        },
+        "history": null,
+        "recent_failures": 1,
+        "last_failure": "predicted_anchor_changed",
+        "expected_receipt": [
+          {
+            "metric": "endpoint_error_m",
+            "anchor_id": "e39",
+            "minimum": 0.0,
+            "maximum": 0.012
+          },
+          {
+            "metric": "angular_error_rad",
+            "anchor_id": "e39",
+            "minimum": 0.0,
+            "maximum": 0.05
+          },
+          {
+            "metric": "object_rise_m",
+            "anchor_id": "e39",
+            "minimum": 0.03,
+            "maximum": null
+          },
+          {
+            "metric": "held",
+            "anchor_id": "e39",
+            "minimum": 1.0,
+            "maximum": 1.0
+          }
+        ]
+      }
+    }
+  ],
+  "candidate_method": "def _choose_one(self, request, status, *, predicted_prefix=False):\n    ex = self.adapter\n    # Cached public anchors remain available to the selector, just as to\n    # the model. Do not lose a measured stationary target merely because\n    # the grasped object now occludes it. Cache age stays in the request.\n    public_ids = {anchor['id'] for anchor in request['anchors']}\n    entities = [replace(entity, visible=True) for entity in ex.scene.entities.values()\n                if entity.id in public_ids]\n    candidates = [c for c in request[\"candidates\"] if c[\"skill\"] != \"call_vla\"]\n    feasible = [c for c in candidates if c[\"consequences\"][\"collision\"] is not True\n                and c[\"consequences\"][\"ik_reachable\"] is not False\n                and c[\"consequences\"][\"screen_scope\"] != \"conditional_on_prefix\"]\n    def find(skill, **parameters):\n        return next((c for c in feasible if c[\"skill\"] == skill\n            and all(c[\"parameters\"].get(key) == value for key, value in parameters.items())), None)\n    def measure_contact():\n        # Each executed step already refreshes and checks its receipt.\n        # A speculative obstruction must end the existing prefix, not\n        # spend a zero-motion observe and its recovery failure budget.\n        if predicted_prefix:\n            self.private_trace[-1]['await_prefix_measurement'] = True\n        return find('observe', mode='refresh')\n    def nudge(axis, direction):\n        # A 2 cm sweep can be blocked while the measured 1 cm sweep\n        # still permits progress. Reobserve after that smaller action;\n        # do not replace it with a scan or bypass either route screen.\n        return next((candidate for distance in (.02, .01)\n            if (candidate := find(\"nudge\", axis=axis,\n                distance_m=float(distance*np.sign(direction)))) is not None), None)\n    chosen = None\n    if status[\"done\"]:\n        chosen = find(\"finish\")\n    for goal, satisfied in zip(status[\"goals\"], status[\"satisfied\"]):\n        if chosen or satisfied:\n            continue\n        predicate, symbol = goal[:2]\n        phrase = goal_clause(ex.ex.instruction, symbol)\n        source = self.binding.bind(symbol, entities, phrase, ex.scene.view_axes)\n        target = self.binding.bind(goal[2], entities, phrase, ex.scene.view_axes, source_reference=False) if len(goal) == 3 else None\n        if len(goal) == 3 and (source is None or target is None):\n            paired_source, paired_target = self._between_pair(\n                symbol, goal[2], entities, phrase, ex.scene.view_axes)\n            if paired_source is not None:\n                source, target = paired_source, paired_target\n        if source is not None and predicate in {'open', 'close'} and source.id not in ex.plans:\n            # A public segmented panel can expose push contact when its\n            # parent's handle is not visible. Select its existing public\n            # option; never create a task pose from the private goal.\n            panels = [e for e in entities if e.part_of == source.id\n                and ex.plans.get(e.id, {}).get('contact_kind') == 'surface']\n            if len(panels) == 1:\n                source = panels[0]\n        if ex.held is not None and target is not None:\n            # Use the same public pre-grasp target as the candidate route\n            # and serialized anchor, rather than its now-occluded mask.\n            target = ex.target_cache.get(target.id, target)\n        # OriginalOraclePolicy.choose normally retains these identities.\n        # This selector calls bind directly and must retain them too:\n        # reinterpreting \"between\" after approach/occlusion loses a\n        # previously resolved source even when its public ID still exists.\n        for label, entity in ((symbol, source), (goal[2] if len(goal) == 3 else None, target)):\n            if entity is not None:\n                self.binding._bindings[label] = entity.id\n                self.binding._binding_peers.setdefault(label, {e.id for e in entities\n                    if e.id != entity.id and e.name == entity.name})\n        self.private_trace.append({\"goal\": goal, \"source_public_id\": source.id if source else None,\n                                   \"target_public_id\": target.id if target else None})\n        if source is None:\n            chosen = find(\"observe\", mode=\"wrist_scan\") or find(\"observe\", mode=\"refresh\")\n            continue\n        if len(goal) == 3 and target is None:\n            # Losing a measured destination does not turn a relational\n            # task into a pick. Reobserve rather than lifting a plate\n            # being pushed merely because the stove was occluded.\n            chosen = find(\"observe\", mode=\"wrist_scan\") or find(\"observe\", mode=\"refresh\")\n            continue\n        robot = request[\"robot\"]\n        xyz = np.array(robot[\"eef_xyz_m\"])\n        if ex.held == source.id and target is not None:\n            object_pose = ex.scene.entities.get(source.id, source)\n            inside = predicate == 'in' and all(target.lower[i] <= object_pose.lower[i]\n                and object_pose.upper[i] <= target.upper[i] for i in (0, 1))\n            object_centre = (np.asarray(object_pose.lower)+object_pose.upper)/2\n            target_centre = (np.asarray(target.lower)+target.upper)/2\n            if not inside and np.linalg.norm((object_centre-target_centre)[:2]) > .025:\n                chosen = (find(\"carry_to\", target_id=target.id)\n                    or find('align', anchor_id=source.id))\n                if chosen is None:\n                    # A short measured lift can be clear while the full\n                    # transport/scan sweep is blocked. Select only an\n                    # existing screened option, then measure again; do\n                    # not discard the held instance or relax the screen.\n                    chosen = next((candidate for distance in (.02, .01)\n                        if (candidate := find('nudge', anchor_id=source.id,\n                            axis='z', distance_m=distance)) is not None), None)\n                    if chosen is not None:\n                        self.private_trace[-1]['recovery'] = 'screened_bounded_lift_after_blocked_transport'\n                if chosen is None:\n                    # Contact can block an upward escape while a short\n                    # lateral route is already screened and reachable.\n                    # Use its measured progress towards the destination;\n                    # the selector cannot invent or unscreen a waypoint.\n                    distance = float(np.sum((object_centre-target_centre)[:2]**2))\n                    lateral = []\n                    for candidate in feasible:\n                        parameters = candidate['parameters']\n                        if (candidate['skill'] != 'nudge'\n                                or parameters.get('anchor_id') != source.id\n                                or parameters.get('axis') not in {'x', 'y'}):\n                            continue\n                        endpoint = object_centre.copy()\n                        endpoint['xy'.index(parameters['axis'])] += parameters['distance_m']\n                        remaining = float(np.sum((endpoint-target_centre)[:2]**2))\n                        if remaining < distance:\n                            lateral.append((remaining, candidate['id'], candidate))\n                    if lateral:\n                        chosen = min(lateral, key=lambda entry: entry[:2])[2]\n                        self.private_trace[-1]['recovery'] = 'screened_lateral_progress_after_blocked_transport'\n            elif object_pose.lower[2] > target.upper[2]+.025:\n                chosen = find(\"lower\", target_id=target.id)\n                # A blocked lowering route does not remove the existing\n                # release option. For On, a centred payload at most one\n                # bounded lift above its measured support can settle by\n                # gravity. This is private option selection only: neither\n                # the public collision screen nor a task label is changed.\n                if (chosen is None and predicate == 'on'\n                        and object_pose.lower[2]-target.upper[2] <= .10):\n                    chosen = find(\"release\")\n                    if chosen is not None:\n                        self.private_trace[-1]['recovery'] = 'release_over_measured_support_after_blocked_lower'\n            else:\n                chosen = find(\"release\")\n            continue\n        contact = ex.plans.get(source.id)\n        if contact is None:\n            # A failed contact can invalidate its fit while the hand\n            # stays closed at that source. Reopen before reapproaching;\n            # exhausting scans must not hide this existing public option.\n            if (ex.active == source.id and ex.held is None\n                    and request['robot']['gripper_opening_m'] < .075):\n                chosen = find('set_gripper', mode='open')\n                if chosen is not None:\n                    self.private_trace[-1]['recovery'] = 'open_lost_contact_before_reapproach'\n            if chosen is None and predicted_prefix:\n                chosen = measure_contact()\n            if chosen is None:\n                attempted = {receipt['candidate_id'] for receipt in ex.receipts}\n                for option in feasible:\n                    if (option['skill'] != 'move_to' or option['parameters']['anchor_id'] != source.id\n                            or option['id'] in attempted):\n                        continue\n                    route = ex._route('move_to', option['parameters'], robot=robot)\n                    if route is not None and np.linalg.norm(np.asarray(route[-1]['xyz_m'])-xyz) > .02:\n                        chosen = option\n                        self.private_trace[-1]['recovery'] = 'measured_anchor_approach_without_contact_fit'\n                        break\n            chosen = chosen or find(\"observe\", mode=\"wrist_scan\")\n            continue\n        if robot[\"gripper_opening_m\"] < .075:\n            if ex.active != source.id:\n                chosen = find(\"set_gripper\", mode=\"open\")\n            elif ex.ex.instruction.lower().startswith('push ') and target is not None:\n                delta = np.asarray(target.xyz)-source.xyz\n                axis = int(np.argmax(np.abs(delta[:2])))\n                chosen = nudge('xy'[axis], delta[axis])\n                if chosen is None and predicted_prefix:\n                    chosen = measure_contact()\n            elif predicate in {\"on\", \"in\"}:\n                last = ex.receipts[-1] if ex.receipts else None\n                failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success' and not (last.get('steps_used') == 0 and last.get('stop_reason') == 'predicted_anchor_changed')\n                chosen = None if failed_lift else find(\"lift\", anchor_id=source.id)\n                if chosen is None and not failed_lift:\n                    # Await the prefix's actual contact measurement\n                    # before discarding an unmeasured grasp.\n                    chosen = measure_contact()\n                chosen = chosen or find(\"set_gripper\", mode=\"open\")\n            elif predicate in {\"turnon\", \"turnoff\", \"turn_on\", \"turn_off\"}:\n                direction = 1 if \"on\" in predicate else -1\n                normal = contact.get('handle_measurement', {}).get('pose', {}).get('approach_normal_xyz')\n                if normal is not None:\n                    # rotate_wrist uses the hand's local z axis. A hand\n                    # approaching from above points that axis into the\n                    # measured control, reversing the outward turn sign.\n                    wrist_axis = Rotation.from_quat(robot['eef_quat_xyzw']).apply([0., 0., 1.])\n                    direction *= np.sign(np.dot(wrist_axis, normal))\n                chosen = find(\"rotate_wrist\", angle_deg=float(45*direction))\n                if chosen is None:\n                    chosen = (measure_contact() if predicted_prefix\n                              else find(\"set_gripper\", mode=\"open\"))\n            else:\n                normal = contact.get('surface_measurement', {}).get('normal_xyz')\n                if normal is None:\n                    normal = contact.get(\"handle_measurement\", {}).get(\"pose\", {}).get(\"approach_normal_xyz\", [0., -1., 0.])\n                normal = np.asarray(normal)\n                for axis in np.argsort(-np.abs(normal), kind='stable'):\n                    direction = (1 if predicate == \"open\" else -1)*np.sign(normal[axis])\n                    option = nudge(\"xyz\"[axis], direction)\n                    # A blocked dominant axis can leave a shorter safe\n                    # push on another measured normal component. Require\n                    # the same 5mm progress resolution; tiny PCA noise\n                    # must not turn an unrelated axis into progress.\n                    if (option is not None and abs(normal[axis]\n                            * option['parameters']['distance_m']) >= .005):\n                        chosen = option\n                        break\n                # A predicted blocked sweep is not a measured failed\n                # contact. Await the executed prefix's checks instead of\n                # closing and immediately reopening in one chunk. A\n                # measured blocked route keeps the existing recovery.\n                if chosen is None:\n                    chosen = (measure_contact() if predicted_prefix\n                              else find(\"set_gripper\", mode=\"open\"))\n            continue\n        error = np.linalg.norm(xyz-contact[\"xyz_m\"])\n        angular = (Rotation.from_quat(robot[\"eef_quat_xyzw\"])*Rotation.from_quat(contact[\"quat_xyzw\"]).inv()).magnitude()\n        if error < .02 and angular < .2:\n            chosen = find(\"set_gripper\", mode=\"close\")\n        elif (np.linalg.norm(xyz-contact['approach_xyz_m']) < .025 if contact.get('approach_xyz_m')\n              else np.linalg.norm((xyz-contact[\"xyz_m\"])[:2]) < .03 and xyz[2] >= contact[\"xyz_m\"][2]):\n            chosen = find(\"align\" if angular > .05 else \"descend\", anchor_id=source.id)\n        else:\n            chosen = (find(\"move_to\", anchor_id=source.id, approach=contact.get('preferred_approach', 'above'),\n                           path=contact.get('preferred_path', 'over'))\n                      or find(\"move_to\", anchor_id=source.id, approach=\"front\", path=\"direct\")\n                      or find(\"move_to\", anchor_id=source.id))\n    chosen = chosen or find(\"observe\", mode=\"wrist_scan\") or find(\"observe\", mode=\"refresh\")\n    if chosen is None:\n        raise NoPublicOption(\"upper-bound selector has no remaining public option\")\n    return chosen\n",
+  "physics_steps": 0,
+  "gpu_used": false,
+  "rpc_calls": 0,
+  "scope": "Private CPU oracle-rule diagnostic; no changed public candidate or physical outcome",
+  "training": false,
+  "confirmation": false,
+  "script_sha256": "f311d23ffcab6f13bed77f3d5d5009f30afe76df478b2dedb0c5db86725a7c63"
+}
