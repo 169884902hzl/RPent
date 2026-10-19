@@ -1,0 +1,500 @@
+{
+  "case": {
+    "name": "box_grab_place_libero_object_t1_s2",
+    "category": "box_grab_place",
+    "episode": {
+      "suite": "libero_object",
+      "task": 1,
+      "seed": 2
+    },
+    "state_sha256": "4b18eff5a14fb9e6226ce096c48dfe4a4b55009958fdd4826dfed6b9a500568b",
+    "bddl": {
+      "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl",
+      "sha256": "7019f37ee158d67a21338a6df0c441dd8f84979b946b5e20bb49463ef0508ea2"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/init_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init",
+      "sha256": "5ea5483bca8abd80a8f1935e2c60570d60eaaf6a985c283d62805b46fb76aa94"
+    },
+    "purpose": "development_feasibility_no_training"
+  },
+  "job": "9515_2",
+  "restoration_source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_distal_pad_20261018_5e1c8fc",
+  "choices_sha256": "d9d74186a277d07b70a450fd9104947ab408f8e10990412a0276cd7105588b1f",
+  "records": [
+    {
+      "row": 0,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/private_decision_snapshots/000.pkl",
+        "sha256": "605add84e9c66d19a4ed533934f5ca7f8eed0b8673ad2dbab4cebc15a5a8ffd7",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_max_residual": 0.0,
+      "object_xyz_m": [
+        0.05208605585281599,
+        -0.10132385159690716,
+        0.00892147741860811
+      ],
+      "eef_xyz_m": [
+        -0.15878531391183226,
+        0.002443443510161159,
+        0.2589902757182505
+      ],
+      "request_eef_error_m": 7.137790099647834e-07,
+      "dual_finger_contact": false,
+      "contacts": [
+        {
+          "geoms": [
+            "floor",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -1.452258139189068e-05
+        },
+        {
+          "geoms": [
+            "floor",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -1.452258139189068e-05
+        },
+        {
+          "geoms": [
+            "floor",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -1.452258139189068e-05
+        },
+        {
+          "geoms": [
+            "floor",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -1.452258139189068e-05
+        }
+      ],
+      "native_success": false,
+      "receipts": [
+        {
+          "skill": "move_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 125
+        },
+        {
+          "skill": "descend",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 47
+        },
+        {
+          "skill": "set_gripper",
+          "outcome": "success",
+          "stop_reason": "measured_gripper_change",
+          "steps_used": 15
+        }
+      ]
+    },
+    {
+      "row": 1,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/private_decision_snapshots/001.pkl",
+        "sha256": "766e8703f4485905a6d8bc88565f89ce4c3fa013fabb650dab69c2a695097354",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_max_residual": 0.0,
+      "object_xyz_m": [
+        0.05206340342132419,
+        -0.10349958614440642,
+        0.008957812170284947
+      ],
+      "eef_xyz_m": [
+        0.03176444968455862,
+        -0.09946054043733026,
+        0.015409746368526073
+      ],
+      "request_eef_error_m": 9.421578062446154e-08,
+      "dual_finger_contact": true,
+      "contacts": [
+        {
+          "geoms": [
+            "floor",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -6.428043610229306e-05
+        },
+        {
+          "geoms": [
+            "floor",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -3.5307326232147246e-05
+        },
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger1_collision"
+          ],
+          "distance_m": -0.0010015238153377706
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006976228683732656
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007091082154839067
+        },
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger2_collision"
+          ],
+          "distance_m": -0.0011786407596449113
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0005209230351817891
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0005334289925436877
+        }
+      ],
+      "native_success": false,
+      "receipts": [
+        {
+          "skill": "lift",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 32
+        },
+        {
+          "skill": "carry_to",
+          "outcome": "failure",
+          "stop_reason": "public_hold_lost",
+          "steps_used": 142
+        }
+      ]
+    },
+    {
+      "row": 2,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/private_decision_snapshots/002.pkl",
+        "sha256": "f051104c8cbb9751203c9e89ac28805a5dde25154b726517ffc9463df1a44d9b",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_max_residual": 0.0,
+      "object_xyz_m": [
+        0.01201973275337338,
+        0.23991765273120924,
+        0.25418853101632627
+      ],
+      "eef_xyz_m": [
+        -0.013604782357264414,
+        0.26020554965992726,
+        0.26079767352733685
+      ],
+      "request_eef_error_m": 6.000556109763401e-07,
+      "dual_finger_contact": true,
+      "contacts": [
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger1_collision"
+          ],
+          "distance_m": -0.0010003680080068163
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007091234413182704
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007159369526469504
+        },
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger2_collision"
+          ],
+          "distance_m": -0.0010267761995654064
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006871285830573728
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006944972507240688
+        }
+      ],
+      "native_success": false,
+      "receipts": [
+        {
+          "skill": "observe",
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ]
+    },
+    {
+      "row": 3,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/private_decision_snapshots/003.pkl",
+        "sha256": "f051104c8cbb9751203c9e89ac28805a5dde25154b726517ffc9463df1a44d9b",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_max_residual": 0.0,
+      "object_xyz_m": [
+        0.01201973275337338,
+        0.23991765273120924,
+        0.25418853101632627
+      ],
+      "eef_xyz_m": [
+        -0.013604782357264414,
+        0.26020554965992726,
+        0.26079767352733685
+      ],
+      "request_eef_error_m": 6.000556109763401e-07,
+      "dual_finger_contact": true,
+      "contacts": [
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger1_collision"
+          ],
+          "distance_m": -0.0010003680080068163
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007091234413182704
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007159369526469504
+        },
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger2_collision"
+          ],
+          "distance_m": -0.0010267761995654064
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006871285830573728
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006944972507240688
+        }
+      ],
+      "native_success": false,
+      "receipts": [
+        {
+          "skill": "observe",
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ]
+    },
+    {
+      "row": 4,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/private_decision_snapshots/004.pkl",
+        "sha256": "f051104c8cbb9751203c9e89ac28805a5dde25154b726517ffc9463df1a44d9b",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_max_residual": 0.0,
+      "object_xyz_m": [
+        0.01201973275337338,
+        0.23991765273120924,
+        0.25418853101632627
+      ],
+      "eef_xyz_m": [
+        -0.013604782357264414,
+        0.26020554965992726,
+        0.26079767352733685
+      ],
+      "request_eef_error_m": 6.000556109763401e-07,
+      "dual_finger_contact": true,
+      "contacts": [
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger1_collision"
+          ],
+          "distance_m": -0.0010003680080068163
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007091234413182704
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007159369526469504
+        },
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger2_collision"
+          ],
+          "distance_m": -0.0010267761995654064
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006871285830573728
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006944972507240688
+        }
+      ],
+      "native_success": false,
+      "receipts": [
+        {
+          "skill": "observe",
+          "outcome": "no_effect",
+          "stop_reason": "no_measured_scene_change",
+          "steps_used": 0
+        }
+      ]
+    },
+    {
+      "row": 5,
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/private_decision_snapshots/005.pkl",
+        "sha256": "f051104c8cbb9751203c9e89ac28805a5dde25154b726517ffc9463df1a44d9b",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "restore_max_residual": 0.0,
+      "object_xyz_m": [
+        0.01201973275337338,
+        0.23991765273120924,
+        0.25418853101632627
+      ],
+      "eef_xyz_m": [
+        -0.013604782357264414,
+        0.26020554965992726,
+        0.26079767352733685
+      ],
+      "request_eef_error_m": 6.000556109763401e-07,
+      "dual_finger_contact": true,
+      "contacts": [
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger1_collision"
+          ],
+          "distance_m": -0.0010003680080068163
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007091234413182704
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger1_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0007159369526469504
+        },
+        {
+          "geoms": [
+            "cream_cheese_1_g1",
+            "gripper0_right_finger2_collision"
+          ],
+          "distance_m": -0.0010267761995654064
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006871285830573728
+        },
+        {
+          "geoms": [
+            "gripper0_right_finger2_pad_collision",
+            "cream_cheese_1_g1"
+          ],
+          "distance_m": -0.0006944972507240688
+        }
+      ],
+      "native_success": false,
+      "receipts": [
+        {
+          "skill": "observe",
+          "outcome": "no_effect",
+          "stop_reason": "no_measured_scene_change",
+          "steps_used": 0
+        }
+      ]
+    }
+  ],
+  "scope": "Private restoration diagnosis; no steps, RPC, render, training or control coordinates",
+  "controls": 0,
+  "gpu_used": false,
+  "runtime_modified": false,
+  "model_visible": false,
+  "script_sha256": "c50b516345fa3b00939731f85eba05dbf85d46ee95d2ae80d2d5b92c7db6ddda"
+}

@@ -164,7 +164,19 @@ class MeasuredSkillAdapter:
 
     def refresh(self, *, contact_motion=None):
         self.ex.capture()
-        self.scene.refresh(sorted(self.scene.vocabulary))
+        association = {}
+        if self.held is not None and self.payload_reference is not None:
+            reference = self.payload_reference
+            points = np.asarray(reference.get('target', [])).reshape(-1, 3)
+            if len(points):
+                before, after = reference['robot'], measured_robot(self.p)
+                local = (points-before['eef_xyz_m'])@Rotation.from_quat(before['eef_quat_xyzw']).as_matrix()
+                predicted = local@Rotation.from_quat(after['eef_quat_xyzw']).as_matrix().T+after['eef_xyz_m']
+                association[self.held] = tuple(np.median(predicted, axis=0))
+        if association:
+            self.scene.refresh(sorted(self.scene.vocabulary), association_positions=association)
+        else:
+            self.scene.refresh(sorted(self.scene.vocabulary))
         self._base_geometry = None
         self._screen_cache.clear()
         self._instance_cache.clear()

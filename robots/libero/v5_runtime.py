@@ -277,7 +277,8 @@ class MeasuredScene:
             }
 
     def refresh(self, names: list[str], *, placement: tuple[Entity, Entity] | None = None,
-                camera_view: str | None = None, guided_entity: Entity | None = None) -> None:
+                camera_view: str | None = None, guided_entity: Entity | None = None,
+                association_positions: dict[str, tuple[float, float, float]] | None = None) -> None:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
         if self.fixture_fragment_alias_v1 and "cabinet" in names:
@@ -670,8 +671,11 @@ class MeasuredScene:
             if self.fixture_identity_cache_v1:
                 old += [e for e in self._rejected_fixture_entities.values() if e.name == name]
             # Associate by measurements, never by simulator object poses/IDs.
+            # A held instance moves with measured proprioception between
+            # captures. Its transported prior orders associations only;
+            # published coordinates still come entirely from this frame.
             pairs = sorted(
-                (math.dist(e.xyz, m[0]), e.id, index)
+                (math.dist((association_positions or {}).get(e.id, e.xyz), m[0]), e.id, index)
                 for e in old
                 for index, m in enumerate(measured)
             )
@@ -686,6 +690,12 @@ class MeasuredScene:
                 )
                 self._scores[eid] = score
                 self.perception_evidence[eid] = measured_evidence[xyz]
+                if association_positions and eid in association_positions:
+                    self.perception_evidence[eid] = {**self.perception_evidence[eid],
+                        'identity_association': {
+                            'source': 'pre_lift_rgbd_transported_by_public_eef_pose',
+                            'predicted_xyz_m': list(association_positions[eid]),
+                            'prediction_is_measurement': False}}
                 self.measurement_clouds[eid] = measured_clouds[xyz]
                 self.cache_independent_views(self.entities[eid], measured_views[xyz])
                 self._rejected_fixture_entities.pop(eid, None)

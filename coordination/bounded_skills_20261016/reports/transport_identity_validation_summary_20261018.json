@@ -1,0 +1,78 @@
+{
+  "cpu_checks_complete": true,
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit_tests/robots/libero/test_bounded_skills.py",
+        "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+        "tests/unit_tests/robots/libero/test_bounded_offline_labels.py",
+        "tests/unit_tests/robots/libero/test_bounded_motion.py",
+        "tests/unit_tests/robots/libero/test_bounded_screen.py",
+        "tests/unit_tests/robots/libero/test_v5_microwave_identity.py",
+        "tests/unit_tests/robots/libero/test_v5_package_identity_conflict.py",
+        "tests/unit_tests/robots/libero/test_v5_runtime.py",
+        "-q"
+      ],
+      "exit_code": 1,
+      "wall_s": 185.20414452441037,
+      "log": "coordination/bounded_skills_20261016/reports/transport_identity_cpu_20261018.log.gz",
+      "raw_log_sha256": "db62dc4c65263401670cf04fc067968053b55821c7524091dcb2fa28998a2af5",
+      "log_sha256": "1e2e5554028582815b9f987a4ceea3a00832b06197d8a107d3d2aa6f4ec35237",
+      "source_sha256": {
+        "robots/libero/bounded_skills.py": "982e677dc33b94b5662a1389bf6a8b5174e4c603d258b50486da213582181a54",
+        "robots/libero/v5_runtime.py": "74e2c4e4253ace18640fcd31f719778b28866dbc3d8feb27efb78df0398ba838",
+        "tests/unit_tests/robots/libero/test_bounded_skills.py": "9c2f9922edba942bd7aef3590f11c4a364242fd7422d7127660fc09fac532f6a",
+        "tests/unit_tests/robots/libero/test_v5_package_identity_conflict.py": "d49b99d179f57a97b7d5f2b4b070671a893caec7f1e26f2ab5020a71561e4f0a"
+      },
+      "scope": "CPU regression only; physical validation pending",
+      "gpu_used": false
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit_tests/robots/libero/test_v5_runtime.py::test_v5_chunk_stops_before_actions_after_native_termination",
+        "-q"
+      ],
+      "exit_code": 0,
+      "wall_s": 0.6109608048573136,
+      "log": "coordination/bounded_skills_20261016/reports/transport_identity_cpu_clean_import_20261018.log.gz",
+      "raw_log_sha256": "09941e17bcc3c745fc2f65646026471f223d94979477e752afc6d2107cafdb9f",
+      "prior_run": "transport_identity_cpu_20261018.json",
+      "scope": "Fresh-process reproduction of the single import-order failure; no runtime change",
+      "gpu_used": false
+    }
+  ],
+  "result": "469 passed with one import-order failure in shared process; that single test passed unchanged in a fresh process",
+  "ast_checked": [
+    "coordination/bounded_skills_20261016/scripts/monitor_v3_timing_20261018.py",
+    "coordination/bounded_skills_20261016/scripts/prepare_chunk_v2_20261018.py",
+    "coordination/bounded_skills_20261016/scripts/microwave9018_private_progress_CPU_20261018.py",
+    "coordination/bounded_skills_20261016/scripts/box9515_transport_private_CPU_20261018.py",
+    "coordination/bounded_skills_20261016/scripts/box9515_association_saved_masks_CPU_20261018.py"
+  ],
+  "diagnostic_reports": [
+    {
+      "path": "coordination/bounded_skills_20261016/reports/box9515_transport_private_CPU_20261018.json",
+      "sha256": "25c610bb3f9963a10b2819ddf0d8c0a184e2deea5770e6ee8fcda7be3a0b4078"
+    },
+    {
+      "path": "coordination/bounded_skills_20261016/reports/box9515_association_saved_masks_CPU_20261018.json",
+      "sha256": "144cea8095fea782fc7f4913f18c366850b713bf7a783757182877a7f8115e1f"
+    }
+  ],
+  "source_sha256": {
+    "robots/libero/bounded_skills.py": "982e677dc33b94b5662a1389bf6a8b5174e4c603d258b50486da213582181a54",
+    "robots/libero/v5_runtime.py": "74e2c4e4253ace18640fcd31f719778b28866dbc3d8feb27efb78df0398ba838",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "9c2f9922edba942bd7aef3590f11c4a364242fd7422d7127660fc09fac532f6a",
+    "tests/unit_tests/robots/libero/test_v5_package_identity_conflict.py": "d49b99d179f57a97b7d5f2b4b070671a893caec7f1e26f2ab5020a71561e4f0a"
+  },
+  "physical_validation": "pending; no repaired physical outcome claimed",
+  "training": false,
+  "confirmation": false,
+  "gpu_used": false
+}

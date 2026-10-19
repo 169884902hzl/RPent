@@ -3035,6 +3035,24 @@ def test_shared_held_pixels_do_not_remain_in_a_stationary_target_mask(adapter, m
     assert len(screen['payload_local']) == 1
 
 
+def test_refresh_uses_transport_prediction_only_to_associate_fresh_measurements(adapter, monkeypatch):
+    source = adapter.scene.entities['e1']
+    adapter.held = 'e1'
+    points = np.array([[.09, .09, .89], [.11, .11, .91]])
+    adapter.payload_reference = {'target': points,
+        'robot': {'eef_xyz_m': [0., 0., 1.], 'eef_quat_xyzw': [0., 0., 0., 1.]}}
+    adapter.p.env.position = np.array([.3, .2, 1.2])
+    calls = []
+    def refresh(names, *, association_positions):
+        assert adapter.scene.entities['e1'] is source
+        calls.append(association_positions)
+    adapter.scene.refresh = refresh
+    monkeypatch.setattr(adapter, '_refresh_held_measurement', lambda: None)
+    adapter.refresh()
+    np.testing.assert_allclose(calls[0]['e1'], [.4, .3, 1.1])
+    assert adapter.scene.entities['e1'] is source
+
+
 def test_held_anchor_and_lower_route_use_the_cleaned_current_payload(adapter):
     from dataclasses import replace
 

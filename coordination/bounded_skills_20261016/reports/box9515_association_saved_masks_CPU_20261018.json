@@ -1,0 +1,218 @@
+{
+  "job": "9515_2",
+  "before_row": 1,
+  "after_row": 2,
+  "association_positions": {
+    "e12": [
+      0.015616161001735171,
+      0.2518814062357948,
+      0.26350525062005004
+    ]
+  },
+  "results": [
+    {
+      "method": "baseline",
+      "entities": [
+        {
+          "id": "e12",
+          "xyz": [
+            0.15953826159238815,
+            0.025121419690549374,
+            0.01765145268291235
+          ],
+          "lower": [
+            0.11333613231778145,
+            0.007014259696006775,
+            0.0036595850810408593
+          ],
+          "upper": [
+            0.18610816061496735,
+            0.0433985172957182,
+            0.017960400357842445
+          ],
+          "source_step": 5
+        },
+        {
+          "id": "e11",
+          "xyz": [
+            0.021004742638960544,
+            0.2370377391787321,
+            0.26312186841832896
+          ],
+          "lower": [
+            -0.021481434144079686,
+            0.20178217433393003,
+            0.24707407355308533
+          ],
+          "upper": [
+            0.054363408330827964,
+            0.2702311724424362,
+            0.264132479429245
+          ],
+          "source_step": 5
+        }
+      ],
+      "held_identity_evidence": {
+        "source_cameras": [
+          "agentview"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "shape_fit_version": "none",
+        "fusion": {
+          "fused": false,
+          "matching_views": 0
+        }
+      }
+    },
+    {
+      "method": "transport_prior",
+      "entities": [
+        {
+          "id": "e12",
+          "xyz": [
+            0.021004742638960544,
+            0.2370377391787321,
+            0.26312186841832896
+          ],
+          "lower": [
+            -0.021481434144079686,
+            0.20178217433393003,
+            0.24707407355308533
+          ],
+          "upper": [
+            0.054363408330827964,
+            0.2702311724424362,
+            0.264132479429245
+          ],
+          "source_step": 5
+        },
+        {
+          "id": "e11",
+          "xyz": [
+            0.15953826159238815,
+            0.025121419690549374,
+            0.01765145268291235
+          ],
+          "lower": [
+            0.11333613231778145,
+            0.007014259696006775,
+            0.0036595850810408593
+          ],
+          "upper": [
+            0.18610816061496735,
+            0.0433985172957182,
+            0.017960400357842445
+          ],
+          "source_step": 5
+        }
+      ],
+      "held_identity_evidence": {
+        "source_cameras": [
+          "agentview",
+          "wrist"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "shape_fit_version": "none",
+        "fusion": {
+          "fused": true,
+          "matching_views": 1,
+          "primary_points": 3863,
+          "secondary_points": 143665,
+          "voxel_points": 1480,
+          "secondary_score": 0.67578125
+        },
+        "identity_association": {
+          "source": "pre_lift_rgbd_transported_by_public_eef_pose",
+          "predicted_xyz_m": [
+            0.015616161001735171,
+            0.2518814062357948,
+            0.26350525062005004
+          ],
+          "prediction_is_measurement": false
+        }
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/v6_sam_agentview_e53449a13e526e7f.npz/05.npz",
+      "sha256": "5b57d2582abbd728abe3a3ab555c3fed30bdeaa9831c72852a3275095ba90805",
+      "camera": "agentview",
+      "source_step": 5,
+      "source": "SAM_instance_used_for_measurement"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/v6_sam_agentview_6ffbba5866f1c405.npz/05.npz",
+      "sha256": "c0c5a6d1f888546ad2f7ecfa84191f5868f760135e51b7583c38e17cae0aa636",
+      "camera": "agentview",
+      "source_step": 5,
+      "source": "SAM_instance_used_for_measurement"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/v6_sam_wrist_25ec32c44a99483f.npz/05.npz",
+      "sha256": "a133b07957557902d516f3dbede1285dea0171294a38f2f028f0d50f86f25493",
+      "camera": "wrist",
+      "source_step": 5,
+      "source": "SAM_instance_used_for_measurement"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/agentview_high.png/05.png",
+      "sha256": "95d40705d6cea65e63e15416c4b529d8a40ae1a0e3eb2ee21f78f8247bfa2fda"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/wrist_high.png/05.png",
+      "sha256": "e72fe01a75fa0909b5cf5c0452bb2eb0dca719e81e2437a65c48be6163566326"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/agentview_metadata.json/05.json",
+      "sha256": "432fc45e54247799d31b1b2fdf97a5f48841587267dd5d69947625f131c04149"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/agentview_high.png/05.png",
+      "sha256": "95d40705d6cea65e63e15416c4b529d8a40ae1a0e3eb2ee21f78f8247bfa2fda"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/agentview_world_high.npz/05.npz",
+      "sha256": "0947719051460c03bebab5c197f67e32320adc9e95a5b7c677eb3a4247fa057c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/wrist_world_high.npz/05.npz",
+      "sha256": "f0c11626111c901bd445785d962a0527c65b2495006a9836a00df215f60af8d5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/wrist_high.png/05.png",
+      "sha256": "e72fe01a75fa0909b5cf5c0452bb2eb0dca719e81e2437a65c48be6163566326"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/agentview_metadata.json/05.json",
+      "sha256": "432fc45e54247799d31b1b2fdf97a5f48841587267dd5d69947625f131c04149"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/agentview_high.png/05.png",
+      "sha256": "95d40705d6cea65e63e15416c4b529d8a40ae1a0e3eb2ee21f78f8247bfa2fda"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/agentview_world_high.npz/05.npz",
+      "sha256": "0947719051460c03bebab5c197f67e32320adc9e95a5b7c677eb3a4247fa057c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/wrist_world_high.npz/05.npz",
+      "sha256": "f0c11626111c901bd445785d962a0527c65b2495006a9836a00df215f60af8d5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_2/box_grab_place_libero_object_t1_s2_oracle_k4/wrist_high.png/05.png",
+      "sha256": "e72fe01a75fa0909b5cf5c0452bb2eb0dca719e81e2437a65c48be6163566326"
+    }
+  ],
+  "candidate_sha256": "74e2c4e4253ace18640fcd31f719778b28866dbc3d8feb27efb78df0398ba838",
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_oblique_contour_20261018_5249d5d",
+  "script_sha256": "d9362bd1b9d91e7cda60e3d29643bf58440b8bb6e8f873784074b5667b98d2ce",
+  "scope": "Saved final-mask association replay, not a complete SAM RPC replay or physical execution",
+  "physics_steps": 0,
+  "gpu_used": false,
+  "rpc_calls": 0,
+  "private_truth_used": false,
+  "private_status_consumed": false,
+  "training": false,
+  "confirmation": false
+}

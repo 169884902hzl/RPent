@@ -15,6 +15,9 @@ parser.add_argument('--cpu-validation-receipt', type=Path)
 parser.add_argument('--base-manifest', type=Path,
     help='Existing registered original-state manifest; cases remain byte-for-byte unchanged')
 args = parser.parse_args()
+if args.cpu_validation_receipt:
+    assert args.cpu_validation_receipt.is_absolute() and args.cpu_validation_receipt.is_file(), args.cpu_validation_receipt
+    json.loads(args.cpu_validation_receipt.read_text())
 root = Path('/public/home/sunyihan/rpent_libero_eval')
 base = root/'coordination/bounded_skills_20261016'
 commit = args.commit

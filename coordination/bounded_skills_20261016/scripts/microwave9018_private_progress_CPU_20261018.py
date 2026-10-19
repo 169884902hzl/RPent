@@ -15,6 +15,8 @@ root = Path('/public/home/sunyihan/rpent_libero_eval')
 parser = argparse.ArgumentParser()
 parser.add_argument('--tag', default='chunk_v3_panel_normal2_20261018')
 parser.add_argument('--job', default='9018_120')
+parser.add_argument('--output', type=Path,
+    help='Fresh per-job report path; existing diagnostic reports are preserved')
 args = parser.parse_args()
 base = root/'coordination/bounded_skills_20261016'
 receipt = json.loads((base/'reports'/f'{args.tag}_full_submission.json').read_text())
@@ -68,9 +70,12 @@ try:
                     for receipt in row['receipts']]})
 finally:
     env.close()
-output = base/'reports'/f'microwave{args.job.split("_")[0]}_private_progress_CPU_20261018.json'
-output.write_text(json.dumps({'scope': 'private posthoc labels only; no runtime inputs or controls',
+output = args.output or base/'reports'/f'microwave{args.job}_private_progress_CPU_20261018.json'
+report = {'scope': 'private posthoc labels only; no runtime inputs or controls',
     'source': str(source), 'case': case, 'rows': records, 'terminal_records': terminal_records, 'gpu_used': False,
-    'controls': 0, 'training': False, 'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}, indent=2)+'\n')
+    'controls': 0, 'training': False, 'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+with output.open('x') as stream:
+    json.dump(report, stream, indent=2)
+    stream.write('\n')
 print(json.dumps({'output': str(output), 'records': [{key: row[key] for key in
     ('arm', 'index', 'private_joint_qpos', 'private_task_success', 'public_normal')} for row in records]}))
