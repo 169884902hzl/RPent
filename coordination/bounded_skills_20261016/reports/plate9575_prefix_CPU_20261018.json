@@ -1,0 +1,805 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_directional_contact_20261018_4db4ea4",
+  "context": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9575_160/plate_push_libero_goal_t5_s0_oracle_k4/private_prefix_state_0000.pkl.gz",
+    "sha256": "80b2c09f74bba2dc5b0a25d80ca11edf20f0731314a742491f5396402ffd4989",
+    "version": "libero-offline-prefix-label/1",
+    "request_sha256": "f16a983c50f04b9207a6d989369e3ea22bc6deaa1799375710b50dadb3413826",
+    "model_visible": false
+  },
+  "choices": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9575_160/plate_push_libero_goal_t5_s0_oracle_k4/choices.jsonl",
+    "sha256": "fd1c2e33e964775fb40dc36ac43721950b700b0ed408659af54b9da12240e39c"
+  },
+  "prefix_candidate": {
+    "id": "9deacfce3a027097",
+    "skill": "move_to",
+    "parameters": {
+      "anchor_id": "e99",
+      "approach": "left",
+      "path": "over"
+    },
+    "consequences": {
+      "path_min_clearance_m": 0.006937380725605676,
+      "collision": false,
+      "ik_reachable": true,
+      "expected_width_m": null,
+      "expected_gripper_opening_m": null,
+      "expected_steps": 293,
+      "screen_scope": "hand_mesh_observed_space",
+      "evidence_ids": [
+        "rgbd:0:e99"
+      ]
+    },
+    "history": null,
+    "recent_failures": 0,
+    "last_failure": null,
+    "expected_receipt": [
+      {
+        "metric": "endpoint_error_m",
+        "anchor_id": "e99",
+        "minimum": 0.0,
+        "maximum": 0.012
+      },
+      {
+        "metric": "angular_error_rad",
+        "anchor_id": "e99",
+        "minimum": 0.0,
+        "maximum": 0.05
+      }
+    ]
+  },
+  "predicted_robot": {
+    "eef_xyz_m": [
+      0.09419547766447067,
+      -0.07723323783526817,
+      1.044671088639895
+    ],
+    "eef_quat_xyzw": [
+      0.7071067811865475,
+      -0.7071067811865475,
+      0.0,
+      0.0
+    ],
+    "gripper_opening_m": 0.0780791838623438,
+    "held_anchor_id": null,
+    "velocity_m_s": null
+  },
+  "plans": {
+    "e99": {
+      "xyz_m": [
+        0.09419547766447067,
+        -0.07723323783526817,
+        0.9246710886398952
+      ],
+      "quat_xyzw": [
+        0.7071067811865475,
+        -0.7071067811865475,
+        0.0,
+        0.0
+      ],
+      "approach_xyz_m": [
+        0.09419547766447067,
+        -0.07723323783526817,
+        1.044671088639895
+      ],
+      "approach_route": [
+        {
+          "xyz_m": [
+            -0.21531765676051706,
+            -0.003897127606630346,
+            1.249212795299916
+          ],
+          "quat_xyzw": [
+            0.9987128604386619,
+            -0.0038791297733371533,
+            -0.049835024732425105,
+            -0.008604943727025319
+          ]
+        },
+        {
+          "xyz_m": [
+            0.09419547766447067,
+            -0.07723323783526817,
+            1.249212795299916
+          ],
+          "quat_xyzw": [
+            0.7071067811865475,
+            -0.7071067811865475,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "xyz_m": [
+            0.09419547766447067,
+            -0.07723323783526817,
+            1.044671088639895
+          ],
+          "quat_xyzw": [
+            0.7071067811865475,
+            -0.7071067811865475,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "preferred_approach": "left",
+      "preferred_path": "over",
+      "width_m": null,
+      "contact_kind": "surface",
+      "contact_point_xyz_m": [
+        0.09419547766447067,
+        -0.07723323783526817,
+        0.9154220546285312
+      ],
+      "contact_approach_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "approach_basis": "measured_surface_normal"
+    },
+    "e98": {
+      "xyz_m": [
+        -0.42695570531155586,
+        0.19867447807249938,
+        0.9556445443500293
+      ],
+      "quat_xyzw": [
+        -0.013833472898374667,
+        -0.9997390569837245,
+        -0.01090619137544735,
+        0.014543313190105722
+      ],
+      "width_m": 0.024655705737353,
+      "handle_measurement": {
+        "version": "measured_fixture_handle_pose/2-dev",
+        "source": "perception",
+        "source_step": 0,
+        "views": {
+          "agentview": {
+            "queries": [
+              {
+                "query": "stove knob",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "stove switch handle",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "stove control switch",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "stove lever",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "hot plate switch",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "black control lever",
+                "sam_instances": 2,
+                "instances": [
+                  {
+                    "basis": "current_rgbd_stove_control_surface/2-dev",
+                    "points": 8886,
+                    "source": "perception",
+                    "endpoint_state": "unmeasured",
+                    "lower": [
+                      -0.008398811426013708,
+                      -0.15327049046754837,
+                      0.9453655183315277
+                    ],
+                    "upper": [
+                      0.07813761234283448,
+                      -0.12208309546113015,
+                      1.097278392314911
+                    ],
+                    "measured_shell_gap_m": 0.2823161916894545,
+                    "reason": "control_not_adjacent_to_measured_stove",
+                    "candidate_cloud": {
+                      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9575_160/plate_push_libero_goal_t5_s0_oracle_k4/fixture_control_e98_agentview_a2af8b5254d78edf.npz/00.npz",
+                      "sha256": "5fb630c6728ea10f3333f00f90b4e9fd21b8fac1500b0e6013a5728c67288750",
+                      "points": 8886,
+                      "source": "perception",
+                      "camera": "agentview",
+                      "source_step": 0
+                    },
+                    "pose": null
+                  },
+                  {
+                    "basis": "current_rgbd_stove_control_surface/2-dev",
+                    "points": 4892,
+                    "source": "perception",
+                    "endpoint_state": "unmeasured",
+                    "lower": [
+                      -0.4586997330188751,
+                      0.15634751230478286,
+                      0.9102964770793914
+                    ],
+                    "upper": [
+                      -0.3613804876804352,
+                      0.23915769189596175,
+                      0.95930016040802
+                    ],
+                    "measured_shell_gap_m": 0.005291849374771118,
+                    "full_control_surface_residual_p90_m": 0.03584458183929286,
+                    "contact_patch": {
+                      "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                      "z_min_m": 0.9552965841293335,
+                      "points": 870,
+                      "xyz": [
+                        -0.42685210704803467,
+                        0.19859452545642853,
+                        0.9592421650886536
+                      ]
+                    },
+                    "surface_residual_p90_m": 0.002198986392429246,
+                    "transverse_support_m": 0.006723449803972948,
+                    "singular_values": [
+                      0.5858738279009617,
+                      0.19831327797677384,
+                      0.03597428423854201
+                    ],
+                    "candidate_cloud": {
+                      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9575_160/plate_push_libero_goal_t5_s0_oracle_k4/fixture_control_e98_agentview_6c7f70e674cd0e10.npz/00.npz",
+                      "sha256": "d6a71d7afdb8a6492b627143759fa4d50e1d5664c5dff21c734f00a709337238",
+                      "points": 4892,
+                      "source": "perception",
+                      "camera": "agentview",
+                      "source_step": 0
+                    },
+                    "pose": {
+                      "xyz": [
+                        -0.42685210704803467,
+                        0.19859452545642853,
+                        0.9592421650886536
+                      ],
+                      "approach_normal_xyz": [
+                        0.02877729542255703,
+                        -0.022209060019683324,
+                        0.9993390940622733
+                      ],
+                      "approach_normal_xy": [
+                        0.02877729542255703,
+                        -0.022209060019683324
+                      ],
+                      "handle_tangent_xyz": [
+                        0.9991903123334311,
+                        -0.027482956491896752,
+                        -0.029383785349833654
+                      ],
+                      "handle_tangent_xy": [
+                        0.9991903123334311,
+                        -0.027482956491896752
+                      ]
+                    }
+                  }
+                ]
+              }
+            ],
+            "accepted_instances": 1,
+            "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+            "contact_cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9575_160/plate_push_libero_goal_t5_s0_oracle_k4/fixture_control_e98_agentview_6c7f70e674cd0e10.npz/00.npz",
+              "sha256": "d6a71d7afdb8a6492b627143759fa4d50e1d5664c5dff21c734f00a709337238",
+              "points": 4892,
+              "source": "perception",
+              "camera": "agentview",
+              "source_step": 0
+            },
+            "pose": {
+              "xyz": [
+                -0.42685210704803467,
+                0.19859452545642853,
+                0.9592421650886536
+              ],
+              "approach_normal_xyz": [
+                0.02877729542255703,
+                -0.022209060019683324,
+                0.9993390940622733
+              ],
+              "approach_normal_xy": [
+                0.02877729542255703,
+                -0.022209060019683324
+              ],
+              "handle_tangent_xyz": [
+                0.9991903123334311,
+                -0.027482956491896752,
+                -0.029383785349833654
+              ],
+              "handle_tangent_xy": [
+                0.9991903123334311,
+                -0.027482956491896752
+              ]
+            },
+            "cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9575_160/plate_push_libero_goal_t5_s0_oracle_k4/fixture_handle_e98_agentview_3d3e81cf93ea0db7.npz/00.npz",
+              "sha256": "098eafc579e97f81777c4c3318351c6570543c682ac6882f56645023a608e308",
+              "points": 870,
+              "source": "perception",
+              "camera": "agentview",
+              "source_step": 0
+            }
+          },
+          "wrist": {
+            "queries": [
+              {
+                "query": "stove knob",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "stove switch handle",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "stove control switch",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "stove lever",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "hot plate switch",
+                "sam_instances": 0,
+                "instances": []
+              },
+              {
+                "query": "black control lever",
+                "sam_instances": 0,
+                "instances": []
+              }
+            ],
+            "accepted_instances": 0,
+            "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+            "reason": "stove_control_missing_or_ambiguous",
+            "pose": null
+          }
+        },
+        "pose": {
+          "xyz": [
+            -0.42685210704803467,
+            0.19859452545642853,
+            0.9592421650886536
+          ],
+          "approach_normal_xyz": [
+            0.02877729542255703,
+            -0.022209060019683324,
+            0.9993390940622733
+          ],
+          "approach_normal_xy": [
+            0.02877729542255703,
+            -0.022209060019683324
+          ],
+          "handle_tangent_xy": [
+            0.9991903123334311,
+            -0.027482956491896752
+          ],
+          "handle_tangent_xyz": [
+            0.9991903123334311,
+            -0.027482956491896752,
+            -0.029383785349833654
+          ]
+        },
+        "source_cameras": [
+          "agentview"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "centre_disagreement_m": 0.0,
+        "normal_cosine": 1.0
+      },
+      "approach_xyz_m": [
+        -0.423502429860849,
+        0.19600939087013738,
+        1.075565235637502
+      ],
+      "preferred_approach": "above",
+      "approach_route": [
+        {
+          "xyz_m": [
+            -0.21531765676051706,
+            -0.003897127606630346,
+            1.249212795299916
+          ],
+          "quat_xyzw": [
+            0.9987128604386619,
+            -0.0038791297733371533,
+            -0.049835024732425105,
+            -0.008604943727025319
+          ]
+        },
+        {
+          "xyz_m": [
+            -0.423502429860849,
+            0.19600939087013738,
+            1.249212795299916
+          ],
+          "quat_xyzw": [
+            0.9987128604386619,
+            -0.0038791297733371533,
+            -0.049835024732425105,
+            -0.008604943727025319
+          ]
+        },
+        {
+          "xyz_m": [
+            -0.423502429860849,
+            0.19600939087013738,
+            1.075565235637502
+          ],
+          "quat_xyzw": [
+            0.9987128604386619,
+            -0.0038791297733371533,
+            -0.049835024732425105,
+            -0.008604943727025319
+          ]
+        },
+        {
+          "xyz_m": [
+            -0.423502429860849,
+            0.19600939087013738,
+            1.075565235637502
+          ],
+          "quat_xyzw": [
+            -0.013833472898374667,
+            -0.9997390569837245,
+            -0.01090619137544735,
+            0.014543313190105722
+          ]
+        }
+      ],
+      "closure_aperture": {
+        "source": "public_handle_pixels_and_static_finger_closure_hulls",
+        "width_m": 0.024655705737353,
+        "finger_half_apertures_m": {
+          "leftfinger": 0.012791758834624913,
+          "rightfinger": 0.011863946902728089
+        }
+      },
+      "preferred_path": "over"
+    }
+  },
+  "contact_successors": [
+    {
+      "id": "b109bf7af9d17cc6",
+      "skill": "align",
+      "parameters": {
+        "anchor_id": "e99"
+      },
+      "consequences": {
+        "path_min_clearance_m": 0.013025356767078026,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 2,
+        "screen_scope": "hand_mesh_observed_space",
+        "evidence_ids": [
+          "rgbd:0:e99"
+        ]
+      },
+      "history": null,
+      "recent_failures": 0,
+      "last_failure": null,
+      "expected_receipt": [
+        {
+          "metric": "endpoint_error_m",
+          "anchor_id": "e99",
+          "minimum": 0.0,
+          "maximum": 0.012
+        },
+        {
+          "metric": "angular_error_rad",
+          "anchor_id": "e99",
+          "minimum": 0.0,
+          "maximum": 0.05
+        }
+      ]
+    },
+    {
+      "id": "75ed3d7dd24e32c5",
+      "skill": "descend",
+      "parameters": {
+        "anchor_id": "e99"
+      },
+      "consequences": {
+        "path_min_clearance_m": 0.0069965332559691965,
+        "collision": false,
+        "ik_reachable": true,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 38,
+        "screen_scope": "contact_selected_surface",
+        "evidence_ids": [
+          "rgbd:0:e99"
+        ]
+      },
+      "history": null,
+      "recent_failures": 0,
+      "last_failure": null,
+      "expected_receipt": [
+        {
+          "metric": "endpoint_error_m",
+          "anchor_id": "e99",
+          "minimum": 0.0,
+          "maximum": 0.012
+        },
+        {
+          "metric": "angular_error_rad",
+          "anchor_id": "e99",
+          "minimum": 0.0,
+          "maximum": 0.05
+        }
+      ]
+    },
+    {
+      "id": "35d86d9c1ab4e6c6",
+      "skill": "align",
+      "parameters": {
+        "anchor_id": "e98"
+      },
+      "recent_failures": 0,
+      "last_failure": null,
+      "consequences": {
+        "collision": true,
+        "ik_reachable": null,
+        "screen_scope": "blocked_at_current_prefix"
+      }
+    },
+    {
+      "id": "260cf88d2785b77d",
+      "skill": "descend",
+      "parameters": {
+        "anchor_id": "e98"
+      },
+      "recent_failures": 0,
+      "last_failure": null,
+      "consequences": {
+        "collision": false,
+        "ik_reachable": false,
+        "screen_scope": "blocked_at_current_prefix"
+      }
+    },
+    {
+      "id": "af866c584b96de88",
+      "skill": "set_gripper",
+      "parameters": {
+        "mode": "open"
+      },
+      "consequences": {
+        "path_min_clearance_m": null,
+        "collision": null,
+        "ik_reachable": null,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": 0.08,
+        "expected_steps": 15,
+        "screen_scope": "nonmotion",
+        "evidence_ids": []
+      },
+      "history": null,
+      "recent_failures": 0,
+      "last_failure": null,
+      "expected_receipt": [
+        {
+          "metric": "gripper_opening_m",
+          "anchor_id": null,
+          "minimum": 0.075,
+          "maximum": 0.085
+        },
+        {
+          "metric": "released",
+          "anchor_id": null,
+          "minimum": 1.0,
+          "maximum": 1.0
+        }
+      ]
+    },
+    {
+      "id": "7f56ae3f4c8b42af",
+      "skill": "set_gripper",
+      "parameters": {
+        "mode": "close"
+      },
+      "consequences": {
+        "path_min_clearance_m": null,
+        "collision": null,
+        "ik_reachable": null,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": 0.0,
+        "expected_steps": 15,
+        "screen_scope": "nonmotion",
+        "evidence_ids": []
+      },
+      "history": null,
+      "recent_failures": 0,
+      "last_failure": null,
+      "expected_receipt": [
+        {
+          "metric": "gripper_opening_m",
+          "anchor_id": null,
+          "minimum": 0.0,
+          "maximum": 0.005
+        }
+      ]
+    },
+    {
+      "id": "027cea6b4534fa9c",
+      "skill": "observe",
+      "parameters": {
+        "mode": "refresh"
+      },
+      "consequences": {
+        "path_min_clearance_m": null,
+        "collision": null,
+        "ik_reachable": null,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 0,
+        "screen_scope": "nonmotion",
+        "evidence_ids": []
+      },
+      "history": null,
+      "recent_failures": 0,
+      "last_failure": null,
+      "expected_receipt": []
+    },
+    {
+      "id": "1f9311eb6c9f6bb8",
+      "skill": "observe",
+      "parameters": {
+        "mode": "wrist_scan"
+      },
+      "consequences": {
+        "path_min_clearance_m": null,
+        "collision": null,
+        "ik_reachable": null,
+        "expected_width_m": null,
+        "expected_gripper_opening_m": null,
+        "expected_steps": 0,
+        "screen_scope": "nonmotion",
+        "evidence_ids": []
+      },
+      "history": null,
+      "recent_failures": 0,
+      "last_failure": null,
+      "expected_receipt": []
+    }
+  ],
+  "labels": {
+    "version": "libero-offline-prefix-label/1",
+    "legality_version": "public-request-legal/2",
+    "request_sha256": "f16a983c50f04b9207a6d989369e3ea22bc6deaa1799375710b50dadb3413826",
+    "observation_id": "public-0",
+    "revision": 0,
+    "prefix": [
+      "9deacfce3a027097"
+    ],
+    "legal": [
+      "613ce744f3fff76a",
+      "7cf7cc6e22bbb7f2",
+      "8201c724d3f34194",
+      "eeb7d2c5638ddd50",
+      "33adeaeeab47ac47",
+      "6899ad278b4a36fc",
+      "2af3a52372c41bb0",
+      "52b05fd5c514f7ae",
+      "5f4dece88da1f6f4",
+      "282f0bc9189bed6e",
+      "a6b9c1132a04f46a",
+      "a08cab3ca5e50340",
+      "fedd1a7f39ead9b9",
+      "61847fe1921eb908",
+      "5e308a4870e775ba",
+      "f4c6a7058f4a8b12",
+      "66bb9af555ab22e9",
+      "1d4c459da21c2a7a",
+      "fb78b547e878199b",
+      "1048435c7f1927e8",
+      "4d56ead138a0eb1b",
+      "bd9b605edfb71b5d",
+      "348fa339f354d237",
+      "35d86d9c1ab4e6c6",
+      "260cf88d2785b77d",
+      "994e6cc558d9f3ab",
+      "6f354f956632f7ce",
+      "3cde78857a8c7be8",
+      "95e5a3d344337410",
+      "b359ea69e35beb6d",
+      "a600ffb6b31a1beb",
+      "28ecb7c6b6805ae9",
+      "f646a82137b2c193",
+      "76281ef89acb93ef",
+      "e0100488be71dfa5",
+      "b5740a8c068ed69f",
+      "61c301d62a3a858d",
+      "8073277987b722a7",
+      "5d85ce894fbf9779",
+      "9208d76ba6b08ccf",
+      "af866c584b96de88",
+      "7f56ae3f4c8b42af",
+      "058d2cacfdbbe9ee",
+      "c839f7047168985f",
+      "b72a74bd885f119f",
+      "c6879ac9fab32978",
+      "f72537752ef750d0",
+      "edd9ac4d0212063f",
+      "47151ff6c459c6e1",
+      "f2ebf3511c61912b",
+      "25c428d919219ac9",
+      "e6e9f48f9eae056f",
+      "78fc3aade1371307",
+      "f395c81b7408c9d5",
+      "ddc57af16afe47d4",
+      "f3cd747ecda3e7bd",
+      "3f2b6fae234e9b1a",
+      "ba5417f0b7c390e9",
+      "027cea6b4534fa9c",
+      "1f9311eb6c9f6bb8",
+      "1491d75e66b081aa",
+      "825cb73a9c032a28"
+    ],
+    "rule_acceptable": [
+      "1f9311eb6c9f6bb8"
+    ],
+    "selected": "1f9311eb6c9f6bb8",
+    "measured_success": [],
+    "measured_failure": [],
+    "judge": "libero-private-task-progress-rules/12",
+    "model_visible": false,
+    "physics_steps": 0,
+    "gpu_used": false,
+    "conditional_on_receipt_checks": [
+      {
+        "metric": "endpoint_error_m",
+        "anchor_id": "e99",
+        "minimum": 0.0,
+        "maximum": 0.012
+      },
+      {
+        "metric": "angular_error_rad",
+        "anchor_id": "e99",
+        "minimum": 0.0,
+        "maximum": 0.05
+      }
+    ],
+    "requires_measurement": false,
+    "status": "labeled",
+    "predicted_robot": {
+      "eef_xyz_m": [
+        0.09419547766447067,
+        -0.07723323783526817,
+        1.044671088639895
+      ],
+      "eef_quat_xyzw": [
+        0.7071067811865475,
+        -0.7071067811865475,
+        0.0,
+        0.0
+      ],
+      "gripper_opening_m": 0.0780791838623438,
+      "held_anchor_id": null,
+      "velocity_m_s": null
+    }
+  },
+  "cpu_s": 83.90175420790911,
+  "physics_steps": 0,
+  "rpc_calls": 0,
+  "gpu_used": false,
+  "training": false,
+  "confirmation": false,
+  "script_sha256": "706a8c3622b823795f9d645b75dce484b35858341e37359b2fc98b5113d3b07c"
+}

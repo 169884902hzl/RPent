@@ -1,0 +1,2483 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_directional_contact_20261018_4db4ea4",
+  "results": [
+    {
+      "job": "9576_160",
+      "case": {
+        "name": "plate_push_libero_goal_t5_s0",
+        "category": "plate_push",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 5,
+          "seed": 0
+        },
+        "state_sha256": "cea30572c1ece1c5d5a53c64fef51544c3a02dbb6bf6bc06d02d3a03ea719aa7",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/push_the_plate_to_the_front_of_the_stove.bddl",
+          "sha256": "26f22f8ad39a4b2b344b049115c45661a877fa0b4821fb78246725e7e87d8c0b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/choices.jsonl",
+        "captured_bytes": 18363306,
+        "sha256": "1844de49c18608ea47b1f4d398019fa59ae14341268bce21dbb0dcb2bf4aaed2"
+      },
+      "records": [
+        {
+          "index": 0,
+          "sim_steps_before": 0,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/000.pkl",
+            "sha256": "cbc154a2e82d34609356a9ca0ce3fcd2e2dfb60284bffaa0ffb28597747c6733",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.051859218508715825,
+              -0.028493060325616923,
+              0.9024998343030154
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.020517586426945653,
+                -0.05692887269768311,
+                0.8999939653215376
+              ],
+              "distance_m": -6.034678462310506e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.020517586426945653,
+                -0.05692887269768311,
+                0.8999939653215376
+              ],
+              "distance_m": -6.034678462310506e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.009533698243100377,
+                -0.02857776943584565,
+                0.8999930112278549
+              ],
+              "distance_m": -6.988772145067484e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.021445410770879546,
+                0.0009348507064191455,
+                0.8999925223444877
+              ],
+              "distance_m": -7.477655512372176e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.050780623560885585,
+                0.013815273595643197,
+                0.8999921565399384
+              ],
+              "distance_m": -7.843460061671863e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.08181818169106006,
+                0.0014050389789004372,
+                0.8999930314949529
+              ],
+              "distance_m": -6.968505047062214e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.09416372869352246,
+                -0.029569222649185777,
+                0.8999939783289551
+              ],
+              "distance_m": -6.021671044870321e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.08112721156368517,
+                -0.059063257174423636,
+                0.8999946330718994
+              ],
+              "distance_m": -5.366928100537913e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.050149761468142054,
+                -0.07077700791118363,
+                0.8999946338464214
+              ],
+              "distance_m": -5.3661535785358774e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 293
+            },
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "sim_steps_before": 316,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/001.pkl",
+            "sha256": "22c65fa7cf87055afe5bf71436dd93776daa00df01a8016c7d65521466f55f20",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.05185921850871936,
+              -0.028493060325529663,
+              0.9024998346667837
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.020517586426945643,
+                -0.056928872697686886,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041084541e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.020517586426945643,
+                -0.056928872697686886,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041084541e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.00953369824310037,
+                -0.028577769435849464,
+                0.8999930114097702
+              ],
+              "distance_m": -6.988590229879872e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.021445410770879556,
+                0.0009348507064153167,
+                0.8999925225258598
+              ],
+              "distance_m": -7.477474140173341e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.05078062356088563,
+                0.013815273595639332,
+                0.8999921567210567
+              ],
+              "distance_m": -7.843278943344876e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.08181818169106012,
+                0.0014050389788966243,
+                0.8999930316762745
+              ],
+              "distance_m": -6.968323725515082e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.09416372869352252,
+                -0.029569222649189562,
+                0.8999939785108293
+              ],
+              "distance_m": -6.0214891707120635e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.08112721156368521,
+                -0.05906325717442741,
+                0.8999946332543172
+              ],
+              "distance_m": -5.36674568286092e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.05014976146814207,
+                -0.07077700791118739,
+                0.899994634029073
+              ],
+              "distance_m": -5.3659709270248825e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 92
+            },
+            {
+              "skill": "descend",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 38
+            },
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            },
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 18
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "sim_steps_before": 479,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/002.pkl",
+            "sha256": "bbc9d4b8035ea532e6d735efa42be03b7c1745c65a1c1c95f7cf7a1d718326a1",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.05167448187812488,
+              -0.02851603102610435,
+              0.9027307644804778
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.08135475291773708,
+                0.001639160070025257,
+                0.899996000612504
+              ],
+              "distance_m": -3.999387496084509e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.09395743234606015,
+                -0.029230558093455095,
+                0.8998837625671101
+              ],
+              "distance_m": -0.00011623743288988409
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.08116801409326288,
+                -0.05883253927270425,
+                0.8999079709624029
+              ],
+              "distance_m": -9.20290375970265e-05
+            },
+            {
+              "geoms": [
+                "plate_1_g8",
+                "gripper0_right_finger2_collision"
+              ],
+              "position_m": [
+                0.10905980506405363,
+                -0.06341875925169085,
+                0.9174216968057026
+              ],
+              "distance_m": -2.7449216911208082e-05
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 18
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "sim_steps_before": 497,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/003.pkl",
+            "sha256": "75d26430731d5aadd1c3464cf9dccaf25c17a5673a1b574f12424df71188db99",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.05162967253093537,
+              -0.02845627098510118,
+              0.9024998345124267
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.020533287495699017,
+                -0.05716007150827804,
+                0.8999939654188382
+              ],
+              "distance_m": -6.0345811616960006e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.020533287495699017,
+                -0.05716007150827804,
+                0.8999939654188382
+              ],
+              "distance_m": -6.0345811616960006e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.009306438813606356,
+                -0.028904298213825303,
+                0.8999930112630397
+              ],
+              "distance_m": -6.988736960340065e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.020964376868069207,
+                0.0007094844443268293,
+                0.8999925223534301
+              ],
+              "distance_m": -7.4776465699462205e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.05018794362558721,
+                0.013841245529922108,
+                0.8999921565771476
+              ],
+              "distance_m": -7.843422852424461e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.08133088738979039,
+                0.0016978937839769483,
+                0.8999930316025166
+              ],
+              "distance_m": -6.968397483301527e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.09394186185022493,
+                -0.0291692527856834,
+                0.8999939785049503
+              ],
+              "distance_m": -6.02149504962704e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.08115900109639297,
+                -0.05877410580677576,
+                0.899994633272257
+              ],
+              "distance_m": -5.3667277429183115e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.050283242853036376,
+                -0.07075333464850883,
+                0.8999946340139975
+              ],
+              "distance_m": -5.365986002496515e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "no_effect",
+              "stop_reason": "contact_no_measured_progress",
+              "steps_used": 18
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "sim_steps_before": 515,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/004.pkl",
+            "sha256": "2a2a6f2477959a5ef800fb2805f108745c66de5819995dd5d6807e0e09142b23",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.051629672538959843,
+              -0.028456270992411554,
+              0.9024998346667837
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.02053328749538381,
+                -0.0571600715079435,
+                0.8999939655039589
+              ],
+              "distance_m": -6.0344960410762464e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.02053328749538381,
+                -0.0571600715079435,
+                0.8999939655039589
+              ],
+              "distance_m": -6.0344960410762464e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.009306438813287778,
+                -0.028904298213483833,
+                0.8999930114097702
+              ],
+              "distance_m": -6.988590229869247e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.020964376867750423,
+                0.0007094844446699842,
+                0.8999925225258598
+              ],
+              "distance_m": -7.477474140156156e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.05018794362526731,
+                0.013841245530264432,
+                0.8999921567210567
+              ],
+              "distance_m": -7.843278943332516e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.08133088738947496,
+                0.0016978937843107403,
+                0.8999930316762745
+              ],
+              "distance_m": -6.968323725504511e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.09394186184991256,
+                -0.029169252785356595,
+                0.8999939785108293
+              ],
+              "distance_m": -6.021489170702631e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.0811590010960819,
+                -0.058774105806451545,
+                0.8999946332543172
+              ],
+              "distance_m": -5.366745682853493e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.05028324285272413,
+                -0.07075333464818138,
+                0.899994634029073
+              ],
+              "distance_m": -5.36597092702228e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 14
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "sim_steps_before": 529,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/005.pkl",
+            "sha256": "0827e734c33cce5ab933beee34d226019e33a8466de2b357fdb1f8ab4b58535e",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.051629672538959843,
+              -0.028456270992411554,
+              0.9024998346667837
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.02053328749538381,
+                -0.0571600715079435,
+                0.8999939655039589
+              ],
+              "distance_m": -6.03449604102041e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.02053328749538381,
+                -0.0571600715079435,
+                0.8999939655039589
+              ],
+              "distance_m": -6.03449604102041e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.009306438813287778,
+                -0.028904298213483833,
+                0.8999930114097702
+              ],
+              "distance_m": -6.988590229869247e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.020964376867750423,
+                0.0007094844446699842,
+                0.8999925225258598
+              ],
+              "distance_m": -7.477474140156156e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.05018794362526731,
+                0.013841245530264432,
+                0.8999921567210567
+              ],
+              "distance_m": -7.843278943332516e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.08133088738947496,
+                0.0016978937843107438,
+                0.8999930316762745
+              ],
+              "distance_m": -6.968323725504511e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.09394186184991256,
+                -0.029169252785356592,
+                0.8999939785108293
+              ],
+              "distance_m": -6.021489170704691e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.0811590010960819,
+                -0.05877410580645154,
+                0.8999946332543172
+              ],
+              "distance_m": -5.3667456828563665e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.05028324285272413,
+                -0.07075333464818138,
+                0.899994634029073
+              ],
+              "distance_m": -5.36597092702228e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 14
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "sim_steps_before": 543,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/006.pkl",
+            "sha256": "1499844b43f909824a0f3041766e4885ad342debd38c9ec39e4db145bc5721fc",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.051883065687876456,
+              -0.028546670659873166,
+              0.9034887758772536
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.08131867194485055,
+                0.0017484291109192175,
+                0.8999068027460044
+              ],
+              "distance_m": -9.319725399557072e-05
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.09412810168077859,
+                -0.02903639765987896,
+                0.8999939352792462
+              ],
+              "distance_m": -6.064720753781922e-06
+            },
+            {
+              "geoms": [
+                "plate_1_g6",
+                "gripper0_right_finger2_collision"
+              ],
+              "position_m": [
+                0.11307557434142482,
+                0.005882869986703805,
+                0.9178546208923799
+              ],
+              "distance_m": -1.57147436902724e-05
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "observe",
+              "outcome": "success",
+              "stop_reason": "fresh_public_views",
+              "steps_used": 23
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "sim_steps_before": 566,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/007.pkl",
+            "sha256": "8049582d443b18206b6156c2044f36fb53d1eb304c5a03a328d969b092e5eff4",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.051828808932482616,
+              -0.028585734430502045,
+              0.9024998346667824
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.020928303281575716,
+                -0.057500299572175353,
+                0.8999939655039582
+              ],
+              "distance_m": -6.034496041866684e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.020928303281575716,
+                -0.057500299572175353,
+                0.8999939655039582
+              ],
+              "distance_m": -6.034496041866684e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.009509599669836766,
+                -0.029321512096028582,
+                0.8999930114097696
+              ],
+              "distance_m": -6.988590230409179e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.020965920558601532,
+                0.00037084979553736247,
+                0.8999925225258595
+              ],
+              "distance_m": -7.4774741405300976e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.05009952739743014,
+                0.013701001925229704,
+                0.8999921567210564
+              ],
+              "distance_m": -7.84327894365268e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.08132431543614642,
+                0.0017696755168288628,
+                0.899993031676274
+              ],
+              "distance_m": -6.968323726016363e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.09414486787681997,
+                -0.029011014035406364,
+                0.8999939785108285
+              ],
+              "distance_m": -6.0214891714690535e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.08156358957679381,
+                -0.05870209498221185,
+                0.8999946332543161
+              ],
+              "distance_m": -5.366745683904736e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.050769993234822966,
+                -0.07089097495834466,
+                0.8999946340290719
+              ],
+              "distance_m": -5.365970928073523e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            },
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 134
+            },
+            {
+              "skill": "descend",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 38
+            },
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "sim_steps_before": 768,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/008.pkl",
+            "sha256": "ade95c5c99159fe0cc5efa7b582ea1f100fc9717476d0253a8306a1d9bf69b44",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.07220677137672861,
+              -0.026622301353917743,
+              0.9090534911702499
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.041052144058099774,
+                -0.053885292449013855,
+                0.8999627150201726
+              ],
+              "distance_m": -3.728497982739094e-05
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.041052144058099774,
+                -0.053885292449013855,
+                0.8999627150201726
+              ],
+              "distance_m": -3.728497982739094e-05
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.0705711848219191,
+                -0.06797280011143066,
+                0.8999273293008753
+              ],
+              "distance_m": -7.267069912477624e-05
+            },
+            {
+              "geoms": [
+                "plate_1_g9",
+                "gripper0_right_finger2_collision"
+              ],
+              "position_m": [
+                0.05474635193579518,
+                -0.08552768796311928,
+                0.9120081796572738
+              ],
+              "distance_m": -1.9256024836784413e-05
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "sim_steps_before": 791,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/009.pkl",
+            "sha256": "cd3651f616e27d0674d410c49cde560fc4fe22ee2e66526d680f9242b7c795e2",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.07305417444045412,
+              -0.026181405734701586,
+              0.9024998346663397
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.041051739039653964,
+                -0.05387143020622019,
+                0.899993965503925
+              ],
+              "distance_m": -6.034496075079591e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.041051739039653964,
+                -0.05387143020622019,
+                0.899993965503925
+              ],
+              "distance_m": -6.034496075079591e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.030738392296890394,
+                -0.02526958175612677,
+                0.8999930114096234
+              ],
+              "distance_m": -6.988590376588906e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.04334164635969158,
+                0.003954408902825817,
+                0.8999925225255544
+              ],
+              "distance_m": -7.477474445617542e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.07297198344942776,
+                0.016140594819214336,
+                0.8999921567206393
+              ],
+              "distance_m": -7.843279360729156e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.10370875221270241,
+                0.0030030538042624677,
+                0.8999930316758601
+              ],
+              "distance_m": -6.968324139941008e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.11532162083703239,
+                -0.028253284697059025,
+                0.8999939785105374
+              ],
+              "distance_m": -6.021489462608616e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.10159431154336232,
+                -0.0574322125561902,
+                0.8999946332541858
+              ],
+              "distance_m": -5.366745814154984e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.07034966043325536,
+                -0.06841338497777169,
+                0.8999946340290511
+              ],
+              "distance_m": -5.3659709489139486e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            },
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 125
+            },
+            {
+              "skill": "descend",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 38
+            },
+            {
+              "skill": "set_gripper",
+              "outcome": "failure",
+              "stop_reason": "expected_receipt_gripper_opening_m",
+              "steps_used": 15
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "sim_steps_before": 984,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_160/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/010.pkl",
+            "sha256": "45fe74bcf7dce01bf0a1da5298efd924c3f7ad0c963ecccbbfee4a0ff8c1c8b1",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.050407782014513715,
+              -0.02369911145518809,
+              0.9105436104093606
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.01866806460141595,
+                -0.049592185475650905,
+                0.8998096160118578
+              ],
+              "distance_m": -0.00019038398814214333
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.01866806460141595,
+                -0.049592185475650905,
+                0.8998096160118578
+              ],
+              "distance_m": -0.00019038398814214333
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.04769332930373573,
+                -0.06466653481597587,
+                0.8999930889508085
+              ],
+              "distance_m": -6.911049191454148e-06
+            },
+            {
+              "geoms": [
+                "plate_1_g8",
+                "gripper0_right_finger1_collision"
+              ],
+              "position_m": [
+                0.07324261463204043,
+                -0.08402334086585297,
+                0.9154587497102444
+              ],
+              "distance_m": -0.0011173654052826605
+            },
+            {
+              "geoms": [
+                "plate_1_g8",
+                "gripper0_right_finger2_collision"
+              ],
+              "position_m": [
+                0.08885775417112139,
+                -0.07821625386675365,
+                0.9207443354343097
+              ],
+              "distance_m": -0.000491174014081356
+            },
+            {
+              "geoms": [
+                "gripper0_right_finger2_pad_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.08819940313400178,
+                -0.07903505993833702,
+                0.9206091737128242
+              ],
+              "distance_m": -0.00018002727448867469
+            },
+            {
+              "geoms": [
+                "gripper0_right_finger2_pad_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.08821703088084912,
+                -0.07983730390697158,
+                0.9187131498401505
+              ],
+              "distance_m": -1.3075859694861395e-05
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 22
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "job": "9576_161",
+      "case": {
+        "name": "plate_push_libero_goal_t5_s1",
+        "category": "plate_push",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 5,
+          "seed": 1
+        },
+        "state_sha256": "5ce7bdf94e5030da4f2cdaecaf680d5607faec8614ca63773f1b67ef045d78bf",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/push_the_plate_to_the_front_of_the_stove.bddl",
+          "sha256": "26f22f8ad39a4b2b344b049115c45661a877fa0b4821fb78246725e7e87d8c0b"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/choices.jsonl",
+        "captured_bytes": 13921659,
+        "sha256": "1f12422df4c969d0bc0ebfaabcaadd4442ed0630f300fe9cd2c497f550d332fd"
+      },
+      "records": [
+        {
+          "index": 0,
+          "sim_steps_before": 0,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/000.pkl",
+            "sha256": "1461c6ce75938f1e501932afe45566efb4676bf6e1c2126794f0b2f165753902",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.045036894814144746,
+              -0.034101963740849485,
+              0.9024998343035089
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.013695262732379485,
+                -0.06253777611292397,
+                0.8999939653218009
+              ],
+              "distance_m": -6.034678199179193e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.013695262732379485,
+                -0.06253777611292397,
+                0.8999939653218009
+              ],
+              "distance_m": -6.034678199179193e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.0027113745485302654,
+                -0.034186672851088035,
+                0.8999930112280938
+              ],
+              "distance_m": -6.988771906167601e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.014623087076305299,
+                -0.004674052708821602,
+                0.8999925223447056
+              ],
+              "distance_m": -7.477655294370127e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.04395829986630953,
+                0.008206370180406541,
+                0.8999921565401517
+              ],
+              "distance_m": -7.843459848280818e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.07499585799648574,
+                -0.0042038644363318785,
+                0.8999930314951818
+              ],
+              "distance_m": -6.968504818126095e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.08734140499895249,
+                -0.03517812606441638,
+                0.8999939783292107
+              ],
+              "distance_m": -6.021670789344577e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.07430488786911929,
+                -0.06467216058965605,
+                0.8999946330721756
+              ],
+              "distance_m": -5.36692782437064e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.043327437773577816,
+                -0.07638591132642036,
+                0.899994633846701
+              ],
+              "distance_m": -5.366153299008445e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 309
+            },
+            {
+              "skill": "descend",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 38
+            },
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            },
+            {
+              "skill": "nudge",
+              "outcome": "failure",
+              "stop_reason": "predicted_anchor_changed",
+              "steps_used": 0
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "sim_steps_before": 362,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/001.pkl",
+            "sha256": "cefc3acdeca92a337e75eba0c111ae91e6e61bf091cc9b3d3dd65410c81b011f",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.06481390563971863,
+              -0.026336674314949446,
+              0.9105357381643334
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.03601721691187396,
+                -0.05548664772553338,
+                0.899831124760445
+              ],
+              "distance_m": -0.00016887523955502488
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.03601721691187396,
+                -0.05548664772553338,
+                0.899831124760445
+              ],
+              "distance_m": -0.00016887523955502488
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.0664936507167586,
+                -0.06735794297763026,
+                0.8999860278956826
+              ],
+              "distance_m": -1.3972104317380154e-05
+            },
+            {
+              "geoms": [
+                "plate_1_g9",
+                "gripper0_right_finger2_collision"
+              ],
+              "position_m": [
+                0.050824878978615,
+                -0.090929584040605,
+                0.9116078207331908
+              ],
+              "distance_m": -0.00018282562191851426
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 18
+            },
+            {
+              "skill": "nudge",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 14
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "sim_steps_before": 394,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/002.pkl",
+            "sha256": "c190cca0ffce1ac5132bc0016bdcf4c29639a9ca4c7a23cd846558f367f67f98",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.06490523567448214,
+              -0.024676529973941253,
+              0.905031098744909
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.03604368037853834,
+                -0.05529508936901017,
+                0.8999311039157347
+              ],
+              "distance_m": -6.889608426527026e-05
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.03604368037853834,
+                -0.05529508936901017,
+                0.8999311039157347
+              ],
+              "distance_m": -6.889608426527026e-05
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.022939450969093764,
+                -0.027859534781443943,
+                0.8999407927893751
+              ],
+              "distance_m": -5.920721062487857e-05
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 18
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "sim_steps_before": 412,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/003.pkl",
+            "sha256": "dc595abf191e3934abc1a1a8687c54e316fd1bb75146d62d3ce1e0f72cc475ac",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.06511174094459861,
+              -0.0245144399513016,
+              0.9024998345951895
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.036037127128811,
+                -0.05526440188098425,
+                0.8999939655080046
+              ],
+              "distance_m": -6.034491995394705e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.036037127128811,
+                -0.05526440188098425,
+                0.8999939655080046
+              ],
+              "distance_m": -6.034491995394705e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.022916714538034736,
+                -0.027836576060362328,
+                0.8999930114126647
+              ],
+              "distance_m": -6.988587335236634e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.03253596857929618,
+                0.0025007539918299746,
+                0.8999925225062333
+              ],
+              "distance_m": -7.4774937666537405e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.06079994575152724,
+                0.0175874235264784,
+                0.8999921566695559
+              ],
+              "distance_m": -7.843330444047938e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.09269587997753012,
+                0.007587757643199047,
+                0.8999930316013206
+              ],
+              "distance_m": -6.968398679390382e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.10737461925700362,
+                -0.022351381077886,
+                0.8999939784368175
+              ],
+              "distance_m": -6.021563182520247e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.09663243459907524,
+                -0.05275622148574387,
+                0.8999946332038464
+              ],
+              "distance_m": -5.366796153616587e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.06664178772846015,
+                -0.06680525956765092,
+                0.8999946340115162
+              ],
+              "distance_m": -5.365988483731622e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 18
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "sim_steps_before": 430,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/004.pkl",
+            "sha256": "780f5ee74fe79ffcaa0760376dda632ee598c355130fc5fdeb8cac8f112dca50",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.0651117409403412,
+              -0.02451443995352792,
+              0.9024998346667837
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.03603712712897675,
+                -0.0552644018808834,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041081017e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.03603712712897675,
+                -0.0552644018808834,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041081017e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.022916714538204146,
+                -0.027836576060259556,
+                0.8999930114097702
+              ],
+              "distance_m": -6.988590229871144e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.032535968579467646,
+                0.002500753991933557,
+                0.8999925225258598
+              ],
+              "distance_m": -7.477474140165643e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.06079994575170015,
+                0.017587423526582355,
+                0.8999921567210567
+              ],
+              "distance_m": -7.843278943344063e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.09269587997769985,
+                0.007587757643301024,
+                0.8999930316762745
+              ],
+              "distance_m": -6.968323725520449e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.1073746192571697,
+                -0.022351381077785965,
+                0.8999939785108293
+              ],
+              "distance_m": -6.02148917071434e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.09663243459923869,
+                -0.052756221485644926,
+                0.8999946332543172
+              ],
+              "distance_m": -5.3667456828625465e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.06664178772862342,
+                -0.06680525956755166,
+                0.899994634029073
+              ],
+              "distance_m": -5.36597092702163e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "unmeasured",
+              "stop_reason": "contact_surface_motion_ambiguous",
+              "steps_used": 14
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "sim_steps_before": 444,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/005.pkl",
+            "sha256": "2ecb1d76a549cd68540156d322e07c9736043cfefe3391a662c84dcafb7a8d92",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.0651117409403412,
+              -0.02451443995352792,
+              0.9024998346667837
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.03603712712897675,
+                -0.0552644018808834,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041081017e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.03603712712897675,
+                -0.0552644018808834,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041081017e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.022916714538204146,
+                -0.027836576060259556,
+                0.8999930114097702
+              ],
+              "distance_m": -6.988590229871144e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.032535968579467646,
+                0.002500753991933557,
+                0.8999925225258598
+              ],
+              "distance_m": -7.477474140165643e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.060799945751700155,
+                0.017587423526582355,
+                0.8999921567210567
+              ],
+              "distance_m": -7.843278943344063e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.09269587997769985,
+                0.007587757643301024,
+                0.8999930316762745
+              ],
+              "distance_m": -6.968323725520882e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.1073746192571697,
+                -0.022351381077785965,
+                0.8999939785108293
+              ],
+              "distance_m": -6.02148917071434e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.09663243459923869,
+                -0.052756221485644926,
+                0.8999946332543172
+              ],
+              "distance_m": -5.3667456828625465e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.06664178772862342,
+                -0.06680525956755166,
+                0.899994634029073
+              ],
+              "distance_m": -5.36597092702163e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "nudge",
+              "outcome": "no_effect",
+              "stop_reason": "contact_no_measured_progress",
+              "steps_used": 14
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "sim_steps_before": 458,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/006.pkl",
+            "sha256": "74d93b02c5e9596430dbaa0fc2a2c225c752051784409d74bb51879a720747b6",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.0651117409403412,
+              -0.02451443995352792,
+              0.9024998346667837
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.03603712712897675,
+                -0.0552644018808834,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041081017e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.03603712712897675,
+                -0.0552644018808834,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041081017e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.022916714538204146,
+                -0.027836576060259556,
+                0.8999930114097702
+              ],
+              "distance_m": -6.988590229871144e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.032535968579467646,
+                0.002500753991933557,
+                0.8999925225258598
+              ],
+              "distance_m": -7.477474140165643e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.06079994575170015,
+                0.017587423526582355,
+                0.8999921567210567
+              ],
+              "distance_m": -7.843278943344063e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.09269587997769985,
+                0.007587757643301024,
+                0.8999930316762745
+              ],
+              "distance_m": -6.968323725520882e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.1073746192571697,
+                -0.022351381077785965,
+                0.8999939785108293
+              ],
+              "distance_m": -6.02148917071434e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.09663243459923869,
+                -0.052756221485644926,
+                0.8999946332543172
+              ],
+              "distance_m": -5.3667456828625465e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.06664178772862342,
+                -0.06680525956755166,
+                0.899994634029073
+              ],
+              "distance_m": -5.36597092702163e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "sim_steps_before": 481,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/007.pkl",
+            "sha256": "81ded056372faf214fc0fd87cd4b557ab5d7e9a1f2193f7a009a0b2985d538e3",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.0651117409403412,
+              -0.02451443995352792,
+              0.9024998346667837
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g2"
+              ],
+              "position_m": [
+                0.03603712712897675,
+                -0.0552644018808834,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041081017e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g3"
+              ],
+              "position_m": [
+                0.03603712712897675,
+                -0.0552644018808834,
+                0.8999939655039589
+              ],
+              "distance_m": -6.034496041081017e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g4"
+              ],
+              "position_m": [
+                0.022916714538204146,
+                -0.027836576060259556,
+                0.8999930114097702
+              ],
+              "distance_m": -6.988590229871144e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g5"
+              ],
+              "position_m": [
+                0.032535968579467646,
+                0.002500753991933557,
+                0.8999925225258598
+              ],
+              "distance_m": -7.477474140165643e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g6"
+              ],
+              "position_m": [
+                0.06079994575170015,
+                0.017587423526582362,
+                0.8999921567210567
+              ],
+              "distance_m": -7.843278943344984e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g7"
+              ],
+              "position_m": [
+                0.09269587997769985,
+                0.007587757643301024,
+                0.8999930316762745
+              ],
+              "distance_m": -6.968323725520449e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g8"
+              ],
+              "position_m": [
+                0.1073746192571697,
+                -0.022351381077785965,
+                0.8999939785108293
+              ],
+              "distance_m": -6.02148917071434e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.09663243459923869,
+                -0.052756221485644926,
+                0.8999946332543172
+              ],
+              "distance_m": -5.3667456828625465e-06
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.06664178772862342,
+                -0.06680525956755166,
+                0.899994634029073
+              ],
+              "distance_m": -5.36597092702163e-06
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            },
+            {
+              "skill": "move_to",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 127
+            },
+            {
+              "skill": "descend",
+              "outcome": "success",
+              "stop_reason": "endpoint",
+              "steps_used": 38
+            },
+            {
+              "skill": "set_gripper",
+              "outcome": "success",
+              "stop_reason": "measured_gripper_change",
+              "steps_used": 15
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "sim_steps_before": 676,
+          "snapshot": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9576_161/plate_push_libero_goal_t5_s1_oracle_k4/private_decision_snapshots/008.pkl",
+            "sha256": "4cc7d8ee21cf74975968f6ce1f8dccfe74a914008d3e44e8c04cafb0353d9b9e",
+            "model_visible": false,
+            "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+          },
+          "restore_max_error": 0.0,
+          "private_plate_positions": {
+            "plate_1": [
+              0.0474917810091393,
+              -0.020392705380267464,
+              0.9084717444623657
+            ]
+          },
+          "private_contacts": [
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g9"
+              ],
+              "position_m": [
+                0.07556699496496035,
+                -0.05095825570999814,
+                0.8999061840294131
+              ],
+              "distance_m": -9.381597058683781e-05
+            },
+            {
+              "geoms": [
+                "table_collision",
+                "plate_1_g10"
+              ],
+              "position_m": [
+                0.044272787820977925,
+                -0.0617964504788123,
+                0.8999777803414412
+              ],
+              "distance_m": -2.2219658558797744e-05
+            },
+            {
+              "geoms": [
+                "plate_1_g8",
+                "gripper0_right_finger1_collision"
+              ],
+              "position_m": [
+                0.07916204668521723,
+                -0.08161247085431678,
+                0.9136570749796042
+              ],
+              "distance_m": -1.5219174218353156e-05
+            }
+          ],
+          "private_task_success": false,
+          "receipts": [
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "private posthoc diagnosis only; not runtime inputs or controls",
+  "gpu_used": false,
+  "controls": 0,
+  "model_visible": false,
+  "training": false,
+  "script_sha256": "7b24011be17156720a44675fa303fd2e84818b255ca08fa9e9c7a227107130bc"
+}

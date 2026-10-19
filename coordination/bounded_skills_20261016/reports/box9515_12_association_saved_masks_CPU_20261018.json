@@ -1,0 +1,218 @@
+{
+  "job": "9515_12",
+  "before_row": 1,
+  "after_row": 2,
+  "association_positions": {
+    "e35": [
+      0.011608532044127729,
+      0.2531555168401062,
+      0.26383665468377454
+    ]
+  },
+  "results": [
+    {
+      "method": "baseline",
+      "entities": [
+        {
+          "id": "e35",
+          "xyz": [
+            0.1580963209271431,
+            0.02820639032870531,
+            0.017653255723416805
+          ],
+          "lower": [
+            0.11098849520087242,
+            0.010177897661924363,
+            0.0038336917432025075
+          ],
+          "upper": [
+            0.1840053653717041,
+            0.0462277052551508,
+            0.017961733043193817
+          ],
+          "source_step": 5
+        },
+        {
+          "id": "e85",
+          "xyz": [
+            0.01383549440652132,
+            0.23790977895259857,
+            0.2635002622326601
+          ],
+          "lower": [
+            -0.027052861289971884,
+            0.20287441432476044,
+            0.24710357904434205
+          ],
+          "upper": [
+            0.04793388694524765,
+            0.2711450082063675,
+            0.26421995878219606
+          ],
+          "source_step": 5
+        }
+      ],
+      "held_identity_evidence": {
+        "source_cameras": [
+          "agentview"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "shape_fit_version": "none",
+        "fusion": {
+          "fused": false,
+          "matching_views": 0
+        }
+      }
+    },
+    {
+      "method": "transport_prior",
+      "entities": [
+        {
+          "id": "e35",
+          "xyz": [
+            0.01383549440652132,
+            0.23790977895259857,
+            0.2635002622326601
+          ],
+          "lower": [
+            -0.027052861289971884,
+            0.20287441432476044,
+            0.24710357904434205
+          ],
+          "upper": [
+            0.04793388694524765,
+            0.2711450082063675,
+            0.26421995878219606
+          ],
+          "source_step": 5
+        },
+        {
+          "id": "e85",
+          "xyz": [
+            0.1580963209271431,
+            0.02820639032870531,
+            0.017653255723416805
+          ],
+          "lower": [
+            0.11098849520087242,
+            0.010177897661924363,
+            0.0038336917432025075
+          ],
+          "upper": [
+            0.1840053653717041,
+            0.0462277052551508,
+            0.017961733043193817
+          ],
+          "source_step": 5
+        }
+      ],
+      "held_identity_evidence": {
+        "source_cameras": [
+          "agentview",
+          "wrist"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "shape_fit_version": "none",
+        "fusion": {
+          "fused": true,
+          "matching_views": 1,
+          "primary_points": 3899,
+          "secondary_points": 145367,
+          "voxel_points": 1659,
+          "secondary_score": 0.7109375
+        },
+        "identity_association": {
+          "source": "pre_lift_rgbd_transported_by_public_eef_pose",
+          "predicted_xyz_m": [
+            0.011608532044127729,
+            0.2531555168401062,
+            0.26383665468377454
+          ],
+          "prediction_is_measurement": false
+        }
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/v6_sam_agentview_8222e7fd7c9e97bf.npz/05.npz",
+      "sha256": "9a491b216fbfe3845cab271abc361c708b80a933b6eb291ed7b6cd694eee1546",
+      "camera": "agentview",
+      "source_step": 5,
+      "source": "SAM_instance_used_for_measurement"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/v6_sam_agentview_c2f14d88a9d93382.npz/05.npz",
+      "sha256": "e54ed10be15c55888575ba8f672d58164247ceb4406b57ba535025fb7530c43d",
+      "camera": "agentview",
+      "source_step": 5,
+      "source": "SAM_instance_used_for_measurement"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/v6_sam_wrist_ad1ebc25ed4dd7cb.npz/05.npz",
+      "sha256": "78b55e6c07937c0bfa63784889cda023c2153ef1ec94e8360a823bdfb7e400f3",
+      "camera": "wrist",
+      "source_step": 5,
+      "source": "SAM_instance_used_for_measurement"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/agentview_high.png/05.png",
+      "sha256": "1d15d5a3965701571f1b69171337eb7480501c0ebe3255dd24ddb6c422c75af9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/wrist_high.png/05.png",
+      "sha256": "937494e8e58a1fdd96f5c6aff80fc8abfb846712d47cb0928099e07dc60940fc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/agentview_metadata.json/05.json",
+      "sha256": "432fc45e54247799d31b1b2fdf97a5f48841587267dd5d69947625f131c04149"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/agentview_high.png/05.png",
+      "sha256": "1d15d5a3965701571f1b69171337eb7480501c0ebe3255dd24ddb6c422c75af9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/agentview_world_high.npz/05.npz",
+      "sha256": "14e1c4e36c94a5ae76f21ee97c313b33566fa3d49c4d00f3befce45de64ba69b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/wrist_world_high.npz/05.npz",
+      "sha256": "a5c8dd3ce781bfffae60dfcd715ea20230ba02f5b108a235832ca0e36800d343"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/wrist_high.png/05.png",
+      "sha256": "937494e8e58a1fdd96f5c6aff80fc8abfb846712d47cb0928099e07dc60940fc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/agentview_metadata.json/05.json",
+      "sha256": "432fc45e54247799d31b1b2fdf97a5f48841587267dd5d69947625f131c04149"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/agentview_high.png/05.png",
+      "sha256": "1d15d5a3965701571f1b69171337eb7480501c0ebe3255dd24ddb6c422c75af9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/agentview_world_high.npz/05.npz",
+      "sha256": "14e1c4e36c94a5ae76f21ee97c313b33566fa3d49c4d00f3befce45de64ba69b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/wrist_world_high.npz/05.npz",
+      "sha256": "a5c8dd3ce781bfffae60dfcd715ea20230ba02f5b108a235832ca0e36800d343"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9515_12/box_grab_place_libero_object_t1_s12_oracle_k4/wrist_high.png/05.png",
+      "sha256": "937494e8e58a1fdd96f5c6aff80fc8abfb846712d47cb0928099e07dc60940fc"
+    }
+  ],
+  "runtime_sha256": "b988d7db2e41144aba51ac42dbf8efae9c8207be117a8f18a637319f5b4ef9bf",
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_directional_contact_20261018_4db4ea4",
+  "script_sha256": "af0dc9a54b711de0e15664f860396bb8a43d696cf09550eefbcef7bbbdd7b30a",
+  "scope": "Saved final-mask association replay, not a complete SAM RPC replay or physical execution",
+  "physics_steps": 0,
+  "gpu_used": false,
+  "rpc_calls": 0,
+  "private_truth_used": false,
+  "private_status_consumed": false,
+  "training": false,
+  "confirmation": false
+}
