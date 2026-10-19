@@ -55,6 +55,29 @@ def test_unknown_is_not_failure_and_tie_prefers_self():
         choose_branch(False, [True])
 
 
+def test_seeded_policy_fingerprints_the_actual_wire_inputs_without_changing_them(tmp_path):
+    import json
+
+    from scripts.probe_bounded_hybrid_d2 import SeededPolicy
+
+    seen = []
+    client = SimpleNamespace(encode_obs=lambda obs: obs,
+        predict=lambda obs, options: seen.append((obs, options)) or np.zeros((5, 7)))
+    ledger = tmp_path/'vla_inputs.jsonl'
+    policy = SeededPolicy(client, 100, input_ledger=ledger)
+    obs = {'states': np.array([[.04, -.04]], dtype=np.float32),
+        'main_images': np.zeros((1, 2, 2, 3), dtype=np.uint8), 'task_descriptions': ['pick up the bowl']}
+    policy.predict(obs)
+    policy.predict(obs)
+    assert seen[0][0] is obs and [s[1]['sampling_seed'] for s in seen] == [100, 101]
+    assert policy.inputs[0]['wire_observation_sha256'] == policy.inputs[1]['wire_observation_sha256']
+    obs['states'][0, 0] += .00001
+    policy.predict(obs)
+    assert policy.inputs[-1]['fields']['states'] != policy.inputs[0]['fields']['states']
+    assert policy.inputs[-1]['fields']['main_images'] == policy.inputs[0]['fields']['main_images']
+    assert [json.loads(line) for line in ledger.read_text().splitlines()] == policy.inputs
+
+
 def test_recognized_storage_predicates_do_not_claim_prerequisite_rule_coverage():
     tasks, unsupported = split_subtasks([
         ['close', 'cabinet_bottom_region'], ['in', 'bowl', 'cabinet_bottom_region']])

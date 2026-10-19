@@ -1,4 +1,4 @@
-"""Pin one measured-success old branch for the narrow-monitor consistency pilot."""
+"""Pin one old failure and one success for the narrow-monitor consistency pilot."""
 import argparse
 import os
 import subprocess
@@ -14,24 +14,26 @@ def main():
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     registry = BASE/'preparation/D2_handoff_six_20261019.json'
-    selected = next(row for row in read(registry)['rows'] if row['seed'] == 17401000)
-    summary = Path(selected['raw_summary'])
-    original = read(summary.parents[3]/'assignment.json')['case']
-    case = {**original, 'name': original['name']+'_targeted_scope_r17401000',
-        'diagnostic': {'kind': 'replay', 'domain': 'd2', 'variant': 'targeted_scope',
-            'old_summary': ref(summary), 'branchpoint': ref(Path(selected['branchpoint'])),
-            'targeted_vla_measurement_v1': True, 'migrate_v3_header_to_v4': True,
-            'budget': {'blocks': 24, 'no_progress_blocks': 3, 'controls_per_check': 1,
-                'minimum_progress_m': .005, 'max_controls': None}}}
+    cases = []
+    for seed in (17401000, 13402000):
+        selected = next(row for row in read(registry)['rows'] if row['seed'] == seed)
+        summary = Path(selected['raw_summary'])
+        original = read(summary.parents[3]/'assignment.json')['case']
+        cases.append({**original, 'name': original['name']+'_targeted_scope_r'+str(seed),
+            'diagnostic': {'kind': 'replay', 'domain': 'd2', 'variant': 'targeted_scope',
+                'old_summary': ref(summary), 'branchpoint': ref(Path(selected['branchpoint'])),
+                'targeted_vla_measurement_v1': True, 'migrate_v3_header_to_v4': True,
+                'budget': {'blocks': 24, 'no_progress_blocks': 3, 'controls_per_check': 1,
+                    'minimum_progress_m': .005, 'max_controls': None}}})
     directory = ROOT/'results/bounded_skills/targeted_vla_pilot_20261019'/args.commit[:8]/'preparation'
     directory.mkdir(parents=True)
     manifest = directory/'manifest.json'
     write(manifest, {'evaluation': 'hybrid_repair', 'source_commit': args.commit,
-        'cases': [case], 'training': False, 'confirmation': False,
-        'registry': ref(registry), 'scope': 'one fixed old measured-success branch; monitor consistency/timing only, no success-rate estimate'})
+        'cases': cases, 'training': False, 'confirmation': False,
+        'registry': ref(registry), 'scope': 'two fixed old branches (one success, one failure); monitor consistency/timing only, no success-rate estimate'})
     batch = {'domain': 'd2', 'source': str(source), 'source_commit': args.commit,
-        'manifest': ref(manifest), 'indices': [0]}
-    plan = {'selected_n': 1, 'batches': [batch], 'training': False, 'confirmation': False}
+        'manifest': ref(manifest), 'indices': [0, 1]}
+    plan = {'selected_n': 2, 'batches': [batch], 'training': False, 'confirmation': False}
     write(directory/'batch_plan.json', plan)
     script = ROOT/'launcher_shared_20261019_3fa8bb8f1740/shared_gpu_episodes_20261019.py'
     command = [str(ROOT/'.venv/bin/python'), str(script), '--batch-plan',

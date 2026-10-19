@@ -1,8 +1,8 @@
-交还修复已有六个保存端点的 CPU 仿真：全部停稳，三个原本真抓住的物体均保持抓持；尚未完成六条完整 VLA 重放和下一个技能验证。
-新代码改为接触后零增量 OSC 阻尼停稳，保留夹爪命令；下一次移动仍做测量、扫掠和 IK 筛查。
-停止规则已配置化，登记原三失败种子分别比较关闭 no_progress 的 120 / 220 控制步预算；尚无新 GPU 结果。
-三个绑定失败均已归因到公开同类误检与脚本跳过观察恢复；保存请求的原 oracle 3/3 会选腕部扫描。已修恢复控制流，没有用私有坐标强绑。
-10477 已按用户 10:30 第 5 条停止，旧记录完整保留；10446 原版并行继续。无训练。
+交还已有真实完整分支：e120c61f 的 t2/13402000 停稳后生成并执行首个 bounded chunk（23仿真步）；其余五例仍在跑，不能宣称六例通过。
+该分支25个VLA控制步共961.88秒：公开观测893.27秒、推理1.16秒、交还0.23秒、私有计量0.13秒；完整SAM细分另见原始计时。
+发现旧快照漏采样缓存/相位，物理哈希相同仍能改变π输入；已补时钟与观测缓存，CPU八种历史重复的qpos和公开夹爪差异均为0，50项聚焦测试通过。
+新停止规则对照及原版71状态尚未正式放行，必须使用修复后的完整分叉状态；旧记录和缺项如实保留。Codex3继续源登记、真实预检和物理验证。
+三个绑定失败已归因并修观察恢复；D2不进训练/history/memory，确认状态永久排除，无训练。
 
 ## 当前指令与身份
 
@@ -59,3 +59,15 @@ OpenPI 官方对照：`https://github.com/Physical-Intelligence/openpi/blob/main
 提交 `cc364d3474d5be92584a53ea7a297c353baeb5e3` 已推送。新原版快照 `/public/home/sunyihan/rpent_libero_eval/source_bounded_original_hybrid_forks_20261019_cc364d34`；归档 `bounded_original_hybrid_forks_20261019_stagefix.tar.gz` SHA256 `9609f2b8fb34bb015d06d39e7c8047ca627e34b0e9104dcecd2cff9d4fd5d100`。原版fork按固定goal_index/subtask_mode，前序原版子任务只用bounded self动作执行，失败边界不可达时记prefix_not_reached；不跳真值位姿，不把未尝试计作π0.5失败。38项聚焦CPU测试通过，schema仍v4同SHA。新71状态计划重新CPU预检中，原版startup仅检查新LIBERO-90入口和push接口的真实VLA首步，不额外要求任务成功。
 
 替换原版10项计划CPU预检通过；真实startup10554_0已提交、未声称物理通过，manifest SHA256 `00138db64e90545febdc26fff16f2f5aabea4e2a982f7d2706fad5f68f7e6941`。D2 10531保持。
+
+## 在途实际结果与新根因（优先于上文旧待办）
+
+D2真实首步已在自有10446_6分配中完成：`owned_startup_10446_6_r2`三种设置均1次推理+1物理步、退出0；重复排队10531已取消。复用原版SAM服务并仅新增1个π0.5服务，启动峰值21.9GB、附加进程树23.0GB RSS；原版剩余3局继续。初次附加启动的Slurm step10446.1因SLURM_JOB_NAME为srun命令名而非父作业名被guard拒绝，退出1、无物理请求；已改查scontrol真实作业归属，24项launcher CPU测试通过，旧日志保留。
+
+正式六条在step10446.3 / `results/bounded_skills/hybrid_repair_20261019/e120c61f/owned_batch0_10446_6`运行。t2/13402000私有false、no_progress、25控制步；旧为50步。初始旧物理和请求SHA均相同，但第一动作最大差0.003125，预备位后公开夹爪开度相差约12.4微米。这不能归因于交还改动。handoff停稳18步，后继请求正常、bounded chunk执行23步。t2/13401000已落VLA分支false/70步，object_swap_t2/17401000已落true/45步；其后继chunk仍待汇总。
+
+`D2_preparation_history_CPU_20261019.json`在同一真实MuJoCo保存状态下施加0/1/10/100步前史：下一物理qpos完全相同，公开gripper_qpos却随历史变；warmstart最后恢复也不能消除。Robosuite Observable._time_since_last_sample/_sampled及env.cur_time/timestep不在旧快照，force采样会推进相位。新`v5_branch_state`保存时钟、Observable运行字段和_obs_cache；恢复完整缓存时不force采样，并最后恢复qacc_warmstart。历史旧快照只可明确标记canonical fresh，无法补回真实旧相位，不能声称旧π输入逐字节一致。
+
+`D2_preparation_history_fixed_CPU_20261019.json`：8/8完整恢复身份一致，物理qpos最大差0、公开夹爪最大差0。新分支还记录实际Pi05VLAClient.encode_obs的各字段SHA、states和采样seed，以及预测actions SHA/首动作，便于直接核查首输入/首动作。50项聚焦CPU测试通过；新源码快照待登记。10554仍排队，因原版分叉源缺完整观测恢复已取消，耗时0，未提交正式71状态。
+
+窄测量实验源6a14b147已提交推送、默认off；330项CPU测试通过。仅逐步重测选中源/目标及父部件所需类别，保留双视角每控制步检查，handoff后与普通回执均全场景复测。2状态选择的CPU准备脚本未提交GPU。此实验不能代替新完整状态恢复验证。已登记e120c61f的12条仍用旧全场景监测；6个预算对照尚未运行，下一版将重登记。

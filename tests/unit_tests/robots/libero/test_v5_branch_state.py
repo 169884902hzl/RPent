@@ -51,6 +51,36 @@ def test_branch_restores_fixture_transform_absent_from_dynamic_state():
     np.testing.assert_array_equal(observed[0], saved['model']['body_pos'])
 
 
+def test_branch_restores_observable_phase_and_cache_without_sampling_again():
+    sensor = SimpleNamespace(_sampling_timestep=.05, _enabled=True, _active=True,
+        _time_since_last_sample=.012, _current_delay=0.,
+        _current_observed_value=np.array([.039]), _sampled=True)
+    data = SimpleNamespace(qacc_warmstart=np.array([.2]))
+    def forward():
+        data.qacc_warmstart[:] = 99.
+    env = SimpleNamespace(robots=[], sim=SimpleNamespace(data=data,
+        model=SimpleNamespace(body_pos=np.zeros((1, 3)), body_quat=np.array([[1., 0., 0., 0.]])),
+        forward=forward), timestep=4, cur_time=.2, _observables={'gripper': sensor},
+        _obs_cache={'gripper': np.array([.039]), 'image': np.zeros((2, 2, 3), dtype=np.uint8)},
+        _get_observations=lambda: {'gripper': sensor._current_observed_value.copy()})
+    def unexpected_sample(**kwargs):
+        raise AssertionError('restoring a captured observation must not sample or advance its clock')
+    wrapper = SimpleNamespace(env=env, _update_observables=unexpected_sample)
+    saved = actuator_state(wrapper)
+    sensor._time_since_last_sample = .049
+    sensor._current_observed_value[:] = 0.
+    sensor._sampled = False
+    env.cur_time = 20.
+    env.timestep = 400
+    env._obs_cache['image'][:] = 255
+    restored = restore_actuators(wrapper, saved)
+    np.testing.assert_array_equal(restored['gripper'], [.039])
+    np.testing.assert_array_equal(env._obs_cache['image'], np.zeros((2, 2, 3), dtype=np.uint8))
+    np.testing.assert_array_equal(data.qacc_warmstart, [.2])
+    assert sensor._time_since_last_sample == .012 and sensor._sampled
+    assert env.cur_time == .2 and env.timestep == 4
+
+
 def test_branch_restores_python_numpy_and_nested_sampler_rngs():
     import random
 

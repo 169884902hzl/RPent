@@ -12,6 +12,47 @@ import numpy as np
 
 DATA_FIELDS = ("ctrl", "qacc_warmstart", "mocap_pos", "mocap_quat", "userdata", "qfrc_applied", "xfrc_applied")
 CONTROLLER_FIELDS = ("goal_pos", "goal_ori", "goal_qpos", "goal_qvel", "_goal_update_mode", "ori_ref", "relative_ori")
+OBSERVABLE_FIELDS = ("_sampling_timestep", "_enabled", "_active", "_time_since_last_sample",
+                     "_current_delay", "_current_observed_value", "_sampled")
+
+
+def observation_state(env):
+    """Private public-sensor scheduling/buffers, separate from physical qpos."""
+    return {'version': 'robosuite-observation-branch/1',
+        'clock': {name: copy.deepcopy(getattr(env, name)) for name in ('timestep', 'cur_time') if hasattr(env, name)},
+        'cache': copy.deepcopy(getattr(env, '_obs_cache', {})),
+        'observables': {name: {field: copy.deepcopy(getattr(observable, field))
+            for field in OBSERVABLE_FIELDS if hasattr(observable, field)}
+            for name, observable in getattr(env, '_observables', {}).items()}}
+
+
+def restore_observation_state(wrapper, saved):
+    """Restore buffered public sensors without incrementing their sample clock."""
+    env = wrapper.env
+    observables = getattr(env, '_observables', {})
+    if saved is None:
+        # Historical snapshots omitted this state. Canonical fresh sampling
+        # cannot recover their unknown phase, but must not inherit a sibling's.
+        if hasattr(env, 'cur_time'):
+            env.cur_time = float(env.sim.data.time)
+        if hasattr(env, 'timestep'):
+            env.timestep = int(round(float(env.sim.data.time)/env.control_timestep))
+        if hasattr(env, '_obs_cache'):
+            env._obs_cache.clear()
+        for observable in observables.values():
+            observable.reset()
+            observable._sampled = False
+        wrapper._update_observables(force=True)
+    else:
+        if saved['version'] != 'robosuite-observation-branch/1' or set(observables) != set(saved['observables']):
+            raise ValueError('observable identity changed during branch')
+        for name, value in saved['clock'].items():
+            setattr(env, name, copy.deepcopy(value))
+        for name, fields in saved['observables'].items():
+            for field, value in fields.items():
+                setattr(observables[name], field, copy.deepcopy(value))
+        env._obs_cache = copy.deepcopy(saved['cache'])
+    return env._get_observations()
 
 
 def _rng_nodes(env):
@@ -75,7 +116,7 @@ def actuator_state(wrapper):
                       for field in ("body_pos", "body_quat")},
             "data": {field: np.array(getattr(env.sim.data, field), copy=True)
                      for field in DATA_FIELDS if hasattr(env.sim.data, field)}, "robots": robots,
-            "rng": rng_state(env)}
+            "rng": rng_state(env), "observation_state": observation_state(env)}
 
 
 def restore_actuators(wrapper, saved):
@@ -109,8 +150,11 @@ def restore_actuators(wrapper, saved):
     for field, value in saved["data"].items():
         getattr(env.sim.data, field)[:] = value
     env.sim.forward()
-    wrapper._update_observables(force=True)
-    observations = env._get_observations()
+    observations = restore_observation_state(wrapper, saved.get('observation_state'))
+    # forward() rebuilds solver input. Keep its captured integration warmstart
+    # after observations, as required by the strict complete-state identity.
+    if 'qacc_warmstart' in saved['data']:
+        env.sim.data.qacc_warmstart[:] = saved['data']['qacc_warmstart']
     if "rng" in saved:
         restore_rng(env, saved["rng"])
     return observations

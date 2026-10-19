@@ -1,8 +1,8 @@
 """Registered same-state handoff/stop diagnostics, separate from D2 whole cases."""
 from __future__ import annotations
 
-import json
 import copy
+import json
 import pickle
 import time
 from pathlib import Path
@@ -124,6 +124,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             common = min(len(old_trace), len(new_trace))
             result['paired_replay'] = {'old_summary': diagnostic['old_summary'],
                 'same_initial_physics': result['initial_physics_sha256'] == old['initial_physics_sha256'],
+                'same_legacy_captured_physics': result['initial_legacy_captured_physics_sha256'] == old['initial_physics_sha256'],
+                'historical_observation_phase_available': 'observation_state' in saved['physics']['actuator_state'],
                 'same_initial_request': result['request_sha256'] == old['request_sha256'],
                 'same_request_except_schema': {k:v for k,v in request.items() if k != 'schema_version'}
                     == {k:v for k,v in saved['request'].items() if k != 'schema_version'},

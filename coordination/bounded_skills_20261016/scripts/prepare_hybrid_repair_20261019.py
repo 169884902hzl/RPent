@@ -33,6 +33,7 @@ def main():
     parser.add_argument('--archive', type=Path, required=True)
     parser.add_argument('--archive-sha256', required=True)
     parser.add_argument('--submit-startup', action='store_true')
+    parser.add_argument('--schema-v4', action='store_true')
     args = parser.parse_args()
     assert ref(args.archive)['sha256'] == args.archive_sha256
     source = ROOT / ('source_bounded_hybrid_handoff_20261019_'+args.commit[:8])
@@ -51,7 +52,8 @@ def main():
         original = read(path.parents[3]/'assignment.json')['case']
         return {**original, 'name':original['name']+'_'+variant+'_r'+str(row['seed']),
             'diagnostic':{'kind':'replay', 'domain':'d2', 'variant':variant,
-                'old_summary':ref(path), 'branchpoint':ref(Path(row['branchpoint'])), 'budget':budget}}
+                'old_summary':ref(path), 'branchpoint':ref(Path(row['branchpoint'])), 'budget':budget,
+                'migrate_v3_header_to_v4':args.schema_v4}}
     cases.extend(case(row, 'handoff', baseline) for row in six)
     for row in six:
         if read(Path(row['raw_summary']))['success'] is not False:
@@ -64,6 +66,7 @@ def main():
     write(manifest, {'evaluation':'hybrid_repair', 'source_commit':args.commit,
         'cases':cases,'training':False,'confirmation':False,'registered_six':ref(registry),
         'scope':'six handoff replays + three failed seeds x two stopping settings; no D2 whole-case score',
+        'legacy_observation_limit':'old checkpoints omit observable phase/buffers; the new complete-state implementation records canonical fresh reconstruction rather than claiming exact historical policy-input replay',
         'stop_comparison':'disable no-progress; retain measured-success, region and native stop conditions; same original sampling seed',
         'openpi_reference':{'url':'https://github.com/Physical-Intelligence/openpi/blob/main/examples/libero/main.py',
             'access_date_pacific':'2026-10-19','replan_steps':5,'stabilization_steps':10,

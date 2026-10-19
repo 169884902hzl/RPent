@@ -148,8 +148,15 @@ def restore_checkpoint(facade, adapter, policy, saved):
     adapter.p.env.truncated = saved["client_stop_flags"]["truncated"]
     adapter.p.set_obs(observed)
     restore_runtime(adapter, policy, saved["public_runtime"])
-    if snapshot_digest(facade.snapshot()) != snapshot_digest(saved["physics"]):
+    actual = facade.snapshot()
+    legacy_observation = ('actuator_state' in saved['physics']
+        and 'observation_state' not in saved['physics']['actuator_state'])
+    comparable = ({**actual, 'actuator_state': {k:v for k,v in actual['actuator_state'].items()
+        if k != 'observation_state'}} if legacy_observation else actual)
+    if snapshot_digest(comparable) != snapshot_digest(saved["physics"]):
         raise RuntimeError("fork did not restore full physics/controller/RNG/counter identity")
+    adapter._branch_observation_restore = ('legacy_missing_phase_canonical_fresh'
+        if legacy_observation else 'captured_sensor_phase_and_buffers_v1')
 
 
 def bind_subtask(policy, adapter, spec):
@@ -180,13 +187,39 @@ class SubtaskRPC:
 
 class SeededPolicy:
     """Seed each owned-server inference; ordinary clients are untouched."""
-    def __init__(self, client, seed):
+    def __init__(self, client, seed, *, input_ledger=None):
         self.client, self.seed, self.calls = client, seed, 0
+        self.inputs = []
+        self.predictions = []
+        self.input_ledger = input_ledger
 
     def predict(self, obs, options=None):
         options = {**(options or {}), "sampling_seed": self.seed + self.calls}
+        encoded = self.client.encode_obs(obs)
+        fields = {}
+        for key, value in encoded.items():
+            if isinstance(value, np.ndarray):
+                array = np.ascontiguousarray(value)
+                header = json.dumps({'dtype': array.dtype.str, 'shape': array.shape}, sort_keys=True).encode()
+                fields[key] = hashlib.sha256(header+b'\0'+array.tobytes()).hexdigest()
+            else:
+                fields[key] = hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
+        self.inputs.append({'sampling_seed': options['sampling_seed'], 'fields': fields,
+            'states': np.asarray(encoded['states']).tolist(),
+            'wire_observation_sha256': hashlib.sha256(json.dumps(fields, sort_keys=True).encode()).hexdigest()})
+        if self.input_ledger is not None:
+            with Path(self.input_ledger).open('a') as stream:
+                stream.write(json.dumps(self.inputs[-1])+'\n')
         self.calls += 1
-        return self.client.predict(obs, options=options)
+        value = self.client.predict(obs, options=options)
+        actions = np.ascontiguousarray(value)
+        self.predictions.append({'sampling_seed': options['sampling_seed'],
+            'actions_sha256': hashlib.sha256(actions.tobytes()).hexdigest(),
+            'shape': list(actions.shape), 'first_action': actions[0].tolist()})
+        if self.input_ledger is not None:
+            with Path(self.input_ledger).with_name('vla_predictions.jsonl').open('a') as stream:
+                stream.write(json.dumps(self.predictions[-1])+'\n')
+        return value
 
 
 def trial(facade, adapter, policy, timings, spec, method, seed, output, first_request, *, decision_limit=160):
@@ -199,8 +232,12 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
     started = time.perf_counter()
     source, target = bind_subtask(policy, adapter, spec)
     initial = facade.snapshot()
+    legacy_physics = (dict(initial, actuator_state={k:v for k,v in initial['actuator_state'].items()
+        if k != 'observation_state'}) if 'actuator_state' in initial else initial)
     result = {"subtask": spec, "method": method, "trial_seed": seed,
         "initial_physics_sha256": snapshot_digest(initial), "prefix": [],
+        "initial_legacy_captured_physics_sha256": snapshot_digest(legacy_physics),
+        "observation_restore": getattr(adapter, '_branch_observation_restore', 'not_restored'),
         "request_sha256": hashlib.sha256(json.dumps(first_request, sort_keys=True,
             separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()).hexdigest(),
         "legal": list(legal_after(first_request, [])), "selected_candidate_id": None,
@@ -210,7 +247,7 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
         "binding_recovery": []}
     original_rpc, original_model = policy.rpc, adapter.p.model
     policy.rpc = SubtaskRPC(facade, spec)
-    seeded = SeededPolicy(original_model, seed)
+    seeded = SeededPolicy(original_model, seed, input_ledger=output/'vla_inputs.jsonl')
     if method == "call_vla":
         adapter.p.model = seeded
     reference_grasp = facade.grasp_reference(spec["source_symbol"]) if spec["mode"] == "pick" else None
@@ -306,7 +343,8 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
     # Metrology has stepped physics; costs come from the saved branch endpoint.
     used = int(np.asarray(endpoint["physics"]["counters"]["_elapsed_steps"]).item()) - before
     result.update(reason=reason, wall_s=time.perf_counter() - started, sim_steps=used,
-                  decisions=decisions, vla_inference_calls=seeded.calls)
+                  decisions=decisions, vla_inference_calls=seeded.calls, vla_inputs=seeded.inputs,
+                  vla_predictions=seeded.predictions)
     write(output / "summary.json", result)
     return result, endpoint
 
