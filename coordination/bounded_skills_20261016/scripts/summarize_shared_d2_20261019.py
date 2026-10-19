@@ -18,6 +18,26 @@ def reference(path):
     return {"path": str(path.resolve()), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
+def vla_exits(branch):
+    """Keep the skill's exit when a later handoff check changes the receipt."""
+    if branch.get("method") != "call_vla" or not branch.get("choices"):
+        return []
+    path = Path(branch["choices"]["path"])
+    if reference(path) != branch["choices"]:
+        raise ValueError("closed branch choices changed")
+    exits = []
+    for line in path.open():
+        row = json.loads(line)
+        for detail in row.get("execution_details", []):
+            execution = detail.get("execution", {})
+            if "skill_stop_reason" in execution:
+                exits.append({"decision_index": row["index"],
+                    "skill_stop_reason": execution["skill_stop_reason"],
+                    "handoff_stop_reason": execution.get("stop_reason"),
+                    "choices": branch["choices"]})
+    return exits
+
+
 def collect(preparation, results):
     plan = read(preparation / "batch_plan.json")
     submission = read(preparation / "full_d2_submission.json")
@@ -51,7 +71,8 @@ def collect(preparation, results):
             for path in sorted((worker_dir / case["name"]).glob("subtask*/*/summary.json")):
                 branch = read(path)
                 branches.append({**reference(path), **{key: branch.get(key) for key in (
-                    "method", "subtask", "success", "reason", "sim_steps", "wall_s")}, "case": case["name"]})
+                    "method", "subtask", "success", "reason", "sim_steps", "wall_s")},
+                    "case": case["name"], "vla_exit_evidence": vla_exits(branch)})
             worker_path = worker_dir / "worker_summary.json"
             if not worker_path.exists():
                 continue
@@ -75,6 +96,8 @@ def collect(preparation, results):
         "closed_branch_records": branches,
         "closed_branch_label_counts": dict(Counter(
             "known" if type(row["success"]) is bool else "unknown" for row in branches)),
+        "vla_inner_stop_counts": dict(Counter(event["skill_stop_reason"]
+            for row in branches for event in row["vla_exit_evidence"])),
     }
 
 
@@ -97,7 +120,7 @@ def main():
         json.dump(result, stream, indent=2)
         stream.write("\n")
     print(json.dumps({key: result[key] for key in ("registered_cases", "case_status",
-        "independent_full_replay", "closed_branch_label_counts", "worker_errors")}))
+        "independent_full_replay", "closed_branch_label_counts", "vla_inner_stop_counts", "worker_errors")}))
 
 
 if __name__ == "__main__":

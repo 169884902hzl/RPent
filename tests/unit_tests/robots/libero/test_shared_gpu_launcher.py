@@ -42,7 +42,11 @@ def test_declared_d2_join_keeps_unknowns_and_rejects_mismatched_runs(tmp_path, m
     (worker_dir / 'worker_summary.json').write_text(json.dumps({'case': cases[0],
         'source_commit': 'other' if mismatch == 'source' else 'pinned', 'exit_code': 0, 'result': result}))
     (worker_dir / 'case0/summary.json').write_text(json.dumps(result))
-    (branch_dir / 'summary.json').write_text(json.dumps({'method': 'call_vla', 'success': None}))
+    choices = branch_dir / 'choices.jsonl'
+    choices.write_text(json.dumps({'index': 0, 'execution_details': [{'execution': {
+        'skill_stop_reason': 'measured_success', 'stop_reason': 'handoff_braking_screen_rejected'}}]}) + '\n')
+    (branch_dir / 'summary.json').write_text(json.dumps({'method': 'call_vla',
+        'success': None, 'choices': module.reference(choices)}))
     # A stale result outside the declared array must never join this cohort.
     stale = results / 'job6_0/N8/000_case0'
     stale.mkdir(parents=True)
@@ -55,6 +59,8 @@ def test_declared_d2_join_keeps_unknowns_and_rejects_mismatched_runs(tmp_path, m
         assert reports == [result]
         assert len(provenance['result_sources']) == 1
         assert provenance['closed_branch_label_counts'] == {'unknown': 1}
+        assert provenance['vla_inner_stop_counts'] == {'measured_success': 1}
+        assert provenance['closed_branch_records'][0]['vla_exit_evidence'][0]['handoff_stop_reason'] == 'handoff_braking_screen_rejected'
         assert not provenance['worker_errors']
 
 

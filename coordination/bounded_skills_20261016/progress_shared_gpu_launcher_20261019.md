@@ -52,3 +52,5 @@ D2已通过真实调用；归档环境变量修复已在真实分支生效。104
 `scripts/summarize_shared_d2_20261019.py`只读10477的提交收据、登记assignment和逐局结果，调用75ce7d53源码里的既有D2汇总器。启动检查、10473无效开发运行、其他数组和分支诊断不混入40局分母。源码或assignment不符、重复登记直接报错；未完成和unknown单列。4个CPU用例通过，验证过期运行排除、未知标签保留，以及startup、错源码、重复登记拒绝。
 
 首次生产汇总`reports/shared_D2_interim_20261019_r1.json`：完整回合0/40、已关闭分支11、已知分支标签11、worker错误0。分支成功不能替代整局成功。真实GPU归档凭据见`reports/shared_D2_live_archive_first_20261019.json`；最先核验的3条self抓取均有11/11有效隔离计量证据。正常运行的原版与D2继续自然完成。
+
+只读汇总同时保存`execution.skill_stop_reason`和外层制动交还原因，避免`handoff_braking_screen_rejected`掩盖原始停止条件。已观察到`measured_success`和`no_progress_blocks`真实触发；尚未证明另两种条件的实测覆盖。相关CPU回归仍4项通过，未知真值仍保持未知。
