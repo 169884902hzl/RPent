@@ -79,17 +79,32 @@ def test_invalid_runtime_worker_count_is_rejected_at_adapter_boundary(adapter):
 def test_spawned_initial_request_keeps_candidate_bytes_order_and_diagnostics(adapter):
     measured_prediction(adapter)
     from robots.libero.bounded_motion import measured_robot
+    from robots.libero.v5_state import Entity
 
+    for number in (2, 3):
+        adapter.scene.entities[f'e{number}'] = Entity(f'e{number}', 'box', (.3, .1, .9),
+            (.25, .05, .85), (.35, .15, .95), True, 0)
     obstacle = np.array(measured_robot(adapter.p)['eef_xyz_m']) + [.015, 0., 0.]
     adapter._cloud_and_ik = lambda *args, **kwargs: PublicRouteScreen(
         obstacle[None], adapter.geometry, MeasuredIK())
     serial = adapter.request(k=4)
+    assert len(serial['candidates']) >= 64
     diagnostics = list(adapter.candidate_diagnostics)
     assert diagnostics  # Blocked routes must also retain their original order.
     adapter.request_consequence_workers = 2
     parallel = adapter.request(k=4)
     assert parallel == serial
     assert adapter.candidate_diagnostics == diagnostics
+    assert not adapter.p.actions
+
+
+def test_small_request_does_not_pay_process_startup(adapter, monkeypatch):
+    from robots.libero.bounded_cpu_planning import request_candidates
+
+    monkeypatch.setattr('multiprocessing.get_context', lambda *_: pytest.fail('small request spawned'))
+    options = [('set_gripper', {'mode': 'open'}), ('finish', {})]
+    expected = [adapter._candidate(skill, parameters) for skill, parameters in options]
+    assert request_candidates(adapter, options, 4) == expected
     assert not adapter.p.actions
 
 

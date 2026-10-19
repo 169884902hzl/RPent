@@ -159,6 +159,11 @@ def request_candidates(adapter, options, workers):
     """Evaluate current-state options in source order using CPU-only spawn."""
     if not options:
         return []
+    # Saved 29-option payload requests take ~0.7 s serial versus ~3.3 s
+    # spawned; 64-option requests already amortize the process startup.
+    if len(options) < 64:
+        return [candidate for skill, parameters in options
+                if (candidate := adapter._candidate(skill, parameters)) is not None]
     captured = capture_request_adapter(adapter, options)
     with multiprocessing.get_context('spawn').Pool(
             workers, initializer=_initialize_request, initargs=(captured,)) as pool:
