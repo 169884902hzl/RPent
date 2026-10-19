@@ -47,6 +47,28 @@ def test_no_progress_exits_after_three_blocks():
     assert result["stop_reason"] == "no_progress_blocks"
 
 
+def test_no_progress_can_be_disabled_and_control_budget_is_exact():
+    result = run_fallback(prompt='pick up the bowl', prepare=lambda: {'success': True},
+        predict=lambda _: np.zeros((5, 7)), step=lambda _: ({}, {}),
+        observe=lambda: {'progress_vector_m': [0, 0, 0], 'completed': False, 'outside_region': False},
+        native_done=lambda: False, handoff=lambda _: {'completed': True},
+        budget=VLABudget(blocks=20, no_progress_blocks=None, max_controls=17))
+    assert result['steps_used'] == 17 and result['blocks_used'] == 4
+    assert result['stop_reason'] == 'control_budget'
+    assert result['budget']['no_progress_blocks'] is None
+    assert set(result['timing_s']) == {'preparation', 'inference', 'public_observation', 'control', 'handoff', 'other'}
+
+
+def test_unsettled_handoff_cannot_claim_a_successful_control_return():
+    result = run_fallback(prompt='pick up the bowl', prepare=lambda: {'success': True},
+        predict=lambda _: np.zeros((5, 7)), step=lambda _: ({}, {}),
+        observe=lambda: {'progress_vector_m': [0, 0, 0], 'completed': True, 'outside_region': False},
+        native_done=lambda: False, handoff=lambda _: {'executed': True, 'completed': False,
+            'reason': 'hold_not_settled'})
+    assert result['skill_stop_reason'] == 'measured_success'
+    assert result['outcome'] == 'interrupted' and result['stop_reason'] == 'handoff_hold_not_settled'
+
+
 def test_outside_region_stops_and_history_unknown_is_not_zero_success():
     result = invoke(lambda: {"progress_vector_m": [0, 0, 0], "completed": False, "outside_region": True})
     assert result["stop_reason"] == "left_target_region"

@@ -55,12 +55,12 @@ class EpisodeTimings:
             setattr(owner, name, original)
         self.originals.clear()
 
-    def summary(self, wall_s):
+    def summary(self, wall_s, *, start_event=0):
         totals = defaultdict(float)
         main = defaultdict(float)
         by_root = defaultdict(lambda: defaultdict(float))
         calls = defaultdict(int)
-        for event in self.events:
+        for event in self.events[start_event:]:
             totals[event['category']] += event['exclusive_s']
             calls[event['category']+':'+str(event['hook'])] += 1
             if event['thread'] == self.main_thread:

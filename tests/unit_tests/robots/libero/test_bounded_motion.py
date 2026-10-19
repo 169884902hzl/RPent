@@ -22,6 +22,40 @@ class FakePrimitives:
         self.env.position += action[:3]*.05
 
 
+def test_contact_handoff_damps_without_a_new_sweep_or_releasing_payload():
+    from robots.libero.bounded_motion import settle_osc_hold
+
+    p = FakePrimitives()
+    velocity = .2
+    def damp(action):
+        nonlocal velocity
+        p.actions.append(action)
+        p.env.position[0] += velocity*.05
+        velocity *= .5
+    p._step_env = damp
+    result = settle_osc_hold(p, 1.)
+    assert result['completed'] and result['settled']
+    assert result['reason'] == 'osc_damped_hold'
+    assert all(np.array_equal(action, [0, 0, 0, 0, 0, 0, 1]) for action in p.actions)
+    speeds = [row['velocity_m_s'] for row in result['trace']]
+    assert all(b <= a for a, b in zip(speeds, speeds[1:]))
+    assert p._bounded_rest_reference['measured_robot']['eef_xyz_m'] == p.env.position.tolist()
+    actions_before = len(p.actions)
+    denied = SmoothMotion(p, lambda _: {'passed': False, 'reason': 'blocked'}).run(
+        [{'xyz_m': [.2, 0., 1.]}])
+    assert not denied['executed'] and len(p.actions) == actions_before
+
+
+def test_contact_handoff_that_does_not_settle_is_explicitly_incomplete():
+    from robots.libero.bounded_motion import MotionConfig, settle_osc_hold
+
+    p = FakePrimitives()
+    p._step_env = lambda _: setattr(p.env, 'position', p.env.position+[.01, 0., 0.])
+    result = settle_osc_hold(p, -1., MotionConfig(handoff_max_steps=3))
+    assert not result['completed'] and result['reason'] == 'hold_not_settled'
+    assert not hasattr(p, '_bounded_rest_reference')
+
+
 def test_executes_blended_curve_and_reports_actual_metrics():
     p = FakePrimitives()
     seen = []

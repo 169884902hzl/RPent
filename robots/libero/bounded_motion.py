@@ -32,6 +32,10 @@ class MotionConfig:
     tracking_error_stop_m: float = .03
     endpoint_tolerance_m: float = .012
     reference_lead_s: float = .05
+    handoff_max_steps: int = 30
+    handoff_stable_steps: int = 4
+    handoff_speed_m_s: float = .005
+    handoff_rotation_speed_rad_s: float = .02
 
     def groups(self):
         return ((slice(0, 3), Limits(self.translation_speed_m_s, self.translation_acceleration_m_s2,
@@ -77,6 +81,44 @@ def measured_derivatives(primitives, hz):
     values = np.array([np.r_[state['eef_xyz_m'],
         (Rotation.from_quat(state['eef_quat_xyzw'])*origin.inv()).as_rotvec()] for _, state in samples])
     return tuple(np.diff(values, n=order, axis=0)[-1]*hz**order for order in (1, 2, 3))
+
+
+def settle_osc_hold(primitives, gripper, config: MotionConfig = MotionConfig()):
+    """Damp the existing contact before handing OSC back to a planned skill.
+
+    Zero pose increments target the measured pose and use the ordinary
+    velocity damping. They do not request a Cartesian braking sweep through
+    contacted geometry. The gripper command is retained. Fresh route screening
+    remains mandatory for the next moving skill; this is not a free-space
+    collision certificate.
+    """
+    trace, stable = [], 0
+    action = np.r_[np.zeros(6), gripper]
+    for index in range(config.handoff_max_steps):
+        if primitives.env.terminated or primitives.env.truncated:
+            break
+        before, after = public_control(primitives, action)
+        speed = float(np.linalg.norm(np.array(after['eef_xyz_m'])-before['eef_xyz_m'])*config.hz)
+        angular = float((Rotation.from_quat(after['eef_quat_xyzw'])
+            * Rotation.from_quat(before['eef_quat_xyzw']).inv()).magnitude()*config.hz)
+        stable = stable+1 if (speed <= config.handoff_speed_m_s
+            and angular <= config.handoff_rotation_speed_rad_s) else 0
+        trace.append({'step': index+1, 'before': before, 'after': after,
+            'action': action.tolist(), 'velocity_m_s': speed, 'angular_velocity_rad_s': angular})
+        if stable >= config.handoff_stable_steps:
+            # The preceding zero-increment OSC target was the BEFORE pose.
+            # Preserve that rest reference instead of resetting to feedback.
+            primitives._bounded_rest_reference = {
+                'pose': {key: before[key] for key in ('eef_xyz_m', 'eef_quat_xyzw')},
+                'control_index': primitives._bounded_control_index, 'measured_robot': after}
+            break
+    native_stop = primitives.env.terminated or primitives.env.truncated
+    settled = stable >= config.handoff_stable_steps
+    return {'executed': bool(trace), 'completed': settled or native_stop,
+        'reason': 'native_stop' if native_stop else 'osc_damped_hold' if settled else 'hold_not_settled',
+        'settled': settled, 'steps_used': len(trace), 'trace': trace,
+        'source': 'public_proprioception_and_existing_OSC_damping',
+        'scope': 'contact settling only; no new Cartesian route requested or certified'}
 
 
 def _synchronized_brake(position, derivatives, groups):

@@ -16,7 +16,8 @@ export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 test -f "${BATCH_PLAN:?absolute BATCH_PLAN required}"
 test -f "${LAUNCHER:?absolute LAUNCHER required}"
-OUT=${OUT:-$ROOT/results/bounded_skills/shared_remaining_20261019/job${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}}
+RESULTS_ROOT=${RESULTS_ROOT:-$ROOT/results/bounded_skills/shared_remaining_20261019}
+OUT=${OUT:-$RESULTS_ROOT/job${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}}
 test ! -e "$OUT"
 ARGS=(--batch-plan "$BATCH_PLAN")
 "$ROOT/.venv/bin/python" -u "$LAUNCHER" "${ARGS[@]}" --preflight

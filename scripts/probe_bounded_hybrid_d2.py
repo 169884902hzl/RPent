@@ -76,7 +76,7 @@ def build_plan(output):
 
 
 @contextmanager
-def runtime(case, endpoints, output):
+def runtime(case, endpoints, output, *, domain='d2'):
     """Use the same public adapter/perception as the original feasibility arm."""
     import robosuite
 
@@ -91,7 +91,15 @@ def runtime(case, endpoints, output):
     from rpent.robots.components.pi05_vla_client import Pi05VLAClient
     from rpent.robots.components.sam3_client import Sam3Client
 
-    facade, primitives = d2_session(case["episode"])
+    if domain == 'd2':
+        facade, primitives = d2_session(case["episode"])
+    elif domain == 'original':
+        from scripts.probe_bounded_motion import original_session
+        ep = case['episode']
+        facade, primitives = original_session(ep['suite'], ep['task'], ep['seed'],
+            10000, rgbd_no_msaa_v1=True)
+    else:
+        raise ValueError('unsupported diagnostic domain')
     toolkit = None
     timings = EpisodeTimings()
     try:

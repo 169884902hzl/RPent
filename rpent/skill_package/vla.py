@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
+from time import perf_counter
 
 import numpy as np
 
@@ -13,9 +14,10 @@ import numpy as np
 @dataclass(frozen=True)
 class VLABudget:
     blocks: int = 24
-    no_progress_blocks: int = 3
+    no_progress_blocks: int | None = 3
     controls_per_check: int = 1
     minimum_progress_m: float = .005
+    max_controls: int | None = None
 
 
 class DevelopmentHistory:
@@ -62,12 +64,20 @@ def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
     outside_region and evidence. The caller owns template construction; this
     low-level executor is never exposed as a free-text model tool.
     """
-    preparation = prepare()
+    started = perf_counter()
+    timing = dict.fromkeys(('preparation', 'inference', 'public_observation', 'control', 'handoff'), 0.)
+    def timed(category, function, *args):
+        before = perf_counter()
+        try:
+            return function(*args)
+        finally:
+            timing[category] += perf_counter()-before
+    preparation = timed('preparation', prepare)
     if not preparation["success"]:
         return {"outcome": "failure", "stop_reason": "preparation_not_reached",
                 "steps_used": preparation.get("steps_used", 0), "blocks_used": 0,
-                "preparation": preparation, "checks": [], "trace": []}
-    initial = observe()
+                "preparation": preparation, "checks": [], "trace": [], "timing_s": timing}
+    initial = timed('public_observation', observe)
     reference = np.asarray(initial["progress_vector_m"], float)
     no_progress, count = 0, 0
     checks, trace = [initial], []
@@ -80,23 +90,26 @@ def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
         if stopped():
             reason, outcome = "environment_budget", "interrupted"
             break
-        actions = np.asarray(predict(prompt))
+        actions = np.asarray(timed('inference', predict, prompt))
         if actions.ndim != 2 or actions.shape[1] != 7 or not len(actions) or not np.isfinite(actions).all():
             raise ValueError("VLA must return a finite nonempty Nx7 OSC action block")
         count += 1
         stop = False
         for index, action in enumerate(actions):
+            if budget.max_controls is not None and len(trace) >= budget.max_controls:
+                reason, outcome, stop = "control_budget", "failure", True
+                break
             if native_done():
                 reason, outcome, stop = "native_success", "success", True
                 break
             if stopped():
                 reason, outcome, stop = "environment_budget", "interrupted", True
                 break
-            before, after = step(action)
+            before, after = timed('control', step, action)
             trace.append({"block": block, "control": index, "action": action.tolist(), "before": before, "after": after})
             if (index+1) % budget.controls_per_check and index != len(actions)-1:
                 continue
-            measurement = observe()
+            measurement = timed('public_observation', observe)
             checks.append(measurement)
             if measurement["completed"] or native_done():
                 reason, outcome, stop = "measured_success", "success", True
@@ -112,16 +125,22 @@ def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
         no_progress = 0 if progressed else no_progress+1
         if progressed:
             reference = current
-        if no_progress >= budget.no_progress_blocks:
+        if budget.no_progress_blocks is not None and no_progress >= budget.no_progress_blocks:
             reason = "no_progress_blocks"
             break
-    handoff_result = handoff(trace) if not stopped() else {"native_stop": True}
+    handoff_result = timed('handoff', handoff, trace) if not stopped() else {"native_stop": True}
     skill_stop_reason = reason
     if handoff_result.get("executed") is False and handoff_result.get("reason") == "braking_screen_rejected":
         reason, outcome = "handoff_braking_screen_rejected", "interrupted"
+    elif handoff_result.get('completed') is False:
+        reason, outcome = 'handoff_'+handoff_result['reason'], 'interrupted'
+    if native_done():
+        reason, outcome = 'native_success', 'success'
+    timing['other'] = max(0., perf_counter()-started-sum(timing.values()))
     return {"outcome": outcome, "stop_reason": reason,
             "skill_stop_reason": skill_stop_reason,
             "steps_used": len(trace)+preparation.get("steps_used", 0)+handoff_result.get("steps_used", 0),
             "blocks_used": count, "no_progress_blocks": no_progress, "checks": checks,
             "preparation": preparation, "handoff": handoff_result, "trace": trace,
-            "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest()}
+            "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
+            "timing_s": timing, "budget": asdict(budget)}

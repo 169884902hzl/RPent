@@ -24,6 +24,7 @@ from robots.libero.bounded_motion import (
     MotionConfig,
     SmoothMotion,
     measured_robot,
+    settle_osc_hold,
     public_control,
 )
 from robots.libero.bounded_screen import PublicRouteScreen
@@ -74,7 +75,8 @@ class MeasuredSkillAdapter:
                  legacy_chunk_boundaries_v1: bool = False,
                  compact_infeasible_candidates_v1: bool = True,
                  prefix_consequence_workers: int = 1,
-                 request_consequence_workers: int = 1):
+                 request_consequence_workers: int = 1,
+                 vla_budget: VLABudget = VLABudget()):
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
         if type(request_consequence_workers) is not int or request_consequence_workers < 1:
@@ -87,6 +89,7 @@ class MeasuredSkillAdapter:
         self.robot_xml = self.xml.parent.parent/"robots/panda/robot.xml"
         self.allow_vla, self.history = allow_vla, history or DevelopmentHistory()
         self.config = motion_config
+        self.vla_budget = vla_budget
         self.memory = FailureMemory()
         self._contact_retry_references = {}
         self.revision = 0
@@ -2826,17 +2829,11 @@ class MeasuredSkillAdapter:
             return before, after
         def handoff(trace):
             if not trace:
-                return {"steps_used": 0}
-            motion = SmoothMotion(self.p, self._cloud_and_ik(source.id, contact=True), self.config)
-            rows = [{"time_s": i/self.config.hz, "before": row["before"], "after": row["after"]}
-                    for i, row in enumerate(trace[-4:])]
-            braking = motion._brake(rows, self.gripper_command)
-            return {**braking, "trace": rows,
-                "public_geometry_evidence": copy.deepcopy(self.public_geometry_evidence),
-                "instance_boundary_evidence": copy.deepcopy(self.instance_boundary_evidence)}
+                return {"steps_used": 0, "completed": True}
+            return settle_osc_hold(self.p, self.gripper_command, self.config)
         result = run_fallback(prompt=prompt, prepare=prepare, predict=predict, step=step, observe=observe,
             native_done=lambda: self.p.env.terminated, native_stopped=lambda: self.p.env.terminated or self.p.env.truncated,
-            handoff=handoff, budget=VLABudget())
+            handoff=handoff, budget=self.vla_budget)
         if not (self.p.env.terminated or self.p.env.truncated):
             result["post_handoff_measurement"] = observe()
             final_completed = result["post_handoff_measurement"]["completed"]

@@ -62,8 +62,8 @@ class TimedRPC:
             self.log.flush()
 
 
-def bootstrap_source(domain):
-    if domain=='d2':
+def bootstrap_source(domain, *, evaluation=None):
+    if domain=='d2' or evaluation == 'hybrid_repair':
         # The frozen environment module sets/checks its GL bootstrap before
         # importing MuJoCo. Load it before the diagnostic's helper imports.
         import robots.libero.env_server
@@ -160,11 +160,11 @@ def install_d2_request_compatibility(diagnostic, *, startup=False):
 
 def worker(args):
     assignment = json.loads(args.assignment.read_bytes())
-    if assignment['domain']=='d2':
+    if assignment['domain']=='d2' or assignment.get('evaluation') == 'hybrid_repair':
         # Private v3 scoring archives the exact live MuJoCo model before its
         # isolated support intervention. Each episode owns its archive.
         os.environ['LIBERO_GRASP_DIAGNOSTIC_MODELS']=str(args.assignment.parent.resolve()/'private_grasp_models')
-    bootstrap_source(assignment['domain'])
+    bootstrap_source(assignment['domain'], evaluation=assignment.get('evaluation'))
     from rpent.utils.rpc.http_rpc import HttpRpcClient
     from scripts.probe_bounded_feasibility import episode, probe_config
 
@@ -181,7 +181,7 @@ def worker(args):
             endpoints = {'sam3': TimedRPC(HttpRpcClient(assignment['sam3_url']), ledger)}
             if assignment.get('vla_url'):
                 endpoints['vla'] = HttpRpcClient(assignment['vla_url'])
-            if assignment['domain'] == 'original':
+            if assignment['domain'] == 'original' and plan.get('evaluation') != 'hybrid_repair':
                 ref = plan['base_config']
                 assert digest(ref['path']) == ref['sha256']
                 config = probe_config(json.loads(Path(ref['path']).read_bytes()))
@@ -196,8 +196,12 @@ def worker(args):
                 install_d2_spawn_bootstrap()
                 from scripts import probe_bounded_hybrid_d2
                 install_d2_request_compatibility(probe_bounded_hybrid_d2,startup=assignment['startup'])
+                evaluator = probe_bounded_hybrid_d2
+                if plan.get('evaluation') == 'hybrid_repair':
+                    from scripts import probe_bounded_hybrid_repair
+                    evaluator = probe_bounded_hybrid_repair
                 try:
-                    result = probe_bounded_hybrid_d2.evaluate_case(case, endpoints, output/case['name'], plan,
+                    result = evaluator.evaluate_case(case, endpoints, output/case['name'], plan,
                                            startup=assignment['startup'])
                 except StartupPhysicalReached as reached:
                     result={'case':case,'status':'startup_physical','trials':[reached.proof],
@@ -304,7 +308,8 @@ def run_level(args, plan, indices, endpoints, n, sampler):
                 output.mkdir()
                 assignment={'domain':args.domain,'case_index':index,'case':case,
                     'manifest':{'path':str(args.manifest),'sha256':digest(args.manifest)},
-                    'sam3_url':urls['sam3'],'vla_url':urls.get('vla'),'startup':args.startup}
+                    'sam3_url':urls['sam3'],'vla_url':urls.get('vla'),'startup':args.startup,
+                    'evaluation':plan.get('evaluation')}
                 path=output/'assignment.json'; dump(path,assignment)
                 log=(output/'worker.log').open('x')
                 command=[sys.executable,'-u',str(Path(__file__).resolve()),'--source',str(args.source),
@@ -334,12 +339,14 @@ def run_level(args, plan, indices, endpoints, n, sampler):
     for path in directory.glob('*/sam3_requests.jsonl'):
         latencies.extend(row['wall_s'] for line in path.open()
             if (row:=json.loads(line))['error'] is None and row['method'].startswith('sam3.'))
-    result_key='success' if args.domain=='original' else 'actual_full_replay_success'
+    result_key=('success' if args.domain=='original' and plan.get('evaluation') != 'hybrid_repair'
+                else 'actual_full_replay_success')
     successes=sum((row.get('result') or {}).get(result_key) is True for row in completed)
     failures=sum(row['process_exit_code']!=0 for row in completed)
     valid=sum((row.get('result') or {}).get('status')=='physical_result' for row in completed)
     report={'n':n,'registered_episodes':len(indices),'finished_processes':len(completed),
         'physical_episodes':valid,'successful_episodes':successes,'worker_errors':failures,
+        'known_success_labels':sum(type((row.get('result') or {}).get(result_key)) is bool for row in completed),
         'wall_s':wall,'completed_episodes_per_hour':valid*3600/wall,
         'sam3_requests':len(latencies),'sam3_request_p50_s':percentile(latencies,.5),
         'sam3_request_p95_s':percentile(latencies,.95),'resources':sampler.summary(stage),
@@ -497,7 +504,8 @@ def main():
     sys.path.insert(0,str(args.source))
     if args.worker:
         return worker(args)
-    bootstrap_source(args.domain)
+    registered = json.loads(args.manifest.resolve(strict=True).read_bytes())
+    bootstrap_source(args.domain, evaluation=registered.get('evaluation'))
     from scripts.probe_bounded_feasibility import services, probe_config
     from scripts.v5_probe_preflight import load_pinned_manifest, validate_registered_states
     import psutil
@@ -519,7 +527,14 @@ def main():
         assert serial_launch['source_commit']==study['source_commit']
         assert serial_launch['manifest']==study['manifest']
         assert serial_launch['indices']==indices and serial_launch['domain']=='original'
-    if args.domain=='original':
+    if registered.get('evaluation') == 'hybrid_repair':
+        from scripts.probe_bounded_hybrid_repair import validate_plan
+        plan = registered
+        validate_plan(plan)
+        for case in plan['cases']:
+            assert case['diagnostic']['domain'] == args.domain
+            assert digest(case['bddl']['path']) == case['bddl']['sha256']
+    elif args.domain=='original':
         _,plan,base=load_pinned_manifest(args.manifest)
         config=probe_config(base)
         assert config.get('prefix_consequence_workers',1)==1
@@ -555,7 +570,7 @@ def main():
     sampler=ResourceSampler(args.output);sampler.start()
     try:
         service_started=time.perf_counter()
-        with services(args.output,vla=args.domain=='d2') as endpoints:
+        with services(args.output,vla=args.domain=='d2' or plan.get('evaluation') == 'hybrid_repair') as endpoints:
             service_startup_s=time.perf_counter()-service_started
             if study:
                 report=run_study(args,plan,study,endpoints,sampler)

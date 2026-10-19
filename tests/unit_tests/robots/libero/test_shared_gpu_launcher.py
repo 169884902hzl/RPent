@@ -176,7 +176,8 @@ def test_offline_finalizer_recounts_failed_episodes_and_requires_complete_n1(tmp
     with pytest.raises(FileNotFoundError):module.finalize(root,study_path,launcher)
 
 
-def test_d2_worker_bootstraps_environment_before_helper_imports(tmp_path):
+@pytest.mark.parametrize('domain,evaluation', [('d2', None), ('d2', 'hybrid_repair'), ('original', 'hybrid_repair')])
+def test_d2_worker_bootstraps_environment_before_helper_imports(tmp_path, domain, evaluation):
     source=tmp_path/'source';source.mkdir()
     for package in ['scripts','rpent','rpent/utils','rpent/utils/rpc','robots','robots/libero',
                     'rlinf','rlinf/envs','rlinf/envs/libero']:
@@ -199,10 +200,12 @@ def evaluate_case(case,endpoints,output,plan,*,startup):
     assert archive.is_absolute() and archive.parent==output.parent
     return {'status':'physical_result','actual_full_replay_success':True}
 ''')
+    (source/'scripts/probe_bounded_hybrid_repair.py').write_text(
+        'from scripts.probe_bounded_hybrid_d2 import evaluate_case\n')
     cases=[{'name':f'case{i}'} for i in range(2)]
-    plan={'source_commit':'pinned','cases':cases};manifest=tmp_path/'manifest.json';manifest.write_text(json.dumps(plan))
+    plan={'source_commit':'pinned','cases':cases,'evaluation':evaluation};manifest=tmp_path/'manifest.json';manifest.write_text(json.dumps(plan))
     output=tmp_path/'out';output.mkdir()
-    args=SimpleNamespace(source=source,manifest=manifest,output=output,domain='d2',startup=False)
+    args=SimpleNamespace(source=source,manifest=manifest,output=output,domain=domain,startup=False)
     result=launcher.run_level(args,plan,[0,1],{'sam3':SimpleNamespace(_base_url='http://127.0.0.1:1234')},
         2,SimpleNamespace(stage=None,summary=lambda _:{}))
     assert result['worker_errors']==0 and result['physical_episodes']==2
