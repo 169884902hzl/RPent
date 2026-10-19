@@ -278,6 +278,27 @@ def compare_three(study, root, selected, serial_root=None):
         'definition':'parallel choice-sequence edit distance, final success mismatch and sim-step delta must each not exceed historical-to-fresh-serial differences'}
 
 
+def selected_parallel_n(reports):
+    parallel=[r for r in reports if r['n']>1]
+    best=max(r['completed_episodes_per_hour'] for r in parallel)
+    return min(r['n'] for r in parallel if r['completed_episodes_per_hour']>=best/1.1)
+
+
+def study_result(reports, consistency, source_commit, count, serial_reference=None):
+    selected=selected_parallel_n(reports)
+    serial=next(r['completed_episodes_per_hour'] for r in reports if r['n']==1)
+    chosen=next(r for r in reports if r['n']==selected)
+    return {'levels':reports,'selected_n':selected,'serial_episodes_per_hour':serial,
+        'parallel_episodes_per_hour':chosen['completed_episodes_per_hour'],
+        'measured_speedup':chosen['completed_episodes_per_hour']/serial,
+        'consistency':consistency,'throughput_improved':chosen['completed_episodes_per_hour']>serial,
+        'adoption_ready':consistency['all_three_within_serial_baseline']
+            and chosen['completed_episodes_per_hour']>serial,
+        'source_commit':source_commit,'plateau_fraction':.10,
+        'serial_reference':str(serial_reference) if serial_reference else None,
+        'training':False,'workload':f'{count} registered original development states; not an all-category rate estimate'}
+
+
 def run_study(args, plan, study, endpoints, sampler):
     from copy import copy
     root=args.output
@@ -299,9 +320,7 @@ def run_study(args, plan, study, endpoints, sampler):
         reports.append(run_level(actual,plan,study['indices'],endpoints,n,sampler))
         if reports[-1]['worker_errors']:
             raise RuntimeError('study worker failed')
-    parallel=[r for r in reports if r['n']>1]
-    best=max(r['completed_episodes_per_hour'] for r in parallel)
-    selected=min(r['n'] for r in parallel if r['completed_episodes_per_hour']>=best/1.1)
+    selected=selected_parallel_n(reports)
     verify=copy(actual);verify.output=root/'consistency';verify.output.mkdir()
     # Keep the chosen per-GPU load while comparing the three registered cases.
     comparison=run_level(verify,plan,study['indices'],endpoints,selected,sampler)
@@ -309,35 +328,15 @@ def run_study(args, plan, study, endpoints, sampler):
         raise RuntimeError('parallel consistency replay worker failed')
     if args.serial_reference:
         serial_summary=args.serial_reference/'measurements/N1/summary.json'
-        last_check=0.
-        while not serial_summary.exists():
-            # This is a real running serial measurement on a different GPU,
-            # not a simulated baseline or a replacement for its failures.
-            if time.monotonic()-last_check>=60:
-                job=json.loads((args.serial_reference/'launch.json').read_bytes())['slurm_job_id']
-                states=subprocess.check_output(['sacct','-X','-n','-j',job,
-                    '--format=State','-P'],text=True).splitlines()
-                if states and all(s.strip().split()[0]!='RUNNING' for s in states):
-                    raise RuntimeError('external serial job ended without N1 summary: '+str(states))
-                last_check=time.monotonic()
-            time.sleep(5)
-        serial_report=json.loads(serial_summary.read_bytes())
-        assert serial_report['worker_errors']==0 and serial_report['source_commit']==plan['source_commit']
-        reports.insert(0,serial_report)
+        # Finish GPU ownership now. The login-node finalizer joins the two
+        # actual measurements; compute nodes cannot query Slurm accounting.
+        return {'levels':reports,'selected_n':selected,
+            'gpu_measurements_complete':True,'offline_finalization_required':True,
+            'awaiting_external_serial':not serial_summary.exists(),
+            'serial_reference':str(args.serial_reference),'adoption_ready':False,
+            'source_commit':plan['source_commit'],'training':False}
     consistency=compare_three(study,root,selected,args.serial_reference)
-    serial=reports[0]['completed_episodes_per_hour']
-    chosen=next(r for r in reports if r['n']==selected)
-    report={'levels':reports,'selected_n':selected,'serial_episodes_per_hour':serial,
-        'parallel_episodes_per_hour':chosen['completed_episodes_per_hour'],
-        'measured_speedup':chosen['completed_episodes_per_hour']/serial,
-        'consistency':consistency,'throughput_improved':chosen['completed_episodes_per_hour']>serial,
-        'adoption_ready':consistency['all_three_within_serial_baseline']
-            and chosen['completed_episodes_per_hour']>serial,
-        'source_commit':plan['source_commit'],'plateau_fraction':.10,
-        'serial_reference':str(args.serial_reference) if args.serial_reference else None,
-        'training':False,'workload':f'{len(study["indices"])} registered original development states; not an all-category rate estimate'}
-    dump(root/'study_summary.json',report)
-    return report
+    return study_result(reports,consistency,plan['source_commit'],len(study['indices']),args.serial_reference)
 
 
 def main():
@@ -441,6 +440,9 @@ def main():
             if study:
                 report=run_study(args,plan,study,endpoints,sampler)
                 report['service_startup_s']=service_startup_s
+                if report.get('offline_finalization_required'):
+                    dump(args.output/'measurement_summary.json',report)
+                    return 0
                 dump(args.output/'study_summary.json',report)
                 return 0 if report['adoption_ready'] else 2
             reports=[run_level(args,plan,indices,endpoints,n,sampler) for n in levels]

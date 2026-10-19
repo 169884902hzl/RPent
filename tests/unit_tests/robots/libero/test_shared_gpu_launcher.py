@@ -68,6 +68,65 @@ def test_consistency_reads_external_serial_results_and_enforces_zero_baseline(tm
     assert rejected['cases'][1]['choice_sequence_edit_baseline']==0
 
 
+def test_gpu_study_finishes_without_accounting_or_waiting_for_external_n1(tmp_path,monkeypatch):
+    def no_accounting(*args,**kwargs):
+        raise AssertionError('compute-node accounting must not be queried')
+    monkeypatch.setattr(launcher.subprocess,'check_output',no_accounting)
+    def measured(args,plan,indices,endpoints,n,sampler):
+        return {'n':n,'worker_errors':0,'completed_episodes_per_hour':{4:30.,8:50.,12:52.}[n]}
+    monkeypatch.setattr(launcher,'run_level',measured)
+    root=tmp_path/'gpu';root.mkdir()
+    args=SimpleNamespace(output=root,serial_reference=tmp_path/'unfinished_serial')
+    result=launcher.run_study(args,{'source_commit':'pinned'},
+        {'indices':[0,1,2]}, {}, None)
+    assert result['gpu_measurements_complete'] and result['offline_finalization_required']
+    assert result['awaiting_external_serial'] and not result['adoption_ready']
+    assert result['selected_n']==8
+
+
+def test_offline_finalizer_recounts_failed_episodes_and_requires_complete_n1(tmp_path):
+    path=_PATH.with_name('finalize_shared_study_20261019.py')
+    spec=importlib.util.spec_from_file_location('offline_finalizer',path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    serial=tmp_path/'serial';root=tmp_path/'parallel'
+    serial.mkdir();root.mkdir()
+    manifest=tmp_path/'manifest.json';manifest.write_text('{}')
+    cases=[{'name':f'case{i}'} for i in range(3)]
+    launch={'source':'/pinned/source','source_commit':'pinned','domain':'original',
+        'manifest':{'path':str(manifest),'sha256':launcher.digest(manifest)},'indices':[0,1,2]}
+    (serial/'launch.json').write_text(json.dumps(launch))
+    (root/'launch.json').write_text(json.dumps({**launch,'serial_reference':str(serial)}))
+    study={**launch,'cases':cases,'consistency_cases':[]}
+    results=[{'success':i!=1,'sim_steps':10+i} for i in range(3)]
+    choices=json.dumps({'decision':{'candidate_ids':['move','close','lift']}})+'\n'
+    for i,case in enumerate(cases):
+        historical=tmp_path/f'history{i}.jsonl';historical.write_text(choices)
+        study['consistency_cases'].append({'case':case,'historical_result':results[i],
+            'choices':{'path':str(historical),'sha256':launcher.digest(historical)}})
+    study_path=tmp_path/'study.json';study_path.write_text(json.dumps(study))
+    for directory,n,rate in [(serial/'measurements/N1',1,10.),
+        (root/'measurements/N4',4,30.),(root/'measurements/N8',8,50.),
+        (root/'measurements/N12',12,52.),(root/'consistency/N8',8,50.)]:
+        directory.mkdir(parents=True)
+        wall=3*3600/rate
+        (directory/'summary.json').write_text(json.dumps({'n':n,'registered_episodes':3,
+            'physical_episodes':3,'successful_episodes':2,'source_commit':'pinned',
+            'startup':False,'worker_errors':0,'wall_s':wall,'completed_episodes_per_hour':3*3600/wall}))
+        rows=[]
+        for i,case in enumerate(cases):
+            d=directory/f'{i:03d}_{case["name"]}';(d/(case['name']+'_oracle_k4')).mkdir(parents=True)
+            (d/'worker_summary.json').write_text(json.dumps({'result':results[i]}))
+            (d/(case['name']+'_oracle_k4')/'choices.jsonl').write_text(choices)
+            rows.append({'case':case,'process_exit_code':0,'result':{**results[i],'status':'physical_result'}})
+        (directory/'episodes.jsonl').write_text(''.join(json.dumps(row)+'\n' for row in rows))
+    result=module.finalize(root,study_path,launcher)
+    assert result['adoption_ready'] and result['selected_n']==8
+    assert result['measured_speedup']==5
+    assert all(row['physical_episodes']==3 and row['successful_episodes']==2 for row in result['levels'])
+    (serial/'measurements/N1/summary.json').unlink()
+    with pytest.raises(FileNotFoundError):module.finalize(root,study_path,launcher)
+
+
 @pytest.mark.parametrize('with_failure',[False,True])
 def test_real_subprocesses_isolate_episode_globals_and_retain_failures(tmp_path,with_failure):
     source=tmp_path/'source';source.mkdir()

@@ -1,4 +1,4 @@
-多回合共享 SAM3 启动器已实现，7 项 CPU 测试通过；原版和 D2 两个固定源码入口的真实 CPU 预检均为 exit 0。
+多回合共享 SAM3 启动器已实现，最新 9 项 CPU 测试通过（包含此前 7 项，不累加）；原版和 D2 两个固定源码入口的真实 CPU 预检均为 exit 0。
 吞吐试验 10240_0 已在 04:28:52 PDT 启动，4/4 局产生首次物理请求、启动错误 0，正在跑 N1 完整基线；吞吐提升、选定 N 和整局一致性尚不能下结论。
 原版技能/规划保持 ec89f74，D2 保持 75ce7d53；新代码只涉及启动、计时、资源调度和产物登记。
 通过吞吐及一致性核对后，才将剩余原版和 D2 批次转到共享启动器；已运行作业自然结束，held 作业保持原样。
@@ -24,13 +24,15 @@
 
 - GPU 试验冻结启动器：`/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261019_ad3599a8b0e1/`；SHA256 `ad3599a8b0e1e1940b3f37c217b57c4eb254a0c0a0169ad5001130bc4224fc78`。
 - 登记：`/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/preparation/throughput_study_r1.json`；SHA256 `70cabe22543b2b70753f0f918162e405b1064bccffa9393a8bf92c6e82e0e7e9`。
-- 单元测试：`.venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_shared_gpu_launcher.py`，7 passed；现有 pytest 的 unknown `timeout` 警告不影响退出码。新增检查验证跨作业串行基线的读取，以及基线为零时拒绝并行选择差异。
+- 单元测试：`.venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_shared_gpu_launcher.py`，当前 9 passed；现有 pytest 的 unknown `timeout` 警告不影响退出码。c133 版本对应此前 7 项；新两项覆盖 GPU 无账目查询即完成、登录节点重数收尾及缺失 N1 的拒绝。
 - 两个固定源码的批次入口预检日志：同 preparation 目录的 `batch_interface_cpu_r1_0.log`、`batch_interface_cpu_r1_1.log`，分别 exit 0。
 - GPU 作业及结果根：`/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/shared_throughput_20261019/job10240_0/`；物理启动和完整成绩必须以该目录实际产物为准。
 - 首次物理请求证据：`reports/shared_job10240_real_startup_20261019.json`。启动段 SAM3 延迟 p50/p95=1.044/2.102 秒，GPU 峰值 12464 MiB、CPU 峰值 4.002 核、进程树 RSS 峰值 18207346688 字节；这些是启动段指标，不作为完整回合吞吐。
 - `reports/shared_startup_first_chunk_comparison_20261019.json`：前三类首次 chunk 选择序列与历史记录完全一致，3/3；整局一致性仍待基线和选定并发档完成。
 - `reports/shared_serial_three_baseline_20261019.json`：三局完整串行回放与历史的选择、成功状态、仿真步数差异均为零；并行验收据此要求这三项精确一致。
 - 并发档作业 10327 的冻结启动器：`/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261019_c133c49d192c/`，SHA256 `c133c49d192c31812f98638cf08bb7fa5e6baaa0043d34515c1177bc3ce55f04`；登记 `throughput_study_parallel_r2.json`，SHA256 `4a50b40d87b6f7fe2ce5148ebcbf027649ff2d1eb669256caf4d9561cd95a60d`。同源 CPU 预检 exit 0。
+- C1 只读复现发现 node02 的 `sacct` 连接 localhost:6819 失败。新启动器 SHA256 `66649480bc4f230adb6f83ead400dfd132e50ee3657a462274119ed0e61d51c1` 已移除 GPU 内的账目查询和跨 GPU 等待；外部 N1 模式完成物理测量后保存 `measurement_summary.json` 并退出，由登录节点运行 `scripts/finalize_shared_study_20261019.py`。回归测试确保不会查询账目、不伪造未完成的 N1，并把失败任务保留在完整回合吞吐分母。
+- 10327 已运行的 c133 冻结文件保持原样；其全部测量和可能的原始收尾异常均保留。登录节点 finalizer 可从既有各档 ledger、选定 N 的完整重放和真实 N1 结果收尾，不重复物理。实际离线收尾仍待数据齐备。
 - 当前监控收据：`coordination/bounded_skills_20261016/reports/monitor_restart_shared_priority_20261019.json`；每 10 分钟核对 sacct，并给共享启动器下一可用时隙。
 - 切换前原版登记 220 局，已有 140 局完整物理记录，执行异常 0；完整成绩以 `reports/original20_support_pre_shared_launcher_20261019.json` 为准。旧失败保留。
 - `prepare_shared_remaining_20261019.py` 只有在 study summary 的一致性和实测吞吐同时通过后才登记正式替换计划；不重复已完成或仍自然运行的原版局，D2 保留全部 40 局分母。
