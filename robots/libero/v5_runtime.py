@@ -1858,8 +1858,18 @@ class MeasuredScene:
                         centre = np.median(cloud, axis=0)
                         normal = np.asarray(face["normal_xy"], dtype=float)
                         camera_xyz = np.asarray(state.load(f"{camera}_metadata.json")["extrinsic_cam2world"])[:2, 3]
-                        if normal @ (camera_xyz - centre[:2]) < 0:
+                        offset = float(normal @ (centre[:2] - face['centre'][:2]))
+                        # A camera can see a protruding handle from behind
+                        # its moving panel. Approach the measured handle side
+                        # of that panel rather than always facing the camera.
+                        measured_side = max(.005, 2*face.get('residual_p90_m', .008)) <= abs(offset) <= .06
+                        direction = offset if measured_side else normal @ (camera_xyz - centre[:2])
+                        if direction < 0:
                             normal = -normal
+                        detail['handle_side_orientation'] = {
+                            'source': 'measured_handle_protrusion' if measured_side else 'camera_facing_plane',
+                            'handle_plane_offset_m': offset,
+                            'plane_residual_p90_m': face.get('residual_p90_m')}
                         pose = {"xyz": centre.tolist(), "approach_normal_xy": normal.tolist(),
                                 "handle_tangent_xy": [-normal[1], normal[0]]}
                     else:

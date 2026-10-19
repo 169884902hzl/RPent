@@ -1,0 +1,27 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+    "tests/unit_tests/robots/libero/test_bounded_offline_labels.py",
+    "tests/unit_tests/robots/libero/test_v5_microwave_handle_orientation.py",
+    "tests/unit_tests/robots/libero/test_v5_fixture_handle_approach.py",
+    "tests/unit_tests/robots/libero/test_v5_stove_control_approach.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "wall_s": 187.97411583922803,
+  "log": "coordination/bounded_skills_20261016/reports/handle_side_reentry_cpu_20261018.log.gz",
+  "raw_log_sha256": "255403fa51c29f0bc739da6f80e0ce8e23b2780d3165ad50f55037ed70da6524",
+  "log_sha256": "bc276c4cfd09d6189b9efa5f39520347ba08442a0f049dbb218d77e112706341",
+  "source_sha256": {
+    "robots/libero/v5_runtime.py": "b988d7db2e41144aba51ac42dbf8efae9c8207be117a8f18a637319f5b4ef9bf",
+    "robots/libero/bounded_skills.py": "345cc9307467547c921a61dbfd5b66d57895ac26d054429db2ef74968a3d75f3",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "2f1b100337e1b9745ed895c22f3a3601ef19606db0de0c24e63f3c1617501bef",
+    "tests/unit_tests/robots/libero/test_v5_microwave_handle_orientation.py": "c303f8f939e5c1fee149309491ed2527c29f8f310b9dc01ad85865e125628f56"
+  },
+  "scope": "CPU regression; physical development rerun required",
+  "gpu_used": false
+}

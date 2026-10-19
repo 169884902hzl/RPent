@@ -62,6 +62,36 @@ def test_current_unique_door_cloud_orients_thin_handle_in_both_views(tmp_path, m
         assert view["current_door_orientation"]["normal_gap_m"] == pytest.approx(.03)
 
 
+@pytest.mark.parametrize('endpoint_measured', [False, True])
+def test_protruding_handle_side_does_not_flip_when_camera_sees_the_back(tmp_path, monkeypatch, endpoint_measured):
+    scene, parent, _, _, _ = scene_with_door(tmp_path, monkeypatch)
+    load = scene.toolkit._state.load
+    def behind_panel(name):
+        value = load(name)
+        if name.endswith('.json'):
+            value = {'extrinsic_cam2world': value['extrinsic_cam2world'].copy()}
+            value['extrinsic_cam2world'][1, 3] = -.5
+        return value
+    scene.toolkit._state.load = behind_panel
+    if endpoint_measured:
+        scene.measure_fixture_endpoint = lambda *args: {'moving': {
+            'centre': [0., 0., 1.1], 'normal_xy': [0., -1.], 'residual_p90_m': .001}}
+    result = scene.measure_fixture_handle_pose(parent, 'close the microwave')
+    assert result['pose']['approach_normal_xy'] == pytest.approx([0., 1.], abs=1e-8)
+    assert all(v['handle_side_orientation']['source'] == 'measured_handle_protrusion'
+               for v in result['views'].values())
+
+
+def test_unresolved_handle_plane_offset_does_not_claim_measured_side(tmp_path, monkeypatch):
+    scene, parent, _, _, _ = scene_with_door(tmp_path, monkeypatch)
+    scene.measure_fixture_endpoint = lambda *args: {'moving': {
+        'centre': [0., .029, 1.1], 'normal_xy': [0., -1.], 'residual_p90_m': .001}}
+    result = scene.measure_fixture_handle_pose(parent, 'close the microwave')
+    assert result['pose']['approach_normal_xy'] == pytest.approx([0., 1.], abs=1e-8)
+    assert all(v['handle_side_orientation']['source'] == 'camera_facing_plane'
+               for v in result['views'].values())
+
+
 def test_handle_cloud_excludes_disconnected_sam_tail_before_tracking(tmp_path, monkeypatch):
     scene, parent, _, handle, _ = scene_with_door(tmp_path, monkeypatch)
     world = handle.reshape(10, 10, 3).copy()

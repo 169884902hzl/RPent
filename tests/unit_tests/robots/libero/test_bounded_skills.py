@@ -1638,9 +1638,27 @@ def test_fixture_search_rejects_long_palm_collision_and_screens_short_entry_thro
     np.testing.assert_allclose(result['approach_xyz_m'], [.1, .06, .9])
     np.testing.assert_allclose(routes[-1][-1]['xyz_m'], plan['xyz_m'])
     choices = adapter.candidate_diagnostics[-1]['candidates']
-    assert [choice['stand_off_m'] for choice in choices[:5]] == [.12, .12, .08, .08, .04]
-    assert all(choice['screen']['collision'] for choice in choices[:4])
-    assert choices[4]['screen']['passed']
+    old_routes = [c for c in choices if c['rotate_at'] in {'entry', 'clearance'}]
+    assert [choice['stand_off_m'] for choice in old_routes[:5]] == [.12, .12, .08, .08, .04]
+    assert all(choice['screen']['collision'] for choice in old_routes[:4])
+    assert old_routes[4]['screen']['passed']
+
+
+def test_fixture_direct_entry_avoids_unreachable_extra_lift_and_keeps_contact_screen(adapter):
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'approach_xyz_m': [.1, -.02, .9], 'width_m': .01, 'preferred_approach': 'front'}
+    checked = []
+    def screen(poses):
+        checked.append(poses)
+        blocked = any(p['xyz_m'][2] > 1.01 for p in poses)
+        return {'passed': not blocked, 'reason': 'numerical_ik_not_found' if blocked else 'clear',
+            'collision': False, 'ik_reachable': not blocked, 'path_min_clearance_m': .02}
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    result = adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan)
+    assert result is not None and result['preferred_path'] == 'direct'
+    assert all(np.allclose(poses[-1]['xyz_m'], plan['xyz_m']) for poses in checked)
+    adapter.plans['e1'] = result
+    assert adapter._route('move_to', {'anchor_id': 'e1', 'approach': 'front', 'path': 'direct'}) == result['approach_route']
 
 
 def test_fixture_with_blocked_contact_has_no_plan_even_when_entry_is_clear(adapter):
@@ -1667,8 +1685,9 @@ def test_fixture_replans_a_symmetric_contact_after_measured_joint_limit_failure(
     turn = (Rotation.from_quat(result['quat_xyzw'])*Rotation.from_quat(plan['quat_xyzw']).inv()).magnitude()
     assert turn == pytest.approx(np.pi)
     choices = adapter.candidate_diagnostics[-1]['candidates']
-    assert all(c['screen']['reason'] == 'measured_joint_limit_during_prior_descent' for c in choices[:6])
-    assert choices[6]['screen']['passed']
+    old_routes = [c for c in choices if c['rotate_at'] in {'entry', 'clearance'}]
+    assert all(c['screen']['reason'] == 'measured_joint_limit_during_prior_descent' for c in old_routes[:6])
+    assert old_routes[6]['screen']['passed']
 
 
 def test_fixture_prefers_symmetric_route_with_larger_public_ik_joint_margin(adapter):
@@ -1687,9 +1706,10 @@ def test_fixture_prefers_symmetric_route_with_larger_public_ik_joint_margin(adap
     result = adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan)
     assert Rotation.from_quat(result['quat_xyzw']).magnitude() == pytest.approx(np.pi)
     choices = adapter.candidate_diagnostics[-1]['candidates']
-    assert choices[0]['screen']['passed'] and choices[6]['screen']['passed']
-    assert choices[0]['screen']['route_joint_margin_rad'] == 1e-6
-    assert adapter.candidate_diagnostics[-1]['selected'] == 6
+    old_routes = [c for c in choices if c['rotate_at'] in {'entry', 'clearance'}]
+    assert old_routes[0]['screen']['passed'] and old_routes[6]['screen']['passed']
+    assert old_routes[0]['screen']['route_joint_margin_rad'] == 1e-6
+    assert choices[adapter.candidate_diagnostics[-1]['selected']] is old_routes[6]
 
 
 @pytest.mark.parametrize('joint_margin', [.001, .1])
@@ -1801,7 +1821,8 @@ def test_fixture_search_uses_oblique_contact_when_upright_palm_route_is_blocked(
     np.testing.assert_allclose(result['xyz_m'], plan['xyz_m'])
     choices = adapter.candidate_diagnostics[-1]
     assert choices['candidates'][choices['selected']]['handle_roll_deg'] == -45
-    assert all(c['screen']['collision'] for c in choices['candidates'][:12])
+    assert all(c['screen']['collision'] for c in choices['candidates']
+        if c['handle_roll_deg'] == 0)
 
 
 def test_fixture_closure_uses_local_finger_sweeps_instead_of_entire_bar(adapter):

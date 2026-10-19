@@ -1375,7 +1375,7 @@ class MeasuredSkillAdapter:
                 height = max(robot['eef_xyz_m'][2], entry[2])+.08
                 high_start = [*robot['eef_xyz_m'][:2], height]
                 high_entry = [*entry[:2], height]
-                for rotate_at in ('entry', 'clearance'):
+                for rotate_at in ('entry', 'clearance', 'entry_direct', 'current_direct'):
                     route = [
                         {'xyz_m': high_start, 'quat_xyzw': robot['eef_quat_xyzw']},
                         {'xyz_m': high_entry, 'quat_xyzw': robot['eef_quat_xyzw']},
@@ -1384,6 +1384,10 @@ class MeasuredSkillAdapter:
                     if rotate_at == 'clearance':
                         route = [route[0], {'xyz_m': high_start, 'quat_xyzw': quat},
                             {'xyz_m': high_entry, 'quat_xyzw': quat}, route[-1]]
+                    if rotate_at == 'entry_direct':
+                        route = [route[2], route[3]]
+                    elif rotate_at == 'current_direct':
+                        route = [{'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': quat}, route[3]]
                     route.append({'xyz_m': contact.tolist(), 'quat_xyzw': quat})
                     choices.append({'stand_off_m': distance, 'rotate_at': rotate_at,
                         'handle_roll_deg': roll, 'width_m': width, 'closure_aperture': aperture,
@@ -1436,6 +1440,7 @@ class MeasuredSkillAdapter:
         return {**plan, 'quat_xyzw': route[-1]['quat_xyzw'],
             'width_m': choices[selected]['width_m'],
             'closure_aperture': choices[selected]['closure_aperture'],
+            'preferred_path': 'direct' if choices[selected]['rotate_at'].endswith('_direct') else 'over',
             'approach_xyz_m': route[-2]['xyz_m'], 'approach_route': route[:-1]}
 
     def _transport_alignment(self, robot):
