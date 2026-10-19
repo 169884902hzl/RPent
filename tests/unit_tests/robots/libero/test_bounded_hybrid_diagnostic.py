@@ -75,3 +75,24 @@ def test_physical_identity_includes_controller_and_counter_state():
     first = {"sim_state": np.array([1., 2.]), "controller": {"goal_pos": [3., 4.]}, "counter": 10}
     assert snapshot_digest(first) == snapshot_digest(dict(reversed(list(first.items()))))
     assert snapshot_digest(first) != snapshot_digest(first | {"counter": 11})
+
+
+def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, monkeypatch):
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    physics = {"sim_state": [1.], "counters": {"_elapsed_steps": 0}}
+    facade = SimpleNamespace(snapshot=lambda: physics, goal_status=lambda: {"satisfied": [False]})
+    source = SimpleNamespace(id="e1")
+    monkeypatch.setattr(probe, "bind_subtask", lambda *args: (source, None))
+    monkeypatch.setattr(probe, "save_checkpoint", lambda *args: ({"physics": physics}, {}))
+    adapter = SimpleNamespace(p=SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False,
+        execution_budget=lambda: {"used_sim_steps": 0}), model=object()))
+    policy = SimpleNamespace(rpc=object())
+    request = {"candidates": [], "max_actions": 4, "robot": {"held_anchor_id": None}, "anchors": []}
+    spec = {"mode": "open", "source_symbol": "cabinet_1", "target_symbol": None, "goal_index": 0}
+    row, _ = probe.trial(facade, adapter, policy, None, spec, "call_vla", 123,
+                         tmp_path / "branch", request)
+    assert row["reason"] == "matching_call_vla_candidate_unavailable"
+    assert row["success"] is False and row["vla_inference_calls"] == 0
+    assert row["sim_steps"] == 0 and row["selected_candidate_id"] is None
+    assert (tmp_path / "branch/choices.jsonl").read_text() == ""
