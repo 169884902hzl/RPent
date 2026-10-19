@@ -24,6 +24,8 @@ parser.add_argument('--expected-case-names',
     help='Forward the exact requested case identities to full-array submission')
 parser.add_argument('--peer-tag', action='append', default=[],
     help='Also rebalance an independently startup-gated array within the aggregate GPU cap')
+parser.add_argument('--peer-startup-receipt', type=Path, action='append', default=[],
+    help='Rebalance an ordinary queued startup while preserving its prerequisite job')
 args = parser.parse_args()
 tag = args.tag
 receipt = json.loads((base/'reports'/f'{tag}_startup_submission.json').read_text())
@@ -73,6 +75,21 @@ while True:
         priority_barrier = json.loads(full_path.read_text())['job']
     priority_waiting = any((r[0] == priority_barrier or r[0].split('_')[0] == priority_barrier)
                           and r[2] == 'PENDING' for r in ours)
+    for path in args.peer_startup_receipt:
+        peer = json.loads(path.read_text())
+        child = peer['job']+'_'+str(peer['startup_index'])
+        waiting = next((r for r in ours if r[0] == child and r[2] == 'PENDING'), None)
+        if waiting is None or 'JobHeld' in waiting[6]:
+            continue
+        prerequisite = peer['prerequisite_job']
+        if priority_waiting:
+            dependency = 'afterany:'+prerequisite+':'+priority_barrier
+        elif len(active) >= cap:
+            dependency = '?'.join('afterany:'+prerequisite+':'+':'.join(r[0] for r in group)
+                for group in itertools.combinations(active, len(active)-cap+1))
+        else:
+            dependency = 'afterany:'+prerequisite
+        subprocess.run(['scontrol', 'update', 'JobId='+child, 'Dependency='+dependency], check=True)
     for peer_tag in args.peer_tag:
         command = [str(root/'.venv/bin/python'),
             str(base/'scripts/rebalance_chunk_v2_20261018.py'), '--tag', peer_tag]
@@ -121,7 +138,7 @@ while True:
                 print('TIMING_ARRAY_FINISHED: inspect all physical rows and failures before proceeding',flush=True)
                 full_reported = True
             following = json.loads((base/'reports'/f'{args.following_tag}_full_submission.json').read_text())['job']
-            if not args.follow_through or not any(r[0].split('_')[0] == following for r in ours):
+            if not args.follow_through or not any('JobHeld' not in r[6] for r in ours):
                 break
     # Preserve priority while this array still has work waiting for a slot.
     # Once its remaining tasks are all running, the independently startup-

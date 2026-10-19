@@ -1,0 +1,294 @@
+{
+  "job": "9891",
+  "mode": "startup",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=120%1",
+    "--dependency=afterany:9791",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_joint_guides_20261019_6958aefe,SOURCE_COMMIT=6958aefe1ef60c8b9f92e029f308762fdadb81f7,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_joint_guides_20261019.json,STARTUP=1,PAIR_LEGACY=0,PROBE_ARMS=oracle_k4",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_joint_guides_20261019_6958aefe/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "6958aefe1ef60c8b9f92e029f308762fdadb81f7",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_joint_guides_20261019_6958aefe",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_joint_guides_20261019.json",
+    "sha256": "099800fe542a89646159d3ecb13d5d12ff739607fbc77661d2b837cb1121e5d0"
+  },
+  "following_updates": [],
+  "queue_before": [
+    [
+      "9791_61",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Priority)",
+      "gres/gpu:1"
+    ],
+    [
+      "9817_0",
+      "rd-bounded-hybrid-d2",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_159",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_219",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_218",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_214",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_212",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_211",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_210",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_209",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_208",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_207",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_203",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_202",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_201",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_200",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_199",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_198",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_197",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_196",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_191",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_190",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_189",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_188",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_187",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_186",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_185",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_181",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_180",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_179",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ]
+  ],
+  "lane": 3,
+  "aggregate_cap": 4,
+  "codex2_gpu_jobs": [],
+  "startup_proof": null,
+  "training": false,
+  "confirmation": false,
+  "indices": [
+    120
+  ],
+  "selected_cases": [
+    {
+      "name": "microwave_close_libero_90_t33_s0",
+      "category": "microwave_close",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 0
+      },
+      "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+      "bddl": {
+        "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "purpose": "development_feasibility_no_training"
+    }
+  ],
+  "expected_case_names": null,
+  "scope": "original-task oracle K4 upper bound; no pi05",
+  "submission_updates_complete": true,
+  "startup_index": 120,
+  "prerequisite_job": "9791"
+}

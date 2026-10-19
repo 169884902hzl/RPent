@@ -1,0 +1,303 @@
+{
+  "job": "9967",
+  "mode": "startup",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=0%1",
+    "--dependency=afterany:9928",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_spawn_planning_20261019_7ffe2118,SOURCE_COMMIT=7ffe2118dca7a74c7455b89a1ef85c9b48dcd64e,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_spawn_w4_20261019.json,STARTUP=1,PAIR_LEGACY=0,PROBE_ARMS=oracle_k4",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_spawn_planning_20261019_7ffe2118/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "7ffe2118dca7a74c7455b89a1ef85c9b48dcd64e",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_spawn_planning_20261019_7ffe2118",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_spawn_w4_20261019.json",
+    "sha256": "e28e6e37e8d464c859dd2cf1c721a5bf8eb4e23a054faf4af96b0d925e1723ab"
+  },
+  "following_updates": [],
+  "queue_before": [
+    [
+      "9791_61",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Priority)",
+      "gres/gpu:1"
+    ],
+    [
+      "9928_0",
+      "rd-bounded-hybrid-d2",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9891_120",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_159",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_219",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_218",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_214",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_212",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_211",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_210",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_209",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_208",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_207",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_203",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_202",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_201",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_200",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_199",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_198",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_197",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_196",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_191",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_190",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_189",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_188",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_187",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_186",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_185",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_181",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_180",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_179",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ]
+  ],
+  "lane": 3,
+  "aggregate_cap": 4,
+  "codex2_gpu_jobs": [],
+  "startup_proof": null,
+  "training": false,
+  "confirmation": false,
+  "indices": [
+    0
+  ],
+  "selected_cases": [
+    {
+      "name": "bowl_transfer_libero_spatial_t0_s0",
+      "category": "bowl_transfer",
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 0,
+        "seed": 0
+      },
+      "state_sha256": "4e3eaf7a315bc3bafb6db4837c8eef0e5f8aea717782a2a3ea33139392d966ed",
+      "bddl": {
+        "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+        "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+      },
+      "purpose": "development_feasibility_no_training"
+    }
+  ],
+  "expected_case_names": "bowl_transfer_libero_spatial_t0_s0",
+  "scope": "original-task oracle K4 upper bound; no pi05",
+  "submission_updates_complete": true,
+  "startup_index": 0,
+  "prerequisite_job": "9928:9891",
+  "explicit_prerequisite_update": "afterany:9928:9891"
+}

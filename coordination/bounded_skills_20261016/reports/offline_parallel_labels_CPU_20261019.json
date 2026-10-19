@@ -1,0 +1,869 @@
+{
+  "source_commit": "16fdece350735430e24398df61a321f694681d0e",
+  "records": [
+    {
+      "job": "9248_0",
+      "saved_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_0/bowl_transfer_libero_spatial_t0_s0_oracle_k4/private_prefix_state_0000.pkl.gz",
+        "sha256": "f7adbee5d613e0835504d81a58aee501ffccfe57e215e5eec699d958dbbd8330",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "3e62d3a82084d1356645b9ce4a39dbcb81ab8425534022f204ad70b7eef39491",
+        "model_visible": false
+      },
+      "prefix": [
+        "7cf7cc6e22bbb7f2"
+      ],
+      "complete_context_and_label_bytes_equal": true,
+      "arms": [
+        {
+          "workers": 1,
+          "wall_s": 15.308189804665744,
+          "contexts": [
+            {
+              "prefix": [],
+              "sha256": "1a74d7b24dc07bce987fa35458bcae6896b3a273ba17b00fb066ece93101e912",
+              "candidates": 67
+            },
+            {
+              "prefix": [
+                "7cf7cc6e22bbb7f2"
+              ],
+              "sha256": "50cbd91fabda6ddfbf57cde6771f3e15468054625a841d67aa4f55924995397b",
+              "candidates": 66
+            }
+          ],
+          "label_sha256": "1dcd91c123eece6aa758dea51f96140f867597f2d071e55d9d0be1d0051b7f02",
+          "label": {
+            "version": "libero-offline-prefix-label/1",
+            "legality_version": "public-request-legal/2",
+            "request_sha256": "3e62d3a82084d1356645b9ce4a39dbcb81ab8425534022f204ad70b7eef39491",
+            "observation_id": "public-0",
+            "revision": 0,
+            "prefix": [
+              "7cf7cc6e22bbb7f2"
+            ],
+            "legal": [
+              "613ce744f3fff76a",
+              "8201c724d3f34194",
+              "eeb7d2c5638ddd50",
+              "33adeaeeab47ac47",
+              "6899ad278b4a36fc",
+              "5f4dece88da1f6f4",
+              "282f0bc9189bed6e",
+              "a6b9c1132a04f46a",
+              "b109bf7af9d17cc6",
+              "75ed3d7dd24e32c5",
+              "a08cab3ca5e50340",
+              "fedd1a7f39ead9b9",
+              "61847fe1921eb908",
+              "5e308a4870e775ba",
+              "f4c6a7058f4a8b12",
+              "66bb9af555ab22e9",
+              "1d4c459da21c2a7a",
+              "4d56ead138a0eb1b",
+              "bd9b605edfb71b5d",
+              "348fa339f354d237",
+              "35d86d9c1ab4e6c6",
+              "260cf88d2785b77d",
+              "994e6cc558d9f3ab",
+              "6f354f956632f7ce",
+              "3cde78857a8c7be8",
+              "95e5a3d344337410",
+              "6b73b26e470a7ddf",
+              "2cd64695c2a78ae0",
+              "2eb6d979cf82224f",
+              "91a344e1d04dc2ca",
+              "4c51c3af8ca4da8c",
+              "839ce9290749e6ab",
+              "3cad9e259af51046",
+              "0babf7c696904e87",
+              "af866c584b96de88",
+              "7f56ae3f4c8b42af",
+              "058d2cacfdbbe9ee",
+              "c839f7047168985f",
+              "b72a74bd885f119f",
+              "c6879ac9fab32978",
+              "f72537752ef750d0",
+              "edd9ac4d0212063f",
+              "47151ff6c459c6e1",
+              "f2ebf3511c61912b",
+              "25c428d919219ac9",
+              "e6e9f48f9eae056f",
+              "78fc3aade1371307",
+              "f395c81b7408c9d5",
+              "ddc57af16afe47d4",
+              "f3cd747ecda3e7bd",
+              "3f2b6fae234e9b1a",
+              "ba5417f0b7c390e9",
+              "027cea6b4534fa9c",
+              "1f9311eb6c9f6bb8",
+              "1491d75e66b081aa",
+              "825cb73a9c032a28"
+            ],
+            "rule_acceptable": [
+              "75ed3d7dd24e32c5"
+            ],
+            "selected": "75ed3d7dd24e32c5",
+            "measured_success": [],
+            "measured_failure": [],
+            "judge": "libero-private-task-progress-rules/13",
+            "model_visible": false,
+            "physics_steps": 0,
+            "gpu_used": false,
+            "conditional_on_receipt_checks": [
+              {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e99",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              {
+                "metric": "angular_error_rad",
+                "anchor_id": "e99",
+                "minimum": 0.0,
+                "maximum": 0.05
+              }
+            ],
+            "requires_measurement": false,
+            "status": "labeled",
+            "predicted_robot": {
+              "eef_xyz_m": [
+                -0.05939897020450896,
+                0.25219549349060766,
+                1.0921273639186664
+              ],
+              "eef_quat_xyzw": [
+                0.993818684889223,
+                -0.11101541138533597,
+                0.0,
+                0.0
+              ],
+              "gripper_opening_m": 0.0780791693172842,
+              "held_anchor_id": null,
+              "velocity_m_s": null
+            }
+          }
+        },
+        {
+          "workers": 4,
+          "wall_s": 7.5379147212952375,
+          "contexts": [
+            {
+              "prefix": [],
+              "sha256": "1a74d7b24dc07bce987fa35458bcae6896b3a273ba17b00fb066ece93101e912",
+              "candidates": 67
+            },
+            {
+              "prefix": [
+                "7cf7cc6e22bbb7f2"
+              ],
+              "sha256": "50cbd91fabda6ddfbf57cde6771f3e15468054625a841d67aa4f55924995397b",
+              "candidates": 66
+            }
+          ],
+          "label_sha256": "1dcd91c123eece6aa758dea51f96140f867597f2d071e55d9d0be1d0051b7f02",
+          "label": {
+            "version": "libero-offline-prefix-label/1",
+            "legality_version": "public-request-legal/2",
+            "request_sha256": "3e62d3a82084d1356645b9ce4a39dbcb81ab8425534022f204ad70b7eef39491",
+            "observation_id": "public-0",
+            "revision": 0,
+            "prefix": [
+              "7cf7cc6e22bbb7f2"
+            ],
+            "legal": [
+              "613ce744f3fff76a",
+              "8201c724d3f34194",
+              "eeb7d2c5638ddd50",
+              "33adeaeeab47ac47",
+              "6899ad278b4a36fc",
+              "5f4dece88da1f6f4",
+              "282f0bc9189bed6e",
+              "a6b9c1132a04f46a",
+              "b109bf7af9d17cc6",
+              "75ed3d7dd24e32c5",
+              "a08cab3ca5e50340",
+              "fedd1a7f39ead9b9",
+              "61847fe1921eb908",
+              "5e308a4870e775ba",
+              "f4c6a7058f4a8b12",
+              "66bb9af555ab22e9",
+              "1d4c459da21c2a7a",
+              "4d56ead138a0eb1b",
+              "bd9b605edfb71b5d",
+              "348fa339f354d237",
+              "35d86d9c1ab4e6c6",
+              "260cf88d2785b77d",
+              "994e6cc558d9f3ab",
+              "6f354f956632f7ce",
+              "3cde78857a8c7be8",
+              "95e5a3d344337410",
+              "6b73b26e470a7ddf",
+              "2cd64695c2a78ae0",
+              "2eb6d979cf82224f",
+              "91a344e1d04dc2ca",
+              "4c51c3af8ca4da8c",
+              "839ce9290749e6ab",
+              "3cad9e259af51046",
+              "0babf7c696904e87",
+              "af866c584b96de88",
+              "7f56ae3f4c8b42af",
+              "058d2cacfdbbe9ee",
+              "c839f7047168985f",
+              "b72a74bd885f119f",
+              "c6879ac9fab32978",
+              "f72537752ef750d0",
+              "edd9ac4d0212063f",
+              "47151ff6c459c6e1",
+              "f2ebf3511c61912b",
+              "25c428d919219ac9",
+              "e6e9f48f9eae056f",
+              "78fc3aade1371307",
+              "f395c81b7408c9d5",
+              "ddc57af16afe47d4",
+              "f3cd747ecda3e7bd",
+              "3f2b6fae234e9b1a",
+              "ba5417f0b7c390e9",
+              "027cea6b4534fa9c",
+              "1f9311eb6c9f6bb8",
+              "1491d75e66b081aa",
+              "825cb73a9c032a28"
+            ],
+            "rule_acceptable": [
+              "75ed3d7dd24e32c5"
+            ],
+            "selected": "75ed3d7dd24e32c5",
+            "measured_success": [],
+            "measured_failure": [],
+            "judge": "libero-private-task-progress-rules/13",
+            "model_visible": false,
+            "physics_steps": 0,
+            "gpu_used": false,
+            "conditional_on_receipt_checks": [
+              {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e99",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              {
+                "metric": "angular_error_rad",
+                "anchor_id": "e99",
+                "minimum": 0.0,
+                "maximum": 0.05
+              }
+            ],
+            "requires_measurement": false,
+            "status": "labeled",
+            "predicted_robot": {
+              "eef_xyz_m": [
+                -0.05939897020450896,
+                0.25219549349060766,
+                1.0921273639186664
+              ],
+              "eef_quat_xyzw": [
+                0.993818684889223,
+                -0.11101541138533597,
+                0.0,
+                0.0
+              ],
+              "gripper_opening_m": 0.0780791693172842,
+              "held_anchor_id": null,
+              "velocity_m_s": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "job": "9544_124",
+      "saved_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9544_124/cup_transfer_libero_10_t4_s11_oracle_k4/private_prefix_state_0000.pkl.gz",
+        "sha256": "46868514d9770d678f681884658c23ff60acf230acfcd05b8348751e7860c38e",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "4358aec7bf6951cb135d0b91082cb9b693f8a5f195f8c3cd1f91fceeea3c5101",
+        "model_visible": false
+      },
+      "prefix": [
+        "74c5b2fe59ade3db"
+      ],
+      "complete_context_and_label_bytes_equal": true,
+      "arms": [
+        {
+          "workers": 1,
+          "wall_s": 29.772608229890466,
+          "contexts": [
+            {
+              "prefix": [],
+              "sha256": "7c08911910d56e8583c194bf5e44be8bb27ef7430a98fd5e54fc43c5e1f8bfc2",
+              "candidates": 97
+            },
+            {
+              "prefix": [
+                "74c5b2fe59ade3db"
+              ],
+              "sha256": "f62482ab1ae4b26aa9f513389a17a249e3a6fac86f3ac179140f20bc23d7df26",
+              "candidates": 96
+            }
+          ],
+          "label_sha256": "5131f4c3ae3808d4378c0ef4176688da785ef34a2dc084d453dea6bdd217a877",
+          "label": {
+            "version": "libero-offline-prefix-label/1",
+            "legality_version": "public-request-legal/2",
+            "request_sha256": "4358aec7bf6951cb135d0b91082cb9b693f8a5f195f8c3cd1f91fceeea3c5101",
+            "observation_id": "public-0",
+            "revision": 0,
+            "prefix": [
+              "74c5b2fe59ade3db"
+            ],
+            "legal": [
+              "7bad92b704fcb355",
+              "78e4526427468668",
+              "1e1c5e128ef7666a",
+              "3e71860d1541b7ea",
+              "b5d8d5a9bec7ca6a",
+              "08d42792487816ed",
+              "90ffa5fa85beb053",
+              "a53bf2e4ad8920b3",
+              "150e06cf1eb5cadc",
+              "1186b4f37db315c3",
+              "5cce9367c61c7c55",
+              "617f9ff4ea326067",
+              "ac3c00065308f2ea",
+              "be955c512c0a6a59",
+              "f4e7cc871af59214",
+              "de99e4e2f16bc485",
+              "2c39184271da79b3",
+              "1e9da45d94d7b54b",
+              "e9a489d6be366ce2",
+              "6b22bad42a52cf8b",
+              "2c73d1f973fa9457",
+              "6e7fe92ad55c9476",
+              "01a7d519a690784e",
+              "dcd27332c86fb038",
+              "9c7a05918d63800d",
+              "3284277c7298bb0c",
+              "1c9238f69a8481d6",
+              "4ea5df3f78a2625d",
+              "d3423146d0f67120",
+              "e29215af60fb39fe",
+              "0c8e5823d810f3f7",
+              "a7c73b838ba6f0b5",
+              "0a1ff0099b6146be",
+              "f2e06a306b114b18",
+              "39f4c773fa2b2947",
+              "8d58ead2d2f414f8",
+              "eac2aadaa0fa7855",
+              "bd892ea154f36b88",
+              "60680d9c85bbf56f",
+              "ed655e378dcd1e0d",
+              "aca19178d3f810d5",
+              "1fc596927c17ed1e",
+              "c7c14cc1bb2699a2",
+              "0db520c82e49183a",
+              "d64d58eddfb6aac0",
+              "6b2036bfca6e172c",
+              "15a7c9d17f5f7017",
+              "2fa9fadc94b2c2e3",
+              "cccc8b2e680f60c9",
+              "c82666bb2fa2ddba",
+              "3fe163bcce99de24",
+              "8d76558c7598c191",
+              "017fb53a0577fd51",
+              "419fc34b1777bf2c",
+              "39a4feb4f030245c",
+              "57ed19b7fd469636",
+              "6472147c9a547479",
+              "5f79efb48cd9a3b5",
+              "34dd44a1ebf8dc76",
+              "af866c584b96de88",
+              "7f56ae3f4c8b42af",
+              "058d2cacfdbbe9ee",
+              "c839f7047168985f",
+              "b72a74bd885f119f",
+              "c6879ac9fab32978",
+              "f72537752ef750d0",
+              "edd9ac4d0212063f",
+              "47151ff6c459c6e1",
+              "f2ebf3511c61912b",
+              "25c428d919219ac9",
+              "e6e9f48f9eae056f",
+              "78fc3aade1371307",
+              "f395c81b7408c9d5",
+              "ddc57af16afe47d4",
+              "f3cd747ecda3e7bd",
+              "3f2b6fae234e9b1a",
+              "ba5417f0b7c390e9",
+              "027cea6b4534fa9c",
+              "1f9311eb6c9f6bb8",
+              "1491d75e66b081aa",
+              "825cb73a9c032a28"
+            ],
+            "rule_acceptable": [
+              "8d58ead2d2f414f8",
+              "d64d58eddfb6aac0",
+              "6b2036bfca6e172c",
+              "15a7c9d17f5f7017",
+              "2fa9fadc94b2c2e3",
+              "cccc8b2e680f60c9",
+              "c82666bb2fa2ddba",
+              "3fe163bcce99de24",
+              "8d76558c7598c191",
+              "017fb53a0577fd51",
+              "419fc34b1777bf2c",
+              "39a4feb4f030245c",
+              "57ed19b7fd469636"
+            ],
+            "selected": "8d58ead2d2f414f8",
+            "measured_success": [],
+            "measured_failure": [],
+            "judge": "libero-private-task-progress-rules/13",
+            "model_visible": false,
+            "physics_steps": 0,
+            "gpu_used": false,
+            "conditional_on_receipt_checks": [
+              {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e72",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              {
+                "metric": "angular_error_rad",
+                "anchor_id": "e72",
+                "minimum": 0.0,
+                "maximum": 0.05
+              }
+            ],
+            "requires_measurement": false,
+            "status": "labeled",
+            "predicted_robot": {
+              "eef_xyz_m": [
+                -0.0820868511210049,
+                -0.17628068586746604,
+                0.6848771061135553
+              ],
+              "eef_quat_xyzw": [
+                0.9575187407670253,
+                0.2883710475757413,
+                0.0,
+                0.0
+              ],
+              "gripper_opening_m": 0.0780791887356451,
+              "held_anchor_id": null,
+              "velocity_m_s": null
+            }
+          }
+        },
+        {
+          "workers": 4,
+          "wall_s": 11.833314072340727,
+          "contexts": [
+            {
+              "prefix": [],
+              "sha256": "7c08911910d56e8583c194bf5e44be8bb27ef7430a98fd5e54fc43c5e1f8bfc2",
+              "candidates": 97
+            },
+            {
+              "prefix": [
+                "74c5b2fe59ade3db"
+              ],
+              "sha256": "f62482ab1ae4b26aa9f513389a17a249e3a6fac86f3ac179140f20bc23d7df26",
+              "candidates": 96
+            }
+          ],
+          "label_sha256": "5131f4c3ae3808d4378c0ef4176688da785ef34a2dc084d453dea6bdd217a877",
+          "label": {
+            "version": "libero-offline-prefix-label/1",
+            "legality_version": "public-request-legal/2",
+            "request_sha256": "4358aec7bf6951cb135d0b91082cb9b693f8a5f195f8c3cd1f91fceeea3c5101",
+            "observation_id": "public-0",
+            "revision": 0,
+            "prefix": [
+              "74c5b2fe59ade3db"
+            ],
+            "legal": [
+              "7bad92b704fcb355",
+              "78e4526427468668",
+              "1e1c5e128ef7666a",
+              "3e71860d1541b7ea",
+              "b5d8d5a9bec7ca6a",
+              "08d42792487816ed",
+              "90ffa5fa85beb053",
+              "a53bf2e4ad8920b3",
+              "150e06cf1eb5cadc",
+              "1186b4f37db315c3",
+              "5cce9367c61c7c55",
+              "617f9ff4ea326067",
+              "ac3c00065308f2ea",
+              "be955c512c0a6a59",
+              "f4e7cc871af59214",
+              "de99e4e2f16bc485",
+              "2c39184271da79b3",
+              "1e9da45d94d7b54b",
+              "e9a489d6be366ce2",
+              "6b22bad42a52cf8b",
+              "2c73d1f973fa9457",
+              "6e7fe92ad55c9476",
+              "01a7d519a690784e",
+              "dcd27332c86fb038",
+              "9c7a05918d63800d",
+              "3284277c7298bb0c",
+              "1c9238f69a8481d6",
+              "4ea5df3f78a2625d",
+              "d3423146d0f67120",
+              "e29215af60fb39fe",
+              "0c8e5823d810f3f7",
+              "a7c73b838ba6f0b5",
+              "0a1ff0099b6146be",
+              "f2e06a306b114b18",
+              "39f4c773fa2b2947",
+              "8d58ead2d2f414f8",
+              "eac2aadaa0fa7855",
+              "bd892ea154f36b88",
+              "60680d9c85bbf56f",
+              "ed655e378dcd1e0d",
+              "aca19178d3f810d5",
+              "1fc596927c17ed1e",
+              "c7c14cc1bb2699a2",
+              "0db520c82e49183a",
+              "d64d58eddfb6aac0",
+              "6b2036bfca6e172c",
+              "15a7c9d17f5f7017",
+              "2fa9fadc94b2c2e3",
+              "cccc8b2e680f60c9",
+              "c82666bb2fa2ddba",
+              "3fe163bcce99de24",
+              "8d76558c7598c191",
+              "017fb53a0577fd51",
+              "419fc34b1777bf2c",
+              "39a4feb4f030245c",
+              "57ed19b7fd469636",
+              "6472147c9a547479",
+              "5f79efb48cd9a3b5",
+              "34dd44a1ebf8dc76",
+              "af866c584b96de88",
+              "7f56ae3f4c8b42af",
+              "058d2cacfdbbe9ee",
+              "c839f7047168985f",
+              "b72a74bd885f119f",
+              "c6879ac9fab32978",
+              "f72537752ef750d0",
+              "edd9ac4d0212063f",
+              "47151ff6c459c6e1",
+              "f2ebf3511c61912b",
+              "25c428d919219ac9",
+              "e6e9f48f9eae056f",
+              "78fc3aade1371307",
+              "f395c81b7408c9d5",
+              "ddc57af16afe47d4",
+              "f3cd747ecda3e7bd",
+              "3f2b6fae234e9b1a",
+              "ba5417f0b7c390e9",
+              "027cea6b4534fa9c",
+              "1f9311eb6c9f6bb8",
+              "1491d75e66b081aa",
+              "825cb73a9c032a28"
+            ],
+            "rule_acceptable": [
+              "8d58ead2d2f414f8",
+              "d64d58eddfb6aac0",
+              "6b2036bfca6e172c",
+              "15a7c9d17f5f7017",
+              "2fa9fadc94b2c2e3",
+              "cccc8b2e680f60c9",
+              "c82666bb2fa2ddba",
+              "3fe163bcce99de24",
+              "8d76558c7598c191",
+              "017fb53a0577fd51",
+              "419fc34b1777bf2c",
+              "39a4feb4f030245c",
+              "57ed19b7fd469636"
+            ],
+            "selected": "8d58ead2d2f414f8",
+            "measured_success": [],
+            "measured_failure": [],
+            "judge": "libero-private-task-progress-rules/13",
+            "model_visible": false,
+            "physics_steps": 0,
+            "gpu_used": false,
+            "conditional_on_receipt_checks": [
+              {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e72",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              {
+                "metric": "angular_error_rad",
+                "anchor_id": "e72",
+                "minimum": 0.0,
+                "maximum": 0.05
+              }
+            ],
+            "requires_measurement": false,
+            "status": "labeled",
+            "predicted_robot": {
+              "eef_xyz_m": [
+                -0.0820868511210049,
+                -0.17628068586746604,
+                0.6848771061135553
+              ],
+              "eef_quat_xyzw": [
+                0.9575187407670253,
+                0.2883710475757413,
+                0.0,
+                0.0
+              ],
+              "gripper_opening_m": 0.0780791887356451,
+              "held_anchor_id": null,
+              "velocity_m_s": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "job": "9611_120",
+      "saved_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9611_120/microwave_close_libero_90_t33_s0_oracle_k4/private_prefix_state_0000.pkl.gz",
+        "sha256": "d6ac336dc8837e2e699b986ee232a6292653d9ec1d98b8359eaddc5df10f62c1",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "efc2e9856f7a4b92d242f119a15e6939965a553d20d764e3d25036ef7c594c47",
+        "model_visible": false
+      },
+      "prefix": [
+        "fedd1a7f39ead9b9"
+      ],
+      "complete_context_and_label_bytes_equal": true,
+      "arms": [
+        {
+          "workers": 1,
+          "wall_s": 14.53022573608905,
+          "contexts": [
+            {
+              "prefix": [],
+              "sha256": "24e6a88efe740cfb422dce0e8eddaf78b6508218ad4c292d4f1c385244e1186c",
+              "candidates": 58
+            },
+            {
+              "prefix": [
+                "fedd1a7f39ead9b9"
+              ],
+              "sha256": "e9e4b813f15dc098e96e42fc960e362881c8664740d3b71d612520ed26a80725",
+              "candidates": 57
+            }
+          ],
+          "label_sha256": "45e53e6fe30314bbc11cc5e45f4884f1b6e6c579330277169a7b2ced025c739b",
+          "label": {
+            "version": "libero-offline-prefix-label/1",
+            "legality_version": "public-request-legal/2",
+            "request_sha256": "efc2e9856f7a4b92d242f119a15e6939965a553d20d764e3d25036ef7c594c47",
+            "observation_id": "public-0",
+            "revision": 0,
+            "prefix": [
+              "fedd1a7f39ead9b9"
+            ],
+            "legal": [
+              "7cf7cc6e22bbb7f2",
+              "8201c724d3f34194",
+              "52b05fd5c514f7ae",
+              "61847fe1921eb908",
+              "5e308a4870e775ba",
+              "fb78b547e878199b",
+              "1048435c7f1927e8",
+              "e897fa0564fd1a3d",
+              "6f354f956632f7ce",
+              "3cde78857a8c7be8",
+              "95e5a3d344337410",
+              "6b73b26e470a7ddf",
+              "3e879be58899ceda",
+              "2cd64695c2a78ae0",
+              "91a344e1d04dc2ca",
+              "af866c584b96de88",
+              "7f56ae3f4c8b42af",
+              "058d2cacfdbbe9ee",
+              "c839f7047168985f",
+              "b72a74bd885f119f",
+              "c6879ac9fab32978",
+              "f72537752ef750d0",
+              "edd9ac4d0212063f",
+              "47151ff6c459c6e1",
+              "f2ebf3511c61912b",
+              "25c428d919219ac9",
+              "e6e9f48f9eae056f",
+              "78fc3aade1371307",
+              "f395c81b7408c9d5",
+              "ddc57af16afe47d4",
+              "f3cd747ecda3e7bd",
+              "3f2b6fae234e9b1a",
+              "ba5417f0b7c390e9",
+              "027cea6b4534fa9c",
+              "1f9311eb6c9f6bb8",
+              "1491d75e66b081aa",
+              "825cb73a9c032a28"
+            ],
+            "rule_acceptable": [
+              "027cea6b4534fa9c"
+            ],
+            "selected": "027cea6b4534fa9c",
+            "measured_success": [],
+            "measured_failure": [],
+            "judge": "libero-private-task-progress-rules/13",
+            "model_visible": false,
+            "physics_steps": 0,
+            "gpu_used": false,
+            "conditional_on_receipt_checks": [
+              {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e98",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              {
+                "metric": "angular_error_rad",
+                "anchor_id": "e98",
+                "minimum": 0.0,
+                "maximum": 0.05
+              }
+            ],
+            "requires_measurement": true,
+            "status": "labeled",
+            "predicted_robot": {
+              "eef_xyz_m": [
+                0.004715994298458093,
+                0.2928778049349785,
+                1.2272078943252565
+              ],
+              "eef_quat_xyzw": [
+                0.9999803471900419,
+                -0.001206171847988713,
+                -0.0018741065217044712,
+                -0.005859872686320075
+              ],
+              "gripper_opening_m": 0.07807918231225848,
+              "held_anchor_id": null,
+              "velocity_m_s": null
+            }
+          }
+        },
+        {
+          "workers": 4,
+          "wall_s": 6.351259362883866,
+          "contexts": [
+            {
+              "prefix": [],
+              "sha256": "24e6a88efe740cfb422dce0e8eddaf78b6508218ad4c292d4f1c385244e1186c",
+              "candidates": 58
+            },
+            {
+              "prefix": [
+                "fedd1a7f39ead9b9"
+              ],
+              "sha256": "e9e4b813f15dc098e96e42fc960e362881c8664740d3b71d612520ed26a80725",
+              "candidates": 57
+            }
+          ],
+          "label_sha256": "45e53e6fe30314bbc11cc5e45f4884f1b6e6c579330277169a7b2ced025c739b",
+          "label": {
+            "version": "libero-offline-prefix-label/1",
+            "legality_version": "public-request-legal/2",
+            "request_sha256": "efc2e9856f7a4b92d242f119a15e6939965a553d20d764e3d25036ef7c594c47",
+            "observation_id": "public-0",
+            "revision": 0,
+            "prefix": [
+              "fedd1a7f39ead9b9"
+            ],
+            "legal": [
+              "7cf7cc6e22bbb7f2",
+              "8201c724d3f34194",
+              "52b05fd5c514f7ae",
+              "61847fe1921eb908",
+              "5e308a4870e775ba",
+              "fb78b547e878199b",
+              "1048435c7f1927e8",
+              "e897fa0564fd1a3d",
+              "6f354f956632f7ce",
+              "3cde78857a8c7be8",
+              "95e5a3d344337410",
+              "6b73b26e470a7ddf",
+              "3e879be58899ceda",
+              "2cd64695c2a78ae0",
+              "91a344e1d04dc2ca",
+              "af866c584b96de88",
+              "7f56ae3f4c8b42af",
+              "058d2cacfdbbe9ee",
+              "c839f7047168985f",
+              "b72a74bd885f119f",
+              "c6879ac9fab32978",
+              "f72537752ef750d0",
+              "edd9ac4d0212063f",
+              "47151ff6c459c6e1",
+              "f2ebf3511c61912b",
+              "25c428d919219ac9",
+              "e6e9f48f9eae056f",
+              "78fc3aade1371307",
+              "f395c81b7408c9d5",
+              "ddc57af16afe47d4",
+              "f3cd747ecda3e7bd",
+              "3f2b6fae234e9b1a",
+              "ba5417f0b7c390e9",
+              "027cea6b4534fa9c",
+              "1f9311eb6c9f6bb8",
+              "1491d75e66b081aa",
+              "825cb73a9c032a28"
+            ],
+            "rule_acceptable": [
+              "027cea6b4534fa9c"
+            ],
+            "selected": "027cea6b4534fa9c",
+            "measured_success": [],
+            "measured_failure": [],
+            "judge": "libero-private-task-progress-rules/13",
+            "model_visible": false,
+            "physics_steps": 0,
+            "gpu_used": false,
+            "conditional_on_receipt_checks": [
+              {
+                "metric": "endpoint_error_m",
+                "anchor_id": "e98",
+                "minimum": 0.0,
+                "maximum": 0.012
+              },
+              {
+                "metric": "angular_error_rad",
+                "anchor_id": "e98",
+                "minimum": 0.0,
+                "maximum": 0.05
+              }
+            ],
+            "requires_measurement": true,
+            "status": "labeled",
+            "predicted_robot": {
+              "eef_xyz_m": [
+                0.004715994298458093,
+                0.2928778049349785,
+                1.2272078943252565
+              ],
+              "eef_quat_xyzw": [
+                0.9999803471900419,
+                -0.001206171847988713,
+                -0.0018741065217044712,
+                -0.005859872686320075
+              ],
+              "gripper_opening_m": 0.07807918231225848,
+              "held_anchor_id": null,
+              "velocity_m_s": null
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scope": "isolated offline CPU annotation; live planning remains serial",
+  "physics_steps": 0,
+  "rpc_calls": 0,
+  "gpu_used": false,
+  "training": false,
+  "script_sha256": "de601b918bcd5079d1dafcac3b613821e337a24240b5d27b13576b02faf55cc5"
+}

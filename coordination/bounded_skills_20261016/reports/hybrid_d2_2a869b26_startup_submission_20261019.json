@@ -1,0 +1,41 @@
+{
+  "job": "9928",
+  "startup_index": 0,
+  "prerequisite_job": "9791",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=0%1",
+    "--dependency=afterany:9791",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_hybrid_d2_startup_20261019_2a869b26,SOURCE_COMMIT=2a869b26f45b0671a70aee66136d19cbc08023be,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/hybrid_d2_20261019/preparation/D2_hybrid_manifest_2a869b26.json,STARTUP=1",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_hybrid_d2_startup_20261019_2a869b26/scripts/run_bounded_hybrid_d2_20261019.sbatch"
+  ],
+  "source_commit": "2a869b26f45b0671a70aee66136d19cbc08023be",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_hybrid_d2_startup_20261019_2a869b26",
+  "archive_sha256": "35c61ee663b7cc3191741e1a29bcee9b03157f7742a173e1bcb524152b155b21",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/hybrid_d2_20261019/preparation/D2_hybrid_manifest_2a869b26.json",
+    "sha256": "e6590dc0a901d5f3e551583d3df758eca9a4ad839cf873311727c90bebfa9ad4"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/hybrid_d2_20261019/preparation/2a869b26_startup_preflight.log",
+    "command": [
+      "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+      "-m",
+      "scripts.probe_bounded_hybrid_d2",
+      "--build-plan",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/hybrid_d2_20261019/preparation/D2_hybrid_manifest_2a869b26.json"
+    ],
+    "same_forty_registered_case_hashes": true
+  },
+  "replaced_pending_startup": "9817_0",
+  "replaced_state": "PENDING|(Dependency)",
+  "first_physical_vla_request": "pending",
+  "formal_array_submitted": false,
+  "scope": "D2 development only; startup calls VLA directly, no self branch",
+  "training": false,
+  "confirmation": false
+}

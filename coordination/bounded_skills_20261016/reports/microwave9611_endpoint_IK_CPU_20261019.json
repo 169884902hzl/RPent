@@ -1,0 +1,2265 @@
+{
+  "source_commit": "ede83b18",
+  "scope": "saved public pose and static robot endpoint IK diagnosis; global endpoint solve is NOT a screened continuous route",
+  "physics_steps": 0,
+  "rpc_calls": 0,
+  "gpu_used": false,
+  "training": false,
+  "records": [
+    {
+      "job": "9611_120",
+      "row": 1,
+      "choices_sha256": "b14b7091c8557a4d2cee51d0921b6c92a3913f6c6277da78fa48fedf70bda163",
+      "context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9611_120/microwave_close_libero_90_t33_s0_oracle_k4/private_prefix_state_0001.pkl.gz",
+        "sha256": "b12f92ece51ad9490045f4a3ecf2a68c67c5e3df0185915037c68e5d6590959f",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "d7f94a76d5610f190d57970c72f25b178f83f1ba4fe82df28554f1dc9e3c5f11",
+        "model_visible": false
+      },
+      "robot": {
+        "eef_xyz_m": [
+          0.005362670342192583,
+          0.29344879981517347,
+          1.2280531235830798
+        ],
+        "eef_quat_xyzw": [
+          0.9999817216292626,
+          -0.0015224163093235377,
+          -0.0036116207057652876,
+          -0.004603786684187465
+        ],
+        "gripper_opening_m": 0.07997619214236623,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          0.03556055414382027,
+          0.05227955188404065,
+          0.007175751385683108
+        ]
+      },
+      "microwave_anchors": [
+        {
+          "id": "e98",
+          "label": "microwave",
+          "frame": "world",
+          "xyz_m": [
+            0.08178535848855972,
+            0.2788388729095459,
+            1.0678668022155762
+          ],
+          "size_m": [
+            0.3307066410779953,
+            0.09556189298629758,
+            0.17308283090591425
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.294921875,
+          "cached": false,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e98",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "segmented_rgbd_bounds"
+            }
+          ]
+        },
+        {
+          "id": "e114",
+          "label": "microwave door",
+          "frame": "world",
+          "xyz_m": [
+            -0.1688275933265686,
+            0.13843873888254166,
+            1.0354836583137512
+          ],
+          "size_m": [
+            0.01764817804098129,
+            0.2516601427271962,
+            0.17843424439430233
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e114",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "measured_door_surface"
+            }
+          ]
+        }
+      ],
+      "route_failures": 16,
+      "endpoint_solutions": 16,
+      "candidates": [
+        {
+          "index": 0,
+          "yaw_deg": 0,
+          "path": "direct",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0045217047055935745,
+              "orientation_error_rad": 0.03177842307208252,
+              "joint_positions_rad": [
+                0.10011685801748366,
+                1.473606528769312,
+                0.2925859997089527,
+                -0.39138016904901707,
+                0.14109069529843915,
+                0.34125567393842127,
+                1.2113558944123803
+              ],
+              "function_evaluations": 11,
+              "joint_margin_min_rad": 0.28919347123068784,
+              "solution_found": true,
+              "method": "warm_damped_jacobian"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "yaw_deg": 0,
+          "path": "over",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0045217047055935745,
+              "orientation_error_rad": 0.03177842307208252,
+              "joint_positions_rad": [
+                0.10011685801748366,
+                1.473606528769312,
+                0.2925859997089527,
+                -0.39138016904901707,
+                0.14109069529843915,
+                0.34125567393842127,
+                1.2113558944123803
+              ],
+              "function_evaluations": 11,
+              "joint_margin_min_rad": 0.28919347123068784,
+              "solution_found": true,
+              "method": "warm_damped_jacobian"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "yaw_deg": 315,
+          "path": "direct",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0032583196929744894,
+              "orientation_error_rad": 0.028336744447391024,
+              "joint_positions_rad": [
+                0.13502637747218382,
+                1.4337480919186372,
+                0.1610346532854033,
+                -0.45378137655756473,
+                0.1964474910837802,
+                0.35597984185846504,
+                1.9080511362209114
+              ],
+              "function_evaluations": 14,
+              "joint_margin_min_rad": 0.32905190808136275,
+              "solution_found": true,
+              "method": "warm_damped_jacobian"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "yaw_deg": 315,
+          "path": "over",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0032583196929744894,
+              "orientation_error_rad": 0.028336744447391024,
+              "joint_positions_rad": [
+                0.13502637747218382,
+                1.4337480919186372,
+                0.1610346532854033,
+                -0.45378137655756473,
+                0.1964474910837802,
+                0.35597984185846504,
+                1.9080511362209114
+              ],
+              "function_evaluations": 14,
+              "joint_margin_min_rad": 0.32905190808136275,
+              "solution_found": true,
+              "method": "warm_damped_jacobian"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "yaw_deg": 45,
+          "path": "direct",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0010757625932948406,
+              "orientation_error_rad": 0.008257020580304017,
+              "joint_positions_rad": [
+                0.041564387405793324,
+                1.4570540695415002,
+                0.4306622352173104,
+                -0.47809344420195216,
+                0.07115750224082545,
+                0.3699494748113823,
+                0.4988562143875885
+              ],
+              "function_evaluations": 12,
+              "joint_margin_min_rad": 0.30574593045849974,
+              "solution_found": true,
+              "method": "warm_damped_jacobian"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "yaw_deg": 45,
+          "path": "over",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0010757625932948406,
+              "orientation_error_rad": 0.008257020580304017,
+              "joint_positions_rad": [
+                0.041564387405793324,
+                1.4570540695415002,
+                0.4306622352173104,
+                -0.47809344420195216,
+                0.07115750224082545,
+                0.3699494748113823,
+                0.4988562143875885
+              ],
+              "function_evaluations": 12,
+              "joint_margin_min_rad": 0.30574593045849974,
+              "solution_found": true,
+              "method": "warm_damped_jacobian"
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "yaw_deg": 270,
+          "path": "direct",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.015611362252445854,
+              "orientation_error_rad": 0.12345337967647071,
+              "joint_positions_rad": [
+                0.21554507217067073,
+                1.0939707626704478,
+                -0.04630516486257223,
+                -1.0210695298305708,
+                0.2335223216129922,
+                0.6738582146185688,
+                2.494394479002651
+              ],
+              "joint_margin_min_rad": 0.4029055209973489,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.0008559289225947854,
+              "orientation_error_rad": 0.004496266141534459,
+              "joint_positions_rad": [
+                0.024294919525219234,
+                1.4741340920860753,
+                0.5089013817750782,
+                -0.4672381905200468,
+                0.018632145161884994,
+                0.36581158508216954,
+                2.8804712828875787
+              ],
+              "joint_margin_min_rad": 0.016828717112421288,
+              "function_evaluations": 120,
+              "solution_found": true
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "yaw_deg": 270,
+          "path": "over",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.015611362252445854,
+              "orientation_error_rad": 0.12345337967647071,
+              "joint_positions_rad": [
+                0.21554507217067073,
+                1.0939707626704478,
+                -0.04630516486257223,
+                -1.0210695298305708,
+                0.2335223216129922,
+                0.6738582146185688,
+                2.494394479002651
+              ],
+              "joint_margin_min_rad": 0.4029055209973489,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.0008559289225947854,
+              "orientation_error_rad": 0.004496266141534459,
+              "joint_positions_rad": [
+                0.024294919525219234,
+                1.4741340920860753,
+                0.5089013817750782,
+                -0.4672381905200468,
+                0.018632145161884994,
+                0.36581158508216954,
+                2.8804712828875787
+              ],
+              "joint_margin_min_rad": 0.016828717112421288,
+              "function_evaluations": 120,
+              "solution_found": true
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "yaw_deg": 90,
+          "path": "direct",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0022832789620674783,
+              "orientation_error_rad": 0.026362728082348595,
+              "joint_positions_rad": [
+                -0.010544907936891237,
+                1.4710224123615392,
+                0.5817564003858867,
+                -0.4962161599398773,
+                0.003381167921522925,
+                0.3853610616467492,
+                -0.18818587894374134
+              ],
+              "function_evaluations": 15,
+              "joint_margin_min_rad": 0.29177758763846073,
+              "solution_found": true,
+              "method": "warm_damped_jacobian"
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "yaw_deg": 90,
+          "path": "over",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0022832789620674783,
+              "orientation_error_rad": 0.026362728082348595,
+              "joint_positions_rad": [
+                -0.010544907936891237,
+                1.4710224123615392,
+                0.5817564003858867,
+                -0.4962161599398773,
+                0.003381167921522925,
+                0.3853610616467492,
+                -0.18818587894374134
+              ],
+              "function_evaluations": 15,
+              "joint_margin_min_rad": 0.29177758763846073,
+              "solution_found": true,
+              "method": "warm_damped_jacobian"
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "yaw_deg": 225,
+          "path": "direct",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.005352753659021961,
+              "orientation_error_rad": 0.02682543124388505,
+              "joint_positions_rad": [
+                0.4921671171616743,
+                1.6391386183257992,
+                -1.4097582837773526,
+                -0.4669997476608962,
+                1.2146760228898035,
+                0.16532247045439294,
+                2.8972989999998076
+              ],
+              "joint_margin_min_rad": 1.0000001924304058e-06,
+              "function_evaluations": 39,
+              "solution_found": true
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "yaw_deg": 225,
+          "path": "over",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.005352753659021961,
+              "orientation_error_rad": 0.02682543124388505,
+              "joint_positions_rad": [
+                0.4921671171616743,
+                1.6391386183257992,
+                -1.4097582837773526,
+                -0.4669997476608962,
+                1.2146760228898035,
+                0.16532247045439294,
+                2.8972989999998076
+              ],
+              "joint_margin_min_rad": 1.0000001924304058e-06,
+              "function_evaluations": 39,
+              "solution_found": true
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "yaw_deg": 135,
+          "path": "direct",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0008543938527902565,
+              "orientation_error_rad": 0.004488384239422437,
+              "joint_positions_rad": [
+                0.015579481079490915,
+                1.479330346124943,
+                0.5413291081279471,
+                -0.46700332969706937,
+                -0.0004614924947593141,
+                0.3657623266540722,
+                -1.031867162574572
+              ],
+              "joint_margin_min_rad": 0.28346965387505696,
+              "function_evaluations": 66,
+              "solution_found": true
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "yaw_deg": 135,
+          "path": "over",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.0008543938527902565,
+              "orientation_error_rad": 0.004488384239422437,
+              "joint_positions_rad": [
+                0.015579481079490915,
+                1.479330346124943,
+                0.5413291081279471,
+                -0.46700332969706937,
+                -0.0004614924947593141,
+                0.3657623266540722,
+                -1.031867162574572
+              ],
+              "joint_margin_min_rad": 0.28346965387505696,
+              "function_evaluations": 66,
+              "solution_found": true
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "yaw_deg": 180,
+          "path": "direct",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.025067057831944056,
+              "orientation_error_rad": 0.12525906628606814,
+              "joint_positions_rad": [
+                0.7214666846405644,
+                1.7627989999999998,
+                -1.6536954204582495,
+                -0.7054810888460559,
+                0.7967000478736269,
+                0.18793618222204705,
+                2.8972989999999994
+              ],
+              "joint_margin_min_rad": 1.000000000139778e-06,
+              "function_evaluations": 33,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.02506661392292783,
+              "orientation_error_rad": 0.12526301461929096,
+              "joint_positions_rad": [
+                0.7214745204782204,
+                1.7627989999999998,
+                -1.65369376991293,
+                -0.7054931559261143,
+                0.7966996318474294,
+                0.18794641127713962,
+                2.8972989999927643
+              ],
+              "joint_margin_min_rad": 1.000000000139778e-06,
+              "function_evaluations": 38,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.0008543931793656657,
+              "orientation_error_rad": 0.004488388425805246,
+              "joint_positions_rad": [
+                0.015987224712064974,
+                1.47908815423225,
+                0.539812791186681,
+                -0.4670009531624737,
+                0.0004332480468781645,
+                0.3657612546523555,
+                -1.817949107955648
+              ],
+              "joint_margin_min_rad": 0.2837118457677499,
+              "function_evaluations": 71,
+              "solution_found": true
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "yaw_deg": 180,
+          "path": "over",
+          "contact_xyz_m": [
+            -0.1683255434036255,
+            0.13536928594112396,
+            1.0768755674362183
+          ],
+          "eef_target_xyz_m": [
+            -0.1590992439172635,
+            0.13601733641587255,
+            1.076883216848091
+          ],
+          "approach_xyz_m": [
+            -0.03939420909923655,
+            0.14442535576949186,
+            1.076982462825954
+          ],
+          "normal_xyz": [
+            0.9975419568168912,
+            0.07006682794682767,
+            0.0008270498155239836
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": true,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.025067057831944056,
+              "orientation_error_rad": 0.12525906628606814,
+              "joint_positions_rad": [
+                0.7214666846405644,
+                1.7627989999999998,
+                -1.6536954204582495,
+                -0.7054810888460559,
+                0.7967000478736269,
+                0.18793618222204705,
+                2.8972989999999994
+              ],
+              "joint_margin_min_rad": 1.000000000139778e-06,
+              "function_evaluations": 33,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.02506661392292783,
+              "orientation_error_rad": 0.12526301461929096,
+              "joint_positions_rad": [
+                0.7214745204782204,
+                1.7627989999999998,
+                -1.65369376991293,
+                -0.7054931559261143,
+                0.7966996318474294,
+                0.18794641127713962,
+                2.8972989999927643
+              ],
+              "joint_margin_min_rad": 1.000000000139778e-06,
+              "function_evaluations": 38,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.0008543931793656657,
+              "orientation_error_rad": 0.004488388425805246,
+              "joint_positions_rad": [
+                0.015987224712064974,
+                1.47908815423225,
+                0.539812791186681,
+                -0.4670009531624737,
+                0.0004332480468781645,
+                0.3657612546523555,
+                -1.817949107955648
+              ],
+              "joint_margin_min_rad": 0.2837118457677499,
+              "function_evaluations": 71,
+              "solution_found": true
+            }
+          ]
+        }
+      ],
+      "cpu_s": 1.403006261214614
+    },
+    {
+      "job": "9611_140",
+      "row": 20,
+      "choices_sha256": "a15e84cd9dcdc73e3915fffc7a2513eb3c21761948c3aa3d9fc4583c79477452",
+      "context": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9611_140/microwave_open_libero_90_t35_s0_oracle_k4/private_prefix_state_0020.pkl.gz",
+        "sha256": "1da2f02691ca619cdf618fcf9ab1056c573762715e9e9d44b291b47170a73db7",
+        "version": "libero-offline-prefix-label/1",
+        "request_sha256": "c144cabeacd6a4f5251a0ef9fcf9cba0663b56fec9df7ea32d483a5b4b7e2155",
+        "model_visible": false
+      },
+      "robot": {
+        "eef_xyz_m": [
+          0.021624732378837348,
+          0.10140204418330974,
+          1.1021480797630607
+        ],
+        "eef_quat_xyzw": [
+          0.5016286594664969,
+          0.49924521653998455,
+          -0.49998967432012387,
+          0.49913247473696276
+        ],
+        "gripper_opening_m": 0.07999720706616995,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          -3.679295217254719e-05,
+          -0.00016172667419526939,
+          0.03468683452112776
+        ]
+      },
+      "microwave_anchors": [
+        {
+          "id": "e98",
+          "label": "microwave",
+          "frame": "world",
+          "xyz_m": [
+            0.08692846447229385,
+            -0.19099070330460866,
+            1.0909011463324227
+          ],
+          "size_m": [
+            0.31951608684233257,
+            0.31109817608880497,
+            0.16831890618801115
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.294921875,
+          "cached": false,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:25:e98",
+              "capture_step": 25,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "measured_appliance_surface_union"
+            }
+          ]
+        },
+        {
+          "id": "e114",
+          "label": "microwave door",
+          "frame": "world",
+          "xyz_m": [
+            0.11366542428731918,
+            -0.108363326638937,
+            1.0413160920143127
+          ],
+          "size_m": [
+            0.22108427815139292,
+            0.11927954871207475,
+            0.17635303974151606
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:25:e114",
+              "capture_step": 25,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "measured_door_surface"
+            }
+          ]
+        }
+      ],
+      "route_failures": 16,
+      "endpoint_solutions": 0,
+      "candidates": [
+        {
+          "index": 0,
+          "yaw_deg": 0,
+          "path": "direct",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.043727911912123746,
+              "orientation_error_rad": 0.4185877280966943,
+              "joint_positions_rad": [
+                0.3762634782975323,
+                1.7360006116066826,
+                -1.3555031720275386,
+                -0.46709601255369076,
+                -0.019183982941554732,
+                1.6137594624574414,
+                -0.5188385156781987
+              ],
+              "joint_margin_min_rad": 0.026799388393317303,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372799943091444,
+              "orientation_error_rad": 0.4185927828624654,
+              "joint_positions_rad": [
+                0.3748692587831588,
+                1.732836419751696,
+                -1.343998639085459,
+                -0.4658895060699357,
+                -0.031134711422551947,
+                1.6131505990211874,
+                -0.5165797264832037
+              ],
+              "joint_margin_min_rad": 0.02996358024830381,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372858146677492,
+              "orientation_error_rad": 0.41858560342382745,
+              "joint_positions_rad": [
+                0.37632180749346267,
+                1.7352353184322427,
+                -1.3529456874525805,
+                -0.46749659371338137,
+                -0.021788484887120225,
+                1.6139272456080063,
+                -0.518332192766213
+              ],
+              "joint_margin_min_rad": 0.027564681567757265,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "yaw_deg": 0,
+          "path": "over",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.043727911912123746,
+              "orientation_error_rad": 0.4185877280966943,
+              "joint_positions_rad": [
+                0.3762634782975323,
+                1.7360006116066826,
+                -1.3555031720275386,
+                -0.46709601255369076,
+                -0.019183982941554732,
+                1.6137594624574414,
+                -0.5188385156781987
+              ],
+              "joint_margin_min_rad": 0.026799388393317303,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372799943091444,
+              "orientation_error_rad": 0.4185927828624654,
+              "joint_positions_rad": [
+                0.3748692587831588,
+                1.732836419751696,
+                -1.343998639085459,
+                -0.4658895060699357,
+                -0.031134711422551947,
+                1.6131505990211874,
+                -0.5165797264832037
+              ],
+              "joint_margin_min_rad": 0.02996358024830381,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372858146677492,
+              "orientation_error_rad": 0.41858560342382745,
+              "joint_positions_rad": [
+                0.37632180749346267,
+                1.7352353184322427,
+                -1.3529456874525805,
+                -0.46749659371338137,
+                -0.021788484887120225,
+                1.6139272456080063,
+                -0.518332192766213
+              ],
+              "joint_margin_min_rad": 0.027564681567757265,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "yaw_deg": 45,
+          "path": "direct",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.043727983066729294,
+              "orientation_error_rad": 0.4185877058701173,
+              "joint_positions_rad": [
+                0.3762313041299757,
+                1.7357380450600208,
+                -1.3545896076021529,
+                -0.4671413934694395,
+                -0.020127955954320695,
+                1.613776104349695,
+                -1.3040546153913377
+              ],
+              "joint_margin_min_rad": 0.027061954939979094,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.0437280553277429,
+              "orientation_error_rad": 0.4185947411251038,
+              "joint_positions_rad": [
+                0.3753194982548635,
+                1.7313477574554632,
+                -1.3392383779457213,
+                -0.4672952649539541,
+                -0.03594779785461908,
+                1.6137567752159223,
+                -1.3010491945820344
+              ],
+              "joint_margin_min_rad": 0.03145224254453671,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.043745245686961906,
+              "orientation_error_rad": 0.41851215602470054,
+              "joint_positions_rad": [
+                0.3756095309673751,
+                1.7327782534146332,
+                -1.344013631858567,
+                -0.4672139836976379,
+                -0.031173645036098475,
+                1.6136670062058487,
+                -1.3019099134614753
+              ],
+              "joint_margin_min_rad": 0.030021746585366715,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "yaw_deg": 45,
+          "path": "over",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.043727983066729294,
+              "orientation_error_rad": 0.4185877058701173,
+              "joint_positions_rad": [
+                0.3762313041299757,
+                1.7357380450600208,
+                -1.3545896076021529,
+                -0.4671413934694395,
+                -0.020127955954320695,
+                1.613776104349695,
+                -1.3040546153913377
+              ],
+              "joint_margin_min_rad": 0.027061954939979094,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.0437280553277429,
+              "orientation_error_rad": 0.4185947411251038,
+              "joint_positions_rad": [
+                0.3753194982548635,
+                1.7313477574554632,
+                -1.3392383779457213,
+                -0.4672952649539541,
+                -0.03594779785461908,
+                1.6137567752159223,
+                -1.3010491945820344
+              ],
+              "joint_margin_min_rad": 0.03145224254453671,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.043745245686961906,
+              "orientation_error_rad": 0.41851215602470054,
+              "joint_positions_rad": [
+                0.3756095309673751,
+                1.7327782534146332,
+                -1.344013631858567,
+                -0.4672139836976379,
+                -0.031173645036098475,
+                1.6136670062058487,
+                -1.3019099134614753
+              ],
+              "joint_margin_min_rad": 0.030021746585366715,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "yaw_deg": 315,
+          "path": "direct",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.04373162357075777,
+              "orientation_error_rad": 0.4185716926605355,
+              "joint_positions_rad": [
+                0.37617015103420676,
+                1.7350528891656152,
+                -1.3521943453648244,
+                -0.4672995226679865,
+                -0.022613898199994976,
+                1.6138191489279352,
+                0.26722579109042993
+              ],
+              "joint_margin_min_rad": 0.027747110834384747,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04380005550481939,
+              "orientation_error_rad": 0.4191197616462649,
+              "joint_positions_rad": [
+                -0.13077138041726838,
+                1.7295798646570375,
+                1.3554784327616298,
+                -0.45899752224879675,
+                -2.808135178073731,
+                1.2055159003197846,
+                0.32386042055267017
+              ],
+              "joint_margin_min_rad": 0.03322013534296242,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.0437300663333555,
+              "orientation_error_rad": 0.4185777594923981,
+              "joint_positions_rad": [
+                0.37633638709669115,
+                1.7359755690849081,
+                -1.3554303110407615,
+                -0.46723357709233443,
+                -0.01926613633329706,
+                1.6138109968733134,
+                0.26658444344406673
+              ],
+              "joint_margin_min_rad": 0.02682443091509179,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "yaw_deg": 315,
+          "path": "over",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.04373162357075777,
+              "orientation_error_rad": 0.4185716926605355,
+              "joint_positions_rad": [
+                0.37617015103420676,
+                1.7350528891656152,
+                -1.3521943453648244,
+                -0.4672995226679865,
+                -0.022613898199994976,
+                1.6138191489279352,
+                0.26722579109042993
+              ],
+              "joint_margin_min_rad": 0.027747110834384747,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04380005550481939,
+              "orientation_error_rad": 0.4191197616462649,
+              "joint_positions_rad": [
+                -0.13077138041726838,
+                1.7295798646570375,
+                1.3554784327616298,
+                -0.45899752224879675,
+                -2.808135178073731,
+                1.2055159003197846,
+                0.32386042055267017
+              ],
+              "joint_margin_min_rad": 0.03322013534296242,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.0437300663333555,
+              "orientation_error_rad": 0.4185777594923981,
+              "joint_positions_rad": [
+                0.37633638709669115,
+                1.7359755690849081,
+                -1.3554303110407615,
+                -0.46723357709233443,
+                -0.01926613633329706,
+                1.6138109968733134,
+                0.26658444344406673
+              ],
+              "joint_margin_min_rad": 0.02682443091509179,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "yaw_deg": 90,
+          "path": "direct",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.04372770709841584,
+              "orientation_error_rad": 0.41859341362547053,
+              "joint_positions_rad": [
+                0.374991518035019,
+                1.7331939356369865,
+                -1.3452827408560772,
+                -0.4659584480442522,
+                -0.029800091633927536,
+                1.6131903202678535,
+                -2.087627150211125
+              ],
+              "joint_margin_min_rad": 0.029606064363013385,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.043727971140757375,
+              "orientation_error_rad": 0.4185904926817488,
+              "joint_positions_rad": [
+                0.3758564097038261,
+                1.7338040982736334,
+                -1.3478437450983918,
+                -0.46724230732577676,
+                -0.027073871629246946,
+                1.6137889353454655,
+                -2.088122757113331
+              ],
+              "joint_margin_min_rad": 0.02899590172636657,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372753967426233,
+              "orientation_error_rad": 0.41858647534832993,
+              "joint_positions_rad": [
+                -2.764408762899733,
+                -1.7405288912010952,
+                1.7702614340847116,
+                -0.46702782366934986,
+                -0.0028732962415799522,
+                1.6137678609497355,
+                -2.09273895612596
+              ],
+              "joint_margin_min_rad": 0.022271108798904704,
+              "function_evaluations": 119,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "yaw_deg": 90,
+          "path": "over",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.04372770709841584,
+              "orientation_error_rad": 0.41859341362547053,
+              "joint_positions_rad": [
+                0.374991518035019,
+                1.7331939356369865,
+                -1.3452827408560772,
+                -0.4659584480442522,
+                -0.029800091633927536,
+                1.6131903202678535,
+                -2.087627150211125
+              ],
+              "joint_margin_min_rad": 0.029606064363013385,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.043727971140757375,
+              "orientation_error_rad": 0.4185904926817488,
+              "joint_positions_rad": [
+                0.3758564097038261,
+                1.7338040982736334,
+                -1.3478437450983918,
+                -0.46724230732577676,
+                -0.027073871629246946,
+                1.6137889353454655,
+                -2.088122757113331
+              ],
+              "joint_margin_min_rad": 0.02899590172636657,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372753967426233,
+              "orientation_error_rad": 0.41858647534832993,
+              "joint_positions_rad": [
+                -2.764408762899733,
+                -1.7405288912010952,
+                1.7702614340847116,
+                -0.46702782366934986,
+                -0.0028732962415799522,
+                1.6137678609497355,
+                -2.09273895612596
+              ],
+              "joint_margin_min_rad": 0.022271108798904704,
+              "function_evaluations": 119,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "yaw_deg": 270,
+          "path": "direct",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.04372665212130985,
+              "orientation_error_rad": 0.4186001213495928,
+              "joint_positions_rad": [
+                0.37483216689396326,
+                1.7321615316429966,
+                -1.3417367668645104,
+                -0.4661001869649859,
+                -0.033427698016168836,
+                1.6132383017892742,
+                1.054645111452671
+              ],
+              "joint_margin_min_rad": 0.030638468357003346,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372927780793519,
+              "orientation_error_rad": 0.41858384347362937,
+              "joint_positions_rad": [
+                0.3760619627901684,
+                1.734190292033921,
+                -1.3492542498103086,
+                -0.467450338152406,
+                -0.025609807717399555,
+                1.6138846850306958,
+                1.0531904399992849
+              ],
+              "joint_margin_min_rad": 0.02860970796607898,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372761043379396,
+              "orientation_error_rad": 0.41859040559057037,
+              "joint_positions_rad": [
+                0.3755857567570459,
+                1.7352895670702309,
+                -1.3527280943087086,
+                -0.46617432889105664,
+                -0.022105539729677687,
+                1.6133294177936301,
+                1.0525079385691996
+              ],
+              "joint_margin_min_rad": 0.02751043292976907,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "yaw_deg": 270,
+          "path": "over",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.04372665212130985,
+              "orientation_error_rad": 0.4186001213495928,
+              "joint_positions_rad": [
+                0.37483216689396326,
+                1.7321615316429966,
+                -1.3417367668645104,
+                -0.4661001869649859,
+                -0.033427698016168836,
+                1.6132383017892742,
+                1.054645111452671
+              ],
+              "joint_margin_min_rad": 0.030638468357003346,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372927780793519,
+              "orientation_error_rad": 0.41858384347362937,
+              "joint_positions_rad": [
+                0.3760619627901684,
+                1.734190292033921,
+                -1.3492542498103086,
+                -0.467450338152406,
+                -0.025609807717399555,
+                1.6138846850306958,
+                1.0531904399992849
+              ],
+              "joint_margin_min_rad": 0.02860970796607898,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372761043379396,
+              "orientation_error_rad": 0.41859040559057037,
+              "joint_positions_rad": [
+                0.3755857567570459,
+                1.7352895670702309,
+                -1.3527280943087086,
+                -0.46617432889105664,
+                -0.022105539729677687,
+                1.6133294177936301,
+                1.0525079385691996
+              ],
+              "joint_margin_min_rad": 0.02751043292976907,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "yaw_deg": 135,
+          "path": "direct",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.043809969954436444,
+              "orientation_error_rad": 0.41920918156997555,
+              "joint_positions_rad": [
+                -0.134872507858164,
+                1.7223112894941277,
+                1.3336685848053649,
+                -0.4687886736734097,
+                -2.784463829251801,
+                1.2029794413404533,
+                -2.8115068528985807
+              ],
+              "joint_margin_min_rad": 0.040488710505872216,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04612199088989441,
+              "orientation_error_rad": 0.6101322298400755,
+              "joint_positions_rad": [
+                0.4484158207312321,
+                1.7627989971431346,
+                -1.5842099037523452,
+                -0.6002184176451705,
+                0.313569472780895,
+                1.673060648893314,
+                2.897298999999975
+              ],
+              "joint_margin_min_rad": 1.0000000250087737e-06,
+              "function_evaluations": 35,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04374530451081242,
+              "orientation_error_rad": 0.41852280000930414,
+              "joint_positions_rad": [
+                0.3749598191914478,
+                1.728382552979584,
+                -1.3286344399661172,
+                -0.46791814018235534,
+                -0.04706500850972717,
+                1.6138657341352192,
+                -2.86913014539608
+              ],
+              "joint_margin_min_rad": 0.028169854603920186,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "yaw_deg": 135,
+          "path": "over",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.043809969954436444,
+              "orientation_error_rad": 0.41920918156997555,
+              "joint_positions_rad": [
+                -0.134872507858164,
+                1.7223112894941277,
+                1.3336685848053649,
+                -0.4687886736734097,
+                -2.784463829251801,
+                1.2029794413404533,
+                -2.8115068528985807
+              ],
+              "joint_margin_min_rad": 0.040488710505872216,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04612199088989441,
+              "orientation_error_rad": 0.6101322298400755,
+              "joint_positions_rad": [
+                0.4484158207312321,
+                1.7627989971431346,
+                -1.5842099037523452,
+                -0.6002184176451705,
+                0.313569472780895,
+                1.673060648893314,
+                2.897298999999975
+              ],
+              "joint_margin_min_rad": 1.0000000250087737e-06,
+              "function_evaluations": 35,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04374530451081242,
+              "orientation_error_rad": 0.41852280000930414,
+              "joint_positions_rad": [
+                0.3749598191914478,
+                1.728382552979584,
+                -1.3286344399661172,
+                -0.46791814018235534,
+                -0.04706500850972717,
+                1.6138657341352192,
+                -2.86913014539608
+              ],
+              "joint_margin_min_rad": 0.028169854603920186,
+              "function_evaluations": 120,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "yaw_deg": 225,
+          "path": "direct",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.04372823653332527,
+              "orientation_error_rad": 0.41858680719860736,
+              "joint_positions_rad": [
+                0.3762964268278378,
+                1.7355208384289846,
+                -1.3539037484142438,
+                -0.46734009222765505,
+                -0.02080844912101638,
+                1.6138619346013496,
+                1.8376690836561775
+              ],
+              "joint_margin_min_rad": 0.027279161571015287,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04373262315756833,
+              "orientation_error_rad": 0.41859091694199335,
+              "joint_positions_rad": [
+                0.37444863181497373,
+                1.7253099307018807,
+                -1.318348251726801,
+                -0.4683635643076472,
+                -0.057456591433967835,
+                1.61402027417063,
+                1.844707353510369
+              ],
+              "joint_margin_min_rad": 0.037490069298119266,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.07222957451365428,
+              "orientation_error_rad": 1.162273902001803,
+              "joint_positions_rad": [
+                0.5432919861631454,
+                1.6501881024277656,
+                -1.2001509933321473,
+                -0.8332487755187403,
+                2.897298997867928,
+                3.7524989999999994,
+                -1.181485163304033
+              ],
+              "joint_margin_min_rad": 1.0000000005838672e-06,
+              "function_evaluations": 36,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "yaw_deg": 225,
+          "path": "over",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.04372823653332527,
+              "orientation_error_rad": 0.41858680719860736,
+              "joint_positions_rad": [
+                0.3762964268278378,
+                1.7355208384289846,
+                -1.3539037484142438,
+                -0.46734009222765505,
+                -0.02080844912101638,
+                1.6138619346013496,
+                1.8376690836561775
+              ],
+              "joint_margin_min_rad": 0.027279161571015287,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04373262315756833,
+              "orientation_error_rad": 0.41859091694199335,
+              "joint_positions_rad": [
+                0.37444863181497373,
+                1.7253099307018807,
+                -1.318348251726801,
+                -0.4683635643076472,
+                -0.057456591433967835,
+                1.61402027417063,
+                1.844707353510369
+              ],
+              "joint_margin_min_rad": 0.037490069298119266,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.07222957451365428,
+              "orientation_error_rad": 1.162273902001803,
+              "joint_positions_rad": [
+                0.5432919861631454,
+                1.6501881024277656,
+                -1.2001509933321473,
+                -0.8332487755187403,
+                2.897298997867928,
+                3.7524989999999994,
+                -1.181485163304033
+              ],
+              "joint_margin_min_rad": 1.0000000005838672e-06,
+              "function_evaluations": 36,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "yaw_deg": 180,
+          "path": "direct",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.051845542969333615,
+              "orientation_error_rad": 0.6210188295745118,
+              "joint_positions_rad": [
+                0.00857987432752995,
+                1.3169695876940335,
+                0.23559888894950326,
+                -0.811891114729509,
+                -1.5707588359221343,
+                1.4389317590717376,
+                -2.897298999998581
+              ],
+              "joint_margin_min_rad": 1.0000014190048034e-06,
+              "function_evaluations": 31,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372976856534816,
+              "orientation_error_rad": 0.418581503359546,
+              "joint_positions_rad": [
+                0.3761573018199628,
+                1.7342562597620257,
+                -1.349527436050049,
+                -0.4675922121593346,
+                -0.025318567722363766,
+                1.6139482626367494,
+                2.6239331505224874
+              ],
+              "joint_margin_min_rad": 0.028543740237974236,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.07222920802098876,
+              "orientation_error_rad": 1.1622749143070032,
+              "joint_positions_rad": [
+                0.5432919848601347,
+                1.6501931786986979,
+                -1.2001572317930729,
+                -0.8332462715272964,
+                2.8972989901790362,
+                3.752498999999834,
+                -0.39608949729591225
+              ],
+              "joint_margin_min_rad": 1.0000001657850532e-06,
+              "function_evaluations": 33,
+              "solution_found": false
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "yaw_deg": 180,
+          "path": "over",
+          "contact_xyz_m": [
+            0.14589588344097137,
+            -0.1243109256029129,
+            1.040461778640747
+          ],
+          "eef_target_xyz_m": [
+            0.15018634782112564,
+            -0.11611724772560174,
+            1.040475504122759
+          ],
+          "approach_xyz_m": [
+            0.20585223952245643,
+            -0.009809784257604398,
+            1.040653583026933
+          ],
+          "normal_xyz": [
+            0.4638824308444234,
+            0.8858955288999779,
+            0.0014839908681167453
+          ],
+          "recorded_route_reason": "numerical_ik_not_found",
+          "endpoint_solution_found": false,
+          "endpoint_solves": [
+            {
+              "position_error_m": 0.051845542969333615,
+              "orientation_error_rad": 0.6210188295745118,
+              "joint_positions_rad": [
+                0.00857987432752995,
+                1.3169695876940335,
+                0.23559888894950326,
+                -0.811891114729509,
+                -1.5707588359221343,
+                1.4389317590717376,
+                -2.897298999998581
+              ],
+              "joint_margin_min_rad": 1.0000014190048034e-06,
+              "function_evaluations": 31,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.04372976856534816,
+              "orientation_error_rad": 0.418581503359546,
+              "joint_positions_rad": [
+                0.3761573018199628,
+                1.7342562597620257,
+                -1.349527436050049,
+                -0.4675922121593346,
+                -0.025318567722363766,
+                1.6139482626367494,
+                2.6239331505224874
+              ],
+              "joint_margin_min_rad": 0.028543740237974236,
+              "function_evaluations": 120,
+              "solution_found": false
+            },
+            {
+              "position_error_m": 0.07222920802098876,
+              "orientation_error_rad": 1.1622749143070032,
+              "joint_positions_rad": [
+                0.5432919848601347,
+                1.6501931786986979,
+                -1.2001572317930729,
+                -0.8332462715272964,
+                2.8972989901790362,
+                3.752498999999834,
+                -0.39608949729591225
+              ],
+              "joint_margin_min_rad": 1.0000001657850532e-06,
+              "function_evaluations": 33,
+              "solution_found": false
+            }
+          ]
+        }
+      ],
+      "cpu_s": 5.173390184529126
+    }
+  ],
+  "script_sha256": "2500a76e525385d5971f3ccbc2cfaa4640438f6e8e8e54420c90a4dc8ea496bf"
+}

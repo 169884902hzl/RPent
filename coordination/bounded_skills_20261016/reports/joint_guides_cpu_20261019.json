@@ -1,0 +1,32 @@
+{
+  "source_commit": "6958aefe1ef60c8b9f92e029f308762fdadb81f7",
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit_tests/robots/libero/test_bounded_joint_routes.py",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py",
+    "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+    "tests/unit_tests/robots/libero/test_bounded_motion.py",
+    "tests/unit_tests/robots/libero/test_bounded_offline_labels.py"
+  ],
+  "exit_code": 0,
+  "summary": "291 passed, 1 warning in 226.48s",
+  "log": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/joint_guides_cpu_20261019.log",
+    "sha256": "1090fd2a08e1ee461c24ddcb1d59d19a129e4fa40103d11980da69b825323e5e"
+  },
+  "files": {
+    "robots/libero/bounded_joint_routes.py": "0fe64ff68bb4f258b5f3b83807c7f10199871d7cbfee3ba1b207d1ce1e9add09",
+    "robots/libero/bounded_skills.py": "3ed9d312f2a92584ca8818105e3545b0268287a72a8f33bd7fe452cafaa233a5",
+    "tests/unit_tests/robots/libero/test_bounded_joint_routes.py": "05305581e0eee2fdc6b0f1fb9e6824e437c8f94d42918eb5e54e40a7976e123d",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "2905f9e3e8b144796fe30f7c740451737a62ba512c73705e50ff85a3e4c68f55",
+    "SKILL_PACKAGE_SPEC.md": "b2c41f5dc861b0b2276bb29a7de844572816ad8a39bf5a3eab7d01996df9e9a8",
+    "rpent/skill_package/schema.json": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa"
+  },
+  "training": false,
+  "gpu_used": false,
+  "physics_steps": 0,
+  "scope": "Offline CPU unit tests; no physical microwave result"
+}
