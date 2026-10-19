@@ -15,6 +15,25 @@ launcher = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(launcher)
 
 
+@pytest.mark.parametrize('job_name', ['rd-bounded-shared-batch', 'rf-user-work', 'c5-user-work', 'c6-user-work'])
+def test_owned_slot_uses_real_allocation_name_and_rejects_protected_work(tmp_path, monkeypatch, job_name):
+    path = _PATH.with_name('run_in_owned_gpu_slots_20261019.py')
+    spec = importlib.util.spec_from_file_location('owned_slot_launcher', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    monkeypatch.setenv('SLURM_JOB_ID', '10446')
+    # srun names the step after its command, not after the parent allocation.
+    monkeypatch.setenv('SLURM_JOB_NAME', 'python')
+    monkeypatch.setattr(module.subprocess, 'check_output', lambda *a, **k:
+        f'JobName={job_name} JobState=RUNNING UserId=ours({os.getuid()}) NodeList=node02 ')
+    monkeypatch.setattr(sys, 'argv', [str(path), '--owner-job', '10446_6',
+        '--batch-plan', str(tmp_path/'not_created_plan.json'), '--batch-index', '0',
+        '--launcher', str(_PATH), '--sam3-url', 'http://127.0.0.1:1234', '--output', str(tmp_path/'run')])
+    expected = FileNotFoundError if job_name.startswith('rd-bounded-') else RuntimeError
+    with pytest.raises(expected):
+        module.main()
+
+
 @pytest.mark.parametrize('mismatch', [None, 'startup', 'source', 'duplicate'])
 def test_declared_d2_join_keeps_unknowns_and_rejects_mismatched_runs(tmp_path, mismatch):
     path = _PATH.with_name('summarize_shared_d2_20261019.py')

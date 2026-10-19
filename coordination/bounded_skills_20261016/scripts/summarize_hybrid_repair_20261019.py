@@ -17,28 +17,45 @@ def read(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--preparation', type=Path, required=True)
-    parser.add_argument('--job', required=True)
+    parser.add_argument('--job')
+    parser.add_argument('--batch-output', action='append', default=[], metavar='INDEX=PATH',
+        help='Explicit registered outputs from steps inside an owned GPU allocation')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     batches = read(args.preparation/'batch_plan.json')
     manifest = batches['batches'][0]['manifest']
     assert hashlib.sha256(Path(manifest['path']).read_bytes()).hexdigest() == manifest['sha256']
     plan = read(manifest['path'])
+    outputs = {int(value.split('=', 1)[0]): Path(value.split('=', 1)[1]) for value in args.batch_output}
+    if not args.job and not outputs:
+        parser.error('provide --job or explicit --batch-output')
     sys.path.insert(0, batches['batches'][0]['source'])
     records, missing, errors = [], [], []
     for batch_index, batch in enumerate(batches['batches']):
-        directory = args.preparation.parent/f'job{args.job}_{batch_index}'/f'N{batches["selected_n"]}'
+        root = outputs.get(batch_index, args.preparation.parent/f'job{args.job}_{batch_index}')
+        directory = root/f'N{batches["selected_n"]}'
+        if root.exists():
+            launch = read(root/'launch.json')
+            assert launch['source_commit'] == plan['source_commit'] and launch['manifest'] == manifest
         for ordinal, index in enumerate(batch['indices']):
             case = plan['cases'][index]
             path = directory/f'{ordinal:03d}_{case["name"]}'/'worker_summary.json'
-            if not path.exists():
-                missing.append(index)
-                continue
-            worker = read(path)
-            if worker['exit_code']:
-                errors.append({'index': index, 'worker_summary': str(path), 'error': worker})
-                continue
-            result = worker['result']
+            partial = not path.exists()
+            if partial:
+                trial_path = path.parent/case['name']/'replay/summary.json'
+                if not trial_path.exists():
+                    missing.append(index)
+                    continue
+                assignment = read(path.parent/'assignment.json')
+                assert assignment['case'] == case and assignment['case_index'] == index and not assignment['startup']
+                result = {'source_commit': plan['source_commit'], 'case': case, 'training': False,
+                    'trials': [read(trial_path)], 'continuation': {'status': 'pending'}}
+            else:
+                worker = read(path)
+                if worker['exit_code']:
+                    errors.append({'index': index, 'worker_summary': str(path), 'error': worker})
+                    continue
+                result = worker['result']
             assert result['source_commit'] == plan['source_commit']
             assert result['case'] == case and result['training'] is False
             trial = result['trials'][0]
@@ -50,7 +67,8 @@ def main():
                 'reason': trial['reason'], 'sim_steps': trial['sim_steps'],
                 'paired_replay': trial.get('paired_replay'), 'continuation': result['continuation'],
                 'wall_s': trial['wall_s'], 'private_metrology_s': trial['private_metrology_s'],
-                'worker_summary': str(path), 'source_commit': plan['source_commit']}
+                'worker_summary': str(path) if not partial else None,
+                'continuation_pending': partial, 'source_commit': plan['source_commit']}
             if execution is not None:
                 trace, checks = execution['trace'], execution['checks']
                 budget = execution['budget']
@@ -79,6 +97,7 @@ def main():
             records.append(row)
     result = {'manifest': manifest, 'source_commit': plan['source_commit'], 'registered_n': len(plan['cases']),
         'completed_n': len(records), 'missing_indices': missing, 'errors': errors, 'records': records,
+        'complete_workers_n': sum(not r['continuation_pending'] for r in records),
         'variants': dict(Counter(r['variant'] for r in records)), 'training': False,
         'scope': 'registered same-state subtask repair only; not D2 whole-episode success',
         'all_six_handoffs_completed': len([r for r in records if r['variant'] == 'handoff']) == 6
