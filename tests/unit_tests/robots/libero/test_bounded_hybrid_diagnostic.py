@@ -152,6 +152,49 @@ def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, mo
     assert (tmp_path / "branch/choices.jsonl").read_text() == ""
 
 
+@pytest.mark.parametrize('method', ['self', 'call_vla'])
+def test_ambiguous_binding_observes_then_rebinds_without_private_instance_selection(tmp_path, monkeypatch, method):
+    from contextlib import nullcontext
+
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    source = SimpleNamespace(id='measured1')
+    bindings = iter([(None, None), (source, None)])
+    monkeypatch.setattr(probe, 'bind_subtask', lambda *_: next(bindings))
+    executed = []
+    def physics():
+        return {'sim_state': [1.], 'counters': {'_elapsed_steps': len(executed)}}
+    facade = SimpleNamespace(snapshot=physics,
+        goal_status=lambda: {'satisfied': [len(executed) == 2]})
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({'physics': physics()}, {}))
+    base = {'schema_version': 'test', 'observation_id': 'o1', 'revision': 1,
+        'max_actions': 4, 'robot': {'held_anchor_id': None}, 'anchors': []}
+    consequences = {'collision': False, 'ik_reachable': True, 'screen_scope': 'measured'}
+    observe = {'id': 'scan', 'skill': 'observe', 'parameters': {'mode': 'wrist_scan'},
+        'consequences': consequences}
+    action = {'id': 'open', 'skill': 'call_vla' if method == 'call_vla' else 'descend',
+        'parameters': {'anchor_id': source.id, 'mode': 'open'}, 'consequences': consequences}
+    request = base | {'candidates': [action]}
+    adapter = SimpleNamespace(request=lambda **_: request, held=None, details=[], last_chunk={},
+        p=SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False,
+            execution_budget=lambda: {'used_sim_steps': len(executed)}), model=object()))
+    def execute(_, decision):
+        executed.append(decision['candidate_ids'])
+        return [{'stop_reason': 'measured_success'}]
+    adapter.execute = execute
+    policy = SimpleNamespace(rpc=object(), choose=lambda _: base | {'candidate_ids': ['open']})
+    timings = SimpleNamespace(measure=lambda *_: nullcontext())
+    spec = {'mode': 'open', 'source_symbol': 'cabinet_1', 'target_symbol': None, 'goal_index': 0}
+    result, _ = probe.trial(facade, adapter, policy, timings, spec, method, 123,
+        tmp_path/'branch', base | {'candidates': [observe]})
+    assert executed == [['scan'], ['open']]
+    assert result['success'] is True and result['decisions'] == 2
+    assert result['selected_candidate_id'] == 'open'
+    assert result['source_public_id'] == source.id
+    assert result['binding_recovery'] == [{'decision': 0, 'reason': 'source_binding_missing',
+        'candidate_id': 'scan', 'mode': 'wrist_scan'}]
+
+
 @pytest.mark.parametrize('physical', [False, True])
 def test_startup_calls_vla_before_any_full_oracle_branch(tmp_path, monkeypatch, physical):
     from contextlib import contextmanager, nullcontext

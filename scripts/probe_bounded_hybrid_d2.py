@@ -206,7 +206,8 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
         "legal": list(legal_after(first_request, [])), "selected_candidate_id": None,
         "source_public_id": source.id if source else None,
         "target_public_id": target.id if target else None, "success": None,
-        "status": "physical_result", "model_visible": False, "training": False}
+        "status": "physical_result", "model_visible": False, "training": False,
+        "binding_recovery": []}
     original_rpc, original_model = policy.rpc, adapter.p.model
     policy.rpc = SubtaskRPC(facade, spec)
     seeded = SeededPolicy(original_model, seed)
@@ -220,16 +221,30 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                 if adapter.p.env.terminated or adapter.p.env.truncated:
                     reason = "native_stop"
                     break
-                if source is None or (spec["target_symbol"] and target is None):
-                    reason = "source_binding_missing" if source is None else "target_binding_missing"
-                    break
                 if index == 0:
                     request = copy.deepcopy(first_request)
                 else:
                     with timings.measure("planning.request"):
                         request = adapter.request(k=4)
+                    source, target = bind_subtask(policy, adapter, spec)
                 decisions += 1
-                if method == "call_vla":
+                recovering_binding = source is None or (spec["target_symbol"] and target is None)
+                if recovering_binding:
+                    # Missing/ambiguous public identity is not permission to
+                    # choose a private instance. Give both arms the existing
+                    # screened observation recovery before declaring it absent.
+                    reason = "source_binding_missing" if source is None else "target_binding_missing"
+                    legal = set(legal_after(request, []))
+                    option = next((c for mode in ("wrist_scan", "refresh")
+                        for c in request["candidates"] if c["id"] in legal
+                        and c["skill"] == "observe" and c["parameters"]["mode"] == mode), None)
+                    if option is None:
+                        break
+                    decision = {key: request[key] for key in ("schema_version", "observation_id", "revision")}
+                    decision.update(kind="decision", candidate_ids=[option["id"]])
+                    result["binding_recovery"].append({"decision": index, "reason": reason,
+                        "candidate_id": option["id"], "mode": option["parameters"]["mode"]})
+                elif method == "call_vla":
                     parameters = {"anchor_id": source.id, "mode": spec["mode"]}
                     if target is not None:
                         parameters["target_id"] = target.id
@@ -254,17 +269,19 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                         stop = next((j + 1 for j, cid in enumerate(ids) if by_id[cid]["skill"] == "lift"), len(ids))
                         decision["candidate_ids"] = ids[:stop]
                 detail_start = len(adapter.details)
-                if index == 0:
+                if not recovering_binding and result["selected_candidate_id"] is None:
                     result["selected_candidate_id"] = decision["candidate_ids"][0]
+                    result["source_public_id"] = source.id
+                    result["target_public_id"] = target.id if target else None
                 with timings.measure("execution.other"):
                     receipts = adapter.execute(request, decision)
                 record = {"index": index, "request": request, "decision": decision, "receipts": receipts,
                     "chunk_execution": adapter.last_chunk, "execution_details": adapter.details[detail_start:]}
                 ledger.write(json.dumps(record, default=lambda x: x.tolist() if hasattr(x, "tolist") else str(x)) + "\n")
                 ledger.flush()
-                completed = (adapter.held == source.id if spec["mode"] == "pick"
+                completed = (source is not None and adapter.held == source.id if spec["mode"] == "pick"
                              else facade.goal_status()["satisfied"][spec["goal_index"]])
-                if completed or method == "call_vla":
+                if completed or (method == "call_vla" and not recovering_binding):
                     reason = receipts[-1]["stop_reason"] if method == "call_vla" and receipts else "subtask_completed"
                     break
         endpoint, endpoint_ref = save_checkpoint(facade, adapter, policy, output / "private_endpoint.pkl")
