@@ -1144,8 +1144,10 @@ class MeasuredSkillAdapter:
             if dimensions[0] > .02 or min(dimensions[1:]) < max(.04, 4*dimensions[0]):
                 return None
             normal = axes[:, 0]
-            parent = self.scene.entities.get(entity.part_of)
-            outward = centre-np.asarray(parent.xyz) if parent is not None else np.asarray(robot['eef_xyz_m'])-centre
+            # A parent's visible centroid can lie on either side of a moving
+            # panel. Approach the observed face from the measured hand side;
+            # the unchanged full-route screen still decides reachability.
+            outward = np.asarray(robot['eef_xyz_m'])-centre
             if np.dot(normal, outward) < 0:
                 normal = -normal
             # The selected contact is an actual measured surface point.
@@ -1829,6 +1831,14 @@ class MeasuredSkillAdapter:
                     screened = self._screen_fixture_approaches(entity, self.plans[entity.id])
                     if screened is None:
                         self.plans.pop(entity.id)
+                        # A visible handle does not make it reachable. The
+                        # current measured panel may still offer a screened
+                        # fingertip contact, as when no handle is visible.
+                        points = self.scene.measurement_clouds.get(entity.id)
+                        if points is not None and len(points) >= 40:
+                            contact = self._surface_contact_plan(entity, points)
+                            if contact is not None:
+                                self.plans[entity.id] = contact
                         continue
                     self.plans[entity.id] = screened
                     self.candidate_diagnostics.append({'stage': 'fixture_contact_plan',

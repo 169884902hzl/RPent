@@ -2140,23 +2140,34 @@ def test_contour_approach_does_not_invent_a_side_surface_and_keeps_screened_top_
     assert plan['width_m'] is None
 
 
-def test_measured_vertical_panel_has_bounded_push_options_without_a_visible_handle(adapter):
+@pytest.mark.parametrize('parent_x', [.3, 0.])
+@pytest.mark.parametrize('handle_blocked', [False, True])
+def test_measured_vertical_panel_offers_screened_contact_from_hand_side(adapter, parent_x, handle_blocked):
     from robots.libero.bounded_oracle import BoundedOracle
 
     adapter.scene.entities.clear()
-    parent = Entity('e2', 'microwave', (.3, .2, 1.), (.2, .1, .9), (.4, .3, 1.1), True, 0)
+    parent = Entity('e2', 'microwave', (parent_x, .2, 1.), (.2, .1, .9), (.4, .3, 1.1), True, 0)
     door = Entity('e3', 'microwave door', (.1, .2, 1.), (.099, .1, .9), (.101, .3, 1.1),
                   True, 0, part_of=parent.id)
     adapter.scene.entities.update({parent.id: parent, door.id: door})
     y, z = np.mgrid[:20, :20]
     points = np.stack([np.full(y.size, .1), .1+y.ravel()*.008, .9+z.ravel()*.008], axis=-1)
     adapter.scene.measurement_clouds[door.id] = points
-    adapter.scene.measure_fixture_handle_pose = lambda *args: {'pose': None}
+    adapter.scene.measure_fixture_handle_pose = lambda *args: {'pose': {
+        'xyz': [.1, .2, 1.], 'approach_normal_xyz': [-1., 0., 0.]
+    } if handle_blocked else None}
+    handle_checks = []
+    def blocked_handle(entity, plan):
+        handle_checks.append(entity.id)
+        return None
+    adapter._screen_fixture_approaches = blocked_handle
+    adapter._handle_pixels = lambda handle: np.empty((0, 3))
     adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
         'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
     adapter._instance_pixels = lambda key: points if key == door.id else np.empty((0, 3))
     request = adapter.request(k=1)
     plan = adapter.plans[door.id]
+    assert bool(handle_checks) == handle_blocked
     np.testing.assert_allclose(plan['surface_measurement']['normal_xyz'], [-1., 0., 0.], atol=1e-12)
     assert plan['contact_kind'] == 'surface' and plan['width_m'] is None
     assert plan['approach_xyz_m'][0] < plan['xyz_m'][0]

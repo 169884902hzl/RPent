@@ -1,0 +1,31 @@
+{
+  "time_pacific": "2026-10-18T20:43:52.979610-07:00",
+  "scope": "CPU regression; physical recovery pending",
+  "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_offline_labels.py",
+  "exit_code": 0,
+  "passed": 272,
+  "wall_s": 218.25,
+  "warning": "pytest-timeout plugin unavailable; unknown timeout config",
+  "focused": {
+    "passed": 12,
+    "deselected": 219,
+    "wall_s": 29.08
+  },
+  "files": {
+    "robots/libero/bounded_skills.py": "a10173a9cf212c6deec589574881b4b93b508b7bb04ff12d90867bf2bfe2db49",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "04237eb90b66aede0c65b8ca89e2b1fafab3279e9599eb6cb010d064af4b81a3",
+    "rpent/skill_package/schema.json": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+    "rpent/skill_package/contract.py": "7e898e3bd4e8f4c7a4e9951d897cc1fe682037ee35ee4d6d5cc1f52606e2f49c",
+    "robots/libero/bounded_oracle.py": "c6057acd0056d940b1c03235c2d54a27e3750161e16f8a8936f0af45db70cc89"
+  },
+  "log": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/panel_surface_recovery_cpu_20261019.log",
+    "sha256": "73878b40e6187c063bde0cc897d380113e2ff752bdbd4a29f9a73ba7d8d73b0d"
+  },
+  "public_schema": "bounded-skills/3",
+  "public_legality": "public-request-legal/2",
+  "private_judge": "libero-private-task-progress-rules/13",
+  "gpu_used": false,
+  "training": false,
+  "confirmation": false
+}
