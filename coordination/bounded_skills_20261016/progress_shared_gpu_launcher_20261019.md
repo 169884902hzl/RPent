@@ -1,8 +1,8 @@
 单卡并发选 N=8：17.0394 → 77.8066 局/GPU小时，实测 4.5663 倍；独立重复为 79.1028、4.6423 倍，N12 均未继续提升。
 三例历史→新串行基线差异为0；24局N4/N8与新N1的选择、仿真步数、最终结果完全一致，选定N8完整重放通过。
-原版220局由164个旧记录和10446的56局组成；最新r3快照完成200/220、成功131、失败69、进程错误0，余20局仍运行/排队。
-D2已通过真实调用；另发现私有计量缺模型归档环境变量。修复启动器已通过14项CPU测试和22/22条CPU隔离证据检查，10476等待同启动器物理检查。
-原版ec89f74、D2 75ce7d53的技能/规划源码不变，无训练；Codex3继续等待作业、修启动故障，10476通过后补提D240局，旧诊断保留。
+原版220局由164个旧记录和10446的56局组成；最新r5快照完成206/220、成功131、失败75、进程错误0，余14局仍运行。
+D2已通过真实调用；归档环境变量修复已在真实分支生效。10477已有11条分支、11条已知标签，完整回合0/40；未完成不记失败，不报整局成功率。
+原版ec89f74、D2 75ce7d53的技能/规划源码不变，无训练；Codex3继续监控10446/10477，旧诊断及失败记录完整保留。
 
 ## 吞吐与一致性
 
@@ -23,13 +23,13 @@ D2已通过真实调用；另发现私有计量缺模型归档环境变量。修
 
 每GPU作业一个SAM3，D2另共享一个π0.5；每局fresh exec、独立EGL/环境/RNG/IK。局内候选保持串行。保存逐次SAM延迟、每局日志、assignment、worker summary，每2秒采样资源。worker错误非零退出，其余回合继续。
 
-仅node02、nice500，每GPU作业20CPU/140G，四作业80CPU/560G。Codex2无GPU作业时借第四卡；有排队则收紧后继并发，不取消运行任务。c5/c6/rf和held未改动。登录节点资源控制每60秒、账目日志每10分钟；当前唯一控制器收据`reports/monitor_shared_archive_repair_20261019.json`，PID1209049，优先启动10476。
+仅node02、nice500，每GPU作业20CPU/140G，四作业80CPU/560G。Codex2无GPU作业时借第四卡；有排队则收紧后继并发，不取消运行任务。c5/c6/rf和held未改动。登录节点资源控制每60秒、账目日志每10分钟；当前唯一控制器收据`reports/monitor_shared_corrected_production_20261019.json`，PID1380503，调度10446和10477。
 
 - 原版source：`/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_support_plane_20261018_ec89f74`；生产启动器`launcher_shared_20261019_14b98fc0f5c9/`，SHA256 `14b98fc0f5c9c3454c136d6b1b75120f25223424e494d306e7b9a9a0d4cffa55`。
 - 原版准备`results/bounded_skills/shared_remaining_20261019/preparation/r2/`，10439_0真实启动4/4通过，10446索引0/2/4/6，共56局。汇总脚本只按登记batch和assignment取结果，拒绝重复、错配和startup；不计吞吐研究或诊断重放。
 - D2 source：`source_bounded_hybrid_progress_20261019_75ce7d53`。该源码在本次吞吐任务前已登记，用于显式披露不覆盖的存储进度规则；没有为PRO临时加规则。
 - 最新D2准备`shared_remaining_20261019/preparation/r7_d2_archive/`。启动器`launcher_shared_20261019_8fcc579c17ec/`，SHA256 `8fcc579c17ec180b5803f85b3229d65aa7609f3faaa4b4d64b55d92c298cdae6`。
-- 10476_0待真实首次VLA物理步检查；通过后再放行修复后的D2正式40局。10473_0缺归档的旧开发诊断自然运行；仅PENDING的10473_1/2已取消，收据`reports/shared_D2_missing_archive_transition_20261019.json`。旧记录不删除，不按成功挑选重跑。
+- 10476_0 COMPLETED 0:0、2/2真实首次VLA物理步通过，worker归档路径已核对；修复后的D2正式40局为10477，N8，16/16/8三片。10473_0已确认私有标签配置错误，保存11个分支记录及快照后停止；10473_1/2在PENDING时取消。收据`reports/shared_D2_missing_archive_transition_20261019.json`及`shared_D2_invalid_run_stopped_20261019.json`。旧记录不删除，按同状态同种子修复开发程序错误，不按成功挑选。
 
 ## 已定位的启动问题
 
@@ -41,8 +41,14 @@ D2已通过真实调用；另发现私有计量缺模型归档环境变量。修
 
 14项CPU测试通过：`.venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_shared_gpu_launcher.py`；覆盖真实子进程隔离/归档环境、错误非零退出、固定源码预检、GL导入顺序、warmstart恢复、请求身份、首步因果凭据、分母去重和登录节点收尾。既有unknown timeout警告保留。私有归档真实CPU检查在`D2_archive_CPU_{0,1}_20261019.json`，scope明确为诊断，未采用为回合标签。
 
-源文件完整性报告`reports/shared_source_integrity_20261019.json`：两固定源码各6个关键技能/规划/分支状态/contract文件均与指定Git commit字节相同。最新启动器修复提交35747dad已普通推送user-fork/harness-v5；没有合并或强推。
+源文件完整性报告`reports/shared_source_integrity_v2_20261019.json`：两固定源码合计18个关键技能/规划/分支状态/contract/私有真值/诊断入口文件均与指定Git commit字节相同。最新启动器修复提交35747dad及真实spawn验证209cda9b已普通推送user-fork/harness-v5；没有合并或强推。
 
-所有确认状态永久排除训练。PRO D2全部是隔离开发诊断，不进入训练、手册、memory或VLA历史成功率卡。原版完整结果及分类Wilson区间以逐次记录为准；r3快照在`reports/original220_shared_interim_20261019_r3.json`。
+所有确认状态永久排除训练。PRO D2全部是隔离开发诊断，不进入训练、手册、memory或VLA历史成功率卡。原版完整结果及分类Wilson区间以逐次记录为准；r5快照在`reports/original220_shared_interim_20261019_r5.json`。
 
 新增真实RLinf spawn CPU端到端验证：`D2_archive_CPU_spawn_0_20261019.json`，子进程内恢复哈希和5步后继一致性通过，`v5_measure_grasp_hold`实际RPC返回11/11隔离证据known。仅用于验证环境传播/归档管道，CPU重建标签不采用为回合结果。GPU启动器仍8fcc579c；仅CPU复现脚本新增此检查路径。
+
+## 登记批次的只读汇总
+
+`scripts/summarize_shared_d2_20261019.py`只读10477的提交收据、登记assignment和逐局结果，调用75ce7d53源码里的既有D2汇总器。启动检查、10473无效开发运行、其他数组和分支诊断不混入40局分母。源码或assignment不符、重复登记直接报错；未完成和unknown单列。4个CPU用例通过，验证过期运行排除、未知标签保留，以及startup、错源码、重复登记拒绝。
+
+首次生产汇总`reports/shared_D2_interim_20261019_r1.json`：完整回合0/40、已关闭分支11、已知分支标签11、worker错误0。分支成功不能替代整局成功。真实GPU归档凭据见`reports/shared_D2_live_archive_first_20261019.json`；最先核验的3条self抓取均有11/11有效隔离计量证据。正常运行的原版与D2继续自然完成。

@@ -15,6 +15,49 @@ launcher = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(launcher)
 
 
+@pytest.mark.parametrize('mismatch', [None, 'startup', 'source', 'duplicate'])
+def test_declared_d2_join_keeps_unknowns_and_rejects_mismatched_runs(tmp_path, mismatch):
+    path = _PATH.with_name('summarize_shared_d2_20261019.py')
+    spec = importlib.util.spec_from_file_location('shared_d2_summary', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    preparation = tmp_path / 'preparation'
+    preparation.mkdir()
+    results = tmp_path / 'results'
+    cases = [{'name': f'case{i}'} for i in range(40)]
+    manifest = tmp_path / 'manifest.json'
+    manifest.write_text(json.dumps({'cases': cases}))
+    ref = module.reference(manifest)
+    indices = list(range(40)) + ([0] if mismatch == 'duplicate' else [])
+    batch = {'domain': 'd2', 'manifest': ref, 'source': '/pinned/source',
+             'source_commit': 'pinned', 'indices': indices}
+    (preparation / 'batch_plan.json').write_text(json.dumps({'selected_n': 8, 'batches': [batch]}))
+    (preparation / 'full_d2_submission.json').write_text(json.dumps({'job': '7', 'indices': [0]}))
+    worker_dir = results / 'job7_0/N8/000_case0'
+    branch_dir = worker_dir / 'case0/subtask00_pick/call_vla_1'
+    branch_dir.mkdir(parents=True)
+    (worker_dir / 'assignment.json').write_text(json.dumps({'startup': mismatch == 'startup',
+        'domain': 'd2', 'manifest': ref, 'case_index': 0, 'case': cases[0]}))
+    result = {'case': cases[0], 'status': 'physical_result', 'actual_full_replay_success': False}
+    (worker_dir / 'worker_summary.json').write_text(json.dumps({'case': cases[0],
+        'source_commit': 'other' if mismatch == 'source' else 'pinned', 'exit_code': 0, 'result': result}))
+    (worker_dir / 'case0/summary.json').write_text(json.dumps(result))
+    (branch_dir / 'summary.json').write_text(json.dumps({'method': 'call_vla', 'success': None}))
+    # A stale result outside the declared array must never join this cohort.
+    stale = results / 'job6_0/N8/000_case0'
+    stale.mkdir(parents=True)
+    (stale / 'worker_summary.json').write_text(json.dumps({'result': {'actual_full_replay_success': True}}))
+    if mismatch:
+        with pytest.raises(ValueError):
+            module.collect(preparation, results)
+    else:
+        _, reports, provenance = module.collect(preparation, results)
+        assert reports == [result]
+        assert len(provenance['result_sources']) == 1
+        assert provenance['closed_branch_label_counts'] == {'unknown': 1}
+        assert not provenance['worker_errors']
+
+
 def test_timed_rpc_preserves_call_and_error(tmp_path):
     received = []
     class Client:
