@@ -1,0 +1,857 @@
+{
+  "time_pacific": "2026-10-19T00:42:00.236469-07:00",
+  "submission": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/chunk_v3_panel_facing_20261019_full_submission.json",
+  "source_commit": "f4400223",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_panel_facing_20261019_f4400223",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_panel_facing_20261019.json",
+    "sha256": "8e5f61b75a0c58be44770f8a892fd3af0c86a518cbacd9fbf8862c156eb2dc9e"
+  },
+  "replacement_submissions": [],
+  "registered": 2,
+  "completed_physical": 2,
+  "incomplete": [],
+  "execution_errors": [],
+  "cohort": {
+    "sources": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9605_120/episodes.jsonl",
+        "sha256": "46280900d093c5362e1d157445dc1facd3f504c600a68ccbd6cd811fd4551de6"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9605_140/episodes.jsonl",
+        "sha256": "fd14eb615c6183dcc9d446d467fd3ab2baae74c9c067b15ab16fcba14e9eaea4"
+      }
+    ],
+    "summary": [
+      {
+        "arm": "oracle_k4",
+        "category": "microwave_close",
+        "n": 1,
+        "success": 0,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "decisions": {
+          "n": 1,
+          "median": 33,
+          "p90": 33.0,
+          "max": 33
+        },
+        "sim_steps": {
+          "n": 1,
+          "median": 2192,
+          "p90": 2192.0,
+          "max": 2192
+        },
+        "wall_s": {
+          "n": 1,
+          "median": 3988.123865784146,
+          "p90": 3988.123865784146,
+          "max": 3988.123865784146
+        },
+        "native_step_limit_hits": 0,
+        "native_step_limit_measured_n": 1,
+        "actual_actions_per_decision": {
+          "n": 32,
+          "median": 1.0,
+          "p90": 1.9000000000000021,
+          "max": 3
+        },
+        "actual_actions_histogram": {
+          "3": 1,
+          "2": 3,
+          "1": 24,
+          "0": 4
+        },
+        "attempted_actions_per_decision": {
+          "n": 32,
+          "median": 1.0,
+          "p90": 1.9000000000000021,
+          "max": 4
+        },
+        "chunk_truncation_reasons": {
+          "contact_surface_motion_ambiguous": 1,
+          "braking_screen_rejected": 4,
+          "tracking_error": 8,
+          "endpoint": 1
+        },
+        "chunk_truncation_skills": {
+          "nudge": 1,
+          "move_to": 13
+        },
+        "skill_attempts": {
+          "move_to": 17,
+          "descend": 1,
+          "set_gripper": 2,
+          "nudge": 6,
+          "observe": 12
+        },
+        "failure_phases": {
+          "planning_unreachable": 1
+        },
+        "skill_midchunk_truncation_rate": {
+          "move_to": 0.7647058823529411,
+          "descend": 0.0,
+          "set_gripper": 0.0,
+          "nudge": 0.16666666666666666,
+          "observe": 0.0
+        }
+      },
+      {
+        "arm": "oracle_k4",
+        "category": "microwave_open",
+        "n": 1,
+        "success": 0,
+        "rate": 0.0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "decisions": {
+          "n": 1,
+          "median": 19,
+          "p90": 19.0,
+          "max": 19
+        },
+        "sim_steps": {
+          "n": 1,
+          "median": 1434,
+          "p90": 1434.0,
+          "max": 1434
+        },
+        "wall_s": {
+          "n": 1,
+          "median": 1825.7942053959705,
+          "p90": 1825.7942053959705,
+          "max": 1825.7942053959705
+        },
+        "native_step_limit_hits": 0,
+        "native_step_limit_measured_n": 1,
+        "actual_actions_per_decision": {
+          "n": 18,
+          "median": 1.0,
+          "p90": 2.0,
+          "max": 3
+        },
+        "actual_actions_histogram": {
+          "2": 4,
+          "3": 1,
+          "1": 11,
+          "0": 2
+        },
+        "attempted_actions_per_decision": {
+          "n": 18,
+          "median": 1.0,
+          "p90": 2.0,
+          "max": 3
+        },
+        "chunk_truncation_reasons": {},
+        "chunk_truncation_skills": {},
+        "skill_attempts": {
+          "move_to": 7,
+          "observe": 5,
+          "descend": 1,
+          "set_gripper": 2,
+          "nudge": 12
+        },
+        "failure_phases": {
+          "perception": 1
+        },
+        "skill_midchunk_truncation_rate": {
+          "move_to": 0.0,
+          "observe": 0.0,
+          "descend": 0.0,
+          "set_gripper": 0.0,
+          "nudge": 0.0
+        }
+      }
+    ],
+    "rows": [
+      {
+        "case": {
+          "name": "microwave_close_libero_90_t33_s0",
+          "category": "microwave_close",
+          "episode": {
+            "suite": "libero_90",
+            "task": 33,
+            "seed": 0
+          },
+          "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+            "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4",
+        "success": false,
+        "decisions": 33,
+        "sim_steps": 2192,
+        "skill_sim_steps": {
+          "move_to": 1863,
+          "descend": 38,
+          "set_gripper": 30,
+          "nudge": 79,
+          "observe": 182
+        },
+        "wall_s": 3988.123865784146,
+        "failure_phase": "planning_unreachable",
+        "source": "official_original_task_predicates_private",
+        "status": "physical_result",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": "upper-bound selector has no remaining public option",
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 3988.123865784146,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 533.5257500228472,
+            "perception.entity_measurement": 395.7194442227483,
+            "artifact_io": 225.7845078627579,
+            "planning.consequences": 1264.3730461061932,
+            "planning.request": 1216.8396648974158,
+            "private_labels.offline_capture": 182.31235133390874,
+            "decision.oracle": 6.1575049688108265,
+            "simulation.step_render": 43.15468303207308,
+            "perception.depth": 3.0904505657963455,
+            "perception.capture_io": 45.824994505848736,
+            "execution.other": 65.5933210044168
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 533.5257500228472,
+            "perception.entity_measurement": 395.7194442227483,
+            "artifact_io": 225.7845078627579,
+            "planning.consequences": 1264.3730461061932,
+            "planning.request": 1216.8396648974158,
+            "private_labels.offline_capture": 182.31235133390874,
+            "decision.oracle": 6.1575049688108265,
+            "simulation.step_render": 43.15468303207308,
+            "perception.depth": 3.0904505657963455,
+            "perception.capture_io": 45.824994505848736,
+            "execution.other": 65.5933210044168
+          },
+          "main_thread_unattributed_s": 5.748147261328995,
+          "calls": {
+            "perception.segmentation:call": 1185,
+            "perception.entity_measurement:refresh": 43,
+            "perception.entity_measurement:_refresh_held_measurement": 70,
+            "perception.entity_measurement:_instance_pixels": 350,
+            "perception.entity_measurement:_contact_pixels": 334,
+            "artifact_io:_record_public_geometry": 964,
+            "planning.consequences:_cloud_and_ik": 2404,
+            "perception.entity_measurement:measure_fixture_endpoint": 148,
+            "perception.entity_measurement:measure_fixture_handle_pose": 74,
+            "planning.consequences:check": 33233,
+            "planning.consequences:__call__": 6556,
+            "planning.consequences:_route": 5431,
+            "planning.consequences:_candidate": 5788,
+            "planning.request:None": 33,
+            "private_labels.offline_capture:None": 33,
+            "planning.consequences:context": 75,
+            "decision.oracle:None": 33,
+            "planning.consequences:plan_chunk": 32,
+            "simulation.step_render:step": 2192,
+            "perception.depth:_metric_depth": 148,
+            "perception.depth:_world_from_depth": 148,
+            "simulation.step_render:render_camera": 74,
+            "perception.capture_io:get_env_state": 37,
+            "execution.other:None": 32
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 5.399161446839571,
+              "perception.entity_measurement": 2.145228415261954
+            },
+            "planning.request": {
+              "perception.entity_measurement": 205.20327122928575,
+              "artifact_io": 176.07367653492838,
+              "planning.consequences": 697.6825351063162,
+              "perception.segmentation": 332.0115785161033,
+              "planning.request": 1216.8396648974158
+            },
+            "private_labels.offline_capture": {
+              "planning.consequences": 34.62595289153978,
+              "perception.entity_measurement": 0.0012535806745290756,
+              "artifact_io": 34.45606773532927,
+              "private_labels.offline_capture": 182.31235133390874
+            },
+            "decision.oracle": {
+              "planning.consequences": 407.44709027558565,
+              "decision.oracle": 6.1575049688108265
+            },
+            "execution.other": {
+              "planning.consequences": 124.61746783275157,
+              "perception.entity_measurement": 188.36969099752605,
+              "artifact_io": 15.25476359250024,
+              "simulation.step_render": 43.15468303207308,
+              "perception.depth": 3.0904505657963455,
+              "perception.capture_io": 45.824994505848736,
+              "perception.segmentation": 196.1150100599043,
+              "execution.other": 65.5933210044168
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "measured-receipt-v2",
+        "actual_actions_per_decision": [
+          3,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "attempted_actions_per_decision": [
+          4,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "skill_attempts": {
+          "move_to": 17,
+          "descend": 1,
+          "set_gripper": 2,
+          "nudge": 6,
+          "observe": 12
+        },
+        "skill_verified": {
+          "move_to": 3,
+          "descend": 1,
+          "set_gripper": 2,
+          "nudge": 3,
+          "observe": 4
+        },
+        "chunk_truncations": [
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "05763988978cc8ca",
+              "a8dc2a73a1f20318",
+              "11d468c6532e614c"
+            ],
+            "executed_ids": [
+              "05763988978cc8ca",
+              "a8dc2a73a1f20318"
+            ],
+            "actual_actions": 2,
+            "discarded_ids": [
+              "11d468c6532e614c"
+            ],
+            "stop_reason": "contact_surface_motion_ambiguous",
+            "interrupted_skill": "nudge"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "2eb6d979cf82224f",
+              "1f9311eb6c9f6bb8"
+            ],
+            "executed_ids": [
+              "2eb6d979cf82224f"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "1f9311eb6c9f6bb8"
+            ],
+            "stop_reason": "braking_screen_rejected",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "2eb6d979cf82224f",
+              "1f9311eb6c9f6bb8"
+            ],
+            "executed_ids": [
+              "2eb6d979cf82224f"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "1f9311eb6c9f6bb8"
+            ],
+            "stop_reason": "braking_screen_rejected",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "2eb6d979cf82224f",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "executed_ids": [
+              "2eb6d979cf82224f"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "stop_reason": "tracking_error",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "2eb6d979cf82224f",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "executed_ids": [
+              "2eb6d979cf82224f"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "stop_reason": "tracking_error",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "2eb6d979cf82224f",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "executed_ids": [
+              "2eb6d979cf82224f"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "stop_reason": "tracking_error",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "2eb6d979cf82224f",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "executed_ids": [
+              "2eb6d979cf82224f"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "stop_reason": "tracking_error",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "91a344e1d04dc2ca",
+              "1f9311eb6c9f6bb8"
+            ],
+            "executed_ids": [
+              "91a344e1d04dc2ca"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "1f9311eb6c9f6bb8"
+            ],
+            "stop_reason": "braking_screen_rejected",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "2eb6d979cf82224f",
+              "1f9311eb6c9f6bb8"
+            ],
+            "executed_ids": [
+              "2eb6d979cf82224f"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "1f9311eb6c9f6bb8"
+            ],
+            "stop_reason": "tracking_error",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "91a344e1d04dc2ca",
+              "1f9311eb6c9f6bb8"
+            ],
+            "executed_ids": [
+              "91a344e1d04dc2ca"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "1f9311eb6c9f6bb8"
+            ],
+            "stop_reason": "endpoint",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "91a344e1d04dc2ca",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "executed_ids": [
+              "91a344e1d04dc2ca"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "stop_reason": "tracking_error",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "91a344e1d04dc2ca",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "executed_ids": [
+              "91a344e1d04dc2ca"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af",
+              "f395c81b7408c9d5"
+            ],
+            "stop_reason": "tracking_error",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "6f354f956632f7ce",
+              "2eb6d979cf82224f",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af"
+            ],
+            "executed_ids": [
+              "6f354f956632f7ce"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "2eb6d979cf82224f",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af"
+            ],
+            "stop_reason": "tracking_error",
+            "interrupted_skill": "move_to"
+          },
+          {
+            "schema_version": "bounded-skills/3",
+            "selected_ids": [
+              "6f354f956632f7ce",
+              "2eb6d979cf82224f",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af"
+            ],
+            "executed_ids": [
+              "6f354f956632f7ce"
+            ],
+            "actual_actions": 1,
+            "discarded_ids": [
+              "2eb6d979cf82224f",
+              "3cad9e259af51046",
+              "7f56ae3f4c8b42af"
+            ],
+            "stop_reason": "braking_screen_rejected",
+            "interrupted_skill": "move_to"
+          }
+        ],
+        "smooth_reference_max_acceleration_jump": 2.1959085572936182e-14,
+        "smooth_reference_max_jerk_limit_ratio": 1.0000000000423386,
+        "smooth_reference_max_translation_acceleration_jump": 2.1958760042453825e-14,
+        "smooth_reference_max_rotation_acceleration_jump": 2.0767336101221765e-14,
+        "native_step_limit_hit": false,
+        "terminal_category": "no_public_option",
+        "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9605_120/episodes.jsonl",
+        "report_category": "microwave_close"
+      },
+      {
+        "case": {
+          "name": "microwave_open_libero_90_t35_s0",
+          "category": "microwave_open",
+          "episode": {
+            "suite": "libero_90",
+            "task": 35,
+            "seed": 0
+          },
+          "state_sha256": "96948bc173dcf571d949ecfc06b91778e1637bebce12ce55b656db8efe1e2a11",
+          "bddl": {
+            "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE7_open_the_microwave.bddl",
+            "sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f"
+          },
+          "purpose": "development_feasibility_no_training"
+        },
+        "arm": "oracle_k4",
+        "success": false,
+        "decisions": 19,
+        "sim_steps": 1434,
+        "skill_sim_steps": {
+          "move_to": 1155,
+          "observe": 69,
+          "descend": 38,
+          "set_gripper": 30,
+          "nudge": 142
+        },
+        "wall_s": 1825.7942053959705,
+        "failure_phase": "perception",
+        "source": "official_original_task_predicates_private",
+        "status": "physical_result",
+        "training": false,
+        "pi05_calls": 0,
+        "fusion_version": "rgbd_dual_view/1",
+        "k": 4,
+        "terminal_diagnostic": "upper-bound selector has no remaining public option",
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 1825.7942053959705,
+          "main_thread_exclusive_s": {
+            "perception.segmentation": 317.62501121731475,
+            "perception.entity_measurement": 273.4362797597423,
+            "artifact_io": 50.417902254499495,
+            "planning.consequences": 763.553912950214,
+            "planning.request": 167.68338424758986,
+            "private_labels.offline_capture": 62.902352747973055,
+            "decision.oracle": 0.5551768695004284,
+            "simulation.step_render": 29.18418627884239,
+            "perception.depth": 2.102407079655677,
+            "perception.capture_io": 28.0665118037723,
+            "execution.other": 125.71757353609428
+          },
+          "all_threads_exclusive_s": {
+            "perception.segmentation": 317.62501121731475,
+            "perception.entity_measurement": 273.4362797597423,
+            "artifact_io": 50.417902254499495,
+            "planning.consequences": 763.553912950214,
+            "planning.request": 167.68338424758986,
+            "private_labels.offline_capture": 62.902352747973055,
+            "decision.oracle": 0.5551768695004284,
+            "simulation.step_render": 29.18418627884239,
+            "perception.depth": 2.102407079655677,
+            "perception.capture_io": 28.0665118037723,
+            "execution.other": 125.71757353609428
+          },
+          "main_thread_unattributed_s": 4.549506650771946,
+          "calls": {
+            "perception.segmentation:call": 683,
+            "perception.entity_measurement:refresh": 29,
+            "perception.entity_measurement:_refresh_held_measurement": 43,
+            "perception.entity_measurement:_instance_pixels": 196,
+            "perception.entity_measurement:_contact_pixels": 194,
+            "artifact_io:_record_public_geometry": 503,
+            "planning.consequences:_cloud_and_ik": 1325,
+            "perception.entity_measurement:measure_fixture_endpoint": 82,
+            "perception.entity_measurement:measure_fixture_handle_pose": 41,
+            "planning.consequences:check": 27665,
+            "planning.consequences:__call__": 3089,
+            "planning.consequences:_route": 2642,
+            "planning.consequences:_candidate": 2840,
+            "planning.request:None": 19,
+            "private_labels.offline_capture:None": 19,
+            "planning.consequences:context": 41,
+            "decision.oracle:None": 19,
+            "planning.consequences:plan_chunk": 18,
+            "simulation.step_render:step": 1434,
+            "perception.depth:_metric_depth": 96,
+            "perception.depth:_world_from_depth": 96,
+            "simulation.step_render:render_camera": 48,
+            "perception.capture_io:get_env_state": 24,
+            "execution.other:None": 18
+          },
+          "main_thread_exclusive_by_root_s": {
+            "perception.entity_measurement": {
+              "perception.segmentation": 4.771588264964521,
+              "perception.entity_measurement": 1.2560443016700447
+            },
+            "planning.request": {
+              "perception.entity_measurement": 114.72524373605847,
+              "artifact_io": 35.45554065145552,
+              "planning.consequences": 499.8316727243364,
+              "perception.segmentation": 177.04399627028033,
+              "planning.request": 167.68338424758986
+            },
+            "private_labels.offline_capture": {
+              "planning.consequences": 13.72309268405661,
+              "private_labels.offline_capture": 62.902352747973055,
+              "perception.entity_measurement": 0.0005137990228831768,
+              "artifact_io": 4.500655306037515
+            },
+            "decision.oracle": {
+              "planning.consequences": 173.44086268916726,
+              "decision.oracle": 0.5551768695004284
+            },
+            "execution.other": {
+              "planning.consequences": 76.55828485265374,
+              "perception.entity_measurement": 157.45447792299092,
+              "artifact_io": 10.461706297006458,
+              "simulation.step_render": 29.18418627884239,
+              "perception.depth": 2.102407079655677,
+              "perception.capture_io": 28.0665118037723,
+              "perception.segmentation": 135.8094266820699,
+              "execution.other": 125.71757353609428
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        },
+        "chunk_rule": "measured-receipt-v2",
+        "actual_actions_per_decision": [
+          2,
+          3,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          0,
+          0
+        ],
+        "attempted_actions_per_decision": [
+          2,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1
+        ],
+        "skill_attempts": {
+          "move_to": 7,
+          "observe": 5,
+          "descend": 1,
+          "set_gripper": 2,
+          "nudge": 12
+        },
+        "skill_verified": {
+          "move_to": 7,
+          "descend": 1,
+          "set_gripper": 2,
+          "nudge": 8
+        },
+        "chunk_truncations": [],
+        "smooth_reference_max_acceleration_jump": 6.199179739489211e-14,
+        "smooth_reference_max_jerk_limit_ratio": 0.9976669382919502,
+        "smooth_reference_max_translation_acceleration_jump": 6.199179044037505e-14,
+        "smooth_reference_max_rotation_acceleration_jump": 8.074438569849715e-15,
+        "native_step_limit_hit": false,
+        "terminal_category": "no_public_option",
+        "record": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9605_140/episodes.jsonl",
+        "report_category": "microwave_open"
+      }
+    ],
+    "training": false
+  },
+  "limitations": [
+    "Completed prefix only; this is not a category qualification.",
+    "Failures remain in all denominators; incomplete cases are listed separately.",
+    "The alphabet-soup-can cohort does not establish cream-cheese-box coverage.",
+    "This report does not combine sources or reuse startup proofs as task results."
+  ],
+  "training": false,
+  "confirmation": false,
+  "script_sha256": "a7c8f70e8049f991c065cf011f6388c7506e8ae9499c967c29f85ef37403256a"
+}

@@ -1,0 +1,13 @@
+{
+  "time_pacific": "2026-10-18T21:27:49.151691-07:00",
+  "job": "9608_140",
+  "queue_before": "9608_140|PENDING||(JobArrayTaskLimit)",
+  "scontrol_before": "JobId=9608 ArrayJobId=9608 ArrayTaskId=140 ArrayTaskThrottle=1 JobName=rd-bounded-feasibility-v21\n   UserId=sunyihan(2004) GroupId=sunyihan(2005) MCS_label=N/A\n   Priority=1 Nice=500 Account=(null) QOS=normal\n   JobState=PENDING Reason=JobArrayTaskLimit Dependency=(null)\n   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=12:00:00 TimeMin=N/A\n   SubmitTime=2026-10-19T12:20:47 EligibleTime=Unknown\n   AccrueTime=2026-10-19T12:23:00\n   StartTime=Unknown EndTime=Unknown Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-19T12:23:00 Scheduler=Main\n   Partition=gpu AllocNode:Sid=master:3052922\n   ReqNodeList=node02 ExcNodeList=(null)\n   NodeList=\n   NumNodes=1 NumCPUs=8 NumTasks=1 CPUs/Task=8 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=8,mem=80G,node=1,billing=8,gres/gpu=1\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=8 MinMemoryNode=80G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)\n   Command=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_panel_consensus_20261019_f75b516d/scripts/run_bounded_21f0744_20261017.sbatch\n   WorkDir=/public/home/sunyihan\n   StdErr=/public/home/sunyihan/rpent_libero_eval/results/slurm-9608_140.log\n   StdIn=/dev/null\n   StdOut=/public/home/sunyihan/rpent_libero_eval/results/slurm-9608_140.log\n   TresPerNode=gres/gpu:1\n   TresPerTask=cpu=8\n   \n\n",
+  "source_commit": "f75b516d",
+  "submission": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/chunk_v3_panel_consensus_20261019_full_submission.json",
+  "reason": "known conflicting fixed-control-panel identity; replaced by startup-gated ede83b18 replay, while already running 9608_120 continues",
+  "replacement_startup": "9610_120",
+  "physical_result": false,
+  "training": false,
+  "confirmation": false
+}

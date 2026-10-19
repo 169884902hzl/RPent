@@ -1,0 +1,1709 @@
+{
+  "job": "9611",
+  "mode": "full",
+  "arguments": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=120,140%1",
+    "--dependency=afterany:9248_64?afterany:9544_125?afterany:9605_140?afterany:9605_120",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_handle_20261019_ede83b18,SOURCE_COMMIT=ede83b18,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_current_handle_20261019.json,STARTUP=0,PAIR_LEGACY=0,PROBE_ARMS=oracle_k4",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_handle_20261019_ede83b18/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "source_commit": "ede83b18",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_handle_20261019_ede83b18",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_current_handle_20261019.json",
+    "sha256": "4488dcf16265788a68cf480d2c55b90452cfce64af69a82cb436ed37998fef7a"
+  },
+  "following_updates": [
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_219",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_218",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_214",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_212",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_211",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_210",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_209",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_208",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_207",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_203",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_202",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_201",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_200",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_199",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_198",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_197",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_196",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_191",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_190",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_189",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_188",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_187",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_186",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_185",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_181",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_180",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_179",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_178",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_177",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_176",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_175",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_174",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_170",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_169",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_168",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_167",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_166",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_165",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_164",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_163",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_119",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_115",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_114",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_113",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_112",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_111",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_110",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_109",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_108",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_104",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_103",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_102",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_101",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_100",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_99",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_98",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_97",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_93",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_92",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_91",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_90",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_89",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_88",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_87",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_86",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_82",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_81",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_80",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_79",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_78",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_77",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_76",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_75",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_71",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_70",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_69",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_68",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_67",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_66",
+      "Dependency=afterany:9611"
+    ],
+    [
+      "scontrol",
+      "update",
+      "JobId=9248_65",
+      "Dependency=afterany:9611"
+    ]
+  ],
+  "queue_before": [
+    [
+      "9579_4",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_3",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_19",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_18",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_17",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_16",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_15",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_14",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_13",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_12",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_11",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_10",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_9",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_8",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_7",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_6",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9579_5",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(Dependency)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_159",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_158",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_157",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_156",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_155",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_154",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_153",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_152",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_148",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_147",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_146",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_145",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_144",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_143",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_142",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_141",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_137",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_136",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_135",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_134",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_133",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_132",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_131",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_130",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_126",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(None)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_219",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_218",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_214",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_212",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_211",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_210",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_209",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_208",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_207",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_203",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_202",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_201",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_200",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_199",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_198",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_197",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_196",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_191",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_190",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_189",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_188",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_187",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_186",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_185",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_181",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_180",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_179",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_178",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_177",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_176",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_175",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_174",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_170",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_169",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_168",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_167",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_166",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_165",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_164",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_163",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_119",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_115",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_114",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_113",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_112",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_111",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_110",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_109",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_108",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_104",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_103",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_102",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_101",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_100",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_99",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_98",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_97",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_93",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_92",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_91",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_90",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_89",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_88",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_87",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_86",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_82",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_81",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_80",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_79",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_78",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_77",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_76",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_75",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_71",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_70",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_69",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_68",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_67",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_66",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_65",
+      "rd-bounded-feasibility-v21",
+      "PENDING",
+      "",
+      "(JobArrayTaskLimit)",
+      "gres/gpu:1"
+    ],
+    [
+      "9248_64",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "9544_125",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "9605_140",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ],
+    [
+      "9605_120",
+      "rd-bounded-feasibility-v21",
+      "RUNNING",
+      "node02",
+      "node02",
+      "gres/gpu:1"
+    ]
+  ],
+  "lane": "available_node02",
+  "aggregate_cap": 4,
+  "codex2_gpu_jobs": [],
+  "startup_proof": {
+    "job": "9610_120",
+    "summary": {
+      "case": {
+        "name": "microwave_close_libero_90_t33_s0",
+        "category": "microwave_close",
+        "episode": {
+          "suite": "libero_90",
+          "task": 33,
+          "seed": 0
+        },
+        "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+          "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+        },
+        "purpose": "development_feasibility_no_training"
+      },
+      "arm": "oracle_k4",
+      "success": false,
+      "decisions": 1,
+      "sim_steps": 111,
+      "skill_sim_steps": {
+        "move_to": 111
+      },
+      "wall_s": 71.97725597117096,
+      "failure_phase": null,
+      "source": "official_original_task_predicates_private",
+      "status": "startup_physical",
+      "training": false,
+      "pi05_calls": 0,
+      "fusion_version": "rgbd_dual_view/1",
+      "k": 4,
+      "terminal_diagnostic": null,
+      "wall_time_breakdown": {
+        "version": "bounded-wall-time/1",
+        "wall_s": 71.97725597117096,
+        "main_thread_exclusive_s": {
+          "perception.segmentation": 18.95834609074518,
+          "perception.entity_measurement": 7.775882407091558,
+          "artifact_io": 0.9331681807525456,
+          "planning.consequences": 26.84997873287648,
+          "planning.request": 3.5144781009294093,
+          "private_labels.offline_capture": 2.4707310870289803,
+          "decision.oracle": 0.013335458002984524,
+          "simulation.step_render": 1.7727357880212367,
+          "perception.depth": 0.08963102428242564,
+          "perception.capture_io": 1.2400494464673102,
+          "execution.other": 1.9576102839782834
+        },
+        "all_threads_exclusive_s": {
+          "perception.segmentation": 18.95834609074518,
+          "perception.entity_measurement": 7.775882407091558,
+          "artifact_io": 0.9331681807525456,
+          "planning.consequences": 26.84997873287648,
+          "planning.request": 3.5144781009294093,
+          "private_labels.offline_capture": 2.4707310870289803,
+          "decision.oracle": 0.013335458002984524,
+          "simulation.step_render": 1.7727357880212367,
+          "perception.depth": 0.08963102428242564,
+          "perception.capture_io": 1.2400494464673102,
+          "execution.other": 1.9576102839782834
+        },
+        "main_thread_unattributed_s": 6.401309370994568,
+        "calls": {
+          "perception.segmentation:call": 45,
+          "perception.entity_measurement:_refresh_held_measurement": 2,
+          "perception.entity_measurement:_instance_pixels": 9,
+          "perception.entity_measurement:_contact_pixels": 9,
+          "artifact_io:_record_public_geometry": 25,
+          "planning.consequences:_cloud_and_ik": 65,
+          "perception.entity_measurement:measure_fixture_endpoint": 4,
+          "perception.entity_measurement:measure_fixture_handle_pose": 2,
+          "planning.consequences:_route": 129,
+          "planning.consequences:check": 1527,
+          "planning.consequences:__call__": 107,
+          "planning.consequences:_candidate": 130,
+          "planning.request:None": 1,
+          "private_labels.offline_capture:None": 1,
+          "planning.consequences:context": 2,
+          "decision.oracle:None": 1,
+          "planning.consequences:plan_chunk": 1,
+          "simulation.step_render:step": 111,
+          "perception.depth:_metric_depth": 4,
+          "perception.depth:_world_from_depth": 4,
+          "simulation.step_render:render_camera": 2,
+          "perception.capture_io:get_env_state": 1,
+          "execution.other:None": 1
+        },
+        "main_thread_exclusive_by_root_s": {
+          "perception.segmentation": {
+            "perception.segmentation": 5.388619700446725
+          },
+          "planning.request": {
+            "perception.entity_measurement": 7.775854216888547,
+            "artifact_io": 0.8151504108682275,
+            "planning.consequences": 16.649583003483713,
+            "perception.segmentation": 9.204568036831915,
+            "planning.request": 3.5144781009294093
+          },
+          "private_labels.offline_capture": {
+            "planning.consequences": 0.6444242219440639,
+            "perception.entity_measurement": 1.4164019376039505e-05,
+            "artifact_io": 0.09379761107265949,
+            "private_labels.offline_capture": 2.4707310870289803
+          },
+          "decision.oracle": {
+            "planning.consequences": 8.729771482758224,
+            "decision.oracle": 0.013335458002984524
+          },
+          "execution.other": {
+            "planning.consequences": 0.826200024690479,
+            "perception.entity_measurement": 1.4026183634996414e-05,
+            "artifact_io": 0.02422015881165862,
+            "simulation.step_render": 1.7727357880212367,
+            "perception.depth": 0.08963102428242564,
+            "perception.capture_io": 1.2400494464673102,
+            "perception.segmentation": 4.365158353466541,
+            "execution.other": 1.9576102839782834
+          }
+        },
+        "worker_times_overlap_main_thread": true,
+        "scope": "client wall time including transport; initial simulator construction excluded"
+      },
+      "chunk_rule": "measured-receipt-v2",
+      "actual_actions_per_decision": [
+        1
+      ],
+      "attempted_actions_per_decision": [
+        1
+      ],
+      "skill_attempts": {
+        "move_to": 1
+      },
+      "skill_verified": {
+        "move_to": 1
+      },
+      "chunk_truncations": [],
+      "smooth_reference_max_acceleration_jump": 8.528420021082405e-17,
+      "smooth_reference_max_jerk_limit_ratio": 0.07109426685669475,
+      "smooth_reference_max_translation_acceleration_jump": 8.528420021082405e-17,
+      "smooth_reference_max_rotation_acceleration_jump": 0.0,
+      "native_step_limit_hit": false,
+      "terminal_category": "other"
+    },
+    "first_physical_request": {
+      "arm": "oracle_k4",
+      "index": 0,
+      "sim_steps": 111,
+      "source": "public_execution_budget"
+    },
+    "state_exit": "COMPLETED|0:0"
+  },
+  "training": false,
+  "confirmation": false,
+  "indices": [
+    120,
+    140
+  ],
+  "selected_cases": [
+    {
+      "name": "microwave_close_libero_90_t33_s0",
+      "category": "microwave_close",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 0
+      },
+      "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+      "bddl": {
+        "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "purpose": "development_feasibility_no_training"
+    },
+    {
+      "name": "microwave_open_libero_90_t35_s0",
+      "category": "microwave_open",
+      "episode": {
+        "suite": "libero_90",
+        "task": 35,
+        "seed": 0
+      },
+      "state_sha256": "96948bc173dcf571d949ecfc06b91778e1637bebce12ce55b656db8efe1e2a11",
+      "bddl": {
+        "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE7_open_the_microwave.bddl",
+        "sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f"
+      },
+      "purpose": "development_feasibility_no_training"
+    }
+  ],
+  "expected_case_names": "microwave_close_libero_90_t33_s0,microwave_open_libero_90_t35_s0",
+  "scope": "original-task oracle K4 upper bound; no pi05",
+  "submission_updates_complete": true
+}

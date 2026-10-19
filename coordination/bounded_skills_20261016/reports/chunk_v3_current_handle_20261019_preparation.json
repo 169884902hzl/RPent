@@ -1,0 +1,64 @@
+{
+  "source_commit": "ede83b18",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_current_handle_20261019_ede83b18",
+  "archive_sha256": "8ed798877a134bd8292dc68e578ca99fd7079a79039f454f922669a6641d84f7",
+  "schema_version": "bounded-skills/3",
+  "schema_sha256": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_chunk_v3_current_handle_20261019.json",
+    "sha256": "4488dcf16265788a68cf480d2c55b90452cfce64af69a82cb436ed37998fef7a"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_chunk_v3_current_handle_20261019.log"
+  },
+  "n_states": 220,
+  "entry": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "cpu_validation": {
+    "receipt": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/handle_panel_support_cpu_20261019.json",
+    "sha256": "42c880dd859e1b5fbe46ffe1947794aff8046953d98661f0a79416af140198c8",
+    "results": {
+      "time_pacific": "2026-10-18T21:24:32.845966-07:00",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/unit_tests/robots/libero/test_v5_format_repair.py",
+        "tests/unit_tests/robots/libero/test_v5_microwave_door_temporal.py",
+        "tests/unit_tests/robots/libero/test_v5_microwave_identity.py",
+        "tests/unit_tests/robots/libero/test_v5_microwave_door_tracking.py",
+        "tests/unit_tests/robots/libero/test_v5_microwave_capture.py",
+        "tests/unit_tests/robots/libero/test_v5_fixture_parts.py",
+        "tests/unit_tests/robots/libero/test_v5_microwave_handle_orientation.py",
+        "tests/unit_tests/robots/libero/test_bounded_skills.py",
+        "tests/unit_tests/robots/libero/test_bounded_chunk.py",
+        "tests/unit_tests/robots/libero/test_bounded_offline_labels.py"
+      ],
+      "exit_code": 0,
+      "wall_s": 218.83850096026435,
+      "summary": "466 passed, 1 warning in 218.16s (0:03:38)",
+      "files": {
+        "robots/libero/v5_runtime.py": "e85a12ff6ceeb53906df265a8c8185c86fe3969e650812b11382d191b4a9334a",
+        "robots/libero/v5_microwave_identity.py": "d16e173e0c1c1e6a9176234bf96d57ac8d3be1795d372f5c5fbd8cd8578675a7",
+        "tests/unit_tests/robots/libero/test_v5_microwave_door_tracking.py": "ffdafe1fb0038f999920774ac35173a9575d06824797ef2ecf5c682a40e1a730",
+        "rpent/skill_package/schema.json": "df17c6c49e4992247ab8ff37ebf528f893ac6887ea8cf946e25668aca110b4aa",
+        "rpent/skill_package/contract.py": "7e898e3bd4e8f4c7a4e9951d897cc1fe682037ee35ee4d6d5cc1f52606e2f49c",
+        "robots/libero/bounded_oracle.py": "c6057acd0056d940b1c03235c2d54a27e3750161e16f8a8936f0af45db70cc89"
+      },
+      "log": {
+        "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/handle_panel_support_cpu_20261019.log",
+        "sha256": "5b04896fedb4059f5530f4beb56e1c8ff80b24b51453a331804db9c850ec9974"
+      },
+      "training": false,
+      "confirmation": false,
+      "gpu_used": false,
+      "scope": "CPU regression; current handle resolves conflicting door views only; no articulation success claim"
+    }
+  },
+  "physical_validation": "pending same-launcher startup",
+  "training": false,
+  "confirmation": false,
+  "pi05_in_oracle": false
+}
