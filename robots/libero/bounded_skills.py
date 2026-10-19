@@ -73,9 +73,12 @@ class MeasuredSkillAdapter:
                  record_public_geometry: bool = False, precontact_instance_surface_v1: bool = False,
                  legacy_chunk_boundaries_v1: bool = False,
                  compact_infeasible_candidates_v1: bool = True,
-                 prefix_consequence_workers: int = 1):
+                 prefix_consequence_workers: int = 1,
+                 request_consequence_workers: int = 1):
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
+        if type(request_consequence_workers) is not int or request_consequence_workers < 1:
+            raise ValueError('request_consequence_workers must be a positive integer')
         self.ex, self.p, self.scene = executor, executor.p, executor.scene
         self.xml = Path(gripper_xml)
         self.geometry = panda_geometry(self.xml)
@@ -115,6 +118,7 @@ class MeasuredSkillAdapter:
         self.legacy_chunk_boundaries_v1 = legacy_chunk_boundaries_v1
         self.compact_infeasible_candidates_v1 = compact_infeasible_candidates_v1
         self.prefix_consequence_workers = prefix_consequence_workers
+        self.request_consequence_workers = request_consequence_workers
         self.public_geometry_evidence = {}
         self._last_free_chunk = None
         self.last_prefetch_adoption = None
@@ -1862,7 +1866,11 @@ class MeasuredSkillAdapter:
                 if contact is not None:
                     self.plans[entity.id] = contact
         candidates = []
+        options = []
         def add(skill, **parameters):
+            if self.request_consequence_workers > 1:
+                options.append((skill, parameters))
+                return
             candidate = self._candidate(skill, parameters, screen_options=screen_options)
             if candidate is not None:
                 candidates.append(candidate)
@@ -1899,6 +1907,10 @@ class MeasuredSkillAdapter:
             add("observe", mode=mode)
         add("finish")
         add("ask_help")
+        if self.request_consequence_workers > 1:
+            from robots.libero.bounded_cpu_planning import request_candidates
+
+            candidates = request_candidates(self, options, self.request_consequence_workers)
         from robots.libero.v5_state import relations
         right, front = self.scene.view_axes
         public_relations = []

@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 from robots.libero.bounded_chunk import PublicPrefixPrediction
-from robots.libero.bounded_cpu_planning import detach_prediction
+from robots.libero.bounded_cpu_planning import capture_request_adapter, detach_prediction
 from robots.libero.bounded_screen import PublicRouteScreen
 from tests.unit_tests.robots.libero.test_bounded_skills import adapter as adapter
 
@@ -70,6 +70,42 @@ def test_spawned_context_keeps_all_fields_and_diagnostics_in_original_order(adap
 def test_invalid_runtime_worker_count_is_rejected_at_adapter_boundary(adapter):
     from robots.libero.bounded_skills import MeasuredSkillAdapter
 
-    for workers in (0, -1, True, 1.5):
-        with pytest.raises(ValueError, match='positive integer'):
-            MeasuredSkillAdapter(adapter.ex, adapter.xml, prefix_consequence_workers=workers)
+    for name in ('prefix_consequence_workers', 'request_consequence_workers'):
+        for workers in (0, -1, True, 1.5):
+            with pytest.raises(ValueError, match='positive integer'):
+                MeasuredSkillAdapter(adapter.ex, adapter.xml, **{name: workers})
+
+
+def test_spawned_initial_request_keeps_candidate_bytes_order_and_diagnostics(adapter):
+    measured_prediction(adapter)
+    from robots.libero.bounded_motion import measured_robot
+
+    obstacle = np.array(measured_robot(adapter.p)['eef_xyz_m']) + [.015, 0., 0.]
+    adapter._cloud_and_ik = lambda *args, **kwargs: PublicRouteScreen(
+        obstacle[None], adapter.geometry, MeasuredIK())
+    serial = adapter.request(k=4)
+    diagnostics = list(adapter.candidate_diagnostics)
+    assert diagnostics  # Blocked routes must also retain their original order.
+    adapter.request_consequence_workers = 2
+    parallel = adapter.request(k=4)
+    assert parallel == serial
+    assert adapter.candidate_diagnostics == diagnostics
+    assert not adapter.p.actions
+
+
+def test_captured_initial_request_keeps_control_history_but_no_live_resources(adapter):
+    measured_prediction(adapter)
+    adapter.p._bounded_control_index = 3
+    adapter.p._bounded_motion_samples = [(3, {'measured': True})]
+    adapter.p._bounded_rest_reference = {'control_index': 3}
+    adapter.scene.rpc = lambda *_: pytest.fail('live RPC')
+    adapter.unused_service = lambda *_: pytest.fail('live service')
+    captured = capture_request_adapter(adapter, [('nudge', {'axis': 'x', 'distance_m': .01})])
+    restored = pickle.loads(pickle.dumps(captured))
+    assert restored.p._bounded_control_index == 3
+    assert restored.p._bounded_motion_samples == adapter.p._bounded_motion_samples
+    assert restored.p._bounded_rest_reference == adapter.p._bounded_rest_reference
+    assert not hasattr(restored.p.env, 'step')
+    assert not hasattr(restored.scene, 'rpc')
+    assert not hasattr(restored, 'unused_service')
+    assert not adapter.p.actions

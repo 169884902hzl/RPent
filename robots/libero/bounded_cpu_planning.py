@@ -1,6 +1,6 @@
 # Copyright 2026 The RPent Authors.
 # SPDX-License-Identifier: Apache-2.0
-"""Spawn CPU consequence workers from a detached public prefix prediction."""
+"""Spawn CPU consequence workers from detached public measurements."""
 from __future__ import annotations
 
 import copy
@@ -8,9 +8,11 @@ import multiprocessing
 import os
 from types import SimpleNamespace
 
+from robots.libero.bounded_motion import measured_robot
 from robots.libero.bounded_screen import PublicRouteScreen
 
 _prediction = None
+_request_adapter = None
 
 
 class CapturedSensors:
@@ -41,6 +43,40 @@ class CapturedDepth:
         return self.images[name]
 
 
+class CapturedScreens:
+    """Exact current route graphs, without callbacks into the live adapter."""
+
+    def __init__(self, screens):
+        self.screens = screens
+
+    def __call__(self, anchor_id=None, *, contact=False):
+        return self.screens[anchor_id, contact]
+
+
+def _detach_adapter(original, robot, budget):
+    clone = object.__new__(type(original))
+    names = ('xml', 'robot_xml', 'geometry', 'config', 'allow_vla', 'history',
+             'held', 'active', 'grasp_reference', 'payload_reference', 'target_cache',
+             'plans', 'committed_grasps', 'receipts', 'revision', '_proprio_sample',
+             'precontact_instance_surface_v1', 'legacy_chunk_boundaries_v1',
+             'compact_infeasible_candidates_v1')
+    clone.__dict__.update({name: getattr(original, name) for name in names})
+    scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')
+    clone.scene = SimpleNamespace(**{name: getattr(original.scene, name) for name in scene_fields})
+    if hasattr(original.scene, 'work_surface_measurement'):
+        clone.scene.work_surface_measurement = original.scene.work_surface_measurement
+    clone.p = SimpleNamespace(env=CapturedSensors(robot, budget))
+    for name in ('_bounded_motion_samples', '_bounded_control_index', '_bounded_rest_reference'):
+        if hasattr(original.p, name):
+            setattr(clone.p, name, getattr(original.p, name))
+    clone.ex = SimpleNamespace(instruction=original.ex.instruction,
+        toolkit=SimpleNamespace(_state=CapturedDepth(original.ex.toolkit._state)))
+    clone.record_public_geometry = False
+    clone.candidate_diagnostics = []
+    clone._screen_cache = {}
+    return clone
+
+
 def detach_prediction(prediction):
     """Remove clients, renderer and unused collision graphs before spawning.
 
@@ -56,24 +92,7 @@ def detach_prediction(prediction):
     # _screen already owns the exact world/payload and original target
     # pixels; per-anchor source collision graphs are no longer inputs.
     result.source_adapter = None
-    original = prediction.adapter
-    result.adapter = clone = object.__new__(type(original))
-    names = ('xml', 'robot_xml', 'geometry', 'config', 'allow_vla', 'history',
-             'held', 'active', 'grasp_reference', 'payload_reference', 'target_cache',
-             'plans', 'committed_grasps', 'receipts', 'revision', '_proprio_sample',
-             'precontact_instance_surface_v1', 'legacy_chunk_boundaries_v1',
-             'compact_infeasible_candidates_v1')
-    clone.__dict__.update({name: getattr(original, name) for name in names})
-    scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')
-    clone.scene = SimpleNamespace(**{name: getattr(original.scene, name) for name in scene_fields})
-    if hasattr(original.scene, 'work_surface_measurement'):
-        clone.scene.work_surface_measurement = original.scene.work_surface_measurement
-    clone.p = SimpleNamespace(env=CapturedSensors(result.sensor, result.budget))
-    clone.ex = SimpleNamespace(instruction=original.ex.instruction,
-        toolkit=SimpleNamespace(_state=CapturedDepth(original.ex.toolkit._state)))
-    clone.record_public_geometry = False
-    clone.candidate_diagnostics = []
-    clone._screen_cache = {}
+    result.adapter = clone = _detach_adapter(prediction.adapter, result.sensor, result.budget)
     clone._cloud_and_ik = result._screen
     return result
 
@@ -101,3 +120,49 @@ def predict_candidates(prediction, originals, workers):
     for _, diagnostics in rows:
         prediction.adapter.candidate_diagnostics.extend(diagnostics)
     return [candidate for candidate, _ in rows]
+
+
+def capture_request_adapter(adapter, options):
+    """Freeze current public screens after contact plans have been generated."""
+    from robots.libero.bounded_skills import MOTION_SKILLS
+
+    clone = _detach_adapter(adapter, measured_robot(adapter.p), adapter.p.env.execution_budget())
+    screens = {}
+    for skill, parameters in options:
+        if skill not in MOTION_SKILLS:
+            continue
+        key = parameters.get('anchor_id', parameters.get('target_id'))
+        if key is None and skill in {'nudge', 'rotate_wrist'}:
+            key = adapter.active
+        contact = skill in {'descend', 'lower', 'nudge'} or (
+            skill in {'lift', 'rotate_wrist'} and adapter.active is not None)
+        if (key, contact) not in screens:
+            screens[key, contact] = adapter._cloud_and_ik(key, contact=contact)
+    clone._cloud_and_ik = CapturedScreens(screens)
+    return clone
+
+
+def _initialize_request(adapter):
+    global _request_adapter
+    os.environ['CUDA_VISIBLE_DEVICES'] = ''
+    _request_adapter = adapter
+
+
+def _request_candidate(option):
+    skill, parameters = option
+    _request_adapter.candidate_diagnostics = []
+    candidate = _request_adapter._candidate(skill, parameters)
+    return candidate, _request_adapter.candidate_diagnostics
+
+
+def request_candidates(adapter, options, workers):
+    """Evaluate current-state options in source order using CPU-only spawn."""
+    if not options:
+        return []
+    captured = capture_request_adapter(adapter, options)
+    with multiprocessing.get_context('spawn').Pool(
+            workers, initializer=_initialize_request, initargs=(captured,)) as pool:
+        rows = pool.map(_request_candidate, options, chunksize=4)
+    for _, diagnostics in rows:
+        adapter.candidate_diagnostics.extend(diagnostics)
+    return [candidate for candidate, _ in rows if candidate is not None]

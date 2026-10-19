@@ -322,7 +322,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                 record_public_geometry=True, precontact_instance_surface_v1=config.get('precontact_instance_surface_v1', True),
                 legacy_chunk_boundaries_v1=config.get('legacy_chunk_boundaries_v1', False),
                 compact_infeasible_candidates_v1=config.get('compact_infeasible_candidates_v1', True),
-                prefix_consequence_workers=config.get('prefix_consequence_workers', 1))
+                prefix_consequence_workers=config.get('prefix_consequence_workers', 1),
+                request_consequence_workers=config.get('request_consequence_workers', 1))
             policy = None if arm.startswith("model") else BoundedOracle(rpc, adapter)
             if arm.startswith("model"):
                 from robots.libero.bounded_async import AsyncSkillDecisions, http_choice
