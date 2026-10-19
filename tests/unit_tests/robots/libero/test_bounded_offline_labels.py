@@ -111,3 +111,34 @@ def test_reject_mismatched_request_invalid_prefix_and_corrupt_snapshot(captured,
     Path(reference['path']).write_bytes(b'corrupt')
     with pytest.raises(ValueError, match='hash mismatch'):
         load_annotation_state(reference['path'], reference['sha256'])
+
+
+def test_parallel_labels_preserve_every_field_for_oracle_and_model_prefixes(captured):
+    adapter, oracle, request, state, calls = captured
+    oracle.choose(request)
+    prefixes = [row['prefix'] for row in oracle.last_labels['positions']]
+    nudge = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'x', 'distance_m': .01})
+    prefixes.append([nudge['id']])
+    calls_before = list(calls)
+    for prefix in prefixes:
+        assert annotate_prefix(state, request, prefix, workers=4) == annotate_prefix(state, request, prefix)
+    assert calls == calls_before and not adapter.p.actions
+
+
+@pytest.mark.parametrize('workers', [0, -1, 1.5, True])
+def test_reject_invalid_worker_count(captured, workers):
+    _, _, request, state, _ = captured
+    with pytest.raises(ValueError, match='positive integer'):
+        annotate_prefix(state, request, [], workers=workers)
+
+
+def test_parallel_rejects_live_adapter_and_initialized_cuda(captured, monkeypatch):
+    import sys
+
+    adapter, _, request, state, _ = captured
+    with pytest.raises(ValueError, match='frozen CPU'):
+        annotate_prefix({**state, 'adapter': adapter}, request, [], workers=4)
+    monkeypatch.setitem(sys.modules, 'torch', SimpleNamespace(cuda=SimpleNamespace(is_initialized=lambda: True)))
+    with pytest.raises(ValueError, match='initialized CUDA'):
+        annotate_prefix(state, request, [], workers=4)

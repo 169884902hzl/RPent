@@ -305,15 +305,15 @@ class PublicPrefixPrediction:
         self.prefix.append(candidate['id'])
         self.screens.clear()
 
+    def _candidates(self, originals):
+        return [self.candidate(original) for original in originals]
+
     def context(self):
-        candidates = []
         committed = committed_candidate_ids(self.request)
-        for original in self.original.values():
-            if original['id'] in self.prefix or original['id'] in committed:
-                continue
-            candidate = self.candidate(original) if self.prefix else original
-            if candidate is not None and candidate['consequences']['screen_scope'] != 'conditional_on_prefix':
-                candidates.append(candidate)
+        originals = [c for c in self.original.values() if c['id'] not in self.prefix and c['id'] not in committed]
+        predicted = self._candidates(originals) if self.prefix else originals
+        candidates = [c for c in predicted if c is not None
+            and c['consequences']['screen_scope'] != 'conditional_on_prefix']
         result = dict(schema_version=VERSION, kind='prefix_context', observation_id=self.request['observation_id'],
             revision=self.request['revision'], prefix=list(self.prefix), predicted_robot=self.adapter.robot(),
             candidates=([compact_candidate(c) for c in candidates]

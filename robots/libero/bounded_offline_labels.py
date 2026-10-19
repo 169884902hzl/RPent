@@ -11,7 +11,10 @@ import copy
 import gzip
 import hashlib
 import json
+import multiprocessing
 import pickle
+import sys
+import threading
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -27,6 +30,34 @@ from rpent.skill_package.contract import (
 )
 
 VERSION = 'libero-offline-prefix-label/1'
+_worker_prediction = None
+
+
+def _initialize_prediction_worker(prediction):
+    global _worker_prediction
+    _worker_prediction = prediction
+
+
+def _predict_candidate(candidate):
+    return _worker_prediction.candidate(candidate)
+
+
+class OfflinePrefixPrediction(PublicPrefixPrediction):
+    """Parallelize only trusted, frozen CPU annotation snapshots."""
+
+    def __init__(self, adapter, request, workers):
+        super().__init__(adapter, request)
+        self.workers = workers
+
+    def _candidates(self, originals):
+        if self.workers == 1 or not originals:
+            return super()._candidates(originals)
+        # Fork inherits the measured predictor without pickling its bound
+        # sensor methods. Each process owns its IK/cloud caches, and ordered
+        # map preserves the public candidate order. No live adapter is used.
+        with multiprocessing.get_context('fork').Pool(
+                self.workers, initializer=_initialize_prediction_worker, initargs=(self,)) as pool:
+            return pool.map(_predict_candidate, originals, chunksize=4)
 
 
 def request_digest(request):
@@ -112,13 +143,23 @@ def capture_annotation_state(oracle, request, *, status=None):
     return copy.deepcopy(state)
 
 
-def annotate_prefix(state, request, prefix):
+def annotate_prefix(state, request, prefix, *, workers=1):
     """Return public legal and private rule-acceptable IDs after any prefix.
 
     Acceptable is conditional on the prefix's receipt assumptions. It is not
     measured branch success. Invalid public prefixes are rejected; an empty
     acceptable set is explicit and is never replaced with the oracle's path.
     """
+    if not isinstance(workers, int) or isinstance(workers, bool) or workers < 1:
+        raise ValueError('workers must be a positive integer')
+    if workers > 1:
+        if not isinstance(state['adapter'].p.env, FrozenSensors):
+            raise ValueError('parallel annotation requires a frozen CPU snapshot')
+        if threading.current_thread() is not threading.main_thread():
+            raise ValueError('parallel annotation must run from the CPU process main thread')
+        torch = sys.modules.get('torch')
+        if torch is not None and torch.cuda.is_initialized():
+            raise ValueError('parallel annotation cannot fork an initialized CUDA process')
     validate(request)
     if state['version'] != VERSION or state['request_sha256'] != request_digest(request):
         raise ValueError('offline annotation state belongs to a different request or version')
@@ -136,7 +177,7 @@ def annotate_prefix(state, request, prefix):
     adapter = copy.deepcopy(state['adapter'])
     oracle = BoundedOracle(None, adapter)
     oracle.binding.__dict__.update(copy.deepcopy(state['binding']))
-    prediction = PublicPrefixPrediction(adapter, request)
+    prediction = OfflinePrefixPrediction(adapter, request, workers)
     oracle.adapter = prediction.adapter
     for cid in prefix:
         context = prediction.context()

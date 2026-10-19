@@ -141,6 +141,8 @@ An in-motion request keeps its original measured robot state, budget, receipts a
 
 CLI: `python -m scripts.label_bounded_prefix --state STATE.pkl.gz --state-sha256 SHA --request REQUEST.json --prefix PREFIX.json --output LABEL.json`. Snapshots are trusted internal pickles; only use the recorded SHA and matching source revision. New synchronous feasibility decisions record `private_prefix_annotation_state` beside the existing private simulator snapshot. Prefetched requests require the corresponding capture-time state; they are not mislabeled from a later state. Historical records without the measured adapter snapshot cannot automatically fill every unknown position. Codex2 can use captured snapshots to label arbitrary valid free-readout prefixes; unresolved positions retain their explicit status.
 
+Optional `--workers 4` / `annotate_prefix(..., workers=4)` computes successor consequences in isolated CPU processes while preserving candidate order. Default is one worker. This path accepts only frozen snapshots, runs from the main thread, and rejects an initialized CUDA process. The CLI hides GPUs and sets BLAS/OpenMP to one thread before loading numerical modules. Each prefix context owns and closes its worker pool; no worker captures images, calls a service or advances physics. The live GPU runtime retains serial prediction. Saved-state checks must compare complete contexts and private labels, not only chosen IDs.
+
 This private interface is `libero-offline-prefix-label/1`. It does not change the public `bounded-skills/3` schema or `public-request-legal/2`. Detailed source receipts remain capped at the latest three, as specified above.
 
 ## π0.5 fallback and branch recording
