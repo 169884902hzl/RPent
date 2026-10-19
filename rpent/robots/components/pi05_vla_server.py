@@ -207,8 +207,17 @@ class Pi05VLAFacade(BaseVLAFacade):
         The caller (client) is responsible for encoding env-native obs into
         the openpi wire format (see ``Pi05VLAClient.encode_obs``).
         """
-        mode = (options or {}).get("mode", "eval")
-        with torch.no_grad():
+        options = options or {}
+        mode = options.get("mode", "eval")
+        seed = options.get("sampling_seed")
+        if seed is not None and (type(seed) is not int or not 0 <= seed < 2**63):
+            raise ValueError("sampling_seed must be an integer in [0, 2**63)")
+        # Owned diagnostic callers can reproduce independent policy branches.
+        # Save/restore RNG state so they do not perturb ordinary requests.
+        devices = list(range(torch.cuda.device_count())) if seed is not None else []
+        with torch.no_grad(), torch.random.fork_rng(devices=devices, enabled=seed is not None):
+            if seed is not None:
+                torch.manual_seed(seed)
             actions, _ = self._model.predict_action_batch(obs, mode=mode)
         return (
             actions.detach().cpu().numpy()

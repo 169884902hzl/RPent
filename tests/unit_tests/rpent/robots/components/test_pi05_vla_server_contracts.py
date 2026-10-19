@@ -116,3 +116,24 @@ def test_libero_preset_keeps_existing_defaults():
     assert cfg.openpi.train_expert_only is True
     assert cfg.openpi.detach_critic_input is None
     assert "openpi_data" not in cfg
+
+
+def test_sampling_seed_is_reproducible_and_preserves_server_rng():
+    import torch
+
+    from rpent.robots.components.pi05_vla_server import Pi05VLAFacade
+
+    class Model:
+        def predict_action_batch(self, obs, mode):
+            return torch.randn(1, 5, 7), None
+
+    facade = object.__new__(Pi05VLAFacade)
+    facade._model = Model()
+    previous = torch.get_rng_state().clone()
+    first = facade.predict({}, {"sampling_seed": 904010})
+    assert torch.equal(previous, torch.get_rng_state())
+    assert np.array_equal(first, facade.predict({}, {"sampling_seed": 904010}))
+    assert not np.array_equal(first, facade.predict({}, {"sampling_seed": 904011}))
+    for seed in (True, -1, 2**63, "1"):
+        with pytest.raises(ValueError):
+            facade.predict({}, {"sampling_seed": seed})

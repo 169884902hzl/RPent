@@ -23,6 +23,20 @@ import numpy as np
 from scripts.probe_bounded_motion import LocalRPC, original_session, write
 
 ORIGINAL_SUITES = ("libero_spatial", "libero_object", "libero_goal", "libero_10", "libero_90")
+BOUNDED_SCENE_FLAGS = dict(
+    fixture_support_filter_v1=True, fixture_support_footprint_v2=True,
+    fixture_front_geometry_v1=True, fixture_identity_cache_v1=True,
+    fixture_fragment_alias_v1=True, stove_public_identity_v1=True,
+    fixture_drawer_clouds_v2=True, fixture_part_visibility_v2=True,
+    fixture_handle_geometry_v3=True, fixture_endpoint_geometry_v3=True,
+    drawer_current_binding_v4=True, drawer_bounds_depth_v5=True,
+    drawer_frontmost_panel_v7=True, microwave_recall_geometry_v3=True,
+    microwave_instance_geometry_v4=True, appliance_support_crop_v5=True,
+    microwave_door_cloud_v6=True, door_point_recall_v7=True,
+    door_plane_consensus_v1=True, microwave_door_tracking_v1=True,
+    microwave_shell_front_hint_v1=True,
+    region_anchor_cache_v1=True, record_sam_masks_v6=True,
+)
 DEFAULT_PERMANENT_EXCLUSIONS = (Path(__file__).resolve().parents[1] /
     "coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_KNOWN_IDENTITIES.jsonl")
 
@@ -266,18 +280,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
             # These are existing RGB-D identity/part measurements, not the
             # retired skill executors. The bounded probe previously omitted
             # them, leaving cabinets fragmented and appliance handles absent.
-            scene_flags.update(fixture_support_filter_v1=True, fixture_support_footprint_v2=True,
-                fixture_front_geometry_v1=True, fixture_identity_cache_v1=True,
-                fixture_fragment_alias_v1=True, stove_public_identity_v1=True,
-                fixture_drawer_clouds_v2=True, fixture_part_visibility_v2=True,
-                fixture_handle_geometry_v3=True, fixture_endpoint_geometry_v3=True,
-                drawer_current_binding_v4=True, drawer_bounds_depth_v5=True,
-                drawer_frontmost_panel_v7=True, microwave_recall_geometry_v3=True,
-                microwave_instance_geometry_v4=True, appliance_support_crop_v5=True,
-                microwave_door_cloud_v6=True, door_point_recall_v7=True,
-                door_plane_consensus_v1=True, microwave_door_tracking_v1=True,
-                microwave_shell_front_hint_v1=True,
-                region_anchor_cache_v1=True, record_sam_masks_v6=True)
+            scene_flags.update(BOUNDED_SCENE_FLAGS)
         write(output/'public_scene_flags.json', scene_flags)
         scene = MeasuredScene(toolkit, endpoints["sam3"], ep["seed"], **scene_flags)
         if startup or os.environ.get('BOUNDED_PROFILE_PERCEPTION') == '1':
