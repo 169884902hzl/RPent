@@ -48,6 +48,18 @@ def test_unknown_is_not_failure_and_tie_prefers_self():
         choose_branch(False, [True])
 
 
+def test_recognized_storage_predicates_do_not_claim_prerequisite_rule_coverage():
+    tasks, unsupported = split_subtasks([
+        ['close', 'cabinet_bottom_region'], ['in', 'bowl', 'cabinet_bottom_region']])
+    assert [task['mode'] for task in tasks] == ['close', 'pick', 'in']
+    assert unsupported == [{'index': 0, 'goal': ['close', 'cabinet_bottom_region'],
+        'reason': 'existing_oracle_storage_insert_close_progress_not_covered'}]
+    # Independent close/in goals on different fixtures do not imply this gap.
+    _, unsupported = split_subtasks([
+        ['close', 'microwave'], ['in', 'bowl', 'basket']])
+    assert unsupported == []
+
+
 def test_runtime_restore_does_not_leak_sibling_caches_or_retry_history():
     p = SimpleNamespace(_bounded_control_index=10, client=object())
     scene = SimpleNamespace(toolkit=object(), rpc=object(), entities={"e1": [1]}, calls=1)

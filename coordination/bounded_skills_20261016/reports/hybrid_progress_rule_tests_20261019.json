@@ -1,0 +1,26 @@
+{
+  "tested_parent_commit": "572423a2de93835cc6f8db6b0738184ffeb2930a",
+  "change": "Predicate parsing does not imply task-progress coverage. Explicitly report missing insertion/close prerequisite rules; no new task or PRO rule.",
+  "subtask_split": "private-hybrid-call-vla-subtasks/2",
+  "public_schema_changed": false,
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/unit_tests/robots/libero/test_bounded_hybrid_diagnostic.py",
+    "tests/unit_tests/robots/libero/test_bounded_hybrid_summary.py"
+  ],
+  "exit_code": 0,
+  "summary": "16 passed, 1 warning in 0.33s",
+  "warning": "existing unknown pytest timeout option",
+  "raw_log_saved": false,
+  "files": {
+    "robots/libero/bounded_hybrid_diagnostic.py": "e79a1e04a135a2cbc1535defe0f21866933d4f6956fa99ec79353f6a32599e04",
+    "tests/unit_tests/robots/libero/test_bounded_hybrid_diagnostic.py": "43dd374e70b764b1f31f9c542ef7fd51313bd77c1c5d8d8bfeb5aa78cc6b4ca7",
+    "SKILL_PACKAGE_SPEC.md": "6b0a52c5b30527d65f879064f0b4414ecd62ce71eefdbb115259577acbe0df61"
+  },
+  "gpu_used": false,
+  "physics_steps": 0,
+  "training": false
+}
