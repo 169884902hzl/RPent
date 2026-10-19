@@ -2016,6 +2016,36 @@ def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
     assert adapter.candidate_diagnostics[-1]['candidates'][0]['screen']['collision'] is True
 
 
+def test_panel_contact_prefers_terminal_joint_room_without_accepting_a_blocked_route(adapter):
+    from scipy.spatial.transform import Rotation
+
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.002, -.002, .003],
+        'upper': [.002, .002, .005]} for name in ('leftfinger', 'rightfinger')]
+    y, z = np.mgrid[:20, :20]
+    points = np.stack([np.full(y.size, .1), y.ravel()*.003, .9+z.ravel()*.003], axis=-1)
+    checked = []
+    def screen(poses):
+        index = len(checked)
+        checked.append(poses)
+        passed = index != 2
+        margin = .3 if index == 1 else .9 if not passed else 1e-6
+        return {'passed': passed, 'reason': 'clear' if passed else 'measured_sweep_collision',
+            'collision': not passed, 'ik_reachable': True, 'path_min_clearance_m': .02,
+            'ik_checks': [{'solves': [{'solution_found': True, 'joint_margin_min_rad': margin}]}]}
+    screen.points = screen.target = np.empty((0, 3))
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    assert len(checked) == 16
+    desired = checked[1][-1]
+    np.testing.assert_allclose(plan['xyz_m'], desired['xyz_m'])
+    assert (Rotation.from_quat(plan['quat_xyzw'])*Rotation.from_quat(desired['quat_xyzw']).inv()).magnitude() < 1e-12
+    options = adapter.candidate_diagnostics[-1]['candidates']
+    assert plan['approach_route'] == options[1]['route'][:-1]
+    assert options[0]['screen']['passed']
+    assert options[1]['screen']['contact_joint_margin_rad'] == .3
+    assert options[2]['screen']['collision']
+
+
 def test_surface_contact_rejects_neighbour_hit_only_during_closure(adapter):
     from scipy.spatial.transform import Rotation
 

@@ -1,0 +1,1597 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_chunk_v3_directional_contact_20261018_4db4ea4",
+  "context": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9539_120/microwave_close_libero_90_t33_s0_oracle_k4/private_prefix_state_0000.pkl.gz",
+    "sha256": "f475526f8b5f04dc806aa7b4fa8d6fd8d5306823e9608d866dd733e2bf0e17bd",
+    "version": "libero-offline-prefix-label/1",
+    "request_sha256": "54648f7b4147e86ee1a327b00b6d47a7d44d06cdb900d1666a75e3f651c4d5b6",
+    "model_visible": false
+  },
+  "cpu_s": 4.679911345243454,
+  "candidate_method": "def _surface_contact_plan(self, entity, points):\n    \"\"\"Offer bounded contact on a measured thin surface, without claiming a grasp.\"\"\"\n    lower, upper = np.quantile(points, [.02, .98], axis=0)\n    extent = upper-lower\n    robot = measured_robot(self.p)\n    centre = np.median(points, axis=0)\n    horizontal = extent[2] <= .02 and min(extent[:2]) >= max(.04, 4*extent[2])\n    if horizontal:\n        normal = np.array([0., 0., 1.])\n        outward = np.asarray(robot['eef_xyz_m'][:2])-centre[:2]\n        norm = np.linalg.norm(outward)\n        outward = np.asarray(self.scene.view_axes[1])[:2] if norm < .001 else outward/norm\n        projection = (points[:, :2]-centre[:2])@outward\n        edge = points[projection >= np.quantile(projection, .97)]\n        contact = np.median(edge, axis=0)\n    else:\n        _, axes = np.linalg.eigh(np.cov(np.asarray(points).T))\n        dimensions = np.diff(np.quantile((points-centre)@axes, [.02, .98], axis=0), axis=0)[0]\n        if dimensions[0] > .02 or min(dimensions[1:]) < max(.04, 4*dimensions[0]):\n            return None\n        normal = axes[:, 0]\n        parent = self.scene.entities.get(entity.part_of)\n        outward = centre-np.asarray(parent.xyz) if parent is not None else np.asarray(robot['eef_xyz_m'])-centre\n        if np.dot(normal, outward) < 0:\n            normal = -normal\n        # The selected contact is an actual measured surface point.\n        contact = points[np.argmin(np.linalg.norm(points-centre, axis=1))]\n    right = np.asarray(self.scene.view_axes[0])\n    right = right-normal*np.dot(right, normal)\n    if np.linalg.norm(right) < .1:\n        right = np.cross(normal, [0., 0., 1.])\n    right /= np.linalg.norm(right)\n    pads = [b for b in self.geometry['boxes'] if b['name'].endswith('_pad')]\n    tip = np.mean([(np.asarray(b['lower'])+b['upper'])/2 for b in pads], axis=0)\n    # A thin surface needs tip contact, not pad-centre alignment: the\n    # latter puts the longer finger body through its supporting plane.\n    tip[2] = max(b['upper'][2] for b in self.geometry['boxes'] if 'finger' in b['name'])\n    current = Rotation.from_quat(robot['eef_quat_xyzw'])\n    contacts = [contact]\n    if horizontal:\n        # A neighbour can block every wrist orientation at the nearest\n        # rim. Sample the same measured perimeter for any thin surface;\n        # no object class or task target chooses these contact patches.\n        for angle in range(45, 360, 45):\n            direction = Rotation.from_euler('z', angle, degrees=True).apply(np.r_[outward, 0.])[:2]\n            projection = (points[:, :2]-centre[:2])@direction\n            edge = points[projection >= np.quantile(projection, .97)]\n            patch = np.median(edge, axis=0)\n            if all(np.linalg.norm(patch-other) >= .01 for other in contacts):\n                contacts.append(patch)\n    choices = []\n    for patch_index, patch in enumerate(contacts):\n        normals = [normal]\n        if horizontal:\n            # A thin rim can be inclined while its overall support is\n            # horizontal. Align tip contact to that measured patch;\n            # a fixed downward tip only skims its upper surface.\n            local = points[np.linalg.norm(points-patch, axis=1) <= .015]\n            if len(local) >= 8:\n                values, axes = np.linalg.eigh(np.cov(local.T))\n                fitted = axes[:, 0]\n                if fitted@normal < 0:\n                    fitted = -fitted\n                if (values[1] > 1e-8 and values[0] <= .2*values[1]\n                        and fitted@normal >= .5 and fitted@normal < .999):\n                    normals.insert(0, fitted)\n        approaches = [(value, 'measured_surface_normal', value) for value in normals]\n        if horizontal:\n            # The measured upper contour is also a contact point. A\n            # fixed oblique approach can keep the palm above its support\n            # while placing the fingertip against that contour. This is\n            # an approach direction, not an inferred unseen side plane.\n            radial = np.r_[patch[:2]-centre[:2], 0.]\n            if np.linalg.norm(radial) >= .02:\n                radial /= np.linalg.norm(radial)\n                for angle in (30., 45., 60.):\n                    direction = radial*math.cos(math.radians(angle))\n                    direction[2] = math.sin(math.radians(angle))\n                    approaches.append((direction, 'measured_contour_fixed_incline', normals[0]))\n        for patch_normal, approach_basis, measured_normal in approaches:\n            tangent = right-patch_normal*(right@patch_normal)\n            if np.linalg.norm(tangent) < .1:\n                tangent = np.cross(patch_normal, [0., 0., 1.])\n            tangent /= np.linalg.norm(tangent)\n            for yaw in range(0, 360, 45):\n                closing = Rotation.from_rotvec(patch_normal*math.radians(yaw)).apply(tangent)\n                site = side_site_rotation(closing, -patch_normal)\n                orientation = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix())\n                # Parallel fingers admit both wrist orientations. The shorter\n                # rotation can reach a joint limit while its symmetric pose has\n                # a continuous IK route, so screen both instead of pruning one.\n                xyz = patch-site@tip\n                entry = xyz+patch_normal*.12\n                height = max(robot['eef_xyz_m'][2], entry[2])+.08\n                over = [{'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},\n                    {'xyz_m': [*entry[:2], height], 'quat_xyzw': orientation.as_quat().tolist()},\n                    {'xyz_m': entry.tolist(), 'quat_xyzw': orientation.as_quat().tolist()},\n                    {'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist()}]\n                routes = [('over', over)] if horizontal else [('direct', over[-2:]), ('over', over)]\n                for path, route in routes:\n                    choices.append({'patch_index': patch_index, 'contact_xyz_m': patch.tolist(),\n                        'normal_xyz': patch_normal.tolist(),\n                        'measured_normal_xyz': measured_normal.tolist(), 'approach_basis': approach_basis,\n                        'local_normal': bool(approach_basis == 'measured_surface_normal'\n                            and not np.array_equal(patch_normal, normal)),\n                        'yaw_deg': yaw, 'path': path, 'xyz_m': xyz.tolist(),\n                        'quat_xyzw': orientation.as_quat().tolist(), 'approach_xyz_m': entry.tolist(), 'route': route,\n                        'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})\n    choices.sort(key=lambda item: (abs(item['normal_xyz'][2]) if horizontal else 0.,\n        not item['local_normal'], item['patch_index'], item['wrist_change_rad'], item['yaw_deg']))\n    screen = self._cloud_and_ik(entity.id, contact=True)\n    def screened(option):\n        if option.get('screen') is not None:\n            return option['screen']['passed']\n        if option.get('closure'):\n            return False\n        from robots.libero.v5_geometric_grasp import collision_counts\n        site = Rotation.from_quat(option['quat_xyzw']).as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()\n        for opening in np.linspace(.08, 0., 9):\n            external = collision_counts(screen.points, option['xyz_m'], site, self.geometry, opening, clearance_m=.004)\n            own = collision_counts(screen.target, option['xyz_m'], site, self.geometry, opening, clearance_m=.004)\n            if any(external.values()) or own.get('palm', 0):\n                option['closure'] = {'opening_m': float(opening), 'scene': external, 'target': own}\n                break\n        if option.get('closure'):\n            return False\n        _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(option['route'])\n        option['screen'] = {k: evidence[k] for k in ('passed', 'reason', 'collision', 'ik_reachable', 'path_min_clearance_m')}\n        margins = [solve['joint_margin_min_rad'] for check in evidence.get('ik_checks', [])\n            for solve in check['solves'] if solve['solution_found']]\n        option['screen']['route_joint_margin_rad'] = min(margins) if margins else None\n        option['screen']['contact_joint_margin_rad'] = margins[-1] if margins else None\n        return evidence['passed']\n    feasible = [option for option in choices if screened(option)]\n    selected = max(feasible, key=lambda option: (\n        option['screen']['contact_joint_margin_rad'] or 0.,\n        option['screen']['route_joint_margin_rad'] or 0.)) if feasible else None\n    right_axis, front = map(np.asarray, self.scene.view_axes)\n    directions = {'above': np.array([0., 0., 1.]), 'front': front,\n                  'left': -right_axis, 'right': right_axis}\n    directional = {}\n    if horizontal and selected is not None:\n        directional['above'] = selected\n        for name in ('front', 'left', 'right'):\n            direction = directions[name]\n            ranked = sorted(choices, key=lambda option:\n                -float((np.asarray(option['contact_xyz_m'])-centre)@direction))\n            option = next((option for option in ranked\n                if (np.asarray(option['contact_xyz_m'])-centre)@direction > 0.\n                and screened(option)), None)\n            if option is not None:\n                directional[name] = option\n    self.candidate_diagnostics.append({'stage': 'measured_surface_contact', 'anchor_id': entity.id,\n        'source': 'fused_rgbd_shape_and_static_finger_tip_geometry',\n        'contact_xyz_m': selected['contact_xyz_m'] if selected else None,\n        'contact_patches_xyz_m': [patch.tolist() for patch in contacts], 'measured_extent_m': extent.tolist(),\n        'surface_normal_xyz': selected['measured_normal_xyz'] if selected else normal.tolist(),\n        'contact_approach_xyz': selected['normal_xyz'] if selected else None,\n        'approach_basis': selected['approach_basis'] if selected else None,\n        'object_plane_normal_xyz': normal.tolist(),\n        'grasp_verified': False, 'candidates': choices,\n        'directional_contact_points': {name: option['contact_xyz_m']\n            for name, option in directional.items()},\n        'selected_yaw_deg': selected['yaw_deg'] if selected else None})\n    if selected is None:\n        return None\n    pixels = self._instance_pixels(entity.id).tolist()\n    def contact_plan(option, approach=None):\n        normal = np.asarray(option['normal_xyz'])\n        return {k: option[k] for k in ('xyz_m', 'quat_xyzw', 'approach_xyz_m')} | {\n            'approach_route': option['route'][:-1],\n            'preferred_approach': approach or max(directions, key=lambda key: np.dot(normal, directions[key])),\n            'preferred_path': option['path'],\n            'width_m': None, 'contact_kind': 'surface',\n            'contact_point_xyz_m': option['contact_xyz_m'],\n            'contact_approach_xyz': normal.tolist(), 'approach_basis': option['approach_basis'],\n            'surface_measurement': {'xyz_world': pixels,\n                'source_step': entity.source_step, 'normal_xyz': option['measured_normal_xyz']}}\n    plan = contact_plan(selected)\n    if directional:\n        plan['surface_contact_options'] = {name: contact_plan(option, name)\n            for name, option in directional.items()}\n    return plan\n",
+  "public_plan": {
+    "xyz_m": [
+      -0.17755132937842139,
+      0.13471443631938518,
+      1.0768495816028614
+    ],
+    "quat_xyzw": [
+      0.24687321327067163,
+      0.6615503232747866,
+      0.29391751568284213,
+      0.6442183483255232
+    ],
+    "approach_xyz_m": [
+      -0.29724970172901066,
+      0.12621820260329086,
+      1.076512432880196
+    ],
+    "approach_route": [
+      {
+        "xyz_m": [
+          -0.1919984051560099,
+          0.0032972868587478645,
+          1.2682277033925387
+        ],
+        "quat_xyzw": [
+          0.9999803471900419,
+          -0.001206171847988713,
+          -0.0018741065217044712,
+          -0.005859872686320075
+        ]
+      },
+      {
+        "xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.2682277033925387
+        ],
+        "quat_xyzw": [
+          0.24687321327067163,
+          0.6615503232747866,
+          0.29391751568284213,
+          0.6442183483255232
+        ]
+      },
+      {
+        "xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "quat_xyzw": [
+          0.24687321327067163,
+          0.6615503232747866,
+          0.29391751568284213,
+          0.6442183483255232
+        ]
+      }
+    ],
+    "preferred_approach": "left",
+    "preferred_path": "over",
+    "width_m": null,
+    "contact_kind": "surface",
+    "contact_point_xyz_m": [
+      -0.1683255434036255,
+      0.13536928594112396,
+      1.0768755674362183
+    ],
+    "contact_approach_xyz": [
+      -0.9974864362549104,
+      -0.07080194763411933,
+      -0.002809572688877749
+    ],
+    "approach_basis": "measured_surface_normal"
+  },
+  "diagnostic": {
+    "stage": "measured_surface_contact",
+    "anchor_id": "e114",
+    "source": "fused_rgbd_shape_and_static_finger_tip_geometry",
+    "contact_xyz_m": [
+      -0.1683255434036255,
+      0.13536928594112396,
+      1.0768755674362183
+    ],
+    "contact_patches_xyz_m": [
+      [
+        -0.1683255434036255,
+        0.13536928594112396,
+        1.0768755674362183
+      ]
+    ],
+    "measured_extent_m": [
+      0.027979776263237,
+      0.2513446216471493,
+      0.1780749261379242
+    ],
+    "surface_normal_xyz": [
+      -0.9974864362549104,
+      -0.07080194763411933,
+      -0.002809572688877749
+    ],
+    "contact_approach_xyz": [
+      -0.9974864362549104,
+      -0.07080194763411933,
+      -0.002809572688877749
+    ],
+    "approach_basis": "measured_surface_normal",
+    "object_plane_normal_xyz": [
+      -0.9974864362549104,
+      -0.07080194763411933,
+      -0.002809572688877749
+    ],
+    "grasp_verified": false,
+    "candidates": [
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 0,
+        "path": "direct",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.7056670920132199,
+          0.02508323952696286,
+          0.7076575102199077,
+          -0.025012688256162697
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.7056670920132199,
+              0.02508323952696286,
+              0.7076575102199077,
+              -0.025012688256162697
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.7056670920132199,
+              0.02508323952696286,
+              0.7076575102199077,
+              -0.025012688256162697
+            ]
+          }
+        ],
+        "wrist_change_rad": 1.5783156307152695,
+        "screen": null,
+        "closure": {
+          "opening_m": 0.08,
+          "scene": {
+            "palm": 10,
+            "leftfinger": 0,
+            "leftfinger_pad": 0,
+            "rightfinger": 0,
+            "rightfinger_pad": 0
+          },
+          "target": {
+            "palm": 53,
+            "leftfinger": 71,
+            "leftfinger_pad": 0,
+            "rightfinger": 68,
+            "rightfinger_pad": 0
+          }
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 0,
+        "path": "over",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.7056670920132199,
+          0.02508323952696286,
+          0.7076575102199077,
+          -0.025012688256162697
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.1919984051560099,
+              0.0032972868587478645,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.9999803471900419,
+              -0.001206171847988713,
+              -0.0018741065217044712,
+              -0.005859872686320075
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.7056670920132199,
+              0.02508323952696286,
+              0.7076575102199077,
+              -0.025012688256162697
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.7056670920132199,
+              0.02508323952696286,
+              0.7076575102199077,
+              -0.025012688256162697
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.7056670920132199,
+              0.02508323952696286,
+              0.7076575102199077,
+              -0.025012688256162697
+            ]
+          }
+        ],
+        "wrist_change_rad": 1.5783156307152695,
+        "screen": null,
+        "closure": {
+          "opening_m": 0.08,
+          "scene": {
+            "palm": 10,
+            "leftfinger": 0,
+            "leftfinger_pad": 0,
+            "rightfinger": 0,
+            "rightfinger_pad": 0
+          },
+          "target": {
+            "palm": 53,
+            "leftfinger": 71,
+            "leftfinger_pad": 0,
+            "rightfinger": 68,
+            "rightfinger_pad": 0
+          }
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 315,
+        "path": "direct",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.6615503232747867,
+          -0.24687321327067138,
+          0.6442183483255234,
+          -0.2939175156828419
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.6615503232747867,
+              -0.24687321327067138,
+              0.6442183483255234,
+              -0.2939175156828419
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.6615503232747867,
+              -0.24687321327067138,
+              0.6442183483255234,
+              -0.2939175156828419
+            ]
+          }
+        ],
+        "wrist_change_rad": 1.693690181536798,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.007217187624781898,
+          "route_joint_margin_rad": 0.047064849444390155,
+          "contact_joint_margin_rad": 0.047064849444390155
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 315,
+        "path": "over",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.6615503232747867,
+          -0.24687321327067138,
+          0.6442183483255234,
+          -0.2939175156828419
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.1919984051560099,
+              0.0032972868587478645,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.9999803471900419,
+              -0.001206171847988713,
+              -0.0018741065217044712,
+              -0.005859872686320075
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.6615503232747867,
+              -0.24687321327067138,
+              0.6442183483255234,
+              -0.2939175156828419
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.6615503232747867,
+              -0.24687321327067138,
+              0.6442183483255234,
+              -0.2939175156828419
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.6615503232747867,
+              -0.24687321327067138,
+              0.6442183483255234,
+              -0.2939175156828419
+            ]
+          }
+        ],
+        "wrist_change_rad": 1.693690181536798,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.006950322165036802,
+          "route_joint_margin_rad": 1.000000000139778e-06,
+          "contact_joint_margin_rad": 1.000000000139778e-06
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 45,
+        "path": "direct",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.6423524428807589,
+          0.29322099648674965,
+          0.6633622311146158,
+          0.24770009421693379
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.6423524428807589,
+              0.29322099648674965,
+              0.6633622311146158,
+              0.24770009421693379
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.6423524428807589,
+              0.29322099648674965,
+              0.6633622311146158,
+              0.24770009421693379
+            ]
+          }
+        ],
+        "wrist_change_rad": 1.7544397191162857,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.007173514525281744,
+          "route_joint_margin_rad": 1.0000000005838672e-06,
+          "contact_joint_margin_rad": 1.0000000005838672e-06
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 45,
+        "path": "over",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.6423524428807589,
+          0.29322099648674965,
+          0.6633622311146158,
+          0.24770009421693379
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.1919984051560099,
+              0.0032972868587478645,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.9999803471900419,
+              -0.001206171847988713,
+              -0.0018741065217044712,
+              -0.005859872686320075
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.6423524428807589,
+              0.29322099648674965,
+              0.6633622311146158,
+              0.24770009421693379
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.6423524428807589,
+              0.29322099648674965,
+              0.6633622311146158,
+              0.24770009421693379
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.6423524428807589,
+              0.29322099648674965,
+              0.6633622311146158,
+              0.24770009421693379
+            ]
+          }
+        ],
+        "wrist_change_rad": 1.7544397191162857,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.006945285363604947,
+          "route_joint_margin_rad": 1.0000252799180487e-06,
+          "contact_joint_margin_rad": 1.0000252799180487e-06
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 270,
+        "path": "direct",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          -0.516718514786381,
+          0.48124545725909734,
+          -0.4827027827524476,
+          0.5180760657157232
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              -0.516718514786381,
+              0.48124545725909734,
+              -0.4827027827524476,
+              0.5180760657157232
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              -0.516718514786381,
+              0.48124545725909734,
+              -0.4827027827524476,
+              0.5180760657157232
+            ]
+          }
+        ],
+        "wrist_change_rad": 2.0492484090608363,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.006981153760506587,
+          "route_joint_margin_rad": 0.2778056827672617,
+          "contact_joint_margin_rad": 0.29653954288157136
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 270,
+        "path": "over",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          -0.516718514786381,
+          0.48124545725909734,
+          -0.4827027827524476,
+          0.5180760657157232
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.1919984051560099,
+              0.0032972868587478645,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.9999803471900419,
+              -0.001206171847988713,
+              -0.0018741065217044712,
+              -0.005859872686320075
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              -0.516718514786381,
+              0.48124545725909734,
+              -0.4827027827524476,
+              0.5180760657157232
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              -0.516718514786381,
+              0.48124545725909734,
+              -0.4827027827524476,
+              0.5180760657157232
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              -0.516718514786381,
+              0.48124545725909734,
+              -0.4827027827524476,
+              0.5180760657157232
+            ]
+          }
+        ],
+        "wrist_change_rad": 2.0492484090608363,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.006931619663680956,
+          "route_joint_margin_rad": 1.900248494113299e-06,
+          "contact_joint_margin_rad": 1.900248494113299e-06
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 90,
+        "path": "direct",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.4812454572590973,
+          0.516718514786381,
+          0.5180760657157231,
+          0.4827027827524476
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.4812454572590973,
+              0.516718514786381,
+              0.5180760657157231,
+              0.4827027827524476
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.4812454572590973,
+              0.516718514786381,
+              0.5180760657157231,
+              0.4827027827524476
+            ]
+          }
+        ],
+        "wrist_change_rad": 2.147541222893557,
+        "screen": {
+          "passed": true,
+          "reason": "public_route_screen_passed",
+          "collision": false,
+          "ik_reachable": true,
+          "path_min_clearance_m": 0.006992132749332483,
+          "route_joint_margin_rad": 1.000000000139778e-06,
+          "contact_joint_margin_rad": 1.000000000139778e-06
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 90,
+        "path": "over",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.4812454572590973,
+          0.516718514786381,
+          0.5180760657157231,
+          0.4827027827524476
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.1919984051560099,
+              0.0032972868587478645,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.9999803471900419,
+              -0.001206171847988713,
+              -0.0018741065217044712,
+              -0.005859872686320075
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.4812454572590973,
+              0.516718514786381,
+              0.5180760657157231,
+              0.4827027827524476
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.4812454572590973,
+              0.516718514786381,
+              0.5180760657157231,
+              0.4827027827524476
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.4812454572590973,
+              0.516718514786381,
+              0.5180760657157231,
+              0.4827027827524476
+            ]
+          }
+        ],
+        "wrist_change_rad": 2.147541222893557,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.00695272093688515,
+          "route_joint_margin_rad": 1.000000000139778e-06,
+          "contact_joint_margin_rad": 1.000000000139778e-06
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 225,
+        "path": "direct",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          -0.2932209964867497,
+          0.642352442880759,
+          -0.2477000942169338,
+          0.6633622311146159
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              -0.2932209964867497,
+              0.642352442880759,
+              -0.2477000942169338,
+              0.6633622311146159
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              -0.2932209964867497,
+              0.642352442880759,
+              -0.2477000942169338,
+              0.6633622311146159
+            ]
+          }
+        ],
+        "wrist_change_rad": 2.5376288185193405,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.007153203663206631,
+          "route_joint_margin_rad": 0.010493398019497668,
+          "contact_joint_margin_rad": 0.010493398019497668
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 225,
+        "path": "over",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          -0.2932209964867497,
+          0.642352442880759,
+          -0.2477000942169338,
+          0.6633622311146159
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.1919984051560099,
+              0.0032972868587478645,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.9999803471900419,
+              -0.001206171847988713,
+              -0.0018741065217044712,
+              -0.005859872686320075
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              -0.2932209964867497,
+              0.642352442880759,
+              -0.2477000942169338,
+              0.6633622311146159
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              -0.2932209964867497,
+              0.642352442880759,
+              -0.2477000942169338,
+              0.6633622311146159
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              -0.2932209964867497,
+              0.642352442880759,
+              -0.2477000942169338,
+              0.6633622311146159
+            ]
+          }
+        ],
+        "wrist_change_rad": 2.5376288185193405,
+        "screen": {
+          "passed": false,
+          "reason": "numerical_ik_not_found",
+          "collision": false,
+          "ik_reachable": false,
+          "path_min_clearance_m": 0.006938947016312199,
+          "route_joint_margin_rad": 1.000000000139778e-06,
+          "contact_joint_margin_rad": 1.000000000139778e-06
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 135,
+        "path": "direct",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.24687321327067163,
+          0.6615503232747866,
+          0.29391751568284213,
+          0.6442183483255232
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.24687321327067163,
+              0.6615503232747866,
+              0.29391751568284213,
+              0.6442183483255232
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.24687321327067163,
+              0.6615503232747866,
+              0.29391751568284213,
+              0.6442183483255232
+            ]
+          }
+        ],
+        "wrist_change_rad": 2.6532660086048425,
+        "screen": {
+          "passed": true,
+          "reason": "public_route_screen_passed",
+          "collision": false,
+          "ik_reachable": true,
+          "path_min_clearance_m": 0.007005655458094222,
+          "route_joint_margin_rad": 0.000980530650676048,
+          "contact_joint_margin_rad": 0.000980530650676048
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 135,
+        "path": "over",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          0.24687321327067163,
+          0.6615503232747866,
+          0.29391751568284213,
+          0.6442183483255232
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.1919984051560099,
+              0.0032972868587478645,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.9999803471900419,
+              -0.001206171847988713,
+              -0.0018741065217044712,
+              -0.005859872686320075
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.24687321327067163,
+              0.6615503232747866,
+              0.29391751568284213,
+              0.6442183483255232
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              0.24687321327067163,
+              0.6615503232747866,
+              0.29391751568284213,
+              0.6442183483255232
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              0.24687321327067163,
+              0.6615503232747866,
+              0.29391751568284213,
+              0.6442183483255232
+            ]
+          }
+        ],
+        "wrist_change_rad": 2.6532660086048425,
+        "screen": {
+          "passed": true,
+          "reason": "public_route_screen_passed",
+          "collision": false,
+          "ik_reachable": true,
+          "path_min_clearance_m": 0.006929175302330091,
+          "route_joint_margin_rad": 1.000000000139778e-06,
+          "contact_joint_margin_rad": 0.3669533586132525
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 180,
+        "path": "direct",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          -0.025083239526962817,
+          0.7056670920132199,
+          0.025012688256162735,
+          0.7076575102199077
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              -0.025083239526962817,
+              0.7056670920132199,
+              0.025012688256162735,
+              0.7076575102199077
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              -0.025083239526962817,
+              0.7056670920132199,
+              0.025012688256162735,
+              0.7076575102199077
+            ]
+          }
+        ],
+        "wrist_change_rad": 3.081328411152526,
+        "screen": null,
+        "closure": {
+          "opening_m": 0.08,
+          "scene": {
+            "palm": 10,
+            "leftfinger": 0,
+            "leftfinger_pad": 0,
+            "rightfinger": 0,
+            "rightfinger_pad": 0
+          },
+          "target": {
+            "palm": 53,
+            "leftfinger": 68,
+            "leftfinger_pad": 0,
+            "rightfinger": 71,
+            "rightfinger_pad": 0
+          }
+        }
+      },
+      {
+        "patch_index": 0,
+        "contact_xyz_m": [
+          -0.1683255434036255,
+          0.13536928594112396,
+          1.0768755674362183
+        ],
+        "normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "measured_normal_xyz": [
+          -0.9974864362549104,
+          -0.07080194763411933,
+          -0.002809572688877749
+        ],
+        "approach_basis": "measured_surface_normal",
+        "local_normal": false,
+        "yaw_deg": 180,
+        "path": "over",
+        "xyz_m": [
+          -0.17755132937842139,
+          0.13471443631938518,
+          1.0768495816028614
+        ],
+        "quat_xyzw": [
+          -0.025083239526962817,
+          0.7056670920132199,
+          0.025012688256162735,
+          0.7076575102199077
+        ],
+        "approach_xyz_m": [
+          -0.29724970172901066,
+          0.12621820260329086,
+          1.076512432880196
+        ],
+        "route": [
+          {
+            "xyz_m": [
+              -0.1919984051560099,
+              0.0032972868587478645,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              0.9999803471900419,
+              -0.001206171847988713,
+              -0.0018741065217044712,
+              -0.005859872686320075
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.2682277033925387
+            ],
+            "quat_xyzw": [
+              -0.025083239526962817,
+              0.7056670920132199,
+              0.025012688256162735,
+              0.7076575102199077
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.29724970172901066,
+              0.12621820260329086,
+              1.076512432880196
+            ],
+            "quat_xyzw": [
+              -0.025083239526962817,
+              0.7056670920132199,
+              0.025012688256162735,
+              0.7076575102199077
+            ]
+          },
+          {
+            "xyz_m": [
+              -0.17755132937842139,
+              0.13471443631938518,
+              1.0768495816028614
+            ],
+            "quat_xyzw": [
+              -0.025083239526962817,
+              0.7056670920132199,
+              0.025012688256162735,
+              0.7076575102199077
+            ]
+          }
+        ],
+        "wrist_change_rad": 3.081328411152526,
+        "screen": null,
+        "closure": {
+          "opening_m": 0.08,
+          "scene": {
+            "palm": 10,
+            "leftfinger": 0,
+            "leftfinger_pad": 0,
+            "rightfinger": 0,
+            "rightfinger_pad": 0
+          },
+          "target": {
+            "palm": 53,
+            "leftfinger": 68,
+            "leftfinger_pad": 0,
+            "rightfinger": 71,
+            "rightfinger_pad": 0
+          }
+        }
+      }
+    ],
+    "directional_contact_points": {},
+    "selected_yaw_deg": 135
+  },
+  "scope": "CPU hypothesis only; original geometry/IK thresholds unchanged",
+  "physics_steps": 0,
+  "rpc_calls": 0,
+  "gpu_used": false,
+  "private_goals_used": false,
+  "training": false,
+  "confirmation": false,
+  "script_sha256": "e9113362ac0a16366b3339590f4f5bcf87bc0140dca4a9bda92703891fb6445d"
+}

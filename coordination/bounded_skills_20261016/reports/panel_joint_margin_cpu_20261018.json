@@ -1,0 +1,24 @@
+{
+  "scope": "CPU regression only; physical validation pending",
+  "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_chunk.py tests/unit_tests/robots/libero/test_bounded_offline_labels.py",
+  "exit_code": 0,
+  "passed": 267,
+  "wall_s": 211.32,
+  "warning": "pytest-timeout plugin unavailable; unknown timeout config",
+  "first_focused_run": {
+    "failed": 1,
+    "passed": 8,
+    "reason": "New test compared dense sampled screen poses with raw route waypoints; corrected the route assertion, no production change for this test error."
+  },
+  "base_commit": "4db4ea42ee4f43ca8b5647171ef3906dfb953b3a",
+  "files": {
+    "robots/libero/bounded_skills.py": "797c97ff158d2fa03bd55cf9f617b93dbdc4637a491c224c1229d523637553ea",
+    "tests/unit_tests/robots/libero/test_bounded_skills.py": "ce5232d2dce9494afd51fab4325103f9c2e13ad4078d34bacf6a1ffd39535d5e",
+    "SKILL_PACKAGE_SPEC.md": "5fad33168024a5e79424bc124841c8c8906105deb4bf270105840c73c67251ae"
+  },
+  "log": "coordination/bounded_skills_20261016/reports/panel_joint_margin_cpu_20261018.log.gz",
+  "log_sha256": "765d03c53a7718eb7c234aee9ce903cdd8fae011652b408479e6f98d71b12e5a",
+  "gpu_used": false,
+  "training": false,
+  "confirmation": false
+}

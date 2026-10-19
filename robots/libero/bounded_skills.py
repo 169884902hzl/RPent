@@ -1251,8 +1251,22 @@ class MeasuredSkillAdapter:
                 return False
             _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(option['route'])
             option['screen'] = {k: evidence[k] for k in ('passed', 'reason', 'collision', 'ik_reachable', 'path_min_clearance_m')}
+            if not horizontal and evidence['passed']:
+                margins = [solve['joint_margin_min_rad'] for check in evidence.get('ik_checks', [])
+                    for solve in check['solves'] if solve['solution_found']]
+                option['screen']['route_joint_margin_rad'] = min(margins) if margins else None
+                option['screen']['contact_joint_margin_rad'] = margins[-1] if margins else None
             return evidence['passed']
-        selected = next((option for option in choices if screened(option)), None)
+        if horizontal:
+            selected = next((option for option in choices if screened(option)), None)
+        else:
+            # Reaching a panel with a wrist at its joint stop leaves no room
+            # to follow the moving face. Compare the same screened contacts
+            # by terminal joint margin, as for measured handle approaches.
+            feasible = [option for option in choices if screened(option)]
+            selected = max(feasible, key=lambda option: (
+                option['screen']['contact_joint_margin_rad'] or 0.,
+                option['screen']['route_joint_margin_rad'] or 0.)) if feasible else None
         right_axis, front = map(np.asarray, self.scene.view_axes)
         directions = {'above': np.array([0., 0., 1.]), 'front': front,
                       'left': -right_axis, 'right': right_axis}
