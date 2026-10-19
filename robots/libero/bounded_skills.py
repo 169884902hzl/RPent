@@ -72,7 +72,10 @@ class MeasuredSkillAdapter:
                  history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
                  record_public_geometry: bool = False, precontact_instance_surface_v1: bool = False,
                  legacy_chunk_boundaries_v1: bool = False,
-                 compact_infeasible_candidates_v1: bool = True):
+                 compact_infeasible_candidates_v1: bool = True,
+                 prefix_consequence_workers: int = 1):
+        if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
+            raise ValueError('prefix_consequence_workers must be a positive integer')
         self.ex, self.p, self.scene = executor, executor.p, executor.scene
         self.xml = Path(gripper_xml)
         self.geometry = panda_geometry(self.xml)
@@ -111,6 +114,7 @@ class MeasuredSkillAdapter:
         self.precontact_instance_surface_v1 = precontact_instance_surface_v1
         self.legacy_chunk_boundaries_v1 = legacy_chunk_boundaries_v1
         self.compact_infeasible_candidates_v1 = compact_infeasible_candidates_v1
+        self.prefix_consequence_workers = prefix_consequence_workers
         self.public_geometry_evidence = {}
         self._last_free_chunk = None
         self.last_prefetch_adoption = None

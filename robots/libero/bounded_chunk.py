@@ -306,6 +306,11 @@ class PublicPrefixPrediction:
         self.screens.clear()
 
     def _candidates(self, originals):
+        workers = getattr(self.adapter, 'prefix_consequence_workers', 1)
+        if workers > 1:
+            from robots.libero.bounded_cpu_planning import predict_candidates
+
+            return predict_candidates(self, originals, workers)
         return [self.candidate(original) for original in originals]
 
     def context(self):
