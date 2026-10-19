@@ -1,8 +1,32 @@
-最新修复在接线：hybrid runtime 没传已登记空夹爪标定，3.76mm 的真夹持被旧5mm下限排除。已有标定lower=2.702mm；离线公开轨迹在控制57已满足抬升/随动，53个样本被旧gate挡住，尚未冒称57步私有成功。
-源码已把SHA固定的机器人标定经manifest传入真实V5Executor，45项相关CPU回归通过；新快照/真实重放待提交。
-e247的10610/10612已取消余片与在途并保留，控制器2378133已停。10613两状态已闭合：t2真值true但block_budget，salad真值false；旧数据不混下一版。
-提示词镜像修复e247已推送、333项CPU和实际首输入核对通过；六例非提示字段全同，三碗例只文本改变。旧e120交还6/6停稳/后继请求、1例续接原生成功仍保留。
-原版VLA-off220独立131/220；三个绑定失败已归因公开误检歧义。无训练，D2不入训练/history/memory，确认状态永久排除。
+当前修复执行源 `7484079b91021a7eebbcd48756c4eb3a047d1563` 已提交推送；真实startup10637/10638共4个π物理请求通过，正式10639（两状态续接）/10640（原版71状态）已提交。源码与manifest见下表。
+旧标定源 `83075952` 的10625（12分支停止对照）继续独立运行；10627原版已取消并保留部分记录，10628两状态已闭合。旧规则与当前批次分开，不报混合整局上限。
+10628已闭合：13402000在π控制57公开测得成功，停稳10步，交还后私有v3成功；17401000用满120控制后失败，停稳7步。前者后继请求生成，但腕扫因payload碰撞0步拒绝；后者后继23步。不能把请求生成或attempted写成续接技能成功。
+CPU公开几何已定位13402000的腕视角碗边缘仍被留作静态障碍，向上1mm会触发payload碰撞；保持间隙和判据，继续查像素归属。全场感知同状态重放未闭合，窄监测默认off不推广。
+原版VLA-off220独立131/220；三处绑定失败归因公开误检歧义，通用观察恢复CPU已验证。无训练；D2不入训练/history/memory，确认状态永久排除。
+
+## 当前快照与运行（83075952）
+
+- 源码目录 `/public/home/sunyihan/rpent_libero_eval/source_bounded_hybrid_handoff_20261019_83075952`；归档 `bounded_calibrated_vla_20261020.tar.gz` SHA256 `a27dd30845ab48b97adde83ecdb15eab4277a06679cfe4af84d7ad9ebaf87c09`。
+- D2 manifest SHA256 `6d1be08b68de8e90b7803f91fa96486280ac434868a5dbc776658fe5e235c5b6`；原版 `d3b49b41acc532034617ced874ef866daeef92a6fdb552b3c8fe0f940a746335`；窄监测 `0d38b7c2b94a80cea95bb4ace56d9b10bed9004d1eda2c8e42083b4d267ad7d9`。
+- 解释器 `/public/home/sunyihan/rpent_libero_eval/.venv/bin/python`；入口 `scripts.probe_bounded_hybrid_repair:evaluate_case`。固定启动器SHA256 `3fa8bb8f1740611bd815de8333ca0de9ddf7f66b8469da7847d1baa80ffd66aa`。
+- 唯一资源控制器PID2504176（旧PID2483354已停）；日志 `reports/monitor_hybrid_repair_calibrated_20261020.log`。node02、nice500；C2无GPU作业时4×20核/140GB，否则并发回落≤3，不取消在跑任务。
+- 新建原版汇总器已在实际计划运行，明确保留prefix_not_reached/unknown/无推理分支；还校验每状态各分支的初始物理与请求SHA，9项相关CPU汇总回归通过。
+- 实际预检标定证据：`reports/calibrated_startup_wire_identity_20261020.json`。窄监测端点：`reports/calibrated_targeted_endpoints_CPU_20261020_r1.json`，物理状态恢复误差0，目标碗双指接触。
+- 后继阻塞根因与修复中：VLA在抬高约3cm以后才捕获reference.scene，使当前碗的漏分割边缘距“静态”参照3.972mm，被4mm静态否决器排除。腕图60、像素(753,570)属于持有碗；旧cache明确否决362个当前语义像素。`reports/calibrated_t2_handoff_geometry_CPU_20261020_r3.json`只更换静态参照、两臂均不调用SAM：旧362个被否决、新0个；0/1/10/100mm上移几何探针由1mm失败变成全部通过。没有改碰撞间隙，没有声称整条路线/IK已通过。
+- 修复保留抬起后的target+EEF配对、改用接触前静态场景；新增stationary_capture_step和artifact出处。13项VLA聚焦与276项相关回归已通过（首轮新测试的模拟对象缺姿态/接口参数，已补齐，未改实现判据）。正式物理回放10639在跑；83075952仍作为旧静态参照批。
+
+### 接触前静态参照修复：7484079b
+
+- 已按4个文件逐个add、提交并推送 `7484079b91021a7eebbcd48756c4eb3a047d1563`。归档 `bounded_precontact_vla_20261020.tar.gz` **完成后**的SHA256为 `3816c371e3d7b263d3c816cf5e56f72870083667760f36a5196f2bbe0bc824a8`；源码目录 `/public/home/sunyihan/rpent_libero_eval/source_bounded_hybrid_handoff_20261019_7484079b`。
+- 276项相关CPU回归通过（153.65s），最终原版调度/汇总9项回归通过（0.27s）。pytest提示本地缺少timeout插件；测试本身通过。未跑全仓或模型训练。
+- 原版分叉改为π三次先跑、自身技能后跑，固定分支index仍为1/2/3/0；各目录名、种子和分支预算保持，逐支恢复同一完整状态。startup与正式首分支同用index1。前序子任务仍需先到达登记分叉点，未到达不计π失败。
+- 83075952原版已保存换源前中间表 `reports/calibrated_original_before_source_replacement_20261020.json`：71登记状态、1个prefix_not_reached、2条完成的self均失败；当时没有完成的π分支，不能写0/71。后续换源记录单独保留，不混新批。
+- 三份新计划全部通过CPU预检。两状态试点startup10637 COMPLETED0:0、1m30s，共2个实际π物理请求；原版startup10638 COMPLETED0:0、2m18s，open/push共2个实际π物理请求。通用launcher的physical_episodes=0是其完整回合计数，不能据此否认startup物理请求。预备脚本首次从live根目录找不到（exit2），已改成直接运行上述不可变源码目录里的脚本；没有提交失败GPU作业。
+- 正式10639（N2）：manifest SHA256 `eea82075e0b979df29a2945ea511b29a8335ac3d1564905a1ed00dcc3b891ba8`；原版10640（N8、9片）：manifest SHA256 `3b9ce36f49f9e2efb23775c1bf4f7b2ac2479a08d416558d64b9100204681996`。各输出根为 `results/bounded_skills/{targeted_vla_pilot_20261019,original_hybrid_forks_20261019}/7484079b`。
+- 当前唯一资源控制器PID2607071，旧2598441/2504176已停；日志 `reports/monitor_precontact_748_formal_20261020.log`，controller SHA256 `035fc7fced3746f903999902ee4f7e36391c8b57d1a18b0def4c98b8d7cf36c6`。node02/nice500；C2无GPU R/PD才借第四卡；原版数组按实际空位放行。
+- Codex1/Codex2通知已追加共享COORDINATION，收据 `reports/precontact_source_notice_20261020.json`，偏移6905579637；说明源码、scope、内部证据来源、旧批保留、无训练及永久隔离。
+
+以下为分阶段历史记录。旧“待提交/待预检”和旧PID只描述当时状态；当前作业与待办以上述当前快照及最新实际收据为准。
 
 ## 当前指令与身份
 

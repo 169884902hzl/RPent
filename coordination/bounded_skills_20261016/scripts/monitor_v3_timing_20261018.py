@@ -74,6 +74,11 @@ while True:
         raise SystemExit('PHYSICAL_JOB_FAILED: inspect preserved log and repair before resubmission')
     launcher_waiting = [r for r in ours if r[2]=='PENDING' and 'JobHeld' not in r[6]
         and r[0].split('_')[0] in args.launcher_priority_job]
+    # Respect the supplied diagnostic order. Once its pending shards have
+    # started, the next verified study may fill the remaining GPU slots.
+    priority = next((job for job in args.launcher_priority_job
+        if any(row[0].split('_')[0] == job for row in launcher_waiting)), None)
+    launcher_waiting = [row for row in launcher_waiting if row[0].split('_')[0] == priority]
     for job in {r[0].split('_')[0] for r in launcher_waiting}:
         other_active=sum(r[0].split('_')[0]!=job for r in active)
         subprocess.run(['scontrol','update','JobId='+job,

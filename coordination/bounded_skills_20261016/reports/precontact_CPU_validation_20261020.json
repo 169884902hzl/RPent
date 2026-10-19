@@ -1,0 +1,41 @@
+{
+  "runtime_source_commit": "7484079b91021a7eebbcd48756c4eb3a047d1563",
+  "runtime_archive_sha256": "3816c371e3d7b263d3c816cf5e56f72870083667760f36a5196f2bbe0bc824a8",
+  "source_files": {
+    "robots/libero/bounded_skills.py": "8631daf58f278366d6470d25e56d05b27d9478792c7073888b664e313841adec",
+    "scripts/probe_bounded_hybrid_repair.py": "4a2f3f24152a47ae993896c6e8062fff3db07a55e4c0dba5052278b30e05b4a7",
+    "coordination/bounded_skills_20261016/scripts/diagnose_handoff_geometry_CPU_20261020.py": "89a76a2ab8f01df6a2077807f85daaff18653ce8b4e2e7b6a6db2bf6d02fd4d0",
+    "coordination/bounded_skills_20261016/scripts/summarize_original_hybrid_forks_20261020.py": "3cfc8a9ff323d0c321849ef8d4704f732fbba6ecdcf4dd5010b8ad87ac54a36a",
+    "coordination/bounded_skills_20261016/scripts/monitor_v3_timing_20261018.py": "035fc7fced3746f903999902ee4f7e36391c8b57d1a18b0def4c98b8d7cf36c6"
+  },
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_hybrid_repair.py tests/unit_tests/robots/libero/test_bounded_hybrid_diagnostic.py tests/unit_tests/robots/libero/test_bounded_vla.py tests/unit_tests/robots/libero/test_original_hybrid_fork_summary.py",
+      "exit_code": 0,
+      "passed": 276,
+      "seconds": 153.65,
+      "scope": "adapter pre-contact static reference; later pi-first scheduling separately checked"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_hybrid_repair.py tests/unit_tests/robots/libero/test_original_hybrid_fork_summary.py",
+      "exit_code": 0,
+      "passed": 9,
+      "seconds": 0.27,
+      "scope": "final pi-first scheduling and paired provenance"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_original_hybrid_fork_summary.py tests/unit_tests/robots/libero/test_bounded_hybrid_summary.py",
+      "exit_code": 0,
+      "passed": 9,
+      "seconds": 0.1,
+      "scope": "final unknown/unobserved/no-inference denominators"
+    }
+  ],
+  "warning": "pytest config timeout option is unknown in this local environment; recorded test executions completed",
+  "not_run": [
+    "full repository tests",
+    "training"
+  ],
+  "training": false,
+  "cpu_test_log": "/tmp/rd_handoff_static_scene_tests_20261020.log"
+}
