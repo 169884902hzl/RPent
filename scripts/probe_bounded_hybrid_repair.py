@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import copy
 import pickle
 import time
 from pathlib import Path
@@ -9,6 +10,25 @@ from pathlib import Path
 from rpent.skill_package.vla import VLABudget
 from scripts import probe_bounded_hybrid_d2 as probe
 from scripts.probe_bounded_motion import write
+
+
+def migrate_replay_header(adapter, request):
+    """Admit the unchanged v3 catalog for a v4 observation-scope diagnostic.
+
+    V4 only extends the mode enum; all original fields retain their meaning.
+    This explicitly changes the version header, never poses/options/screens.
+    """
+    from rpent.skill_package import VERSION
+
+    if request['schema_version'] != 'bounded-skills/3' or VERSION != 'bounded-skills/4':
+        raise ValueError('only the registered public v3-to-v4 header migration is supported')
+    request = copy.deepcopy(request)
+    cached = copy.deepcopy(adapter.latest_request)
+    if request != cached:
+        raise ValueError('saved request differs from its restored cache')
+    request['schema_version'] = cached['schema_version'] = VERSION
+    adapter.latest_request = cached
+    return request
 
 
 def validate_plan(plan):
@@ -92,7 +112,10 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             saved = pickle.loads(Path(diagnostic['branchpoint']['path']).read_bytes())
             probe.restore_checkpoint(facade, adapter, policy, saved)
             adapter.vla_budget = budget
+            adapter.targeted_vla_measurement_v1 = diagnostic.get('targeted_vla_measurement_v1', False)
             spec, request = old['subtask'], saved['request']
+            if diagnostic.get('migrate_v3_header_to_v4', False):
+                request = migrate_replay_header(adapter, request)
             result, endpoint = run_trial(facade, adapter, policy, timings, spec, 'call_vla',
                 old['trial_seed'], output / 'replay', request)
             old_execution, new_execution = vla_execution(old), vla_execution(result)
@@ -102,6 +125,9 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             result['paired_replay'] = {'old_summary': diagnostic['old_summary'],
                 'same_initial_physics': result['initial_physics_sha256'] == old['initial_physics_sha256'],
                 'same_initial_request': result['request_sha256'] == old['request_sha256'],
+                'same_request_except_schema': {k:v for k,v in request.items() if k != 'schema_version'}
+                    == {k:v for k,v in saved['request'].items() if k != 'schema_version'},
+                'public_request_schema_migration': diagnostic.get('migrate_v3_header_to_v4', False),
                 'old_controls':len(old_trace), 'new_controls':len(new_trace),
                 'common_controls':common,
                 'first_action_mismatch':next((i for i in range(common)
@@ -128,6 +154,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 return report
             spec = matches[0]
             adapter.vla_budget = budget
+            adapter.targeted_vla_measurement_v1 = diagnostic.get('targeted_vla_measurement_v1', False)
             prefix = []
             prefix_decisions = 0
             position = subtask_plan.index(spec)
@@ -156,6 +183,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             for index, method in enumerate(methods):
                 probe.restore_checkpoint(facade, adapter, policy, saved)
                 adapter.vla_budget = budget
+                adapter.targeted_vla_measurement_v1 = diagnostic.get('targeted_vla_measurement_v1', False)
                 row, _ = run_trial(facade, adapter, policy, timings, spec, method,
                     diagnostic['trial_seed_base']+index*1000, output / f'{method}_{index}', request,
                     decision_limit=max(0, 160-prefix_decisions))

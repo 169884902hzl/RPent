@@ -17,6 +17,7 @@ def main():
     parser.add_argument('--commit', required=True)
     parser.add_argument('--baseline-report', type=Path, required=True)
     parser.add_argument('--submit-startup', action='store_true')
+    parser.add_argument('--targeted-vla-measurement', action='store_true')
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     sys.path.insert(0, str(source))
@@ -54,6 +55,7 @@ def main():
         stage = cup_stages.get(case['name'], {'goal_index': 0, 'subtask_mode': mode})
         cases.append({**case, 'diagnostic': {'kind': 'original_fork', 'domain': 'original', **stage,
             'trial_seed_base': 20500000+10000*len(cases),
+            'targeted_vla_measurement_v1': args.targeted_vla_measurement,
             'budget': {'blocks': math.ceil(controls/5), 'no_progress_blocks': None,
                 'controls_per_check': 1, 'minimum_progress_m': .005, 'max_controls': controls}}})
     assert len(cases) == 71

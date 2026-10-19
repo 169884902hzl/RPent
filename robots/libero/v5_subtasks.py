@@ -112,6 +112,9 @@ def subtask_phrase(source_name: str, mode: str, target_name: str | None = None) 
         return f"put the {source} {mode} the {_ALIASES.get(target_name, target_name)}"
     if mode == 'push' and target_name is not None:
         target = _ALIASES.get(target_name, target_name).removeprefix('area ')
+        if ' of ' in target:
+            relation, reference = target.split(' of ', 1)
+            target = relation+' of '+('' if reference.startswith('the ') else 'the ')+reference
         return f"push the {source} to the {target}"
     if mode in FIXTURE_MODES and target_name is None:
         return f"{mode.replace('_', ' ')} the {source}"

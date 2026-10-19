@@ -60,7 +60,7 @@ def test_public_push_fallback_has_measured_source_and_region_without_goal_filter
     push = next(c for c in request['candidates'] if c['skill'] == 'call_vla'
         and c['parameters']['mode'] == 'push')
     assert push['parameters'] == {'anchor_id': 'e1', 'target_id': 'dest', 'mode': 'push'}
-    assert subtask_phrase('plate', 'push', 'area front of stove') == 'push the plate to the front of stove'
+    assert subtask_phrase('plate', 'push', 'area front of stove') == 'push the plate to the front of the stove'
     validate(request)
     del push['parameters']['target_id']
     with pytest.raises(ValidationError):
@@ -82,6 +82,43 @@ def test_push_endpoint_requires_fresh_stable_planar_motion_in_public_region():
     assert measured_push_endpoint(initial, previous, replace(current, xyz=(.3, 0., .9)), target)[0] is False
     assert measured_push_endpoint(initial, previous, replace(current,
         lower=(-.06, -.06, .94), upper=(.06, .06, .96)), target)[0] is False
+
+
+def test_targeted_vla_categories_use_public_parents_and_relative_region_support(adapter):
+    from dataclasses import replace
+
+    parent = Entity('cab', 'cabinet', (0., 0., .9), (-.1, -.1, .8), (.1, .1, 1.))
+    drawer = replace(parent, id='drawer', name='cabinet top drawer', part_of='cab')
+    area = replace(parent, id='area', name='area front of stove')
+    adapter.scene.entities.update(cab=parent, drawer=drawer, area=area)
+    assert adapter._vla_measurement_names(drawer, None) == ['cabinet']
+    assert adapter._vla_measurement_names(adapter.scene.entities['e1'], area) == ['box', 'stove', 'table']
+
+
+def test_targeted_refresh_preserves_the_full_scene_vocabulary(adapter):
+    received = []
+    adapter.scene.vocabulary.update(('plate', 'table'))
+    adapter.scene.refresh = lambda names, **kwargs: received.append(names)
+    adapter.refresh(names=['box'])
+    adapter.refresh()
+    assert received == [['box'], ['box', 'plate', 'table']]
+    assert adapter.scene.vocabulary == {'box', 'plate', 'table'}
+
+
+def test_targeted_vla_still_checks_each_control_and_fully_remeasures_after_handoff(adapter, monkeypatch):
+    adapter.allow_vla = True
+    adapter.targeted_vla_measurement_v1 = True
+    received = []
+    adapter.refresh = lambda **kwargs: received.append(kwargs.get('names'))
+    def fallback(**kwargs):
+        assert kwargs['budget'].controls_per_check == 1
+        kwargs['observe']()
+        kwargs['observe']()
+        return {'outcome': 'failure', 'stop_reason': 'control_budget'}
+    monkeypatch.setattr('robots.libero.bounded_skills.run_fallback', fallback)
+    result = adapter.call_vla({'anchor_id': 'e1', 'mode': 'pick'})
+    assert received == [['box'], ['box'], None]
+    assert result['public_measurement_scope']['version'] == 'selected-subtask-entities/1'
 
 
 def test_measured_anchor_still_has_screened_approaches_without_a_contact_fit(adapter):

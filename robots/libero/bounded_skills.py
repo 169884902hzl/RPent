@@ -76,7 +76,8 @@ class MeasuredSkillAdapter:
                  compact_infeasible_candidates_v1: bool = True,
                  prefix_consequence_workers: int = 1,
                  request_consequence_workers: int = 1,
-                 vla_budget: VLABudget = VLABudget()):
+                 vla_budget: VLABudget = VLABudget(),
+                 targeted_vla_measurement_v1: bool = False):
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
         if type(request_consequence_workers) is not int or request_consequence_workers < 1:
@@ -90,6 +91,7 @@ class MeasuredSkillAdapter:
         self.allow_vla, self.history = allow_vla, history or DevelopmentHistory()
         self.config = motion_config
         self.vla_budget = vla_budget
+        self.targeted_vla_measurement_v1 = targeted_vla_measurement_v1
         self.memory = FailureMemory()
         self._contact_retry_references = {}
         self.revision = 0
@@ -173,8 +175,9 @@ class MeasuredSkillAdapter:
             'opening_m': opening, 'empty_closed_upper_m': lower, 'empty_open_lower_m': upper,
             'calibration_source': calibration.get('source_report')}
 
-    def refresh(self, *, contact_motion=None):
+    def refresh(self, *, contact_motion=None, names=None):
         self.ex.capture()
+        requested_names = sorted(self.scene.vocabulary if names is None else set(names))
         association = {}
         if self.held is not None and self.payload_reference is not None:
             reference = self.payload_reference
@@ -185,9 +188,9 @@ class MeasuredSkillAdapter:
                 predicted = local@Rotation.from_quat(after['eef_quat_xyzw']).as_matrix().T+after['eef_xyz_m']
                 association[self.held] = tuple(np.median(predicted, axis=0))
         if association:
-            self.scene.refresh(sorted(self.scene.vocabulary), association_positions=association)
+            self.scene.refresh(requested_names, association_positions=association)
         else:
-            self.scene.refresh(sorted(self.scene.vocabulary))
+            self.scene.refresh(requested_names)
         self._base_geometry = None
         self._screen_cache.clear()
         self._instance_cache.clear()
@@ -2727,6 +2730,24 @@ class MeasuredSkillAdapter:
                         'stationary_scene': _voxel(scene[~member], .001),
                         'source_step': self.ex.toolkit._state.latest_step, 'artifact': artifact}
 
+    def _vla_measurement_names(self, source, target):
+        """Public categories needed by the selected subtask's receipt checks."""
+        names = set()
+        for entity in (source, target):
+            if entity is None:
+                continue
+            parent = self.scene.entities.get(entity.part_of)
+            if parent is not None:
+                names.add(parent.name)
+            elif entity.name.startswith('area '):
+                # Existing relative regions derive from this public anchor
+                # and a measured support, not a private destination pose.
+                names.add(entity.name.rsplit(' of ', 1)[-1])
+                names.add('table')
+            else:
+                names.add(entity.name)
+        return sorted(names)
+
     def call_vla(self, parameters):
         if not self.allow_vla:
             raise ValueError("call_vla disabled for the oracle upper-bound diagnostic")
@@ -2734,6 +2755,8 @@ class MeasuredSkillAdapter:
         mode = parameters["mode"]
         name = measured_instance_description(source, self.scene.entities, self.scene.view_axes)
         target = self.scene.entities.get(parameters.get("target_id"))
+        targeted = getattr(self, 'targeted_vla_measurement_v1', False)
+        monitor_names = self._vla_measurement_names(source, target) if targeted else None
         target_name = measured_instance_description(target, self.scene.entities, self.scene.view_axes) if target else None
         prompt = f"pick up the {name}" if mode == "pick" else subtask_phrase(name, mode, target_name)
         initial = source
@@ -2746,9 +2769,12 @@ class MeasuredSkillAdapter:
         hold_verified = False
         vla_payload_reference = None
         previous_push_measurement = None
-        def observe():
+        def observe(*, full=False):
             nonlocal hold_verified, vla_payload_reference, previous_push_measurement
-            self.refresh()
+            if monitor_names is not None and not full:
+                self.refresh(names=monitor_names)
+            else:
+                self.refresh()
             current = self.scene.entities.get(source.id)
             robot = self.robot()
             displacement = np.asarray(current.xyz)-initial.xyz if current and current.visible else np.full(3, np.nan)
@@ -2849,7 +2875,7 @@ class MeasuredSkillAdapter:
             native_done=lambda: self.p.env.terminated, native_stopped=lambda: self.p.env.terminated or self.p.env.truncated,
             handoff=handoff, budget=self.vla_budget)
         if not (self.p.env.terminated or self.p.env.truncated):
-            result["post_handoff_measurement"] = observe()
+            result["post_handoff_measurement"] = observe(full=True)
             final_completed = result["post_handoff_measurement"]["completed"]
             if result['outcome'] == 'success' and not final_completed:
                 result.update(outcome='failure', stop_reason='completion_lost_during_handoff')
@@ -2865,4 +2891,8 @@ class MeasuredSkillAdapter:
             if vla_payload_reference is not None else None)
         result['payload_reference_artifacts'] = (vla_payload_reference.get('artifacts')
             if vla_payload_reference is not None else None)
+        result['public_measurement_scope'] = {
+            'version': 'selected-subtask-entities/1' if targeted else 'full-scene/1',
+            'categories': monitor_names, 'post_handoff_full_scene': True,
+            'control_check_interval': self.vla_budget.controls_per_check}
         return result
