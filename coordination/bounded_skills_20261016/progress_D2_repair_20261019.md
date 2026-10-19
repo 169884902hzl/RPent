@@ -1,3 +1,11 @@
+## 最新续接（覆盖下文队列号）：10662 + 自有step10641.0
+
+- 10653_0仅pending取消后，batch0在raw JobID10641的step0执行，工具session71229；输出results/bounded_skills/original_measured_forks_20261020/59f7daf8/owned10641_batch0。8个独立进程共用现有模型RPC；不新增GPU，父分配剩余十余小时，父0..3旧任务继续保留。
+- Slurm在取消10653_0后无法再调整ArrayJobId10653限流，控制器2842910退出。已在数分钟内将余8个pending原样重提10662；新唯一控制器PID2904228，reports/monitor_original_measured_repaired_20261020.log，优先10662再10640。10653原始提交收据保存在preparation/full_submission_10653.json，当前full_submission.json指向10662并登记batch0覆盖输出。
+- batch0已有杯子/开微波炉/推盘π推理，关微波炉仍完成准备。四个开/推首次π输入和动作哈希一致；sim_state差0，仅Python/reset sampler独立RNG不同。报告original_full_targeted_prefix_CPU_20261020_r1.json、original_fork_snapshot_difference_CPU_20261020.json；不得写整条轨迹已一致。
+- 12个停止设置终点CPU物理恢复误差0，两个碗种子均抓目标；14401000基线近另一碗，延至120/220仍无目标双指接触，且无v3成功窗口。详见calibrated_D2_stop_actual_endpoints_CPU_20261020.json。
+- Git已推送2bb1adb1（启动复用+显式batch输出汇总），执行源59f7/748不变。相关CPU14项通过。下一步：监测session71229及10662，逐分支闭合后增量汇总；原版旧全场源独立保存。汇总命令须带--batch-output 0=<上述owned10641_batch0路径>。
+
 ## 当前续接：10653 原版目标测量分叉；六例交还和停止对照已闭合
 
 - 执行核心7484079b；保存原版起点入口59f7daf8；Git HEAD ae578bb3（修正持物阶段）。六例 selected10649：6/6停稳、6/6后继请求；13401000/13402000续接carry_to→release，原生成功；14401000/16401000/17402000后继扫掠零步拒绝，17401000 observe23步no_effect。

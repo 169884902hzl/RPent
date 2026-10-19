@@ -857,11 +857,18 @@
     },
     "pi_branches_each": 3,
     "self_branches_each": 1,
-    "job": "10653",
+    "job": "10662",
     "startup_step": "10644.1",
     "startup_categories_physical": 4,
     "manifest_sha256": "9a66314ef33e8a079d4dca44252ab23a935bc49b1db553b90595e6355d5b3908",
-    "status": "submitted; waiting for slots; not physical results"
+    "status": "batch0 running in owned10641.0; indices1..8 queued",
+    "previous_job": "10653",
+    "batch_output_overrides": {
+      "0": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/original_measured_forks_20261020/59f7daf8/owned10641_batch0"
+    },
+    "controller_pid": 2904228,
+    "helper_commit": "2bb1adb1",
+    "additional_gpu_allocations": 0
   },
   "remaining": [
     "three next-route collision rejections after successful control handoff",
@@ -896,6 +903,200 @@
     {
       "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/D2_handoff_e120_closed_20261020.json",
       "sha256": "1c4a0f35a87c06f45d2c1bfbe859b35f186ae80fa07518ea9e957e3e73469429"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/calibrated_D2_stop_actual_endpoints_CPU_20261020.json",
+      "sha256": "76074ee18969de328ddf74794d894e7a3624442b069306694798481b30abdd6f"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/original_full_targeted_prefix_CPU_20261020_r1.json",
+      "sha256": "8ddf4c416c265608290306d161eb012e57a3af21744b8ff105d38ffa4f46a9a9"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/bounded_skills_20261016/reports/original_array_control_repair_20261020.json",
+      "sha256": "872b7b4f0cee2b66e046164d78d0aaa40851148c5e50e6c4d6e66566dfe339c0"
     }
-  ]
+  ],
+  "private_actual_endpoints": [
+    {
+      "sampling_seed": 13401000,
+      "variant": "handoff",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.056609193501687666,
+      "source_dual_finger_contact": true,
+      "nearest_object_symbol": "akita_black_bowl_1",
+      "nearest_object_eef_distance_m": 0.056609193501687666,
+      "dual_finger_objects": [
+        "akita_black_bowl_1"
+      ],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 13402000,
+      "variant": "handoff",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.05357282482057181,
+      "source_dual_finger_contact": true,
+      "nearest_object_symbol": "akita_black_bowl_1",
+      "nearest_object_eef_distance_m": 0.05357282482057181,
+      "dual_finger_objects": [
+        "akita_black_bowl_1"
+      ],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 14401000,
+      "variant": "handoff",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.19528288083507517,
+      "source_dual_finger_contact": false,
+      "nearest_object_symbol": "akita_black_bowl_2",
+      "nearest_object_eef_distance_m": 0.16143433216366107,
+      "dual_finger_objects": [],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 16401000,
+      "variant": "handoff",
+      "source_symbol": "cream_cheese_1",
+      "source_eef_distance_m": 0.034235958420121386,
+      "source_dual_finger_contact": true,
+      "nearest_object_symbol": "cream_cheese_1",
+      "nearest_object_eef_distance_m": 0.034235958420121386,
+      "dual_finger_objects": [
+        "cream_cheese_1"
+      ],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 17401000,
+      "variant": "handoff",
+      "source_symbol": "salad_dressing_1",
+      "source_eef_distance_m": 0.04019063830547009,
+      "source_dual_finger_contact": false,
+      "nearest_object_symbol": "salad_dressing_1",
+      "nearest_object_eef_distance_m": 0.04019063830547009,
+      "dual_finger_objects": [],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 17402000,
+      "variant": "handoff",
+      "source_symbol": "salad_dressing_1",
+      "source_eef_distance_m": 0.025036138097111464,
+      "source_dual_finger_contact": true,
+      "nearest_object_symbol": "salad_dressing_1",
+      "nearest_object_eef_distance_m": 0.025036138097111464,
+      "dual_finger_objects": [
+        "salad_dressing_1"
+      ],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 13401000,
+      "variant": "progress_off_120",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.056609193501687666,
+      "source_dual_finger_contact": true,
+      "nearest_object_symbol": "akita_black_bowl_1",
+      "nearest_object_eef_distance_m": 0.056609193501687666,
+      "dual_finger_objects": [
+        "akita_black_bowl_1"
+      ],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 13401000,
+      "variant": "progress_off_220",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.056609193501687666,
+      "source_dual_finger_contact": true,
+      "nearest_object_symbol": "akita_black_bowl_1",
+      "nearest_object_eef_distance_m": 0.056609193501687666,
+      "dual_finger_objects": [
+        "akita_black_bowl_1"
+      ],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 13402000,
+      "variant": "progress_off_120",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.05357282482057181,
+      "source_dual_finger_contact": true,
+      "nearest_object_symbol": "akita_black_bowl_1",
+      "nearest_object_eef_distance_m": 0.05357282482057181,
+      "dual_finger_objects": [
+        "akita_black_bowl_1"
+      ],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 13402000,
+      "variant": "progress_off_220",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.05357282482057181,
+      "source_dual_finger_contact": true,
+      "nearest_object_symbol": "akita_black_bowl_1",
+      "nearest_object_eef_distance_m": 0.05357282482057181,
+      "dual_finger_objects": [
+        "akita_black_bowl_1"
+      ],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 14401000,
+      "variant": "progress_off_120",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.18682847398269106,
+      "source_dual_finger_contact": false,
+      "nearest_object_symbol": "akita_black_bowl_1",
+      "nearest_object_eef_distance_m": 0.18682847398269106,
+      "dual_finger_objects": [],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    },
+    {
+      "sampling_seed": 14401000,
+      "variant": "progress_off_220",
+      "source_symbol": "akita_black_bowl_1",
+      "source_eef_distance_m": 0.18370402655825882,
+      "source_dual_finger_contact": false,
+      "nearest_object_symbol": "akita_black_bowl_1",
+      "nearest_object_eef_distance_m": 0.18370402655825882,
+      "dual_finger_objects": [],
+      "physical_restore_max_error": 0.0,
+      "model_visible": false,
+      "training": false
+    }
+  ],
+  "original_monitor_prefix_comparison": {
+    "pairs": 4,
+    "observed_inference_calls_each": 1,
+    "matching_actual_policy_inputs_and_actions": 4,
+    "sim_state_max_error": 0.0,
+    "non_rng_snapshot_differences": 0,
+    "caveat": "complete snapshots differ in independent Python/reset sampler RNGs; no observed control/observation-state differences. Prefix equality does not prove full outcome equality."
+  }
 }
