@@ -1,4 +1,4 @@
-"""Resumable schema6 developer probes, one independent episode process at a time."""
+"""Resumable schema6 probes with shared services and isolated episode processes."""
 import argparse
 import copy
 import hashlib
@@ -10,6 +10,7 @@ import sys
 import time
 from pathlib import Path
 from types import SimpleNamespace
+from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 
 
 def write(path, value):
@@ -151,9 +152,11 @@ def main():
     p.add_argument('--startup',action='store_true')
     p.add_argument('--startup-only',action='store_true')
     p.add_argument('--preflight',action='store_true')
+    p.add_argument('--episode-concurrency',type=int,default=1)
     args=p.parse_args();args.source=args.source.resolve(strict=True)
     args.manifest=args.manifest.resolve(strict=True);sys.path.insert(0,str(args.source))
     plan=json.loads(args.manifest.read_bytes())
+    if not 1 <= args.episode_concurrency <= 8:raise ValueError('episode concurrency must be1..8')
     if plan['training'] or plan['schema_version']!='bounded-skills/6':raise ValueError('wrong evaluation registration')
     if args.worker is not None:return worker(args,plan)
     for row in plan['jobs']:
@@ -172,6 +175,7 @@ def main():
         sam3_entry=Path(plan['sam_entry']['path']))
     checked(plan['sam_entry'])
     with helper.owned_services(service_args,services,vla=True) as endpoints:
+        pending=[]
         for index,row in enumerate(plan['jobs']):
             directory=args.output/f'case{index:03d}'
             closed=args.output/f'closed_{index:03d}.json'
@@ -184,16 +188,20 @@ def main():
                 attempt=1
                 while (args.output/f'case{index:03d}_attempt{attempt}').exists():attempt+=1
                 directory=args.output/f'case{index:03d}_attempt{attempt}'
-            if index==0:
-                startup=args.output/f'startup_{int(time.time())}';startup.mkdir()
-                write(startup/'assignment.json',{k+'_url':v._base_url for k,v in endpoints.items()})
-                command=[sys.executable,str(Path(__file__).resolve()),'--source',str(args.source),
-                    '--manifest',str(args.manifest),'--output',str(startup),'--worker',str(index),'--startup']
-                with (startup/'worker.log').open('x') as stream:
-                    subprocess.run(command,stdout=stream,stderr=subprocess.STDOUT,check=True)
-                if args.startup_only:
-                    print(json.dumps({'startup':'physical_passed','proof':str(startup/'summary.json')}),flush=True)
-                    return 0
+            pending.append((index,directory,closed))
+        if not pending:return 0
+        startup=args.output/f'startup_{time.time_ns()}';startup.mkdir()
+        write(startup/'assignment.json',{k+'_url':v._base_url for k,v in endpoints.items()})
+        command=[sys.executable,str(Path(__file__).resolve()),'--source',str(args.source),
+            '--manifest',str(args.manifest),'--output',str(startup),'--worker',str(pending[0][0]),'--startup']
+        with (startup/'worker.log').open('x') as stream:
+            subprocess.run(command,stdout=stream,stderr=subprocess.STDOUT,check=True)
+        if args.startup_only:
+            print(json.dumps({'startup':'physical_passed','proof':str(startup/'summary.json')}),flush=True)
+            return 0
+
+        def run_case(item):
+            index,directory,closed=item
             directory.mkdir()
             write(directory/'assignment.json',{k+'_url':v._base_url for k,v in endpoints.items()})
             command=[sys.executable,str(Path(__file__).resolve()),'--source',str(args.source),
@@ -203,6 +211,19 @@ def main():
             write(closed,{'summary':str(directory/'summary.json'),
                 'sha256':hashlib.sha256((directory/'summary.json').read_bytes()).hexdigest()})
             print(json.dumps({'index':index,'closed':str(directory/'summary.json')}),flush=True)
+        # Threads only own child-process launch/wait; each episode uses a
+        # fresh Python process, RNG, EGL context and IK state. Candidate
+        # planning inside an episode remains serial, as in the N8 study.
+        waiting=iter(pending)
+        with ThreadPoolExecutor(max_workers=args.episode_concurrency) as pool:
+            active={pool.submit(run_case,item) for item in
+                [next(waiting,None) for _ in range(args.episode_concurrency)] if item is not None}
+            while active:
+                done,active=wait(active,return_when=FIRST_COMPLETED)
+                for future in done:future.result()
+                for _ in done:
+                    item=next(waiting,None)
+                    if item is not None:active.add(pool.submit(run_case,item))
     return 0
 
 

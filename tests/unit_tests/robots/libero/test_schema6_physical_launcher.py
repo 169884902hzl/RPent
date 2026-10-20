@@ -1,0 +1,81 @@
+"""Preserve startup admission and completed checkpoints with shared services."""
+import hashlib
+import importlib.util
+import json
+import subprocess
+import sys
+import threading
+import time
+from contextlib import contextmanager
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+
+def setup_launcher(tmp_path, monkeypatch, *, fail_startup=False):
+    path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py'
+    spec = importlib.util.spec_from_file_location('schema6_physical_launcher', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    entry = tmp_path / 'sam.py'
+    entry.write_text('# fake service entry\n')
+    manifest = tmp_path / 'manifest.json'
+    manifest.write_text(json.dumps({'training': False, 'schema_version': 'bounded-skills/6',
+        'source_commit': 'test', 'jobs': [{'case': {}} for _ in range(9)],
+        'sam_entry': {'path': str(entry), 'sha256': hashlib.sha256(entry.read_bytes()).hexdigest()}}))
+    output = tmp_path / 'output'
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, 'path', sys.path.copy())
+    monkeypatch.setattr(sys, 'argv', ['launcher', '--source', str(tmp_path), '--manifest', str(manifest),
+        '--output', str(output), '--episode-concurrency', '3'])
+
+    @contextmanager
+    def services(*_, **__):
+        yield {'sam3': SimpleNamespace(_base_url='private_sam'), 'vla': SimpleNamespace(_base_url='private_vla')}
+
+    monkeypatch.setitem(sys.modules, 'scripts.probe_bounded_feasibility', SimpleNamespace(services=object()))
+    monkeypatch.setattr(module, 'hooks', lambda _: SimpleNamespace(
+        bootstrap_source=lambda *_: None, owned_services=services))
+    stats = {'active': 0, 'peak': 0, 'formal': [], 'startup': 0}
+    lock = threading.Lock()
+
+    def run(command, **_):
+        if '--startup' in command:
+            stats['startup'] += 1
+            if fail_startup:
+                raise subprocess.CalledProcessError(1, command)
+        else:
+            with lock:
+                assert stats['startup'] > 0
+                stats['active'] += 1
+                stats['peak'] = max(stats['peak'], stats['active'])
+                stats['formal'].append(int(command[command.index('--worker') + 1]))
+            time.sleep(.03)
+            with lock:
+                stats['active'] -= 1
+        directory = Path(command[command.index('--output') + 1])
+        (directory / 'summary.json').write_text(json.dumps({'status': 'physical_result'}))
+
+    monkeypatch.setattr(module.subprocess, 'run', run)
+    return module, output, stats
+
+
+def test_real_startup_precedes_pool_and_closed_cases_are_not_repeated(tmp_path, monkeypatch):
+    module, output, stats = setup_launcher(tmp_path, monkeypatch)
+    assert module.main() == 0
+    assert stats['peak'] == 3 and sorted(stats['formal']) == list(range(9))
+    pointers = list(output.glob('closed_*.json'))
+    assert len(pointers) == 9
+    for path in pointers:
+        row = json.loads(path.read_bytes())
+        assert row['sha256'] == hashlib.sha256(Path(row['summary']).read_bytes()).hexdigest()
+    assert module.main() == 0
+    assert stats['startup'] == 1 and len(stats['formal']) == 9
+
+
+def test_failed_startup_raises_before_dispatching_any_full_case(tmp_path, monkeypatch):
+    module, output, stats = setup_launcher(tmp_path, monkeypatch, fail_startup=True)
+    with pytest.raises(subprocess.CalledProcessError):
+        module.main()
+    assert stats['formal'] == [] and not list(output.glob('closed_*.json'))
