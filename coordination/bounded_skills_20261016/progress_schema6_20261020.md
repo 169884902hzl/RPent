@@ -135,3 +135,11 @@ Codex2要求旧original220 annotation与18保存PRO状态的CPU新候选入口�
 离线接口14项通过(42.92秒)，新增旧失败记账投影1项通过(2.14秒)；schema6 builder12项通过(1.91秒)。同schema6输入重建请求完全相等；legacy old→new映射、任意非oracle前缀、候选对私有目标不敏感、无RPC/无物理动作均有回归。日志/tmp/schema6_captured_rebuild_full.log、/tmp/schema6_capture_memory_projection.log、/tmp/schema6_builder_regression.log。真实旧保存输入的适配仍须单独跑，不将CPU假输入测试称物理证据。该接口补丁不改变在跑be3dae5e分母。
 
 离线迁移的有效默认变体保持显式未知：above/over只列作优先序参考，不能当作实际通过完整规划的默认路线。返回default_old_candidate_id_by_new_id全部null，default_resolution写明需完整路线规划；prefix_compatible空且requires_prefix_relabel=true，供Codex2保留未知。不得把优先序参考当作可接受集合成员资格证据。四项映射/历史回归通过，日志/tmp/schema6_default_provenance.log。
+
+## 精确18条PRO CPU交付与端点收敛诊断
+
+`ff71966c` 接口已用Codex2的精确18条 `dataset_v2/pro_eval.jsonl.gz` 跑完，公开输出远端 `results/bounded_skills/schema6_20261020/PRO18_CPU_ff71966c_r2/public_packets.jsonl`，私有空前缀标签单列 `private_empty_prefix_labels.jsonl`。18/18成功重建，候选总数1646→838，单请求35–79。原件摘要保存在 `reports/PRO18_CPU_ff71966c_r2_summary.json`。消费者的18条旧请求曾把schema3改为4；均用完整请求SHA核对恢复源请求，不猜候选或有效默认。提供者与源请求两种SHA、唯一差异字段及恢复出处全部保留。3条没有分支choices的记录，用完整SHA证明原始header后恢复；不是物理分支成功。所有18条的新空前缀私有规则可标注，但旧前缀/有效默认仍未知，不可拿来作旧正标签。首次r1仅15/18成功，失败记录保留。r2原件与源CPU callable已追加共享COORDINATION，PRO仍仅评测。
+
+be3 drawer case000及另外状态共16次descend都在标称轨迹结束时退出，残差约2.3cm、测得末端仍约5.1cm/s；路线IK和碰撞筛查通过。原执行器只走完标称参考，没有有界端点保持，故下一步接收失败。`3429e275f045e6490699465c75a7d7b13e8ca843` 添加最多30个20Hz端点保持步，固定已筛查的同一端点、保持夹爪指令和原12mm/0.05rad判据，不扩展路线、不增加夹持力。保持用完仍不达标则明确 `endpoint_not_reached`，不能冒充endpoint成功。阻挡回归验证仍失败，跟踪滞后回归验证可收敛；motion/schema6/chunk共69项通过（52.85秒），日志 `/tmp/schema6_endpoint_hold_regression.log`。物理是否解决仍待同状态验证，不把CPU测试当作真实控制结果。
+
+08:49 PDT取消自己的10794与尚未启动的10795–10798；原drawer仅关闭2对，均nudge/guarded失败，完整与中断原件保留。10793 move旧源继续提供开发对照，10698按用户要求自然运行；其他项目、Codex2及held不动。3429快照归档SHA256 `ecdc4365cc5aad2b379b147edbef7469b8466e490b17d51219eb4bcf36d8bff7`，新抽屉同状态真实启动将先验证端点保持，不能用be3成绩混入新源码分母。schema/contract/spec字节均未变，D尚未通过。
