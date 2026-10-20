@@ -116,7 +116,8 @@ def capture_annotation_state(oracle, request, *, status=None):
         'held', 'active', 'grasp_reference', 'payload_reference', 'target_cache',
         'plans', 'committed_grasps', 'receipts', 'revision', '_proprio_sample',
         'precontact_instance_surface_v1', 'legacy_chunk_boundaries_v1',
-        'compact_infeasible_candidates_v1', 'lazy_planning_v1', 'schema6_v1', 'public_progress')
+        'compact_infeasible_candidates_v1', 'lazy_planning_v1', 'schema6_v1', 'public_progress',
+        'memory', '_failed_move_anchors', '_move_approach_by_anchor', 'guarded_move_v1')
     adapter = object.__new__(MeasuredSkillAdapter)
     adapter.__dict__.update({key: getattr(original, key) for key in names})
     scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')
@@ -142,6 +143,89 @@ def capture_annotation_state(oracle, request, *, status=None):
         'binding': {key: value for key, value in oracle.binding.__dict__.items() if key != 'rpc'}}
     # Detach shared buffers and warm starts once, retaining internal aliasing.
     return copy.deepcopy(state)
+
+
+def rebuild_schema6_captured_request(state, request):
+    """Rebuild the current catalog from a trusted captured public observation.
+
+    This does not remeasure a scene or step physics. Historical snapshots may
+    omit failure/progress history; those resets are explicit migration flags.
+    Private goals are retained only in the returned annotation state.
+
+    Returns:
+        The rebuilt annotation state, public request, and ID/provenance flags.
+    """
+    from rpent.skill_package import VERSION as SCHEMA_VERSION
+    from rpent.skill_package.contract import FailureMemory, identity
+    from rpent.skill_package.progress import PublicProgress
+
+    if SCHEMA_VERSION != 'bounded-skills/6':
+        raise ValueError('captured catalog reconstruction requires schema6 source')
+    if state['version'] != VERSION or state['request_sha256'] != request_digest(request):
+        raise ValueError('captured state belongs to a different request or version')
+    if request['schema_version'] not in {f'bounded-skills/{v}' for v in (3, 4, 5, 6)}:
+        raise ValueError('unsupported captured request version')
+    if request.get('execution_prefix') is not None:
+        raise ValueError('committed legacy prefix requires a new capture after it completes')
+    if not isinstance(state['adapter'].p.env, FrozenSensors):
+        raise ValueError('catalog reconstruction requires a frozen CPU annotation state')
+    rebuilt = copy.deepcopy(state)
+    adapter = rebuilt['adapter']
+    had_history = 'memory' in vars(adapter)
+    was_schema6 = adapter.schema6_v1
+    had_progress = 'public_progress' in vars(adapter) and was_schema6
+    adapter.schema6_v1 = adapter.lazy_planning_v1 = True
+    adapter.request_consequence_workers = 1
+    adapter.record_public_geometry = False
+    for screen in adapter._cloud_and_ik.screens.values():
+        if not hasattr(screen, '_endpoint_ik_cache'):
+            screen._endpoint_ik_cache = {}
+    if not had_progress:
+        adapter.public_progress = PublicProgress(31)
+    if not had_history or not was_schema6:
+        prior = adapter.memory if had_history else None
+        adapter.memory = FailureMemory()
+        adapter._failed_move_anchors = set()
+        adapter._move_approach_by_anchor = {}
+        # Only the published failure counts are known. Missing history must
+        # not be invented from task progress, private goals or later outcomes.
+        failures = ([(dict(skill=json.loads(key)[0], parameters=json.loads(key)[1]),
+            count, prior.last.get(key), prior.cooldown.get(key, 0))
+            for key, count in prior.counts.items()] if prior is not None else
+            [(c, c['recent_failures'], c.get('last_failure'), 0) for c in request['candidates']])
+        for candidate, count, reason, cooldown in failures:
+            public = copy.deepcopy(candidate)
+            if public['skill'] == 'move_to':
+                public['parameters'] = {'anchor_id': public['parameters']['anchor_id']}
+                if count:
+                    adapter._failed_move_anchors.add(public['parameters']['anchor_id'])
+            key = identity(public)
+            adapter.memory.counts[key] = max(adapter.memory.counts.get(key, 0), count)
+            adapter.memory.cooldown[key] = max(adapter.memory.cooldown.get(key, 0), cooldown)
+            if reason:
+                adapter.memory.last[key] = reason
+    entities = [e for e in adapter.scene.entities.values() if adapter._has_anchor(e)]
+    current = adapter._request_from_measured_plans(entities, k=request['max_actions'])
+    rebuilt['request_sha256'] = request_digest(current)
+    by_identity = {identity(c): c['id'] for c in current['candidates']}
+    old_to_new, default_old = {}, {}
+    for candidate in request['candidates']:
+        public = copy.deepcopy(candidate)
+        if public['skill'] == 'move_to':
+            params = public['parameters']
+            if params.get('approach') == 'above' and params.get('path') == 'over':
+                default_old[params['anchor_id']] = public['id']
+            public['parameters'] = {'anchor_id': params['anchor_id']}
+        old_to_new[candidate['id']] = by_identity.get(identity(public))
+    flags = {'source_request_sha256': state['request_sha256'],
+        'request_sha256': rebuilt['request_sha256'], 'old_to_new': old_to_new,
+        'default_old_move_by_anchor': default_old, 'requires_prefix_relabel': True,
+        'committed_prefix_present': False, 'failure_history_incomplete': not had_history,
+        'failure_history_projected_to_merged_catalog': not was_schema6,
+        'progress_history_reset': not had_progress, 'contact_plans_reused': True,
+        'measurement_source': 'captured_public_rgbd_and_proprioception; no new sensor capture',
+        'physics_steps': 0, 'gpu_used': False, 'training_authorized': False}
+    return rebuilt, current, flags
 
 
 def annotate_prefix(state, request, prefix, *, workers=1):

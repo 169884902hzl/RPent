@@ -12,6 +12,8 @@ from robots.libero.bounded_offline_labels import (
     annotate_prefix,
     capture_annotation_state,
     load_annotation_state,
+    rebuild_schema6_captured_request,
+    request_digest,
     save_annotation_state,
 )
 from robots.libero.bounded_oracle import BoundedOracle
@@ -80,6 +82,78 @@ def test_schema6_capture_preserves_merged_options_and_prefix_screen_scope(captur
         for field in ('legal', 'rule_acceptable', 'selected'):
             assert actual[field] == expected[field]
     assert calls == calls_before and not adapter.p.actions
+
+
+def test_schema6_captured_catalog_uses_same_builder_and_keeps_exact_request(captured):
+    adapter, oracle, _, _, calls = captured
+    adapter.schema6_v1 = adapter.lazy_planning_v1 = True
+    request = adapter.request(k=4)
+    state = capture_annotation_state(oracle, request)
+    calls_before = list(calls)
+    rebuilt, current, flags = rebuild_schema6_captured_request(state, request)
+    assert current == request
+    assert flags['old_to_new'] == {c['id']: c['id'] for c in request['candidates']}
+    assert not flags['failure_history_incomplete'] and not flags['progress_history_reset']
+    assert annotate_prefix(rebuilt, current, [])['rule_acceptable']
+    assert calls == calls_before and not adapter.p.actions
+
+
+def test_legacy_captured_catalog_rebuilds_merged_moves_and_relabels_arbitrary_prefix(captured):
+    adapter, _, request, state, calls = captured
+    request = copy.deepcopy(request)
+    request['schema_version'] = 'bounded-skills/3'
+    state = copy.deepcopy(state)
+    state['request_sha256'] = request_digest(request)
+    for field in ('memory', 'public_progress', '_failed_move_anchors', '_move_approach_by_anchor'):
+        vars(state['adapter']).pop(field)
+    calls_before = list(calls)
+    rebuilt, current, flags = rebuild_schema6_captured_request(state, request)
+    moves = [c for c in current['candidates'] if c['skill'] == 'move_to']
+    assert len(moves) == len(current['anchors']) == 2
+    for move in moves:
+        anchor = move['parameters']['anchor_id']
+        legacy = [c for c in request['candidates'] if c['skill'] == 'move_to'
+            and c['parameters']['anchor_id'] == anchor]
+        assert len(legacy) == 12
+        assert {flags['old_to_new'][c['id']] for c in legacy} == {move['id']}
+        assert flags['default_old_move_by_anchor'][anchor] == next(c['id'] for c in legacy
+            if c['parameters']['approach'] == 'above' and c['parameters']['path'] == 'over')
+    assert flags['failure_history_incomplete'] and flags['progress_history_reset']
+    prefix = [next(c['id'] for c in current['candidates'] if c['skill'] == 'nudge')]
+    label = annotate_prefix(rebuilt, current, prefix)
+    assert label['prefix'] == prefix and label['rule_acceptable']
+    assert label['legal'] == list(legal_after(current, prefix))
+    assert calls == calls_before and not adapter.p.actions
+    assert len([c for c in request['candidates'] if c['skill'] == 'move_to']) == 24
+    unrelated_goals = copy.deepcopy(state)
+    unrelated_goals['private_status'] = {'done': True, 'goals': [], 'satisfied': []}
+    assert rebuild_schema6_captured_request(unrelated_goals, request)[1] == current
+
+
+def test_captured_catalog_rebuild_rejects_inflight_prefix(captured):
+    _, _, request, state, _ = captured
+    request = copy.deepcopy(request)
+    request['execution_prefix'] = {'steps': []}
+    state = copy.deepcopy(state)
+    state['request_sha256'] = request_digest(request)
+    with pytest.raises(ValueError, match='new capture after it completes'):
+        rebuild_schema6_captured_request(state, request)
+
+
+def test_captured_legacy_failure_memory_is_projected_without_restoring_blocked_move(captured):
+    adapter, oracle, request, _, _ = captured
+    move = next(c for c in request['candidates'] if c['skill'] == 'move_to'
+        and c['parameters'] == {'anchor_id': 'e1', 'approach': 'above', 'path': 'over'})
+    for _ in range(2):
+        adapter.memory.record(move, 'failure', 'measured_sweep_collision')
+    request = adapter.request(k=4)
+    state = capture_annotation_state(oracle, request)
+    _, current, flags = rebuild_schema6_captured_request(state, request)
+    moves = [c for c in current['candidates'] if c['skill'] == 'move_to'
+        and c['parameters']['anchor_id'] == 'e1']
+    assert len(moves) == 3 and all('approach' in c['parameters'] for c in moves)
+    assert flags['failure_history_projected_to_merged_catalog']
+    assert not flags['failure_history_incomplete']
 
 
 def test_model_chosen_nonoracle_prefix_is_labeled_without_mutating_saved_state(captured):

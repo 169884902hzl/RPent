@@ -2044,6 +2044,14 @@ class MeasuredSkillAdapter:
                 contact = self.grasp_geometry(entity)
                 if contact is not None:
                     self.plans[entity.id] = contact
+        return self._request_from_measured_plans(entities, k=k, screen_options=screen_options)
+
+    def _request_from_measured_plans(self, entities, *, k, screen_options=True):
+        """Build the public catalog from already measured contact plans.
+
+        Frozen CPU annotation states use this same builder without calling
+        perception, task truth, or a simulator to reconstruct observations.
+        """
         candidates = []
         options = []
         def add(skill, **parameters):

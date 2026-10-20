@@ -123,3 +123,13 @@ CPU稳定复现：同一已测量侧向接触计划，schema6合并move默认从
 08:13 PDT停止自己的10787/10788及尚未执行的10789–10792，以免已知阶段错误继续耗卡；完整与中断原件保留在177d44e9目录，旧确认状态不改判。10698、10699、10777和Codex2/保护/held作业未改。Codex2已自行撤销10786，其后续GPU短测将等10749结束，不再等一个已取消的依赖。
 
 接近阶段相关四文件回归296项通过；8项只因原测试硬编码旧judge /13失败（前面的行为断言已过），已更新为/14后单独复跑。首轮日志/tmp/schema6_endpoint_phase_regression.log；版本断言复跑/tmp/schema6_endpoint_phase_judge_rerun.log。旧物理停止汇总reports/move177_stopped_endpoint_r1.json仍为9关闭/8已知、两臂6/8、改善0退步0；未完成91对，unknown1对。逐次阶段证据reports/endpoint_phase_177_evidence.json。新物理分母尚未开始。
+
+## 新源be3dae5e物理批和CPU迁移接口
+
+be3dae5e32afff965d2ede20abb5fc159ccbc7ab已普通推送，快照source_schema6_be3dae5e_20261020，archive SHA256 7d8647ec01bbf9e8f882b5c32557b98398c5130720d1e3c833f82ae9977c5532。六类CPU preflight全通过，manifest与提交收据preparation/schema6_be3dae5e/。10793 move100、10794 drawer40已运行；10795 N1等10793，10796–10798 D2恢复0/1/2等drawer及前档。当前三张C3(含10698)、一张C2，无C2 GPU排队，借卡监控每30秒查询。所有node02/nice500；完成与中断回合分开保留。schema与contract SHA不变。
+
+296项相关回归通过，加更新judge版本断言后的8项通过(20.55秒)，离线快照11项通过(45.69秒)。本次旧版judge断言失败原日志保留，不伪称首次全过。
+
+Codex2要求旧original220 annotation与18保存PRO状态的CPU新候选入口。新增rebuild_schema6_captured_request(state,request)返回(rebuilt_state,current_request,mapping_flags)，共享当前请求候选builder。不执行仿真、不调用感知/RPC；保留捕获的RGB-D/本体/接触计划，private_status不参与候选生成。旧move12变体合并映射到1项；above/over旧ID另列default_old_move_by_anchor。旧标签必须按新prefix重算，不能只改header。缺失failure/progress历史分别显式标记，已保存旧失败记账投影到合并项。执行中未完成前缀拒绝迁移，必须在该前缀完成后重采。D2/PRO仍仅评测，接口不授权其数据进训练。
+
+离线接口14项通过(42.92秒)，新增旧失败记账投影1项通过(2.14秒)；schema6 builder12项通过(1.91秒)。同schema6输入重建请求完全相等；legacy old→new映射、任意非oracle前缀、候选对私有目标不敏感、无RPC/无物理动作均有回归。日志/tmp/schema6_captured_rebuild_full.log、/tmp/schema6_capture_memory_projection.log、/tmp/schema6_builder_regression.log。真实旧保存输入的适配仍须单独跑，不将CPU假输入测试称物理证据。该接口补丁不改变在跑be3dae5e分母。
