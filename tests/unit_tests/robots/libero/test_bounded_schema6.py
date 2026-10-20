@@ -107,6 +107,32 @@ def test_merged_move_skips_clear_entry_with_blocked_contact_ingress(adapter, mon
         if row['stage'] == 'move_contact_ingress' and row['screen']['passed'] is False]) == 3
 
 
+def test_selected_blocked_handle_defers_existing_contact_fit_until_execution(adapter, monkeypatch):
+    from types import SimpleNamespace
+    from robots.libero.bounded_motion import SmoothMotion
+
+    enable(adapter)
+    request = adapter.request(k=1)
+    adapter.plans['e1']['handle_measurement'] = {'source_step': 0}
+    called = []
+    def fit(entity, plan, *, complete=False):
+        called.append((entity.id, complete))
+        return {**plan, 'xyz_m': [.15, .1, .9]}
+    monkeypatch.setattr(adapter, '_screen_fixture_approaches', fit)
+    def prepare(*_args):
+        passed = adapter.plans['e1']['xyz_m'][0] == .15
+        return SimpleNamespace(duration=1.), None, None, dict(passed=passed,
+            collision=not passed, ik_reachable=True, path_min_clearance_m=.01)
+    monkeypatch.setattr(SmoothMotion, 'prepare', prepare)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    assert called == []
+    resolved = adapter._candidate('move_to', candidate['parameters'], complete=True)
+    assert called == [('e1', True)]
+    assert resolved['consequences']['collision'] is False
+    assert resolved['id'] == candidate['id']
+    assert adapter.plans['e1']['fixture_route_screened']
+
+
 def test_merged_move_uses_selected_endpoint_for_predicted_and_measured_contact_phase(adapter):
     from types import SimpleNamespace
 

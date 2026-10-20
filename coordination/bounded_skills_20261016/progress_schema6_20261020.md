@@ -163,3 +163,9 @@ CPU诊断第一次因外部脚本目录优先于PYTHONPATH误载live包而缺pro
 18fbf678的CPU真实保存输入复核已完成：above的3条路径均被指壳碰撞拒绝，right/over随后通过，最小公开间隙0.0069581m；0 RPC、0仿真步。32项screen/schema6通过(2.63秒)。物理启动仍需重新做。
 
 10793旧move100在运行1小时2分26秒后FAILED1:0：case011续跑oracle报KeyError: distance_m(bounded_oracle.py:289)。nudge选择器已可返回guarded_move，但调用方仍读取仅nudge拥有的distance_m。修为guarded用固定CHECK_DISTANCE_M及direction判断测量法向进展，nudge仍用distance_m；不扩大进展/停止阈值。新增真实参数形状回归，schema6共14项通过(2.71秒)。旧10793完成结果保留，当前12对关闭，剩余未完成不计失败；新源码批不混入。原件case011/worker.log。
+
+## 93c物理启动与选中后的把手姿态搜索
+
+10813同launcher真实启动COMPLETED0:0，5分06秒。关抽屉两臂共同初态SHA3a6a249186b5dd38d8aa460dd17f1bc6fb217d9449b27258bcc64a8d1de1479c；move right/over344步成功(误差0.00045848m)，descend38步成功(误差0.00340835m、端点保持0)，闭合15步成功，后续nudge被碰撞拒绝(0步)。只是启动，不是抽屉整局通过。10814固定N1启动COMPLETED0:0，2分42秒。10816正式N1还在独立VLA入口预启动时因新发现的通用把手姿态缺失主动取消，尚无正式关闭回合，保留中断原件；10698不变继续。
+
+开抽屉保存输入CPU检查：原接触姿态12变体均失败(碰撞/数值IK)，只把旋转移到高处的假设仍失败，不改源码。复用已有_screen_fixture_approaches则找到45度倾斜姿态，right/over连同接触入口通过，公开最小间隙0.00653720m；与历史可行姿态/宽度相符。原惰性实现把该搜索整段跳过，导致选中后仍无可行接触姿态。现将原搜索延迟到“模型已选中move，且固定优先序12路线均失败”时才运行；完整测量/碰撞/IK不削弱，不给未选候选做全规划，不加物体类别特例。34项screen/schema6通过(12.03秒)，原夹具相关回归另外运行。三份CPU原件在93c1213c/CPU_drawer_open_{rebuild_r1,clearance_rotation_r1,fixture_search_r1}/summary.json。

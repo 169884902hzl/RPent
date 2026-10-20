@@ -1503,14 +1503,14 @@ class MeasuredSkillAdapter:
         return {'source': 'public_handle_pixels_and_static_finger_closure_hulls',
             'width_m': sum(contacts.values()), 'finger_half_apertures_m': contacts}
 
-    def _screen_fixture_approaches(self, entity, plan):
+    def _screen_fixture_approaches(self, entity, plan, *, complete=False):
         """Select a measured handle entry with a clear complete contact route.
 
         A fixed stand-off can put the palm in another fixture. Search the
         same geometric alternatives for every handle, retaining the existing
         collision margin, contact exceptions and numerical IK checks.
         """
-        if self.lazy_planning_v1:
+        if self.lazy_planning_v1 and not complete:
             return plan
         robot = measured_robot(self.p)
         contact = np.asarray(plan['xyz_m'])
@@ -1788,6 +1788,19 @@ class MeasuredSkillAdapter:
                         self.candidate_diagnostics.append({'stage': 'move_variant_resolution',
                             'candidate_id': cid, 'attempts': attempts, 'selected': variant})
                         return result
+            plan = self.plans.get(parameters['anchor_id'])
+            if plan and plan.get('handle_measurement') and not plan.get('fixture_route_screened'):
+                # Lazy requests retain a measured handle without eagerly
+                # searching wrist rolls and stand-offs for every anchor.
+                # If the selected option's routes all fail, reuse that
+                # existing search here, before issuing any control.
+                fitted = self._screen_fixture_approaches(
+                    self.scene.entities[parameters['anchor_id']], plan, complete=True)
+                if fitted is not None:
+                    fitted['fixture_route_screened'] = True
+                    self.plans[parameters['anchor_id']] = fitted
+                    self._screen_cache.clear()
+                    return self._candidate(skill, parameters, complete=True)
             if last is None:
                 return None
             last['id'] = cid
