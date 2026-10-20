@@ -56,10 +56,6 @@ def main():
         if len(matching)!=1:
             counts['no_unique_closed_trial']+=1;continue
         trial=matching[0]
-        if trial.get('sim_steps')!=0:
-            counts['trial_has_controls']+=1;continue
-        if trial['endpoint'].get('physics_sha256')!=trial['initial_physics_sha256']:
-            counts['captured_start_endpoint_differ']+=1;continue
         choices=Path(event['file']).read_bytes()
         if hashlib.sha256(choices).hexdigest()!=trial['choices']['sha256']:
             excluded.append({'identity':identity,'reason':'choice_ledger_changed'});continue
@@ -67,20 +63,46 @@ def main():
         row=next((row for row in parsed if row.get('index')==event['row_index']),None)
         if row is None:counts['row_missing']+=1;continue
         candidate=next(c for c in row['request']['candidates'] if c['id']==event['candidate_id'])
-        reference=trial['endpoint'];path=Path(reference['path'])
+        if trial.get('sim_steps')==0 and trial['endpoint'].get('physics_sha256')==trial['initial_physics_sha256']:
+            reference=trial['endpoint'];role='zero_control_endpoint_equals_initial'
+        else:
+            # A trial can move AFTER this rejected action. Its registered
+            # branchpoint still restores the action if no preceding receipt
+            # used a control tick. Do not restore that trial's later endpoint.
+            before=[];found=False
+            for previous in parsed:
+                for receipt in previous.get('receipts',[]):
+                    if previous.get('index')==event['row_index'] and receipt['candidate_id']==event['candidate_id']:
+                        found=True;break
+                    before.append(receipt)
+                if found:break
+            if not found or any(r.get('steps_used',0)>0 for r in before):
+                counts['controls_before_rejected_action']+=1;continue
+            paired_path=Path(event['file']).parent.parent/'paired.json'
+            if not paired_path.is_file():counts['registered_branchpoint_missing']+=1;continue
+            paired=json.loads(paired_path.read_bytes())
+            paired_trials=[item for item in paired.get('trials',[])
+                if item.get('choices',{}).get('path')==event['file']]
+            reference=paired_trials[0].get('branchpoint') if len(paired_trials)==1 else None
+            if not reference or reference.get('physics_sha256')!=trial['initial_physics_sha256']:
+                counts['branchpoint_initial_digest_mismatch']+=1;continue
+            role='registered_branchpoint_before_zero_control_prefix'
+        path=Path(reference['path'])
         if hashlib.sha256(path.read_bytes()).hexdigest()!=reference['sha256']:
             excluded.append({'identity':identity,'reason':'endpoint_changed'});continue
         case=parent_payload.get('case')
         if not isinstance(case,dict):case=parent_payload.get('result',{}).get('case')
         if not isinstance(case,dict):case=registrations.get(name)
         if not isinstance(case,dict):counts['case_registration_missing']+=1;continue
-        rows.append({'event':event,'case':case,'candidate':candidate,'endpoint':reference,
+        rows.append({'event':event,'case':case,'candidate':candidate,'start_checkpoint':reference,
+            'checkpoint_role':role,
             'captured_initial_physics_sha256':trial['initial_physics_sha256'],
             'choices':trial['choices'],'source_summary':{'path':str(parent_path),'sha256':cache[parent_path][2]},
             'domain':'original' if original else 'D2_evaluation_only',
-            'scope':'zero controls and exact equality of all historically captured state fields; restore then capture a new complete integration/RNG common start before branching',
+            'scope':'zero controls before this action, registered checkpoint initial digest; restore then capture a new complete integration/RNG common start before branching',
             'training':False})
         counts['eligible/'+candidate['skill']]+=1
+        counts['checkpoint_role/'+role]+=1
     a.output.mkdir(exist_ok=False,parents=True)
     data=a.output/'eligible.jsonl';data.write_text(''.join(json.dumps(row,allow_nan=False)+'\n' for row in rows))
     report={'counts':dict(counts),'eligible':len(rows),'errors_or_changed_inputs':excluded,

@@ -1,0 +1,103 @@
+{
+  "source_commit": "645c4d22958fa77e3fccc346d909f41a9b2eaff2",
+  "counts": {
+    "positions": 54,
+    "TN": 44,
+    "off_physical": 53,
+    "TP": 5,
+    "FP": 4,
+    "unknown": 1
+  },
+  "by_skill": {
+    "call_vla": {
+      "positions": 29,
+      "TN": 22,
+      "off_physical": 28,
+      "TP": 3,
+      "unknown": 1,
+      "FP": 3
+    },
+    "observe": {
+      "positions": 19,
+      "TN": 16,
+      "off_physical": 19,
+      "TP": 2,
+      "FP": 1
+    },
+    "move_to": {
+      "positions": 6,
+      "TN": 6,
+      "off_physical": 6
+    }
+  },
+  "by_domain": {
+    "D2_evaluation_only": {
+      "positions": 50,
+      "TN": 43,
+      "off_physical": 49,
+      "TP": 5,
+      "FP": 1,
+      "unknown": 1
+    },
+    "original": {
+      "positions": 4,
+      "TN": 1,
+      "off_physical": 4,
+      "FP": 3
+    }
+  },
+  "clear_route_rejection_rate": {
+    "k": 4,
+    "n": 48,
+    "rate": 0.08333333333333333,
+    "wilson95": [
+      0.032883756818091775,
+      0.1955330179036728
+    ]
+  },
+  "false_fraction_among_classified_collision_rejections": {
+    "k": 4,
+    "n": 9,
+    "rate": 0.4444444444444444,
+    "wilson95": [
+      0.18877852109766452,
+      0.733348706504507
+    ]
+  },
+  "missed_collision_rate_within_old_rejected_cohort": {
+    "k": 0,
+    "n": 5,
+    "rate": 0.0,
+    "wilson95": [
+      0.0,
+      0.43448246478317476
+    ]
+  },
+  "agreement": {
+    "k": 49,
+    "n": 53,
+    "rate": 0.9245283018867925,
+    "wilson95": [
+      0.8214152251634678,
+      0.9702604449130533
+    ]
+  },
+  "full_initial_sha_mismatches": 0,
+  "unknown_positions": [
+    33
+  ],
+  "rows": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/B1_collision54_fresh_r4/rows.jsonl",
+    "sha256": "3376f6dc78c489719121d79b55dd05ff3bf4daef8640eeaa45697f3be6a141a3"
+  },
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/preparation_645c4d22/B1_collision_forks_r4.json",
+    "sha256": "40b1a2a1dd82dd014cea271bde345e592b70f9e111f4b8f2b80c259807d02ce8"
+  },
+  "parent_manifest": null,
+  "scope": "54 distinct historical captured state/action pairs from the old-rejected census. Shared new complete starts; historical integration omissions retained. Conditional cohort only; no population false-negative rate or whole-task success claim.",
+  "private_truth_scope": "OFF reached endpoint and retained payload without new/deeper robot/payload scene contact => clear; new/deeper contact => collision; other outcomes remain unknown. Raw private traces retained.",
+  "training": false,
+  "confirmation": false,
+  "physics_replayed_by_this_aggregator": 0
+}

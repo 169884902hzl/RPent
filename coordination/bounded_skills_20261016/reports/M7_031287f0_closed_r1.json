@@ -1,0 +1,230 @@
+{
+  "version": "M7-original220-schema6-rule-relabel/1",
+  "source_revision": "031287f09498abe79bdb3e23f311a1c3a1e2d75b",
+  "source_files": {
+    "robots/libero/bounded_skills.py": "658245525da1667b7cc2a647993771f026a3bdb40cf04b74c12f2b3b376f96ef",
+    "robots/libero/bounded_screen.py": "2df9d89e1c52ef00f5072a5f900661b6efe6aaea3423dfcaa79992881c42a649",
+    "robots/libero/bounded_offline_labels.py": "09fcf71aa17e87b97c881acdfec67993481dd2919c60ec0976efc61deb96c8fd",
+    "robots/libero/bounded_goal_progress.py": "566c175cd63b3f385836ba5b36b9c6a6e936bbf7b51cc6f2a6903dbcaa8ef93d",
+    "robots/libero/bounded_oracle.py": "f7984ca9cc559891cf09ee3cb352ad3c5c7ac54f9cbc5ee9018ab4c2ab328ffe",
+    "robots/libero/v5_oracle_policy.py": "5ac528accb76b647e266102ece885c89a92b60225eae280a55deb9707868fe99",
+    "rpent/skill_package/schema.json": "b64b6fb60c603dc1db297abcd53a5c5921092779ff5cab62b91cc3506883901d",
+    "rpent/skill_package/contract.py": "a0fef7407efb67b4f9cde557cfa09ffcf3964eaaf9eaabad9f671d4e5b900f0b",
+    "rpent/skill_package/progress.py": "9daa0e3d3b82ecceba16aefd46a12a88ecbff782034d8dca508b66782d41fea6"
+  },
+  "counts": {
+    "positions": 5472,
+    "effective_positions": 4907,
+    "source_eligible_effective_positions": 4427
+  },
+  "requests": 2966,
+  "source_eligible_requests": 2741,
+  "by_category": {
+    "bowl_transfer": {
+      "before_usable": 31,
+      "positions": 195,
+      "effective_positions": 195,
+      "source_eligible_effective_positions": 195,
+      "source_eligible_delta": 164
+    },
+    "box_transfer": {
+      "before_usable": 28,
+      "positions": 211,
+      "effective_positions": 211,
+      "source_eligible_effective_positions": 170,
+      "source_eligible_delta": 142
+    },
+    "container": {
+      "before_usable": 21,
+      "positions": 168,
+      "effective_positions": 168,
+      "source_eligible_effective_positions": 162,
+      "source_eligible_delta": 141
+    },
+    "cup_transfer": {
+      "before_usable": 81,
+      "positions": 479,
+      "effective_positions": 479,
+      "source_eligible_effective_positions": 387,
+      "source_eligible_delta": 306
+    },
+    "drawer_close": {
+      "before_usable": 319,
+      "positions": 785,
+      "effective_positions": 470,
+      "source_eligible_effective_positions": 466,
+      "source_eligible_delta": 147
+    },
+    "drawer_open": {
+      "before_usable": 116,
+      "positions": 335,
+      "effective_positions": 232,
+      "source_eligible_effective_positions": 221,
+      "source_eligible_delta": 105
+    },
+    "microwave_close": {
+      "before_usable": 123,
+      "positions": 298,
+      "effective_positions": 280,
+      "source_eligible_effective_positions": 218,
+      "source_eligible_delta": 95
+    },
+    "microwave_open": {
+      "before_usable": 157,
+      "positions": 645,
+      "effective_positions": 516,
+      "source_eligible_effective_positions": 343,
+      "source_eligible_delta": 186
+    },
+    "plate_push": {
+      "before_usable": 1462,
+      "positions": 1887,
+      "effective_positions": 1887,
+      "source_eligible_effective_positions": 1872,
+      "source_eligible_delta": 410
+    },
+    "stove_off": {
+      "before_usable": 66,
+      "positions": 347,
+      "effective_positions": 347,
+      "source_eligible_effective_positions": 299,
+      "source_eligible_delta": 233
+    },
+    "stove_on": {
+      "before_usable": 10,
+      "positions": 122,
+      "effective_positions": 122,
+      "source_eligible_effective_positions": 94,
+      "source_eligible_delta": 84
+    }
+  },
+  "by_split": {
+    "train": {
+      "positions": 3999,
+      "effective_positions": 3545,
+      "source_eligible_effective_positions": 3238
+    },
+    "init_holdout": {
+      "positions": 1004,
+      "effective_positions": 893,
+      "source_eligible_effective_positions": 796
+    },
+    "task_holdout": {
+      "positions": 469,
+      "effective_positions": 469,
+      "source_eligible_effective_positions": 393
+    }
+  },
+  "before_usable_positions": 2414,
+  "source_eligible_delta": 2013,
+  "rows": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_closed_r1/positions.jsonl.gz",
+    "sha256": "5302fd829f0693552deb55f738503cb1e7b7e88b5614eef4484814949f9b7bd4"
+  },
+  "excluded": [],
+  "errors": [],
+  "shard_manifests": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard0/manifest.json",
+      "sha256": "e54ff4be2186c11b1daf9cf8642a2d3bfedd82a375b62145263aa9f21a485280"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard1/manifest.json",
+      "sha256": "cc513c1d5a1a84b2ae85606098e0e43366c018265462308c9765f7aa5ca2d2b1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard2/manifest.json",
+      "sha256": "33363087ba94a2a456ba2b053e8f4b8d19f57d4990594f2d999636b667e0121b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard3/manifest.json",
+      "sha256": "982ef19053e29cff6e585faa82ce664176ab48e37e252e07ef658bc335475372"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard4/manifest.json",
+      "sha256": "ac15823b970f11d55229d49fb13115ae4fffd7404ac3b3a8b0636a0b2e1bfd1b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard5/manifest.json",
+      "sha256": "fc7d000f903f704cb295ff33e2666e4435161f7b8d3004588acb1156af49c356"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard6/manifest.json",
+      "sha256": "7a8160500d525befeab042f51de5f350f30118582cd5ec5edfc26aef361604ae"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard7/manifest.json",
+      "sha256": "f97681b8909ecf038c814ad0d14fc2d630f526282769c03e7b49544c8437bae3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard8/manifest.json",
+      "sha256": "2cde1971157a9e3f5e3c941ed2a48a88e47d12d220d80b4407c58874f8d78170"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard9/manifest.json",
+      "sha256": "fd2e3b7c41bb7b4033511db9b5bb4f72f3e31e867fcce63af3ede606bba96b9a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard10/manifest.json",
+      "sha256": "8ad6bc1705cb9acd57ed3d3f19962712be6629dae35ed0a84da2eafa1692d342"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard11/manifest.json",
+      "sha256": "998b74b3f000dbb01a6b514b9b5887ea247d8e64a0f13d25610d30c9fbab2d45"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard12/manifest.json",
+      "sha256": "b62d6ac2ba74b0ceea2dda87d63b916cec70f2d19f5e04af2a740fa2b7f2c384"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard13/manifest.json",
+      "sha256": "e7b1e31f7999c721fbd945fea92f82eaeaf130c8f5bfb730a5e414c2a4a2a9f7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard14/manifest.json",
+      "sha256": "cc847c48c0dd3dd0e60a2f4ab5c29c1a8127ee4312fcfec34262390345008e3e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard15/manifest.json",
+      "sha256": "5c813c1b49cd1c5aec49908a21f460236fa1c13586630ad7a8c6f75595193366"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard16/manifest.json",
+      "sha256": "a027903054d917190a23324cca5705662d913ebecf8de41264036c26defc68a8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard17/manifest.json",
+      "sha256": "d144f878dab0a403739232ccaf5c340eee8d9e0282615aaf1bb6cf23def4f9c4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard18/manifest.json",
+      "sha256": "d6873c2f0a574dbfc1729471bfe751bcb19ec91edc6c7c490d88f88389773389"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard19/manifest.json",
+      "sha256": "b9173a8d332f13c2f30d7085494532cf674b48d5f7c87fa1b9163ccca1faab41"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard20/manifest.json",
+      "sha256": "25c42b47d49ad83f37001e7ca5a705138afbd4e27fd12ff93ae56ea949ae24d5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard21/manifest.json",
+      "sha256": "5b88718f15ea3e4c1079de9d42d0b423a0e75ac3dbd6e8fda115f0ed1fc38d74"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard22/manifest.json",
+      "sha256": "82e9efc72d486f0bd38916c593f8a73f5e484d0926902f5d89c9f12f3740d833"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/M7_031287f0_shard23/manifest.json",
+      "sha256": "1f7b3a0c730a41334bf84992170753b2a87b8a40b5d2d8ed784a8f54779912d4"
+    }
+  ],
+  "process_cpu_s": 51557.773973368,
+  "worker_wall_s": 53097.49874491338,
+  "physics_steps": 0,
+  "rpc_calls": 0,
+  "gpu_used": false,
+  "caveat": "Conditional rule labels, not physical success. Source exclusions/splits retained; C2 must recompute cross-split aliases on new requests before training."
+}

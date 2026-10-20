@@ -1,4 +1,4 @@
-本轮接续 USER10/20 10:50；不训练。HEAD 仍为 333d12c6；下列新实现尚未作为物理批发布。
+本轮接续 USER10/20 10:50 + M7；不训练。当前runtime HEAD=645c4d22958fa77e3fccc346d909f41a9b2eaff2，CPU680通过、固定10首物理面板10973已COMPLETED0:0。以下旧记录按各自SHA保留；首物理不等于技能/整局上限通过。
 
 - A 已执行：取消 10698 剩余优化臂及 10834/10835；旧结果保留。当前修前恢复0为 10831/333d12c6。10699/10777不变。借卡只监控10833，Codex2出现运行或排队GPU时实际取消归还。
 - C1 CPU语料已封存：`results/bounded_skills/kernel_corpus_20261021/manifest_original_r1.json`（1160 route/15575 IK）；`D2_slow608_r2/manifest.json`（85/1783）；`D2_held_r1/manifest.json`（25/177）；`cold_ik1000_r1/manifest.json`（1000冷IK，显式清缓存对照）。输入为带SHA的可信pickle，D2语料禁止训练。原版4个旧snapshot缺字段的后续位置错误仍保留，不伪称全位置成功。
@@ -31,3 +31,19 @@ M7全量10897仍按bcc22412独立CPU口径继续，0错误（最近1787请求/36
 
 031287f09498abe79bdb3e23f311a1c3a1e2d75b已推送，完整Git archive SHA54c8863d4d4824909badb26099f2c07fe72a8521be29b6a1a0380c3a90ae6911，两端一致。真实CPU导入10校准及manifest预检通过；物理面板10944已有首物理128tick，非技能/整局通过。新oracle M7为CPU24片10945，B2目录仍OFF。
 C4同帧进一步定位：下降阻挡点离公开静态机器人实际三角面0.0015–0.55mm、投影偏差0.1–0.6像素；多层深度只能解决drawer_open那一点。box及drawer_close样点距当前机器人18–26cm，不当自身滤除。CPU10969已给79样点的精确表面距离（cpu/fixed10_blocker_surface_distance_r1.json）。据此新增一像素边缘覆盖，须同时满足到真实三角面3D距离≤原12mm，不扩4mm未来碰撞间隙，不填层间空隙。5个针对性CPU用例通过；全技能r16运行中。CPU10941曾因/tmp只在登录机可见而退出2，改共享路径10942完成0:0；失败日志保留。
+
+当前接续：645c4d22完整archive SHA9c83d2cbcdc757abdcc92c612a0ae72eb7a185d98be158df8abfebcae8c09849，两端核同；CPU r16=680 passed315.12s。10973固定10均有物理步；碗首chunk move128/descend47/close15/lift32全部成功回执。容器lift payload拒、杯lift sweep拒、开关抽屉/微波炉nudge sweep拒、stove_on descend31tick braking拒等仍保留。三轮固定面板完整初态SHA不同，仅同case/seed开发诊断，不当严格N1或成功率对照。cpu/fixed10_645c4d22_closed_r1.json。
+C4同帧fringe CPU10972：32个机器人表面一致样点全部滤除，47个box/drawer_close障碍样点全保留；79总样点，微波炉IK无几何点。源自cpu/fixed10_self_pixels_fringe_r1.json，不是物理FP/FN率。
+B1 index_r4 CPU10974已120事件/54不同物理状态+动作；19条由paired.trials对应的登记branchpoint恢复，拒绝动作之前0控制步。计划B1_collision_forks_r2.json共54（prep29/scan19/move6），永久确认排除已CPU检查。初版CPU发现4个旧原版case缺夹爪标定字段；误连提交10975已1秒FAILED1:0，无物理步，原件保留。补同机器人已校准引用、保留源case，CPU预检通过后10976启动。首同完整起点对照ON0步sweep拒/OFF117步endpoint、私有无新增碰撞且payload保持。已闭合若干条；case015触发点提示SAM但诊断未提供客户端而程序错误，其他继续；正在给诊断接共享SAM服务，仅补程序错误状态，core645c4d22不变。
+M7新oracle CPU24片10945/source031287f0运行，B2仍OFF，三端ACK未见。旧bcc完整4439（train3248/init798/task393）已共享C1核同。C4后续改动不参与M7的保存点云静态过滤重建，M7保持它自己的真实SHA。
+
+重要修正（最新接续）：10977已0:0完成6个程序错误补跑，B1 r2共54/54 closed、53 OFF实际运动。cpu/B1_collision54_closed_r1 原始统计FP40/TP5/TN8/unknown1，**该检查器统计无效，不得当当前source误杀率**。CPU10978/79/80 replay前三例held_pixels均0；10981进一步证明：从旧checkpoint恢复的实际EEF与原回执before逐值完全相同，但live EnvState仍是工具包构造时step0（开局EEF），而已恢复scene实体source_step为154/199/180。旧checkpoint缺artifact_state，我新写的B1诊断器漏了旧观测恢复，导致拿开局RGB-D对当前持物位姿判碰撞。是诊断器错误，不能归咎runtime或放宽collision。旧全部物理/计分原件保留并将另加validity note。下一步CPU恢复旧frame cursor和真实已保存RGB-D：从choices路径定位源states.json，按已恢复scene的source_step/measurement views找真实capture；核该帧的公开EEF/quat/开度与恢复本体匹配后，将真实StepRecord前缀和所需artifact复制进自有目录，再保存两臂common完整checkpoint。若旧观测缺失/不匹配，单列，另登记fresh dual-view reconstruction；不再使用开局帧。可复用EnvState/StepRecord（rpent/session/base.py）和已有restore_original_subtask的fresh public reconstruction。B1 probe_r2.py是当前已运行脚本（core645不变），本地run_zero_step_collision_forks_20261021.py已接共享SAM并能按attempt summary resume；修复图像恢复后需新script/manifest/output，不混入无效r2。
+M7新031287f0 job10945最新22/24 manifest、2597父请求、0错误，尚待全量聚合。CPU r16=680、fixed10 10973=0:0是真实core645证据，不受B1新诊断器错误影响。B2三端ACK仍未见，catalog OFF。旧10699/10777/10833继续，借卡watcher本地63075/ledger每30秒运行，C2出现时实际取消10833。
+
+M7新oracle全24片10945已全闭合，聚合cpu/M7_031287f0_closed_r1：2966请求/5472位置/4907有效/4427源status可用=train3238/init796/task393，对旧2414增2013；0错误/RPC/物理步，VLA仍unknown。逐位置gzip SHA5302fd829f0693552deb55f738503cb1e7b7e88b5614eef4484814949f9b7bd4。新版替代bcc归档供使用，不能盲合并同record_id；C2继续重算跨split别名。
+
+接续（2026-10-21 07:xx）：B1 新 probe r4 用同物理恢复状态重新采双视角，校验公开 EEF/quaternion/夹爪与本体一致，保留历史 gripper_command；点提示测量在共同状态保存前完成，两臂公开 screen 数组也验 SHA。真实 startup 后运行10984：COMPLETED0:0，54/54闭合、53条OFF有控制、完整初态0差异。结果 TP5/TN44/FP4/unknown1；clear被拒4/48，Wilson3.29–19.55%，仅旧拒绝子群。新独立原件cpu/B1_collision54_fresh_r4；旧r2错帧统计继续无效不覆盖。4FP为D2腕部扫描link7一次、原版杯子s7/15/11预备路线三次；CPU几何归因已准备，不改4mm间隙。
+
+全技能CPU r19：685 passed/305.03s（/tmp/user1050_CPU_panel_r19.log）。r18运行期间修改测试/launcher，混用旧已加载测试与新函数产生1失败，原日志保留；冻结修改后的r19全通过。帧恢复/N1启动专项15项通过。M7仍为031源5472位置/4427源身份可用、train3238，已登记。
+
+N1严格配对另修：只共享完整物理状态，每臂保留自身源码公开runtime并刷新，刷新前后均核完整SHA，避免把基线公开缓存带到优化臂。实际10698基线为6a2d6bb8（不是3968）；基于其完整源只移植D3快照运输，登记source_N1_6a2d_D3transport_20261021_r1。10985启动因缺PI05_CHECKPOINT_PATH退出1、无物理；已加入模型资源绝对路径CPU预检、补环境变量，失败目录保留。两端CPU preflight均0；10986只做两臂真实startup，不是32局完成。新代码/正式N1不能和旧非完整初态配对数字混用。

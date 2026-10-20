@@ -79,15 +79,24 @@ def common_start(args, facade, adapter, policy, probe):
     integration=saved['physics']['actuator_state'].get('integration')
     if integration is None:
         raise ValueError('strict pair requires mjSTATE_INTEGRATION; legacy hash cannot be repaired')
+    # Share physics, not a different source's adapter, cached plans or schema.
+    # Each arm must measure the common state through its own implementation.
+    own_runtime=probe.capture_runtime(adapter,policy)
     probe.restore_checkpoint(facade,adapter,policy,saved)
+    probe.restore_runtime(adapter,policy,own_runtime)
     expected=probe.snapshot_digest(saved['physics'])
     actual=probe.snapshot_digest(facade.snapshot())
     evidence={'checkpoint':str(path),'checkpoint_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
         'expected_complete_initial_sha256':expected,'actual_complete_initial_sha256':actual,
-        'integration_sha256':integration['sha256'],'source_role':args.initial_mode}
-    write(args.output/'common_initial_verified.json',evidence)
+        'integration_sha256':integration['sha256'],'source_role':args.initial_mode,
+        'public_runtime_source':'current arm; baseline public caches are not imported'}
     if actual!=expected:
         raise ValueError('complete integration/controller/RNG initial state differs; pair not admitted')
+    adapter.refresh()
+    evidence['post_public_refresh_complete_sha256']=probe.snapshot_digest(facade.snapshot())
+    write(args.output/'common_initial_verified.json',evidence)
+    if evidence['post_public_refresh_complete_sha256']!=expected:
+        raise ValueError('public refresh changed complete initial state; pair not admitted')
     return evidence
 
 
@@ -337,6 +346,13 @@ def main():
     sam_entry = plan['paired_protocol']['sam_entry']
     if hashlib.sha256(Path(sam_entry['path']).read_bytes()).hexdigest() != sam_entry['sha256']:
         raise ValueError('registered SAM entry changed')
+    for key in ('PI05_CHECKPOINT_PATH','SAM3_CHECKPOINT_PATH'):
+        value=os.environ.get(key)
+        if not value:
+            raise ValueError(key+' must be set before startup/preflight')
+        if not Path(value).is_absolute():
+            raise ValueError(key+' must use an absolute path')
+        Path(value).resolve(strict=True)
     if args.preflight:
         sys.path.insert(0,str(args.source))
         os.environ.setdefault('MUJOCO_GL','egl')

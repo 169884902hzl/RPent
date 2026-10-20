@@ -151,24 +151,33 @@ def test_n1_common_start_requires_complete_state_and_verifies_each_arm(tmp_path)
     module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     physical = {'actuator_state':{'integration':{'sha256':'complete-vector'}},'rng':17}
     current = copy.deepcopy(physical)
+    adapter=SimpleNamespace(source='baseline',refresh_count=0)
+    def refresh():adapter.refresh_count+=1
+    adapter.refresh=refresh
     facade = SimpleNamespace(snapshot=lambda:copy.deepcopy(current))
     def save(facade,adapter,policy,destination):
         destination.write_bytes(pickle.dumps({'physics':facade.snapshot()}))
     def restore(facade,adapter,policy,saved):
         current.clear();current.update(copy.deepcopy(saved['physics']))
+        adapter.source='inherited-baseline-cache'
     digest=lambda value:hashlib.sha256(json.dumps(value,sort_keys=True).encode()).hexdigest()
-    probe=SimpleNamespace(save_checkpoint=save,restore_checkpoint=restore,snapshot_digest=digest)
+    probe=SimpleNamespace(save_checkpoint=save,restore_checkpoint=restore,snapshot_digest=digest,
+        capture_runtime=lambda adapter,policy:adapter.source,
+        restore_runtime=lambda adapter,policy,source:setattr(adapter,'source',source))
     args=SimpleNamespace(common_starts=tmp_path/'common',worker=0,startup=False,
         initial_mode='create',output=tmp_path/'baseline')
     args.output.mkdir()
-    baseline=module.common_start(args,facade,None,None,probe)
+    baseline=module.common_start(args,facade,adapter,None,probe)
+    assert adapter.source=='baseline' and adapter.refresh_count==1
     current['rng']=999
+    adapter.source='optimized'
     args.initial_mode='restore';args.output=tmp_path/'optimized';args.output.mkdir()
-    optimized=module.common_start(args,facade,None,None,probe)
+    optimized=module.common_start(args,facade,adapter,None,probe)
     assert current==physical
+    assert adapter.source=='optimized' and adapter.refresh_count==2
     assert baseline['actual_complete_initial_sha256']==optimized['actual_complete_initial_sha256']
     probe.restore_checkpoint=lambda *_:None
     current['rng']=123
     args.output=tmp_path/'mismatched';args.output.mkdir()
     with pytest.raises(ValueError,match='initial state differs'):
-        module.common_start(args,facade,None,None,probe)
+        module.common_start(args,facade,adapter,None,probe)
