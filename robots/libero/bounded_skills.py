@@ -1960,11 +1960,14 @@ class MeasuredSkillAdapter:
         from robots.libero.v5_state import relations
         right, front = self.scene.view_axes
         public_relations = []
+        anchor_ids = {anchor['id'] for anchor in self.anchors()}
         relation_entities = [self.target_cache.get(e.id, e)
             if (self.held is not None and e.id != self.held)
                 or (not e.visible and self._has_anchor(e)) else e for e in self.scene.entities.values()]
         for row in relations(relation_entities, right_axis=right, front_axis=front):
             _, source, relation, target = row.split()
+            if source not in anchor_ids or target not in anchor_ids:
+                continue
             public_relations.append({"source_id": source, "relation": relation, "target_id": target})
         published = self.memory.apply(candidates)
         compact = [compact_candidate(c) for c in published] if self.compact_infeasible_candidates_v1 else published
