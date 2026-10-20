@@ -108,6 +108,17 @@ def main():
                 stream.flush()
                 print(json.dumps({'submitted': value}), flush=True)
             errors = []
+            accounting = subprocess.check_output(['sacct', '-X', '-n', '-P', '-j',
+                ','.join([args.original_array]+[value['job'] for value in submitted]),
+                '--format=JobID,State,ExitCode,Elapsed'], text=True).strip().splitlines()
+            allocation_errors = []
+            for line in accounting:
+                fields = line.split('|')
+                if len(fields) >= 3 and fields[1] not in {'RUNNING', 'PENDING', 'COMPLETED', 'COMPLETING'}:
+                    key = 'allocation:'+fields[0]+':'+fields[1]
+                    if key not in seen_errors:
+                        seen_errors.add(key)
+                        allocation_errors.append({'job': fields[0], 'state': fields[1], 'exit_code': fields[2]})
             for root in (args.original_results, args.preparation.parent):
                 for path in root.glob('job*/N*/*/worker_summary.json'):
                     if str(path) in seen_errors:
@@ -126,6 +137,7 @@ def main():
             print(json.dumps({'utc': datetime.now(timezone.utc).isoformat(), 'cap': cap,
                 'original_running': running, 'original_pending': pending,
                 'original_throttle': primary_cap, 'D2_active': secondary, 'codex2_gpu': peers,
+                'accounting': accounting, 'new_allocation_errors': allocation_errors,
                 'new_worker_errors': errors, 'finished': finished}), flush=True)
             if finished:
                 return 0
