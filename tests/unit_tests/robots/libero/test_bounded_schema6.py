@@ -42,6 +42,21 @@ def test_one_move_per_anchor_and_only_failed_anchor_has_alternates(adapter):
     assert all('path' not in c['parameters'] for c in moves)
 
 
+def test_failed_empty_gripper_closure_offers_alternate_approach_to_contacted_anchor(adapter, monkeypatch):
+    enable(adapter)
+    adapter.active = 'e1'
+    request = adapter.request(k=1)
+    close = next(c for c in request['candidates']
+        if c['skill'] == 'set_gripper' and c['parameters']['mode'] == 'close')
+    receipt = {'candidate_id': close['id'], 'skill': 'set_gripper', 'outcome': 'failure',
+        'before': {'held_anchor_id': None}, 'expectation_checks': [{
+            'condition': {'metric': 'gripper_opening_m', 'anchor_id': 'e1'}, 'passed': False}]}
+    monkeypatch.setattr(adapter, '_execute_chunk', lambda *_, **__: [receipt])
+    adapter.execute(request, decision(request, [close['id']]))
+    moves = [c for c in adapter.request()['candidates'] if c['skill'] == 'move_to']
+    assert len(moves) == 4
+
+
 def test_selected_move_resolves_first_passing_variant_in_fixed_order(adapter, monkeypatch):
     from robots.libero.bounded_motion import SmoothMotion
     enable(adapter)

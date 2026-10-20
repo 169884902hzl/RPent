@@ -2342,6 +2342,12 @@ class MeasuredSkillAdapter:
                 for receipt in outcomes:
                     params = by_id[receipt['candidate_id']]['parameters']
                     key = params.get('anchor_id') or params.get('target_id') or receipt['before']['held_anchor_id']
+                    if key is None and receipt['skill'] == 'set_gripper' and params.get('mode') == 'close':
+                        # A missed grasp has no held object. Its measured
+                        # contact anchor is carried by the executed receipt,
+                        # including a close predicted after move/descend.
+                        key = next((c['condition']['anchor_id'] for c in receipt.get('expectation_checks', [])
+                            if c['condition'].get('anchor_id') is not None), self.active)
                     if receipt['outcome'] in {'failure', 'no_effect', 'unmeasured', 'rejected'} and key is not None:
                         self._failed_move_anchors.add(key)
                     if receipt['skill'] == 'move_to' and receipt['outcome'] == 'success':
