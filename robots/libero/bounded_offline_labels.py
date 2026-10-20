@@ -219,7 +219,13 @@ def rebuild_schema6_captured_request(state, request):
         old_to_new[candidate['id']] = by_identity.get(identity(public))
     flags = {'source_request_sha256': state['request_sha256'],
         'request_sha256': rebuilt['request_sha256'], 'old_to_new': old_to_new,
-        'default_old_move_by_anchor': default_old, 'requires_prefix_relabel': True,
+        'old_to_new_candidate_ids': old_to_new,
+        'priority_reference_old_move_by_anchor': default_old,
+        'default_old_candidate_id_by_new_id': {c['id']: None for c in current['candidates']
+            if c['skill'] == 'move_to'},
+        'default_resolution': 'unresolved: requires complete route planning; above/over is priority only',
+        'prefix_compatible': {}, 'unknown_reasons': ['effective_default_and_legacy_prefixes_not_resolved'],
+        'requires_prefix_relabel': True,
         'committed_prefix_present': False, 'failure_history_incomplete': not had_history,
         'failure_history_projected_to_merged_catalog': not was_schema6,
         'progress_history_reset': not had_progress, 'contact_plans_reused': True,

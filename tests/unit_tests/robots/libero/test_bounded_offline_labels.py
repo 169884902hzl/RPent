@@ -116,8 +116,9 @@ def test_legacy_captured_catalog_rebuilds_merged_moves_and_relabels_arbitrary_pr
             and c['parameters']['anchor_id'] == anchor]
         assert len(legacy) == 12
         assert {flags['old_to_new'][c['id']] for c in legacy} == {move['id']}
-        assert flags['default_old_move_by_anchor'][anchor] == next(c['id'] for c in legacy
+        assert flags['priority_reference_old_move_by_anchor'][anchor] == next(c['id'] for c in legacy
             if c['parameters']['approach'] == 'above' and c['parameters']['path'] == 'over')
+        assert flags['default_old_candidate_id_by_new_id'][move['id']] is None
     assert flags['failure_history_incomplete'] and flags['progress_history_reset']
     prefix = [next(c['id'] for c in current['candidates'] if c['skill'] == 'nudge')]
     label = annotate_prefix(rebuilt, current, prefix)

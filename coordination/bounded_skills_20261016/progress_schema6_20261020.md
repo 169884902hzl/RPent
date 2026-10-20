@@ -133,3 +133,5 @@ be3dae5e32afff965d2ede20abb5fc159ccbc7ab已普通推送，快照source_schema6_b
 Codex2要求旧original220 annotation与18保存PRO状态的CPU新候选入口。新增rebuild_schema6_captured_request(state,request)返回(rebuilt_state,current_request,mapping_flags)，共享当前请求候选builder。不执行仿真、不调用感知/RPC；保留捕获的RGB-D/本体/接触计划，private_status不参与候选生成。旧move12变体合并映射到1项；above/over旧ID另列default_old_move_by_anchor。旧标签必须按新prefix重算，不能只改header。缺失failure/progress历史分别显式标记，已保存旧失败记账投影到合并项。执行中未完成前缀拒绝迁移，必须在该前缀完成后重采。D2/PRO仍仅评测，接口不授权其数据进训练。
 
 离线接口14项通过(42.92秒)，新增旧失败记账投影1项通过(2.14秒)；schema6 builder12项通过(1.91秒)。同schema6输入重建请求完全相等；legacy old→new映射、任意非oracle前缀、候选对私有目标不敏感、无RPC/无物理动作均有回归。日志/tmp/schema6_captured_rebuild_full.log、/tmp/schema6_capture_memory_projection.log、/tmp/schema6_builder_regression.log。真实旧保存输入的适配仍须单独跑，不将CPU假输入测试称物理证据。该接口补丁不改变在跑be3dae5e分母。
+
+离线迁移的有效默认变体保持显式未知：above/over只列作优先序参考，不能当作实际通过完整规划的默认路线。返回default_old_candidate_id_by_new_id全部null，default_resolution写明需完整路线规划；prefix_compatible空且requires_prefix_relabel=true，供Codex2保留未知。不得把优先序参考当作可接受集合成员资格证据。四项映射/历史回归通过，日志/tmp/schema6_default_provenance.log。
