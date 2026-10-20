@@ -137,11 +137,54 @@ def test_one_tick_lead_uses_the_screened_curve_and_reduces_tracking_lag():
             if row['braking']:
                 continue
             command = row['command_reference']
-            assert row['time_s'] <= command['time_s'] <= trajectory.duration
+            assert min(row['time_s'], trajectory.duration) <= command['time_s'] <= trajectory.duration
             np.testing.assert_allclose(command['xyz_m'], trajectory.at(command['time_s'])[:3], atol=1e-10)
     assert results[0]['stop_reason'] == 'tracking_error'
     assert results[1]['stop_reason'] == 'endpoint'
     assert results[1]['max_tracking_error_m'] < results[0]['max_tracking_error_m']
+
+
+def test_endpoint_feedback_lag_gets_a_bounded_fixed_reference_tail():
+    from robots.libero.bounded_motion import MotionConfig
+
+    results = []
+    for settle_steps in (0, 30):
+        p = FakePrimitives()
+        def lagged_step(action):
+            p.actions.append(action)
+            # Feedback slows near the contact region but stays inside the
+            # tracking guard. The nominal clock alone leaves >12mm lag.
+            gain = .05 if p.env.position[2] < .92 else 1.
+            p.env.position += action[:3]*.05*gain
+        p._step_env = lagged_step
+        result = SmoothMotion(p, lambda poses: {'passed': True},
+            MotionConfig(endpoint_settle_steps=settle_steps)).run([{'xyz_m': [0., 0., .88]}])
+        results.append(result)
+    old, new = results
+    assert old['stop_reason'] == 'endpoint_not_reached'
+    assert old['endpoint_error_m'] > .012
+    assert new['stop_reason'] == 'endpoint' and new['endpoint_error_m'] <= .012
+    assert 0 < new['endpoint_hold_steps'] <= 30
+    for row in new['trace'][-new['endpoint_hold_steps']:]:
+        assert row['endpoint_hold'] and row['action'][-1] == -1.
+        np.testing.assert_allclose(row['desired']['xyz_m'], [0., 0., .88])
+        np.testing.assert_allclose(row['reference_velocity'], 0., atol=1e-10)
+        np.testing.assert_allclose(row['reference_acceleration'], 0., atol=1e-10)
+
+
+def test_endpoint_hold_does_not_turn_a_blocked_endpoint_into_success():
+    from robots.libero.bounded_motion import MotionConfig
+
+    p = FakePrimitives()
+    def blocked(action):
+        p.actions.append(action)
+        p.env.position[0] = min(.085, p.env.position[0]+action[0]*.05)
+    p._step_env = blocked
+    result = SmoothMotion(p, lambda poses: {'passed': True},
+        MotionConfig(endpoint_settle_steps=3)).run([{'xyz_m': [.1, 0., 1.]}])
+    assert result['stop_reason'] == 'endpoint_not_reached'
+    assert result['endpoint_hold_steps'] == 3 and result['endpoint_error_m'] > .012
+    assert not hasattr(p, '_bounded_rest_reference')
 
 
 def test_rejected_curve_sends_no_physical_command():

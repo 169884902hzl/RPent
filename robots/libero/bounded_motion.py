@@ -31,6 +31,7 @@ class MotionConfig:
     rotation_action_scale_rad: float = .50
     tracking_error_stop_m: float = .03
     endpoint_tolerance_m: float = .012
+    endpoint_settle_steps: int = 30
     reference_lead_s: float = .05
     handoff_max_steps: int = 30
     handoff_stable_steps: int = 4
@@ -238,12 +239,27 @@ class SmoothMotion:
         trace, stop = [], "endpoint"
         checked_waypoints = []
         waypoint_cursor = 0
-        for pose in poses[1:]:
+        # A zero-velocity reference does not mean OSC feedback has already
+        # reached it. Keep the screened endpoint fixed for a bounded tail;
+        # never replan beyond it or relax the receipt's arrival tolerance.
+        endpoint_holds = [{**poses[-1], 'time_s': trajectory.duration+(i+1)/self.config.hz}
+                          for i in range(self.config.endpoint_settle_steps)]
+        endpoint_hold_steps = 0
+        for pose in [*poses[1:], *endpoint_holds]:
             if self.p.env.terminated or self.p.env.truncated:
                 stop = "native_stop"
                 break
+            holding = pose['time_s'] > trajectory.duration
+            if holding:
+                current = measured_robot(self.p)
+                error = np.linalg.norm(np.asarray(poses[-1]['xyz_m'])-current['eef_xyz_m'])
+                angle = (Rotation.from_quat(poses[-1]['quat_xyzw'])
+                         * Rotation.from_quat(current['eef_quat_xyzw']).inv()).magnitude()
+                if error <= self.config.endpoint_tolerance_m and angle <= .05:
+                    break
+                endpoint_hold_steps += 1
             if lookahead is not None:
-                lookahead.poll(trajectory.duration-pose["time_s"], request_factory)
+                lookahead.poll(max(0., trajectory.duration-pose["time_s"]), request_factory)
             # OSC tracks a position reference with finite lag. Command the
             # next control sample on this already-screened curve, rather
             # than extrapolating a velocity beyond its collision envelope.
@@ -261,7 +277,7 @@ class SmoothMotion:
                           "reference_jerk": trajectory.at(pose["time_s"], 3).tolist(),
                           **{'command_reference_'+name: trajectory.at(lead_time, order).tolist()
                              for order, name in enumerate(('velocity', 'acceleration', 'jerk'), 1)},
-                          "braking": False})
+                          "braking": False, "endpoint_hold": holding})
             if contact_stop is not None and contact_stop(after):
                 stop = "public_contact_stop"
                 break
@@ -305,6 +321,11 @@ class SmoothMotion:
         metrics['reference_max_jerk_limit_ratio'] = max((segment.maximum(3, axes)/limit.jerk
             for segment in trajectory.segments for axes, limit in self.config.groups()), default=0.)
         end_error = float(np.linalg.norm(np.asarray(waypoints[-1]["xyz_m"])-measured_robot(self.p)["eef_xyz_m"]))
+        end_angle = float((Rotation.from_quat(poses[-1]['quat_xyzw'])
+                          * Rotation.from_quat(measured_robot(self.p)['eef_quat_xyzw']).inv()).magnitude())
+        if stop in {'endpoint', 'decision_pending_at_rest_endpoint'} and (
+                end_error > self.config.endpoint_tolerance_m or end_angle > .05):
+            stop = 'endpoint_not_reached'
         rested = (trace and ((stop in {'endpoint', 'decision_pending_at_rest_endpoint'}
                               and end_error <= self.config.endpoint_tolerance_m)
                              or (braking is not None and braking.get('completed')
@@ -323,6 +344,7 @@ class SmoothMotion:
                 "initial_derivatives_source": inherited_source,
                 "reference_start_pose": {key: reference_start[key] for key in ('eef_xyz_m', 'eef_quat_xyzw')},
                 "reference_duration_s": trajectory.duration,
+                "endpoint_hold_steps": endpoint_hold_steps,
                 "waypoint_times_s": list(trajectory.waypoint_times), "braking": braking,
                 "checked_waypoints": checked_waypoints}
 
