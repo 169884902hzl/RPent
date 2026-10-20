@@ -71,6 +71,9 @@ MOTION_SKILLS = {"move_to", "align", "descend", "lift", "carry_to", "lower", "ro
 class MeasuredSkillAdapter:
     """Enumerate public options and execute only exact selected IDs."""
 
+    # Trusted historical annotation snapshots omit development-only flags.
+    lazy_planning_v1 = False
+
     def __init__(self, executor, gripper_xml: str | Path, *, allow_vla: bool = True,
                  history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
                  record_public_geometry: bool = False, precontact_instance_surface_v1: bool = False,
@@ -79,7 +82,8 @@ class MeasuredSkillAdapter:
                  prefix_consequence_workers: int = 1,
                  request_consequence_workers: int = 1,
                  vla_budget: VLABudget = VLABudget(),
-                 targeted_vla_measurement_v1: bool = False):
+                 targeted_vla_measurement_v1: bool = False,
+                 lazy_planning_v1: bool = False):
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
         if type(request_consequence_workers) is not int or request_consequence_workers < 1:
@@ -94,6 +98,8 @@ class MeasuredSkillAdapter:
         self.config = motion_config
         self.vla_budget = vla_budget
         self.targeted_vla_measurement_v1 = targeted_vla_measurement_v1
+        self.lazy_planning_v1 = lazy_planning_v1
+        self._grasp_geometry_cache = {}
         self.memory = FailureMemory()
         self._contact_retry_references = {}
         self.revision = 0
@@ -115,6 +121,7 @@ class MeasuredSkillAdapter:
         self.previous_scene = {}
         self._last_scene_changes = set()
         self._base_geometry = None
+        self._base_geometry_cache = None
         self._screen_cache = {}
         self._instance_cache = {}
         self._self_filtered_capture = None
@@ -293,12 +300,20 @@ class MeasuredSkillAdapter:
             # Preserve pixel identities until both selected and held masks
             # have been subtracted. A voxel centroid is not an instance pixel.
             cloud = np.concatenate(clouds)
-            scene, _ = remove_current_gripper(cloud, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
-                                           hand_geometry, robot["gripper_opening_m"])
             ik = PublicPoseScreen(self.robot_xml, robot["joint_positions_rad"], robot["eef_xyz_m"],
                                  robot["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
-            scene, _ = ik.remove_measured_arm(scene)
-            scene, _ = remove_visual_robot(scene, ik)
+            key = ((hashlib.sha256(cloud.tobytes()).hexdigest(), json.dumps(robot,sort_keys=True))
+                if self.lazy_planning_v1 else None)
+            cached = getattr(self,'_base_geometry_cache',None) if self.lazy_planning_v1 else None
+            if cached is not None and cached[0] == key:
+                scene = cached[1]
+            else:
+                scene, _ = remove_current_gripper(cloud, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
+                                               hand_geometry, robot["gripper_opening_m"])
+                scene, _ = ik.remove_measured_arm(scene)
+                scene, _ = remove_visual_robot(scene, ik)
+                if self.lazy_planning_v1:
+                    self._base_geometry_cache = key,scene
             self._base_geometry = scene, ik
         scene, ik = self._base_geometry
         target = self._contact_pixels(anchor_id)
@@ -1072,6 +1087,27 @@ class MeasuredSkillAdapter:
         return result
 
     def grasp_geometry(self, entity):
+        """Reuse an identical public cloud/robot query across requests."""
+        if not self.lazy_planning_v1:
+            return self._compute_grasp_geometry(entity)
+        if not hasattr(self, '_grasp_geometry_cache'):
+            self._grasp_geometry_cache = {}
+        points = self.scene.measurement_clouds.get(entity.id)
+        if points is None:
+            return None
+        key = (entity.id, entity.name, hashlib.sha256(np.asarray(points).tobytes()).hexdigest(),
+            json.dumps(measured_robot(self.p), sort_keys=True),
+            tuple(map(tuple, self.scene.view_axes)))
+        # The lazy fit below checks no obstacle route; changed obstacles are
+        # screened afresh by each cheap candidate and by selected execution.
+        if key not in self._grasp_geometry_cache:
+            value = self._compute_grasp_geometry(entity)
+            self._grasp_geometry_cache[key] = copy.deepcopy(value)
+            if len(self._grasp_geometry_cache) > 64:
+                self._grasp_geometry_cache.pop(next(iter(self._grasp_geometry_cache)))
+        return copy.deepcopy(self._grasp_geometry_cache[key])
+
+    def _compute_grasp_geometry(self, entity):
         """Reuse r9 proposals, screening the entire actual smooth approach."""
         from robots.libero.v5_grasp_route import sample_unified_grasps
 
@@ -1095,9 +1131,9 @@ class MeasuredSkillAdapter:
                 return self._surface_contact_plan(entity, points)
             # Do not build/subtract full-resolution clouds for surfaces whose
             # measured flanks already rule out every grasp (e.g. the table).
-            screen = self._cloud_and_ik(entity.id, contact=True)
+            screen = None if self.lazy_planning_v1 else self._cloud_and_ik(entity.id, contact=True)
             from scipy.spatial import cKDTree
-            obstacle_tree = cKDTree(screen.points) if len(screen.points) else None
+            obstacle_tree = cKDTree(screen.points) if screen is not None and len(screen.points) else None
             for row in proposals:
                 clearance = min(float(obstacle_tree.query(row['xyz'])[0]), .2) if obstacle_tree else .2
                 row['score'] += (clearance-row.get('clearance_m', clearance))/.2
@@ -1122,6 +1158,12 @@ class MeasuredSkillAdapter:
                     continue
                 if chosen is not None:
                     row['route_status'] = 'not_screened_lower_rank'
+                    continue
+                if self.lazy_planning_v1:
+                    # Publish the measured opposing-contact proposal. Full
+                    # approach/closure screening belongs to selected actions.
+                    chosen = row
+                    row['route_status'] = 'deferred_until_selected'
                     continue
                 route = [{'xyz_m': w['xyz'], 'quat_xyzw': w['body_quat_xyzw']} for w in row['route']]
                 _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(route)
@@ -1276,8 +1318,12 @@ class MeasuredSkillAdapter:
                             'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
         choices.sort(key=lambda item: (abs(item['normal_xyz'][2]) if horizontal else 0.,
             not item['local_normal'], item['patch_index'], item['wrist_change_rad'], item['yaw_deg']))
-        screen = self._cloud_and_ik(entity.id, contact=True)
+        screen = None if self.lazy_planning_v1 else self._cloud_and_ik(entity.id, contact=True)
         def screened(option):
+            if self.lazy_planning_v1:
+                option['screen'] = {'passed':True, 'reason':'deferred_until_selected',
+                    'contact_joint_margin_rad':None, 'route_joint_margin_rad':None}
+                return True
             if option.get('screen') is not None:
                 return option['screen']['passed']
             if option.get('closure'):
@@ -1434,6 +1480,8 @@ class MeasuredSkillAdapter:
         same geometric alternatives for every handle, retaining the existing
         collision margin, contact exceptions and numerical IK checks.
         """
+        if self.lazy_planning_v1:
+            return plan
         robot = measured_robot(self.p)
         contact = np.asarray(plan['xyz_m'])
         normal = np.asarray(plan['approach_xyz_m'])-contact
@@ -1656,7 +1704,7 @@ class MeasuredSkillAdapter:
             quat = (Rotation.from_quat(quat)*Rotation.from_euler("z", parameters["angle_deg"], degrees=True)).as_quat().tolist()
         return [{"xyz_m": point.tolist(), "quat_xyzw": quat}]
 
-    def _candidate(self, skill, parameters, *, screen_options=True):
+    def _candidate(self, skill, parameters, *, screen_options=True, complete=False):
         cid = hashlib.sha256(identity({"skill": skill, "parameters": parameters}).encode()).hexdigest()[:16]
         key = parameters.get("anchor_id", parameters.get("target_id"))
         if key is None and skill in {'nudge', 'rotate_wrist'}:
@@ -1693,15 +1741,35 @@ class MeasuredSkillAdapter:
                     'expected_receipt': expected_receipt(self, skill, parameters)}
             contact = skill in {"descend", "lower", "nudge"} or (skill in {"lift", "rotate_wrist"} and self.active is not None)
             motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=contact), self.config)
-            trajectory, _, _, evidence = motion.prepare(route)
+            if self.lazy_planning_v1 and not complete:
+                robot = measured_robot(self.p)
+                evidence = motion.screen.endpoint_screen(route, robot)
+                position = np.asarray(robot['eef_xyz_m'])
+                rotation = Rotation.from_quat(robot['eef_quat_xyzw'])
+                duration = 0.
+                for waypoint in route:
+                    distance = float(np.linalg.norm(np.asarray(waypoint['xyz_m'])-position))
+                    angle = float((Rotation.from_quat(waypoint['quat_xyzw'])*rotation.inv()).magnitude())
+                    duration += max(distance/self.config.translation_speed_m_s,
+                        (6*distance/self.config.translation_acceleration_m_s2)**.5,
+                        (60*distance/self.config.translation_jerk_m_s3)**(1/3),
+                        angle/self.config.rotation_speed_rad_s,
+                        (6*angle/self.config.rotation_acceleration_rad_s2)**.5,
+                        (60*angle/self.config.rotation_jerk_rad_s3)**(1/3))
+                    position = np.asarray(waypoint['xyz_m'])
+                    rotation = Rotation.from_quat(waypoint['quat_xyzw'])
+            else:
+                trajectory, _, _, evidence = motion.prepare(route)
+                duration = trajectory.duration
             if not evidence['passed']:
                 self.candidate_diagnostics.append({'candidate_id': cid, 'skill': skill, 'parameters': parameters,
                     **{field: evidence[field] for field in ('reason', 'at', 'counts', 'target_counts',
                         'path_min_clearance_m', 'public_nearby_points', 'payload_point', 'obstacle_point',
                         'public_scene_collision_points', 'public_target_collision_points') if field in evidence}})
             consequence.update({field: evidence[field] for field in ("path_min_clearance_m", "collision", "ik_reachable")})
-            consequence["screen_scope"] = "contact_selected_surface" if contact else "hand_mesh_observed_space"
-            consequence["expected_steps"] = math.ceil(trajectory.duration*self.config.hz)
+            consequence["screen_scope"] = ("endpoint_ik_coarse_geometry" if self.lazy_planning_v1 and not complete
+                else "contact_selected_surface" if contact else "hand_mesh_observed_space")
+            consequence["expected_steps"] = math.ceil(duration*self.config.hz)
         elif skill in {"release", "set_gripper"}:
             consequence.update(expected_steps=15, expected_gripper_opening_m=(.08 if skill == "release" or parameters.get("mode") == "open" else 0.))
         history = None
@@ -2147,7 +2215,8 @@ class MeasuredSkillAdapter:
         prediction = PublicPrefixPrediction(self, request)
         plan = []
         for original in selected(request, decision):
-            candidate = prediction.candidate(original)
+            candidate = (prediction.candidate(original, complete=True) if self.lazy_planning_v1
+                else prediction.candidate(original))
             if candidate is None:
                 candidate = copy.deepcopy(original)
             plan.append({'prefix': list(prediction.prefix), 'candidate': candidate,

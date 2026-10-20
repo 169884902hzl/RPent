@@ -20,6 +20,8 @@ LEGALITY_VERSION = "public-request-legal/2"
 def compact_candidate(candidate: dict) -> dict:
     """Keep a short current-prefix blocker without deleting a future action."""
     effect = candidate['consequences']
+    if effect['screen_scope'] == 'endpoint_ik_coarse_geometry':
+        return candidate  # Preserve the cheaper screen's explicit measurement scope.
     if effect['collision'] is not True and effect['ik_reachable'] is not False:
         return candidate
     return {key: candidate[key] for key in ('id', 'skill', 'parameters', 'recent_failures', 'last_failure')} | {

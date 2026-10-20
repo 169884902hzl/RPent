@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import math
 
 import numpy as np
@@ -34,6 +35,7 @@ class PublicRouteScreen:
         self.contact_allowed = contact_allowed
         self.payload = np.asarray(payload_local if payload_local is not None else [], float).reshape(-1, 3)
         self._pose_geometry_cache = {}
+        self._endpoint_ik_cache = {}
         self.radius = max(np.linalg.norm(np.maximum(np.abs(b["lower"]), np.abs(b["upper"])))
                           for b in geometry["boxes"])+.08
         if len(self.payload):
@@ -71,6 +73,34 @@ class PublicRouteScreen:
         current = copy.copy(self)
         current.ik = self.ik.with_measured_robot(robot)
         return current
+
+    def endpoint_screen(self, route, robot):
+        """Screen an endpoint without certifying its connecting trajectory.
+
+        A fresh IK solver starts from the measured joints for every endpoint.
+        Neither a preceding candidate's warm start nor a full route is used.
+        The exact observed hand/payload geometry is checked only at the end;
+        a clear endpoint leaves the connecting path's collision value unknown.
+        """
+        result = dict(collision=None, ik_reachable=None, path_min_clearance_m=None,
+            screen_scope='endpoint_ik_coarse_geometry', passed=False)
+        if not route or self.tree is None or self.ik is None:
+            return {**result, 'reason':'public_screen_inputs_missing'}
+        pose = route[-1]
+        key = (tuple(pose['xyz_m']),tuple(pose['quat_xyzw']),json.dumps(robot,sort_keys=True))
+        if key not in self._endpoint_ik_cache:
+            solver = self.ik.with_measured_robot(robot)
+            solver.warm_start = False
+            self._endpoint_ik_cache[key] = solver.check(pose['xyz_m'], pose['quat_xyzw'])
+        ik = self._endpoint_ik_cache[key]
+        result['ik_reachable'] = bool(ik['solution_found'])
+        result['endpoint_ik'] = ik
+        if not result['ik_reachable']:
+            return {**result, 'reason':'endpoint_numerical_ik_not_found'}
+        geometry = self._geometry_at(pose)
+        if not geometry['passed']:
+            return {**result, 'collision':True, 'reason':geometry['reason']}
+        return {**result, 'passed':True, 'reason':'endpoint_only_screen_passed'}
 
     def _halfspace_distance(self, local, box):
         shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2

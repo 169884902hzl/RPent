@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:robot-decider:bounded-skills:4",
+  "$id": "urn:robot-decider:bounded-skills:5",
   "title": "Robot-independent bounded skill request, selection and receipt",
   "oneOf": [
     {
@@ -975,7 +975,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/4"
+          "const": "bounded-skills/5"
         },
         "kind": {
           "const": "receipt"
@@ -1105,7 +1105,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/4"
+          "const": "bounded-skills/5"
         },
         "kind": {
           "const": "request"
@@ -1219,7 +1219,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/4"
+          "const": "bounded-skills/5"
         },
         "kind": {
           "const": "decision"
@@ -1297,7 +1297,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/4"
+          "const": "bounded-skills/5"
         },
         "kind": {
           "const": "prefix_context"
@@ -1421,7 +1421,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/4"
+          "const": "bounded-skills/5"
         },
         "kind": {
           "const": "oracle_labels"
@@ -1500,7 +1500,8 @@
             "nonmotion",
             "contact_selected_surface",
             "unmeasured",
-            "conditional_on_prefix"
+            "conditional_on_prefix",
+            "endpoint_ik_coarse_geometry"
           ]
         },
         "evidence_ids": {

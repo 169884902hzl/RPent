@@ -8,6 +8,28 @@ from scipy.spatial.transform import Rotation
 from robots.libero.bounded_screen import PublicRouteScreen
 
 
+def test_endpoint_screen_leaves_an_obstructed_connecting_path_unknown():
+    geometry = {'boxes':[{'name':'palm','lower':[-.01]*3,'upper':[.01]*3}]}
+    made = []
+    def solver(robot):
+        result = SimpleNamespace(check=lambda *args:{'solution_found':True})
+        made.append(result)
+        return result
+    screen = PublicRouteScreen([[.1,0.,1.]], geometry,
+        SimpleNamespace(with_measured_robot=solver,check=lambda *args:{'solution_found':True}))
+    route = [{'xyz_m':[0.,0.,1.],'quat_xyzw':[0.,0.,0.,1.]},
+             {'xyz_m':[.2,0.,1.],'quat_xyzw':[0.,0.,0.,1.]}]
+    robot = {'joint_positions_rad':[0.]*7}
+    cheap = screen.endpoint_screen(route,robot)
+    assert cheap['passed'] and cheap['ik_reachable'] is True
+    assert cheap['collision'] is None and cheap['path_min_clearance_m'] is None
+    assert screen(route)['collision'] is True
+    screen.endpoint_screen(list(reversed(route)),robot)
+    assert screen.endpoint_screen(route,robot)==cheap
+    assert len(made)==2 and made[0] is not made[1]
+    assert all(s.warm_start is False for s in made)
+
+
 def test_current_joint_seed_keeps_captured_scene_payload_and_margin_evidence():
     geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
     new_ik = SimpleNamespace(check=lambda *args: {'solution_found': True})

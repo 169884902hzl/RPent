@@ -47,6 +47,45 @@ def decision(request, ids):
             "observation_id": request["observation_id"], "candidate_ids": ids}
 
 
+def test_lazy_catalog_skips_smooth_plans_but_selected_collision_returns_receipt(adapter, monkeypatch):
+    from robots.libero.bounded_motion import SmoothMotion
+
+    adapter.lazy_planning_v1 = True
+    screen = adapter._cloud_and_ik()
+    screen.endpoint_screen = lambda *args:dict(passed=True,collision=None,ik_reachable=True,
+        path_min_clearance_m=None,reason='endpoint_only_screen_passed')
+    monkeypatch.setattr(SmoothMotion,'prepare',lambda *a,**k:pytest.fail('catalog planned a full route'))
+    request = adapter.request(k=1)
+    chosen = next(c for c in request['candidates']if c['skill']=='move_to')
+    assert chosen['consequences']['screen_scope']=='endpoint_ik_coarse_geometry'
+    assert chosen['consequences']['collision'] is None
+    def blocked(*args,**kwargs):
+        return SimpleNamespace(duration=1.),None,None,dict(passed=False,collision=True,
+            ik_reachable=None,path_min_clearance_m=0.,reason='measured_sweep_collision')
+    monkeypatch.setattr(SmoothMotion,'prepare',blocked)
+    receipts=adapter.execute(request,decision(request,[chosen['id']]))
+    assert receipts[0]['outcome']=='failure' and receipts[0]['steps_used']==0
+    assert not adapter.p.actions
+
+
+def test_identical_grasp_measurement_cache_isolated_and_invalidated_by_cloud(adapter,monkeypatch):
+    adapter.lazy_planning_v1=True
+    adapter.scene.measurement_clouds['e1']=np.arange(120,dtype=float).reshape(-1,3)
+    calls=[]
+    def fit(entity):
+        calls.append(entity.id)
+        return {'xyz_m':[1.,2.,3.]}
+    monkeypatch.setattr(adapter,'_compute_grasp_geometry',fit)
+    entity=adapter.scene.entities['e1']
+    first=MeasuredSkillAdapter.grasp_geometry(adapter,entity)
+    first['xyz_m'][0]=99.
+    assert MeasuredSkillAdapter.grasp_geometry(adapter,entity)['xyz_m'][0]==1.
+    assert calls==['e1']
+    adapter.scene.measurement_clouds['e1'][0,0]+=.001
+    MeasuredSkillAdapter.grasp_geometry(adapter,entity)
+    assert calls==['e1','e1']
+
+
 def test_vla_prompt_ignores_only_tracking_remnants_absent_from_public_anchors(adapter):
     from dataclasses import replace
 

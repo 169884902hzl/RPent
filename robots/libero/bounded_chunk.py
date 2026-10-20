@@ -197,10 +197,11 @@ class PublicPrefixPrediction:
         self.screens[cache_key] = result
         return result
 
-    def candidate(self, candidate):
+    def candidate(self, candidate, *, complete=False):
         """Return consequences conditioned on this exact ordered prefix."""
         self.checking_skill = candidate['skill']
-        result = self.adapter._candidate(candidate['skill'], candidate['parameters'])
+        options = {'complete': True} if complete and getattr(self.adapter, 'lazy_planning_v1', False) else {}
+        result = self.adapter._candidate(candidate['skill'], candidate['parameters'], **options)
         if result is not None:
             result['recent_failures'] = candidate['recent_failures']
             result['last_failure'] = candidate['last_failure']
