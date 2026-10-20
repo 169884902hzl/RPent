@@ -11,6 +11,57 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+def test_neutral_ids_extend_after_long_refresh_and_do_not_recycle_removed_tracks():
+    import copy
+    import random
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+
+    state = SimpleNamespace(load=lambda _: {'extrinsic_cam2world': np.eye(4)})
+    scene = MeasuredScene(SimpleNamespace(_state=state), None, 19)
+    original = [f'e{i}' for i in range(1, 129)]
+    random.Random(19).shuffle(original)
+    assert [scene.new_entity_id() for _ in range(128)] == list(reversed(original))
+    assert scene.new_entity_id() == 'e129'
+    scene.entities.clear()
+    restored = copy.deepcopy(scene)
+    assert restored.new_entity_id() == 'e130'
+    assert scene.new_entity_id() == 'e130'
+    del restored._entity_id_high_water
+    restored.entities['e180'] = SimpleNamespace()
+    assert restored.new_entity_id() == 'e181'
+
+
+def test_fixture_and_instruction_region_refresh_continue_after_id_pool_exhaustion(tmp_path, monkeypatch):
+    import numpy as np
+    from robots.libero import v5_fixture_parts
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+
+    def save(name, points, step):
+        np.savez_compressed(tmp_path/name, points)
+        return tmp_path/name
+    state = SimpleNamespace(latest_step=0, save=save, artifact_path=lambda name,step:tmp_path/name,
+        load=lambda _: {'extrinsic_cam2world': np.eye(4)})
+    scene = MeasuredScene(SimpleNamespace(_state=state), None, 0, furniture_parts_v1=True)
+    scene.instruction = 'put the bowl to the left of the plate'
+    scene._ids.clear()
+    parent = Entity('e1', 'microwave', (0.,0.,1.), (-.1,-.1,.9), (.1,.1,1.1))
+    plate = Entity('e2', 'plate', (.3,0.,.9), (.25,-.05,.9), (.35,.05,.91))
+    scene.entities = {e.id:e for e in (parent, plate)}
+    world = np.full((6,6,3), (.01,.02,1.))
+    scene.measurement_clouds[parent.id] = world.reshape(-1,3)
+    monkeypatch.setattr(v5_fixture_parts, 'fixture_parts', lambda *a, **kw: [{
+        'name':'microwave door', 'xyz':parent.xyz, 'lower':parent.lower, 'upper':parent.upper}])
+    scene.refresh_fixture_parts(world, {parent.id:np.ones((6,6), bool)})
+    scene.refresh_instruction_regions()
+    ids = set(scene.entities)
+    assert 'e129' in ids and 'e130' in ids
+    scene.refresh_fixture_parts(world, {parent.id:np.ones((6,6), bool)})
+    scene.refresh_instruction_regions()
+    assert set(scene.entities) == ids
+
+
 @pytest.mark.parametrize("name,profile", [
     ("bowl", "C"), ("wine bottle", "C"), ("ketchup", "C"),
     ("cream cheese", "B"), ("red coffee mug", "B"),

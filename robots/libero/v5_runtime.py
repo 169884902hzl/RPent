@@ -249,6 +249,7 @@ class MeasuredScene:
         self.measurement_clouds_by_view: dict[str, dict[str, dict]] = {}
         self.rejected_fixture_measurements: list[dict] = []
         self._ids = [f"e{i}" for i in range(1, 129)]
+        self._entity_id_high_water = 128
         random.Random(seed).shuffle(self._ids)
         meta = toolkit._state.load("agentview_metadata.json")
         rotation = np.asarray(meta["extrinsic_cam2world"], dtype=float)[:3, :3]
@@ -261,6 +262,18 @@ class MeasuredScene:
                 raise ValueError("camera cannot define a planar relation axis")
             axes.append(tuple(float(round(x / norm, 6)) for x in axis))
         self.view_axes = tuple(axes)
+
+    def new_entity_id(self) -> str:
+        """Allocate a neutral episode identity without recycling stale tracks."""
+        if self._ids:
+            return self._ids.pop()
+        # Older saved scenes contain only the original shuffled pool. Keep
+        # its sequence, then extend monotonically even after tracks merge.
+        occupied = [int(key[1:]) for key in self.entities
+                    if key.startswith('e') and key[1:].isdigit()]
+        high = max([getattr(self, '_entity_id_high_water', 128), *occupied]) + 1
+        self._entity_id_high_water = high
+        return f'e{high}'
 
     def cache_independent_views(self, entity: Entity, clouds: dict[str, np.ndarray]) -> None:
         """Keep camera-specific measured points before fusion changes bounds."""
@@ -754,9 +767,7 @@ class MeasuredScene:
                         self.cache_independent_views(self.entities[existing.id], measured_views[xyz])
                         instance_masks[existing.id] = mask
                         continue
-                    if not self._ids:
-                        raise ValueError("episode exhausted neutral ID pool")
-                    eid = self._ids.pop()
+                    eid = self.new_entity_id()
                     self.entities[eid] = Entity(
                         eid, name, xyz, lower, upper, source_step=state.latest_step,
                         geometry="shape_prior_height" if measured_evidence[xyz].get("shape_completion", {}).get("accepted") else None,
@@ -1076,7 +1087,7 @@ class MeasuredScene:
             for measured in parts:
                 old = next((e for e in self.entities.values()
                             if e.name == measured["name"] and e.part_of == parent.id), None)
-                eid = old.id if old else self._ids.pop()
+                eid = old.id if old else self.new_entity_id()
                 self.entities[eid] = Entity(eid, **measured, part_of=parent.id,
                                             source_step=source_step)
                 self.measurement_clouds_by_view.pop(eid, None)
@@ -1400,7 +1411,7 @@ class MeasuredScene:
             xyz[2] = min(support)
             name = region_name(direction, anchor_kind)
             old = next((e for e in self.entities.values() if e.name == name), None)
-            eid = old.id if old is not None else self._ids.pop()
+            eid = old.id if old is not None else self.new_entity_id()
             lower, upper = xyz - (0.04, 0.04, 0), xyz + (0.04, 0.04, 0)
             self.entities[eid] = Entity(eid, name, tuple(xyz), tuple(lower), tuple(upper), source_step=anchor.source_step)
 
