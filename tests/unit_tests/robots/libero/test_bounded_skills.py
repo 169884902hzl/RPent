@@ -481,6 +481,37 @@ def test_payload_prompt_uses_owned_surface_without_carving_its_bounds(adapter, m
     assert evidence['reason'] == 'no_current_instance_depth_seed'
 
 
+@pytest.mark.parametrize('seed_kind', ['current', 'stale_pose', 'filtered_robot'])
+def test_payload_point_recovery_after_text_loss_needs_exact_current_depth(adapter, monkeypatch, seed_kind):
+    y, x = np.mgrid[:5, :9]
+    world = np.stack([.1+x*.001, .1+y*.001, np.full(x.shape, .9)], axis=-1)
+    world[:, 7:, 2] += .02
+    owned = (x >= 1) & (x <= 3) & (y >= 1) & (y <= 3)
+    current = world[owned].copy()
+    if seed_kind == 'stale_pose':
+        current[:, 2] += .001
+    if seed_kind == 'filtered_robot':
+        filtered = world.copy()
+        filtered[owned] = np.nan
+        adapter._self_filtered_world = lambda _: filtered
+    calls = []
+    adapter.scene.rpc = SimpleNamespace(call=lambda *a, **kw: calls.append(kw) or {})
+    adapter.scene.calls = 0
+    adapter.ex.toolkit._state.load_bytes = lambda _: b'current-public-image'
+    monkeypatch.setattr('rpent.robots.components.sam3_client.Sam3Client._decode_result',
+        lambda _: SimpleNamespace(found=True, mask=np.ones(x.shape, bool), score=.96, reason=''))
+    points, evidence = adapter._guided_payload_pixels(
+        world, None, 'wrist', adapter.scene.entities['e1'], current)
+    assert evidence['seed_source'] == 'exact_current_co_moving_rgbd_pixels'
+    if seed_kind == 'current':
+        assert calls[0]['kwargs']['point'] == [2, 2]
+        np.testing.assert_array_equal(points, world[x < 7])
+        assert evidence['depth_connected_pixels_outside_prompt_extent'] > 0
+    else:
+        assert not calls and len(points) == 0
+        assert evidence['reason'] == 'no_current_instance_depth_seed'
+
+
 @pytest.mark.parametrize('mode', ['connected', 'depth_gap', 'robot_gap'])
 def test_guided_mask_can_measure_a_new_tail_but_cannot_bridge_an_obstacle(adapter, monkeypatch, mode):
     y, x = np.mgrid[:5, :7]

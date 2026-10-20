@@ -744,7 +744,7 @@ class MeasuredSkillAdapter:
             'camera': camera, 'capture_step': self.ex.toolkit._state.latest_step,
             'private_pose_used': False, 'member_pixels': 0}
         rpc = getattr(self.scene, 'rpc', None)
-        if rpc is None or semantic_mask is None:
+        if rpc is None:
             return empty, {**evidence, 'reason': 'current_mask_or_segment_service_unavailable'}
         current = np.asarray(current_points).reshape(-1, 3)
         current = current[np.isfinite(current).all(axis=1)]
@@ -756,7 +756,23 @@ class MeasuredSkillAdapter:
         lower, upper = current.min(0), current.max(0)
         valid = (np.isfinite(world).all(axis=2)
             & (world >= lower).all(axis=2) & (world <= upper).all(axis=2))
-        interior = np.asarray(semantic_mask, bool) & valid
+        if semantic_mask is None:
+            from scipy.spatial import cKDTree
+
+            # Text recall can disappear while temporal RGB-D tracking still
+            # owns current pixels. Only those exact, self-filtered pixels
+            # may seed point SAM; a transported pose or extent owns none.
+            filtered = self._self_filtered_world(world)
+            flat = filtered.reshape(-1, 3)
+            ids = np.flatnonzero(valid.reshape(-1) & np.isfinite(flat).all(axis=1))
+            matched = cKDTree(current).query(flat[ids],
+                distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+            interior = np.zeros(world.shape[:2], bool)
+            interior.flat[ids[matched]] = True
+            evidence['seed_source'] = 'exact_current_co_moving_rgbd_pixels'
+        else:
+            interior = np.asarray(semantic_mask, bool) & valid
+            evidence['seed_source'] = 'current_semantic_mask_and_depth'
         if not interior.any():
             return empty, {**evidence, 'reason': 'no_current_instance_depth_seed'}
         point = list(map(int, np.unravel_index(
