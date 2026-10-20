@@ -1,3 +1,41 @@
+## 最新监测与profile
+
+唯一派发器现在PID3568107（3524921已停），代码cb103385；远端dispatcher_d2_accounted_20261020.py SHA04f7fbe725127ead2438ceb4c7cf9d724765c7563abaebbdbe4e93c1e84c794a。每分钟同时sacct/squeue、worker错误检测；registry可恢复，不重复提交。receipt reports/repaired_D2_dispatch_monitor_r2_20261020.json，log仍monitor_repaired_D2_and_original_20261020.log。当前四卡原版R，原版throttle3，D2无GPU任务已提交，等首个原版片释放。
+Profile session96417/step10672.6已闭合0；首次D2空间t1的request约565.9s采样、grasp_geometry543.8、SmoothMotion.prepare517.1、screen427.9、geometry232.6、IK133.7，累计互相包含。样本命中不是调用次数。与未采样startup的首π输入和动作字节全部相同。完整前15项reports/D2_initial_request_profile_20261020.json；未改候选内容/顺序或规划源码。实际startup621.16s相对原544.64包含py-spy开销，不报成性能退步或提速。
+
+## 最新闭合与调度（覆盖下文旧PID/待办）
+
+150六例已全部闭合，完整π输入/动作与748基线6/6一致；6/6停稳和后继请求。两个碗carry/release原生成功；奶油奶酪改为carry189步+observe23步，追加同源保存端点续接为lower43步+release5步，两次决策260步、原生成功；至此三个π真抓住的例子都由bounded技能续接成功。其余三条原π抓取失败保留；17402000后继改为set_gripper成功，t3仍0步扫掠碰撞。紧凑证据reports/binding_handoff_15068167_closed_20261020.json、binding_handoff_inputs_CPU_20261020_closed.json。session42934/56963都应闭合，先poll确认。
+
+D2两例真实startup10672.4 COMPLETED0:0、2个首π物理请求（544.64s；spatial_swap_t1初始规划约8分钟是新吞吐疑点，SAM只有22次共6.40秒）。已启动只读py-spy49Hz复现此例的首次规划：step10672.6/session96417，results/bounded_skills/D2_initial_planning_profile_20261020/15068167/profiled_startup，raw initial_request.speedscope.json完成后才写，profile.log有采样状态。py-spy0.4.2在本地uvx隔离cache安装，复制二进制到远端py-spy-owned-0.4.2；未改共享环境。只用原版父分配已有SAM/π，无额外GPU。运行中不改其登记helper脚本。
+
+当前唯一全局派发器PID3524921；旧3171126已终止。代码commit09483422（普通推送），现HEAD1f69d857已推送（两个诊断脚本）；源码仍15068167不混。dispatcher_d2_20261020.py SHA23eb3270cb92fcd83cd53c57f05af8510cfcf224c886a5cefdd45e271b887582，记录reports/repaired_D2_dispatch_monitor_20261020.json；log reports/monitor_repaired_D2_and_original_20261020.log。它已验证D2同源startup和4项CPU预检；原版10670四R五PD时将原版throttle设3，等真实空位逐片提交D2；原版仍PD时最多1个D2，原版无PD后用满余卡。D2四个batch各10例、N8；未来提交逐行保存在D2_repaired_hybrid_20261020/15068167/preparation/dispatch.jsonl。现在还没提交D2 GPU作业，因为四张卡仍占满；不能说已在跑。C2 GPU排队则cap3，否则4；最多80CPU/560GB。不碰其他项目、node01、held。
+
+原版10670 f909仍独立运行，最新r5：71注册状态、15worker闭合，94条π接口闭合，其中88真执行78成功、6预备碰撞无推理。开微波炉27/27，关微波炉16/25，推盘27/27，杯子pick8/12、on0/3（无π）；这些是中间分支、不是71/220整局结果，也不是确认批。无新worker程序错误。
+
+62项CPU测试（共享launcher/调度、hybrid诊断/修复）通过；聚焦Ruff和py_compile通过。尚未提交主报告/进度/紧凑JSON/pi资产JSON，按文件add，不动无关dirty。下一步先收profile函数采样；继续汇总原版、盯dispatcher首次D2提交/首个物理请求；D2软件错误立即日志修复，物理失败保留。队列未清，不以提交或compaction结束。
+
+## 当前续接：15068167（优先于下文旧状态）
+
+- 用户10/19 10:30任务：修π交还、停止规则、source_binding_missing归因、耗时、重提D2、原版71状态call_vla三分叉；无训练。队列未清不能结束回合。
+- HEAD1506816747489926709bc7fc49a0e730fd5da354已普通推送。快照source_bounded_subtask_binding_20261020_15068167，归档SHA1bff3a649f05bebf1808cfd25db474072bf5e5b21ec5c976161e1eafd19f7945。只补scripts/probe_bounded_hybrid_d2.bind_subtask的既有公开绑定记忆，43项相关CPU通过。首次新增测试fixture漏view_axes已补，未改判据。
+- c023六例6/6停稳、6/6后继请求；两碗carry/release原生成功。奶油奶酪腕扫23步成功；再从保存端点跑4个bounded决策、92步仍4次observe。路线碰撞/IK均通过，实际问题是诊断入口未存源ID，oracle缓存同类误检使source=None。本次150修它，不为PRO写规则。
+- 150六例实际startup10671.10 COMPLETED0:0、2个首π物理请求；完整10671.11进行中，工具session42934，输出results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671。先poll它、读worker_summary，再与748/c023比完整π输入动作。
+- startup10671.9调用了live旧helper写死standard，两个worker0物理失败退出1；已用不可变source150里的helper在新目录startup_owned10671_r2重试通过。后续一律指向快照helper，不调用ROOT的旧同名文件。
+- 原版10670 f909源四R五PD、71状态，唯一资源监测PID3171126；reports/monitor_original_id_repaired_20261020.log。最新已保存r4：84条接口闭合，78真执行71成功，6无推理预备碰撞；6闭合worker。新持物/绑定代码不在此源，分开报。
+- D2完整新manifest c9551b5df910fc77598ec38b40c8c26a8784433b37df940de5c92f90a0e76656，results/bounded_skills/D2_repaired_hybrid_20261020/15068167/preparation；40例、4个轮转batch、N8。CPU5项通过；真实startup10672.4进行中session15756。它复用独立冻结helper launcher_owned_d2_20261020.py（SHA56759911068e76ffe060493c77a8f9b9d2425d95980098b92497b679393a94df），只扩原复用helper的完整D2 admission，55项现有CPU通过。完整数组未提交，先让150六例续接闭合。不能同时起两个各自cap4的控制器。
+- 偏离故障注入r3（脚本probe_vla_deviation_guard3d_20261020.py）10672.3 COMPLETED0:0，60.22cm触发原60cm left_target_region，13步停稳，后继请求；仅第一块真实π，后17块人工OSC注入，policy_success=null，永久不进训练/history/memory/策略分数。r2仅33.3cm未触发，退出1记录保留；r1身份适配漏接未进π也保留。不要改r3已登记脚本。
+- c023奶油续接脚本probe_saved_handoff_continuation_20261020.py也已闭合，session75509退出0；输出saved_handoff_continuation_20261020/c0233712_cheese；其中4次观察的失败证据是150修复依据。
+- 未提交：上述helper扩展、两诊断脚本与紧凑证据、主报告/进度/pi资产JSON；按文件add、不要add-A。其他dirty全部保留。
+- 要紧的后续：150六例若奶油仍不能carry，沿新阻塞点修；通过后同源重提D2完整40。先实现一个全局资源控制器或原版释放后再启第二数组，node02合计≤4（C2有GPU排队≤3）、≤80CPU/600GB，nice500，保护c5/c6/rf和held。原版新闭合结果增量汇总，不以提交或compaction结束。
+- OpenPI停止对照12条已闭合，55/57步成功；第三种子45/120/220均无v3成功窗口。三处绑定均公开同类误检歧义，仅CPU通用恢复验证；不能说物理消歧已修。π权重/metadata完整hash已匹配RLinf130-fullshot，训练含40+90，但无逐回合manifest。
+
+以下保留分阶段历史，旧源/PID/待办不代表当前：
+
+最新物理续接：af478781f7f14a9cb07964dae7944dc449872a96已普通推送。持物文字分割丢失时，由精确当前随手运动深度像素恢复点SAM；283项CPU通过。164保存公开缓存+同一图像2次现有SAM请求，+1mm/+1cm几何旧false→新true（非物理成功）。源/public/home/sunyihan/rpent_libero_eval/source_bounded_guided_handoff_20261020_af478781，归档49940b68dc07d6bd40504248816a8a997ca9e354b51674d1ab711f0dccdca5ba，manifest1dd17f9a382570a52d943f9f4e9a1b3600311c916c55db28e9b8a4ae8aa31619。两例同launcher真实startup10671.1 COMPLETED0:0，两物理请求通过；六同状态/种子完整重放在step10671.2（session67409）、results/bounded_skills/guided_handoff_20261020/af478781/full_owned10671，N6，共用原版10670_0已有SAM/π，没有新增GPU。先刷新本session、原版10670与PID3171126监测；继续，不等队列就结束。
+原版10670仍f909源、四R五PD，与新guided源分开汇总。CPU中间汇总r1没有闭合worker，s4(on)/s7(pick)各三次是预备位测量碰撞0步、π推理0次；不能说π失败。s4拒绝点在路线早期仅移动约80nm，不能误认整个准备目标已到位；s7拒绝在3.5cm移动处，暂未改准备规则。当前只新改持物mask恢复，不同时叠加新停止/预备规则。旧杯子三成功是59源、原版新分母不混入。所有D2仅诊断不入训练；确认状态永久排除。
+COORDINATION最新notice reports/guided_handoff_notice_20261020.json，offset6906137484，SHA5a5093e2…，已通知C1/C2测量值可能变化；旧COORDINATION巨大不能整读。
+
 当前队列：新原版10670（f9096f79，manifest082f368f…）四片R、五片PD；PID3171126监测/限流，日志reports/monitor_original_id_repaired_20261020.log。四类真实startup10644.3全部物理请求通过，169秒、4worker退出0。旧10640_0..3与10662已因已知中性ID耗尽停止，已完成和部分记录保留；owned10641_batch0随父停止，杯子三成功、自身未闭合。旧session71229退出143，属于登记的停止，不是基础设施故障。新launcher仅替换等价SAM输出入口；技能核心仅ID池扩展，执行预算、真值判据不变。
 新的CPU恢复缺口：164公开缓存中当前持物像素9629，但两视角都缺文字mask，_guided_payload_pixels因此拒绝点提示。正在验证用精确当前随手运动深度像素作为点seed，不从预测位置造像素；10项聚焦测试已通过，全相关测试session45620进行中。粗凸包遮挡6/6被精确三角面复核否定为只有1/6，未基于凸包删点；待真实SAM/后继物理复核后再登记源码。10670不含此WIP。
 

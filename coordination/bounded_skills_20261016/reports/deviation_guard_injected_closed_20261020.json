@@ -1,0 +1,38 @@
+{
+  "version": "call-vla-deviation-interface/2",
+  "source_commit": "c0233712654533fbfc3c9fdbb62b770a3782907d",
+  "plan": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/interface_deviation_guard_20261020/c0233712_r3/plan.json",
+    "sha256": "d9b0a5d9c5312d0352b88a393cb0c183c9d34e17a0d862a2538d9fb511652767"
+  },
+  "fault_injection": {
+    "predict_calls": 18,
+    "real_pi_blocks": 1,
+    "injected_blocks": 17,
+    "initial_source_xyz_m": [
+      -0.02449897024780512,
+      0.0880701057612896,
+      0.5127001106739044
+    ],
+    "real_block_controls": 5
+  },
+  "guard_passed": true,
+  "stop_reason": "left_target_region",
+  "max_public_distance_m": 0.6021779066964579,
+  "handoff": {
+    "completed": true,
+    "settled": true,
+    "steps_used": 13,
+    "reason": "osc_damped_hold"
+  },
+  "first_next_request_generated": true,
+  "trial": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/interface_deviation_guard_20261020/c0233712_r3/episode/call_vla_1/summary.json",
+    "sha256": "d84848f7817e8ce929846284728c2a0e165cf3344929be3c43045ae2233fa9ce"
+  },
+  "policy_success": null,
+  "training": false,
+  "confirmation": false,
+  "model_visible": false,
+  "scope": "one real pi block followed by explicit OSC fault injection; interface check only"
+}

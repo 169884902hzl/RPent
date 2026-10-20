@@ -109,7 +109,20 @@
       ]
     }
   ],
-  "model_weights_hash_verified": false,
-  "scope": "metadata verified; no checkpoint deserialization executed",
-  "training": false
+  "model_weights_hash_verified": true,
+  "scope": "entire local model.safetensors and metadata match fixed RLinf HF revision; dataset coverage inferred from training config plus RLinf suite definition, not a per-episode training manifest",
+  "training": false,
+  "hf_weights_reference": {
+    "repository": "RLinf/RLinf-Pi05-LIBERO-130-fullshot-SFT",
+    "revision": "6222623",
+    "path": "model.safetensors",
+    "size": 7473091464,
+    "lfs": {
+      "oid": "4d9089c941793f170b625c2ed0ac7a3aa09b6f103e52dbbc82e67301529d6683",
+      "size": 7473091464,
+      "pointerSize": 135
+    }
+  },
+  "local_model_weights_sha256": "4d9089c941793f170b625c2ed0ac7a3aa09b6f103e52dbbc82e67301529d6683",
+  "local_model_weights_path": "/public/home/sunyihan/rpent_libero_eval/assets/pi05/model.safetensors"
 }

@@ -1198,5 +1198,1657 @@
     "monitor_pid": 3171126,
     "source_archive_sha256": "4e3473d92a50a3aeacc9426f8cb9131b9c253fbf2e2bda805c1685dc2b439e98",
     "manifest_sha256": "082f368f4b85f698f96fdc8a7a36892481fccc4a9e12fa3f2e2776cfcee3273b"
+  },
+  "latest_execution_source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+  "latest_six_handoffs": {
+    "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+    "rows": [
+      {
+        "seed": 13401000,
+        "case": {
+          "suite": "libero_spatial_swap",
+          "task": 2,
+          "seed": 40
+        },
+        "worker_exit_code": 0,
+        "worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/000_libero_spatial_swap_t2_s40_handoff_r13401000/worker_summary.json",
+          "sha256": "be26a98fe5c26c1d08c30e0a305d47a3c650a426d329ae806e346fe581c1cfac"
+        },
+        "private_grasp_success": true,
+        "controls": 55,
+        "public_stop": "measured_success",
+        "handoff": {
+          "completed": true,
+          "settled": true,
+          "steps_used": 9,
+          "reason": "osc_damped_hold"
+        },
+        "next_request_generated": true,
+        "next_sim_steps": 103,
+        "next_status": "executed",
+        "next_receipts": [
+          {
+            "skill": "carry_to",
+            "outcome": "success",
+            "stop_reason": "endpoint",
+            "steps_used": 99
+          },
+          {
+            "skill": "release",
+            "outcome": "success",
+            "stop_reason": "native_success",
+            "steps_used": 4
+          }
+        ],
+        "wall_s": 341.4823963129893,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 341.4840215430595,
+          "main_thread_exclusive_s": {
+            "perception.entity_measurement": 44.535665777511895,
+            "artifact_io": 1.9013291206210852,
+            "planning.consequences": 24.027001636102796,
+            "simulation.step_render": 28.898929249029607,
+            "perception.depth": 5.386794850230217,
+            "perception.capture_io": 89.22703596716747,
+            "perception.segmentation": 136.76050549186766,
+            "vla.inference": 2.0272419210523367,
+            "execution.other": 1.3265867992304265
+          },
+          "all_threads_exclusive_s": {
+            "perception.entity_measurement": 44.535665777511895,
+            "artifact_io": 1.9013291206210852,
+            "planning.consequences": 24.027001636102796,
+            "simulation.step_render": 28.898929249029607,
+            "perception.depth": 5.386794850230217,
+            "perception.capture_io": 89.22703596716747,
+            "perception.segmentation": 136.76050549186766,
+            "vla.inference": 2.0272419210523367,
+            "execution.other": 1.3265867992304265
+          },
+          "main_thread_unattributed_s": 7.392930730246007,
+          "calls": {
+            "perception.entity_measurement:_instance_pixels": 10,
+            "perception.entity_measurement:_contact_pixels": 8,
+            "artifact_io:_record_public_geometry": 22,
+            "planning.consequences:_cloud_and_ik": 6,
+            "planning.consequences:_candidate": 1,
+            "planning.consequences:plan_chunk": 1,
+            "planning.consequences:check": 2,
+            "planning.consequences:__call__": 1,
+            "simulation.step_render:step": 66,
+            "perception.depth:_metric_depth": 232,
+            "perception.depth:_world_from_depth": 232,
+            "simulation.step_render:render_camera": 116,
+            "perception.capture_io:get_env_state": 58,
+            "perception.segmentation:call": 188,
+            "perception.entity_measurement:refresh": 58,
+            "perception.entity_measurement:_refresh_held_measurement": 58,
+            "vla.inference:predict": 11,
+            "execution.other:None": 1
+          },
+          "main_thread_exclusive_by_root_s": {
+            "execution.other": {
+              "perception.entity_measurement": 44.535665777511895,
+              "artifact_io": 1.9013291206210852,
+              "planning.consequences": 24.027001636102796,
+              "simulation.step_render": 28.898929249029607,
+              "perception.depth": 5.386794850230217,
+              "perception.capture_io": 89.22703596716747,
+              "perception.segmentation": 136.76050549186766,
+              "vla.inference": 2.0272419210523367,
+              "execution.other": 1.3265867992304265
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        }
+      },
+      {
+        "seed": 13402000,
+        "case": {
+          "suite": "libero_spatial_swap",
+          "task": 2,
+          "seed": 40
+        },
+        "worker_exit_code": 0,
+        "worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/001_libero_spatial_swap_t2_s40_handoff_r13402000/worker_summary.json",
+          "sha256": "94e10cf4351ca06780789c4a6f94163ebb2888b5a40d042f48795e5f5e73dc21"
+        },
+        "private_grasp_success": true,
+        "controls": 57,
+        "public_stop": "measured_success",
+        "handoff": {
+          "completed": true,
+          "settled": true,
+          "steps_used": 10,
+          "reason": "osc_damped_hold"
+        },
+        "next_request_generated": true,
+        "next_sim_steps": 102,
+        "next_status": "executed",
+        "next_receipts": [
+          {
+            "skill": "carry_to",
+            "outcome": "success",
+            "stop_reason": "endpoint",
+            "steps_used": 98
+          },
+          {
+            "skill": "release",
+            "outcome": "success",
+            "stop_reason": "native_success",
+            "steps_used": 4
+          }
+        ],
+        "wall_s": 350.804494951386,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 350.8062123339623,
+          "main_thread_exclusive_s": {
+            "perception.entity_measurement": 47.35840190714225,
+            "artifact_io": 1.923668832052499,
+            "planning.consequences": 24.140760411974043,
+            "simulation.step_render": 30.275138169061393,
+            "perception.depth": 6.088864149525762,
+            "perception.capture_io": 92.70910859527066,
+            "perception.segmentation": 137.61415025498718,
+            "vla.inference": 2.344604006037116,
+            "execution.other": 1.343226123135537
+          },
+          "all_threads_exclusive_s": {
+            "perception.entity_measurement": 47.35840190714225,
+            "artifact_io": 1.923668832052499,
+            "planning.consequences": 24.140760411974043,
+            "simulation.step_render": 30.275138169061393,
+            "perception.depth": 6.088864149525762,
+            "perception.capture_io": 92.70910859527066,
+            "perception.segmentation": 137.61415025498718,
+            "vla.inference": 2.344604006037116,
+            "execution.other": 1.343226123135537
+          },
+          "main_thread_unattributed_s": 7.008289884775877,
+          "calls": {
+            "perception.entity_measurement:_instance_pixels": 10,
+            "perception.entity_measurement:_contact_pixels": 8,
+            "artifact_io:_record_public_geometry": 24,
+            "planning.consequences:_cloud_and_ik": 6,
+            "planning.consequences:_candidate": 1,
+            "planning.consequences:plan_chunk": 1,
+            "planning.consequences:check": 2,
+            "planning.consequences:__call__": 1,
+            "simulation.step_render:step": 69,
+            "perception.depth:_metric_depth": 240,
+            "perception.depth:_world_from_depth": 240,
+            "simulation.step_render:render_camera": 120,
+            "perception.capture_io:get_env_state": 60,
+            "perception.segmentation:call": 194,
+            "perception.entity_measurement:refresh": 60,
+            "perception.entity_measurement:_refresh_held_measurement": 60,
+            "vla.inference:predict": 12,
+            "execution.other:None": 1
+          },
+          "main_thread_exclusive_by_root_s": {
+            "execution.other": {
+              "perception.entity_measurement": 47.35840190714225,
+              "artifact_io": 1.923668832052499,
+              "planning.consequences": 24.140760411974043,
+              "simulation.step_render": 30.275138169061393,
+              "perception.depth": 6.088864149525762,
+              "perception.capture_io": 92.70910859527066,
+              "perception.segmentation": 137.61415025498718,
+              "vla.inference": 2.344604006037116,
+              "execution.other": 1.343226123135537
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        }
+      },
+      {
+        "seed": 14401000,
+        "case": {
+          "suite": "libero_spatial_swap",
+          "task": 3,
+          "seed": 40
+        },
+        "worker_exit_code": 0,
+        "worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/002_libero_spatial_swap_t3_s40_handoff_r14401000/worker_summary.json",
+          "sha256": "e10f78e5bb5916a05b2e5ce6d7170c69516be0d6b130da472b698919d788d287"
+        },
+        "private_grasp_success": false,
+        "controls": 45,
+        "public_stop": "no_progress_blocks",
+        "handoff": {
+          "completed": true,
+          "settled": true,
+          "steps_used": 12,
+          "reason": "osc_damped_hold"
+        },
+        "next_request_generated": true,
+        "next_sim_steps": 0,
+        "next_status": "executed",
+        "next_receipts": [
+          {
+            "skill": "observe",
+            "outcome": "failure",
+            "stop_reason": "measured_sweep_collision",
+            "steps_used": 0
+          }
+        ],
+        "wall_s": 258.3484503873624,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 258.34989031404257,
+          "main_thread_exclusive_s": {
+            "perception.entity_measurement": 11.19370128121227,
+            "artifact_io": 0.8442235784605145,
+            "planning.consequences": 7.5398238599300385,
+            "simulation.step_render": 23.964169634506106,
+            "perception.depth": 4.35381680727005,
+            "perception.capture_io": 71.97420606389642,
+            "perception.segmentation": 133.9967236323282,
+            "vla.inference": 1.6447534360922873,
+            "execution.other": 0.6988082872703671
+          },
+          "all_threads_exclusive_s": {
+            "perception.entity_measurement": 11.19370128121227,
+            "artifact_io": 0.8442235784605145,
+            "planning.consequences": 7.5398238599300385,
+            "simulation.step_render": 23.964169634506106,
+            "perception.depth": 4.35381680727005,
+            "perception.capture_io": 71.97420606389642,
+            "perception.segmentation": 133.9967236323282,
+            "vla.inference": 1.6447534360922873,
+            "execution.other": 0.6988082872703671
+          },
+          "main_thread_unattributed_s": 2.139663733076304,
+          "calls": {
+            "perception.entity_measurement:_instance_pixels": 4,
+            "perception.entity_measurement:_contact_pixels": 4,
+            "artifact_io:_record_public_geometry": 9,
+            "planning.consequences:_cloud_and_ik": 3,
+            "planning.consequences:_candidate": 1,
+            "planning.consequences:plan_chunk": 1,
+            "planning.consequences:check": 2,
+            "planning.consequences:__call__": 1,
+            "simulation.step_render:step": 59,
+            "perception.depth:_metric_depth": 192,
+            "perception.depth:_world_from_depth": 192,
+            "simulation.step_render:render_camera": 96,
+            "perception.capture_io:get_env_state": 48,
+            "perception.segmentation:call": 170,
+            "perception.entity_measurement:refresh": 50,
+            "perception.entity_measurement:_refresh_held_measurement": 48,
+            "vla.inference:predict": 9,
+            "execution.other:None": 1
+          },
+          "main_thread_exclusive_by_root_s": {
+            "execution.other": {
+              "perception.entity_measurement": 11.19370128121227,
+              "artifact_io": 0.8442235784605145,
+              "planning.consequences": 7.5398238599300385,
+              "simulation.step_render": 23.964169634506106,
+              "perception.depth": 4.35381680727005,
+              "perception.capture_io": 71.97420606389642,
+              "perception.segmentation": 133.9967236323282,
+              "vla.inference": 1.6447534360922873,
+              "execution.other": 0.6988082872703671
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        }
+      },
+      {
+        "seed": 16401000,
+        "case": {
+          "suite": "libero_object_swap",
+          "task": 1,
+          "seed": 40
+        },
+        "worker_exit_code": 0,
+        "worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/003_libero_object_swap_t1_s40_handoff_r16401000/worker_summary.json",
+          "sha256": "6e3ed0b9c40f01a711fc3b0964ab3a3b33380975c86b4884abd30c06557ee8f5"
+        },
+        "private_grasp_success": true,
+        "controls": 73,
+        "public_stop": "measured_success",
+        "handoff": {
+          "completed": true,
+          "settled": true,
+          "steps_used": 11,
+          "reason": "osc_damped_hold"
+        },
+        "next_request_generated": true,
+        "next_sim_steps": 212,
+        "next_status": "executed",
+        "next_receipts": [
+          {
+            "skill": "carry_to",
+            "outcome": "success",
+            "stop_reason": "endpoint",
+            "steps_used": 189
+          },
+          {
+            "skill": "observe",
+            "outcome": "success",
+            "stop_reason": "fresh_public_views",
+            "steps_used": 23
+          }
+        ],
+        "wall_s": 472.86064097378403,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 472.86220197193325,
+          "main_thread_exclusive_s": {
+            "perception.entity_measurement": 48.06364399380982,
+            "artifact_io": 3.3202641420066357,
+            "planning.consequences": 24.24768845876679,
+            "simulation.step_render": 38.11576854484156,
+            "perception.depth": 7.687906642910093,
+            "perception.capture_io": 121.21032717358321,
+            "perception.segmentation": 220.64145346311852,
+            "vla.inference": 2.9021182931028306,
+            "execution.other": 1.7438722979277372
+          },
+          "all_threads_exclusive_s": {
+            "perception.entity_measurement": 48.06364399380982,
+            "artifact_io": 3.3202641420066357,
+            "planning.consequences": 24.24768845876679,
+            "simulation.step_render": 38.11576854484156,
+            "perception.depth": 7.687906642910093,
+            "perception.capture_io": 121.21032717358321,
+            "perception.segmentation": 220.64145346311852,
+            "vla.inference": 2.9021182931028306,
+            "execution.other": 1.7438722979277372
+          },
+          "main_thread_unattributed_s": 4.929158961866051,
+          "calls": {
+            "perception.entity_measurement:_instance_pixels": 12,
+            "perception.entity_measurement:_contact_pixels": 10,
+            "artifact_io:_record_public_geometry": 29,
+            "planning.consequences:_cloud_and_ik": 7,
+            "planning.consequences:_candidate": 1,
+            "planning.consequences:plan_chunk": 1,
+            "planning.consequences:check": 2,
+            "planning.consequences:__call__": 1,
+            "simulation.step_render:step": 86,
+            "perception.depth:_metric_depth": 304,
+            "perception.depth:_world_from_depth": 304,
+            "simulation.step_render:render_camera": 152,
+            "perception.capture_io:get_env_state": 76,
+            "perception.segmentation:call": 375,
+            "perception.entity_measurement:refresh": 80,
+            "perception.entity_measurement:_refresh_held_measurement": 76,
+            "vla.inference:predict": 15,
+            "execution.other:None": 1
+          },
+          "main_thread_exclusive_by_root_s": {
+            "execution.other": {
+              "perception.entity_measurement": 48.06364399380982,
+              "artifact_io": 3.3202641420066357,
+              "planning.consequences": 24.24768845876679,
+              "simulation.step_render": 38.11576854484156,
+              "perception.depth": 7.687906642910093,
+              "perception.capture_io": 121.21032717358321,
+              "perception.segmentation": 220.64145346311852,
+              "vla.inference": 2.9021182931028306,
+              "execution.other": 1.7438722979277372
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        }
+      },
+      {
+        "seed": 17401000,
+        "case": {
+          "suite": "libero_object_swap",
+          "task": 2,
+          "seed": 40
+        },
+        "worker_exit_code": 0,
+        "worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/004_libero_object_swap_t2_s40_handoff_r17401000/worker_summary.json",
+          "sha256": "60568b46502ec49a6c6630d5e6c63630d6414b5a290084886aca1841431017ae"
+        },
+        "private_grasp_success": false,
+        "controls": 120,
+        "public_stop": "block_budget",
+        "handoff": {
+          "completed": true,
+          "settled": true,
+          "steps_used": 7,
+          "reason": "osc_damped_hold"
+        },
+        "next_request_generated": true,
+        "next_sim_steps": 23,
+        "next_status": "executed",
+        "next_receipts": [
+          {
+            "skill": "observe",
+            "outcome": "no_effect",
+            "stop_reason": "no_measured_scene_change",
+            "steps_used": 23
+          }
+        ],
+        "wall_s": 522.3643172592856,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 522.3659310908988,
+          "main_thread_exclusive_s": {
+            "perception.entity_measurement": 19.119656315539032,
+            "artifact_io": 1.3898943541571498,
+            "planning.consequences": 5.6522004078142345,
+            "simulation.step_render": 61.98284303629771,
+            "perception.depth": 12.930819742847234,
+            "perception.capture_io": 199.33013092167675,
+            "perception.segmentation": 214.7181051489897,
+            "vla.inference": 4.554924243595451,
+            "execution.other": 0.7098969151265919
+          },
+          "all_threads_exclusive_s": {
+            "perception.entity_measurement": 19.119656315539032,
+            "artifact_io": 1.3898943541571498,
+            "planning.consequences": 5.6522004078142345,
+            "simulation.step_render": 61.98284303629771,
+            "perception.depth": 12.930819742847234,
+            "perception.capture_io": 199.33013092167675,
+            "perception.segmentation": 214.7181051489897,
+            "vla.inference": 4.554924243595451,
+            "execution.other": 0.7098969151265919
+          },
+          "main_thread_unattributed_s": 1.9774600048549473,
+          "calls": {
+            "perception.entity_measurement:_instance_pixels": 4,
+            "perception.entity_measurement:_contact_pixels": 4,
+            "artifact_io:_record_public_geometry": 9,
+            "planning.consequences:_cloud_and_ik": 3,
+            "planning.consequences:_candidate": 1,
+            "planning.consequences:plan_chunk": 1,
+            "planning.consequences:check": 2,
+            "planning.consequences:__call__": 1,
+            "simulation.step_render:step": 129,
+            "perception.depth:_metric_depth": 492,
+            "perception.depth:_world_from_depth": 492,
+            "simulation.step_render:render_camera": 246,
+            "perception.capture_io:get_env_state": 123,
+            "perception.segmentation:call": 401,
+            "perception.entity_measurement:refresh": 125,
+            "perception.entity_measurement:_refresh_held_measurement": 123,
+            "vla.inference:predict": 24,
+            "execution.other:None": 1
+          },
+          "main_thread_exclusive_by_root_s": {
+            "execution.other": {
+              "perception.entity_measurement": 19.119656315539032,
+              "artifact_io": 1.3898943541571498,
+              "planning.consequences": 5.6522004078142345,
+              "simulation.step_render": 61.98284303629771,
+              "perception.depth": 12.930819742847234,
+              "perception.capture_io": 199.33013092167675,
+              "perception.segmentation": 214.7181051489897,
+              "vla.inference": 4.554924243595451,
+              "execution.other": 0.7098969151265919
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        }
+      },
+      {
+        "seed": 17402000,
+        "case": {
+          "suite": "libero_object_swap",
+          "task": 2,
+          "seed": 40
+        },
+        "worker_exit_code": 0,
+        "worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/005_libero_object_swap_t2_s40_handoff_r17402000/worker_summary.json",
+          "sha256": "68131e1e44539df86ff02c1eeac8935d88e73c19211fd268b319b2ea19b63add"
+        },
+        "private_grasp_success": false,
+        "controls": 110,
+        "public_stop": "no_progress_blocks",
+        "handoff": {
+          "completed": true,
+          "settled": true,
+          "steps_used": 11,
+          "reason": "osc_damped_hold"
+        },
+        "next_request_generated": true,
+        "next_sim_steps": 15,
+        "next_status": "executed",
+        "next_receipts": [
+          {
+            "skill": "set_gripper",
+            "outcome": "success",
+            "stop_reason": "measured_gripper_change",
+            "steps_used": 15
+          }
+        ],
+        "wall_s": 490.6692379792221,
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 490.67076312890276,
+          "main_thread_exclusive_s": {
+            "perception.entity_measurement": 16.84768815431744,
+            "artifact_io": 1.3583425753749907,
+            "planning.consequences": 6.797999150585383,
+            "simulation.step_render": 56.65505207097158,
+            "perception.depth": 10.765231954399496,
+            "perception.capture_io": 183.69474934134632,
+            "perception.segmentation": 207.51235689874738,
+            "vla.inference": 4.414900484960526,
+            "execution.other": 0.687777653336525
+          },
+          "all_threads_exclusive_s": {
+            "perception.entity_measurement": 16.84768815431744,
+            "artifact_io": 1.3583425753749907,
+            "planning.consequences": 6.797999150585383,
+            "simulation.step_render": 56.65505207097158,
+            "perception.depth": 10.765231954399496,
+            "perception.capture_io": 183.69474934134632,
+            "perception.segmentation": 207.51235689874738,
+            "vla.inference": 4.414900484960526,
+            "execution.other": 0.687777653336525
+          },
+          "main_thread_unattributed_s": 1.9366648448631167,
+          "calls": {
+            "perception.entity_measurement:_instance_pixels": 4,
+            "perception.entity_measurement:_contact_pixels": 4,
+            "artifact_io:_record_public_geometry": 9,
+            "planning.consequences:_cloud_and_ik": 3,
+            "planning.consequences:_candidate": 1,
+            "planning.consequences:plan_chunk": 1,
+            "planning.consequences:check": 2,
+            "planning.consequences:__call__": 1,
+            "simulation.step_render:step": 123,
+            "perception.depth:_metric_depth": 452,
+            "perception.depth:_world_from_depth": 452,
+            "simulation.step_render:render_camera": 226,
+            "perception.capture_io:get_env_state": 113,
+            "perception.segmentation:call": 381,
+            "perception.entity_measurement:refresh": 115,
+            "perception.entity_measurement:_refresh_held_measurement": 113,
+            "vla.inference:predict": 22,
+            "execution.other:None": 1
+          },
+          "main_thread_exclusive_by_root_s": {
+            "execution.other": {
+              "perception.entity_measurement": 16.84768815431744,
+              "artifact_io": 1.3583425753749907,
+              "planning.consequences": 6.797999150585383,
+              "simulation.step_render": 56.65505207097158,
+              "perception.depth": 10.765231954399496,
+              "perception.capture_io": 183.69474934134632,
+              "perception.segmentation": 207.51235689874738,
+              "vla.inference": 4.414900484960526,
+              "execution.other": 0.687777653336525
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        }
+      }
+    ],
+    "cheese_followup": {
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/summary.json",
+        "sha256": "7e2c062c23a775ff7a2e0115c43ed8e6e56e339f3f44a3ddd64771a6eaccc940"
+      },
+      "result": {
+        "plan": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/plan.json",
+          "sha256": "10f16fc2583d6844386b9b38c0d687d21f8f7fc6a381dc7f4ec0c7c95be2110e"
+        },
+        "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+        "subtask": {
+          "goal_index": 0,
+          "goal": [
+            "in",
+            "cream_cheese_1",
+            "basket_1_contain_region"
+          ],
+          "source_symbol": "cream_cheese_1",
+          "id": "g0:in",
+          "mode": "in",
+          "target_symbol": "basket_1_contain_region"
+        },
+        "trial": {
+          "subtask": {
+            "goal_index": 0,
+            "goal": [
+              "in",
+              "cream_cheese_1",
+              "basket_1_contain_region"
+            ],
+            "source_symbol": "cream_cheese_1",
+            "id": "g0:in",
+            "mode": "in",
+            "target_symbol": "basket_1_contain_region"
+          },
+          "method": "self",
+          "trial_seed": 16401000,
+          "initial_physics_sha256": "870015e275d1366de1431546fd3022a17ebed2a28806eb36693f5f995fa3e070",
+          "prefix": [],
+          "initial_legacy_captured_physics_sha256": "d007aa750cfbe64fb666708b88187de4352be3f6c566600f921baf2df6f370ed",
+          "observation_restore": "captured_sensor_phase_and_buffers_v1",
+          "request_sha256": "93915d038c143220895b2cea5b05f4c48fc1576e0d53d6600529022289fa8d7f",
+          "legal": [
+            "e36f0d142490c484",
+            "1786f6b86bc8b67c",
+            "e04e58d46e5b3e44",
+            "54021981a323c862",
+            "d22f9990a9e65ccf",
+            "bf9de6ee91eca358",
+            "a06d7246e281fcc0",
+            "8b0466775a5ee6e0",
+            "af168d7be0907ccf",
+            "af866c584b96de88",
+            "7f56ae3f4c8b42af",
+            "987434631f6c114e",
+            "d451641a43530846",
+            "da03dfd33903f2af",
+            "a60c614801315118",
+            "081576ed1324444c",
+            "cf76f41b91add9d4",
+            "d9c1571c64094174",
+            "6214fa75dd12c9ad",
+            "73648ffc793365f9",
+            "569a921930ff8027",
+            "7b2a0ff9a2f09db4",
+            "9c67fe68072b4df7",
+            "5fcd6a5186d9dead",
+            "1308af716be7cf2f",
+            "e1884eb5a348896b",
+            "00bf480e4f979c19",
+            "93c1617fd7159ccf",
+            "027cea6b4534fa9c",
+            "1f9311eb6c9f6bb8",
+            "1491d75e66b081aa",
+            "825cb73a9c032a28"
+          ],
+          "selected_candidate_id": "e36f0d142490c484",
+          "source_public_id": "e75",
+          "target_public_id": "e118",
+          "success": true,
+          "status": "physical_result",
+          "model_visible": false,
+          "training": false,
+          "binding_recovery": [],
+          "truth_source": "unchanged_registered_task_predicate",
+          "endpoint": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/continuation/private_endpoint.pkl",
+            "sha256": "9f52bc946fe906fd0c6d20cd4fb6dcb11f0f44cbf68f72a05aadcd77d81af6b1",
+            "physics_sha256": "747ff56a881a2ecda6f418c218a1ed215197652d9fe31a83b0be6f6011e98220"
+          },
+          "private_metrology_s": 0.0009277099743485451,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/continuation/private_truth.json",
+            "sha256": "28a82890c16a2f8dc63119725b5470720a8e86eb4e4d636e992540654068068a"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/continuation/choices.jsonl",
+            "sha256": "80d1511ac70db607e05703efe3a6baabb8074ec35116f5892197511f8972f183"
+          },
+          "reason": "subtask_completed",
+          "wall_s": 121.6242760992609,
+          "sim_steps": 260,
+          "decisions": 2,
+          "vla_inference_calls": 0,
+          "vla_inputs": [],
+          "vla_predictions": [],
+          "wall_time_breakdown": {
+            "version": "bounded-wall-time/1",
+            "wall_s": 121.62536430824548,
+            "main_thread_exclusive_s": {
+              "perception.entity_measurement": 63.5003041443415,
+              "artifact_io": 1.5633764620870352,
+              "planning.consequences": 33.71806752542034,
+              "decision.oracle": 0.02631128579378128,
+              "simulation.step_render": 5.414082198869437,
+              "perception.depth": 0.41139368806034327,
+              "perception.capture_io": 6.4189593186602,
+              "perception.segmentation": 8.597014581318945,
+              "execution.other": 0.2483692429959774,
+              "planning.request": 0.024611805099993944
+            },
+            "all_threads_exclusive_s": {
+              "perception.entity_measurement": 63.5003041443415,
+              "artifact_io": 1.5633764620870352,
+              "planning.consequences": 33.71806752542034,
+              "decision.oracle": 0.02631128579378128,
+              "simulation.step_render": 5.414082198869437,
+              "perception.depth": 0.41139368806034327,
+              "perception.capture_io": 6.4189593186602,
+              "perception.segmentation": 8.597014581318945,
+              "execution.other": 0.2483692429959774,
+              "planning.request": 0.024611805099993944
+            },
+            "main_thread_unattributed_s": 1.7028740555979311,
+            "calls": {
+              "perception.entity_measurement:_instance_pixels": 20,
+              "perception.entity_measurement:_contact_pixels": 11,
+              "artifact_io:_record_public_geometry": 35,
+              "planning.consequences:_cloud_and_ik": 41,
+              "planning.consequences:context": 5,
+              "planning.consequences:_route": 90,
+              "planning.consequences:__call__": 83,
+              "planning.consequences:_candidate": 137,
+              "planning.consequences:check": 375,
+              "decision.oracle:None": 2,
+              "planning.consequences:plan_chunk": 2,
+              "simulation.step_render:step": 260,
+              "perception.depth:_metric_depth": 16,
+              "perception.depth:_world_from_depth": 16,
+              "simulation.step_render:render_camera": 8,
+              "perception.capture_io:get_env_state": 4,
+              "perception.segmentation:call": 72,
+              "perception.entity_measurement:refresh": 8,
+              "perception.entity_measurement:_refresh_held_measurement": 5,
+              "execution.other:None": 2,
+              "planning.request:None": 1
+            },
+            "main_thread_exclusive_by_root_s": {
+              "decision.oracle": {
+                "perception.entity_measurement": 6.21904619038105e-05,
+                "artifact_io": 0.28932806570082903,
+                "planning.consequences": 14.744344352278858,
+                "decision.oracle": 0.02631128579378128
+              },
+              "execution.other": {
+                "planning.consequences": 14.423634852748364,
+                "perception.entity_measurement": 61.97111918590963,
+                "artifact_io": 0.6105208899825811,
+                "simulation.step_render": 5.414082198869437,
+                "perception.depth": 0.41139368806034327,
+                "perception.capture_io": 6.4189593186602,
+                "perception.segmentation": 8.597014581318945,
+                "execution.other": 0.2483692429959774
+              },
+              "planning.request": {
+                "planning.consequences": 4.550088320393115,
+                "perception.entity_measurement": 1.529122767969966,
+                "artifact_io": 0.663527506403625,
+                "planning.request": 0.024611805099993944
+              }
+            },
+            "worker_times_overlap_main_thread": true,
+            "scope": "client wall time including transport; initial simulator construction excluded"
+          }
+        },
+        "native_success": true,
+        "training": false,
+        "confirmation": false,
+        "scope": "D2 saved endpoint bounded continuation only"
+      }
+    },
+    "training": false,
+    "confirmation": false,
+    "scope": "six registered canonical restores at original sampling seeds; no historical10477 exact-input or D2 whole-cohort success claim"
+  },
+  "latest_pi_input_comparison": {
+    "script_sha256": "aefcf25ddfe055671917551b678e364668df99dff70e5b3951fbf7005e8596ea",
+    "ledgers": [
+      {
+        "label": "baseline",
+        "case": "libero_spatial_swap_t2_s40_handoff_r13401000",
+        "source_commit": "7484079b91021a7eebbcd48756c4eb3a047d1563",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/000_libero_spatial_swap_t2_s40_handoff_r13401000/libero_spatial_swap_t2_s40_handoff_r13401000/replay/vla_inputs.jsonl",
+        "input_sha256": "20561269aeddac9577c2642190c22e71dd56fa7121289aff32042059930d1f4e",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/000_libero_spatial_swap_t2_s40_handoff_r13401000/libero_spatial_swap_t2_s40_handoff_r13401000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "baadf9507eb02e1feb1299b01266a8d057ae2bf4924073f505ae69e7e745eb34",
+        "sampling_seed": 13401000
+      },
+      {
+        "label": "baseline",
+        "case": "libero_spatial_swap_t2_s40_handoff_r13402000",
+        "source_commit": "7484079b91021a7eebbcd48756c4eb3a047d1563",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/001_libero_spatial_swap_t2_s40_handoff_r13402000/libero_spatial_swap_t2_s40_handoff_r13402000/replay/vla_inputs.jsonl",
+        "input_sha256": "882e9a7d2f2a9ee487b1a3aa2e72cc7a9bc4964fffe751bfd4b5e4b19bf9aa53",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/001_libero_spatial_swap_t2_s40_handoff_r13402000/libero_spatial_swap_t2_s40_handoff_r13402000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "baadf9507eb02e1feb1299b01266a8d057ae2bf4924073f505ae69e7e745eb34",
+        "sampling_seed": 13402000
+      },
+      {
+        "label": "baseline",
+        "case": "libero_spatial_swap_t3_s40_handoff_r14401000",
+        "source_commit": "7484079b91021a7eebbcd48756c4eb3a047d1563",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/002_libero_spatial_swap_t3_s40_handoff_r14401000/libero_spatial_swap_t3_s40_handoff_r14401000/replay/vla_inputs.jsonl",
+        "input_sha256": "c4f599e5f1f56cec7d9d05ead46d4c42723f41467b682526e17e060f731641cb",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/002_libero_spatial_swap_t3_s40_handoff_r14401000/libero_spatial_swap_t3_s40_handoff_r14401000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "9e895d714024d15c4601fa0e0cfba945b2607a82a6ca03bdcfa2f47a15f5b460",
+        "sampling_seed": 14401000
+      },
+      {
+        "label": "baseline",
+        "case": "libero_object_swap_t1_s40_handoff_r16401000",
+        "source_commit": "7484079b91021a7eebbcd48756c4eb3a047d1563",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/003_libero_object_swap_t1_s40_handoff_r16401000/libero_object_swap_t1_s40_handoff_r16401000/replay/vla_inputs.jsonl",
+        "input_sha256": "3842c33434db543c955bc49c5e2c116a11a257b3a6ae0e7b6b2704d763570ef7",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/003_libero_object_swap_t1_s40_handoff_r16401000/libero_object_swap_t1_s40_handoff_r16401000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "2a70990b3f93d7a22cbdc68c5be7f992b79ed12330edff17efa9351f5dc8041a",
+        "sampling_seed": 16401000
+      },
+      {
+        "label": "baseline",
+        "case": "libero_object_swap_t2_s40_handoff_r17401000",
+        "source_commit": "7484079b91021a7eebbcd48756c4eb3a047d1563",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/004_libero_object_swap_t2_s40_handoff_r17401000/libero_object_swap_t2_s40_handoff_r17401000/replay/vla_inputs.jsonl",
+        "input_sha256": "53edf88b1d436f08a3d5957acb20f83f0d8d794fb14575ad035f7be0db5acc1d",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/004_libero_object_swap_t2_s40_handoff_r17401000/libero_object_swap_t2_s40_handoff_r17401000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "3cf43fc093bfea9137b1afb4e1b0eac5edb298d637287e430b2a07785f56b739",
+        "sampling_seed": 17401000
+      },
+      {
+        "label": "baseline",
+        "case": "libero_object_swap_t2_s40_handoff_r17402000",
+        "source_commit": "7484079b91021a7eebbcd48756c4eb3a047d1563",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/005_libero_object_swap_t2_s40_handoff_r17402000/libero_object_swap_t2_s40_handoff_r17402000/replay/vla_inputs.jsonl",
+        "input_sha256": "27eb6ddfcca096b6a30b2c881e56b7c002b6894c07f87838e27940a689750692",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/005_libero_object_swap_t2_s40_handoff_r17402000/libero_object_swap_t2_s40_handoff_r17402000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "3cf43fc093bfea9137b1afb4e1b0eac5edb298d637287e430b2a07785f56b739",
+        "sampling_seed": 17402000
+      },
+      {
+        "label": "new",
+        "case": "libero_spatial_swap_t2_s40_handoff_r13401000",
+        "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/000_libero_spatial_swap_t2_s40_handoff_r13401000/libero_spatial_swap_t2_s40_handoff_r13401000/replay/vla_inputs.jsonl",
+        "input_sha256": "20561269aeddac9577c2642190c22e71dd56fa7121289aff32042059930d1f4e",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/000_libero_spatial_swap_t2_s40_handoff_r13401000/libero_spatial_swap_t2_s40_handoff_r13401000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "baadf9507eb02e1feb1299b01266a8d057ae2bf4924073f505ae69e7e745eb34",
+        "sampling_seed": 13401000
+      },
+      {
+        "label": "new",
+        "case": "libero_spatial_swap_t2_s40_handoff_r13402000",
+        "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/001_libero_spatial_swap_t2_s40_handoff_r13402000/libero_spatial_swap_t2_s40_handoff_r13402000/replay/vla_inputs.jsonl",
+        "input_sha256": "882e9a7d2f2a9ee487b1a3aa2e72cc7a9bc4964fffe751bfd4b5e4b19bf9aa53",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/001_libero_spatial_swap_t2_s40_handoff_r13402000/libero_spatial_swap_t2_s40_handoff_r13402000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "baadf9507eb02e1feb1299b01266a8d057ae2bf4924073f505ae69e7e745eb34",
+        "sampling_seed": 13402000
+      },
+      {
+        "label": "new",
+        "case": "libero_spatial_swap_t3_s40_handoff_r14401000",
+        "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/002_libero_spatial_swap_t3_s40_handoff_r14401000/libero_spatial_swap_t3_s40_handoff_r14401000/replay/vla_inputs.jsonl",
+        "input_sha256": "c4f599e5f1f56cec7d9d05ead46d4c42723f41467b682526e17e060f731641cb",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/002_libero_spatial_swap_t3_s40_handoff_r14401000/libero_spatial_swap_t3_s40_handoff_r14401000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "9e895d714024d15c4601fa0e0cfba945b2607a82a6ca03bdcfa2f47a15f5b460",
+        "sampling_seed": 14401000
+      },
+      {
+        "label": "new",
+        "case": "libero_object_swap_t1_s40_handoff_r16401000",
+        "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/003_libero_object_swap_t1_s40_handoff_r16401000/libero_object_swap_t1_s40_handoff_r16401000/replay/vla_inputs.jsonl",
+        "input_sha256": "3842c33434db543c955bc49c5e2c116a11a257b3a6ae0e7b6b2704d763570ef7",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/003_libero_object_swap_t1_s40_handoff_r16401000/libero_object_swap_t1_s40_handoff_r16401000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "2a70990b3f93d7a22cbdc68c5be7f992b79ed12330edff17efa9351f5dc8041a",
+        "sampling_seed": 16401000
+      },
+      {
+        "label": "new",
+        "case": "libero_object_swap_t2_s40_handoff_r17401000",
+        "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/004_libero_object_swap_t2_s40_handoff_r17401000/libero_object_swap_t2_s40_handoff_r17401000/replay/vla_inputs.jsonl",
+        "input_sha256": "53edf88b1d436f08a3d5957acb20f83f0d8d794fb14575ad035f7be0db5acc1d",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/004_libero_object_swap_t2_s40_handoff_r17401000/libero_object_swap_t2_s40_handoff_r17401000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "3cf43fc093bfea9137b1afb4e1b0eac5edb298d637287e430b2a07785f56b739",
+        "sampling_seed": 17401000
+      },
+      {
+        "label": "new",
+        "case": "libero_object_swap_t2_s40_handoff_r17402000",
+        "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+        "startup": false,
+        "input_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/005_libero_object_swap_t2_s40_handoff_r17402000/libero_object_swap_t2_s40_handoff_r17402000/replay/vla_inputs.jsonl",
+        "input_sha256": "27eb6ddfcca096b6a30b2c881e56b7c002b6894c07f87838e27940a689750692",
+        "prediction_path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/005_libero_object_swap_t2_s40_handoff_r17402000/libero_object_swap_t2_s40_handoff_r17402000/replay/vla_predictions.jsonl",
+        "branchpoint_sha256": "3cf43fc093bfea9137b1afb4e1b0eac5edb298d637287e430b2a07785f56b739",
+        "sampling_seed": 17402000
+      }
+    ],
+    "pairs": [
+      {
+        "left": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/000_libero_spatial_swap_t2_s40_handoff_r13401000/libero_spatial_swap_t2_s40_handoff_r13401000/replay/vla_inputs.jsonl",
+        "right": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/000_libero_spatial_swap_t2_s40_handoff_r13401000/libero_spatial_swap_t2_s40_handoff_r13401000/replay/vla_inputs.jsonl",
+        "branchpoint_sha256": "baadf9507eb02e1feb1299b01266a8d057ae2bf4924073f505ae69e7e745eb34",
+        "sampling_seed": 13401000,
+        "input_counts": [
+          11,
+          11
+        ],
+        "prediction_counts": [
+          11,
+          11
+        ],
+        "common_input_calls": 11,
+        "common_prediction_calls": 11,
+        "first_input_mismatch": null,
+        "first_changed_input_fields": [],
+        "first_prediction_mismatch": null,
+        "recorded_prefix_equal": true,
+        "scope": "recorded inference prefix; not unobserved calls or full branch success"
+      },
+      {
+        "left": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/001_libero_spatial_swap_t2_s40_handoff_r13402000/libero_spatial_swap_t2_s40_handoff_r13402000/replay/vla_inputs.jsonl",
+        "right": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/001_libero_spatial_swap_t2_s40_handoff_r13402000/libero_spatial_swap_t2_s40_handoff_r13402000/replay/vla_inputs.jsonl",
+        "branchpoint_sha256": "baadf9507eb02e1feb1299b01266a8d057ae2bf4924073f505ae69e7e745eb34",
+        "sampling_seed": 13402000,
+        "input_counts": [
+          12,
+          12
+        ],
+        "prediction_counts": [
+          12,
+          12
+        ],
+        "common_input_calls": 12,
+        "common_prediction_calls": 12,
+        "first_input_mismatch": null,
+        "first_changed_input_fields": [],
+        "first_prediction_mismatch": null,
+        "recorded_prefix_equal": true,
+        "scope": "recorded inference prefix; not unobserved calls or full branch success"
+      },
+      {
+        "left": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/002_libero_spatial_swap_t3_s40_handoff_r14401000/libero_spatial_swap_t3_s40_handoff_r14401000/replay/vla_inputs.jsonl",
+        "right": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/002_libero_spatial_swap_t3_s40_handoff_r14401000/libero_spatial_swap_t3_s40_handoff_r14401000/replay/vla_inputs.jsonl",
+        "branchpoint_sha256": "9e895d714024d15c4601fa0e0cfba945b2607a82a6ca03bdcfa2f47a15f5b460",
+        "sampling_seed": 14401000,
+        "input_counts": [
+          9,
+          9
+        ],
+        "prediction_counts": [
+          9,
+          9
+        ],
+        "common_input_calls": 9,
+        "common_prediction_calls": 9,
+        "first_input_mismatch": null,
+        "first_changed_input_fields": [],
+        "first_prediction_mismatch": null,
+        "recorded_prefix_equal": true,
+        "scope": "recorded inference prefix; not unobserved calls or full branch success"
+      },
+      {
+        "left": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/003_libero_object_swap_t1_s40_handoff_r16401000/libero_object_swap_t1_s40_handoff_r16401000/replay/vla_inputs.jsonl",
+        "right": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/003_libero_object_swap_t1_s40_handoff_r16401000/libero_object_swap_t1_s40_handoff_r16401000/replay/vla_inputs.jsonl",
+        "branchpoint_sha256": "2a70990b3f93d7a22cbdc68c5be7f992b79ed12330edff17efa9351f5dc8041a",
+        "sampling_seed": 16401000,
+        "input_counts": [
+          15,
+          15
+        ],
+        "prediction_counts": [
+          15,
+          15
+        ],
+        "common_input_calls": 15,
+        "common_prediction_calls": 15,
+        "first_input_mismatch": null,
+        "first_changed_input_fields": [],
+        "first_prediction_mismatch": null,
+        "recorded_prefix_equal": true,
+        "scope": "recorded inference prefix; not unobserved calls or full branch success"
+      },
+      {
+        "left": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/004_libero_object_swap_t2_s40_handoff_r17401000/libero_object_swap_t2_s40_handoff_r17401000/replay/vla_inputs.jsonl",
+        "right": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/004_libero_object_swap_t2_s40_handoff_r17401000/libero_object_swap_t2_s40_handoff_r17401000/replay/vla_inputs.jsonl",
+        "branchpoint_sha256": "3cf43fc093bfea9137b1afb4e1b0eac5edb298d637287e430b2a07785f56b739",
+        "sampling_seed": 17401000,
+        "input_counts": [
+          24,
+          24
+        ],
+        "prediction_counts": [
+          24,
+          24
+        ],
+        "common_input_calls": 24,
+        "common_prediction_calls": 24,
+        "first_input_mismatch": null,
+        "first_changed_input_fields": [],
+        "first_prediction_mismatch": null,
+        "recorded_prefix_equal": true,
+        "scope": "recorded inference prefix; not unobserved calls or full branch success"
+      },
+      {
+        "left": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/selected_handoff_20261020/7484079b/job10649_0/N8/005_libero_object_swap_t2_s40_handoff_r17402000/libero_object_swap_t2_s40_handoff_r17402000/replay/vla_inputs.jsonl",
+        "right": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/005_libero_object_swap_t2_s40_handoff_r17402000/libero_object_swap_t2_s40_handoff_r17402000/replay/vla_inputs.jsonl",
+        "branchpoint_sha256": "3cf43fc093bfea9137b1afb4e1b0eac5edb298d637287e430b2a07785f56b739",
+        "sampling_seed": 17402000,
+        "input_counts": [
+          22,
+          22
+        ],
+        "prediction_counts": [
+          22,
+          22
+        ],
+        "common_input_calls": 22,
+        "common_prediction_calls": 22,
+        "first_input_mismatch": null,
+        "first_changed_input_fields": [],
+        "first_prediction_mismatch": null,
+        "recorded_prefix_equal": true,
+        "scope": "recorded inference prefix; not unobserved calls or full branch success"
+      }
+    ],
+    "matching_pairs": 6,
+    "pair_count": 6,
+    "physics_steps": 0,
+    "training": false
+  },
+  "original_interim": {
+    "source_commit": "f9096f79ef333f2708d631fb3f18e93677d4179e",
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/original_id_repaired_forks_20261020/f9096f79/preparation/manifest.json",
+      "sha256": "082f368f4b85f698f96fdc8a7a36892481fccc4a9e12fa3f2e2776cfcee3273b"
+    },
+    "overall": {
+      "registered_states": 71,
+      "closed_workers": 15,
+      "fork_reached": 32,
+      "status_counts": {
+        "pending": 56,
+        "physical_result": 15
+      },
+      "self_branch": {
+        "n": 15,
+        "success": 4,
+        "rate": 0.26666666666666666,
+        "wilson95": [
+          0.10897453325692374,
+          0.5195043405598057
+        ]
+      },
+      "vla_branch": {
+        "n": 94,
+        "success": 78,
+        "rate": 0.8297872340425532,
+        "wilson95": [
+          0.7412544169093981,
+          0.8924237880897957
+        ]
+      },
+      "vla_actually_executed": {
+        "n": 88,
+        "success": 78,
+        "rate": 0.8863636363636364,
+        "wilson95": [
+          0.8033143613281423,
+          0.9370919962489864
+        ]
+      },
+      "vla_trials_registered": 213,
+      "vla_trials_closed": 94,
+      "vla_trials_unobserved": 119,
+      "vla_unknown_outcomes": 0,
+      "vla_inference_trials": 88,
+      "vla_without_inference": 6,
+      "both_failed_states": 0
+    },
+    "categories": [
+      {
+        "category": "cup_transfer",
+        "mode": "on",
+        "registered_states": 2,
+        "closed_workers": 1,
+        "fork_reached": 1,
+        "status_counts": {
+          "physical_result": 1,
+          "pending": 1
+        },
+        "self_branch": {
+          "n": 1,
+          "success": 1,
+          "rate": 1.0,
+          "wilson95": [
+            0.20654931437723745,
+            1.0
+          ]
+        },
+        "vla_branch": {
+          "n": 3,
+          "success": 0,
+          "rate": 0.0,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ]
+        },
+        "vla_actually_executed": {
+          "n": 0,
+          "success": 0,
+          "rate": null,
+          "wilson95": null
+        },
+        "vla_trials_registered": 6,
+        "vla_trials_closed": 3,
+        "vla_trials_unobserved": 3,
+        "vla_unknown_outcomes": 0,
+        "vla_inference_trials": 0,
+        "vla_without_inference": 3,
+        "both_failed_states": 0
+      },
+      {
+        "category": "cup_transfer",
+        "mode": "pick",
+        "registered_states": 9,
+        "closed_workers": 4,
+        "fork_reached": 4,
+        "status_counts": {
+          "physical_result": 4,
+          "pending": 5
+        },
+        "self_branch": {
+          "n": 4,
+          "success": 3,
+          "rate": 0.75,
+          "wilson95": [
+            0.30064184258240184,
+            0.9544127391902995
+          ]
+        },
+        "vla_branch": {
+          "n": 12,
+          "success": 8,
+          "rate": 0.6666666666666666,
+          "wilson95": [
+            0.39062208887279953,
+            0.8618799089087867
+          ]
+        },
+        "vla_actually_executed": {
+          "n": 9,
+          "success": 8,
+          "rate": 0.8888888888888888,
+          "wilson95": [
+            0.5650002944233439,
+            0.9801091123614551
+          ]
+        },
+        "vla_trials_registered": 27,
+        "vla_trials_closed": 12,
+        "vla_trials_unobserved": 15,
+        "vla_unknown_outcomes": 0,
+        "vla_inference_trials": 9,
+        "vla_without_inference": 3,
+        "both_failed_states": 0
+      },
+      {
+        "category": "microwave_close",
+        "mode": "close",
+        "registered_states": 20,
+        "closed_workers": 4,
+        "fork_reached": 9,
+        "status_counts": {
+          "pending": 16,
+          "physical_result": 4
+        },
+        "self_branch": {
+          "n": 4,
+          "success": 0,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.4898908364545973
+          ]
+        },
+        "vla_branch": {
+          "n": 25,
+          "success": 16,
+          "rate": 0.64,
+          "wilson95": [
+            0.44518497748164865,
+            0.7975211922554178
+          ]
+        },
+        "vla_actually_executed": {
+          "n": 25,
+          "success": 16,
+          "rate": 0.64,
+          "wilson95": [
+            0.44518497748164865,
+            0.7975211922554178
+          ]
+        },
+        "vla_trials_registered": 60,
+        "vla_trials_closed": 25,
+        "vla_trials_unobserved": 35,
+        "vla_unknown_outcomes": 0,
+        "vla_inference_trials": 25,
+        "vla_without_inference": 0,
+        "both_failed_states": 0
+      },
+      {
+        "category": "microwave_open",
+        "mode": "open",
+        "registered_states": 20,
+        "closed_workers": 5,
+        "fork_reached": 9,
+        "status_counts": {
+          "pending": 15,
+          "physical_result": 5
+        },
+        "self_branch": {
+          "n": 5,
+          "success": 0,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.43448246478317476
+          ]
+        },
+        "vla_branch": {
+          "n": 27,
+          "success": 27,
+          "rate": 1.0,
+          "wilson95": [
+            0.8754449702581328,
+            0.9999999999999998
+          ]
+        },
+        "vla_actually_executed": {
+          "n": 27,
+          "success": 27,
+          "rate": 1.0,
+          "wilson95": [
+            0.8754449702581328,
+            0.9999999999999998
+          ]
+        },
+        "vla_trials_registered": 60,
+        "vla_trials_closed": 27,
+        "vla_trials_unobserved": 33,
+        "vla_unknown_outcomes": 0,
+        "vla_inference_trials": 27,
+        "vla_without_inference": 0,
+        "both_failed_states": 0
+      },
+      {
+        "category": "plate_push",
+        "mode": "push",
+        "registered_states": 20,
+        "closed_workers": 1,
+        "fork_reached": 9,
+        "status_counts": {
+          "physical_result": 1,
+          "pending": 19
+        },
+        "self_branch": {
+          "n": 1,
+          "success": 0,
+          "rate": 0.0,
+          "wilson95": [
+            0.0,
+            0.7934506856227626
+          ]
+        },
+        "vla_branch": {
+          "n": 27,
+          "success": 27,
+          "rate": 1.0,
+          "wilson95": [
+            0.8754449702581328,
+            0.9999999999999998
+          ]
+        },
+        "vla_actually_executed": {
+          "n": 27,
+          "success": 27,
+          "rate": 1.0,
+          "wilson95": [
+            0.8754449702581328,
+            0.9999999999999998
+          ]
+        },
+        "vla_trials_registered": 60,
+        "vla_trials_closed": 27,
+        "vla_trials_unobserved": 33,
+        "vla_unknown_outcomes": 0,
+        "vla_inference_trials": 27,
+        "vla_without_inference": 0,
+        "both_failed_states": 0
+      }
+    ],
+    "errors": [],
+    "interval_scope": "Wilson intervals describe this fixed diagnostic cohort; each state has three VLA sampling seeds. They are not a claim about independent task generalization."
+  },
+  "latest_pending": [
+    "Original71-state forks10670 still running; no whole-episode score",
+    "D2 all40 source150 startup10672.4 passed2/2; dispatcher3524921 waits for actual GPU capacity, no full D2 job yet",
+    "Original source-binding ambiguities have public attribution but no physical disambiguation proof"
+  ],
+  "pending_source_validation": null,
+  "deviation_injection_interface": {
+    "version": "call-vla-deviation-interface/2",
+    "source_commit": "c0233712654533fbfc3c9fdbb62b770a3782907d",
+    "plan": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/interface_deviation_guard_20261020/c0233712_r3/plan.json",
+      "sha256": "d9b0a5d9c5312d0352b88a393cb0c183c9d34e17a0d862a2538d9fb511652767"
+    },
+    "fault_injection": {
+      "predict_calls": 18,
+      "real_pi_blocks": 1,
+      "injected_blocks": 17,
+      "initial_source_xyz_m": [
+        -0.02449897024780512,
+        0.0880701057612896,
+        0.5127001106739044
+      ],
+      "real_block_controls": 5
+    },
+    "guard_passed": true,
+    "stop_reason": "left_target_region",
+    "max_public_distance_m": 0.6021779066964579,
+    "handoff": {
+      "completed": true,
+      "settled": true,
+      "steps_used": 13,
+      "reason": "osc_damped_hold"
+    },
+    "first_next_request_generated": true,
+    "trial": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/interface_deviation_guard_20261020/c0233712_r3/episode/call_vla_1/summary.json",
+      "sha256": "d84848f7817e8ce929846284728c2a0e165cf3344929be3c43045ae2233fa9ce"
+    },
+    "policy_success": null,
+    "training": false,
+    "confirmation": false,
+    "model_visible": false,
+    "scope": "one real pi block followed by explicit OSC fault injection; interface check only"
+  },
+  "resource_dispatch": {
+    "pid": 3568107,
+    "command": [
+      "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+      "-u",
+      "/public/home/sunyihan/rpent_libero_eval/dispatcher_d2_accounted_20261020.py",
+      "--preparation",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_repaired_hybrid_20261020/15068167/preparation",
+      "--startup-output",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_repaired_hybrid_20261020/15068167/startup_owned10672",
+      "--original-array",
+      "10670",
+      "--original-results",
+      "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/original_id_repaired_forks_20261020/f9096f79"
+    ],
+    "log": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/monitor_repaired_D2_and_original_20261020.log",
+    "script_sha256": "04f7fbe725127ead2438ceb4c7cf9d724765c7563abaebbdbe4e93c1e84c794a",
+    "replaced_monitor_pid": 3524921,
+    "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+    "controller_commit": "accounting amendment to09483422",
+    "training": false
+  },
+  "initial_request_profile": {
+    "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+    "profile": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_initial_planning_profile_20261020/15068167/initial_request.speedscope.json",
+      "sha256": "585761e7f97fbd6fe7f11e8f3130ae402b33a2c1aaefaf2b9a3d009415caa160"
+    },
+    "worker_profile": "Process 3679875 Thread 3679875 \"MainThread\"",
+    "sampled_worker_time_s": 608.265306122449,
+    "top15": [
+      {
+        "file": "",
+        "function": "process 3679861:\".venv/bin/python -u launcher_owned_d2_20261020.py --preparation /public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_initial_planning_profile_20261020/15068167/preparation --parent-output /public/home/sunyihan/rpent_libero_eval/results/bounded_skills/original_id_repaired_forks_20261020/f9096f79/job10670_1 --output /public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_initial_planning_profile_20261020/15068167/profiled_startup\"",
+        "sampled_cumulative_s": 608.2653061223285,
+        "sampled_self_s": 0.0,
+        "sample_hits": 29805
+      },
+      {
+        "file": "",
+        "function": "process 3679875:\"/public/home/sunyihan/rpent_libero_eval/.venv/bin/python -u /public/home/sunyihan/rpent_libero_eval/launcher_shared_20261020_7ce53392/shared_gpu_episodes_20261019.py --source /public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167 --worker --assignment /public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_initial_planning_profile_20261020/15068167/profiled_startup/N1/000_libero_spatial_swap_t1_s40/assignment.json\"",
+        "sampled_cumulative_s": 608.2653061223285,
+        "sampled_self_s": 0.7959183673469393,
+        "sample_hits": 29805
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261020_7ce53392/shared_gpu_episodes_20261019.py",
+        "function": "worker",
+        "sampled_cumulative_s": 607.4693877549818,
+        "sampled_self_s": 0.1020408163265306,
+        "sample_hits": 29766
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261020_7ce53392/shared_gpu_episodes_20261019.py",
+        "function": "main",
+        "sampled_cumulative_s": 607.4693877549818,
+        "sampled_self_s": 0.0,
+        "sample_hits": 29766
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261020_7ce53392/shared_gpu_episodes_20261019.py",
+        "function": "<module>",
+        "sampled_cumulative_s": 607.4693877549818,
+        "sampled_self_s": 0.0,
+        "sample_hits": 29766
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/scripts/probe_bounded_hybrid_d2.py",
+        "function": "evaluate_case",
+        "sampled_cumulative_s": 605.2448979590639,
+        "sampled_self_s": 0.061224489795918366,
+        "sample_hits": 29657
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_skills.py",
+        "function": "request",
+        "sampled_cumulative_s": 565.8979591835626,
+        "sampled_self_s": 0.0,
+        "sample_hits": 27729
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_skills.py",
+        "function": "grasp_geometry",
+        "sampled_cumulative_s": 543.7959183672411,
+        "sampled_self_s": 0.8367346938775516,
+        "sample_hits": 26646
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_motion.py",
+        "function": "prepare",
+        "sampled_cumulative_s": 517.0816326529615,
+        "sampled_self_s": 0.12244897959183672,
+        "sample_hits": 25337
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_timing.py",
+        "function": "timed",
+        "sampled_cumulative_s": 467.9183673468502,
+        "sampled_self_s": 0.26530612244897955,
+        "sample_hits": 22928
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_screen.py",
+        "function": "__call__",
+        "sampled_cumulative_s": 427.89795918359397,
+        "sampled_self_s": 12.734693877551123,
+        "sample_hits": 20967
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_screen.py",
+        "function": "_geometry_at",
+        "sampled_cumulative_s": 232.61224489792409,
+        "sampled_self_s": 111.14285714284965,
+        "sample_hits": 11398
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/v5_grasp_kinematics.py",
+        "function": "check",
+        "sampled_cumulative_s": 133.6734693877425,
+        "sampled_self_s": 1.9387755102040833,
+        "sample_hits": 6550
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/scipy/optimize/_lsq/least_squares.py",
+        "function": "least_squares",
+        "sampled_cumulative_s": 106.12244897958549,
+        "sampled_self_s": 0.04081632653061224,
+        "sample_hits": 5200
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/scipy/optimize/_lsq/trf.py",
+        "function": "trf_bounds",
+        "sampled_cumulative_s": 105.14285714285101,
+        "sampled_self_s": 4.142857142857124,
+        "sample_hits": 5152
+      }
+    ],
+    "project_top15": [
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/scripts/probe_bounded_hybrid_d2.py",
+        "function": "evaluate_case",
+        "sampled_cumulative_s": 605.2448979590639,
+        "sampled_self_s": 0.061224489795918366,
+        "sample_hits": 29657
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_skills.py",
+        "function": "request",
+        "sampled_cumulative_s": 565.8979591835626,
+        "sampled_self_s": 0.0,
+        "sample_hits": 27729
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_skills.py",
+        "function": "grasp_geometry",
+        "sampled_cumulative_s": 543.7959183672411,
+        "sampled_self_s": 0.8367346938775516,
+        "sample_hits": 26646
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_motion.py",
+        "function": "prepare",
+        "sampled_cumulative_s": 517.0816326529615,
+        "sampled_self_s": 0.12244897959183672,
+        "sample_hits": 25337
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_timing.py",
+        "function": "timed",
+        "sampled_cumulative_s": 467.9183673468502,
+        "sampled_self_s": 0.26530612244897955,
+        "sample_hits": 22928
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_screen.py",
+        "function": "__call__",
+        "sampled_cumulative_s": 427.89795918359397,
+        "sampled_self_s": 12.734693877551123,
+        "sample_hits": 20967
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_screen.py",
+        "function": "_geometry_at",
+        "sampled_cumulative_s": 232.61224489792409,
+        "sampled_self_s": 111.14285714284965,
+        "sample_hits": 11398
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/v5_grasp_kinematics.py",
+        "function": "check",
+        "sampled_cumulative_s": 133.6734693877425,
+        "sampled_self_s": 1.9387755102040833,
+        "sample_hits": 6550
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/rpent/skill_package/trajectory.py",
+        "function": "<listcomp>",
+        "sampled_cumulative_s": 84.12244897959049,
+        "sampled_self_s": 2.469387755102038,
+        "sample_hits": 4122
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/rpent/skill_package/trajectory.py",
+        "function": "plan",
+        "sampled_cumulative_s": 79.22448979591813,
+        "sampled_self_s": 0.30612244897959184,
+        "sample_hits": 3882
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/v5_grasp_kinematics.py",
+        "function": "evaluate",
+        "sampled_cumulative_s": 75.18367346938844,
+        "sampled_self_s": 14.897959183673645,
+        "sample_hits": 3684
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/rpent/skill_package/trajectory.py",
+        "function": "maximum",
+        "sampled_cumulative_s": 68.16326530612473,
+        "sampled_self_s": 2.6530612244897913,
+        "sample_hits": 3340
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/v5_geometric_grasp.py",
+        "function": "collision_counts",
+        "sampled_cumulative_s": 63.714285714288906,
+        "sampled_self_s": 60.59183673469669,
+        "sample_hits": 3122
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/bounded_screen.py",
+        "function": "_collisions",
+        "sampled_cumulative_s": 60.79591836734978,
+        "sampled_self_s": 8.326530612244852,
+        "sample_hits": 2979
+      },
+      {
+        "file": "/public/home/sunyihan/rpent_libero_eval/source_bounded_subtask_binding_20261020_15068167/robots/libero/v5_grasp_kinematics.py",
+        "function": "residual",
+        "sampled_cumulative_s": 51.163265306124124,
+        "sampled_self_s": 0.40816326530612257,
+        "sample_hits": 2507
+      }
+    ],
+    "comparisons": {
+      "vla_inputs.jsonl": {
+        "baseline_sha256": "bea7b2f4ce9dc6f99f17283c67faaa3b5162999c56025a608ae755be890a4f0d",
+        "profiled_sha256": "bea7b2f4ce9dc6f99f17283c67faaa3b5162999c56025a608ae755be890a4f0d",
+        "bytes_equal": true,
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "vla_predictions.jsonl": {
+        "baseline_sha256": "199db4507b66230d0d74cfbf14c941cf0959d682b602a1a8d3647ab4eda0f665",
+        "profiled_sha256": "199db4507b66230d0d74cfbf14c941cf0959d682b602a1a8d3647ab4eda0f665",
+        "bytes_equal": true,
+        "lines": [
+          1,
+          1
+        ]
+      }
+    },
+    "training": false,
+    "confirmation": false,
+    "scope": "49Hz same-case startup CPU stack sampling; sampling hits are not function-call counts; cumulative times overlap; profiler overhead prevents speedup claims"
   }
 }

@@ -1,0 +1,794 @@
+{
+  "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+  "rows": [
+    {
+      "seed": 13401000,
+      "case": {
+        "suite": "libero_spatial_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "worker_exit_code": 0,
+      "worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/000_libero_spatial_swap_t2_s40_handoff_r13401000/worker_summary.json",
+        "sha256": "be26a98fe5c26c1d08c30e0a305d47a3c650a426d329ae806e346fe581c1cfac"
+      },
+      "private_grasp_success": true,
+      "controls": 55,
+      "public_stop": "measured_success",
+      "handoff": {
+        "completed": true,
+        "settled": true,
+        "steps_used": 9,
+        "reason": "osc_damped_hold"
+      },
+      "next_request_generated": true,
+      "next_sim_steps": 103,
+      "next_status": "executed",
+      "next_receipts": [
+        {
+          "skill": "carry_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 99
+        },
+        {
+          "skill": "release",
+          "outcome": "success",
+          "stop_reason": "native_success",
+          "steps_used": 4
+        }
+      ],
+      "wall_s": 341.4823963129893,
+      "wall_time_breakdown": {
+        "version": "bounded-wall-time/1",
+        "wall_s": 341.4840215430595,
+        "main_thread_exclusive_s": {
+          "perception.entity_measurement": 44.535665777511895,
+          "artifact_io": 1.9013291206210852,
+          "planning.consequences": 24.027001636102796,
+          "simulation.step_render": 28.898929249029607,
+          "perception.depth": 5.386794850230217,
+          "perception.capture_io": 89.22703596716747,
+          "perception.segmentation": 136.76050549186766,
+          "vla.inference": 2.0272419210523367,
+          "execution.other": 1.3265867992304265
+        },
+        "all_threads_exclusive_s": {
+          "perception.entity_measurement": 44.535665777511895,
+          "artifact_io": 1.9013291206210852,
+          "planning.consequences": 24.027001636102796,
+          "simulation.step_render": 28.898929249029607,
+          "perception.depth": 5.386794850230217,
+          "perception.capture_io": 89.22703596716747,
+          "perception.segmentation": 136.76050549186766,
+          "vla.inference": 2.0272419210523367,
+          "execution.other": 1.3265867992304265
+        },
+        "main_thread_unattributed_s": 7.392930730246007,
+        "calls": {
+          "perception.entity_measurement:_instance_pixels": 10,
+          "perception.entity_measurement:_contact_pixels": 8,
+          "artifact_io:_record_public_geometry": 22,
+          "planning.consequences:_cloud_and_ik": 6,
+          "planning.consequences:_candidate": 1,
+          "planning.consequences:plan_chunk": 1,
+          "planning.consequences:check": 2,
+          "planning.consequences:__call__": 1,
+          "simulation.step_render:step": 66,
+          "perception.depth:_metric_depth": 232,
+          "perception.depth:_world_from_depth": 232,
+          "simulation.step_render:render_camera": 116,
+          "perception.capture_io:get_env_state": 58,
+          "perception.segmentation:call": 188,
+          "perception.entity_measurement:refresh": 58,
+          "perception.entity_measurement:_refresh_held_measurement": 58,
+          "vla.inference:predict": 11,
+          "execution.other:None": 1
+        },
+        "main_thread_exclusive_by_root_s": {
+          "execution.other": {
+            "perception.entity_measurement": 44.535665777511895,
+            "artifact_io": 1.9013291206210852,
+            "planning.consequences": 24.027001636102796,
+            "simulation.step_render": 28.898929249029607,
+            "perception.depth": 5.386794850230217,
+            "perception.capture_io": 89.22703596716747,
+            "perception.segmentation": 136.76050549186766,
+            "vla.inference": 2.0272419210523367,
+            "execution.other": 1.3265867992304265
+          }
+        },
+        "worker_times_overlap_main_thread": true,
+        "scope": "client wall time including transport; initial simulator construction excluded"
+      }
+    },
+    {
+      "seed": 13402000,
+      "case": {
+        "suite": "libero_spatial_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "worker_exit_code": 0,
+      "worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/001_libero_spatial_swap_t2_s40_handoff_r13402000/worker_summary.json",
+        "sha256": "94e10cf4351ca06780789c4a6f94163ebb2888b5a40d042f48795e5f5e73dc21"
+      },
+      "private_grasp_success": true,
+      "controls": 57,
+      "public_stop": "measured_success",
+      "handoff": {
+        "completed": true,
+        "settled": true,
+        "steps_used": 10,
+        "reason": "osc_damped_hold"
+      },
+      "next_request_generated": true,
+      "next_sim_steps": 102,
+      "next_status": "executed",
+      "next_receipts": [
+        {
+          "skill": "carry_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 98
+        },
+        {
+          "skill": "release",
+          "outcome": "success",
+          "stop_reason": "native_success",
+          "steps_used": 4
+        }
+      ],
+      "wall_s": 350.804494951386,
+      "wall_time_breakdown": {
+        "version": "bounded-wall-time/1",
+        "wall_s": 350.8062123339623,
+        "main_thread_exclusive_s": {
+          "perception.entity_measurement": 47.35840190714225,
+          "artifact_io": 1.923668832052499,
+          "planning.consequences": 24.140760411974043,
+          "simulation.step_render": 30.275138169061393,
+          "perception.depth": 6.088864149525762,
+          "perception.capture_io": 92.70910859527066,
+          "perception.segmentation": 137.61415025498718,
+          "vla.inference": 2.344604006037116,
+          "execution.other": 1.343226123135537
+        },
+        "all_threads_exclusive_s": {
+          "perception.entity_measurement": 47.35840190714225,
+          "artifact_io": 1.923668832052499,
+          "planning.consequences": 24.140760411974043,
+          "simulation.step_render": 30.275138169061393,
+          "perception.depth": 6.088864149525762,
+          "perception.capture_io": 92.70910859527066,
+          "perception.segmentation": 137.61415025498718,
+          "vla.inference": 2.344604006037116,
+          "execution.other": 1.343226123135537
+        },
+        "main_thread_unattributed_s": 7.008289884775877,
+        "calls": {
+          "perception.entity_measurement:_instance_pixels": 10,
+          "perception.entity_measurement:_contact_pixels": 8,
+          "artifact_io:_record_public_geometry": 24,
+          "planning.consequences:_cloud_and_ik": 6,
+          "planning.consequences:_candidate": 1,
+          "planning.consequences:plan_chunk": 1,
+          "planning.consequences:check": 2,
+          "planning.consequences:__call__": 1,
+          "simulation.step_render:step": 69,
+          "perception.depth:_metric_depth": 240,
+          "perception.depth:_world_from_depth": 240,
+          "simulation.step_render:render_camera": 120,
+          "perception.capture_io:get_env_state": 60,
+          "perception.segmentation:call": 194,
+          "perception.entity_measurement:refresh": 60,
+          "perception.entity_measurement:_refresh_held_measurement": 60,
+          "vla.inference:predict": 12,
+          "execution.other:None": 1
+        },
+        "main_thread_exclusive_by_root_s": {
+          "execution.other": {
+            "perception.entity_measurement": 47.35840190714225,
+            "artifact_io": 1.923668832052499,
+            "planning.consequences": 24.140760411974043,
+            "simulation.step_render": 30.275138169061393,
+            "perception.depth": 6.088864149525762,
+            "perception.capture_io": 92.70910859527066,
+            "perception.segmentation": 137.61415025498718,
+            "vla.inference": 2.344604006037116,
+            "execution.other": 1.343226123135537
+          }
+        },
+        "worker_times_overlap_main_thread": true,
+        "scope": "client wall time including transport; initial simulator construction excluded"
+      }
+    },
+    {
+      "seed": 14401000,
+      "case": {
+        "suite": "libero_spatial_swap",
+        "task": 3,
+        "seed": 40
+      },
+      "worker_exit_code": 0,
+      "worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/002_libero_spatial_swap_t3_s40_handoff_r14401000/worker_summary.json",
+        "sha256": "e10f78e5bb5916a05b2e5ce6d7170c69516be0d6b130da472b698919d788d287"
+      },
+      "private_grasp_success": false,
+      "controls": 45,
+      "public_stop": "no_progress_blocks",
+      "handoff": {
+        "completed": true,
+        "settled": true,
+        "steps_used": 12,
+        "reason": "osc_damped_hold"
+      },
+      "next_request_generated": true,
+      "next_sim_steps": 0,
+      "next_status": "executed",
+      "next_receipts": [
+        {
+          "skill": "observe",
+          "outcome": "failure",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ],
+      "wall_s": 258.3484503873624,
+      "wall_time_breakdown": {
+        "version": "bounded-wall-time/1",
+        "wall_s": 258.34989031404257,
+        "main_thread_exclusive_s": {
+          "perception.entity_measurement": 11.19370128121227,
+          "artifact_io": 0.8442235784605145,
+          "planning.consequences": 7.5398238599300385,
+          "simulation.step_render": 23.964169634506106,
+          "perception.depth": 4.35381680727005,
+          "perception.capture_io": 71.97420606389642,
+          "perception.segmentation": 133.9967236323282,
+          "vla.inference": 1.6447534360922873,
+          "execution.other": 0.6988082872703671
+        },
+        "all_threads_exclusive_s": {
+          "perception.entity_measurement": 11.19370128121227,
+          "artifact_io": 0.8442235784605145,
+          "planning.consequences": 7.5398238599300385,
+          "simulation.step_render": 23.964169634506106,
+          "perception.depth": 4.35381680727005,
+          "perception.capture_io": 71.97420606389642,
+          "perception.segmentation": 133.9967236323282,
+          "vla.inference": 1.6447534360922873,
+          "execution.other": 0.6988082872703671
+        },
+        "main_thread_unattributed_s": 2.139663733076304,
+        "calls": {
+          "perception.entity_measurement:_instance_pixels": 4,
+          "perception.entity_measurement:_contact_pixels": 4,
+          "artifact_io:_record_public_geometry": 9,
+          "planning.consequences:_cloud_and_ik": 3,
+          "planning.consequences:_candidate": 1,
+          "planning.consequences:plan_chunk": 1,
+          "planning.consequences:check": 2,
+          "planning.consequences:__call__": 1,
+          "simulation.step_render:step": 59,
+          "perception.depth:_metric_depth": 192,
+          "perception.depth:_world_from_depth": 192,
+          "simulation.step_render:render_camera": 96,
+          "perception.capture_io:get_env_state": 48,
+          "perception.segmentation:call": 170,
+          "perception.entity_measurement:refresh": 50,
+          "perception.entity_measurement:_refresh_held_measurement": 48,
+          "vla.inference:predict": 9,
+          "execution.other:None": 1
+        },
+        "main_thread_exclusive_by_root_s": {
+          "execution.other": {
+            "perception.entity_measurement": 11.19370128121227,
+            "artifact_io": 0.8442235784605145,
+            "planning.consequences": 7.5398238599300385,
+            "simulation.step_render": 23.964169634506106,
+            "perception.depth": 4.35381680727005,
+            "perception.capture_io": 71.97420606389642,
+            "perception.segmentation": 133.9967236323282,
+            "vla.inference": 1.6447534360922873,
+            "execution.other": 0.6988082872703671
+          }
+        },
+        "worker_times_overlap_main_thread": true,
+        "scope": "client wall time including transport; initial simulator construction excluded"
+      }
+    },
+    {
+      "seed": 16401000,
+      "case": {
+        "suite": "libero_object_swap",
+        "task": 1,
+        "seed": 40
+      },
+      "worker_exit_code": 0,
+      "worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/003_libero_object_swap_t1_s40_handoff_r16401000/worker_summary.json",
+        "sha256": "6e3ed0b9c40f01a711fc3b0964ab3a3b33380975c86b4884abd30c06557ee8f5"
+      },
+      "private_grasp_success": true,
+      "controls": 73,
+      "public_stop": "measured_success",
+      "handoff": {
+        "completed": true,
+        "settled": true,
+        "steps_used": 11,
+        "reason": "osc_damped_hold"
+      },
+      "next_request_generated": true,
+      "next_sim_steps": 212,
+      "next_status": "executed",
+      "next_receipts": [
+        {
+          "skill": "carry_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 189
+        },
+        {
+          "skill": "observe",
+          "outcome": "success",
+          "stop_reason": "fresh_public_views",
+          "steps_used": 23
+        }
+      ],
+      "wall_s": 472.86064097378403,
+      "wall_time_breakdown": {
+        "version": "bounded-wall-time/1",
+        "wall_s": 472.86220197193325,
+        "main_thread_exclusive_s": {
+          "perception.entity_measurement": 48.06364399380982,
+          "artifact_io": 3.3202641420066357,
+          "planning.consequences": 24.24768845876679,
+          "simulation.step_render": 38.11576854484156,
+          "perception.depth": 7.687906642910093,
+          "perception.capture_io": 121.21032717358321,
+          "perception.segmentation": 220.64145346311852,
+          "vla.inference": 2.9021182931028306,
+          "execution.other": 1.7438722979277372
+        },
+        "all_threads_exclusive_s": {
+          "perception.entity_measurement": 48.06364399380982,
+          "artifact_io": 3.3202641420066357,
+          "planning.consequences": 24.24768845876679,
+          "simulation.step_render": 38.11576854484156,
+          "perception.depth": 7.687906642910093,
+          "perception.capture_io": 121.21032717358321,
+          "perception.segmentation": 220.64145346311852,
+          "vla.inference": 2.9021182931028306,
+          "execution.other": 1.7438722979277372
+        },
+        "main_thread_unattributed_s": 4.929158961866051,
+        "calls": {
+          "perception.entity_measurement:_instance_pixels": 12,
+          "perception.entity_measurement:_contact_pixels": 10,
+          "artifact_io:_record_public_geometry": 29,
+          "planning.consequences:_cloud_and_ik": 7,
+          "planning.consequences:_candidate": 1,
+          "planning.consequences:plan_chunk": 1,
+          "planning.consequences:check": 2,
+          "planning.consequences:__call__": 1,
+          "simulation.step_render:step": 86,
+          "perception.depth:_metric_depth": 304,
+          "perception.depth:_world_from_depth": 304,
+          "simulation.step_render:render_camera": 152,
+          "perception.capture_io:get_env_state": 76,
+          "perception.segmentation:call": 375,
+          "perception.entity_measurement:refresh": 80,
+          "perception.entity_measurement:_refresh_held_measurement": 76,
+          "vla.inference:predict": 15,
+          "execution.other:None": 1
+        },
+        "main_thread_exclusive_by_root_s": {
+          "execution.other": {
+            "perception.entity_measurement": 48.06364399380982,
+            "artifact_io": 3.3202641420066357,
+            "planning.consequences": 24.24768845876679,
+            "simulation.step_render": 38.11576854484156,
+            "perception.depth": 7.687906642910093,
+            "perception.capture_io": 121.21032717358321,
+            "perception.segmentation": 220.64145346311852,
+            "vla.inference": 2.9021182931028306,
+            "execution.other": 1.7438722979277372
+          }
+        },
+        "worker_times_overlap_main_thread": true,
+        "scope": "client wall time including transport; initial simulator construction excluded"
+      }
+    },
+    {
+      "seed": 17401000,
+      "case": {
+        "suite": "libero_object_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "worker_exit_code": 0,
+      "worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/004_libero_object_swap_t2_s40_handoff_r17401000/worker_summary.json",
+        "sha256": "60568b46502ec49a6c6630d5e6c63630d6414b5a290084886aca1841431017ae"
+      },
+      "private_grasp_success": false,
+      "controls": 120,
+      "public_stop": "block_budget",
+      "handoff": {
+        "completed": true,
+        "settled": true,
+        "steps_used": 7,
+        "reason": "osc_damped_hold"
+      },
+      "next_request_generated": true,
+      "next_sim_steps": 23,
+      "next_status": "executed",
+      "next_receipts": [
+        {
+          "skill": "observe",
+          "outcome": "no_effect",
+          "stop_reason": "no_measured_scene_change",
+          "steps_used": 23
+        }
+      ],
+      "wall_s": 522.3643172592856,
+      "wall_time_breakdown": {
+        "version": "bounded-wall-time/1",
+        "wall_s": 522.3659310908988,
+        "main_thread_exclusive_s": {
+          "perception.entity_measurement": 19.119656315539032,
+          "artifact_io": 1.3898943541571498,
+          "planning.consequences": 5.6522004078142345,
+          "simulation.step_render": 61.98284303629771,
+          "perception.depth": 12.930819742847234,
+          "perception.capture_io": 199.33013092167675,
+          "perception.segmentation": 214.7181051489897,
+          "vla.inference": 4.554924243595451,
+          "execution.other": 0.7098969151265919
+        },
+        "all_threads_exclusive_s": {
+          "perception.entity_measurement": 19.119656315539032,
+          "artifact_io": 1.3898943541571498,
+          "planning.consequences": 5.6522004078142345,
+          "simulation.step_render": 61.98284303629771,
+          "perception.depth": 12.930819742847234,
+          "perception.capture_io": 199.33013092167675,
+          "perception.segmentation": 214.7181051489897,
+          "vla.inference": 4.554924243595451,
+          "execution.other": 0.7098969151265919
+        },
+        "main_thread_unattributed_s": 1.9774600048549473,
+        "calls": {
+          "perception.entity_measurement:_instance_pixels": 4,
+          "perception.entity_measurement:_contact_pixels": 4,
+          "artifact_io:_record_public_geometry": 9,
+          "planning.consequences:_cloud_and_ik": 3,
+          "planning.consequences:_candidate": 1,
+          "planning.consequences:plan_chunk": 1,
+          "planning.consequences:check": 2,
+          "planning.consequences:__call__": 1,
+          "simulation.step_render:step": 129,
+          "perception.depth:_metric_depth": 492,
+          "perception.depth:_world_from_depth": 492,
+          "simulation.step_render:render_camera": 246,
+          "perception.capture_io:get_env_state": 123,
+          "perception.segmentation:call": 401,
+          "perception.entity_measurement:refresh": 125,
+          "perception.entity_measurement:_refresh_held_measurement": 123,
+          "vla.inference:predict": 24,
+          "execution.other:None": 1
+        },
+        "main_thread_exclusive_by_root_s": {
+          "execution.other": {
+            "perception.entity_measurement": 19.119656315539032,
+            "artifact_io": 1.3898943541571498,
+            "planning.consequences": 5.6522004078142345,
+            "simulation.step_render": 61.98284303629771,
+            "perception.depth": 12.930819742847234,
+            "perception.capture_io": 199.33013092167675,
+            "perception.segmentation": 214.7181051489897,
+            "vla.inference": 4.554924243595451,
+            "execution.other": 0.7098969151265919
+          }
+        },
+        "worker_times_overlap_main_thread": true,
+        "scope": "client wall time including transport; initial simulator construction excluded"
+      }
+    },
+    {
+      "seed": 17402000,
+      "case": {
+        "suite": "libero_object_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "worker_exit_code": 0,
+      "worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/005_libero_object_swap_t2_s40_handoff_r17402000/worker_summary.json",
+        "sha256": "68131e1e44539df86ff02c1eeac8935d88e73c19211fd268b319b2ea19b63add"
+      },
+      "private_grasp_success": false,
+      "controls": 110,
+      "public_stop": "no_progress_blocks",
+      "handoff": {
+        "completed": true,
+        "settled": true,
+        "steps_used": 11,
+        "reason": "osc_damped_hold"
+      },
+      "next_request_generated": true,
+      "next_sim_steps": 15,
+      "next_status": "executed",
+      "next_receipts": [
+        {
+          "skill": "set_gripper",
+          "outcome": "success",
+          "stop_reason": "measured_gripper_change",
+          "steps_used": 15
+        }
+      ],
+      "wall_s": 490.6692379792221,
+      "wall_time_breakdown": {
+        "version": "bounded-wall-time/1",
+        "wall_s": 490.67076312890276,
+        "main_thread_exclusive_s": {
+          "perception.entity_measurement": 16.84768815431744,
+          "artifact_io": 1.3583425753749907,
+          "planning.consequences": 6.797999150585383,
+          "simulation.step_render": 56.65505207097158,
+          "perception.depth": 10.765231954399496,
+          "perception.capture_io": 183.69474934134632,
+          "perception.segmentation": 207.51235689874738,
+          "vla.inference": 4.414900484960526,
+          "execution.other": 0.687777653336525
+        },
+        "all_threads_exclusive_s": {
+          "perception.entity_measurement": 16.84768815431744,
+          "artifact_io": 1.3583425753749907,
+          "planning.consequences": 6.797999150585383,
+          "simulation.step_render": 56.65505207097158,
+          "perception.depth": 10.765231954399496,
+          "perception.capture_io": 183.69474934134632,
+          "perception.segmentation": 207.51235689874738,
+          "vla.inference": 4.414900484960526,
+          "execution.other": 0.687777653336525
+        },
+        "main_thread_unattributed_s": 1.9366648448631167,
+        "calls": {
+          "perception.entity_measurement:_instance_pixels": 4,
+          "perception.entity_measurement:_contact_pixels": 4,
+          "artifact_io:_record_public_geometry": 9,
+          "planning.consequences:_cloud_and_ik": 3,
+          "planning.consequences:_candidate": 1,
+          "planning.consequences:plan_chunk": 1,
+          "planning.consequences:check": 2,
+          "planning.consequences:__call__": 1,
+          "simulation.step_render:step": 123,
+          "perception.depth:_metric_depth": 452,
+          "perception.depth:_world_from_depth": 452,
+          "simulation.step_render:render_camera": 226,
+          "perception.capture_io:get_env_state": 113,
+          "perception.segmentation:call": 381,
+          "perception.entity_measurement:refresh": 115,
+          "perception.entity_measurement:_refresh_held_measurement": 113,
+          "vla.inference:predict": 22,
+          "execution.other:None": 1
+        },
+        "main_thread_exclusive_by_root_s": {
+          "execution.other": {
+            "perception.entity_measurement": 16.84768815431744,
+            "artifact_io": 1.3583425753749907,
+            "planning.consequences": 6.797999150585383,
+            "simulation.step_render": 56.65505207097158,
+            "perception.depth": 10.765231954399496,
+            "perception.capture_io": 183.69474934134632,
+            "perception.segmentation": 207.51235689874738,
+            "vla.inference": 4.414900484960526,
+            "execution.other": 0.687777653336525
+          }
+        },
+        "worker_times_overlap_main_thread": true,
+        "scope": "client wall time including transport; initial simulator construction excluded"
+      }
+    }
+  ],
+  "cheese_followup": {
+    "summary": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/summary.json",
+      "sha256": "7e2c062c23a775ff7a2e0115c43ed8e6e56e339f3f44a3ddd64771a6eaccc940"
+    },
+    "result": {
+      "plan": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/plan.json",
+        "sha256": "10f16fc2583d6844386b9b38c0d687d21f8f7fc6a381dc7f4ec0c7c95be2110e"
+      },
+      "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+      "subtask": {
+        "goal_index": 0,
+        "goal": [
+          "in",
+          "cream_cheese_1",
+          "basket_1_contain_region"
+        ],
+        "source_symbol": "cream_cheese_1",
+        "id": "g0:in",
+        "mode": "in",
+        "target_symbol": "basket_1_contain_region"
+      },
+      "trial": {
+        "subtask": {
+          "goal_index": 0,
+          "goal": [
+            "in",
+            "cream_cheese_1",
+            "basket_1_contain_region"
+          ],
+          "source_symbol": "cream_cheese_1",
+          "id": "g0:in",
+          "mode": "in",
+          "target_symbol": "basket_1_contain_region"
+        },
+        "method": "self",
+        "trial_seed": 16401000,
+        "initial_physics_sha256": "870015e275d1366de1431546fd3022a17ebed2a28806eb36693f5f995fa3e070",
+        "prefix": [],
+        "initial_legacy_captured_physics_sha256": "d007aa750cfbe64fb666708b88187de4352be3f6c566600f921baf2df6f370ed",
+        "observation_restore": "captured_sensor_phase_and_buffers_v1",
+        "request_sha256": "93915d038c143220895b2cea5b05f4c48fc1576e0d53d6600529022289fa8d7f",
+        "legal": [
+          "e36f0d142490c484",
+          "1786f6b86bc8b67c",
+          "e04e58d46e5b3e44",
+          "54021981a323c862",
+          "d22f9990a9e65ccf",
+          "bf9de6ee91eca358",
+          "a06d7246e281fcc0",
+          "8b0466775a5ee6e0",
+          "af168d7be0907ccf",
+          "af866c584b96de88",
+          "7f56ae3f4c8b42af",
+          "987434631f6c114e",
+          "d451641a43530846",
+          "da03dfd33903f2af",
+          "a60c614801315118",
+          "081576ed1324444c",
+          "cf76f41b91add9d4",
+          "d9c1571c64094174",
+          "6214fa75dd12c9ad",
+          "73648ffc793365f9",
+          "569a921930ff8027",
+          "7b2a0ff9a2f09db4",
+          "9c67fe68072b4df7",
+          "5fcd6a5186d9dead",
+          "1308af716be7cf2f",
+          "e1884eb5a348896b",
+          "00bf480e4f979c19",
+          "93c1617fd7159ccf",
+          "027cea6b4534fa9c",
+          "1f9311eb6c9f6bb8",
+          "1491d75e66b081aa",
+          "825cb73a9c032a28"
+        ],
+        "selected_candidate_id": "e36f0d142490c484",
+        "source_public_id": "e75",
+        "target_public_id": "e118",
+        "success": true,
+        "status": "physical_result",
+        "model_visible": false,
+        "training": false,
+        "binding_recovery": [],
+        "truth_source": "unchanged_registered_task_predicate",
+        "endpoint": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/continuation/private_endpoint.pkl",
+          "sha256": "9f52bc946fe906fd0c6d20cd4fb6dcb11f0f44cbf68f72a05aadcd77d81af6b1",
+          "physics_sha256": "747ff56a881a2ecda6f418c218a1ed215197652d9fe31a83b0be6f6011e98220"
+        },
+        "private_metrology_s": 0.0009277099743485451,
+        "evidence": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/continuation/private_truth.json",
+          "sha256": "28a82890c16a2f8dc63119725b5470720a8e86eb4e4d636e992540654068068a"
+        },
+        "choices": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/saved_handoff_continuation_20261020/15068167_cheese/continuation/choices.jsonl",
+          "sha256": "80d1511ac70db607e05703efe3a6baabb8074ec35116f5892197511f8972f183"
+        },
+        "reason": "subtask_completed",
+        "wall_s": 121.6242760992609,
+        "sim_steps": 260,
+        "decisions": 2,
+        "vla_inference_calls": 0,
+        "vla_inputs": [],
+        "vla_predictions": [],
+        "wall_time_breakdown": {
+          "version": "bounded-wall-time/1",
+          "wall_s": 121.62536430824548,
+          "main_thread_exclusive_s": {
+            "perception.entity_measurement": 63.5003041443415,
+            "artifact_io": 1.5633764620870352,
+            "planning.consequences": 33.71806752542034,
+            "decision.oracle": 0.02631128579378128,
+            "simulation.step_render": 5.414082198869437,
+            "perception.depth": 0.41139368806034327,
+            "perception.capture_io": 6.4189593186602,
+            "perception.segmentation": 8.597014581318945,
+            "execution.other": 0.2483692429959774,
+            "planning.request": 0.024611805099993944
+          },
+          "all_threads_exclusive_s": {
+            "perception.entity_measurement": 63.5003041443415,
+            "artifact_io": 1.5633764620870352,
+            "planning.consequences": 33.71806752542034,
+            "decision.oracle": 0.02631128579378128,
+            "simulation.step_render": 5.414082198869437,
+            "perception.depth": 0.41139368806034327,
+            "perception.capture_io": 6.4189593186602,
+            "perception.segmentation": 8.597014581318945,
+            "execution.other": 0.2483692429959774,
+            "planning.request": 0.024611805099993944
+          },
+          "main_thread_unattributed_s": 1.7028740555979311,
+          "calls": {
+            "perception.entity_measurement:_instance_pixels": 20,
+            "perception.entity_measurement:_contact_pixels": 11,
+            "artifact_io:_record_public_geometry": 35,
+            "planning.consequences:_cloud_and_ik": 41,
+            "planning.consequences:context": 5,
+            "planning.consequences:_route": 90,
+            "planning.consequences:__call__": 83,
+            "planning.consequences:_candidate": 137,
+            "planning.consequences:check": 375,
+            "decision.oracle:None": 2,
+            "planning.consequences:plan_chunk": 2,
+            "simulation.step_render:step": 260,
+            "perception.depth:_metric_depth": 16,
+            "perception.depth:_world_from_depth": 16,
+            "simulation.step_render:render_camera": 8,
+            "perception.capture_io:get_env_state": 4,
+            "perception.segmentation:call": 72,
+            "perception.entity_measurement:refresh": 8,
+            "perception.entity_measurement:_refresh_held_measurement": 5,
+            "execution.other:None": 2,
+            "planning.request:None": 1
+          },
+          "main_thread_exclusive_by_root_s": {
+            "decision.oracle": {
+              "perception.entity_measurement": 6.21904619038105e-05,
+              "artifact_io": 0.28932806570082903,
+              "planning.consequences": 14.744344352278858,
+              "decision.oracle": 0.02631128579378128
+            },
+            "execution.other": {
+              "planning.consequences": 14.423634852748364,
+              "perception.entity_measurement": 61.97111918590963,
+              "artifact_io": 0.6105208899825811,
+              "simulation.step_render": 5.414082198869437,
+              "perception.depth": 0.41139368806034327,
+              "perception.capture_io": 6.4189593186602,
+              "perception.segmentation": 8.597014581318945,
+              "execution.other": 0.2483692429959774
+            },
+            "planning.request": {
+              "planning.consequences": 4.550088320393115,
+              "perception.entity_measurement": 1.529122767969966,
+              "artifact_io": 0.663527506403625,
+              "planning.request": 0.024611805099993944
+            }
+          },
+          "worker_times_overlap_main_thread": true,
+          "scope": "client wall time including transport; initial simulator construction excluded"
+        }
+      },
+      "native_success": true,
+      "training": false,
+      "confirmation": false,
+      "scope": "D2 saved endpoint bounded continuation only"
+    }
+  },
+  "training": false,
+  "confirmation": false,
+  "scope": "six registered canonical restores at original sampling seeds; no historical10477 exact-input or D2 whole-cohort success claim"
+}
