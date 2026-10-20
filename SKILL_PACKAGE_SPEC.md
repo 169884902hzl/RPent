@@ -359,6 +359,10 @@ Incremental refresh uses hand/payload swept volumes, contacted anchors and
 measured support movement. Cached anchors retain `cached=true` and their
 original `capture_step`. Rendered robot depth uses static visual meshes,
 public joint measurements and the same camera calibration as RGB-D.
+Depth masks rasterize the original visual mesh faces, preserving recesses;
+collision convex hull faces must not replace the visual surface. Raster
+samples use OpenGL pixel centres `(col+0.5,row+0.5)` in the saved array grid.
+Calibration and the 12 mm depth agreement band remain unchanged.
 Array encoding runs in an owned background thread; reads, snapshots and
 shutdown wait for pending writes and surface errors. Production diagnostics
 omit redundant public point-cloud dumps while retaining both camera views,

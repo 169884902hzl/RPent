@@ -5,17 +5,24 @@ import xml.etree.ElementTree as ET
 
 import numpy as np
 from numba import njit
-from scipy.spatial import ConvexHull
 from scipy.spatial.transform import Rotation
 
 from robots.libero.v5_geometric_grasp import _rotation, _vector, stl_vertices
 
 
-def _vertices(path):
+def _mesh_triangles(path):
     if path.suffix.lower()=='.obj':
-        return np.array([line.split()[1:4] for line in path.read_text().splitlines()
-                         if line.startswith('v ')],dtype=float)
-    return stl_vertices(path)
+        vertices,faces=[],[]
+        for line in path.read_text().splitlines():
+            fields=line.split()
+            if not fields:continue
+            if fields[0]=='v':vertices.append([float(x) for x in fields[1:4]])
+            elif fields[0]=='f':
+                indices=[int(item.split('/')[0]) for item in fields[1:]]
+                ids=[i-1 if i>0 else len(vertices)+i for i in indices]
+                faces.extend((ids[0],ids[i],ids[i+1]) for i in range(1,len(ids)-1))
+        return np.asarray(vertices)[np.asarray(faces,dtype=int)]
+    return stl_vertices(path).reshape(-1,3,3)
 
 
 @lru_cache(maxsize=4)
@@ -29,9 +36,9 @@ def _arm_triangles(xml_path):
             if geom.get('group')!='1' or geom.get('type')!='mesh':
                 continue
             mesh = meshes[geom.get('mesh')]
-            vertices = _vertices(path.parent/mesh.get('file'))*_vector(mesh,'scale','1 1 1')
-            vertices = vertices@_rotation(geom).T+_vector(geom,'pos','0 0 0')
-            result.append((node,vertices[ConvexHull(vertices).simplices]))
+            triangles = _mesh_triangles(path.parent/mesh.get('file'))*_vector(mesh,'scale','1 1 1')
+            triangles = triangles@_rotation(geom).T+_vector(geom,'pos','0 0 0')
+            result.append((node,triangles))
         if body.get('name')=='right_hand':
             break
         node,body = node+1,body.find('body')
@@ -42,7 +49,7 @@ def _arm_triangles(xml_path):
 def _hand_triangles(xml_path):
     path = Path(xml_path)
     root = ET.parse(path).getroot()
-    meshes = {m.get('name'):path.parent/m.get('file') for m in root.findall('asset/mesh')}
+    meshes = {m.get('name'):m for m in root.findall('asset/mesh')}
     hand = root.find(".//body[@name='right_gripper']")
     eef = hand.find("body[@name='eef']")
     offset = _vector(eef,'pos','0 0 0')+_vector(eef.find("site[@name='grip_site']"),'pos','0 0 0')
@@ -55,14 +62,19 @@ def _hand_triangles(xml_path):
         for geom in body.findall('geom'):
             if geom.get('group')!='1' or geom.get('type')!='mesh':
                 continue
-            vertices = _vertices(meshes[geom.get('mesh')])
-            vertices = (vertices@_rotation(geom).T+_vector(geom,'pos','0 0 0'))@turn.T+position-offset
-            result.append((finger,slide,vertices[ConvexHull(vertices).simplices]))
+            mesh=meshes[geom.get('mesh')]
+            triangles = _mesh_triangles(path.parent/mesh.get('file'))*_vector(mesh,'scale','1 1 1')
+            triangles = (triangles@_rotation(geom).T+_vector(geom,'pos','0 0 0'))@turn.T+position-offset
+            result.append((finger,slide,triangles))
     return result
 
 
 def current_robot_triangles(pose_screen,robot,gripper_xml):
-    """Static convex visual shells in the same public FK world as the screen."""
+    """Actual visual faces in the same public FK world as the screen.
+
+    Convex hull faces bridge visual recesses and render depth ahead of the
+    true surface. Their depth must not be used as a robot segmentation mask.
+    """
     transforms,pose,joint = [],np.eye(4),0
     for fixed,axis in pose_screen.nodes:
         pose = pose@fixed
@@ -117,10 +129,16 @@ def rendered_robot_mask(world,metadata,triangles,*,margin_m=.012):
     k = np.array(metadata['intrinsic_K'],dtype=float,copy=True)
     k[0] *= width/metadata.get('width',256)
     k[1] *= height/metadata.get('height',256)
+    # MuJoCo/OpenGL samples depth at pixel centres. Saved RGB-D backprojection
+    # uses integer array indices, so render at (col+.5,row+.5) in that grid.
+    # This changes sampling, not the camera's measured calibration.
+    k[0,2] -= .5
+    k[1,2] -= .5
     camera = (triangles-extrinsic[:3,3])@extrinsic[:3,:3]
     depth = raster_depth(camera,k,height,width)
     measured = (np.asarray(world)-extrinsic[:3,3])@extrinsic[:3,:3]
     mask = np.isfinite(depth)&np.isfinite(measured).all(axis=-1)&(np.abs(measured[...,2]-depth)<=margin_m)
-    return mask,{'source':'static_visual_convex_meshes_public_joint_sensors_and_camera_calibration',
-        'method':'rendered_robot_depth','margin_m':margin_m,'triangles':len(triangles),
+    return mask,{'source':'static_visual_mesh_triangles_public_joint_sensors_and_camera_calibration',
+        'method':'rendered_robot_depth','pixel_sample_offset_xy':[.5,.5],
+        'margin_m':margin_m,'triangles':len(triangles),
         'removed_points':int(mask.sum()),'private_pose_used':False}
