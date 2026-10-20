@@ -24,6 +24,32 @@ def module(path, name):
     return result
 
 
+def pending_cases(output, indices):
+    """Resume completed cases while retaining every interrupted attempt."""
+    pending = []
+    for index in indices:
+        pointer = output / f'closed_{index:03d}.json'
+        if pointer.exists():
+            row = json.loads(pointer.read_bytes())
+            if hashlib.sha256(Path(row['summary']).read_bytes()).hexdigest() != row['sha256']:
+                raise ValueError('completed latency case changed')
+            continue
+        directory = output / f'case{index:03d}'
+        prior = [directory / 'summary.json', *output.glob(f'case{index:03d}_attempt*/summary.json')]
+        completed = next((path for path in prior if path.exists()
+            and json.loads(path.read_bytes()).get('status') in {'physical_result', 'oracle_rule_uncovered'}), None)
+        if completed:
+            write(pointer, {'summary': str(completed),
+                'sha256': hashlib.sha256(completed.read_bytes()).hexdigest()})
+            continue
+        attempt = 0
+        while directory.exists():
+            attempt += 1
+            directory = output / f'case{index:03d}_attempt{attempt}'
+        pending.append((index, directory))
+    return pending
+
+
 def worker(args, plan):
     sys.path.insert(0, str(args.source))
     hooks = module(args.source/'coordination/bounded_skills_20261016/scripts/shared_gpu_episodes_20261019.py', 'latency_hooks')
@@ -266,8 +292,10 @@ def main():
     hooks=module(args.source/'coordination/bounded_skills_20261016/scripts/shared_gpu_episodes_20261019.py','latency_hooks')
     hooks.bootstrap_source('d2')
     from scripts.probe_bounded_feasibility import services
-    args.output.mkdir(parents=True)
-    write(args.output/'launch.json',{'manifest':str(args.manifest),'source':str(args.source),
+    args.output.mkdir(parents=True,exist_ok=True)
+    pending = pending_cases(args.output, indices)
+    if not pending:return 0
+    write(args.output/f'launch_{time.time_ns()}.json',{'manifest':str(args.manifest),'source':str(args.source),
         'source_commit':plan['baseline_commit'],'slurm_job_id':os.environ.get('SLURM_JOB_ID'),
         'cuda_visible_devices':os.environ.get('CUDA_VISIBLE_DEVICES'),'episode_concurrency':1,
         'comparison_scope':'N1 only; no throughput claim','training':False})
@@ -275,8 +303,8 @@ def main():
         sam3_entry=Path(plan['paired_protocol']['sam_entry']['path']))
     env=dict(os.environ,SOURCE_COMMIT=plan['baseline_commit'])
     with hooks.owned_services(service_args,services,vla=True) as endpoints:
-        for startup,index in [(True,indices[0])]+([] if args.startup_only else [(False,i) for i in indices]):
-            output=args.output/('startup' if startup else f'case{index:03d}')
+        for startup,index,output in [(True,pending[0][0],args.output/f'startup_{time.time_ns()}')]+(
+                [] if args.startup_only else [(False,i,path) for i,path in pending]):
             output.mkdir()
             write(output/'assignment.json',{key+'_url':client._base_url for key,client in endpoints.items()})
             command=[sys.executable,str(Path(__file__).resolve()),'--manifest',str(args.manifest),
@@ -288,6 +316,9 @@ def main():
                 raise RuntimeError(f'latency worker {index} failed; see {output}/worker.log')
             if startup and json.loads((output/'summary.json').read_bytes())['status'] != 'startup_physical':
                 raise RuntimeError('startup ended without a completed physical request')
+            if not startup:
+                write(args.output/f'closed_{index:03d}.json', {'summary':str(output/'summary.json'),
+                    'sha256':hashlib.sha256((output/'summary.json').read_bytes()).hexdigest()})
             print(json.dumps({'index':index,'startup':startup,'closed':str(output/'summary.json')}),flush=True)
     return 0
 

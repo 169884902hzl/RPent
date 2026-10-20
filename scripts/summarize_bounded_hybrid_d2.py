@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import statistics
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -169,6 +170,11 @@ def summarize(plan, reports):
             if 'independent_replay_supplement' in report else {})}
         for name, report in physical.items()}
     replay = [replay_details[name]['label'] if name in physical else None for name in cases]
+    replay_times = [{'case': name, 'wall_s': report['independent_replay_wall_s'],
+        'scope': report.get('independent_replay_wall_scope')}
+        for name, report in physical.items() if replay_details[name]['label'] is not None
+        and type(report.get('independent_replay_wall_s')) in (float, int)]
+    wall_values = sorted(row['wall_s'] for row in replay_times)
     envelope = [physical[name].get('sampled_envelope_native_success') if name in physical else None
                 for name in cases]
     task_suites = []
@@ -183,6 +189,10 @@ def summarize(plan, reports):
         'case_status': dict(Counter(report['status'] for report in by_case.values())),
         'missing_cases': [name for name in cases if name not in by_case],
         'independent_full_replay': rate(replay), 'sampled_envelope_native': rate(envelope),
+        'independent_replay_wall_s': {'known_n': len(wall_values), 'registered_n': len(cases),
+            'mean': statistics.mean(wall_values) if wall_values else None,
+            'median': statistics.median(wall_values) if wall_values else None,
+            'observations': replay_times},
         'independent_replay_evidence': [{'case': name, **detail}
             for name, detail in replay_details.items()],
         'task_suite_summary': task_suites,

@@ -359,7 +359,9 @@ def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_
     if unknown:
         assert len(methods) == 4 and result['full_replay'] == []
         assert result['conditional_rate_product'] is None
+        assert result['independent_replay_wall_s'] is None
     else:
         assert methods[4:] == ['self']
         assert len(result['full_replay']) == 1 and result['full_replay'][0]['success'] is False
         assert result['conditional_rate_product'] == 0.
+        assert result['independent_replay_wall_s'] >= 0.

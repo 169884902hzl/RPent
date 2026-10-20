@@ -79,3 +79,24 @@ def test_failed_startup_raises_before_dispatching_any_full_case(tmp_path, monkey
     with pytest.raises(subprocess.CalledProcessError):
         module.main()
     assert stats['formal'] == [] and not list(output.glob('closed_*.json'))
+
+
+def test_n1_resume_preserves_completed_cases_and_interrupted_attempt(tmp_path):
+    path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py'
+    spec = importlib.util.spec_from_file_location('schema6_fixed_latency', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    complete = tmp_path / 'case000'
+    complete.mkdir()
+    summary = complete / 'summary.json'
+    summary.write_text(json.dumps({'status': 'physical_result', 'success': False}))
+    interrupted = tmp_path / 'case001'
+    interrupted.mkdir()
+    (interrupted / 'worker.log').write_text('interrupted physical attempt')
+    pending = module.pending_cases(tmp_path, [0, 1, 2])
+    assert pending == [(1, tmp_path / 'case001_attempt1'), (2, tmp_path / 'case002')]
+    assert (interrupted / 'worker.log').read_text() == 'interrupted physical attempt'
+    assert (tmp_path / 'closed_000.json').exists()
+    summary.write_text('changed')
+    with pytest.raises(ValueError):
+        module.pending_cases(tmp_path, [0])

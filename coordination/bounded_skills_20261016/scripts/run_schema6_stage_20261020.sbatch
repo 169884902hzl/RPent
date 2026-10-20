@@ -18,7 +18,7 @@ export PI05_CHECKPOINT_PATH="$ROOT/assets/pi05" SAM3_CHECKPOINT_PATH="$ROOT/asse
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 if [[ "${SCHEMA6_N1:-0}" == 1 ]]; then
-    LAUNCHER=$SCHEMA6_SOURCE/coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py
+    LAUNCHER=${SCHEMA6_LAUNCHER:-$SCHEMA6_SOURCE/coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py}
 else
     LAUNCHER=${SCHEMA6_LAUNCHER:-$SCHEMA6_SOURCE/coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py}
 fi

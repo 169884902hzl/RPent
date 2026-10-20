@@ -482,6 +482,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
         # Independently execute the selected method sequence from the original
         # full state, never splice saved successful endpoints into this replay.
         restore_checkpoint(facade, adapter, policy, initial)
+        replay_started = time.perf_counter()
         replay, replay_decisions = [], 0
         if all(row["selection"]["method"] is not None for row in rows):
             for index, choice in enumerate(chosen):
@@ -500,6 +501,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             "sampled_envelope_native_success": envelope_done,
             "conditional_rate_product": envelope_rate,
             "actual_full_replay_success": facade.goal_status()["done"], "full_replay": replay,
+            "independent_replay_wall_s": time.perf_counter() - replay_started if replay else None,
+            "independent_replay_wall_scope": "after restoring initial physics/public cache; includes replay planning, execution and private measurement; excludes forks, method selection and simulator construction",
             "wall_time_breakdown": timings.summary(time.perf_counter() - timings.started),
             "training": False, "confirmation": False, "source_commit": plan["source_commit"]}
         write(output / "summary.json", result)

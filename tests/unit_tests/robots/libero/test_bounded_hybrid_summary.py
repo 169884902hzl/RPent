@@ -158,6 +158,21 @@ def test_actual_replay_of_the_zero_zero_self_tie_is_measured_failure():
     assert result['independent_full_replay']['known_n'] == 1
 
 
+def test_replay_latency_excludes_unknown_and_unexecuted_replays():
+    plan = fixture_plan()
+    first = fixture_report(plan)
+    first['subtasks'][0]['selection'] = {'method': 'self', 'status': 'both_failed'}
+    first['full_replay'] = [{'method': 'self', 'success': False}]
+    first.update(independent_replay_wall_s=120., independent_replay_wall_scope='replay_only')
+    second = fixture_report(plan)
+    second['case'] = plan['cases'][1]
+    second['independent_replay_wall_s'] = 0.
+    result = summarize(plan, [first, second])
+    assert result['independent_replay_wall_s']['known_n'] == 1
+    assert result['independent_replay_wall_s']['registered_n'] == 40
+    assert result['independent_replay_wall_s']['mean'] == 120.
+
+
 def test_native_success_after_an_executed_prefix_is_a_measured_success():
     plan = fixture_plan()
     report = fixture_report(plan)

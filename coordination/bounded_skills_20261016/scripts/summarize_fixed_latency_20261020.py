@@ -32,6 +32,13 @@ def collect(directory, registration):
     for index, row in enumerate(registration['cases']):
         case_dir = directory/f'case{index:03d}'
         summary_path = case_dir/'summary.json'
+        pointer = directory/f'closed_{index:03d}.json'
+        if pointer.exists():
+            registered = json.loads(pointer.read_bytes())
+            summary_path = Path(registered['summary'])
+            if reference(summary_path)['sha256'] != registered['sha256']:
+                raise ValueError(f'closed latency case changed: {summary_path}')
+            case_dir = summary_path.parent
         if not summary_path.exists():
             missing.append(index)
             continue
