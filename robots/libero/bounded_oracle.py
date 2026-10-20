@@ -67,7 +67,9 @@ class BoundedOracle:
         candidates = [c for c in request["candidates"] if c["skill"] != "call_vla"]
         feasible = [c for c in candidates if c["consequences"]["collision"] is not True
                     and c["consequences"]["ik_reachable"] is not False
-                    and c["consequences"]["screen_scope"] != "conditional_on_prefix"]
+                    and c["consequences"]["screen_scope"] != "conditional_on_prefix"
+                    and not (c.get('recent_failures',0)>0 and c.get('last_failure') in
+                        {'measured_sweep_collision','measured_arm_sweep_collision','numerical_ik_not_found'})]
         def find(skill, **parameters):
             return next((c for c in feasible if c["skill"] == skill
                 and all(c["parameters"].get(key) == value for key, value in parameters.items())), None)
@@ -351,6 +353,8 @@ class BoundedOracle:
                 effect = candidate['consequences']
                 if (effect['collision'] is True or effect['ik_reachable'] is False
                         or effect['screen_scope'] == 'conditional_on_prefix'
+                        or (candidate.get('recent_failures',0)>0 and candidate.get('last_failure') in
+                            {'measured_sweep_collision','measured_arm_sweep_collision','numerical_ik_not_found'})
                         or candidate['skill'] != chosen['skill']):
                     continue
                 other = candidate['parameters']

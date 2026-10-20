@@ -52,3 +52,16 @@ def test_libero_depth_sampling_uses_pixel_centres_without_changing_calibration()
     assert metadata['intrinsic_K']==k.tolist()
     world[2,2]=[0.,0.,.8]
     assert not rendered_robot_mask(world,metadata,faces)[0][2,2]
+
+
+def test_depth_agreement_uses_actual_surface_layers_without_filling_the_gap():
+    front=np.array([[[-1.,-1.,1.],[1.,-1.,1.],[0.,1.,1.]]])
+    back=front.copy();back[:,:,2]=1.08
+    faces=np.concatenate((front,back))
+    k=np.array([[2.,0.,2.],[0.,2.,2.],[0.,0.,1.]])
+    row,col=np.mgrid[:5,:5]
+    metadata=dict(extrinsic_cam2world=np.eye(4).tolist(),intrinsic_K=k.tolist(),width=5,height=5)
+    for z,expected in ((1.,True),(1.08,True),(.8,False),(1.04,False),(1.2,False)):
+        world=np.stack([(col-2)*z/2,(row-2)*z/2,np.full((5,5),z)],axis=-1)
+        mask,_=rendered_robot_mask(world,metadata,faces)
+        assert bool(mask[2,2]) is expected

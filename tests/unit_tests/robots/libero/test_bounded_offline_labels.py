@@ -84,6 +84,32 @@ def test_schema6_capture_preserves_merged_options_and_prefix_screen_scope(captur
     assert calls == calls_before and not adapter.p.actions
 
 
+@pytest.mark.parametrize('reason',[
+    'measured_sweep_collision','measured_arm_sweep_collision','numerical_ik_not_found'])
+def test_rejected_deterministic_approach_uses_new_option_until_scene_changes(captured,reason):
+    adapter,oracle,_,_,_=captured
+    adapter.schema6_v1=adapter.lazy_planning_v1=True
+    request=adapter.request(k=1)
+    default=next(c for c in request['candidates'] if c['skill']=='move_to'
+        and c['parameters']=={'anchor_id':'e1'})
+    adapter.memory.record(default,'failure',reason)
+    adapter._failed_move_anchors.add('e1')
+    adapter.revision+=1
+    request=adapter.request(k=1)
+    state=capture_annotation_state(oracle,request)
+    label=annotate_prefix(state,request,[])
+    assert default['id'] in label['legal']
+    assert default['id'] not in label['rule_acceptable']
+    chosen=next(c for c in request['candidates'] if c['id']==label['selected'])
+    assert chosen['skill']=='move_to' and chosen['parameters']['anchor_id']=='e1'
+    assert 'approach' in chosen['parameters']
+    adapter.memory.tick(scene_changed=True)
+    adapter.revision+=1
+    request=adapter.request(k=1)
+    label=annotate_prefix(capture_annotation_state(oracle,request),request,[])
+    assert default['id'] in label['rule_acceptable']
+
+
 def test_schema6_captured_catalog_uses_same_builder_and_keeps_exact_request(captured):
     adapter, oracle, _, _, calls = captured
     adapter.schema6_v1 = adapter.lazy_planning_v1 = True

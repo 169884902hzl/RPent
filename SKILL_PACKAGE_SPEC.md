@@ -363,6 +363,9 @@ Depth masks rasterize the original visual mesh faces, preserving recesses;
 collision convex hull faces must not replace the visual surface. Raster
 samples use OpenGL pixel centres `(col+0.5,row+0.5)` in the saved array grid.
 Calibration and the 12 mm depth agreement band remain unchanged.
+Depth agreement checks every actual mesh surface at that pixel, because
+CPU/GPU edge coverage can select different front fragments. It never fills
+the gap between separate surfaces or expands the depth agreement band.
 Array encoding runs in an owned background thread; reads, snapshots and
 shutdown wait for pending writes and surface errors. Production diagnostics
 omit redundant public point-cloud dumps while retaining both camera views,
@@ -403,6 +406,13 @@ preserves task/initial-state holdouts and exclusions. All unmeasured VLA
 options remain unknown; no PRO, D2 or confirmation state is admitted.
 Source-eligible effective positions are reported against the old 2414;
 C2 must also recompute cross-split aliases on the rebuilt requests.
+
+The private oracle does not immediately reselect an unchanged action with
+a recorded swept-hand collision, swept-arm collision or failed numerical
+IK. It tries another publicly available option. The same exclusion applies
+to its acceptable set; it does not remove that action from public legality.
+Measured scene change resets the existing failure memory and permits a new
+attempt. Rule-label releases bind this oracle revision independently.
 
 B2's expanded VLA catalog is implemented behind `vla_options_v2=false`.
 It becomes active only after the shared schema/contract is synchronized in

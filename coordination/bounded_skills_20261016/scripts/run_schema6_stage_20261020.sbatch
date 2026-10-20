@@ -23,6 +23,23 @@ else
     LAUNCHER=${SCHEMA6_LAUNCHER:-$SCHEMA6_SOURCE/coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py}
 fi
 ARGS=(--source "$SCHEMA6_SOURCE" --manifest "$SCHEMA6_MANIFEST" --output "$SCHEMA6_OUTPUT")
+CUDA_VISIBLE_DEVICES='' "$ROOT/.venv/bin/python" - "$SCHEMA6_SOURCE" "$SCHEMA6_MANIFEST" <<'PY'
+from pathlib import Path
+import hashlib,json,sys
+source=Path(sys.argv[1]).resolve(strict=True)
+for name in ('harness_v5_eval.py','typed_choice_eval.py','scripts/probe_bounded_hybrid_d2.py'):
+    if not (source/name).is_file():raise FileNotFoundError(source/name)
+sys.path.insert(0,str(source))
+from scripts.probe_bounded_hybrid_d2 import load_public_gripper_calibration
+import harness_v5_eval
+if Path(harness_v5_eval.__file__).resolve().parent!=source:
+    raise RuntimeError('calibration helper imported from a different snapshot')
+plan=json.loads(Path(sys.argv[2]).resolve(strict=True).read_bytes())
+rows=plan.get('jobs',plan.get('cases',[]))
+for row in rows:load_public_gripper_calibration(row['case']['grasp_measurement_calibration'])
+print(json.dumps({'CPU_source_import_preflight':'passed','cases':len(rows),'source':str(source),
+    'root_helper_sha256':hashlib.sha256((source/'harness_v5_eval.py').read_bytes()).hexdigest()}),flush=True)
+PY
 if [[ "${SCHEMA6_N1:-0}" != 1 ]]; then
     ARGS+=(--episode-concurrency "${SCHEMA6_CONCURRENCY:-8}")
 fi

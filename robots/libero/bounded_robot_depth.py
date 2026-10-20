@@ -98,9 +98,9 @@ def current_robot_triangles(pose_screen,robot,gripper_xml):
 
 
 @njit(cache=True)
-def raster_depth(triangles,k,height,width):
-    """Perspective-correct triangle depth; pixel centres match RGB-D maps."""
+def _raster_surfaces(triangles,k,height,width,observed_depth,margin_m):
     depth = np.full((height,width),np.inf)
+    matches = np.zeros((height,width),np.bool_)
     for face in triangles:
         if np.min(face[:,2]) <= 1e-5:
             continue
@@ -119,7 +119,14 @@ def raster_depth(triangles,k,height,width):
                 if min(a,b,c)>=-1e-10:
                     value = 1./(a/face[0,2]+b/face[1,2]+c/face[2,2])
                     depth[row,col] = min(depth[row,col],value)
-    return depth
+                    if abs(observed_depth[row,col]-value)<=margin_m:
+                        matches[row,col] = True
+    return depth,matches
+
+
+def raster_depth(triangles,k,height,width):
+    """Perspective-correct nearest depth on the caller's pixel grid."""
+    return _raster_surfaces(triangles,k,height,width,np.full((height,width),np.nan),0.)[0]
 
 
 def rendered_robot_mask(world,metadata,triangles,*,margin_m=.012):
@@ -135,10 +142,14 @@ def rendered_robot_mask(world,metadata,triangles,*,margin_m=.012):
     k[0,2] -= .5
     k[1,2] -= .5
     camera = (triangles-extrinsic[:3,3])@extrinsic[:3,:3]
-    depth = raster_depth(camera,k,height,width)
     measured = (np.asarray(world)-extrinsic[:3,3])@extrinsic[:3,:3]
-    mask = np.isfinite(depth)&np.isfinite(measured).all(axis=-1)&(np.abs(measured[...,2]-depth)<=margin_m)
+    # At a projected mesh edge, CPU and GPU coverage can select different
+    # front fragments. Match a measured sample to any finite robot face at
+    # that pixel; do not fill the depth interval between separate surfaces.
+    _,mask = _raster_surfaces(camera,k,height,width,measured[...,2],margin_m)
+    mask &= np.isfinite(measured).all(axis=-1)
     return mask,{'source':'static_visual_mesh_triangles_public_joint_sensors_and_camera_calibration',
-        'method':'rendered_robot_depth','pixel_sample_offset_xy':[.5,.5],
+        'method':'rendered_robot_depth','surface_layers':'all_finite_visual_faces',
+        'pixel_sample_offset_xy':[.5,.5],
         'margin_m':margin_m,'triangles':len(triangles),
         'removed_points':int(mask.sum()),'private_pose_used':False}
