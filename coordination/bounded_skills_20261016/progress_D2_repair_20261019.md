@@ -1,3 +1,13 @@
+## 当前续接：公开提示绑定3968bdb4（覆盖下方旧PID）
+
+- HEAD3968bdb4f5f88c63be1a60fc34d955ff169af5b3已普通推送。公开提示只对anchors可见/缓存实体消歧；不可描述候选省略，选中后失测返回unmeasured/perception/subtask_binding_unmeasured、0步且计入失败。schema字段不变，bounded-skills/4。
+- 真实失败：10682_1的microwave_close_libero_90_t33_s15。腕扫后e2公开、e67失测且不在anchors，旧提示却用e67否决。捕获状态CPU重建anchors字节相等、旧报错复现、新提示close the microwave，保留e2。320项相关CPU回归通过；物理尚未通过。
+- 快照source_bounded_public_vla_binding_20261020_3968bdb4；归档SHA bf0212555ae870ecd3c59aa910c9b17083a55ef69eaf9589b21d839cf334f0db。
+- 新同状态验证CPU预检2/2，manifest SHA6986909fed0499bb2c2099018aaeee4dee77a3cfa4ae24ad6cda8a445240d8cc，输出results/bounded_skills/public_binding_repair_20261020/3968bdb4。首次物理startup在raw10684已有服务上启动，工具session53978；必须用新快照里的startup_on_shared_allocation，不用live根旧helper。通过后同三种原seed完整运行。
+- 旧全局派发器3680760已TERM，无竞争控制器；10681_0/10682_0..2仍R，旧结果保留，等待新源实际startup后转移后续到新登记源码，不混分母。卡4/C2无GPU，80CPU/560GB，node02/nice500。
+- 六例150交还已闭合6/6停稳和后继请求；3个私有真抓住都由bounded续接完成原生任务。三seed停止规则对照12条闭合；三个绑定歧义仍待物理消歧验证。不要把本公共提示bug称成Entity对象不等，它是未公开跟踪残留参与提示消歧。
+- 优先：检查53978首次物理；通过后s15三分支、重登记D2/原版后续；监控并归因worker程序错误，不结束回合。所有PRO数据evaluation-only，永久确认排除有效。
+
 ## 最新监测与profile
 
 唯一派发器现在PID3568107（3524921已停），代码cb103385；远端dispatcher_d2_accounted_20261020.py SHA04f7fbe725127ead2438ceb4c7cf9d724765c7563abaebbdbe4e93c1e84c794a。每分钟同时sacct/squeue、worker错误检测；registry可恢复，不重复提交。receipt reports/repaired_D2_dispatch_monitor_r2_20261020.json，log仍monitor_repaired_D2_and_original_20261020.log。当前四卡原版R，原版throttle3，D2无GPU任务已提交，等首个原版片释放。

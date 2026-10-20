@@ -1156,50 +1156,8 @@
     "training": false,
     "scope": "first closed original cup pick branch only; not full task or all three sampling trials"
   },
-  "latest_update": {
-    "source_commit": "f9096f79ef333f2708d631fb3f18e93677d4179e",
-    "launcher_commit": "7ce53392",
-    "original_cup_s1_closed_vla_success": [
-      true,
-      true,
-      true
-    ],
-    "original_cup_s1_sim_steps": [
-      202,
-      202,
-      209
-    ],
-    "original_cup_self_closed": false,
-    "original_ongoing": true,
-    "new_program_error": "neutral entity ID pool exhausted in refresh_fixture_parts",
-    "id_regression_cpu_passed": 2,
-    "focused_suite": {
-      "passed": 215,
-      "failed": 1,
-      "failure_preexisting_proven": true
-    },
-    "sam_complete_branch_equivalence": "sam_output_three_branches_20261020_closed.json",
-    "pi_asset_metadata": "pi05_asset_origin_20261020.json",
-    "training": false,
-    "original_new_array": "10670",
-    "original_old_source_stopped": [
-      "10640_0",
-      "10640_1",
-      "10640_2",
-      "10640_3"
-    ],
-    "startup_4_categories": {
-      "step": "10644.3",
-      "state": "COMPLETED",
-      "exit": "0:0",
-      "physical_requests": 4,
-      "worker_errors": 0
-    },
-    "monitor_pid": 3171126,
-    "source_archive_sha256": "4e3473d92a50a3aeacc9426f8cb9131b9c253fbf2e2bda805c1685dc2b439e98",
-    "manifest_sha256": "082f368f4b85f698f96fdc8a7a36892481fccc4a9e12fa3f2e2776cfcee3273b"
-  },
-  "latest_execution_source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+  "latest_update": "2026-10-20T03:56:00Z",
+  "latest_execution_source_commit": "3968bdb4f5f88c63be1a60fc34d955ff169af5b3",
   "latest_six_handoffs": {
     "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
     "rows": [
@@ -2540,9 +2498,10 @@
     "interval_scope": "Wilson intervals describe this fixed diagnostic cohort; each state has three VLA sampling seeds. They are not a claim about independent task generalization."
   },
   "latest_pending": [
-    "Original71-state forks10670 still running; no whole-episode score",
-    "D2 all40 source150 startup10672.4 passed2/2; dispatcher3524921 waits for actual GPU capacity, no full D2 job yet",
-    "Original source-binding ambiguities have public attribution but no physical disambiguation proof"
+    "s15 repaired source three-seed full branch outcomes pending",
+    "D2 source3968bdb4 real startup in progress; old dispatcher3680760 stopped",
+    "original620ff0da remainder39 running; s15 old worker error retained separately",
+    "three original source_binding_missing cases physically unresolved"
   ],
   "pending_source_validation": null,
   "deviation_injection_interface": {
@@ -2850,5 +2809,61 @@
     "training": false,
     "confirmation": false,
     "scope": "49Hz same-case startup CPU stack sampling; sampling hits are not function-call counts; cumulative times overlap; profiler overhead prevents speedup claims"
+  },
+  "public_prompt_binding_repair": {
+    "source_commit": "3968bdb4f5f88c63be1a60fc34d955ff169af5b3",
+    "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_public_vla_binding_20261020_3968bdb4",
+    "archive_sha256": "bf0212555ae870ecd3c59aa910c9b17083a55ef69eaf9589b21d839cf334f0db",
+    "cpu_regressions_passed": 320,
+    "captured_state_public_anchors_bytes_equal": true,
+    "selected_public_id": "e2",
+    "new_prompt": "close the microwave",
+    "six_old_prompt_bytes_equal": true,
+    "startup": {
+      "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_public_vla_binding_20261020_3968bdb4",
+      "source_commit": "3968bdb4f5f88c63be1a60fc34d955ff169af5b3",
+      "launcher": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/launcher_shared_20261020_7ce53392/shared_gpu_episodes_20261019.py",
+        "sha256": "6d81a1ab206ac2fd8bb1e62cb901cd1a644ad6b4b61a85e5c9b23218bdf8dd75"
+      },
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/public_binding_repair_20261020/3968bdb4/preparation/manifest.json",
+        "sha256": "6986909fed0499bb2c2099018aaeee4dee77a3cfa4ae24ad6cda8a445240d8cc"
+      },
+      "indices": [
+        0
+      ],
+      "levels": [
+        1
+      ],
+      "domain": "original",
+      "startup": true,
+      "registered_batch_index": 0,
+      "slurm_job_id": "10684",
+      "slurm_step_id": "1",
+      "cuda_visible_devices": "2",
+      "existing_services_from": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/original_pi_remaining_20261020/620ff0da/job10682_1",
+      "model_server_source_commit": "620ff0da8b8fcc30b176e7229c59f8d7d79f3244",
+      "sam_services_started": 0,
+      "sam_entry": null,
+      "vla_services_started": 0,
+      "additional_gpu_allocations": 0,
+      "training": false,
+      "scope": "owned allocation reuse; timings overlap the parent and are not an independent throughput comparison",
+      "wall_s": 236.39849948883057,
+      "worker_errors": 0,
+      "physical_requests": [
+        "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/public_binding_repair_20261020/3968bdb4/startup_owned10684/N1/000_microwave_close_libero_90_t33_s15/microwave_close_libero_90_t33_s15/first_physical_vla_request.json"
+      ]
+    },
+    "three_seed_physical_result": "pending",
+    "schema": "bounded-skills/4",
+    "coordination_append": {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/COORDINATION.md",
+      "append_start": 6906148464,
+      "append_end": 6906150724,
+      "appended_bytes": 2260,
+      "appended_sha256": "84bae7fad660989fb9d033fbde596552a181389f1b6ad8017723de555487632d"
+    }
   }
 }
