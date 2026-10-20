@@ -46,12 +46,24 @@ def main():
     spec.loader.exec_module(module)
     module.bootstrap_source(domain, evaluation='hybrid_repair')
     from rpent.utils.rpc.http_rpc import HttpRpcClient
-    from scripts.probe_bounded_hybrid_repair import validate_plan
 
     manifest = Path(batch['manifest']['path'])
     assert hashlib.sha256(manifest.read_bytes()).hexdigest() == batch['manifest']['sha256']
     plan = json.loads(manifest.read_bytes())
-    validate_plan(plan)
+    if plan.get('evaluation') == 'hybrid_repair':
+        from scripts.probe_bounded_hybrid_repair import validate_plan
+
+        validate_plan(plan)
+    else:
+        from robots.libero.bounded_hybrid_diagnostic import validate_d2_episode
+        from scripts.probe_bounded_hybrid_d2 import load_public_gripper_calibration
+
+        if domain != 'd2' or plan['training'] or plan['confirmation'] or len(plan['cases']) != 40:
+            raise ValueError('expected the registered forty-case D2 development diagnostic')
+        for case in plan['cases']:
+            validate_d2_episode(case['episode'])
+            assert hashlib.sha256(Path(case['bddl']['path']).read_bytes()).hexdigest() == case['bddl']['sha256']
+            load_public_gripper_calibration(case['grasp_measurement_calibration'])
     os.environ['SOURCE_COMMIT'] = plan['source_commit']
     args.output.mkdir(parents=True)
     started = time.time()

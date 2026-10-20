@@ -17,6 +17,24 @@ launcher = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(launcher)
 
 
+@pytest.mark.parametrize('cap,running,pending,active,remaining,expected', [
+    (4, 4, True, 0, 4, (3, 0)),
+    (4, 3, True, 0, 4, (3, 1)),
+    (4, 3, True, 1, 3, (3, 0)),
+    (3, 3, True, 1, 3, (2, 0)),
+    (3, 2, True, 1, 3, (2, 0)),
+    (4, 0, False, 0, 3, (3, 3)),
+    (4, 2, True, 0, 0, (4, 0)),
+])
+def test_d2_dispatcher_reserves_capacity_without_cancelling_running_jobs(
+        cap, running, pending, active, remaining, expected):
+    path = _PATH.with_name('dispatch_repaired_d2_20261020.py')
+    spec = importlib.util.spec_from_file_location('repaired_d2_dispatcher', path)
+    dispatcher = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(dispatcher)
+    assert dispatcher.limits(cap, running, pending, active, remaining) == expected
+
+
 @pytest.mark.parametrize('failure', [None, 'ready', 'worker'])
 def test_optional_sam_entry_owns_one_service_pair_and_cleans_up(tmp_path, monkeypatch, failure):
     import rpent.utils.daemon as daemon_module
