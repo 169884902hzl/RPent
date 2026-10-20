@@ -285,6 +285,8 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
         adapter.p.model = seeded
     reference_grasp = facade.grasp_reference(spec["source_symbol"]) if spec["mode"] == "pick" else None
     reason, decisions, endpoint = "decision_limit", 0, None
+    recovery_budget = getattr(adapter, 'hybrid_recovery_budget', None)
+    recovery_used = 0
     try:
         with (output / "choices.jsonl").open("x") as ledger:
             for index in range(decision_limit):
@@ -300,6 +302,11 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                 decisions += 1
                 recovering_binding = source is None or (spec["target_symbol"] and target is None)
                 if recovering_binding:
+                    if recovery_budget is not None:
+                        if recovery_used >= recovery_budget:
+                            reason = 'binding_recovery_budget'
+                            break
+                        recovery_used += 1
                     # Missing/ambiguous public identity is not permission to
                     # choose a private instance. Give both arms the existing
                     # screened observation recovery before declaring it absent.
@@ -349,9 +356,24 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                     "chunk_execution": adapter.last_chunk, "execution_details": adapter.details[detail_start:]}
                 ledger.write(json.dumps(record, default=lambda x: x.tolist() if hasattr(x, "tolist") else str(x)) + "\n")
                 ledger.flush()
+                if getattr(adapter, 'schema6_v1', False) and any(
+                        r.get('skill') in {'finish','ask_help'} for r in receipts):
+                    reason = 'public_terminal_selection'
+                    break
                 completed = (source is not None and adapter.held == source.id if spec["mode"] == "pick"
                              else facade.goal_status()["satisfied"][spec["goal_index"]])
-                if completed or (method == "call_vla" and not recovering_binding):
+                failed = recovery_budget is not None and bool(receipts) and any(
+                    r['outcome'] != 'success' for r in receipts)
+                retry_exhausted = False
+                if failed and not recovering_binding and recovery_budget is not None:
+                    retry_exhausted = recovery_used >= recovery_budget
+                    if not retry_exhausted:
+                        recovery_used += 1
+                if retry_exhausted:
+                    reason = 'failed_chunk_recovery_budget'
+                    break
+                if completed or (method == "call_vla" and not recovering_binding
+                        and (recovery_budget is None or not failed)):
                     reason = receipts[-1]["stop_reason"] if method == "call_vla" and receipts else "subtask_completed"
                     break
         endpoint, endpoint_ref = save_checkpoint(facade, adapter, policy, output / "private_endpoint.pkl")
@@ -377,7 +399,8 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
     used = int(np.asarray(endpoint["physics"]["counters"]["_elapsed_steps"]).item()) - before
     result.update(reason=reason, wall_s=time.perf_counter() - started, sim_steps=used,
                   decisions=decisions, vla_inference_calls=seeded.calls, vla_inputs=seeded.inputs,
-                  vla_predictions=seeded.predictions)
+                  vla_predictions=seeded.predictions, recovery_budget=recovery_budget,
+                  recovery_used=recovery_used)
     write(output / "summary.json", result)
     return result, endpoint
 
@@ -385,6 +408,10 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
 def evaluate_case(case, endpoints, output, plan, *, startup=False):
     output.mkdir()
     with runtime(case, endpoints, output) as (facade, adapter, policy, timings):
+        if 'recovery_budget' in plan:
+            if type(plan['recovery_budget']) is not int or plan['recovery_budget'] not in (0,1,2):
+                raise ValueError('registered hybrid recovery budget must be 0, 1 or 2')
+            adapter.hybrid_recovery_budget = plan['recovery_budget']
         initial, initial_ref = save_checkpoint(facade, adapter, policy, output / "private_initial.pkl")
         status = facade.goal_status()
         subtasks, unsupported = split_subtasks(status["goals"], adapter.ex.instruction)

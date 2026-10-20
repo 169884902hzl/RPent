@@ -14,7 +14,7 @@ SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
-LEGALITY_VERSION = "public-request-legal/2"
+LEGALITY_VERSION = "public-request-legal/3"
 
 
 def compact_candidate(candidate: dict) -> dict:
@@ -63,6 +63,8 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
         raise ValueError('prefix reselects an already committed action')
     if any(is_boundary(candidates[cid]) for cid in prefix[:-1]):
         raise ValueError('prefix crosses a control-handoff boundary')
+    if any(candidates[cid]['skill'] == 'guarded_move' for cid in prefix[:-1]):
+        raise ValueError('guarded endpoint needs its actual receipt before a successor')
     if len(prefix) > request['max_actions']:
         raise ValueError('prefix exceeds requested K')
     robot = ((request.get('execution_prefix') or {}).get('predicted_state') or {}).get('robot', request['robot'])
@@ -70,6 +72,10 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
     anchors = {a['id'] for a in request['anchors']}
 
     def available(candidate):
+        progress = request.get('progress', {})
+        if (progress.get('limit') is not None
+                and progress['stagnant_decisions'] >= progress['limit']):
+            return candidate['skill'] in {'finish', 'ask_help'}
         effect = candidate['consequences']
         if effect['collision'] is True or effect['ik_reachable'] is False:
             return False
@@ -91,7 +97,8 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
                 held = check['anchor_id']
             elif check['metric'] == 'released' and check['minimum'] == 1:
                 held = None
-    if len(prefix) == request['max_actions'] or (prefix and is_boundary(candidates[prefix[-1]])):
+    if len(prefix) == request['max_actions'] or (prefix and (
+            is_boundary(candidates[prefix[-1]]) or candidates[prefix[-1]]['skill'] == 'guarded_move')):
         return ()
     used = set(prefix) | committed
     return tuple(cid for cid, candidate in candidates.items() if cid not in used and available(candidate))

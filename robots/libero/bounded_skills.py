@@ -74,6 +74,8 @@ class MeasuredSkillAdapter:
     # Trusted historical annotation snapshots omit development-only flags.
     lazy_planning_v1 = False
     registration_query_workers = 1
+    schema6_v1 = False  # Absent on trusted historical annotation snapshots.
+    guarded_move_v1 = True
 
     def __init__(self, executor, gripper_xml: str | Path, *, allow_vla: bool = True,
                  history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
@@ -84,7 +86,8 @@ class MeasuredSkillAdapter:
                  request_consequence_workers: int = 1,
                  vla_budget: VLABudget = VLABudget(),
                  targeted_vla_measurement_v1: bool = False,
-                 lazy_planning_v1: bool = False, registration_query_workers: int = 1):
+                 lazy_planning_v1: bool = False, registration_query_workers: int = 1,
+                 schema6_v1: bool = True, no_progress_limit: int | None = 31):
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
         if type(request_consequence_workers) is not int or request_consequence_workers < 1:
@@ -103,6 +106,20 @@ class MeasuredSkillAdapter:
         self.targeted_vla_measurement_v1 = targeted_vla_measurement_v1
         self.lazy_planning_v1 = lazy_planning_v1
         self.registration_query_workers = registration_query_workers
+        self.schema6_v1 = schema6_v1
+        if schema6_v1:
+            self.lazy_planning_v1 = True
+        from rpent.skill_package.progress import PublicProgress
+        self.public_progress = PublicProgress(no_progress_limit)
+        if schema6_v1 and not getattr(self.scene, 'rgbd_mask_tracking_v1', False):
+            from robots.libero.bounded_mask_tracking import TrackedSegmentation
+            self.scene.rgbd_mask_tracking_v1 = True
+            self.scene.rpc = TrackedSegmentation(self.scene.rpc, self.ex.toolkit._state, self.scene,
+                refresh_captures=None)
+        self._incremental_touched = set()
+        self._incremental_route = []
+        self._failed_move_anchors = set()
+        self._move_approach_by_anchor = {}
         self._grasp_geometry_cache = {}
         self.memory = FailureMemory()
         self._contact_retry_references = {}
@@ -191,6 +208,9 @@ class MeasuredSkillAdapter:
     def refresh(self, *, contact_motion=None, names=None):
         self.ex.capture()
         requested_names = sorted(self.scene.vocabulary if names is None else set(names))
+        if self.schema6_v1:
+            from robots.libero.bounded_incremental import refresh_names
+            requested_names = refresh_names(self, requested_names)
         association = {}
         if self.held is not None and self.payload_reference is not None:
             reference = self.payload_reference
@@ -200,9 +220,9 @@ class MeasuredSkillAdapter:
                 local = (points-before['eef_xyz_m'])@Rotation.from_quat(before['eef_quat_xyzw']).as_matrix()
                 predicted = local@Rotation.from_quat(after['eef_quat_xyzw']).as_matrix().T+after['eef_xyz_m']
                 association[self.held] = tuple(np.median(predicted, axis=0))
-        if association:
+        if association and requested_names:
             self.scene.refresh(requested_names, association_positions=association)
-        else:
+        elif requested_names:
             self.scene.refresh(requested_names)
         self._base_geometry = None
         self._screen_cache.clear()
@@ -290,7 +310,9 @@ class MeasuredSkillAdapter:
             anchors.append({"id": e.id, "label": e.name, "frame": "world",
                  "xyz_m": list(e.xyz), "size_m": (np.array(e.upper)-e.lower).tolist(),
                  "quat_xyzw": None, "confidence": float(self.scene._scores.get(e.id, 0.)),
-                 "cached": cached or not e.visible or bool(e.geometry and e.geometry.startswith("cached_perception")),
+                 "cached": cached or not e.visible or bool(e.geometry and e.geometry.startswith("cached_perception"))
+                     or (self.schema6_v1 and e.source_step < self.ex.toolkit._state.latest_step),
+                 "capture_step": int(e.source_step),
                  "evidence": self._anchor_evidence(e)})
         return anchors
 
@@ -1639,6 +1661,10 @@ class MeasuredSkillAdapter:
         if skill in {"move_to", "align", "descend"}:
             contact = self.plans.get(key)
             approach = parameters.get("approach", "above")
+            if (skill == 'move_to' and 'approach' not in parameters and contact is not None
+                    and 'surface_contact_options' in contact):
+                approach = next(k for k in ('above', 'right', 'front', 'left')
+                    if k in contact['surface_contact_options'])
             if skill == 'move_to' and contact is not None and 'surface_contact_options' in contact:
                 contact = contact['surface_contact_options'].get(approach)
                 if contact is None:
@@ -1664,11 +1690,11 @@ class MeasuredSkillAdapter:
                     return copy.deepcopy(contact.get('contact_route',
                         [{"xyz_m": goal.tolist(), "quat_xyzw": contact["quat_xyzw"]}]))
                 preferred = approach == contact.get('preferred_approach')
-                if preferred and parameters['path'] == contact.get('preferred_path', 'over'):
+                if preferred and parameters.get('path', 'over') == contact.get('preferred_path', 'over'):
                     return copy.deepcopy(contact['approach_route'])
                 point = np.asarray(contact['approach_xyz_m']) if preferred else goal+direction*.12
                 quat = contact["quat_xyzw"]
-            path = parameters["path"]
+            path = parameters.get("path", "over")
             if path == "over":
                 height = max(start[2], point[2])+ .08
                 return [{"xyz_m": [*start[:2], height], "quat_xyzw": robot["eef_quat_xyzw"]},
@@ -1712,6 +1738,41 @@ class MeasuredSkillAdapter:
 
     def _candidate(self, skill, parameters, *, screen_options=True, complete=False):
         cid = hashlib.sha256(identity({"skill": skill, "parameters": parameters}).encode()).hexdigest()[:16]
+        if self.schema6_v1 and skill == 'move_to' and not complete and 'path' not in parameters:
+            plan = self.plans.get(parameters['anchor_id'], {})
+            approaches = [parameters['approach']] if parameters.get('approach') else ('above', 'right', 'front', 'left')
+            variant = next(({**parameters, 'approach': approach, 'path': 'over'} for approach in approaches
+                if 'surface_contact_options' not in plan or approach in plan['surface_contact_options']), None)
+            result = self._candidate(skill, variant, complete=False) if variant else None
+            if result is not None:
+                result.update(id=cid, parameters=parameters)
+                result['consequences'].update(collision=None, ik_reachable=None,
+                    path_min_clearance_m=None, screen_scope='planner_selected_variant_pending')
+            return result
+        if self.schema6_v1 and skill == 'move_to' and complete and 'path' not in parameters:
+            attempts = []
+            last = None
+            for approach in ([parameters['approach']] if parameters.get('approach') else
+                    ('above', 'right', 'front', 'left')):
+                for path in ('over', 'direct', 'around'):
+                    variant = {**parameters, 'approach': approach, 'path': path}
+                    result = self._candidate(skill, variant, complete=True)
+                    attempts.append({'parameters': variant, 'consequences': result['consequences'] if result else None})
+                    if result is None:
+                        continue
+                    last = result
+                    if (result['consequences']['collision'] is not True
+                            and result['consequences']['ik_reachable'] is True):
+                        result['id'] = cid
+                        self.candidate_diagnostics.append({'stage': 'move_variant_resolution',
+                            'candidate_id': cid, 'attempts': attempts, 'selected': variant})
+                        return result
+            if last is None:
+                return None
+            last['id'] = cid
+            self.candidate_diagnostics.append({'stage': 'move_variant_resolution',
+                'candidate_id': cid, 'attempts': attempts, 'selected': None})
+            return last
         key = parameters.get("anchor_id", parameters.get("target_id"))
         if key is None and skill in {'nudge', 'rotate_wrist'}:
             key = self.active
@@ -1776,6 +1837,8 @@ class MeasuredSkillAdapter:
             consequence["screen_scope"] = ("endpoint_ik_coarse_geometry" if self.lazy_planning_v1 and not complete
                 else "contact_selected_surface" if contact else "hand_mesh_observed_space")
             consequence["expected_steps"] = math.ceil(duration*self.config.hz)
+        elif skill == 'guarded_move':
+            consequence.update(expected_steps=400, screen_scope='guarded_contact_increment')
         elif skill in {"release", "set_gripper"}:
             consequence.update(expected_steps=15, expected_gripper_opening_m=(.08 if skill == "release" or parameters.get("mode") == "open" else 0.))
         history = None
@@ -1992,9 +2055,17 @@ class MeasuredSkillAdapter:
             if entity.id == self.held:
                 add('align', anchor_id=entity.id)
             if self.held is None and (entity.id in self.plans or entity.visible):
-                for approach in ("above", "front", "left", "right"):
-                    for path in ("direct", "over", "around"):
-                        add("move_to", anchor_id=entity.id, approach=approach, path=path)
+                if self.schema6_v1:
+                    add('move_to', anchor_id=entity.id)
+                    if entity.id in self._failed_move_anchors:
+                        used = self._move_approach_by_anchor.get(entity.id, 'above')
+                        for approach in ('above', 'right', 'front', 'left'):
+                            if approach != used:
+                                add('move_to', anchor_id=entity.id, approach=approach)
+                else:
+                    for approach in ("above", "front", "left", "right"):
+                        for path in ("direct", "over", "around"):
+                            add("move_to", anchor_id=entity.id, approach=approach, path=path)
             if entity.id in self.plans and self.held is None:
                 for skill in ("align", "descend", "lift"):
                     add(skill, anchor_id=entity.id)
@@ -2023,6 +2094,11 @@ class MeasuredSkillAdapter:
         for axis in "xyz":
             for distance in (-.02, -.01, .01, .02):
                 add("nudge", axis=axis, distance_m=distance, **({"anchor_id": self.active} if self.active else {}))
+            active_entity = self.scene.entities.get(self.active)
+            if (self.schema6_v1 and self.guarded_move_v1 and active_entity is not None
+                    and (active_entity.part_of or fixture_actions(active_entity.name))):
+                for direction in (-1, 1):
+                    add('guarded_move', anchor_id=self.active, axis=axis, direction=direction)
         for mode in ("refresh", "wrist_scan"):
             add("observe", mode=mode)
         add("finish")
@@ -2055,6 +2131,13 @@ class MeasuredSkillAdapter:
             "anchors": self.anchors(), "robot": self.robot(), "candidates": compact,
             "receipts": self.receipts[-3:], "relations": public_relations, "max_actions": k,
             "execution_prefix": None}
+        if self.schema6_v1:
+            from rpent.skill_package.progress import VERSION as PROGRESS_VERSION
+            self.public_progress.update(request)
+            request['progress'] = {'version': PROGRESS_VERSION,
+                'stagnant_decisions': self.public_progress.stagnant, 'limit': self.public_progress.limit}
+            if self.public_progress.exhausted:
+                request['candidates'] = [c for c in request['candidates'] if c['skill'] in {'finish', 'ask_help'}]
         validate(request)
         self.latest_request = request
         return request
@@ -2222,7 +2305,7 @@ class MeasuredSkillAdapter:
         prediction = PublicPrefixPrediction(self, request)
         plan = []
         for original in selected(request, decision):
-            candidate = (prediction.candidate(original, complete=True) if self.lazy_planning_v1
+            candidate = (prediction.candidate(original, complete=not self.schema6_v1) if self.lazy_planning_v1
                 else prediction.candidate(original))
             if candidate is None:
                 candidate = copy.deepcopy(original)
@@ -2231,7 +2314,7 @@ class MeasuredSkillAdapter:
                 'predicted_anchors': {key: list(entity.xyz)
                     for key, entity in prediction.adapter.scene.entities.items()},
                 'conditional_on': copy.deepcopy(prediction.assumptions)})
-            if is_boundary(candidate) or candidate['consequences']['screen_scope'] == 'conditional_on_prefix':
+            if is_boundary(candidate) or candidate['skill'] == 'guarded_move' or candidate['consequences']['screen_scope'] == 'conditional_on_prefix':
                 break
             prediction.advance(candidate)
         return plan
@@ -2239,6 +2322,8 @@ class MeasuredSkillAdapter:
     def _free_motion(self, candidate):
         """Contact still permits a suffix, but requires a measured checkpoint."""
         skill = candidate['skill']
+        if self.schema6_v1 and skill == 'move_to' and 'path' not in candidate['parameters']:
+            return False
         return (skill in MOTION_SKILLS and skill not in {'descend', 'lower', 'lift'}
             and not (skill in {'nudge', 'rotate_wrist'} and (
                 candidate['parameters'].get('anchor_id') or any(
@@ -2249,7 +2334,17 @@ class MeasuredSkillAdapter:
         self._executing_prefix = ({'request': request, 'choices': choices, 'completed': 0}
             if all(self._free_motion(c) for c in choices) else None)
         try:
-            return self._execute_chunk(request, decision, choices, async_decisions=async_decisions)
+            outcomes = self._execute_chunk(request, decision, choices, async_decisions=async_decisions)
+            if self.schema6_v1:
+                by_id = {c['id']: c for c in choices}
+                for receipt in outcomes:
+                    params = by_id[receipt['candidate_id']]['parameters']
+                    key = params.get('anchor_id') or params.get('target_id') or receipt['before']['held_anchor_id']
+                    if receipt['outcome'] in {'failure', 'no_effect', 'unmeasured', 'rejected'} and key is not None:
+                        self._failed_move_anchors.add(key)
+                    if receipt['skill'] == 'move_to' and receipt['outcome'] == 'success':
+                        self._failed_move_anchors.discard(key)
+            return outcomes
         finally:
             self._executing_prefix = None
 
@@ -2339,12 +2434,14 @@ class MeasuredSkillAdapter:
                 if len(receipts) < len(group) or any(r['outcome'] != 'success' for r in receipts):
                     break
             else:
+                if self.schema6_v1:
+                    candidate = self._candidate(candidate['skill'], candidate['parameters'], complete=True) or candidate
                 receipt = self._execute_one(request, candidate, lookahead=lookahead)
                 outcomes.append(receipt)
                 self.receipts.append(receipt)
                 self.memory.record(candidate, receipt['outcome'], receipt['stop_reason'])
                 cursor += 1
-                if receipt['outcome'] != 'success' or is_boundary(candidate):
+                if receipt['outcome'] != 'success' or is_boundary(candidate) or candidate['skill'] == 'guarded_move':
                     break
             if self.p.env.terminated or self.p.env.truncated:
                 break
@@ -2478,6 +2575,8 @@ class MeasuredSkillAdapter:
             eid: np.asarray(entity.xyz) for eid, entity in entities_before.items() if entity.visible}
         skill, parameters = candidate["skill"], candidate["parameters"]
         key = parameters.get("anchor_id", parameters.get("target_id"))
+        if self.schema6_v1:
+            self._incremental_touched.update(k for k in (key, self.held, self.active) if k)
         if key is None and skill in {'nudge', 'rotate_wrist'}:
             key = self.active
         phase, outcome, reason, detail = None, "unmeasured", "measurement_missing", {}
@@ -2517,11 +2616,20 @@ class MeasuredSkillAdapter:
             if route is None:
                 phase, outcome, reason = "perception", "failure", "current_anchor_unmeasured"
             else:
+                if self.schema6_v1:
+                    path = [list(before['eef_xyz_m']), *[w['xyz_m'] for w in route]]
+                    self._incremental_route = [point.tolist() for a, b in zip(path, path[1:])
+                        for point in np.linspace(a, b, max(2, math.ceil(np.linalg.norm(np.asarray(b)-a)/.02)+1))]
                 motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=skill in {"descend", "lower", "nudge"}
                     or (skill in {"lift", "rotate_wrist"} and self.active is not None)), self.config)
                 detail = motion.run(route, gripper=self.gripper_command, lookahead=lookahead,
                     request_factory=self.snapshot_decision_context if lookahead is not None else None,
                     contact_stop=self._empty_held_gripper)
+                if skill == 'move_to':
+                    detail.update(resolved_anchor=key, resolved_approach=parameters.get('approach', 'above'),
+                        resolved_path=parameters.get('path', 'over'))
+                    if self.schema6_v1:
+                        self._move_approach_by_anchor[key] = parameters.get('approach', 'above')
                 reason = detail["stop_reason"]
                 angular_error = (Rotation.from_quat(route[-1]["quat_xyzw"])*Rotation.from_quat(self.robot()["eef_quat_xyzw"]).inv()).magnitude()
                 detail["angular_endpoint_error_rad"] = float(angular_error)
@@ -2550,6 +2658,13 @@ class MeasuredSkillAdapter:
                     # at the unchanged fingers after a zero-step rejection.
                     if skill != 'nudge' or detail.get('executed'):
                         self.committed_grasps.pop(key, None)
+        elif skill == 'guarded_move':
+            from robots.libero.bounded_guarded import run_guarded
+            detail = run_guarded(self, parameters)
+            reason = detail['guarded_stop_reason']
+            outcome = ('success' if reason == 'measured_target_region' else
+                'no_effect' if reason == 'no_measured_progress' else 'interrupted')
+            phase = None if outcome == 'success' else 'contact_failure'
         elif skill in {"release", "set_gripper"}:
             opening = skill == "release" or parameters.get("mode") == "open"
             if opening:
@@ -2760,6 +2875,8 @@ class MeasuredSkillAdapter:
                 'operation': (f"paired_contact_axis:{parameters['axis']}:compatible_interval_m="
                     + json.dumps(fit['compatible_axis_interval_m']))})
         check_receipt(candidate, receipt, detail)
+        if skill == 'guarded_move':
+            receipt['advance_m'] = detail['advance_m']
         if (receipt['outcome'] == 'success' and (skill == 'nudge'
                 or (skill == 'set_gripper' and parameters.get('mode') == 'close'))):
             self._update_contact_surface_reference(self.active)
@@ -2819,7 +2936,10 @@ class MeasuredSkillAdapter:
             entity = self.scene.entities[key]
             plan = self.plans[key]
             if candidate['skill'] == 'move_to' and 'surface_contact_options' in plan:
-                plan = plan['surface_contact_options'][candidate['parameters']['approach']]
+                approach = candidate['parameters'].get('approach')
+                if approach is None:
+                    approach = next(k for k in ('above', 'right', 'front', 'left') if k in plan['surface_contact_options'])
+                plan = plan['surface_contact_options'][approach]
             plan = copy.deepcopy(plan)
             plan['contact_evidence'] = self._evidence(entity)
             self.plans[key] = plan
@@ -2902,6 +3022,8 @@ class MeasuredSkillAdapter:
         previous_push_measurement = None
         def observe(*, full=False):
             nonlocal hold_verified, vla_payload_reference, stationary_reference, previous_push_measurement
+            if self.schema6_v1:
+                self._incremental_touched.update(k for k in (source.id, parameters.get('target_id')) if k)
             if monitor_names is not None and not full:
                 self.refresh(names=monitor_names)
             else:

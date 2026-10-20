@@ -58,7 +58,8 @@ def collect(directory, registration):
                 candidate_counts=[len(loop['request']['candidates']) for loop in loops],
                 request_json_bytes=[len(json.dumps(loop['request'],separators=(',',':'),
                     ensure_ascii=False).encode()) for loop in loops],
-                timing_categories=[loop['timings']['main_thread_exclusive_s'] for loop in loops])
+                timing_categories=[loop['timings']['main_thread_exclusive_s'] for loop in loops],
+                whole_timing_s=summary['timings']['main_thread_exclusive_s'])
         else:
             trials = summary['trials']
             if len(trials) != 1:
@@ -87,7 +88,16 @@ def collect(directory, registration):
     aggregated['sam_calls_per_whole_episode'] = distribution([record['sam_calls'] for record in episodes])
     aggregated['whole_episode_success'] = {'success': sum(record['success'] for record in episodes),
         'n': len(episodes)}
-    return {'records': records, 'missing_indices': missing, 'whole_episode_aggregates': aggregated}
+    categories = {}
+    for category in sorted({record['category'] or record['domain'] for record in episodes}):
+        group=[r for r in episodes if (r['category'] or r['domain'])==category]
+        categories[category]={'episodes':len(group),'success':sum(r['success'] for r in group),
+            'whole_wall_s':distribution([r['wall_s'] for r in group]),
+            'decision_loop_s':distribution([v for r in group for v in r['loop_s']]),
+            'whole_timing_mean_s':{key:sum(r['whole_timing_s'].get(key,0.) for r in group)/len(group)
+                for key in sorted({k for r in group for k in r['whole_timing_s']})}}
+    return {'records': records, 'missing_indices': missing, 'whole_episode_aggregates': aggregated,
+        'categories':categories}
 
 
 def main():
@@ -95,11 +105,14 @@ def main():
     parser.add_argument('--root', type=Path, required=True)
     parser.add_argument('--manifest', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--schema6-root',type=Path)
     args = parser.parse_args()
     registration = json.loads(args.manifest.read_bytes())
     if len(registration['cases']) != 32 or registration['training'] or registration['confirmation']:
         raise ValueError('expected the registered fixed32 development cohort')
     arms = {arm: collect(args.root/arm, registration) for arm in ('baseline','optimized')}
+    if args.schema6_root is not None:
+        arms['schema6']=collect(args.schema6_root,registration)
     paired = []
     left = {row['index']: row for row in arms['baseline']['records']}
     right = {row['index']: row for row in arms['optimized']['records']}

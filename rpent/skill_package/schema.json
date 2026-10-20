@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:robot-decider:bounded-skills:5",
+  "$id": "urn:robot-decider:bounded-skills:6",
   "title": "Robot-independent bounded skill request, selection and receipt",
   "oneOf": [
     {
@@ -126,6 +126,10 @@
         },
         "cached": {
           "type": "boolean"
+        },
+        "capture_step": {
+          "type": "integer",
+          "minimum": 0
         }
       },
       "required": [
@@ -344,6 +348,12 @@
             "push",
             null
           ]
+        },
+        "direction": {
+          "enum": [
+            -1,
+            1
+          ]
         }
       },
       "required": [],
@@ -367,6 +377,7 @@
             "set_gripper",
             "release",
             "rotate_wrist",
+            "guarded_move",
             "nudge",
             "observe",
             "call_vla",
@@ -429,25 +440,11 @@
             "properties": {
               "parameters": {
                 "required": [
-                  "anchor_id",
-                  "approach",
-                  "path"
+                  "anchor_id"
                 ],
                 "properties": {
                   "anchor_id": {
-                    "not": {
-                      "type": "null"
-                    }
-                  },
-                  "approach": {
-                    "not": {
-                      "type": "null"
-                    }
-                  },
-                  "path": {
-                    "not": {
-                      "type": "null"
-                    }
+                    "type": "string"
                   }
                 }
               }
@@ -918,6 +915,26 @@
               "expected_receipt"
             ]
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "guarded_move"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "anchor_id",
+                  "axis",
+                  "direction"
+                ]
+              }
+            }
+          }
         }
       ]
     },
@@ -975,7 +992,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/5"
+          "const": "bounded-skills/6"
         },
         "kind": {
           "const": "receipt"
@@ -999,6 +1016,7 @@
             "set_gripper",
             "release",
             "rotate_wrist",
+            "guarded_move",
             "nudge",
             "observe",
             "call_vla",
@@ -1082,6 +1100,12 @@
             ],
             "additionalProperties": false
           }
+        },
+        "advance_m": {
+          "type": [
+            "number",
+            "null"
+          ]
         }
       },
       "required": [
@@ -1105,7 +1129,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/5"
+          "const": "bounded-skills/6"
         },
         "kind": {
           "const": "request"
@@ -1197,6 +1221,31 @@
               "type": "null"
             }
           ]
+        },
+        "progress": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "const": "public-measured-progress/1"
+            },
+            "stagnant_decisions": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            }
+          },
+          "required": [
+            "version",
+            "stagnant_decisions",
+            "limit"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -1219,7 +1268,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/5"
+          "const": "bounded-skills/6"
         },
         "kind": {
           "const": "decision"
@@ -1297,7 +1346,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/5"
+          "const": "bounded-skills/6"
         },
         "kind": {
           "const": "prefix_context"
@@ -1421,7 +1470,7 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "const": "bounded-skills/5"
+          "const": "bounded-skills/6"
         },
         "kind": {
           "const": "oracle_labels"
@@ -1501,7 +1550,10 @@
             "contact_selected_surface",
             "unmeasured",
             "conditional_on_prefix",
-            "endpoint_ik_coarse_geometry"
+            "endpoint_ik_coarse_geometry",
+            "planner_selected_variant_pending",
+            "reused_endpoint_ik",
+            "guarded_contact_increment"
           ]
         },
         "evidence_ids": {
@@ -1585,6 +1637,7 @@
             "set_gripper",
             "release",
             "rotate_wrist",
+            "guarded_move",
             "nudge",
             "observe",
             "call_vla",

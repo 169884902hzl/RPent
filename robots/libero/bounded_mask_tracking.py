@@ -67,7 +67,8 @@ class TrackedSegmentation:
                     'full_segmentation':False})
                 return copy.deepcopy(previous['response'])
             reason='periodic_segmentation_refresh'
-            if 0<step-previous['step']<=1 and step-previous['full_step']<self.refresh_captures:
+            if 0<step-previous['step']<=1 and (self.refresh_captures is None
+                    or step-previous['full_step']<self.refresh_captures):
                 instances=[]
                 reason='previous_instances_missing'
                 for item,mask in previous['instances']:

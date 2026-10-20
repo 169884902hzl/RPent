@@ -122,6 +122,41 @@ def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.00
     valid = np.isfinite(world).all(axis=2) & (np.linalg.norm(world, axis=2) > 1e-6)
     ring = binary_dilation(mask) & ~mask & valid
     result, added = mask.copy(), 0
+    if not measured_tangent_spacing:
+        # Batch independent 7x7 local-plane fits, retaining every original
+        # sample in row-major order and the same SVD/rank/residual tests.
+        coords = np.column_stack(np.nonzero(ring))
+        offsets = np.stack(np.meshgrid(np.arange(-3, 4), np.arange(-3, 4), indexing='ij'), -1).reshape(-1, 2)
+        for chunk in np.array_split(coords, max(1, (len(coords)+511)//512)):
+            neighbours = chunk[:, None, :]+offsets[None, :, :]
+            inside = ((neighbours >= 0) & (neighbours < np.asarray(mask.shape))).all(-1)
+            safe = np.clip(neighbours, 0, np.asarray(mask.shape)-1)
+            keep = inside & mask[safe[..., 0], safe[..., 1]] & valid[safe[..., 0], safe[..., 1]]
+            counts = keep.sum(1)
+            samples = world[safe[..., 0], safe[..., 1]]
+            for count in np.unique(counts[counts >= 6]):
+                ids = np.flatnonzero(counts == count)
+                local = samples[ids][keep[ids]].reshape(len(ids), count, 3)
+                points = world[chunk[ids, 0], chunk[ids, 1]]
+                near = np.linalg.norm(local-points[:, None, :], axis=2).min(1) <= max_step_m
+                ids, local, points = ids[near], local[near], points[near]
+                if not len(ids):
+                    continue
+                centre = local.mean(1)
+                _, spread, axes = np.linalg.svd(local-centre[:, None, :], full_matrices=False)
+                passed = ((spread[:, 1]/np.sqrt(count) > max_step_m/10)
+                    & (spread[:, 2]/np.sqrt(count) <= max_residual_m)
+                    & (np.abs(np.sum((points-centre)*axes[:, -1, :], axis=1)) <= max_residual_m))
+                selected = chunk[ids[passed]]
+                result[selected[:, 0], selected[:, 1]] = True
+                added += len(selected)
+        return result, {'version': 'public-local-plane-instance-boundary/1-dev',
+            'candidate_pixels': int(ring.sum()), 'added_pixels': added,
+            'max_step_m': max_step_m, 'minimum_step_limit_m': max_step_m,
+            'max_residual_m': max_residual_m, 'tangent_span_multiplier': None,
+            'spacing_source': 'fixed_metric_limit',
+            'source': 'current_instance_mask_and_same_view_local_rgbd_plane',
+            'private_target_pose_used': False}
     for y, x in zip(*np.nonzero(ring)):
         ys, xs = slice(max(0, y-3), y+4), slice(max(0, x-3), x+4)
         local = world[ys, xs][mask[ys, xs] & valid[ys, xs]]

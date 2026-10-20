@@ -378,13 +378,18 @@ def contact_axis_registration(reference, current_scene, axis, distance_m, *, end
         return {**evidence, 'reason': 'current_contact_surface_missing'}
     tree = cKDTree(target)
     shifts = np.linspace(-radius, radius, 2*math.ceil(radius/.001)+1)
+    # Query shifts in bounded batches. Every source row and shift retains
+    # its original order, cap and reduction; only independent NN queries
+    # share a call, without numerical approximation or learned geometry.
     scores, supported = [], []
-    for shift in shifts:
-        offset = np.zeros(3)
-        offset[axis] = shift
-        residual = tree.query(source+offset, workers=query_workers)[0]
-        scores.append(float(np.mean(np.minimum(residual, .008)**2)))
-        supported.append(float(np.mean(residual <= .008)))
+    for start in range(0, len(shifts), 8):
+        batch = shifts[start:start+8]
+        offsets = np.zeros((len(batch), 3))
+        offsets[:, axis] = batch
+        residual = tree.query((source[None, :, :]+offsets[:, None, :]).reshape(-1, 3),
+            workers=query_workers)[0].reshape(len(batch), len(source))
+        scores.extend(np.mean(np.minimum(residual, .008)**2, axis=1).tolist())
+        supported.extend(np.mean(residual <= .008, axis=1).tolist())
     best = int(np.argmin(scores))
     compatible = shifts[np.asarray(scores) <= scores[best]+.001**2]
     translation = np.zeros(3)

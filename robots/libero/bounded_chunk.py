@@ -112,6 +112,7 @@ class PublicPrefixPrediction:
         clone.scene.measurement_clouds = dict(adapter.scene.measurement_clouds)
         clone.target_cache = dict(adapter.target_cache)
         clone.plans = copy.deepcopy(adapter.plans)
+        clone.public_progress = copy.deepcopy(getattr(adapter, 'public_progress', None))
         clone.candidate_diagnostics = []
         clone.record_public_geometry = False
         clone._screen_cache = {}
@@ -127,6 +128,8 @@ class PublicPrefixPrediction:
         self.separated_worlds = {}
         self.moved = set()
         self.checking_skill = None
+        self._stationary_candidate_cache = dict(self.original)
+        self._pose_changed = True
         self.source_adapter = adapter
         self.base_screen = adapter._cloud_and_ik()
         self.world = (np.array(self.base_screen.measured_scene_points, copy=True)
@@ -238,7 +241,8 @@ class PublicPrefixPrediction:
                     # Commit the execution side even for an in-flight move;
                     # its successor must not descend at the default rim.
                     self.adapter.plans[params['anchor_id']] = copy.deepcopy(
-                        plan['surface_contact_options'][params['approach']])
+                        plan['surface_contact_options'][params.get('approach') or next(k
+                            for k in ('above', 'right', 'front', 'left') if k in plan['surface_contact_options'])])
             self.sensor.update(eef_xyz_m=route[-1]['xyz_m'], eef_quat_xyzw=route[-1]['quat_xyzw'])
             if self.ik is not None and self.ik.last_solution is not None:
                 self.sensor['joint_positions_rad'] = self.ik.last_solution.tolist()
@@ -305,14 +309,31 @@ class PublicPrefixPrediction:
         self.assumptions.extend(candidate['expected_receipt'])
         self.prefix.append(candidate['id'])
         self.screens.clear()
+        self._pose_changed = skill not in {'release', 'set_gripper'}
 
     def _candidates(self, originals):
+        if (getattr(self.adapter, 'schema6_v1', False) and not self._pose_changed
+                and self._stationary_candidate_cache is not None):
+            result = []
+            for original in originals:
+                cached = self._stationary_candidate_cache.get(original['id'])
+                if cached is None or original['skill'] in {'carry_to', 'lower', 'lift', 'set_gripper', 'release'}:
+                    cached = self.candidate(original)
+                else:
+                    cached = copy.deepcopy(cached)
+                    if cached['skill'] in {'move_to', 'align', 'descend', 'nudge', 'rotate_wrist'}:
+                        cached['consequences'].update(collision=None, path_min_clearance_m=None,
+                            screen_scope='reused_endpoint_ik')
+                result.append(cached)
+            return result
         workers = getattr(self.adapter, 'prefix_consequence_workers', 1)
         if workers > 1:
             from robots.libero.bounded_cpu_planning import predict_candidates
 
             return predict_candidates(self, originals, workers)
-        return [self.candidate(original) for original in originals]
+        result = [self.candidate(original) for original in originals]
+        self._stationary_candidate_cache = {c['id']: c for c in result if c is not None}
+        return result
 
     def context(self):
         committed = committed_candidate_ids(self.request)

@@ -27,7 +27,7 @@ def adapter(monkeypatch):
     def capture():
         ex.toolkit._state.latest_step += 1
     ex.capture = capture
-    result = MeasuredSkillAdapter(ex, "/static/grippers/panda_gripper.xml", allow_vla=False)
+    result = MeasuredSkillAdapter(ex, "/static/grippers/panda_gripper.xml", allow_vla=False, schema6_v1=False)
     result.grasp_geometry = lambda e: {"xyz_m": [.1, .1, .9], "quat_xyzw": [0, 0, 0, 1], "width_m": .04}
     def screen(poses):
         return {

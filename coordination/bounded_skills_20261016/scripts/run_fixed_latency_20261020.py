@@ -133,7 +133,10 @@ def bounded_episode(args, row, endpoints, probe):
     case = row['case']
     with probe.runtime(case, endpoints, args.output/'episode', domain=row['domain']) as (facade, adapter, policy, timings):
         adapter.allow_vla = False
-        initial_physics_sha256 = probe.snapshot_digest(facade.snapshot())
+        initial_snapshot = facade.snapshot()
+        import pickle
+        (args.output/'private_initial_physics.pkl').write_bytes(pickle.dumps(initial_snapshot,protocol=5))
+        initial_physics_sha256 = probe.snapshot_digest(initial_snapshot)
         for index in range(160):
             if adapter.p.env.terminated or adapter.p.env.truncated:
                 break

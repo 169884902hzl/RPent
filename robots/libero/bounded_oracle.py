@@ -18,6 +18,7 @@ from scipy.spatial.transform import Rotation
 
 from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 from robots.libero.bounded_chunk import PublicPrefixPrediction
+from robots.libero.v5_state import fixture_actions
 from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
 JUDGE_VERSION = 'libero-private-task-progress-rules/13'
@@ -78,6 +79,12 @@ class BoundedOracle:
                 self.private_trace[-1]['await_prefix_measurement'] = True
             return find('observe', mode='refresh')
         def nudge(axis, direction):
+            active = ex.scene.entities.get(ex.active)
+            if active is not None and (active.part_of or fixture_actions(active.name)):
+                guarded = find('guarded_move', anchor_id=active.id, axis=axis,
+                    direction=int(np.sign(direction)))
+                if guarded is not None:
+                    return guarded
             # A 2 cm sweep can be blocked while the measured 1 cm sweep
             # still permits progress. Reobserve after that smaller action;
             # do not replace it with a scan or bypass either route screen.
@@ -303,6 +310,7 @@ class BoundedOracle:
                           or find("move_to", anchor_id=source.id, approach="front", path="direct")
                           or find("move_to", anchor_id=source.id))
         chosen = chosen or find("observe", mode="wrist_scan") or find("observe", mode="refresh")
+        chosen = chosen or find('ask_help') or find('finish')
         if chosen is None:
             raise NoPublicOption("upper-bound selector has no remaining public option")
         return chosen
@@ -341,7 +349,7 @@ class BoundedOracle:
                     continue
                 other = candidate['parameters']
                 if chosen['skill'] == 'move_to' and other.get('anchor_id') == params['anchor_id']:
-                    if contact_approaches is not None and other['approach'] not in contact_approaches:
+                    if contact_approaches is not None and other.get('approach') is not None and other['approach'] not in contact_approaches:
                         continue
                     if params['anchor_id'] not in self.adapter.plans:
                         if candidate['id'] in {receipt['candidate_id'] for receipt in self.adapter.receipts}:
@@ -405,7 +413,7 @@ class BoundedOracle:
             legacy_end = (self.adapter.legacy_chunk_boundaries_v1 and (
                 chosen['skill'] in {'descend', 'lower', 'lift', 'set_gripper', 'release'}
                 or chosen['skill'] in {'nudge', 'rotate_wrist'} and chosen['parameters'].get('anchor_id')))
-            if is_boundary(chosen) or legacy_end:
+            if is_boundary(chosen) or chosen['skill'] == 'guarded_move' or legacy_end:
                 break
             prediction.advance(chosen)
         self.private_trace.extend(virtual.private_trace)
