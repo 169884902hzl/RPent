@@ -195,3 +195,15 @@ CPU同一原件case000证明：旧接触点云静止筛查有leftfinger7/rightfi
 01:13:35集群时间停止10820(3对关闭)、10822(0整局关闭)以及依赖10823–10825，以新快照修复已证实抬升屏幕问题。10821抽屉不受可动物体载荷分支影响，继续收集独立开发证据；10698仍不改。停止原件stopped_e361_pending_lift_20261021.json，失败/未知/中断不删除、不混新源。10698基线32状态已完整关闭：30整局25成功，2VLA试点单列；循环中位109.12秒、整局中位327.25秒，优化臂尚无配对关闭，不能宣称提速。
 
 条件抬升、技能、chunk、schema6、screen和启动器完整相关CPU回归334 passed，213.98秒；原pytest timeout配置警告保留。日志/tmp/schema6_pending_lift_full.log。源码补丁没有降低任何碰撞/抓取/放置判据，后续仍须新快照同launcher真实物理请求验证。
+
+## 5bd物理配对改善与后续边界归属修复
+
+5bd8e877已普通推送，快照source_schema6_5bd8e877_20261021，完整归档SHA256 d951a21b8762c6c2c9fe494577ff6febc0cf8240baaa76ae75990c65a895894f。10826 fixed32 N1、10827 move100已通过真实启动并进入正式回合；10828–10830为D2恢复0/1/2依次等move。每个显式job有30秒借卡归还监控，schema/contract不变。接口登记共享6906612219–6906613958，回执preparation_5bd8e877/interface_delivery.json。
+
+move100 case000对e361和5bd，完整初态物理SHA相同、lift前62控制动作逐个相同。旧lift零步(measured_sweep_collision后被覆盖成持物失败)，新lift32控制步endpoint；原公开判据测得rise0.09612402298m/coupling0.00682412852m/aperture0.00561502235m，通过held验证。新case000默认和原选变体均完成注册子任务。证据5bd8e877/pending_lift_physical_case000_pair_r1.json，已交Codex1/2；仅证明这一状态的物理改善，不是整批D通过。
+
+同源N1第一启动仍零步measured_payload_collision，原始原因现在正确保留。CPU追踪新阻挡点到主视角像素[575,729]，距target0.00083685m；已有3轮、两像素切线连续规则可将其归回实例。完整prelift target还原的最终掩码遗漏该点(较早instance边界之后的接触关联又裁掉了它)。仅重放现有边界判据、限制在原target测得extent内，再按精确像素扣除场景，整条继承v/a/j抬升路线通过。0RPC/0物理步；原件CPU_N1_boundary_capture_r1.json、CPU_N1_final_boundary_route_r1.json。
+
+拟修生产_capture_payload_reference：在最终已测掩码上复用同样3轮/3mm连通/1mm外推规则，仍限制原测得extent、排除测得支撑面，不作距离膨胀。23项针对性测试通过10.34秒，包含邻接障碍留在scene；完整相关回归运行中，新源码尚未物理验证。在跑5bd/e361快照保持不改，失败/未知/中断保留。
+
+最终掩码补丁完整相关回归335 passed，235.16秒，日志/tmp/schema6_final_boundary_full_r2.log。首轮334通过、1失败是旧payload测试缺RGB-D load桩；补齐相同邻物输入、保留邻物不得被实例拥有的断言，并在拟合前用当前机器人过滤后的精确像素限定target范围。两项该回归单独通过0.72秒，旧失败原文保留。物理尚待新快照。5bd N1目前2局：碗成功7决策/602步/533.36秒，容器失败8决策/237.53秒；不改旧记录。

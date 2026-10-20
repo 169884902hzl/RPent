@@ -2783,6 +2783,25 @@ def test_lift_prediction_keeps_an_existing_finger_shell_overlap(adapter, monkeyp
     assert not screen([pose])['passed'] and adapter.held is None
 
 
+def test_pre_lift_reference_refines_final_current_depth_mask_before_scene_subtraction(adapter, monkeypatch):
+    y, x = np.mgrid[:5, :5]
+    world = np.stack((x*.001, y*.001, np.ones_like(x)), axis=-1)
+    mask = np.ones((5, 5), dtype=bool)
+    mask[2, 3] = False
+    target = world[mask]
+    obstacle = world[2, 3]
+    foreign = np.array([[.1, .1, 1.]])
+    monkeypatch.setattr(adapter, '_contact_pixels', lambda key: target)
+    monkeypatch.setattr(adapter, '_self_filtered_world', lambda points: points)
+    monkeypatch.setattr(adapter, '_exclude_measured_support', lambda points: (points, None))
+    adapter.ex.toolkit._state.load = lambda name: world
+    adapter._base_geometry = (np.concatenate([world.reshape(-1, 3), foreign]), None)
+    result = adapter._capture_payload_reference('e1')
+    assert np.any(np.all(result['target'] == obstacle, axis=1))
+    assert not np.any(np.all(result['scene'] == obstacle, axis=1))
+    assert np.any(np.all(result['scene'] == foreign[0], axis=1))
+
+
 def test_rejected_wrist_scan_is_a_failure(adapter):
     request = adapter.request(k=1)
     adapter._cloud_and_ik = lambda *args, **kwargs: lambda poses: {
@@ -3022,7 +3041,9 @@ def test_payload_reference_does_not_veto_its_own_small_motion(adapter, monkeypat
     target = np.array([[.1, .1, .9], [.12, .1, .9]])
     neighbour = [.122, .1, .902]
     adapter._base_geometry = np.vstack([target, neighbour]), None
-    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=7))
+    world = np.vstack([target, neighbour]).reshape(3, 1, 3)
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=7, load=lambda _: world))
+    monkeypatch.setattr(adapter, '_self_filtered_world', lambda points: points)
     # The semantic mask also covers a robot pixel, already removed from the
     # scene by public proprioception/static-geometry self filtering.
     monkeypatch.setattr(adapter, '_contact_pixels', lambda key: np.vstack([target, [9., 9., 9.]]))

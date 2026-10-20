@@ -3012,6 +3012,35 @@ class MeasuredSkillAdapter:
         self._cloud_and_ik(anchor_id, contact=True)
         scene = self._base_geometry[0]
         if len(target):
+            # Establish the instance's extent only from pixels that survived
+            # the current proprioceptive robot filter, including SAM spill.
+            member = cKDTree(target).query(scene,
+                distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+            target = scene[member]
+        if len(target):
+            # Contact association can trim pixels after the earlier instance
+            # boundary pass. Reapply the SAME current-depth tangent test to
+            # the final mask, inside its already measured extent. Otherwise
+            # omitted pixels of this object become stationary lift obstacles.
+            lower, upper = target.min(0), target.max(0)
+            tree = cKDTree(target)
+            recovered = [target]
+            boundary = []
+            for camera in ('agentview', 'wrist'):
+                world = self._self_filtered_world(np.asarray(
+                    self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                valid = np.isfinite(world).all(axis=2) & (world >= lower).all(axis=2) & (world <= upper).all(axis=2)
+                mask = np.zeros(valid.shape, dtype=bool)
+                mask[valid] = tree.query(world[valid],
+                    distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+                completed, evidence = complete_instance_boundary(world, mask, rounds=3)
+                recovered.append(world[completed & valid])
+                boundary.append({'camera': camera, **evidence})
+            target, support = self._exclude_measured_support(np.concatenate(recovered))
+            self.instance_boundary_evidence.setdefault(anchor_id, []).append({
+                'source': 'final_pre_lift_current_depth_boundary', 'views': boundary,
+                'measured_support': support, 'private_pose_used': False})
+        if len(target):
             # Remove exact target pixels before downsampling. Otherwise a
             # small held-object motion matches its own old surface and the
             # temporal static-scene veto rejects genuine payload pixels.
