@@ -247,7 +247,9 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             # Trial identities/seeds are fixed independently of scheduling.
             # Diagnose fallback contact before a slow bounded-self branch.
             methods = ([(1, 'call_vla')] if startup else
-                [(1, 'call_vla'), (2, 'call_vla'), (3, 'call_vla'), (0, 'self')])
+                [(1, 'call_vla'), (2, 'call_vla'), (3, 'call_vla')])
+            if not startup and diagnostic.get('include_self', True):
+                methods.append((0, 'self'))
             for index, method in methods:
                 probe.restore_checkpoint(facade, adapter, policy, saved)
                 adapter.vla_budget = budget

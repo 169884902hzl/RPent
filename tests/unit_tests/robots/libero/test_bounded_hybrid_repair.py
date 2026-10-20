@@ -151,7 +151,9 @@ def test_holding_another_object_is_not_a_placement_start_for_the_requested_sourc
 
 
 @pytest.mark.parametrize('prefix_success', [False, True])
-def test_original_fork_reaches_the_registered_second_goal_and_phase_before_branching(tmp_path, monkeypatch, prefix_success):
+@pytest.mark.parametrize('include_self', [None, False])
+def test_original_fork_reaches_the_registered_second_goal_and_phase_before_branching(
+        tmp_path, monkeypatch, prefix_success, include_self):
     from contextlib import contextmanager
 
     from scripts import probe_bounded_hybrid_repair as repair
@@ -176,10 +178,13 @@ def test_original_fork_reaches_the_registered_second_goal_and_phase_before_branc
     monkeypatch.setattr(repair, 'run_trial', run_trial)
     case = {'diagnostic': {'domain': 'original', 'kind': 'original_fork',
         'budget': {}, 'subtask_mode': 'on', 'goal_index': 1, 'trial_seed_base': 1000}}
+    if include_self is not None:
+        case['diagnostic']['include_self'] = include_self
     result = repair.evaluate_case(case, {}, tmp_path/'case', {'source_commit': 'test'})
     if prefix_success:
         assert calls == [('g0:pick', 'self'), ('g0:on', 'self'), ('g1:pick', 'self'),
-            ('g1:on', 'call_vla'), ('g1:on', 'call_vla'), ('g1:on', 'call_vla'), ('g1:on', 'self')]
+            ('g1:on', 'call_vla'), ('g1:on', 'call_vla'), ('g1:on', 'call_vla')]+(
+                [('g1:on', 'self')] if include_self is not False else [])
         assert result['status'] == 'physical_result' and len(result['prefix']) == 3
     else:
         assert calls == [('g0:pick', 'self')]
