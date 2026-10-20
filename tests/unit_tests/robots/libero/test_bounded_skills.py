@@ -47,6 +47,60 @@ def decision(request, ids):
             "observation_id": request["observation_id"], "candidate_ids": ids}
 
 
+def test_vla_prompt_ignores_only_tracking_remnants_absent_from_public_anchors(adapter):
+    from dataclasses import replace
+
+    adapter.allow_vla = True
+    adapter.scene.entities['unmeasured'] = replace(adapter.scene.entities['e1'],
+        id='unmeasured', visible=False)
+    request = adapter.request(k=1)
+    assert [a['id'] for a in request['anchors']] == ['e1']
+    call = next(c for c in request['candidates'] if c['skill'] == 'call_vla')
+    assert adapter._vla_prompt(call['parameters'])[0] == 'pick up the box'
+
+
+def test_vla_prompt_preserves_advertised_cached_peer_for_disambiguation(adapter):
+    from dataclasses import replace
+
+    adapter.allow_vla = True
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='microwave')
+    peer = replace(adapter.scene.entities['e1'], id='peer', xyz=(.4, .1, .9))
+    adapter.scene.entities['peer'] = replace(peer, visible=False)
+    adapter.target_cache['peer'] = peer
+    assert {a['id'] for a in adapter.anchors()} == {'e1', 'peer'}
+    assert adapter._vla_prompt({'anchor_id': 'e1', 'mode': 'close'})[0] == 'close the rightmost microwave'
+
+
+def test_vla_candidate_omits_unresolvable_public_instances(adapter):
+    from dataclasses import replace
+
+    adapter.allow_vla = True
+    adapter.scene.entities['peer'] = replace(adapter.scene.entities['e1'], id='peer')
+    request = adapter.request(k=1)
+    assert {a['id'] for a in request['anchors']} == {'e1', 'peer'}
+    assert not any(c['skill'] == 'call_vla' for c in request['candidates'])
+    assert any(c['skill'] == 'move_to' for c in request['candidates'])
+
+
+def test_vla_binding_lost_after_selection_is_a_measured_failure_receipt(adapter, monkeypatch):
+    from robots.libero.v5_subtasks import SubtaskBindingError
+
+    adapter.allow_vla = True
+    request = adapter.request(k=1)
+    call = next(c for c in request['candidates'] if c['skill'] == 'call_vla')
+    def lost(_):
+        raise SubtaskBindingError('selected public measurement disappeared')
+    monkeypatch.setattr(adapter, 'call_vla', lost)
+    receipt, = adapter.execute(request, decision(request, [call['id']]))
+    assert (receipt['outcome'], receipt['phase'], receipt['stop_reason']) == (
+        'unmeasured', 'perception', 'subtask_binding_unmeasured')
+    assert receipt['steps_used'] == 0 and not adapter.p.actions
+    validate(receipt)
+    subsequent = adapter.request(k=1)
+    again = next(c for c in subsequent['candidates'] if c['id'] == call['id'])
+    assert again['recent_failures'] == 1
+
+
 def test_public_push_fallback_has_measured_source_and_region_without_goal_filter(adapter):
     from jsonschema import ValidationError
 

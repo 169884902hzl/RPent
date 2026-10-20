@@ -51,7 +51,9 @@ from robots.libero.v5_grasp_geometry import (
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_state import fixture_actions
-from robots.libero.v5_subtasks import PI05_PROMPT_VERSION, pi05_instance_description, subtask_phrase
+from robots.libero.v5_subtasks import (
+    PI05_PROMPT_VERSION, SubtaskBindingError, pi05_instance_description, subtask_phrase,
+)
 from rpent.skill_package import VERSION
 from rpent.skill_package.contract import (
     FailureMemory,
@@ -261,14 +263,17 @@ class MeasuredSkillAdapter:
                 or entity.name.startswith('area ') or entity.name.endswith('top surface')))
             or (entity.id == self.active and entity.id in self.committed_grasps))
 
+    def _anchor_entity(self, current):
+        cached = current.id in self.target_cache and (
+            (self.held is not None and current.id != self.held) or not current.visible)
+        return (self.target_cache[current.id] if cached else current), cached
+
     def anchors(self):
         anchors = []
         for current in self.scene.entities.values():
             if not self._has_anchor(current):
                 continue
-            cached = current.id in self.target_cache and (
-                (self.held is not None and current.id != self.held) or not current.visible)
-            e = self.target_cache[current.id] if cached else current
+            e, cached = self._anchor_entity(current)
             anchors.append({"id": e.id, "label": e.name, "frame": "world",
                  "xyz_m": list(e.xyz), "size_m": (np.array(e.upper)-e.lower).tolist(),
                  "quat_xyzw": None, "confidence": float(self.scene._scores.get(e.id, 0.)),
@@ -1662,6 +1667,13 @@ class MeasuredSkillAdapter:
         if key in self.target_cache and (
                 (self.held is not None and key != self.held) or not entity.visible):
             entity = self.target_cache[key]
+        if skill == 'call_vla':
+            try:
+                self._vla_prompt(parameters)
+            except SubtaskBindingError as exc:
+                self.candidate_diagnostics.append({'stage': 'vla_public_binding',
+                    'candidate_id': cid, 'reason': str(exc)})
+                return None
         consequence = {"path_min_clearance_m": None, "collision": None, "ik_reachable": None,
                        "expected_width_m": self.plans.get(key, {}).get("width_m"),
                        "expected_gripper_opening_m": None, "expected_steps": 0,
@@ -2512,9 +2524,15 @@ class MeasuredSkillAdapter:
                 elif detail.get('endpoint_error_m', float('inf')) > self.config.endpoint_tolerance_m:
                     outcome, reason, phase = 'failure', 'scan_waypoint_not_reached', 'planning_unreachable'
         elif skill == "call_vla":
-            detail = self.call_vla(parameters)
-            outcome, reason = detail["outcome"], detail["stop_reason"]
-            phase = None if outcome == "success" else "contact_failure"
+            try:
+                detail = self.call_vla(parameters)
+            except SubtaskBindingError as exc:
+                outcome, phase, reason = 'unmeasured', 'perception', 'subtask_binding_unmeasured'
+                detail = {'binding_error': str(exc), 'steps_used': 0, 'blocks_used': 0,
+                    'trace': [], 'checks': []}
+            else:
+                outcome, reason = detail["outcome"], detail["stop_reason"]
+                phase = None if outcome == "success" else "contact_failure"
         elif skill == "finish":
             outcome = "success" if self.p.env.terminated else "rejected"
             reason = "native_success" if outcome == "success" else "environment_reports_task_incomplete"
@@ -2764,17 +2782,33 @@ class MeasuredSkillAdapter:
                 names.add(entity.name)
         return sorted(names)
 
+    def _vla_prompt(self, parameters):
+        # Use exactly the visible/cached identity universe advertised by
+        # anchors(). Unadvertised raw tracking remnants are not measurements
+        # and cannot veto a prompt for the sole public instance.
+        entities = {e.id: self._anchor_entity(e)[0] for e in self.scene.entities.values()
+            if self._has_anchor(e)}
+        source = entities.get(parameters['anchor_id'])
+        if source is None:
+            raise SubtaskBindingError('selected source has no public anchor')
+        name = pi05_instance_description(source, entities, self.scene.view_axes)
+        target = entities.get(parameters.get('target_id'))
+        if parameters.get('target_id') is not None and target is None:
+            raise SubtaskBindingError('selected target has no public anchor')
+        target_name = pi05_instance_description(target, entities, self.scene.view_axes) if target else None
+        mode = parameters['mode']
+        prompt = f'pick up the {name}' if mode == 'pick' else subtask_phrase(name, mode, target_name)
+        return prompt, name
+
     def call_vla(self, parameters):
         if not self.allow_vla:
             raise ValueError("call_vla disabled for the oracle upper-bound diagnostic")
+        prompt, name = self._vla_prompt(parameters)
         source = self.scene.entities[parameters["anchor_id"]]
         mode = parameters["mode"]
-        name = pi05_instance_description(source, self.scene.entities, self.scene.view_axes)
         target = self.scene.entities.get(parameters.get("target_id"))
         targeted = getattr(self, 'targeted_vla_measurement_v1', False)
         monitor_names = self._vla_measurement_names(source, target) if targeted else None
-        target_name = pi05_instance_description(target, self.scene.entities, self.scene.view_axes) if target else None
-        prompt = f"pick up the {name}" if mode == "pick" else subtask_phrase(name, mode, target_name)
         initial = source
         initial_step = self.p.env.execution_budget()["used_sim_steps"]
         initial_endpoint = self.scene.measure_fixture_endpoint(source, name) if mode in {"open", "close"} else None
