@@ -108,7 +108,7 @@ def main():
     with args.output.with_suffix('.csv').open('x') as stream:
         fields = ['case', 'category', 'mode', 'source_commit', 'repair', 'self_success',
                   'vla_x_of_3', 'vla_executed_n']
-        writer = csv.DictWriter(stream, fieldnames=fields, extrasaction='ignore')
+        writer = csv.DictWriter(stream, fieldnames=fields, extrasaction='ignore', lineterminator='\n')
         writer.writeheader()
         writer.writerows(rows)
     print(json.dumps({'registered_states': 71, 'closed_vla_trials': 213, 'categories': groups}))
