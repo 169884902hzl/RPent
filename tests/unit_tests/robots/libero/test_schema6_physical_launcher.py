@@ -100,3 +100,24 @@ def test_n1_resume_preserves_completed_cases_and_interrupted_attempt(tmp_path):
     summary.write_text('changed')
     with pytest.raises(ValueError):
         module.pending_cases(tmp_path, [0])
+
+
+def test_move_outcome_tracks_parent_goal_and_held_transfer_stage(tmp_path, monkeypatch):
+    module, _, _ = setup_launcher(tmp_path, monkeypatch)
+    cabinet = SimpleNamespace(id='cabinet', part_of=None)
+    panel = SimpleNamespace(id='door', part_of='cabinet')
+    obj = SimpleNamespace(id='object', part_of=None)
+    adapter = SimpleNamespace(scene=SimpleNamespace(entities={
+        'cabinet': cabinet, 'door': panel, 'object': obj}), held=None)
+    facade = SimpleNamespace(goal_status=lambda: {'satisfied': [False]})
+    close = {'goal_index': 0, 'mode': 'close'}
+    bindings = SimpleNamespace(bind_subtask=lambda *args: (cabinet, None))
+    assert module.move_subtask(bindings, facade, adapter, None, [close], 'door') == close
+    assert module.move_subtask(bindings, facade, adapter, None, [close], 'object') is None
+
+    pick = {'goal_index': 0, 'mode': 'pick'}
+    place = {'goal_index': 0, 'mode': 'in'}
+    adapter.held = obj.id
+    bindings.bind_subtask = lambda *args: (obj, cabinet)
+    assert module.move_subtask(bindings, facade, adapter, None, [pick, place], 'cabinet') == place
+    assert module.move_subtask(bindings, facade, adapter, None, [pick, place], 'object') == place

@@ -32,6 +32,32 @@ def checked(ref):
     return path
 
 
+def move_subtask(probe, facade, adapter, policy, specs, anchor_id):
+    """Associate a measured contact part with its existing private goal.
+
+    A door/panel candidate can refer to a measured child of the goal's
+    cabinet/microwave anchor. This only selects the diagnostic outcome to
+    measure; it creates no candidate or public binding.
+    """
+    related = {anchor_id}
+    entity = adapter.scene.entities.get(anchor_id)
+    while entity is not None and entity.part_of and entity.part_of not in related:
+        related.add(entity.part_of)
+        entity = adapter.scene.entities.get(entity.part_of)
+    satisfied = facade.goal_status()['satisfied']
+    for subtask in specs:
+        if satisfied[subtask['goal_index']]:
+            continue
+        source, target = probe.bind_subtask(policy, adapter, subtask)
+        held = source is not None and adapter.held == source.id
+        if subtask['mode'] == 'pick' and held:
+            continue
+        if ((source is not None and source.id in related)
+                or (held and target is not None and target.id in related)):
+            return subtask
+    return None
+
+
 def worker(args, plan):
     row=plan['jobs'][args.worker]
     os.environ['LIBERO_TYPE']='pro' if row['kind']=='d2' else 'standard'
@@ -92,13 +118,7 @@ def worker(args, plan):
             common,common_ref=probe.save_checkpoint(facade,adapter,policy,args.output/'private_common.pkl',request)
             specs,unsupported=probe.split_subtasks(facade.goal_status()['goals'],adapter.ex.instruction)
             source_id=saved['candidate']['parameters']['anchor_id']
-            spec=None
-            for subtask in specs:
-                bound,_=probe.bind_subtask(policy,adapter,subtask)
-                if (bound is not None and bound.id==source_id
-                        and not facade.goal_status()['satisfied'][subtask['goal_index']]):
-                    spec=subtask
-                    break
+            spec=move_subtask(probe,facade,adapter,policy,specs,source_id)
             arms=[]
             for arm in ('default','original_variant'):
                 directory=args.output/arm;directory.mkdir()
