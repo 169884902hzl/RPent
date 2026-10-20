@@ -1,3 +1,11 @@
+## 最新物理启动与派发（覆盖下方旧PID）
+
+- D2新源3968bdb4的startup10681.0已COMPLETED0:0，2/2实际首π物理请求，543.40s。新D2 batch0=10686_0已经R；其余3批由唯一派发器PID3896745接续。脚本快照内dispatch_repaired_d2_20261020.py，SHA04f7fbe725127ead2438ceb4c7cf9d724765c7563abaebbdbe4e93c1e84c794a；日志monitor_public_binding_D2_and_original_20261020.log。原3680760不在。
+- 旧D2 10681_0已scancel，仅因为新源码替换，不改判。停止前37条π分支闭合、1个worker闭合、程序错误0，记录reports/D2_150_source_cutoff_20261020.json；其余partial保留unknown。旧源不混入新批结果。
+- 原版10682三片仍R；s15新源三seed完整分叉仍在raw10684.2/session22167，首条π已开始推理，未闭合。父片10682_1不能在这个复跑结束前取消，因为它拥有共享SAM/π服务。
+- HEAD7c7801e1已推送，仅报告和诊断准备脚本更新；物理执行源仍3968bdb4，不重建源。
+- 下一步：确认10686实际π物理执行、盯s15三次完成、监控worker错误和C2资源归还；最终原版71状态按旧32/余39/程序错误补跑分源码交付。主报告D2_repair_status_20261020.md/json正在更新。队列未清不结束。
+
 ## 当前续接：公开提示绑定3968bdb4（覆盖下方旧PID）
 
 - HEAD3968bdb4f5f88c63be1a60fc34d955ff169af5b3已普通推送。公开提示只对anchors可见/缓存实体消歧；不可描述候选省略，选中后失测返回unmeasured/perception/subtask_binding_unmeasured、0步且计入失败。schema字段不变，bounded-skills/4。
