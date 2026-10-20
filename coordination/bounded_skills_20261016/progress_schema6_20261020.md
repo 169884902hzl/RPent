@@ -43,3 +43,11 @@ GPU 只保留 10698；10688 完成 9 局后归还借卡，末局待续跑，1074
 机器可读登记保存在远端 `results/bounded_skills/schema6_20261020/preparation_907a572f/`：move100.json（100 对）、drawer40.json（开关各 20 对）、N1_fixed32.json（同 32 状态）、D2_recovery0/1/2.json（每档 40 局）。上一份 preparation/ 与 5fad 快照保留；CPU preflight 均通过。
 
 共享 COORDINATION 已写 schema6 字段变化、SHA 与证据范围，回执 `reports/schema6_interface_delivery.json`。独立物理启动 `10755`（node02/1GPU/8CPU/96GB/nice500）等 `10699` 后开始；当前只是排队，没有物理成绩。正式 100 对尚未放行。此后新增启动壳不改变固定的技能/规划源码。
+
+## 21:50 集群时间更新
+
+`ec899215` 快照已独立解压到 `/public/home/sunyihan/rpent_libero_eval/source_schema6_ec899215_20261020`，归档 SHA256 `435cb7fc817e7c6cf549e483d58ae868f8fa1d3a94d4ce4c3d0c4b4777b1c7d8`。move100、drawer40、N1_fixed32、D2 三档共六类 CPU 预检全部通过，原件 `reports/schema6_ec899215_preflight.json`。接口 SHA 未变化，已另追加共享登记。旧待运行启动 10755 取消，换为 10757/ec899215，仍等待 10699；这不构成真实启动通过。
+
+10698 基线臂完成前 22 个完整回合，优化臂尚未开始；`reports/schema6_N1_three_arm_interim_r1.json` 保留此前 21 局中间原件。三臂汇总器现已逐对输出 baseline/optimized/schema6，ID 因 schema 变化而不同只作为描述，不用来判断语义等价。初态哈希差异继续披露。GPU 当前 10698、Codex2 的 10749/10754、用户 p3a5 各自运行；C3 未占第二张卡。
+
+检查 D2 独立重放路径时发现：两路都失败时没有将已测得的择优方法加入重放，导致未实际重放。新代码对已测得的零比零平局也从整局初态实际重放 self；方法未知仍不代选。原分叉与旧源码保留。对应回归两类加现有混合/汇总共 40 passed（`/tmp/schema6_replay_regression.log`）；新增物理汇总器保留未完成/未知分母、逐状态翻转、Wilson 区间，并拒绝初态哈希不一致的配对。报告烟测原件 `reports/schema6_reporting_smoke.json`。该补丁须以新源码登记 D2，不能混入正在运行的旧分母。

@@ -467,6 +467,10 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             write(directory / "paired.json", row)
             if selection["method"] is None or selection["status"] == "both_failed":
                 envelope_rate = 0. if selection["status"] == "both_failed" else None
+                if selection["method"] is not None:
+                    # Even the best measured method can fail. Independently
+                    # replay it instead of calling an unexecuted replay false.
+                    chosen.append({"subtask": spec, "method": selection["method"]})
                 break
             envelope_rate *= selection["rate"]
             candidates = [0] if selection["method"] == "self" else [1, 2, 3]
@@ -479,7 +483,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
         # full state, never splice saved successful endpoints into this replay.
         restore_checkpoint(facade, adapter, policy, initial)
         replay, replay_decisions = [], 0
-        if len(chosen) == len([row for row in rows if row["selection"]["status"] == "measured"]):
+        if all(row["selection"]["method"] is not None for row in rows):
             for index, choice in enumerate(chosen):
                 with timings.measure("planning.request"):
                     request = adapter.request(k=4)

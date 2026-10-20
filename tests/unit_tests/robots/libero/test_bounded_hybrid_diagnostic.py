@@ -318,3 +318,48 @@ def test_startup_calls_vla_before_any_full_oracle_branch(tmp_path, monkeypatch, 
     assert methods == ['call_vla']
     assert result['status'] == ('startup_physical' if physical else 'startup_no_vla_physics')
     assert (tmp_path / 'episode/first_physical_vla_request.json').exists() is physical
+
+
+@pytest.mark.parametrize('unknown', [False, True])
+def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_path, monkeypatch, unknown):
+    from contextlib import contextmanager, nullcontext
+    import time
+
+    from robots.libero import bounded_offline_labels
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    case = {'name': 'D2', 'episode': {'suite': 'libero_spatial_swap', 'task': 0, 'seed': 40}}
+    plan = {'cases': [case], 'source_commit': 'tested', 'trial_seed_base': 1000}
+    facade = SimpleNamespace(goal_status=lambda: {
+        'goals': [['open', 'cabinet_1']], 'satisfied': [False], 'done': False})
+    adapter = SimpleNamespace(request=lambda **_: {'candidates': []},
+        ex=SimpleNamespace(instruction='open the cabinet'))
+    timings = SimpleNamespace(measure=lambda *_: nullcontext(), started=time.perf_counter(),
+        summary=lambda *_: {})
+
+    @contextmanager
+    def runtime(*_):
+        yield facade, adapter, object(), timings
+
+    methods = []
+
+    def trial(*args, **kwargs):
+        methods.append(args[5])
+        return {'success': None if unknown and args[5] == 'call_vla' else False,
+            'decisions': 1, 'request_sha256': 'same'}, {}
+
+    monkeypatch.setattr(probe, 'runtime', runtime)
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({}, {}))
+    monkeypatch.setattr(probe, 'restore_checkpoint', lambda *_: None)
+    monkeypatch.setattr(probe, 'trial', trial)
+    monkeypatch.setattr(bounded_offline_labels, 'capture_annotation_state', lambda *_: {})
+    monkeypatch.setattr(bounded_offline_labels, 'save_annotation_state', lambda *_: {})
+    result = probe.evaluate_case(case, {}, tmp_path / 'episode', plan)
+    assert methods[:4] == ['self', 'call_vla', 'call_vla', 'call_vla']
+    if unknown:
+        assert len(methods) == 4 and result['full_replay'] == []
+        assert result['conditional_rate_product'] is None
+    else:
+        assert methods[4:] == ['self']
+        assert len(result['full_replay']) == 1 and result['full_replay'][0]['success'] is False
+        assert result['conditional_rate_product'] == 0.

@@ -4,6 +4,7 @@ import hashlib
 import json
 import statistics
 from collections import Counter
+from itertools import combinations
 from pathlib import Path
 
 
@@ -100,6 +101,37 @@ def collect(directory, registration):
         'categories':categories}
 
 
+def pair_records(left_arm, right_arm):
+    """Compare only completed registered cases, without aligning changed IDs."""
+    paired = []
+    left = {row['index']: row for row in left_arm['records']}
+    right = {row['index']: row for row in right_arm['records']}
+    for index in sorted(left.keys() & right.keys()):
+        a, b = left[index], right[index]
+        if (a['case'], a['runner']) != (b['case'], b['runner']):
+            raise ValueError(f'registered case mismatch at {index}')
+        pair = {'index': index, 'case': a['case'], 'runner': a['runner'],
+            'left_success': a['success'], 'right_success': b['success'],
+            'outcome_equal': a['success'] == b['success'],
+            'initial_physics_hash_equal': (a['initial_physics_sha256'] == b['initial_physics_sha256']
+                if a['initial_physics_sha256'] and b['initial_physics_sha256'] else None)}
+        if a['runner'] == 'bounded_episode':
+            pair.update(whole_episode_wall_s=[a['wall_s'], b['wall_s']],
+                choice_chunks_equal=a['choice_chunks'] == b['choice_chunks'],
+                selected_ids_equal=a['selected_ids'] == b['selected_ids'],
+                decisions=[a['decisions'], b['decisions']], sim_steps=[a['sim_steps'], b['sim_steps']],
+                decision_loop_median_s=[distribution(a['loop_s'])['median'],
+                    distribution(b['loop_s'])['median']],
+                timing_s=[a['whole_timing_s'], b['whole_timing_s']])
+        else:
+            pair.update(branch_wall_s=[a['branch_wall_s'], b['branch_wall_s']],
+                trial_seed_equal=a['trial_seed'] == b['trial_seed'],
+                controls=[a['controls'], b['controls']], public_checks=[a['public_checks'], b['public_checks']],
+                fallback_timing_s=[a['fallback_timing_s'], b['fallback_timing_s']])
+        paired.append(pair)
+    return paired
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, required=True)
@@ -113,33 +145,27 @@ def main():
     arms = {arm: collect(args.root/arm, registration) for arm in ('baseline','optimized')}
     if args.schema6_root is not None:
         arms['schema6']=collect(args.schema6_root,registration)
-    paired = []
-    left = {row['index']: row for row in arms['baseline']['records']}
-    right = {row['index']: row for row in arms['optimized']['records']}
-    for index in sorted(left.keys() & right.keys()):
-        a,b=left[index],right[index]
-        pair = {'index':index,'case':a['case'],'runner':a['runner'],
-            'baseline_success':a['success'],'optimized_success':b['success'],
-            'outcome_equal':a['success']==b['success'],
-            'initial_physics_hash_equal': (a['initial_physics_sha256']==b['initial_physics_sha256']
-                if a['initial_physics_sha256'] and b['initial_physics_sha256'] else None)}
-        if a['runner']=='bounded_episode':
-            pair.update(whole_episode_wall_s=[a['wall_s'],b['wall_s']],
-                choice_chunks_equal=a['choice_chunks']==b['choice_chunks'],
-                selected_ids_equal=a['selected_ids']==b['selected_ids'],
-                decisions=[a['decisions'],b['decisions']],sim_steps=[a['sim_steps'],b['sim_steps']])
-        else:
-            pair.update(branch_wall_s=[a['branch_wall_s'],b['branch_wall_s']],
-                trial_seed_equal=a['trial_seed']==b['trial_seed'],
-                controls=[a['controls'],b['controls']],public_checks=[a['public_checks'],b['public_checks']])
-        paired.append(pair)
+    comparisons = {}
+    for left, right in combinations(arms, 2):
+        rows = pair_records(arms[left], arms[right])
+        comparisons[f'{left}_vs_{right}'] = {'left': left, 'right': right,
+            'paired_n': len(rows), 'records': rows,
+            'improved': sum(not row['left_success'] and row['right_success'] for row in rows),
+            'regressed': sum(row['left_success'] and not row['right_success'] for row in rows)}
+    # Preserve the original two-arm keys for existing report readers.
+    paired = comparisons['baseline_vs_optimized']['records']
+    for row in paired:
+        row['baseline_success'] = row['left_success']
+        row['optimized_success'] = row['right_success']
     report={'scope':'N1 only; 30 whole episodes and 2 separately reported VLA continuation pilots',
         'manifest':reference(args.manifest),'script':reference(Path(__file__)),
         'complete':all(not arm['missing_indices'] for arm in arms.values()),
-        'arms':arms,'paired':paired,'paired_n':len(paired),'training':False,
+        'arms':arms,'paired':paired,'paired_n':len(paired),'comparisons':comparisons,'training':False,
         'limits':['Source scopes differ intentionally; request-byte equality is not expected.',
             'Missing results stay missing, not failures or successes.',
             'JSON bytes are measured; model prompt token counts are not estimated.',
+            'Candidate IDs intentionally change in schema6; ID equality is descriptive only.',
+            'Initial full-state hash differences prevent claiming identical checkpoint replay.',
             'No N8 throughput or model choice-accuracy claim.']}
     with args.output.open('x') as stream:
         json.dump(report,stream,indent=2)
