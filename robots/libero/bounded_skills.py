@@ -258,7 +258,9 @@ class MeasuredSkillAdapter:
         return {"measurement_id": f"rgbd:{entity.source_step}:{entity.id}",
                 "capture_step": int(entity.source_step), "source": "rgbd",
                 "cameras": ["main", "wrist"] if self.scene.dual_view_fusion_v1 else ["main"],
-                "operation": entity.geometry or "segmented_rgbd_bounds"}
+                "operation": ("rgbd_segmentation_and_tracking/1-dev"
+                    if getattr(self.scene,'rgbd_mask_tracking_v1',False)
+                    else entity.geometry or "segmented_rgbd_bounds")}
 
     def _anchor_evidence(self, entity):
         evidence = [self._evidence(entity)]
@@ -2070,6 +2072,7 @@ class MeasuredSkillAdapter:
             measurement_clouds_by_view=copy.deepcopy(getattr(self.scene, 'measurement_clouds_by_view', {})),
             dual_view_fusion_v1=self.scene.dual_view_fusion_v1,
             view_axes=self.scene.view_axes, _scores=dict(self.scene._scores))
+        clone.scene.rgbd_mask_tracking_v1 = getattr(self.scene,'rgbd_mask_tracking_v1',False)
         obs = {"robot0_eef_pos": state["eef_xyz_m"], "robot0_eef_quat": state["eef_quat_xyzw"],
             "robot0_joint_pos": state["joint_positions_rad"],
             "robot0_gripper_qpos": state['finger_positions_m']}

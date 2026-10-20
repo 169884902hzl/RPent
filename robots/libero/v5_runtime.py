@@ -156,6 +156,8 @@ def segmentation_retry_prompt(name: str) -> str:
 class MeasuredScene:
     """Stable episode-local IDs bound only to distinct measured instances."""
 
+    rgbd_mask_tracking_v1 = False  # Historical snapshots predate the opt-in tracker.
+
     def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
@@ -183,9 +185,14 @@ class MeasuredScene:
                  region_anchor_cache_v1: bool = False,
                  record_sam_masks_v6: bool = False,
                  grasp_geometry_cleanup_v1: bool = False,
-                 moka_query_ladder_v1: bool = False) -> None:
+                 moka_query_ladder_v1: bool = False, rgbd_mask_tracking_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
+        self.rgbd_mask_tracking_v1 = rgbd_mask_tracking_v1
+        if rgbd_mask_tracking_v1:
+            from robots.libero.bounded_mask_tracking import TrackedSegmentation
+
+            self.rpc = TrackedSegmentation(rpc,toolkit._state,self)
         self.instruction = ""
         self.entities: dict[str, Entity] = {}
         self.vocabulary: set[str] = set()
@@ -323,6 +330,7 @@ class MeasuredScene:
             # support plane. The plane is cached while stationary.
             measured_names.sort(key=lambda name: name == "microwave")
         for name in measured_names:
+            tracking_event_start = len(self.rpc.events) if self.rgbd_mask_tracking_v1 else 0
             prompt = segmentation_prompt(name)
             moka_ladder = self.moka_query_ladder_v1 and name == "moka pot"
             moka_artifacts = []
@@ -506,6 +514,8 @@ class MeasuredScene:
                     continue
                 evidence = {"source_cameras": [camera], "fusion_version": "none",
                             "shape_fit_version": "none"}
+                if self.rgbd_mask_tracking_v1:
+                    evidence['segmentation_queries'] = self.rpc.events[tracking_event_start:]
                 if grasp_cleanup is not None:
                     evidence['grasp_depth_components'] = grasp_cleanup
                 if moka_ladder:

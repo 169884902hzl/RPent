@@ -671,6 +671,11 @@ def test_distinct_door_uses_second_view_only_for_one_measured_plane(
         lambda item: SimpleNamespace(mask=np.ones((20,20), dtype=bool))))
     scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=call), 0,
                           furniture_parts_v1=True, microwave_door_cloud_v6=True, dual_view_fusion_v1=True)
+    handle_requests = []
+    def unmeasured_handle(parent):
+        handle_requests.append(parent.id)
+        return {'views': {}}
+    monkeypatch.setattr(scene, 'measure_fixture_handle_pose', unmeasured_handle)
     parent = Entity("e1", "microwave", (0., 0., 1.05), (-.2, -.2, .95), (.2, .2, 1.15))
     scene.fixture_measurement_evidence[parent.id] = {}
     raw_parts, raw_views = {}, {}
@@ -678,6 +683,7 @@ def test_distinct_door_uses_second_view_only_for_one_measured_plane(
         measured_clouds=raw_parts, measured_views=raw_views)
     assert bool(parts) is accepted
     assert scene.calls == 2
+    assert handle_requests == ([] if accepted else [parent.id])
     evidence = scene.fixture_measurement_evidence[parent.id]["door_measurement"]
     if accepted:
         assert evidence["source_cameras"] == (["agentview", "wrist"] if primary_visible else ["wrist"])

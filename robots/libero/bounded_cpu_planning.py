@@ -63,6 +63,7 @@ def _detach_adapter(original, robot, budget):
     clone.__dict__.update({name: getattr(original, name) for name in names})
     scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')
     clone.scene = SimpleNamespace(**{name: getattr(original.scene, name) for name in scene_fields})
+    clone.scene.rgbd_mask_tracking_v1 = getattr(original.scene,'rgbd_mask_tracking_v1',False)
     if hasattr(original.scene, 'work_surface_measurement'):
         clone.scene.work_surface_measurement = original.scene.work_surface_measurement
     clone.p = SimpleNamespace(env=CapturedSensors(robot, budget))

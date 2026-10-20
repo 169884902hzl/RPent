@@ -39,7 +39,11 @@ def worker(args, plan):
 
     hooks.install_d2_request_compatibility(probe)
     runtime_options = plan.get('runtime_options', {})
-    if runtime_options:
+    scene_options = plan.get('scene_options', {})
+    tracking_stats = {}
+    if scene_options:
+        probe.BOUNDED_SCENE_FLAGS = {**probe.BOUNDED_SCENE_FLAGS, **scene_options}
+    if runtime_options or scene_options:
         original_runtime = probe.runtime
         from contextlib import contextmanager
 
@@ -48,7 +52,15 @@ def worker(args, plan):
             with original_runtime(*positional, **kwargs) as runtime:
                 for key, value in runtime_options.items():
                     setattr(runtime[1], key, value)
-                yield runtime
+                try:
+                    yield runtime
+                finally:
+                    scene = runtime[1].scene
+                    if getattr(scene,'rgbd_mask_tracking_v1',False):
+                        tracker=scene.rpc
+                        tracking_stats.update(full_queries=tracker.full_queries,
+                            tracked_queries=tracker.tracked_queries,exact_reuses=tracker.exact_reuses,
+                            events=list(tracker.events))
         probe.runtime = configured_runtime
         original_restore = probe.restore_checkpoint
 
@@ -56,6 +68,10 @@ def worker(args, plan):
             result = original_restore(facade, adapter, policy, saved)
             for key, value in runtime_options.items():
                 setattr(adapter, key, value)
+            for key, value in scene_options.items():
+                setattr(adapter.scene,key,value)
+            if scene_options.get('rgbd_mask_tracking_v1') and not hasattr(adapter.scene,'_mask_tracking_history'):
+                adapter.scene._mask_tracking_history={'entries':{},'frames':{}}
             return result
         probe.restore_checkpoint = configured_restore
     assignment = json.loads((args.output/'assignment.json').read_bytes())
@@ -95,6 +111,10 @@ def worker(args, plan):
                 (args.output/'episode').mkdir()
                 result = bounded_episode(args, row, endpoints, probe)
             result['registered_runtime_options'] = runtime_options
+            result['registered_scene_options'] = scene_options
+            if tracking_stats:
+                write(args.output/'tracking_events.json',tracking_stats)
+                result['perception_tracking_counts']={key:value for key,value in tracking_stats.items() if key!='events'}
             write(args.output/'summary.json', result)
         finally:
             write(args.output/'candidate_times.json', candidate_times)
@@ -196,6 +216,10 @@ def main():
             or ('registration_query_workers' in options and (
                 type(options['registration_query_workers']) is not int or options['registration_query_workers'] < 1))):
         raise ValueError('unregistered latency runtime options')
+    scene_options = plan.get('scene_options', {})
+    if (set(scene_options)-{'rgbd_mask_tracking_v1'}
+            or any(type(value) is not bool for value in scene_options.values())):
+        raise ValueError('unregistered latency scene options')
     for name in ('parents',):
         for ref in plan.get(name, []):
             if hashlib.sha256(Path(ref['path']).read_bytes()).hexdigest() != ref['sha256']:

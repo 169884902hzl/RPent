@@ -121,6 +121,7 @@ def capture_annotation_state(oracle, request, *, status=None):
     adapter.__dict__.update({key: getattr(original, key) for key in names})
     scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')
     adapter.scene = SimpleNamespace(**{key: getattr(original.scene, key) for key in scene_fields})
+    adapter.scene.rgbd_mask_tracking_v1 = getattr(original.scene,'rgbd_mask_tracking_v1',False)
     if hasattr(original.scene, 'work_surface_measurement'):
         adapter.scene.work_surface_measurement = original.scene.work_surface_measurement
     robot = measured_robot(original.p)

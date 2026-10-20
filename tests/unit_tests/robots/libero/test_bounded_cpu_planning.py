@@ -110,9 +110,11 @@ def test_small_request_does_not_pay_process_startup(adapter, monkeypatch):
 
 def test_cpu_capture_preserves_the_registered_screen_scope(adapter):
     adapter.lazy_planning_v1 = True
+    adapter.scene.rgbd_mask_tracking_v1 = True
     captured = capture_request_adapter(adapter, [('set_gripper', {'mode': 'open'})])
     restored = pickle.loads(pickle.dumps(captured))
     assert restored.lazy_planning_v1 is True
+    assert restored.scene.rgbd_mask_tracking_v1 is True
     assert not hasattr(restored.p.env, 'step')
 
 
