@@ -146,6 +146,7 @@ def main():
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--worker',type=int)
     p.add_argument('--startup',action='store_true')
+    p.add_argument('--startup-only',action='store_true')
     p.add_argument('--preflight',action='store_true')
     args=p.parse_args();args.source=args.source.resolve(strict=True)
     args.manifest=args.manifest.resolve(strict=True);sys.path.insert(0,str(args.source))
@@ -153,6 +154,8 @@ def main():
     if plan['training'] or plan['schema_version']!='bounded-skills/6':raise ValueError('wrong evaluation registration')
     if args.worker is not None:return worker(args,plan)
     for row in plan['jobs']:
+        for key in ('bddl','grasp_measurement_calibration'):
+            if key in row['case']:checked(row['case'][key])
         if 'manifest' in row:checked(row['manifest'])
         if 'position' in row:
             for key in ('snapshot','annotation_state'):checked(row['position'][key])
@@ -185,6 +188,9 @@ def main():
                     '--manifest',str(args.manifest),'--output',str(startup),'--worker',str(index),'--startup']
                 with (startup/'worker.log').open('x') as stream:
                     subprocess.run(command,stdout=stream,stderr=subprocess.STDOUT,check=True)
+                if args.startup_only:
+                    print(json.dumps({'startup':'physical_passed','proof':str(startup/'summary.json')}),flush=True)
+                    return 0
             directory.mkdir()
             write(directory/'assignment.json',{k+'_url':v._base_url for k,v in endpoints.items()})
             command=[sys.executable,str(Path(__file__).resolve()),'--source',str(args.source),
