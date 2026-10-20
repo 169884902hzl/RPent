@@ -191,6 +191,15 @@ def bind_subtask(policy, adapter, spec):
     source = policy.binding.bind(spec["source_symbol"], entities, phrase, adapter.scene.view_axes)
     target = (policy.binding.bind(spec["target_symbol"], entities, phrase,
         adapter.scene.view_axes, source_reference=False) if spec["target_symbol"] else None)
+    # This diagnostic calls bind() directly, bypassing the ordinary selector's
+    # identity bookkeeping. Retain its publicly resolved IDs before VLA contact
+    # changes visibility. Otherwise a cached peer becomes an apparent new
+    # ambiguity when the bounded selector admits cached anchors after handoff.
+    for symbol, entity in ((spec['source_symbol'], source), (spec['target_symbol'], target)):
+        if entity is not None:
+            policy.binding._bindings[symbol] = entity.id
+            policy.binding._binding_peers.setdefault(symbol, {
+                e.id for e in entities if e.id != entity.id and e.name == entity.name})
     return source, target
 
 

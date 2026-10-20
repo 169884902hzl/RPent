@@ -55,6 +55,39 @@ def test_unknown_is_not_failure_and_tie_prefers_self():
         choose_branch(False, [True])
 
 
+@pytest.mark.parametrize('peer_visible', [False, True])
+def test_subtask_binding_retains_public_identity_without_resolving_ambiguous_source(peer_visible):
+    import copy
+
+    from robots.libero.v5_oracle_policy import OriginalOraclePolicy
+    from scripts.probe_bounded_hybrid_d2 import bind_subtask
+
+    source = SimpleNamespace(id='source', name='cream cheese', visible=True)
+    peer = SimpleNamespace(id='peer', name='cream cheese', visible=peer_visible)
+    basket = SimpleNamespace(id='basket', name='basket', visible=True)
+    axes = ([1., 0., 0.], [0., 1., 0.])
+    binding = OriginalOraclePolicy(object())
+    policy = SimpleNamespace(binding=binding)
+    adapter = SimpleNamespace(scene=SimpleNamespace(
+        entities={e.id: e for e in (source, peer, basket)}, view_axes=axes),
+        ex=SimpleNamespace(instruction='pick up the cream cheese and place it in the basket'))
+    spec = {'source_symbol': 'cream_cheese_1', 'target_symbol': 'basket_1_contain_region'}
+    chosen, target = bind_subtask(policy, adapter, spec)
+    assert target is basket and binding._bindings['basket_1_contain_region'] == 'basket'
+    if peer_visible:
+        assert chosen is None and 'cream_cheese_1' not in binding._bindings
+    else:
+        assert chosen is source and binding._bindings['cream_cheese_1'] == 'source'
+        assert binding._binding_peers['cream_cheese_1'] == {'peer'}
+        # The bounded oracle also exposes cached anchors. They must not undo
+        # the identity resolved before contact, or rebind to a known peer.
+        cached = copy.copy(peer)
+        cached.visible = True
+        assert binding.bind('cream_cheese_1', [source, cached], '', axes) is source
+        source.visible = False
+        assert binding.bind('cream_cheese_1', [source, cached], '', axes) is None
+
+
 def test_hybrid_executor_loads_registered_sensor_calibration_for_thin_rim_hold(tmp_path):
     import json
 
