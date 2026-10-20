@@ -121,3 +121,22 @@ def test_move_outcome_tracks_parent_goal_and_held_transfer_stage(tmp_path, monke
     bindings.bind_subtask = lambda *args: (obj, cabinet)
     assert module.move_subtask(bindings, facade, adapter, None, [pick, place], 'cabinet') == place
     assert module.move_subtask(bindings, facade, adapter, None, [pick, place], 'object') == place
+
+
+@pytest.mark.parametrize('result,accepted', [
+    ({'status': 'physical_result', 'trials': [{'sim_steps': 129}]}, True),
+    ({'status': 'startup_physical', 'first_physical': {'receipts': [{'steps_used': 1}]}}, True),
+    ({'status': 'physical_result', 'trials': [{'sim_steps': 0}]}, False),
+    ({'status': 'startup_physical'}, False),
+    ({'status': 'startup_error', 'trials': [{'sim_steps': 129}]}, False),
+])
+def test_fixed_latency_startup_requires_controls_in_both_report_formats(result, accepted):
+    path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py'
+    spec = importlib.util.spec_from_file_location('schema6_fixed_latency_startup', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if accepted:
+        module.require_physical_startup(result)
+    else:
+        with pytest.raises(RuntimeError, match='physical request'):
+            module.require_physical_startup(result)

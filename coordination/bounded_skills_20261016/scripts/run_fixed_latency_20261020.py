@@ -50,6 +50,19 @@ def pending_cases(output, indices):
     return pending
 
 
+def require_physical_startup(result):
+    """Admit both bounded and saved-VLA startup reports with real controls."""
+    if result.get('status') == 'startup_physical':
+        receipts = result.get('first_physical', {}).get('receipts', [])
+        steps = sum(receipt['steps_used'] for receipt in receipts)
+    elif result.get('status') == 'physical_result':
+        steps = sum(trial.get('sim_steps', 0) for trial in result.get('trials', []))
+    else:
+        steps = 0
+    if steps <= 0:
+        raise RuntimeError('startup ended without a completed physical request')
+
+
 def worker(args, plan):
     sys.path.insert(0, str(args.source))
     hooks = module(args.source/'coordination/bounded_skills_20261016/scripts/shared_gpu_episodes_20261019.py', 'latency_hooks')
@@ -315,8 +328,8 @@ def main():
                 result=subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT)
             if result.returncode:
                 raise RuntimeError(f'latency worker {index} failed; see {output}/worker.log')
-            if startup and json.loads((output/'summary.json').read_bytes())['status'] != 'startup_physical':
-                raise RuntimeError('startup ended without a completed physical request')
+            if startup:
+                require_physical_startup(json.loads((output/'summary.json').read_bytes()))
             if not startup:
                 write(args.output/f'closed_{index:03d}.json', {'summary':str(output/'summary.json'),
                     'sha256':hashlib.sha256((output/'summary.json').read_bytes()).hexdigest()})

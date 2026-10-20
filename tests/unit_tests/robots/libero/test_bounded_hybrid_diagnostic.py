@@ -176,6 +176,41 @@ def test_physical_identity_includes_controller_and_counter_state():
     assert snapshot_digest(first) != snapshot_digest(first | {"counter": 11})
 
 
+def test_runtime_restore_selects_captured_rgbd_and_keeps_sibling_files(tmp_path):
+    from rpent.session import EnvState
+
+    store = EnvState(tmp_path)
+    with store.record_step(state={'frame': 0}):
+        store.save('world.npz', np.array([[1., 2., 3.]]))
+    initial_file = store.artifact_path('world.npz')
+    original_bytes = initial_file.read_bytes()
+    toolkit = SimpleNamespace(_state=store, _state_output_dir=tmp_path)
+    scene = SimpleNamespace(toolkit=toolkit, rpc=object(), entities={})
+    adapter = SimpleNamespace(ex=object(), p=SimpleNamespace(), scene=scene)
+    policy = SimpleNamespace(binding=SimpleNamespace(rpc=object()), private_trace=[])
+    captured = capture_runtime(adapter, policy)
+    with store.record_step(state={'frame': 1}):
+        store.save('world.npz', np.array([[4., 5., 6.]]))
+    sibling = store.artifact_path('world.npz')
+    restore_runtime(adapter, policy, captured)
+    assert toolkit._state is store and store.latest_step == 0
+    np.testing.assert_array_equal(store.load('world.npz'), [[1., 2., 3.]])
+    branch_file = store.artifact_path('world.npz')
+    assert branch_file != initial_file and branch_file.read_bytes() == original_bytes
+    # Planning artifacts written after restore stay in that branch. Even an
+    # atomic replacement of a hard-linked capture cannot change the source.
+    store.save('world.npz', np.array([[7., 8., 9.]]))
+    assert initial_file.read_bytes() == original_bytes
+    assert sibling.exists()
+    restore_runtime(adapter, policy, captured)
+    assert store.latest_step == 0 and store.artifact_path('world.npz') != branch_file
+    np.testing.assert_array_equal(store.load('world.npz'), [[1., 2., 3.]])
+    with store.record_step(state={'frame': 2}):
+        store.save('world.npz', np.array([[10., 11., 12.]]))
+    assert store.latest_step == 1
+    np.testing.assert_array_equal(np.load(sibling)['array'], [[4., 5., 6.]])
+
+
 def test_checkpoint_restores_success_history_and_client_stops_after_sibling(tmp_path):
     from scripts import probe_bounded_hybrid_d2 as probe
 

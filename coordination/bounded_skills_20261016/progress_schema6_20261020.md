@@ -169,3 +169,13 @@ CPU诊断第一次因外部脚本目录优先于PYTHONPATH误载live包而缺pro
 10813同launcher真实启动COMPLETED0:0，5分06秒。关抽屉两臂共同初态SHA3a6a249186b5dd38d8aa460dd17f1bc6fb217d9449b27258bcc64a8d1de1479c；move right/over344步成功(误差0.00045848m)，descend38步成功(误差0.00340835m、端点保持0)，闭合15步成功，后续nudge被碰撞拒绝(0步)。只是启动，不是抽屉整局通过。10814固定N1启动COMPLETED0:0，2分42秒。10816正式N1还在独立VLA入口预启动时因新发现的通用把手姿态缺失主动取消，尚无正式关闭回合，保留中断原件；10698不变继续。
 
 开抽屉保存输入CPU检查：原接触姿态12变体均失败(碰撞/数值IK)，只把旋转移到高处的假设仍失败，不改源码。复用已有_screen_fixture_approaches则找到45度倾斜姿态，right/over连同接触入口通过，公开最小间隙0.00653720m；与历史可行姿态/宽度相符。原惰性实现把该搜索整段跳过，导致选中后仍无可行接触姿态。现将原搜索延迟到“模型已选中move，且固定优先序12路线均失败”时才运行；完整测量/碰撞/IK不削弱，不给未选候选做全规划，不加物体类别特例。34项screen/schema6通过(12.03秒)，原夹具相关回归另外运行。三份CPU原件在93c1213c/CPU_drawer_open_{rebuild_r1,clearance_rotation_r1,fixture_search_r1}/summary.json。
+
+## 观测文件分叉隔离与N1真实启动回执格式
+
+10818在真实VLA请求129控制步后FAILED1:0，原文RuntimeError: startup ended without a completed physical request。VLA修复评测入口返回physical_result/trials，而N1启动器只接受startup_physical。现兼容两种回执格式，但均要求实际控制步>0；零步和startup_error仍抛错。原件results/slurm-10818.log与c5be5d49/N1_fixed32/pilot_startup_check/保留。
+
+10817同一物理初态下，nudge首chunk成功move344/descend38/close15，guarded却在起点零步报告掌部28点碰撞。恢复代码只恢复物理和scene/adapter字典，不恢复EnvState最新帧游标；第二臂读到了第一臂末帧点云，锚点仍是开局坐标。已停止10817和10819(均0完整关闭回合)，记录stopped_c5be_restore_artifact_20261021.json，不把串帧结果算进新物理分母。10698按用户要求继续不改。
+
+通用分叉修复：checkpoint捕获EnvState的观测记录，恢复时在独立目录硬链接原始RGB-D文件并恢复帧游标；保留同一个EnvState对象，工具回调和mask跟踪仍引用正确对象。后续原子写入只替换本分叉文件，不覆盖任何兄弟或源文件。无需重新渲染/测量，不把私有坐标用于公开输入。旧checkpoint无此字段时保留原兼容路径，不能声称历史传感器视图已补齐。
+
+针对性29项CPU回归通过0.88秒，包含同状态多次恢复、RGB-D字节相同、兄弟文件保留、真实控制零步拒绝和VLA129步准入。物理同状态启动仍待新源码复核，D未通过。

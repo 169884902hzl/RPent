@@ -13,6 +13,7 @@ import copy
 import hashlib
 import json
 import os
+import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -99,7 +100,7 @@ def snapshot_digest(snapshot: dict) -> str:
 
 def capture_runtime(adapter, policy) -> dict:
     """Detach public measurement/recovery state, without clients or renderers."""
-    return copy.deepcopy({
+    captured = {
         "adapter": {key: value for key, value in vars(adapter).items()
                     if key not in {"ex", "p", "scene"}},
         "scene": {key: value for key, value in vars(adapter.scene).items()
@@ -107,15 +108,23 @@ def capture_runtime(adapter, policy) -> dict:
         "binding": {key: value for key, value in vars(policy.binding).items() if key != "rpc"},
         "private_trace": policy.private_trace,
         "primitive": {key: value for key, value in vars(adapter.p).items() if key.startswith("_bounded_")},
-    })
+    }
+    from rpent.session import EnvState
+
+    store = getattr(adapter.scene.toolkit, '_state', None)
+    if isinstance(store, EnvState):
+        if store._step_open:
+            raise RuntimeError('cannot checkpoint an unfinished observation capture')
+        captured['artifact_state'] = vars(store)
+    return copy.deepcopy(captured)
 
 
 def restore_runtime(adapter, policy, state: dict) -> None:
     """Restore each fork's public caches and retry history as well as physics.
 
-    Artifact storage remains append-only. Existing referenced image files are
-    immutable; new captures have new toolkit step IDs, never overwriting a
-    sibling branch's measurements.
+    Each restored branch gets a separate artifact directory and the captured
+    frame cursor. Hard links preserve the exact RGB-D bytes without rendering
+    again; atomic artifact writes cannot overwrite a sibling's files.
     """
     saved = copy.deepcopy(state)
     for owner, name, keep in ((adapter, "adapter", {"ex", "p", "scene"}),
@@ -131,6 +140,28 @@ def restore_runtime(adapter, policy, state: dict) -> None:
     vars(policy.binding).clear()
     vars(policy.binding).update(saved["binding"], rpc=rpc)
     policy.private_trace = saved["private_trace"]
+    if 'artifact_state' in saved:
+        store = adapter.scene.toolkit._state
+        artifact_state = saved['artifact_state']
+        source = artifact_state['_output_dir']
+        branch_root = Path(adapter.scene.toolkit._state_output_dir) / 'restored_captures'
+        branch_root.mkdir(parents=True, exist_ok=True)
+        destination = Path(tempfile.mkdtemp(prefix='fork_', dir=branch_root))
+        artifacts = [(name, None) for name in artifact_state['_run_artifacts']]
+        artifacts.extend((name, record.step_idx)
+            for record in artifact_state['_steps'] for name in record.artifacts)
+        # Keep the EnvState object: toolkit tool callbacks and the mask tracker
+        # hold references to it, rather than looking up toolkit._state afresh.
+        vars(store).clear()
+        vars(store).update(artifact_state)
+        for name, step in artifacts:
+            original = store._artifact_file(name, step)
+            if original.exists():  # Older captures may have been pruned.
+                target = destination / original.relative_to(source)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                os.link(original, target)
+        store._output_dir = destination
+        store._write_manifest()
 
 
 def d2_session(episode: dict, budget: int = 10000):
