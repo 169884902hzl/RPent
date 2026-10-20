@@ -6,6 +6,8 @@ from pathlib import Path
 import jsonschema
 import pytest
 
+from rpent.skill_package import VERSION
+
 SCHEMA = json.loads((Path(__file__).resolve().parents[4] / 'rpent/skill_package/schema.json').read_text())
 
 
@@ -14,7 +16,7 @@ def test_schema_is_valid():
 
 
 def decision():
-    return {'schema_version': 'bounded-skills/3', 'kind': 'decision',
+    return {'schema_version': VERSION, 'kind': 'decision',
             'observation_id': 'obs1', 'revision': 0, 'candidate_ids': ['c1']}
 
 

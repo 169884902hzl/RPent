@@ -6,19 +6,30 @@ import pytest
 from scripts.probe_bounded_hybrid_repair import first_self_chunk, validate_plan
 
 
-def test_scope_diagnostic_migrates_only_the_public_version_header():
+@pytest.mark.parametrize('old_version', ['bounded-skills/3', 'bounded-skills/4'])
+def test_scope_diagnostic_migrates_only_the_public_version_header(old_version):
     from copy import deepcopy
 
     from scripts.probe_bounded_hybrid_repair import migrate_replay_header
+    from rpent.skill_package import VERSION
 
-    request = {'schema_version': 'bounded-skills/3', 'candidates': [{'id': 'same', 'parameters': {'mode': 'pick'}}]}
+    request = {'schema_version': old_version, 'candidates': [{'id': 'same', 'parameters': {'mode': 'pick'}}]}
     adapter = SimpleNamespace(latest_request=deepcopy(request))
     updated = migrate_replay_header(adapter, request)
-    assert request['schema_version'] == 'bounded-skills/3'
-    assert updated == adapter.latest_request == request | {'schema_version': 'bounded-skills/4'}
+    assert request['schema_version'] == old_version
+    assert updated == adapter.latest_request == request | {'schema_version': VERSION}
     adapter.latest_request['candidates'][0]['id'] = 'different'
     with pytest.raises(ValueError, match='differs'):
         migrate_replay_header(adapter, request)
+
+
+def test_scope_diagnostic_rejects_unregistered_schema_migrations():
+    from scripts.probe_bounded_hybrid_repair import migrate_replay_header
+
+    for version in ('bounded-skills/1', 'bounded-skills/5', 'bounded-skills/6'):
+        request = {'schema_version': version}
+        with pytest.raises(ValueError, match='unsupported'):
+            migrate_replay_header(SimpleNamespace(latest_request=dict(request)), request)
 
 
 def plan(tmp_path):

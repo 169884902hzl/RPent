@@ -108,6 +108,14 @@ def test_small_request_does_not_pay_process_startup(adapter, monkeypatch):
     assert not adapter.p.actions
 
 
+def test_cpu_capture_preserves_the_registered_screen_scope(adapter):
+    adapter.lazy_planning_v1 = True
+    captured = capture_request_adapter(adapter, [('set_gripper', {'mode': 'open'})])
+    restored = pickle.loads(pickle.dumps(captured))
+    assert restored.lazy_planning_v1 is True
+    assert not hasattr(restored.p.env, 'step')
+
+
 def test_captured_initial_request_keeps_control_history_but_no_live_resources(adapter):
     measured_prediction(adapter)
     adapter.p._bounded_control_index = 3

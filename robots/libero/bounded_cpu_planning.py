@@ -59,7 +59,7 @@ def _detach_adapter(original, robot, budget):
              'held', 'active', 'grasp_reference', 'payload_reference', 'target_cache',
              'plans', 'committed_grasps', 'receipts', 'revision', '_proprio_sample',
              'precontact_instance_surface_v1', 'legacy_chunk_boundaries_v1',
-             'compact_infeasible_candidates_v1')
+             'compact_infeasible_candidates_v1', 'lazy_planning_v1')
     clone.__dict__.update({name: getattr(original, name) for name in names})
     scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')
     clone.scene = SimpleNamespace(**{name: getattr(original.scene, name) for name in scene_fields})

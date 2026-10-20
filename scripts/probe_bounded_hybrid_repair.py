@@ -13,15 +13,19 @@ from scripts.probe_bounded_motion import write
 
 
 def migrate_replay_header(adapter, request):
-    """Admit the unchanged v3 catalog for a v4 observation-scope diagnostic.
+    """Admit an unchanged historical catalog for a registered replay.
 
-    V4 only extends the mode enum; all original fields retain their meaning.
+    V4 extends the mode enum and V5 adds an explicitly scoped endpoint screen.
+    Neither changes the meaning of existing full-route consequences.
     This explicitly changes the version header, never poses/options/screens.
     """
     from rpent.skill_package import VERSION
 
-    if request['schema_version'] != 'bounded-skills/3' or VERSION != 'bounded-skills/4':
-        raise ValueError('only the registered public v3-to-v4 header migration is supported')
+    if (request['schema_version'], VERSION) not in {
+            ('bounded-skills/3', 'bounded-skills/4'),
+            ('bounded-skills/3', 'bounded-skills/5'),
+            ('bounded-skills/4', 'bounded-skills/5')}:
+        raise ValueError('unsupported historical replay header migration')
     request = copy.deepcopy(request)
     cached = copy.deepcopy(adapter.latest_request)
     if request != cached:
