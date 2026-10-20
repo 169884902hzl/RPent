@@ -2447,7 +2447,9 @@ class MeasuredSkillAdapter:
                 receipt = self._execute_one(request, candidate, lookahead=lookahead)
                 outcomes.append(receipt)
                 self.receipts.append(receipt)
-                self.memory.record(candidate, receipt['outcome'], receipt['stop_reason'])
+                # The resolved direction/path is executor-owned. Retry history
+                # belongs to the public option selected in this request.
+                self.memory.record(row['candidate'], receipt['outcome'], receipt['stop_reason'])
                 cursor += 1
                 if receipt['outcome'] != 'success' or is_boundary(candidate) or candidate['skill'] == 'guarded_move':
                     break

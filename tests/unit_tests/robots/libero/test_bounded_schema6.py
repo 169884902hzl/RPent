@@ -81,6 +81,31 @@ def test_selected_move_resolves_first_passing_variant_in_fixed_order(adapter, mo
     assert resolved['parameters'] == {'anchor_id':'e1','approach':'right','path':'over'}
 
 
+def test_merged_move_failures_block_selected_public_option_after_two_attempts(adapter, monkeypatch):
+    from types import SimpleNamespace
+    from robots.libero.bounded_motion import SmoothMotion
+    enable(adapter)
+    def blocked(*args, **kwargs):
+        return SimpleNamespace(duration=1.), None, None, dict(passed=False,
+            collision=True, ik_reachable=True, path_min_clearance_m=0., reason='measured_sweep_collision')
+    monkeypatch.setattr(SmoothMotion, 'prepare', blocked)
+    for expected_failures in (0, 1):
+        request = adapter.request(k=1)
+        move = next(c for c in request['candidates'] if c['skill'] == 'move_to'
+            and c['parameters'] == {'anchor_id': 'e1'})
+        assert move['recent_failures'] == expected_failures
+        receipts = adapter.execute(request, decision(request, [move['id']]))
+        assert receipts[0]['outcome'] == 'failure' and receipts[0]['steps_used'] == 0
+    request = adapter.request(k=1)
+    assert not any(c['skill'] == 'move_to' and c['parameters'] == {'anchor_id': 'e1'}
+        for c in request['candidates'])
+    assert any(c['skill'] == 'move_to' and c['parameters'].get('approach')
+        for c in request['candidates'])
+    adapter.memory.tick(scene_changed=True)
+    assert any(c['skill'] == 'move_to' and c['parameters'] == {'anchor_id': 'e1'}
+        for c in adapter.request(k=1)['candidates'])
+
+
 def test_no_progress_terminal_legality_matches_source_catalog(adapter):
     request = adapter.request()
     adapter.schema6_v1 = True
