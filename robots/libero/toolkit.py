@@ -48,11 +48,15 @@ class LiberoToolkit(Toolkit):
         mode: str = "evaluation",
         attempts_per_session: int = 0,
         state_output_dir: Path | str | None = None,
+        artifact_compression_level: int | None = None,
     ) -> None:
         if mode not in {"evaluation", "exploration"}:
             raise ValueError(f"unsupported LIBERO toolkit mode: {mode!r}")
         self._state_output_dir = Path(state_output_dir or get_output_dir())
-        state = EnvState(self._state_output_dir)
+        state = EnvState(
+            self._state_output_dir,
+            lossless_compression_level=artifact_compression_level,
+        )
         super().__init__(
             dashboard_events=dashboard_events,
             state=state,

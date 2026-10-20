@@ -95,7 +95,7 @@ def build_plan(output, calibration_ref):
 
 
 @contextmanager
-def runtime(case, endpoints, output, *, domain='d2'):
+def runtime(case, endpoints, output, *, domain='d2', artifact_compression_level=None):
     """Use the same public adapter/perception as the original feasibility arm."""
     import robosuite
 
@@ -125,7 +125,8 @@ def runtime(case, endpoints, output, *, domain='d2'):
         model = Pi05VLAClient(endpoints["vla"], embodiment="libero")
         toolkit = LiberoToolkit(runtime_kwargs={"env": primitives.env, "model": model,
             "sam3_client": Sam3Client(endpoints["sam3"])}, dashboard_events=NullDashboardEventSink(),
-            memory=MemoryManager(output / "empty_memory", memory_access="read_only"), state_output_dir=output)
+            memory=MemoryManager(output / "empty_memory", memory_access="read_only"), state_output_dir=output,
+            artifact_compression_level=artifact_compression_level)
         scene = MeasuredScene(toolkit, endpoints["sam3"], case["episode"]["seed"],
             dual_view_fusion_v1=True, furniture_parts_v1=True, instruction_queries_v1=True,
             wrist_recall_v1=True, occluded_measurement_cache_v2=True, **BOUNDED_SCENE_FLAGS)

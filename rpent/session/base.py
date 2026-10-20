@@ -19,6 +19,7 @@ from __future__ import annotations
 import copy
 import json
 import os
+import zipfile
 from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
@@ -95,7 +96,17 @@ class StepRecord:
 class EnvState:
     """Own a session's step trace and all state-related files in its output root."""
 
-    def __init__(self, output_dir: Path | str):
+    def __init__(
+        self, output_dir: Path | str, *, lossless_compression_level: int | None = None
+    ):
+        if lossless_compression_level is not None and (
+            type(lossless_compression_level) is not int
+            or not 0 <= lossless_compression_level <= 9
+        ):
+            raise ValueError(
+                "lossless_compression_level must be an integer from 0 to 9"
+            )
+        self._lossless_compression_level = lossless_compression_level
         self._output_dir = Path(output_dir)
         self.reset()
 
@@ -198,6 +209,8 @@ class EnvState:
         made inside (or right after) a :meth:`record_step` block attach to that
         step without an explicit index. Pass an ``int`` to target a specific
         step, or ``None`` for a session-level artifact such as an episode video.
+        The constructor's ``lossless_compression_level`` changes PNG/NPZ
+        encoding cost and size, preserving their decoded arrays.
         """
         step = self._resolve_read_step(step)
         destination = self._artifact_file(name, step)
@@ -210,11 +223,24 @@ class EnvState:
                 array = np.asarray(value)
                 if array.dtype != np.uint8:
                     array = array.astype(np.uint8)
-                imageio.imwrite(temporary, array)
+                encoding = {}
+                if suffix == ".png" and self._lossless_compression_level is not None:
+                    encoding["compress_level"] = self._lossless_compression_level
+                imageio.imwrite(temporary, array, **encoding)
             elif suffix == ".npy":
                 np.save(temporary, np.asarray(value))
             elif suffix == ".npz":
-                np.savez_compressed(temporary, array=np.asarray(value))
+                if self._lossless_compression_level is None:
+                    np.savez_compressed(temporary, array=np.asarray(value))
+                else:
+                    with zipfile.ZipFile(
+                        temporary,
+                        "w",
+                        compression=zipfile.ZIP_DEFLATED,
+                        compresslevel=self._lossless_compression_level,
+                    ) as archive:
+                        with archive.open("array.npy", "w", force_zip64=True) as member:
+                            np.lib.format.write_array(member, np.asarray(value))
             elif suffix == ".json":
                 with temporary.open("w") as file:
                     json.dump(value, file, indent=2, default=_json_default)

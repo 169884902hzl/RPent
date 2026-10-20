@@ -28,6 +28,31 @@ class _StepFailure(Exception):
     pass
 
 
+@pytest.mark.parametrize("level", [None, 0, 1, 9])
+def test_lossless_encoding_preserves_public_rgbd_and_array_layout(
+    tmp_path: Path, level: int | None
+) -> None:
+    state = EnvState(tmp_path, lossless_compression_level=level)
+    rgb = np.random.default_rng(4).integers(0, 256, (24, 32, 3), dtype=np.uint8)
+    xyz = np.asfortranarray(np.arange(72, dtype=">f8").reshape(8, 3, 3))
+    xyz[0, 0] = [np.nan, np.inf, -np.inf]
+    assert state.save("rgb.png", rgb, step=None) == "rgb.png"
+    assert state.save("xyz.npz", xyz, step=None) == "xyz.npz"
+    np.testing.assert_array_equal(state.load("rgb.png", step=None), rgb)
+    decoded = state.load("xyz.npz", step=None)
+    np.testing.assert_array_equal(decoded, xyz)
+    assert decoded.dtype == xyz.dtype
+    assert decoded.flags.f_contiguous
+    with np.load(tmp_path / "xyz.npz") as archive:
+        assert archive.files == ["array"]
+
+
+@pytest.mark.parametrize("level", [-1, 10, 1.5, True])
+def test_lossless_encoding_rejects_invalid_level(tmp_path: Path, level: Any) -> None:
+    with pytest.raises(ValueError, match="lossless_compression_level"):
+        EnvState(tmp_path, lossless_compression_level=level)
+
+
 def test_step_record_serializes_optional_fields_and_sorts_artifacts() -> None:
     minimal = StepRecord(
         step_idx=2,

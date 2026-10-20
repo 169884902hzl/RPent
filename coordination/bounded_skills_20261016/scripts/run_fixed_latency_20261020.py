@@ -40,15 +40,17 @@ def worker(args, plan):
     hooks.install_d2_request_compatibility(probe)
     runtime_options = plan.get('runtime_options', {})
     scene_options = plan.get('scene_options', {})
+    artifact_options = plan.get('artifact_options', {})
     tracking_stats = {}
     if scene_options:
         probe.BOUNDED_SCENE_FLAGS = {**probe.BOUNDED_SCENE_FLAGS, **scene_options}
-    if runtime_options or scene_options:
+    if runtime_options or scene_options or artifact_options:
         original_runtime = probe.runtime
         from contextlib import contextmanager
 
         @contextmanager
         def configured_runtime(*positional, **kwargs):
+            kwargs.update(artifact_options)
             with original_runtime(*positional, **kwargs) as runtime:
                 for key, value in runtime_options.items():
                     setattr(runtime[1], key, value)
@@ -112,6 +114,7 @@ def worker(args, plan):
                 result = bounded_episode(args, row, endpoints, probe)
             result['registered_runtime_options'] = runtime_options
             result['registered_scene_options'] = scene_options
+            result['registered_artifact_options'] = artifact_options
             if tracking_stats:
                 write(args.output/'tracking_events.json',tracking_stats)
                 result['perception_tracking_counts']={key:value for key,value in tracking_stats.items() if key!='events'}
@@ -220,6 +223,11 @@ def main():
     if (set(scene_options)-{'rgbd_mask_tracking_v1'}
             or any(type(value) is not bool for value in scene_options.values())):
         raise ValueError('unregistered latency scene options')
+    artifact_options = plan.get('artifact_options', {})
+    if (set(artifact_options)-{'artifact_compression_level'}
+            or any(type(value) is not int or not 0 <= value <= 9
+                   for value in artifact_options.values())):
+        raise ValueError('unregistered latency artifact options')
     for name in ('parents',):
         for ref in plan.get(name, []):
             if hashlib.sha256(Path(ref['path']).read_bytes()).hexdigest() != ref['sha256']:
