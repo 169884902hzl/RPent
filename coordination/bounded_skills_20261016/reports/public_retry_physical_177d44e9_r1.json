@@ -1,0 +1,81 @@
+{
+  "at": "2026-10-20T22:52:05.427460+08:00",
+  "source_commit": "177d44e99cb8944112b0c4720debf0b5a61d0a05",
+  "source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/177d44e9/drawer40_N8/case001/nudge_choices.jsonl",
+    "prefix_lines": 3,
+    "prefix_sha256": "7e54886006038791981987f092844f9daad36038dd1709936c95241f0d87a151"
+  },
+  "proof": [
+    {
+      "decision_index": 0,
+      "merged_option_present": true,
+      "recent_failures": 0,
+      "other_approaches": [],
+      "receipts": [
+        {
+          "candidate_id": "a169f3a3dae8fd94",
+          "skill": "move_to",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ]
+    },
+    {
+      "decision_index": 1,
+      "merged_option_present": true,
+      "recent_failures": 1,
+      "other_approaches": [
+        {
+          "anchor_id": "e54",
+          "approach": "above"
+        },
+        {
+          "anchor_id": "e54",
+          "approach": "right"
+        },
+        {
+          "anchor_id": "e54",
+          "approach": "front"
+        }
+      ],
+      "receipts": [
+        {
+          "candidate_id": "a169f3a3dae8fd94",
+          "skill": "move_to",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ]
+    },
+    {
+      "decision_index": 2,
+      "merged_option_present": false,
+      "recent_failures": null,
+      "other_approaches": [
+        {
+          "anchor_id": "e54",
+          "approach": "above"
+        },
+        {
+          "anchor_id": "e54",
+          "approach": "right"
+        },
+        {
+          "anchor_id": "e54",
+          "approach": "front"
+        }
+      ],
+      "receipts": [
+        {
+          "candidate_id": "9d9fd0748dd543a7",
+          "skill": "move_to",
+          "stop_reason": "measured_sweep_collision",
+          "steps_used": 0
+        }
+      ]
+    }
+  ],
+  "verified": "0 to 1 then removed after two zero-step collision failures",
+  "training": false
+}

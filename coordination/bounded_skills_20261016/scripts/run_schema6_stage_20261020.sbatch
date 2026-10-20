@@ -27,5 +27,12 @@ if [[ "${SCHEMA6_N1:-0}" != 1 ]]; then
     ARGS+=(--episode-concurrency "${SCHEMA6_CONCURRENCY:-8}")
 fi
 "$ROOT/.venv/bin/python" "$LAUNCHER" "${ARGS[@]}" --preflight
+if [[ "${SCHEMA6_N1:-0}" == 1 && "${SCHEMA6_STARTUP_ONLY:-0}" != 1 ]]; then
+    # The fixed cohort includes legacy saved VLA requests as well as fresh
+    # episodes. Exercise that distinct restore path before the formal N1 run.
+    "$ROOT/.venv/bin/python" "$LAUNCHER" --source "$SCHEMA6_SOURCE" \
+        --manifest "$SCHEMA6_MANIFEST" --output "$SCHEMA6_OUTPUT/pilot_startup_check" \
+        --indices 24 --startup-only
+fi
 if [[ "${SCHEMA6_STARTUP_ONLY:-0}" == 1 ]]; then ARGS+=(--startup-only); fi
 exec "$ROOT/.venv/bin/python" -u "$LAUNCHER" "${ARGS[@]}"

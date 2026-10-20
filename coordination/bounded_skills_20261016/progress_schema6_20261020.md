@@ -2,7 +2,7 @@ schema6 六项实现已接线；384 项相关测试通过，尚未通过 D 的�
 原版 220 离线选 N=31，保留全部 131 个历史成功，但历史墙钟节省为 0；不改用会截断成功局的更小 N。
 增量感知首版失败保留；双视角保守版比较 1,289 次锚点，56 次可缓存，位置/尺寸差均 0，超过 1 cm 的漏变化 0。
 保存输入的配准 JSON 与 6 张平面掩码逐字节一致；平面拟合小幅提速，配准批量化几乎无提速。
-当前只保留10698自然运行；schema6开发批因已复现的公开候选失败记账错误停止，保留原件，修正回归后更换源码重提。D的完整结果仍待。
+177d44e9修复公开候选失败记账，266项相关回归通过；新move100与drawer40两批真实启动均已产生控制步，N8正式回合运行中。10698自然运行，固定32 N1与D2三档沿依赖接续；D的完整结果仍待。
 
 ## 接口与实现
 
@@ -83,3 +83,23 @@ CPU复现：case008公开锚点e114为microwave door，part_of=e98；现有任�
 修复后的schema6、技能适配器及启动器回归266 passed，188.94秒，原有pytest timeout配置警告1条；日志`/tmp/schema6_public_retry_identity_fixed.log`。修复前新回归在第二次请求稳定失败（0 != 1），修复后通过。
 
 10764最终关闭11对，9对已知，两臂各7/9，改善0、退步0；2对unknown、89未完成。10776的新诊断launcher已真实启动，但随后因同一记账缺陷停批。22:37:48取消10765/10776及尚未运行的10771–10774，全部中断和完整原件保留，不混入修复后的D分母。停止记录远端`stopped_public_retry_identity_20261020.json`；10698/10699及保护作业未改。旧3968末局续跑10777排在10699后，保持旧源独立分母。
+
+## 22:50 集群时间（07:50 PDT）：新源真实启动通过
+
+源码`177d44e99cb8944112b0c4720debf0b5a61d0a05`已普通推送；快照`/public/home/sunyihan/rpent_libero_eval/source_schema6_177d44e9_20261020`，归档SHA256 `d97bd3757b2901b5cbafb6da4cdbd9ce44c0880794b69757ae56662b87fb1bfe`。六类CPU预检均通过，原件`reports/schema6_177d44e9_preflight.json`；schema/contract SHA未变，已交Codex1/2登记，回执`reports/interface_177d44e9_delivery.json`。
+
+10780/move100与10781/drawer40均已通过同快照、同launcher的真实启动，再发放各8个独立回合进程。move默认/原选两臂完整初态哈希相同，各执行119控制步；drawer nudge/guarded两臂分别执行289/891控制步。证据`reports/startup_177d44e9_evidence_r1.json`。这只证明真实启动，不是完整子任务或回合的成功率。
+
+10782固定32 N1等10780；10783/10784/10785为D2恢复预算0/1/2，各40局、依次等10781及前一档。六个显式借卡job均有30秒轮询的归还监控；Codex2仅CPU排队不触发，GPU排队立即取消借卡分片并保留完成回合。当前C3三张（10698/10780/10781），Codex2一张（10749），合计C3 GPU资源24核/288GB；无保护作业和旧held修改。
+
+22:55物理核对`reports/public_retry_physical_177d44e9_r1.json`：drawer case001的合并move连续两次零步碰撞，公开失败计数0→1，第三次请求移除该合并选项，其他方向保留。move100已关闭5对、两臂各5/5（Wilson [56.55%,100%]）、改善0/退步0，95对待完成，原件`reports/move100_N8_177d44e9_interim_2255.json`。drawer尚无完整双臂回合，不能从启动样本推断成功率。
+
+N1三臂中间原件`reports/N1_three_arm_177d44e9_interim_2252.json`：10698基线关闭26整局及2个VLA试点；整局25/26，每循环中位117.08秒、整局中位289.76秒。优化臂与schema6臂均尚无关闭记录，不存在已验证的整局提速或结果一致性结论。六类新manifest已同步到`preparation/schema6_177d44e9/`，均保留远端源码与输入哈希。
+
+## N1旧VLA试点的schema6迁移修复
+
+CPU检查发现固定32中的两个VLA试点仍走旧版“只换schema header”入口，该入口不支持v6；旧检查点也没有schema6新增的公开进展/合并候选运行时字段。不能把旧版12个move变体仅换header当作schema6候选。
+
+修复只在N1登记为`schema6_source`时启用：恢复同一物理状态与原重试历史，初始化新增运行时字段，重新测量公开传感器并生成schema6请求；在配对原件中显式记`schema6_public_request_rebuilt=true`，不声称请求与旧版相等。N1启动器在正式32状态前，用同launcher额外真实启动旧试点24，成功才继续。此前运行的177d44e9技能/规划源码不修改，move与drawer批次继续。
+
+迁移/共享启动器50 passed；schema6/物理启动器15 passed，原有pytest timeout配置警告保留。日志`/tmp/schema6_replay_migration_regression.log`、`/tmp/schema6_replay_adapter_regression.log`；shell语法、py_compile通过。N1待更换为该评测入口修复的独立快照与manifest后重提；尚无新试点物理结果。

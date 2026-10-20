@@ -134,7 +134,8 @@ def worker(args, plan):
                 from scripts import probe_bounded_hybrid_repair as repair
                 result = repair.evaluate_case(row['case'], endpoints, args.output/'episode',
                     {'evaluation':'hybrid_repair', 'training':False, 'confirmation':False,
-                     'source_commit':plan['baseline_commit'], 'cases':[row['case']]}, startup=args.startup)
+                     'source_commit':plan['baseline_commit'], 'schema6_source':plan.get('schema6_source',False),
+                     'cases':[row['case']]}, startup=args.startup)
             else:
                 (args.output/'episode').mkdir()
                 result = bounded_episode(args, row, endpoints, probe)

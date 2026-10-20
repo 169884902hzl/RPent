@@ -35,6 +35,32 @@ def migrate_replay_header(adapter, request):
     return request
 
 
+def rebuild_schema6_replay(adapter, request, defaults):
+    """Re-measure a historical checkpoint for the changed schema6 catalog.
+
+    Schema6 merges move options, so a version-header rewrite cannot preserve
+    their meaning. Keep the restored physics and retry history, initialize
+    only the new runtime fields, and generate a current measured request.
+    """
+    from rpent.skill_package import VERSION
+
+    if VERSION != 'bounded-skills/6' or request['schema_version'] not in {
+            'bounded-skills/3', 'bounded-skills/4', 'bounded-skills/5'}:
+        raise ValueError('unsupported schema6 checkpoint reconstruction')
+    if request != adapter.latest_request:
+        raise ValueError('saved request differs from its restored cache')
+    vars(adapter).update(copy.deepcopy(defaults))
+    adapter.refresh()
+    return adapter.request(k=4)
+
+
+SCHEMA6_REPLAY_FIELDS = (
+    'schema6_v1', 'lazy_planning_v1', 'public_progress', '_incremental_touched',
+    '_incremental_route', '_failed_move_anchors', '_move_approach_by_anchor',
+    '_grasp_geometry_cache',
+)
+
+
 def validate_plan(plan):
     from robots.libero.bounded_hybrid_diagnostic import validate_d2_episode
     if (plan.get('evaluation') != 'hybrid_repair' or plan['training'] or plan['confirmation']
@@ -174,11 +200,16 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
         if diagnostic['kind'] == 'replay':
             old = json.loads(Path(diagnostic['old_summary']['path']).read_bytes())
             saved = pickle.loads(Path(diagnostic['branchpoint']['path']).read_bytes())
+            rebuild_public = bool(plan.get('schema6_source'))
+            defaults = ({name: copy.deepcopy(getattr(adapter, name))
+                         for name in SCHEMA6_REPLAY_FIELDS} if rebuild_public else None)
             probe.restore_checkpoint(facade, adapter, policy, saved)
             adapter.vla_budget = budget
             adapter.targeted_vla_measurement_v1 = diagnostic.get('targeted_vla_measurement_v1', False)
             spec, request = old['subtask'], saved['request']
-            if diagnostic.get('migrate_v3_header_to_v4', False):
+            if rebuild_public:
+                request = rebuild_schema6_replay(adapter, request, defaults)
+            elif diagnostic.get('migrate_v3_header_to_v4', False):
                 request = migrate_replay_header(adapter, request)
             result, endpoint = run_trial(facade, adapter, policy, timings, spec, 'call_vla',
                 old['trial_seed'], output / 'replay', request)
@@ -193,7 +224,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 'same_initial_request': result['request_sha256'] == old['request_sha256'],
                 'same_request_except_schema': {k:v for k,v in request.items() if k != 'schema_version'}
                     == {k:v for k,v in saved['request'].items() if k != 'schema_version'},
-                'public_request_schema_migration': diagnostic.get('migrate_v3_header_to_v4', False),
+                'public_request_schema_migration': diagnostic.get('migrate_v3_header_to_v4', False) and not rebuild_public,
+                'schema6_public_request_rebuilt': rebuild_public,
                 'old_controls':len(old_trace), 'new_controls':len(new_trace),
                 'common_controls':common,
                 'first_action_mismatch':next((i for i in range(common)

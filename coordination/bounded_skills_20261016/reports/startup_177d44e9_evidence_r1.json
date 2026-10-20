@@ -1,0 +1,62 @@
+{
+  "at": "2026-10-20T22:50:16.662843+08:00",
+  "source_commit": "177d44e99cb8944112b0c4720debf0b5a61d0a05",
+  "training": false,
+  "records": [
+    {
+      "job": 10780,
+      "stage": "move100_N8",
+      "source": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/177d44e9/move100_N8/startup_1792507540483528431/summary.json",
+        "sha256": "5384b59551c00248235729ab5d08b199ea1eead60a1081b7cc1b6fe1b463ba01"
+      },
+      "status": "startup_physical",
+      "arms": [
+        {
+          "arm": "default",
+          "sim_steps": null,
+          "first_action_steps": [
+            119
+          ],
+          "initial_physics_sha256": "880f355e92814e4d3fb42420668388c03d26412a180b8a41bc1dcfe3442598bc"
+        },
+        {
+          "arm": "original_variant",
+          "sim_steps": null,
+          "first_action_steps": [
+            119
+          ],
+          "initial_physics_sha256": "880f355e92814e4d3fb42420668388c03d26412a180b8a41bc1dcfe3442598bc"
+        }
+      ],
+      "formal_workers_started": 8,
+      "closed_pairs": 0
+    },
+    {
+      "job": 10781,
+      "stage": "drawer40_N8",
+      "source": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/177d44e9/drawer40_N8/startup_1792507518945338001/summary.json",
+        "sha256": "0a207a801f58d71baac94f555aeffc548e845c714a8c6df819174c7d3182d631"
+      },
+      "status": "startup_physical",
+      "arms": [
+        {
+          "arm": "nudge",
+          "sim_steps": 289,
+          "first_action_steps": [],
+          "initial_physics_sha256": "e6d1091ac40d64c60ba782b64f056ca4d78eb93c3a3d60c27d7e23b4d0d14f82"
+        },
+        {
+          "arm": "guarded",
+          "sim_steps": 891,
+          "first_action_steps": [],
+          "initial_physics_sha256": "e6d1091ac40d64c60ba782b64f056ca4d78eb93c3a3d60c27d7e23b4d0d14f82"
+        }
+      ],
+      "formal_workers_started": 8,
+      "closed_pairs": 0
+    }
+  ],
+  "scope": "Startup evidence only; not complete subtask or full-episode results"
+}

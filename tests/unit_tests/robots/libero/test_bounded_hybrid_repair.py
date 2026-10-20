@@ -7,20 +7,51 @@ from scripts.probe_bounded_hybrid_repair import first_self_chunk, validate_plan
 
 
 @pytest.mark.parametrize('old_version', ['bounded-skills/3', 'bounded-skills/4'])
-def test_scope_diagnostic_migrates_only_the_public_version_header(old_version):
+def test_scope_diagnostic_migrates_only_the_public_version_header(old_version, monkeypatch):
     from copy import deepcopy
 
     from scripts.probe_bounded_hybrid_repair import migrate_replay_header
-    from rpent.skill_package import VERSION
+    monkeypatch.setattr('rpent.skill_package.VERSION', 'bounded-skills/5')
 
     request = {'schema_version': old_version, 'candidates': [{'id': 'same', 'parameters': {'mode': 'pick'}}]}
     adapter = SimpleNamespace(latest_request=deepcopy(request))
     updated = migrate_replay_header(adapter, request)
     assert request['schema_version'] == old_version
-    assert updated == adapter.latest_request == request | {'schema_version': VERSION}
+    assert updated == adapter.latest_request == request | {'schema_version': 'bounded-skills/5'}
     adapter.latest_request['candidates'][0]['id'] = 'different'
     with pytest.raises(ValueError, match='differs'):
         migrate_replay_header(adapter, request)
+
+
+def test_schema6_replay_rebuilds_measured_options_after_legacy_runtime_restore():
+    from copy import deepcopy
+
+    from rpent.skill_package.progress import PublicProgress
+    from scripts.probe_bounded_hybrid_repair import rebuild_schema6_replay
+
+    old = {'schema_version': 'bounded-skills/3', 'candidates': [
+        {'id': 'old', 'skill': 'move_to', 'parameters': {'anchor_id': 'e1', 'approach': 'above', 'path': 'over'}}]}
+    current = {'schema_version': 'bounded-skills/6', 'candidates': [
+        {'id': 'new', 'skill': 'move_to', 'parameters': {'anchor_id': 'e1'}}]}
+    memory = object()
+    adapter = SimpleNamespace(latest_request=deepcopy(old), memory=memory)
+    events = []
+    def refresh():
+        assert adapter.schema6_v1 and adapter.public_progress.limit == 31
+        events.append('fresh_public_measurements')
+    def request(**kwargs):
+        assert events == ['fresh_public_measurements'] and kwargs == {'k': 4}
+        events.append('new_catalog')
+        adapter.latest_request = current
+        return current
+    adapter.refresh, adapter.request = refresh, request
+    defaults = {'schema6_v1': True, 'public_progress': PublicProgress(31), '_failed_move_anchors': set()}
+    updated = rebuild_schema6_replay(adapter, old, defaults)
+    assert updated is current and adapter.memory is memory
+    assert old['schema_version'] == 'bounded-skills/3' and old['candidates'][0]['id'] == 'old'
+    assert events == ['fresh_public_measurements', 'new_catalog']
+    adapter._failed_move_anchors.add('e1')
+    assert defaults['_failed_move_anchors'] == set()
 
 
 def test_scope_diagnostic_rejects_unregistered_schema_migrations():
