@@ -346,7 +346,8 @@ def _surface_registration(predicted, measured, *, reciprocal=False):
             'reciprocal_pairs': int(supported.sum())} if reciprocal else {})}
 
 
-def contact_axis_registration(reference, current_scene, axis, distance_m, *, endpoint_tolerance_m=.012):
+def contact_axis_registration(reference, current_scene, axis, distance_m, *, endpoint_tolerance_m=.012,
+                              query_workers=1):
     """Measure a bounded translation without reusing a changing SAM centre.
 
     Fit the pre-contact surface to current self-filtered public depth along
@@ -381,7 +382,7 @@ def contact_axis_registration(reference, current_scene, axis, distance_m, *, end
     for shift in shifts:
         offset = np.zeros(3)
         offset[axis] = shift
-        residual = tree.query(source+offset)[0]
+        residual = tree.query(source+offset, workers=query_workers)[0]
         scores.append(float(np.mean(np.minimum(residual, .008)**2)))
         supported.append(float(np.mean(residual <= .008)))
     best = int(np.argmin(scores))
@@ -402,7 +403,8 @@ def contact_axis_registration(reference, current_scene, axis, distance_m, *, end
     return {**evidence, 'accepted': True, 'reason': 'public_axis_surface_fit'}
 
 
-def stationary_surface_registration(reference, current_scene, current_instance, *, tolerance_m=.01):
+def stationary_surface_registration(reference, current_scene, current_instance, *, tolerance_m=.01,
+                                    query_workers=1):
     """Recheck a shifted visible centre against its unchanged measured surface.
 
     Shared current instance pixels establish identity. Three bounded axis
@@ -418,14 +420,14 @@ def stationary_surface_registration(reference, current_scene, current_instance, 
               'private_pose_used': False, 'tolerance_m': tolerance_m, 'axis_fits': {}}
     if min(len(source), len(instance)) < 40:
         return {**result, 'reason': 'instance_surface_missing'}
-    overlap = cKDTree(source).query(instance,
+    overlap = cKDTree(source).query(instance, workers=query_workers,
         distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001
     result['shared_instance_pixels'] = int(overlap.sum())
     if overlap.sum() < 40:
         return {**result, 'reason': 'current_instance_identity_not_shared'}
     bounds = []
     for axis in range(3):
-        fit = contact_axis_registration(source, current_scene, axis, .02)
+        fit = contact_axis_registration(source, current_scene, axis, .02, query_workers=query_workers)
         result['axis_fits']['xyz'[axis]] = fit
         if not fit['accepted']:
             return {**result, 'reason': 'surface_displacement_unmeasured'}

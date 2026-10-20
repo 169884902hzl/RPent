@@ -113,6 +113,19 @@ def test_stationary_anchor_rejects_motion_ambiguity_and_missing_identity():
     assert not stationary_surface_registration(source[:10], source, source)['accepted']
 
 
+def test_parallel_registration_preserves_all_measurements_and_verdicts():
+    source = np.random.default_rng(97).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
+    partial = source[source[:, 0] > .01]
+    for scene, instance in ((source, partial), (source+[.02, 0., 0.], source+[.02, 0., 0.])):
+        serial = stationary_surface_registration(source, scene, instance)
+        parallel = stationary_surface_registration(source, scene, instance, query_workers=4)
+        assert parallel == serial
+    for shift in (0., .02, -.02):
+        scene = source+[0., shift, 0.]
+        assert contact_axis_registration(source, scene, 1, .02, query_workers=4) == (
+            contact_axis_registration(source, scene, 1, .02))
+
+
 def test_contact_fit_corrects_normal_compliance_without_tangent_drift():
     x, z = np.mgrid[:20, :12]
     surface = np.stack([x.ravel()*.001, np.zeros(x.size), z.ravel()*.001], axis=-1)

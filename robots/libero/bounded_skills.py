@@ -73,6 +73,7 @@ class MeasuredSkillAdapter:
 
     # Trusted historical annotation snapshots omit development-only flags.
     lazy_planning_v1 = False
+    registration_query_workers = 1
 
     def __init__(self, executor, gripper_xml: str | Path, *, allow_vla: bool = True,
                  history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
@@ -83,11 +84,13 @@ class MeasuredSkillAdapter:
                  request_consequence_workers: int = 1,
                  vla_budget: VLABudget = VLABudget(),
                  targeted_vla_measurement_v1: bool = False,
-                 lazy_planning_v1: bool = False):
+                 lazy_planning_v1: bool = False, registration_query_workers: int = 1):
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
         if type(request_consequence_workers) is not int or request_consequence_workers < 1:
             raise ValueError('request_consequence_workers must be a positive integer')
+        if type(registration_query_workers) is not int or registration_query_workers < 1:
+            raise ValueError('registration_query_workers must be a positive integer')
         self.ex, self.p, self.scene = executor, executor.p, executor.scene
         self.xml = Path(gripper_xml)
         self.geometry = panda_geometry(self.xml)
@@ -99,6 +102,7 @@ class MeasuredSkillAdapter:
         self.vla_budget = vla_budget
         self.targeted_vla_measurement_v1 = targeted_vla_measurement_v1
         self.lazy_planning_v1 = lazy_planning_v1
+        self.registration_query_workers = registration_query_workers
         self._grasp_geometry_cache = {}
         self.memory = FailureMemory()
         self._contact_retry_references = {}
@@ -2301,7 +2305,8 @@ class MeasuredSkillAdapter:
                         -plan[0]['predicted_anchors'][key])
                     self._cloud_and_ik(key, contact=True)
                     recheck = stationary_surface_registration(reference+shift,
-                        self._base_geometry[0], self._contact_pixels(key))
+                        self._base_geometry[0], self._contact_pixels(key),
+                        query_workers=self.registration_query_workers)
                     recheck['conditional_prefix_translation_m'] = shift.tolist()
                 self.details.append({'anchor_recheck': recheck, 'anchor_id': key,
                     'predicted_xyz_m': row['predicted_anchors'][key],

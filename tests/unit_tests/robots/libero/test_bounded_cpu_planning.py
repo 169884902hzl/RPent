@@ -70,7 +70,7 @@ def test_spawned_context_keeps_all_fields_and_diagnostics_in_original_order(adap
 def test_invalid_runtime_worker_count_is_rejected_at_adapter_boundary(adapter):
     from robots.libero.bounded_skills import MeasuredSkillAdapter
 
-    for name in ('prefix_consequence_workers', 'request_consequence_workers'):
+    for name in ('prefix_consequence_workers', 'request_consequence_workers', 'registration_query_workers'):
         for workers in (0, -1, True, 1.5):
             with pytest.raises(ValueError, match='positive integer'):
                 MeasuredSkillAdapter(adapter.ex, adapter.xml, **{name: workers})

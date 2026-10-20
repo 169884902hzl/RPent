@@ -110,6 +110,7 @@ def bounded_episode(args, row, endpoints, probe):
     case = row['case']
     with probe.runtime(case, endpoints, args.output/'episode', domain=row['domain']) as (facade, adapter, policy, timings):
         adapter.allow_vla = False
+        initial_physics_sha256 = probe.snapshot_digest(facade.snapshot())
         for index in range(160):
             if adapter.p.env.terminated or adapter.p.env.truncated:
                 break
@@ -145,12 +146,15 @@ def bounded_episode(args, row, endpoints, probe):
             loops.append({'index':index, 'request_s':request_s,
                 'decision_s':decision_end-begin-request_s, 'execution_s':end-decision_end,
                 'loop_s':end-begin, 'request':request,'decision':decision,'receipts':receipts,
+                'request_sha256': hashlib.sha256(json.dumps(request,sort_keys=True,separators=(',',':'),
+                    allow_nan=False).encode()).hexdigest(),
                 'timings':timings.summary(end-begin, start_event=event)})
             with (args.output/'loops.jsonl').open('a') as stream:
                 stream.write(json.dumps(loops[-1])+'\n')
             if args.startup:
                 if any(r['steps_used']>0 for r in receipts):
-                    return {'status':'startup_physical', 'first_physical':loops[-1], 'training':False}
+                    return {'status':'startup_physical', 'first_physical':loops[-1],
+                        'initial_physics_sha256': initial_physics_sha256, 'training':False}
                 if index >= 9:
                     raise RuntimeError('startup did not reach a physical control request')
             if not decision['candidate_ids'] or any(r['skill'] in {'finish','ask_help'} for r in receipts):
@@ -161,6 +165,7 @@ def bounded_episode(args, row, endpoints, probe):
             'sim_steps':adapter.p.env.execution_budget()['used_sim_steps'],
             'wall_s':time.perf_counter()-started, 'timings':timings.summary(time.perf_counter()-timings.started),
             'source_commit':os.environ.get('SOURCE_COMMIT'), 'training':False,
+            'initial_physics_sha256': initial_physics_sha256,
             'stop_reason': stop_reason,
             'candidate_ids':[loop['decision']['candidate_ids'] if loop['decision'] else None for loop in loops]}
 
@@ -186,7 +191,10 @@ def main():
     if not indices or len(set(indices)) != len(indices) or any(not 0 <= i < 32 for i in indices):
         raise ValueError('indices must be unique registered state indices')
     options = plan.get('runtime_options', {})
-    if set(options) - {'lazy_planning_v1'} or any(type(value) is not bool for value in options.values()):
+    if (set(options) - {'lazy_planning_v1', 'registration_query_workers'}
+            or ('lazy_planning_v1' in options and type(options['lazy_planning_v1']) is not bool)
+            or ('registration_query_workers' in options and (
+                type(options['registration_query_workers']) is not int or options['registration_query_workers'] < 1))):
         raise ValueError('unregistered latency runtime options')
     for name in ('parents',):
         for ref in plan.get(name, []):
