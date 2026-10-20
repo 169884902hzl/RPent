@@ -1,0 +1,150 @@
+{
+  "rows": [
+    {
+      "case": "libero_goal_task_t3_s40",
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_missing_replay_20261020/3968bdb4/libero_goal_task_t3_s40_r3/summary.json",
+        "sha256": "f381617c9dd9c30dab9d0becbe02e846f9f58d8c40caed8d55471f6583a84ed4"
+      },
+      "initial_matches": true,
+      "reused_prefix_n": 1,
+      "actual_full_replay_success": false,
+      "sim_steps_used": 259,
+      "decisions": 8,
+      "wall_s": 45.653338335920125,
+      "new_first_physical_request": false,
+      "execution_receipt": {
+        "case": "libero_goal_task_t3_s40",
+        "command": [
+          "srun",
+          "--jobid=10687",
+          "--overlap",
+          "--exact",
+          "--nodes=1",
+          "--ntasks=1",
+          "--cpus-per-task=1",
+          "--gpus=0",
+          "env",
+          "CUDA_VISIBLE_DEVICES=1",
+          "MUJOCO_GL=egl",
+          "PYOPENGL_PLATFORM=egl",
+          "OMP_NUM_THREADS=1",
+          "OPENBLAS_NUM_THREADS=1",
+          "MKL_NUM_THREADS=1",
+          "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+          "/public/home/sunyihan/rpent_libero_eval/replay_missing_D2_episode_20261020_r3.py",
+          "--source",
+          "/public/home/sunyihan/rpent_libero_eval/source_bounded_public_vla_binding_20261020_3968bdb4",
+          "--worker",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10686_0/N8/007_libero_goal_task_t3_s40/worker_summary.json",
+          "--parent-output",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10687_1",
+          "--output",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_missing_replay_20261020/3968bdb4/libero_goal_task_t3_s40_r3"
+        ],
+        "exit_code": 0,
+        "summary_exists": true,
+        "first_physical_request": false,
+        "training": false
+      }
+    },
+    {
+      "case": "libero_object_task_t3_s40",
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_missing_replay_20261020/3968bdb4/libero_object_task_t3_s40_r3/summary.json",
+        "sha256": "11f83470663b660811e0762f4d75e944730dca11906886a4e52a7cfd32395fb1"
+      },
+      "initial_matches": true,
+      "reused_prefix_n": 0,
+      "actual_full_replay_success": false,
+      "sim_steps_used": 46,
+      "decisions": 5,
+      "wall_s": 350.2053112182766,
+      "new_first_physical_request": true,
+      "execution_receipt": {
+        "case": "libero_object_task_t3_s40",
+        "command": [
+          "srun",
+          "--jobid=10687",
+          "--overlap",
+          "--exact",
+          "--nodes=1",
+          "--ntasks=1",
+          "--cpus-per-task=1",
+          "--gpus=0",
+          "env",
+          "CUDA_VISIBLE_DEVICES=1",
+          "MUJOCO_GL=egl",
+          "PYOPENGL_PLATFORM=egl",
+          "OMP_NUM_THREADS=1",
+          "OPENBLAS_NUM_THREADS=1",
+          "MKL_NUM_THREADS=1",
+          "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+          "/public/home/sunyihan/rpent_libero_eval/replay_missing_D2_episode_20261020_r3.py",
+          "--source",
+          "/public/home/sunyihan/rpent_libero_eval/source_bounded_public_vla_binding_20261020_3968bdb4",
+          "--worker",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10688_2/N8/004_libero_object_task_t3_s40/worker_summary.json",
+          "--parent-output",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10687_1",
+          "--output",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_missing_replay_20261020/3968bdb4/libero_object_task_t3_s40_r3"
+        ],
+        "exit_code": 0,
+        "summary_exists": true,
+        "first_physical_request": true,
+        "training": false
+      }
+    },
+    {
+      "case": "libero_object_task_t4_s40",
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_missing_replay_20261020/3968bdb4/libero_object_task_t4_s40_r3/summary.json",
+        "sha256": "8ca66c5ab1a47c633c9bc4f921b9365ce0e6ccf8ce41e903675f99a92001fb9c"
+      },
+      "initial_matches": true,
+      "reused_prefix_n": 0,
+      "actual_full_replay_success": false,
+      "sim_steps_used": 46,
+      "decisions": 5,
+      "wall_s": 171.65047339582816,
+      "new_first_physical_request": true,
+      "execution_receipt": {
+        "case": "libero_object_task_t4_s40",
+        "command": [
+          "srun",
+          "--jobid=10687",
+          "--overlap",
+          "--exact",
+          "--nodes=1",
+          "--ntasks=1",
+          "--cpus-per-task=1",
+          "--gpus=0",
+          "env",
+          "CUDA_VISIBLE_DEVICES=1",
+          "MUJOCO_GL=egl",
+          "PYOPENGL_PLATFORM=egl",
+          "OMP_NUM_THREADS=1",
+          "OPENBLAS_NUM_THREADS=1",
+          "MKL_NUM_THREADS=1",
+          "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+          "/public/home/sunyihan/rpent_libero_eval/replay_missing_D2_episode_20261020_r3.py",
+          "--source",
+          "/public/home/sunyihan/rpent_libero_eval/source_bounded_public_vla_binding_20261020_3968bdb4",
+          "--worker",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10689_3/N8/004_libero_object_task_t4_s40/worker_summary.json",
+          "--parent-output",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10687_1",
+          "--output",
+          "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_missing_replay_20261020/3968bdb4/libero_object_task_t4_s40_r3"
+        ],
+        "exit_code": 0,
+        "summary_exists": true,
+        "first_physical_request": true,
+        "training": false
+      }
+    }
+  ],
+  "training": false,
+  "scope": "actual independent replay supplements; previous measured prefix retained exactly; no replacement of original fork results"
+}
