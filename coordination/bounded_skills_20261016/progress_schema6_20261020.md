@@ -153,3 +153,9 @@ be3 drawer case000及另外状态共16次descend都在标称轨迹结束时退�
 原件和摘要：reports/schema6_endpoint_collision_10803.json。CPU真实保存输入已能拒绝原来被豁免的72点；仍须同状态物理检查后才发放完整D批。schema/contract/spec字节不变；旧be3、3429物理分母与新补丁严格分开。
 
 测试：screen/schema6针对性31项通过（1.94秒）；首轮相关282项中281项通过，唯一失败为旧测试只计move路线调用、未计新增接触路线检查的调用次数，已更新后针对性通过。完整相关回归正在复跑，原日志/tmp/schema6_pad_ingress_regression.log保留。Ruff指出这些旧文件已有多项格式/fixture告警，未做无关全文件整理。
+
+## 接触路线续解起点修正
+
+282相关CPU回归已通过(169.03秒)。daaa同launcher启动10809出现连续零步拒绝，未宣称启动通过；运行6分03秒后取消自己的诊断作业，原件保留。CPU从同一private_common.pkl中只取公开机器人传感器、已测实体和RGB-D，重新跑完整规划，0 RPC/0仿真步，定位9个入口后续解失败均来自重置到开局关节：前一条move已筛查通过，但新ingress检查begin_route又从原capture起点求解。修为复制该屏幕并从last_solution继续局部IK，不重估世界标定、不新增接触豁免、不改变原始余量和源solver。新增回归确认连续分支可达，原始capture不能跳到未来位姿。新补丁须再次同保存输入CPU核对和真实物理启动。
+
+CPU诊断第一次因外部脚本目录优先于PYTHONPATH误载live包而缺progress模块，已改为显式--source并在导入前插入绝对快照路径；原失败保留，r2成功。原件 daaa1730/CPU_ingress_rebuild_r2/summary.json。脚本scripts/diagnose_schema6_captured_ingress_CPU_20261021.py。

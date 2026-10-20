@@ -47,6 +47,25 @@
       "bounded_screen_e101_1_scene.npz/01.npz",
       "fixture_handle_e101*/00.npz"
     ],
-    "runtime_private_truth_used": false
+    "runtime_private_truth_used": false,
+    "complete_ingress_checks": {
+      "above": {
+        "passed": false,
+        "reason": "measured_sweep_collision",
+        "samples": 16
+      },
+      "measured_normal": {
+        "passed": true,
+        "samples": 32,
+        "path_min_clearance_m": 0.008387096774193536
+      },
+      "source": "same saved RGB-D, measured pre-descent joints, static Panda geometry; no environment or physics step"
+    }
+  },
+  "patch_source_commit": "daaa1730824ba25eaa672bedd7ff3c40d285ed14",
+  "CPU_regression": {
+    "passed": 282,
+    "elapsed_s": 169.03,
+    "log": "/tmp/schema6_pad_ingress_regression_r2.log"
   }
 }

@@ -74,6 +74,22 @@ class PublicRouteScreen:
         current.ik = self.ik.with_measured_robot(robot)
         return current
 
+    def continuing_route(self):
+        """Continue IK from a screened endpoint without changing calibration.
+
+        The preceding full route has already reached ``last_solution``.
+        Resetting its next local solve to the capture's original joints
+        would test a joint-branch jump instead of the contact ingress.
+        Captured obstacle geometry and initial clearance allowances stay
+        unchanged; these planned joints are never reported as measurements.
+        """
+        if self.ik.last_solution is None:
+            raise ValueError('a screened preceding route is required')
+        current = copy.copy(self)
+        current.ik = copy.copy(self.ik)
+        current.ik.joints = self.ik.last_solution.copy()
+        return current
+
     def endpoint_screen(self, route, robot):
         """Screen an endpoint without certifying its connecting trajectory.
 

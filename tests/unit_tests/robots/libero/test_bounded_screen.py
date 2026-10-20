@@ -49,6 +49,33 @@ def test_current_joint_seed_keeps_captured_scene_payload_and_margin_evidence():
     assert current._pose_geometry_cache is screen._pose_geometry_cache
 
 
+def test_contact_ingress_continues_the_screened_endpoint_joint_branch():
+    class LocalIK:
+        def __init__(self):
+            self.joints = np.array([0.])
+            self.last_solution = None
+        def begin_route(self):
+            self.last_solution = self.joints.copy()
+        def check(self, xyz, quat):
+            reached = abs(xyz[0]-self.last_solution[0]) <= .1
+            if reached:
+                self.last_solution[0] = xyz[0]
+            return {'solution_found': reached}
+    screen = PublicRouteScreen([[10., 10., 10.]],
+        {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}, LocalIK())
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    assert screen([pose, {**pose, 'xyz_m': [.4, 0., 1.]}])['passed']
+    continuation = screen.continuing_route()
+    assert continuation.ik is not screen.ik
+    assert continuation.points is screen.points
+    assert continuation.initial_margin is screen.initial_margin
+    assert continuation([{**pose, 'xyz_m': [.4, 0., 1.]},
+        {**pose, 'xyz_m': [.45, 0., 1.]}])['passed']
+    assert screen.ik.joints.tolist() == [0.]
+    # A fresh route from the original capture cannot jump to the future pose.
+    assert not screen([{**pose, 'xyz_m': [.4, 0., 1.]}])['passed']
+
+
 def test_target_broad_phase_keeps_real_collisions_and_allowed_finger_contact():
     geometry = {"boxes": [
         {"name": "palm", "lower": [-.02, -.02, .04], "upper": [.02, .02, .06]},

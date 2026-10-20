@@ -1772,7 +1772,10 @@ class MeasuredSkillAdapter:
                             entry = self._route('move_to', variant)[-1]
                             ingress = plan.get('contact_route',
                                 [{'xyz_m': plan['xyz_m'], 'quat_xyzw': plan['quat_xyzw']}])
-                            evidence = self._cloud_and_ik(parameters['anchor_id'], contact=True)([entry, *ingress])
+                            screen = self._cloud_and_ik(parameters['anchor_id'], contact=True)
+                            if isinstance(screen, PublicRouteScreen):
+                                screen = screen.continuing_route()
+                            evidence = screen([entry, *ingress])
                             self.candidate_diagnostics.append({'stage': 'move_contact_ingress',
                                 'candidate_id': cid, 'parameters': variant, 'screen': evidence})
                             if not evidence['passed']:
