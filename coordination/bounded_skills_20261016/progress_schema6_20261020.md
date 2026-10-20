@@ -143,3 +143,13 @@ Codex2要求旧original220 annotation与18保存PRO状态的CPU新候选入口�
 be3 drawer case000及另外状态共16次descend都在标称轨迹结束时退出，残差约2.3cm、测得末端仍约5.1cm/s；路线IK和碰撞筛查通过。原执行器只走完标称参考，没有有界端点保持，故下一步接收失败。`3429e275f045e6490699465c75a7d7b13e8ca843` 添加最多30个20Hz端点保持步，固定已筛查的同一端点、保持夹爪指令和原12mm/0.05rad判据，不扩展路线、不增加夹持力。保持用完仍不达标则明确 `endpoint_not_reached`，不能冒充endpoint成功。阻挡回归验证仍失败，跟踪滞后回归验证可收敛；motion/schema6/chunk共69项通过（52.85秒），日志 `/tmp/schema6_endpoint_hold_regression.log`。物理是否解决仍待同状态验证，不把CPU测试当作真实控制结果。
 
 08:49 PDT取消自己的10794与尚未启动的10795–10798；原drawer仅关闭2对，均nudge/guarded失败，完整与中断原件保留。10793 move旧源继续提供开发对照，10698按用户要求自然运行；其他项目、Codex2及held不动。3429快照归档SHA256 `ecdc4365cc5aad2b379b147edbef7469b8466e490b17d51219eb4bcf36d8bff7`，新抽屉同状态真实启动将先验证端点保持，不能用be3成绩混入新源码分母。schema/contract/spec字节均未变，D尚未通过。
+
+## 10/21：端点保持未消除阻挡，已定位接触豁免错误
+
+10799完成同launcher物理启动，但descend在30个端点保持后仍误差0.02345255m；保持不是修复结果。10800因诊断launcher缺PYTHONPATH启动失败(exit1，原文ModuleNotFoundError: No module named robots)，修入口后10803完成334控制步纯物理回放，每一步末端位置误差最大0.0m。第287步起右手指壳gripper0_right_finger2_collision与wooden_cabinet_1_g18接触48步，最小关节余量0.93589rad；不是关节限位。前一节关于反馈滞后的说明只是CPU假设，不能解释这次物理失败。
+
+公开保存输入同时支持根因：下降第20个参考点(固定下降前的两个实测指关节)与目标点云有163个右手指壳交点，其中72个在指垫接触区域外；场景点云交点为0。这些交点匹配测得的把手云，而非没有测到障碍。旧contact_allowed直接豁免整份目标点云与所有手指壳；最终接触位姿本身无指壳交点，问题发生在接近路线中段。补丁只允许目标与实际指垫区域接触(含XML中指垫/指壳的重叠)，其余指壳仍筛查；合并move在选择变体时同时筛查该入口到接触点的公开路线，不再把安全入口等同于安全接触路线。判据、力、预算不变。
+
+原件和摘要：reports/schema6_endpoint_collision_10803.json。CPU真实保存输入已能拒绝原来被豁免的72点；仍须同状态物理检查后才发放完整D批。schema/contract/spec字节不变；旧be3、3429物理分母与新补丁严格分开。
+
+测试：screen/schema6针对性31项通过（1.94秒）；首轮相关282项中281项通过，唯一失败为旧测试只计move路线调用、未计新增接触路线检查的调用次数，已更新后针对性通过。完整相关回归正在复跑，原日志/tmp/schema6_pad_ingress_regression.log保留。Ruff指出这些旧文件已有多项格式/fixture告警，未做无关全文件整理。

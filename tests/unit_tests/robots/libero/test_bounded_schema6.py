@@ -76,9 +76,35 @@ def test_selected_move_resolves_first_passing_variant_in_fixed_order(adapter, mo
             collision=not passed, ik_reachable=True, path_min_clearance_m=.01 if passed else 0., reason='test')
     monkeypatch.setattr(SmoothMotion, 'prepare', prepare)
     resolved = adapter._candidate('move_to', move['parameters'], complete=True)
-    assert seen == [('above','over'),('above','direct'),('above','around'),('right','over')]
+    assert seen == [('above','over'),('above','direct'),('above','around'),
+        ('right','over'), ('right','over')]  # Selected entry's contact-ingress check.
     assert resolved['id'] == move['id']
     assert resolved['parameters'] == {'anchor_id':'e1','approach':'right','path':'over'}
+
+
+def test_merged_move_skips_clear_entry_with_blocked_contact_ingress(adapter, monkeypatch):
+    from types import SimpleNamespace
+    from robots.libero.bounded_motion import SmoothMotion
+
+    enable(adapter)
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    monkeypatch.setattr(SmoothMotion, 'prepare', lambda *_: (SimpleNamespace(duration=1.), None, None,
+        dict(passed=True, collision=False, ik_reachable=True, path_min_clearance_m=.01)))
+    seen = []
+    def screen(route):
+        seen.append(route)
+        above = route[0]['xyz_m'][2] > route[-1]['xyz_m'][2]+.05
+        return dict(passed=not above, collision=above, ik_reachable=True,
+            path_min_clearance_m=0. if above else .01,
+            reason='measured_sweep_collision' if above else 'public_route_screen_passed')
+    monkeypatch.setattr(adapter, '_cloud_and_ik', lambda *_args, **_kwargs: screen)
+    resolved = adapter._candidate('move_to', candidate['parameters'], complete=True)
+    assert resolved['parameters'] == {'anchor_id': 'e1', 'approach': 'right', 'path': 'over'}
+    assert len(seen) == 4
+    assert all(row[-1]['xyz_m'] == adapter.plans['e1']['xyz_m'] for row in seen)
+    assert len([row for row in adapter.candidate_diagnostics
+        if row['stage'] == 'move_contact_ingress' and row['screen']['passed'] is False]) == 3
 
 
 def test_merged_move_uses_selected_endpoint_for_predicted_and_measured_contact_phase(adapter):

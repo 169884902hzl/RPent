@@ -1765,6 +1765,22 @@ class MeasuredSkillAdapter:
                     last = result
                     if (result['consequences']['collision'] is not True
                             and result['consequences']['ik_reachable'] is True):
+                        plan = self.plans.get(parameters['anchor_id'])
+                        if plan is not None and 'surface_contact_options' in plan:
+                            plan = plan['surface_contact_options'].get(approach)
+                        if plan is not None:
+                            entry = self._route('move_to', variant)[-1]
+                            ingress = plan.get('contact_route',
+                                [{'xyz_m': plan['xyz_m'], 'quat_xyzw': plan['quat_xyzw']}])
+                            evidence = self._cloud_and_ik(parameters['anchor_id'], contact=True)([entry, *ingress])
+                            self.candidate_diagnostics.append({'stage': 'move_contact_ingress',
+                                'candidate_id': cid, 'parameters': variant, 'screen': evidence})
+                            if not evidence['passed']:
+                                result['consequences'].update(collision=evidence['collision'],
+                                    ik_reachable=evidence['ik_reachable'],
+                                    path_min_clearance_m=evidence['path_min_clearance_m'])
+                                attempts[-1]['contact_ingress_reason'] = evidence['reason']
+                                continue
                         result['id'] = cid
                         self.candidate_diagnostics.append({'stage': 'move_variant_resolution',
                             'candidate_id': cid, 'attempts': attempts, 'selected': variant})

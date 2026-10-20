@@ -69,6 +69,36 @@ def test_target_broad_phase_keeps_real_collisions_and_allowed_finger_contact():
     assert obstacle['public_scene_collision_points']['left_pad'] == [[0., 0., 0.]]
 
 
+def test_contact_permission_keeps_finger_shell_collisions_outside_its_pad():
+    geometry = {'boxes': [
+        {'name': 'rightfinger', 'lower': [-.02]*3, 'upper': [.02]*3},
+        {'name': 'rightfinger_pad', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    # Overlapping pad/shell geometry may touch the selected target at a pad.
+    allowed = PublicRouteScreen([[10., 10., 10.]], geometry, ik,
+        contact_points=[[0., 0., 1.]], contact_allowed=True)
+    assert allowed([pose])['passed']
+    # A broad object/contact mask must not exempt the rest of the finger.
+    blocked = PublicRouteScreen([[10., 10., 10.]], geometry, ik,
+        contact_points=[[0., 0., 1.], [.015, 0., 1.]], contact_allowed=True)
+    result = blocked([pose])
+    assert result['collision'] and result['target_counts']['rightfinger'] == 1
+    assert result['public_target_collision_points']['rightfinger'] == [[.015, 0., 1.]]
+
+
+def test_contact_permission_does_not_skip_an_unsampled_finger_collision():
+    geometry = {'boxes': [
+        {'name': 'rightfinger', 'lower': [-.02]*3, 'upper': [.02]*3},
+        {'name': 'rightfinger_pad', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    target = np.r_[np.tile([[0., 0., 1.]], (40, 1)), [[.015, 0., 1.]]]
+    screen = PublicRouteScreen([[10., 10., 10.]], geometry,
+        SimpleNamespace(check=lambda *args: {'solution_found': True}),
+        contact_points=target, contact_allowed=True)
+    result = screen([{'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}])
+    assert result['target_counts']['rightfinger'] == 1
+
+
 def test_blocked_start_does_not_expand_the_unreachable_remaining_route(monkeypatch):
     from robots.libero import bounded_screen
 

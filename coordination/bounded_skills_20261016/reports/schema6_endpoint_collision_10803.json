@@ -1,0 +1,52 @@
+{
+  "source_job": "10803",
+  "physical_controls": 334,
+  "max_per_control_replay_position_error_m": 0.0,
+  "contacts": [
+    {
+      "geom_pair": [
+        "gripper0_right_finger2_collision",
+        "wooden_cabinet_1_g18"
+      ],
+      "steps": 48,
+      "first_control_zero_based": 286
+    }
+  ],
+  "minimum_joint_margin_rad": 0.9358906730648321,
+  "diagnostic_only": true,
+  "training": false,
+  "conclusion": "right finger collides with cabinet geometry during descent; not a joint limit; fixed endpoint hold did not remove the obstruction",
+  "sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/3429e275/endpoint_contact_replay/summary.json",
+      "sha256": "268ef1592a5ec07c61c3f0facc67cd981153c801ac5fbbbefe52dee89bb917eb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/3429e275/endpoint_contact_replay/private_contacts.jsonl",
+      "sha256": "299f324b512af05950139a1ca5ddc6d1662be1bc0a489ed0d942d9d71aef8998"
+    }
+  ],
+  "public_geometry_audit": {
+    "target_cloud": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/3429e275/drawer2_startup/startup_1792511588716965488/episode/bounded_screen_e101_1_target.npz/01.npz",
+      "sha256": "1fd2ecc4ca1d98c17d5ebdc01fd75c1ef0cb21c6848d97ac190360810dd75750"
+    },
+    "capture_step": 1,
+    "descent_trace_index": 19,
+    "target_points": 14725,
+    "finger_qpos_source": "descent trace[0].before; fixed public measured fingers used by planned sweep",
+    "rightfinger_intersections": 163,
+    "same_finger_pad_region_intersections": 91,
+    "rightfinger_intersections_outside_pad_region": 72,
+    "scene_intersections": 0,
+    "final_planned_pose_finger_intersections": 0,
+    "result": "old contact screen exempted every target/finger intersection; pad-only permission rejects the intermediate ingress while keeping the final planned grasp pose clear",
+    "interpretation": "colliding public points match measured handle cloud; not evidence of a missing RGB-D obstacle or a servo tolerance problem",
+    "inputs": [
+      "nudge_choices.jsonl/details/descend.execution.trace",
+      "bounded_screen_e101_1_scene.npz/01.npz",
+      "fixture_handle_e101*/00.npz"
+    ],
+    "runtime_private_truth_used": false
+  }
+}

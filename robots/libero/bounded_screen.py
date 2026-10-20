@@ -114,13 +114,15 @@ class PublicRouteScreen:
             result[ids] = (local[ids]@equations[:, :3].T+equations[:, 3]).max(axis=1)
         return result
 
-    def _collisions(self, points, ids, xyz, site, initial_margin):
-        if not initial_margin:
+    def _collisions(self, points, ids, xyz, site, initial_margin, *, pad_contact=False):
+        if not initial_margin and not pad_contact:
             return (*collision_counts(points[ids], xyz, site, self.geometry, self.opening,
                 clearance_m=.004, return_points=True), 0)
         local = (points[ids]-xyz)@site
         counts, hits, retained_margin = {}, {}, 0
         for box in self.geometry['boxes']:
+            if pad_contact and box['name'].endswith('_pad'):
+                continue
             shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2
             lower = np.asarray(box['lower'])+shift-.004
             upper = np.asarray(box['upper'])+shift+.004
@@ -137,6 +139,14 @@ class PublicRouteScreen:
             # proximity allowance and reject all physical mesh interiors.
             blocked |= (distance <= 0.) | ((distance <= .004) & (bound == .004))
             retained_margin += int(((distance <= .004) & ~blocked).sum())
+            if pad_contact:
+                pad = next((candidate for candidate in self.geometry['boxes']
+                    if candidate['name'] == box['name']+'_pad'), None)
+                if pad is not None:
+                    # Pad and finger meshes can overlap in the robot XML.
+                    # Permit only that pad's contact region, not the whole
+                    # finger shell sweeping through the selected object.
+                    blocked &= self._halfspace_distance(local[near], pad) > .004
             counts[box['name']] = int(blocked.sum())
             hits[box['name']] = points[ids[near[blocked]]][:32].tolist()
         return counts, hits, retained_margin
@@ -224,9 +234,8 @@ class PublicRouteScreen:
         target_ids = np.asarray(self.target_tree.query_ball_point(xyz, self.radius+.02), dtype=int) if self.target_tree is not None else np.empty(0, dtype=int)
         own_points = self.target[target_ids]
         own, target_hits, retained_target_margin = self._collisions(
-            self.target, target_ids, xyz, site, self.initial_target_margin)
-        if self.contact_allowed:
-            own = {k: v for k, v in own.items() if k == "palm"}
+            self.target, target_ids, xyz, site, self.initial_target_margin,
+            pad_contact=self.contact_allowed)
         if any(counts.values()) or any(own.values()):
             result = {"passed": False, "reason": "measured_sweep_collision", "collision": True,
                 "counts": counts, "target_counts": own, "path_min_clearance_m": 0.,
@@ -234,7 +243,8 @@ class PublicRouteScreen:
                 "public_nearby_points": nearby[:256].tolist()}
         else:
             clearance = .2
-            target_boxes = [b for b in self.geometry['boxes'] if not self.contact_allowed or b['name'] == 'palm']
+            target_boxes = [b for b in self.geometry['boxes']
+                if not self.contact_allowed or not b['name'].endswith('_pad')]
             for cloud, boxes in ((nearby, self.geometry['boxes']), (own_points, target_boxes)):
                 local = (cloud-xyz)@site
                 for box in boxes:
