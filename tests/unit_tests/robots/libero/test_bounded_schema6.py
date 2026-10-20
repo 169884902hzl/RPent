@@ -16,6 +16,17 @@ def enable(adapter):
         collision=None, ik_reachable=True, path_min_clearance_m=None, reason='endpoint')
 
 
+def test_schema6_defaults_enable_tracking_block_monitoring_and_original_progress_limit(adapter):
+    from types import SimpleNamespace
+    from robots.libero.bounded_skills import MeasuredSkillAdapter
+    adapter.scene.rpc=SimpleNamespace(call=lambda *args,**kwargs:None)
+    current=MeasuredSkillAdapter(adapter.ex,'/static/grippers/panda_gripper.xml',allow_vla=False)
+    assert current.schema6_v1 and current.lazy_planning_v1
+    assert current.vla_budget.controls_per_check is None
+    assert current.public_progress.limit==31
+    assert current.scene.rgbd_mask_tracking_v1 and current.scene.rpc.refresh_captures is None
+
+
 def test_one_move_per_anchor_and_only_failed_anchor_has_alternates(adapter):
     enable(adapter)
     adapter.scene.entities['peer'] = replace(adapter.scene.entities['e1'], id='peer', xyz=(.3,.1,.9))

@@ -109,6 +109,7 @@ class MeasuredSkillAdapter:
         self.schema6_v1 = schema6_v1
         if schema6_v1:
             self.lazy_planning_v1 = True
+            self.vla_budget = replace(vla_budget, controls_per_check=None)
         from rpent.skill_package.progress import PublicProgress
         self.public_progress = PublicProgress(no_progress_limit)
         if schema6_v1 and not getattr(self.scene, 'rgbd_mask_tracking_v1', False):
@@ -252,7 +253,8 @@ class MeasuredSkillAdapter:
 
                 self._cloud_and_ik(key, contact=True)
                 fit = contact_axis_registration(reference, self._base_geometry[0],
-                    'xyz'.index(axis), distance, endpoint_tolerance_m=self.config.endpoint_tolerance_m)
+                    'xyz'.index(axis), distance, endpoint_tolerance_m=self.config.endpoint_tolerance_m,
+                    query_workers=self.registration_query_workers)
                 if contact_motion is not None and key == contact_motion[0]:
                     registration = fit
                 if fit['accepted']:

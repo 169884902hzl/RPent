@@ -45,6 +45,9 @@ def worker(args, plan):
     if row['kind']=='d2':
         manifest=json.loads(checked(row['manifest']).read_bytes())
         manifest['recovery_budget']=row['recovery_budget']
+        manifest['source_commit']=plan['source_commit']
+        manifest['schema_version']=plan['schema_version']
+        manifest['parent_registration']=row['manifest']
         result=probe.evaluate_case(row['case'],endpoints,args.output/'episode',manifest,startup=args.startup)
     elif row['kind']=='drawer':
         from robots.libero.bounded_oracle import NoPublicOption
