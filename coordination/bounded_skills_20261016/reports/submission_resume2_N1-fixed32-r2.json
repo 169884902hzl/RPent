@@ -1,0 +1,21 @@
+{
+  "job": "10789",
+  "stage": "N1-fixed32-r2",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--job-name=rd-c3-s6-N1-fixed32-r2",
+    "--dependency=afterany:10787",
+    "--export=ALL,SCHEMA6_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_schema6_8c3cdd38_20261020,SCHEMA6_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/preparation_8c3cdd38/N1_fixed32.json,SCHEMA6_OUTPUT=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/8c3cdd38/N1_fixed32,SCHEMA6_CONCURRENCY=8,SCHEMA6_N1=1",
+    "/public/home/sunyihan/rpent_libero_eval/source_schema6_8c3cdd38_20261020/coordination/bounded_skills_20261016/scripts/run_schema6_stage_20261020.sbatch"
+  ],
+  "source_commit": "8c3cdd38bf10d8b0910f6b578b85d384188c9c01",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/preparation_8c3cdd38/N1_fixed32.json",
+  "output": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/8c3cdd38/N1_fixed32",
+  "borrowed_gpu": true,
+  "training": false,
+  "dependency_semantics": "resume only after Codex2GPU10786 starts; no GPU held while dependency waits",
+  "at": "2026-10-20T23:03:32.242478+08:00"
+}

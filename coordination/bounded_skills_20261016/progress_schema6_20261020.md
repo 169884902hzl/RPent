@@ -2,7 +2,7 @@ schema6 六项实现已接线；384 项相关测试通过，尚未通过 D 的�
 原版 220 离线选 N=31，保留全部 131 个历史成功，但历史墙钟节省为 0；不改用会截断成功局的更小 N。
 增量感知首版失败保留；双视角保守版比较 1,289 次锚点，56 次可缓存，位置/尺寸差均 0，超过 1 cm 的漏变化 0。
 保存输入的配准 JSON 与 6 张平面掩码逐字节一致；平面拟合小幅提速，配准批量化几乎无提速。
-177d44e9修复公开候选失败记账，266项相关回归通过；新move100与drawer40两批真实启动均已产生控制步，N8正式回合运行中。10698自然运行，固定32 N1与D2三档沿依赖接续；D的完整结果仍待。
+177d44e9修复公开候选失败记账，266项相关回归通过；两批已真实启动，随后因Codex2 GPU排队归还借卡。10698自然运行，续跑已登记等待Codex2启动；D的完整结果仍待。
 
 ## 接口与实现
 
@@ -103,3 +103,11 @@ CPU检查发现固定32中的两个VLA试点仍走旧版“只换schema header�
 修复只在N1登记为`schema6_source`时启用：恢复同一物理状态与原重试历史，初始化新增运行时字段，重新测量公开传感器并生成schema6请求；在配对原件中显式记`schema6_public_request_rebuilt=true`，不声称请求与旧版相等。N1启动器在正式32状态前，用同launcher额外真实启动旧试点24，成功才继续。此前运行的177d44e9技能/规划源码不修改，move与drawer批次继续。
 
 迁移/共享启动器50 passed；schema6/物理启动器15 passed，原有pytest timeout配置警告保留。日志`/tmp/schema6_replay_migration_regression.log`、`/tmp/schema6_replay_adapter_regression.log`；shell语法、py_compile通过。N1待更换为该评测入口修复的独立快照与manifest后重提；尚无新试点物理结果。
+
+## 23:04集群时间：借卡实际归还与续跑登记
+
+Codex2 GPU作业10786于22:58:10提交；10780/10781于22:58:41实际退出，归还用时31秒，满足10分钟要求。旧pending 10782–10785同步取消，未执行。原件`reports/schema6_card_return_10786_and_resume2.json`。关闭9个move对，8对已知，两臂配对均6/8，改善0/退步0；case007原选变体当前不合法，保留unknown，不补成失败。单臂默认6/9、原选6/8的分母不同，不能直接比较。drawer尚无完整双臂局，全部中断轨迹保留。
+
+已重提10787 move100、10788 drawer40，均`after:10786`，仅等Codex2服务实际启动，不提前占卡。随后10789固定32 N1、10790/10791/10792 D2恢复0/1/2按原依赖接续。所有job仍仅node02、nice500、每job1GPU/8CPU/96GB。六个归还监控保持运行；仅在Dependency等待的job不持卡，继续等待，变为可运行或运行后仍按Codex2 GPU排队信号归还。
+
+N1评测入口源码`8c3cdd38bf10d8b0910f6b578b85d384188c9c01`已普通推送，快照`/public/home/sunyihan/rpent_libero_eval/source_schema6_8c3cdd38_20261020`，归档SHA256 `64b46dbbe9b338e509c2598af1ac5426aa7c064541d602b64eaf9c6b2b8219f8`。技能、guarded、增量感知、schema和contract与177完全相同；只修N1旧试点恢复入口并加真实试点启动。新N1 CPU预检通过，manifest `preparation/schema6_8c3cdd38/N1_fixed32.json`，独立输出`results/bounded_skills/schema6_20261020/8c3cdd38/N1_fixed32/`。其余续跑保持177源码与完成回合指针，不混分母。

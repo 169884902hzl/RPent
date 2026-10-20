@@ -1,0 +1,179 @@
+{
+  "at": "2026-10-20T23:05:51.366327+08:00",
+  "trigger_job": 10786,
+  "c2_submit_cluster": "2026-10-20T22:58:10+08:00",
+  "borrow_end_cluster": "2026-10-20T22:58:41+08:00",
+  "actual_return_from_queue_submit_s": 31,
+  "sacct_evidence_command": "sacct -j 10786,10780,10781 -X -P --format=JobID,State,Submit,Start,End,Elapsed",
+  "completed_cases_preserved": true,
+  "ledgers": {
+    "10780": {
+      "source": "/tmp/schema6_borrow10780.jsonl",
+      "sha256": "8fa78998af562ff4b3b410fd83a7d342c9551db1eac1631ab2e6c5ad9ba17cfd",
+      "events": [
+        {
+          "at": "2026-10-20T22:58:38.627911+08:00",
+          "borrow_job": 10780,
+          "borrow_state": "RUNNING",
+          "c2_pending": [
+            "10786"
+          ],
+          "action": "cancel_explicit_borrowed_job_preserve_completed_cases"
+        },
+        {
+          "at": "2026-10-20T22:59:11.431648+08:00",
+          "borrow_job": 10780,
+          "borrow_state": "not_in_queue",
+          "c2_pending": [
+            "10786"
+          ],
+          "done": true,
+          "cancellation_requested": true,
+          "pending_first_seen": "2026-10-20T22:58:38.627911+08:00"
+        }
+      ]
+    },
+    "10781": {
+      "source": "/tmp/schema6_borrow10781.jsonl",
+      "sha256": "396587d5c02e769e47f850fa63c850d09b2f16467dc9ac46fbb365cf63759b77",
+      "events": [
+        {
+          "at": "2026-10-20T22:58:38.682320+08:00",
+          "borrow_job": 10781,
+          "borrow_state": "RUNNING",
+          "c2_pending": [
+            "10786"
+          ],
+          "action": "cancel_explicit_borrowed_job_preserve_completed_cases"
+        },
+        {
+          "at": "2026-10-20T22:59:11.473171+08:00",
+          "borrow_job": 10781,
+          "borrow_state": "not_in_queue",
+          "c2_pending": [
+            "10786"
+          ],
+          "done": true,
+          "cancellation_requested": true,
+          "pending_first_seen": "2026-10-20T22:58:38.682320+08:00"
+        }
+      ]
+    },
+    "10782": {
+      "source": "/tmp/schema6_borrow10782.jsonl",
+      "sha256": "ea5d2a98c073078f20c0ac836e495d59888163f84b3ce3d4279ebbbe5e0a32ec",
+      "events": [
+        {
+          "at": "2026-10-20T22:58:38.249798+08:00",
+          "borrow_job": 10782,
+          "borrow_state": "PENDING",
+          "c2_pending": [
+            "10786"
+          ],
+          "action": "cancel_explicit_borrowed_job_preserve_completed_cases"
+        },
+        {
+          "at": "2026-10-20T22:59:11.048069+08:00",
+          "borrow_job": 10782,
+          "borrow_state": "not_in_queue",
+          "c2_pending": [
+            "10786"
+          ],
+          "done": true,
+          "cancellation_requested": true,
+          "pending_first_seen": "2026-10-20T22:58:38.249798+08:00"
+        }
+      ]
+    },
+    "10783": {
+      "source": "/tmp/schema6_borrow10783.jsonl",
+      "sha256": "a3a63efc95f0d890cfcab69d32ea1d25e0323b1d19a805adb06eb65b44c93a72",
+      "events": [
+        {
+          "at": "2026-10-20T22:58:38.707792+08:00",
+          "borrow_job": 10783,
+          "borrow_state": "PENDING",
+          "c2_pending": [
+            "10786"
+          ],
+          "action": "cancel_explicit_borrowed_job_preserve_completed_cases"
+        },
+        {
+          "at": "2026-10-20T22:59:11.506357+08:00",
+          "borrow_job": 10783,
+          "borrow_state": "not_in_queue",
+          "c2_pending": [
+            "10786"
+          ],
+          "done": true,
+          "cancellation_requested": true,
+          "pending_first_seen": "2026-10-20T22:58:38.707792+08:00"
+        }
+      ]
+    },
+    "10784": {
+      "source": "/tmp/schema6_borrow10784.jsonl",
+      "sha256": "7cf5ceb9328d0c5fb708fd82275e29700641a6316710676ed4d226cfd7cca351",
+      "events": [
+        {
+          "at": "2026-10-20T22:58:38.622759+08:00",
+          "borrow_job": 10784,
+          "borrow_state": "PENDING",
+          "c2_pending": [
+            "10786"
+          ],
+          "action": "cancel_explicit_borrowed_job_preserve_completed_cases"
+        },
+        {
+          "at": "2026-10-20T22:59:11.423095+08:00",
+          "borrow_job": 10784,
+          "borrow_state": "not_in_queue",
+          "c2_pending": [
+            "10786"
+          ],
+          "done": true,
+          "cancellation_requested": true,
+          "pending_first_seen": "2026-10-20T22:58:38.622759+08:00"
+        }
+      ]
+    },
+    "10785": {
+      "source": "/tmp/schema6_borrow10785.jsonl",
+      "sha256": "cb612b85be364b259c124ad85058d86c5a4b377fce96b6d5d02b0c5957750014",
+      "events": [
+        {
+          "at": "2026-10-20T22:58:38.518414+08:00",
+          "borrow_job": 10785,
+          "borrow_state": "PENDING",
+          "c2_pending": [
+            "10786"
+          ],
+          "action": "cancel_explicit_borrowed_job_preserve_completed_cases"
+        },
+        {
+          "at": "2026-10-20T22:59:11.313900+08:00",
+          "borrow_job": 10785,
+          "borrow_state": "not_in_queue",
+          "c2_pending": [
+            "10786"
+          ],
+          "done": true,
+          "cancellation_requested": true,
+          "pending_first_seen": "2026-10-20T22:58:38.518414+08:00"
+        }
+      ]
+    }
+  },
+  "resume_jobs": [
+    10787,
+    10788,
+    10789,
+    10790,
+    10791,
+    10792
+  ],
+  "resource_dependency": "10787/10788 after:10786 (start, not completion)",
+  "new_N1_source": "8c3cdd38bf10d8b0910f6b578b85d384188c9c01",
+  "skill_code_identical_to": "177d44e99cb8944112b0c4720debf0b5a61d0a05",
+  "training": false
+}

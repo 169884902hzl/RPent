@@ -35,7 +35,11 @@ def main():
                         raise ValueError('refuse to modify an unrecognized or non-node02 job')
                     if borrowed[2] == 'PENDING' and borrowed[5] == 'JobHeldUser':
                         raise ValueError('held jobs are outside this watcher scope')
-                if pending and borrowed is not None and not cancelled:
+                # A dependent job owns no GPU and can remain queued behind
+                # Codex2's start. Recheck when it becomes eligible/running.
+                dependency_wait = (borrowed is not None and borrowed[2] == 'PENDING'
+                    and borrowed[5] == 'Dependency')
+                if pending and borrowed is not None and not cancelled and not dependency_wait:
                     pending_since = now
                     remote(args.host, f'scancel {args.borrow_job}')
                     cancelled = True
