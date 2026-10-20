@@ -285,8 +285,13 @@ class BoundedOracle:
                         # push on another measured normal component. Require
                         # the same 5mm progress resolution; tiny PCA noise
                         # must not turn an unrelated axis into progress.
-                        if (option is not None and abs(normal[axis]
-                                * option['parameters']['distance_m']) >= .005):
+                        if option is not None:
+                            if option['skill'] == 'guarded_move':
+                                from robots.libero.bounded_guarded import CHECK_DISTANCE_M
+                                advance = CHECK_DISTANCE_M*option['parameters']['direction']
+                            else:
+                                advance = option['parameters']['distance_m']
+                        if option is not None and abs(normal[axis]*advance) >= .005:
                             chosen = option
                             break
                     # A predicted blocked sweep is not a measured failed

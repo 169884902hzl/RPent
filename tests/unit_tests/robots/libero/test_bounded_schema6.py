@@ -208,6 +208,30 @@ def test_guarded_candidate_only_for_measured_active_furniture(adapter):
     assert legal_after(request,[guarded[0]['id']]) == ()
 
 
+def test_private_drawer_selector_accepts_guarded_direction_without_nudge_distance(adapter):
+    from types import SimpleNamespace
+    from robots.libero.bounded_oracle import BoundedOracle
+    from rpent.skill_package.contract import selected
+
+    enable(adapter)
+    original_obs = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.active = 'e1'
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'],
+        name='cabinet drawer', part_of='cabinet')
+    adapter.scene.measure_fixture_handle_pose = lambda *_: {}
+    request = adapter.request(k=1)
+    adapter.plans['e1'] = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'handle_measurement': {'pose': {'approach_normal_xyz': [0., 1., 0.]}}}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda _: {
+        'done': False, 'goals': [['open', 'wooden_cabinet_1_top_region']],
+        'satisfied': [False]}), adapter)
+    oracle.binding.bind = lambda *_args, **_kwargs: adapter.scene.entities['e1']
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'guarded_move'
+    assert chosen['parameters'] == {'anchor_id': 'e1', 'axis': 'y', 'direction': 1}
+
+
 def test_public_progress_accumulates_subcentimetre_motion():
     monitor = PublicProgress()
     row = {'revision':0,'anchors':[{'id':'a','xyz_m':[0.,0.,0.],'cached':False}],

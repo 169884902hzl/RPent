@@ -159,3 +159,7 @@ be3 drawer case000及另外状态共16次descend都在标称轨迹结束时退�
 282相关CPU回归已通过(169.03秒)。daaa同launcher启动10809出现连续零步拒绝，未宣称启动通过；运行6分03秒后取消自己的诊断作业，原件保留。CPU从同一private_common.pkl中只取公开机器人传感器、已测实体和RGB-D，重新跑完整规划，0 RPC/0仿真步，定位9个入口后续解失败均来自重置到开局关节：前一条move已筛查通过，但新ingress检查begin_route又从原capture起点求解。修为复制该屏幕并从last_solution继续局部IK，不重估世界标定、不新增接触豁免、不改变原始余量和源solver。新增回归确认连续分支可达，原始capture不能跳到未来位姿。新补丁须再次同保存输入CPU核对和真实物理启动。
 
 CPU诊断第一次因外部脚本目录优先于PYTHONPATH误载live包而缺progress模块，已改为显式--source并在导入前插入绝对快照路径；原失败保留，r2成功。原件 daaa1730/CPU_ingress_rebuild_r2/summary.json。脚本scripts/diagnose_schema6_captured_ingress_CPU_20261021.py。
+
+18fbf678的CPU真实保存输入复核已完成：above的3条路径均被指壳碰撞拒绝，right/over随后通过，最小公开间隙0.0069581m；0 RPC、0仿真步。32项screen/schema6通过(2.63秒)。物理启动仍需重新做。
+
+10793旧move100在运行1小时2分26秒后FAILED1:0：case011续跑oracle报KeyError: distance_m(bounded_oracle.py:289)。nudge选择器已可返回guarded_move，但调用方仍读取仅nudge拥有的distance_m。修为guarded用固定CHECK_DISTANCE_M及direction判断测量法向进展，nudge仍用distance_m；不扩大进展/停止阈值。新增真实参数形状回归，schema6共14项通过(2.71秒)。旧10793完成结果保留，当前12对关闭，剩余未完成不计失败；新源码批不混入。原件case011/worker.log。
