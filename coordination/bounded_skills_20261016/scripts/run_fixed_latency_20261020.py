@@ -103,7 +103,9 @@ def worker(args, plan):
 
 def bounded_episode(args, row, endpoints, probe):
     from rpent.skill_package.contract import VERSION
+    from robots.libero.bounded_oracle import NoPublicOption
     loops = []
+    stop_reason = None
     started = time.perf_counter()
     case = row['case']
     with probe.runtime(case, endpoints, args.output/'episode', domain=row['domain']) as (facade, adapter, policy, timings):
@@ -118,8 +120,20 @@ def bounded_episode(args, row, endpoints, probe):
                 request = adapter.request(k=4)
             request_s = time.perf_counter()-begin
             adapter._latency_stage = 'oracle'
-            with timings.measure('decision.oracle'):
-                decision = policy.choose(request)
+            try:
+                with timings.measure('decision.oracle'):
+                    decision = policy.choose(request)
+            except NoPublicOption as exc:
+                elapsed = time.perf_counter()-begin
+                loops.append({'index': index, 'request_s': request_s,
+                    'decision_s': elapsed-request_s, 'execution_s': 0., 'loop_s': elapsed,
+                    'request': request, 'decision': None, 'receipts': [],
+                    'stop_reason': 'no_public_option', 'message': str(exc),
+                    'timings': timings.summary(elapsed, start_event=event)})
+                with (args.output/'loops.jsonl').open('a') as stream:
+                    stream.write(json.dumps(loops[-1])+'\n')
+                stop_reason = 'no_public_option'
+                break
             decision_end = time.perf_counter()
             if decision['candidate_ids']:
                 adapter._latency_stage = 'selected_execution'
@@ -147,7 +161,8 @@ def bounded_episode(args, row, endpoints, probe):
             'sim_steps':adapter.p.env.execution_budget()['used_sim_steps'],
             'wall_s':time.perf_counter()-started, 'timings':timings.summary(time.perf_counter()-timings.started),
             'source_commit':os.environ.get('SOURCE_COMMIT'), 'training':False,
-            'candidate_ids':[loop['decision']['candidate_ids'] for loop in loops]}
+            'stop_reason': stop_reason,
+            'candidate_ids':[loop['decision']['candidate_ids'] if loop['decision'] else None for loop in loops]}
 
 
 def main():
