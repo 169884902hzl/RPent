@@ -3,6 +3,24 @@
 from pathlib import Path
 
 import numpy as np
+import pytest
+
+
+@pytest.mark.parametrize('obstacle', ['none', 'depth_jump', 'static'])
+def test_current_pixels_beyond_old_extent_can_seed_same_surface_without_owning_obstacles(obstacle):
+    from robots.libero.bounded_payload import complete_moving_boundary
+
+    y, x = np.mgrid[:5, :6]
+    world = np.stack([.1+x*.004, .1+y*.001, np.full(x.shape, .9)], axis=-1)
+    mask = (x <= 2) | (x == 4)
+    if obstacle == 'depth_jump':
+        world[x == 3, 2] += .02
+    stationary = world[x == 3] if obstacle == 'static' else np.array([[10., 10., 10.]])
+    completed, evidence = complete_moving_boundary(world, mask, world[mask], stationary,
+        surface_extent=[[.1, .1, .9], [.108, .104, .9]])
+    assert completed[x == 3].all() if obstacle == 'none' else not completed[x == 3].any()
+    assert not completed[x == 5].any()
+    assert evidence['max_extrapolation_error_m'] == .001
 from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_payload import (

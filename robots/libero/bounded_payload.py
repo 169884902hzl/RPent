@@ -88,6 +88,9 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     the existing 3 mm depth gap, robot filtering and static-scene veto.
     Current semantic edge pixels outside that extent require the same
     two-pixel RGB/depth support; the semantic mask alone never owns them.
+    Newly owned current depth pixels enlarge the association extent before
+    the next boundary pass. A transported extent cannot hide current samples
+    that have already passed the same depth and stationary-scene checks.
     """
     from robots.libero.v5_grasp_geometry import (
         complete_instance_boundary,
@@ -96,7 +99,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/10-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/11-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
         'spacing_source': 'measured_two_pixel_tangent',
         'max_extrapolation_error_m': .001,
@@ -129,6 +132,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         bounded_world = world.copy()
         bounded_world[~eligible] = np.nan
         evidence['measured_surface_extent_m'] = [lower.tolist(), upper.tolist()]
+    original_extent_valid = np.isfinite(bounded_world).all(axis=2)
     retained = np.zeros(mask.shape, bool)
     def keep_stationary(extended):
         new = np.flatnonzero(extended & ~current)
@@ -136,6 +140,18 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
             distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
         retained.flat[new[stationary]] = True
         extended.flat[new[stationary]] = False
+        if appearance:
+            # Growing the measured envelope must retain the existing RGB-D
+            # support rule for pixels outside the original association
+            # extent; a geometric pass cannot bypass an appearance conflict.
+            for index in new[~stationary & ~original_extent_valid.flat[new]]:
+                y, x = np.unravel_index(index, mask.shape)
+                ys, xs = slice(max(0, y-2), y+3), slice(max(0, x-2), x+3)
+                local = current[ys, xs]
+                colour = np.max(np.abs(image[ys, xs][local]-image[y, x]), axis=1)
+                distance = np.linalg.norm(world[ys, xs][local]-world[y, x], axis=1)
+                if ((colour <= .1) & (distance <= .025)).sum() < 2:
+                    extended[y, x] = False
         return extended
     appearance = rgb is not None and surface_extent is not None
     appearance_rounds = []
@@ -182,6 +198,20 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         evidence['depth_component_scope'] = 'current_self_filtered_rgbd_without_pre_lift_static_pixels'
     rounds, planar_rounds = [], []
     for _ in range(sum(mask.shape) if surface_extent is not None else 3):
+        if surface_extent is not None and current.any():
+            measured = world[current]
+            next_lower = np.minimum(lower, measured.min(axis=0))
+            next_upper = np.maximum(upper, measured.max(axis=0))
+            if np.any(next_lower < lower) or np.any(next_upper > upper):
+                lower, upper = next_lower, next_upper
+                bounded_world = world.copy()
+                eligible = ((world >= lower).all(axis=2) & (world <= upper).all(axis=2)) | current
+                bounded_world[~eligible] = np.nan
+                evidence['measured_surface_extent_m'] = [lower.tolist(), upper.tolist()]
+                if appearance:
+                    appearance_valid = np.isfinite(bounded_world).all(axis=2)
+                    if semantic_mask is not None:
+                        appearance_valid |= np.asarray(semantic_mask, bool) & np.isfinite(world).all(axis=2)
         extended, _ = complete_instance_boundary(bounded_world, current, rounds=1,
             measured_tangent_spacing=True)
         # Extent-limited geometric helpers omit semantic edge pixels outside

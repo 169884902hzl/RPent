@@ -20,6 +20,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--public-report', type=Path, required=True)
     parser.add_argument('--implementation', type=Path, required=True)
+    parser.add_argument('--payload-implementation', type=Path)
     parser.add_argument('--sam-assignment', type=Path, required=True)
     parser.add_argument('--target-id', required=True)
     parser.add_argument('--output', type=Path, required=True)
@@ -32,6 +33,8 @@ def main():
     from scipy.spatial import cKDTree
 
     from robots.libero.bounded_offline_labels import FrozenSensors
+    from robots.libero.bounded_motion import SmoothMotion
+    from robots.libero import bounded_payload
     from robots.libero.bounded_skills import MeasuredSkillAdapter
     from rpent.utils.rpc.http_rpc import HttpRpcClient
 
@@ -40,6 +43,13 @@ def main():
     spec.loader.exec_module(proposed)
     new_method = proposed.MeasuredSkillAdapter._guided_payload_pixels
     original = MeasuredSkillAdapter._guided_payload_pixels
+    original_boundary = bounded_payload.complete_moving_boundary
+    new_boundary = original_boundary
+    if args.payload_implementation is not None:
+        payload_spec = importlib.util.spec_from_file_location('proposed_payload', args.payload_implementation)
+        payload = importlib.util.module_from_spec(payload_spec)
+        payload_spec.loader.exec_module(payload)
+        new_boundary = payload.complete_moving_boundary
     assignment = json.loads(args.sam_assignment.read_bytes())
     endpoint = json.loads((directory/'replay/summary.json').read_bytes())['endpoint']
     raw = Path(endpoint['path']).read_bytes()
@@ -66,8 +76,10 @@ def main():
     blockers = np.asarray([r['point_m'] for r in report['rows']])
     variants = []
     try:
-        for name, method in [('baseline', original), ('current_depth_point_seed', new_method)]:
+        variant = 'current_measured_extent' if args.payload_implementation else 'current_depth_point_seed'
+        for name, method in [('baseline', original), (variant, new_method)]:
             MeasuredSkillAdapter._guided_payload_pixels = method
+            bounded_payload.complete_moving_boundary = (original_boundary if name == 'baseline' else new_boundary)
             saved = copy.deepcopy(public)
             adapter = object.__new__(MeasuredSkillAdapter)
             vars(adapter).update(saved['adapter'])
@@ -88,14 +100,21 @@ def main():
                 pose = {'xyz_m': (np.asarray(measured['eef_xyz_m'])+[0., 0., shift]).tolist(),
                     'quat_xyzw': measured['eef_quat_xyzw']}
                 checks.append({'z_shift_m': shift, 'geometry': screen._geometry_at(pose)})
+            route = adapter._route('carry_to', {'target_id': key})
+            planned = SmoothMotion(adapter.p, screen, adapter.config).prepare(route)
             variants.append({'variant': name, 'wall_s': time.perf_counter()-started,
                 'sam_calls': adapter.scene.calls-calls, 'payload_points': len(screen.payload),
                 'blocker_distances_to_remaining_scene_m': cKDTree(screen.points).query(blockers)[0].tolist(),
-                'checks': checks, 'boundary_evidence': adapter.instance_boundary_evidence.get(held)})
+                'checks': checks, 'carry_route': route, 'carry_screen': planned[3],
+                'boundary_evidence': adapter.instance_boundary_evidence.get(held)})
     finally:
         MeasuredSkillAdapter._guided_payload_pixels = original
+        bounded_payload.complete_moving_boundary = original_boundary
     result = {'source': str(source), 'implementation': {'path': str(args.implementation),
         'sha256': hashlib.sha256(args.implementation.read_bytes()).hexdigest()},
+        'payload_implementation': ({'path': str(args.payload_implementation),
+            'sha256': hashlib.sha256(args.payload_implementation.read_bytes()).hexdigest()}
+            if args.payload_implementation else None),
         'sam_assignment': str(args.sam_assignment), 'capture_step': step, 'variants': variants,
         'physics_steps': 0, 'private_scene_geometry_used': False, 'training': False,
         'gpu_allocation_added': False, 'live_gpu_sam_used': True,
