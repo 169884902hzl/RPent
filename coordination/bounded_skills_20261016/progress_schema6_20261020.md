@@ -35,3 +35,11 @@ GPU 只保留 10698；10688 完成 9 局后归还借卡，末局待续跑，1074
 ## 继续执行
 
 先完成冻结源码的 CPU preflight、同 launcher 真实物理启动，再逐步跑 D：100 个 move 位置成对、抽屉开/关各 20 对、同固定 32 个 N1、新 D2 40×恢复0/1/2。按完成回合续跑，启动错误非零退出；保持 node02/1 GPU/nice500，CPU 和 Codex2 合计不超 80 核/600 GB。既有确认状态永久排除训练，D2 全部评测专用。
+
+## 源码与提交后登记
+
+源码提交 `5fad1176`，仅启动器输入检查/独立启动入口补丁 `907a572f`，已普通推送 `user-fork/harness-v5`。远端运行快照 `/public/home/sunyihan/rpent_libero_eval/source_schema6_907a572f_20261020`，归档 SHA256 `0ff4f706a7609438f4f106b46f0d01fec174c7e949efdaedd49b1b3e50857d41`。schema SHA256 `ef7531ab9b810ee8c56679c7c685941321ee3c2046080b359a1478fc4c722794`；contract SHA256 `c4b559d00d0333532ce76467df32e0ce12097ca6ef21c53834d30476f3315d8c`。
+
+机器可读登记保存在远端 `results/bounded_skills/schema6_20261020/preparation_907a572f/`：move100.json（100 对）、drawer40.json（开关各 20 对）、N1_fixed32.json（同 32 状态）、D2_recovery0/1/2.json（每档 40 局）。上一份 preparation/ 与 5fad 快照保留；CPU preflight 均通过。
+
+共享 COORDINATION 已写 schema6 字段变化、SHA 与证据范围，回执 `reports/schema6_interface_delivery.json`。独立物理启动 `10755`（node02/1GPU/8CPU/96GB/nice500）等 `10699` 后开始；当前只是排队，没有物理成绩。正式 100 对尚未放行。此后新增启动壳不改变固定的技能/规划源码。
