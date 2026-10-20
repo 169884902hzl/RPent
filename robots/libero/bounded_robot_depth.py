@@ -98,7 +98,29 @@ def current_robot_triangles(pose_screen,robot,gripper_xml):
 
 
 @njit(cache=True)
-def _raster_surfaces(triangles,k,height,width,observed_depth,margin_m):
+def _face_distance_squared(point,face):
+    a,b,c=face
+    u,v,w=b-a,c-a,point-a
+    uu,uv,vv=np.dot(u,u),np.dot(u,v),np.dot(v,v)
+    determinant=uu*vv-uv*uv
+    if determinant>1e-24:
+        wu,wv=np.dot(w,u),np.dot(w,v)
+        s=(wu*vv-wv*uv)/determinant
+        t=(wv*uu-wu*uv)/determinant
+        if s>=0 and t>=0 and s+t<=1:
+            offset=w-s*u-t*v
+            return np.dot(offset,offset)
+    distance=np.inf
+    for left,right in ((a,b),(b,c),(c,a)):
+        edge=right-left
+        fraction=min(1.,max(0.,np.dot(point-left,edge)/max(np.dot(edge,edge),1e-30)))
+        offset=point-left-fraction*edge
+        distance=min(distance,np.dot(offset,offset))
+    return distance
+
+
+@njit(cache=True)
+def _raster_surfaces(triangles,k,height,width,observed_camera,margin_m):
     depth = np.full((height,width),np.inf)
     matches = np.zeros((height,width),np.bool_)
     for face in triangles:
@@ -106,11 +128,14 @@ def _raster_surfaces(triangles,k,height,width,observed_depth,margin_m):
             continue
         x = k[0,0]*face[:,0]/face[:,2]+k[0,2]
         y = k[1,1]*face[:,1]/face[:,2]+k[1,2]
-        left,right = max(0,int(np.ceil(np.min(x)))),min(width-1,int(np.floor(np.max(x))))
-        top,bottom = max(0,int(np.ceil(np.min(y)))),min(height-1,int(np.floor(np.max(y))))
+        left,right = max(0,int(np.ceil(np.min(x)-1.))),min(width-1,int(np.floor(np.max(x)+1.)))
+        top,bottom = max(0,int(np.ceil(np.min(y)-1.))),min(height-1,int(np.floor(np.max(y)+1.)))
         area = (y[1]-y[2])*(x[0]-x[2])+(x[2]-x[1])*(y[0]-y[2])
         if abs(area)<1e-12:
             continue
+        da=(abs(y[1]-y[2])+abs(x[2]-x[1]))/abs(area)
+        db=(abs(y[2]-y[0])+abs(x[0]-x[2]))/abs(area)
+        dc=(abs(y[0]-y[1])+abs(x[1]-x[0]))/abs(area)
         for row in range(top,bottom+1):
             for col in range(left,right+1):
                 a = ((y[1]-y[2])*(col-x[2])+(x[2]-x[1])*(row-y[2]))/area
@@ -119,14 +144,22 @@ def _raster_surfaces(triangles,k,height,width,observed_depth,margin_m):
                 if min(a,b,c)>=-1e-10:
                     value = 1./(a/face[0,2]+b/face[1,2]+c/face[2,2])
                     depth[row,col] = min(depth[row,col],value)
-                    if abs(observed_depth[row,col]-value)<=margin_m:
+                    if abs(observed_camera[row,col,2]-value)<=margin_m:
                         matches[row,col] = True
+                elif (a+da>=0 and b+db>=0 and c+dc>=0
+                        and not matches[row,col] and np.isfinite(observed_camera[row,col]).all()
+                        and _face_distance_squared(observed_camera[row,col],face)<=margin_m**2):
+                    # Cover the one-pixel fringe between integer RGB-D
+                    # backprojection and GPU pixel-centre edge coverage.
+                    # A fringe pixel must still lie within the unchanged
+                    # 3-D band of an ACTUAL face, never a filled depth gap.
+                    matches[row,col] = True
     return depth,matches
 
 
 def raster_depth(triangles,k,height,width):
     """Perspective-correct nearest depth on the caller's pixel grid."""
-    return _raster_surfaces(triangles,k,height,width,np.full((height,width),np.nan),0.)[0]
+    return _raster_surfaces(triangles,k,height,width,np.full((height,width,3),np.nan),0.)[0]
 
 
 def rendered_robot_mask(world,metadata,triangles,*,margin_m=.012):
@@ -146,10 +179,11 @@ def rendered_robot_mask(world,metadata,triangles,*,margin_m=.012):
     # At a projected mesh edge, CPU and GPU coverage can select different
     # front fragments. Match a measured sample to any finite robot face at
     # that pixel; do not fill the depth interval between separate surfaces.
-    _,mask = _raster_surfaces(camera,k,height,width,measured[...,2],margin_m)
+    _,mask = _raster_surfaces(camera,k,height,width,measured,margin_m)
     mask &= np.isfinite(measured).all(axis=-1)
     return mask,{'source':'static_visual_mesh_triangles_public_joint_sensors_and_camera_calibration',
         'method':'rendered_robot_depth','surface_layers':'all_finite_visual_faces',
+        'edge_guard_px':1.,'edge_guard_requires_actual_3d_surface_agreement':True,
         'pixel_sample_offset_xy':[.5,.5],
         'margin_m':margin_m,'triangles':len(triangles),
         'removed_points':int(mask.sum()),'private_pose_used':False}

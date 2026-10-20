@@ -366,6 +366,10 @@ Calibration and the 12 mm depth agreement band remain unchanged.
 Depth agreement checks every actual mesh surface at that pixel, because
 CPU/GPU edge coverage can select different front fragments. It never fills
 the gap between separate surfaces or expands the depth agreement band.
+One-pixel edge coverage accounts for integer RGB-D backprojection versus
+GPU pixel-centre sampling. A fringe sample must also be within the same
+12 mm **3-D distance to an actual triangle**; pixel dilation alone cannot
+remove an obstacle. No triangle interior or inter-layer gap is filled.
 Array encoding runs in an owned background thread; reads, snapshots and
 shutdown wait for pending writes and surface errors. Production diagnostics
 omit redundant public point-cloud dumps while retaining both camera views,

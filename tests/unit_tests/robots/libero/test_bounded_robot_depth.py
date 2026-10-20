@@ -65,3 +65,16 @@ def test_depth_agreement_uses_actual_surface_layers_without_filling_the_gap():
         world=np.stack([(col-2)*z/2,(row-2)*z/2,np.full((5,5),z)],axis=-1)
         mask,_=rendered_robot_mask(world,metadata,faces)
         assert bool(mask[2,2]) is expected
+
+
+def test_pixel_edge_coverage_requires_nearby_actual_face():
+    face=np.array([[[-.1,-.1,1.],[.1,-.1,1.],[0.,.1,1.]]])
+    k=np.array([[2.,0.,2.],[0.,2.,2.],[0.,0.,1.]])
+    metadata=dict(extrinsic_cam2world=np.eye(4).tolist(),intrinsic_K=k.tolist(),width=5,height=5)
+    world=np.full((5,5,3),np.nan)
+    world[2,2]=[0.,0.,1.]
+    assert rendered_robot_mask(world,metadata,face)[0][2,2]
+    world[2,2]=[0.,0.,.97]
+    assert not rendered_robot_mask(world,metadata,face)[0][2,2]
+    world[2,2]=[0.,0.,1.04]
+    assert not rendered_robot_mask(world,metadata,face)[0][2,2]

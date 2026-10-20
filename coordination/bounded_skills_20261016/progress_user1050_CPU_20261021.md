@@ -28,3 +28,6 @@ M7全量10897仍按bcc22412独立CPU口径继续，0错误（最近1787请求/36
 
 接续更新：M7 bcc22412 全24片闭合，2966请求/5488位置/4923有效/4439源status可用（train3248/init798/task393），比旧2414增2025；所有VLA仍unknown，0错误。聚合cpu/M7_bcc22412_closed_r1，逐位置SHA8fb0b7694e205e3590e9ce3aa4abcd90247494f96dc0fe9912b028a5bf4bdcf0。当前oracle恢复修复改变rule acceptable，新版需独立重采。r14全技能677通过；另增arm-sweep拒绝恢复用例后r15运行中。stage真实CPU预检对完整336源10条校准加载成功，对漏root helper源明确FileNotFoundError退出1；未替代首物理。
 最新r15面板679 passed，315.75秒（/tmp/user1050_CPU_panel_r15.log），含碰撞/手臂碰撞/数值IK三种拒绝转向回归。零步101条去重为38个物理状态+动作，不能冒充101独立状态；≥50物理分叉仍未完成。固定10首chunk逐像素同帧复核CPU10941已提交（不占GPU）；运行时新快照将保留12mm有限表面匹配，不填层间隙。
+
+031287f09498abe79bdb3e23f311a1c3a1e2d75b已推送，完整Git archive SHA54c8863d4d4824909badb26099f2c07fe72a8521be29b6a1a0380c3a90ae6911，两端一致。真实CPU导入10校准及manifest预检通过；物理面板10944已有首物理128tick，非技能/整局通过。新oracle M7为CPU24片10945，B2目录仍OFF。
+C4同帧进一步定位：下降阻挡点离公开静态机器人实际三角面0.0015–0.55mm、投影偏差0.1–0.6像素；多层深度只能解决drawer_open那一点。box及drawer_close样点距当前机器人18–26cm，不当自身滤除。CPU10969已给79样点的精确表面距离（cpu/fixed10_blocker_surface_distance_r1.json）。据此新增一像素边缘覆盖，须同时满足到真实三角面3D距离≤原12mm，不扩4mm未来碰撞间隙，不填层间空隙。5个针对性CPU用例通过；全技能r16运行中。CPU10941曾因/tmp只在登录机可见而退出2，改共享路径10942完成0:0；失败日志保留。
