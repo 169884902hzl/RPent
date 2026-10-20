@@ -73,6 +73,26 @@ def test_scene_voxel_cannot_merge_target_pixel_and_adjacent_obstacle():
     assert np.allclose(obstacles, [[.002, 0., 1.]])
 
 
+def test_surface_opposition_cache_keeps_new_pose_routes_and_all_results(monkeypatch):
+    import robots.libero.v5_geometric_grasp as geometric
+    from robots.libero.v5_grasp_route import sample_unified_grasps
+    grid=np.linspace(-.02,.02,17)
+    cloud=np.array([[x,y,z+.9] for x in grid for y in grid for z in grid
+        if abs(x)==.02 or abs(y)==.02 or abs(z)==.02])
+    hand={'boxes':[{'name':name,'lower':[-.003,-.01,.01],'upper':[.003,.01,.03]}
+                   for name in ('left_pad','right_pad')]}
+    arguments=(cloud,np.empty((0,3)),'box',[0.,0.,1.2],[0.,0.,0.,1.],hand,None,1.2)
+    cache={}
+    sample_unified_grasps(*arguments,candidate_only=True,opposition_cache=cache)
+    assert cache
+    moved=(*arguments[:3],[.1,.05,1.1],*arguments[4:])
+    expected=sample_unified_grasps(*moved,candidate_only=True)
+    monkeypatch.setattr(geometric,'_opposition',lambda *_: (_ for _ in ()).throw(AssertionError('surface recomputed')))
+    actual=sample_unified_grasps(*moved,candidate_only=True,opposition_cache=cache)
+    assert actual==expected
+    assert any('route' in row for row in actual[1])
+
+
 def test_side_route_can_rotate_at_lower_pregrasp_without_assuming_high_wrist_reachable():
     start_quat = [1.,0.,0.,0.]
     side_quat = Rotation.from_euler('y', np.pi/2).as_quat().tolist()

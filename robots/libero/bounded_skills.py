@@ -34,6 +34,8 @@ from robots.libero.bounded_self_filter import (
     gripper_visual_boxes,
     remove_current_gripper,
     remove_visual_robot,
+    remove_depth_edge_fliers,
+    ROBOT_FILTER_MARGIN_M,
 )
 from robots.libero.v5_geometric_grasp import panda_geometry, side_site_rotation
 from robots.libero.v5_grasp_geometry import (
@@ -73,9 +75,13 @@ class MeasuredSkillAdapter:
 
     # Trusted historical annotation snapshots omit development-only flags.
     lazy_planning_v1 = False
+    vla_options_v2 = False  # USER M7: activate after C2 train/inference/service schema sync.
     registration_query_workers = 1
     schema6_v1 = False  # Absent on trusted historical annotation snapshots.
     guarded_move_v1 = True
+    rendered_self_filter_v1 = False  # Historical CPU captures keep their filter.
+    verify_instance_crops_v1 = False  # Legacy captures have no crop scores.
+    RUNTIME_REVISION = 'libero-bounded-execution/USER1050-1'
 
     def __init__(self, executor, gripper_xml: str | Path, *, allow_vla: bool = True,
                  history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
@@ -87,7 +93,8 @@ class MeasuredSkillAdapter:
                  vla_budget: VLABudget = VLABudget(),
                  targeted_vla_measurement_v1: bool = False,
                  lazy_planning_v1: bool = False, registration_query_workers: int = 1,
-                 schema6_v1: bool = True, no_progress_limit: int | None = 31):
+                 schema6_v1: bool = True, no_progress_limit: int | None = 11,
+                 vla_options_v2: bool = False):
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
         if type(request_consequence_workers) is not int or request_consequence_workers < 1:
@@ -107,11 +114,17 @@ class MeasuredSkillAdapter:
         self.lazy_planning_v1 = lazy_planning_v1
         self.registration_query_workers = registration_query_workers
         self.schema6_v1 = schema6_v1
+        self.vla_options_v2 = vla_options_v2
+        self.runtime_revision = self.RUNTIME_REVISION
+        self.rendered_self_filter_v1 = schema6_v1
+        self.verify_instance_crops_v1 = schema6_v1
         if schema6_v1:
             self.lazy_planning_v1 = True
-            self.vla_budget = replace(vla_budget, controls_per_check=None)
+            self.vla_budget = replace(vla_budget, controls_per_check=None,
+                no_progress_blocks=max(5,vla_budget.no_progress_blocks) if vla_budget.no_progress_blocks is not None else None)
         from rpent.skill_package.progress import PublicProgress
         self.public_progress = PublicProgress(no_progress_limit)
+        self._progress_normals = {}
         if schema6_v1 and not getattr(self.scene, 'rgbd_mask_tracking_v1', False):
             from robots.libero.bounded_mask_tracking import TrackedSegmentation
             self.scene.rgbd_mask_tracking_v1 = True
@@ -120,6 +133,7 @@ class MeasuredSkillAdapter:
         self._incremental_touched = set()
         self._incremental_route = []
         self._failed_move_anchors = set()
+        self._vla_failed_options = set()
         self._move_approach_by_anchor = {}
         self._grasp_geometry_cache = {}
         self.memory = FailureMemory()
@@ -142,7 +156,9 @@ class MeasuredSkillAdapter:
         self.gripper_command = -1. if self.preparation["gripper_opening_m"] >= .075 else 1.
         self.previous_scene = {}
         self._last_scene_changes = set()
+        self._stationary_observe_modes = set()
         self._base_geometry = None
+        self._capture_obstacles = None
         self._base_geometry_cache = None
         self._screen_cache = {}
         self._instance_cache = {}
@@ -226,6 +242,7 @@ class MeasuredSkillAdapter:
         elif requested_names:
             self.scene.refresh(requested_names)
         self._base_geometry = None
+        self._capture_obstacles = None
         self._screen_cache.clear()
         self._instance_cache.clear()
         self._self_filtered_capture = None
@@ -263,6 +280,8 @@ class MeasuredSkillAdapter:
                         changed.add(key)
                         self._contact_retry_references.pop(key, None)
         self._last_scene_changes = changed
+        if changed:
+            self._stationary_observe_modes = set()
         self.memory.tick(scene_changed=bool(changed), changed_anchors=changed)
         # Temporary occlusion does not erase the last measured pose. Merely
         # detecting the same stationary entity again is not scene progress.
@@ -286,6 +305,11 @@ class MeasuredSkillAdapter:
 
     def _anchor_evidence(self, entity):
         evidence = [self._evidence(entity)]
+        crop = getattr(self,'_binding_crop_evidence',{}).get(entity.id)
+        if crop and crop.get('status')=='scored':
+            evidence.append({'measurement_id':f'instance-crop:{crop["capture_step"]}:{entity.id}',
+                'capture_step':crop['capture_step'],'source':'derived_public','cameras':['main'],
+                'operation':'instance_crop_contrast:'+json.dumps(crop['scores'],separators=(',',':'))})
         contact = self.plans.get(entity.id, {}).get('contact_evidence')
         if contact and contact['measurement_id'] != evidence[0]['measurement_id']:
             evidence.append(contact)
@@ -325,45 +349,73 @@ class MeasuredSkillAdapter:
             return self._screen_cache[cache_key]
         hand_geometry = gripper_at_measured_fingers(self.geometry, robot['finger_positions_m'])
         if self._base_geometry is None:
-            clouds = [np.asarray(self.ex.toolkit._state.load(name+"_world_high.npz")).reshape(-1, 3)
-                      for name in ("agentview", "wrist")]
+            ik = PublicPoseScreen(self.robot_xml, robot["joint_positions_rad"], robot["eef_xyz_m"],
+                                 robot["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
+            ik.use_batched_kernel = self.schema6_v1
+            clouds = []
+            triangles = None
+            if self.rendered_self_filter_v1:
+                from robots.libero.bounded_robot_depth import current_robot_triangles, rendered_robot_mask
+                triangles = current_robot_triangles(ik,robot,self.xml)
+            for camera in ('agentview','wrist'):
+                world,_ = remove_depth_edge_fliers(np.asarray(
+                    self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                if triangles is not None:
+                    mask,evidence = rendered_robot_mask(world,
+                        self.ex.toolkit._state.load(camera+'_metadata.json'),triangles)
+                    world[mask] = np.nan
+                    self.public_geometry_evidence['self_filter_'+camera] = evidence
+                clouds.append(world.reshape(-1,3))
             # Preserve pixel identities until both selected and held masks
             # have been subtracted. A voxel centroid is not an instance pixel.
             cloud = np.concatenate(clouds)
-            ik = PublicPoseScreen(self.robot_xml, robot["joint_positions_rad"], robot["eef_xyz_m"],
-                                 robot["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
+            cloud = cloud[np.isfinite(cloud).all(axis=1)
+                & (np.abs(cloud).sum(axis=1) > 1e-6)]
             key = ((hashlib.sha256(cloud.tobytes()).hexdigest(), json.dumps(robot,sort_keys=True))
                 if self.lazy_planning_v1 else None)
             cached = getattr(self,'_base_geometry_cache',None) if self.lazy_planning_v1 else None
             if cached is not None and cached[0] == key:
                 scene = cached[1]
+            elif triangles is not None:
+                scene = cloud
+                if self.lazy_planning_v1:
+                    self._base_geometry_cache = key,scene
             else:
                 scene, _ = remove_current_gripper(cloud, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
-                                               hand_geometry, robot["gripper_opening_m"])
-                scene, _ = ik.remove_measured_arm(scene)
-                scene, _ = remove_visual_robot(scene, ik)
+                                               hand_geometry, robot["gripper_opening_m"],
+                                               surface_margin_m=ROBOT_FILTER_MARGIN_M)
+                scene, _ = ik.remove_measured_arm(scene, tolerance_m=ROBOT_FILTER_MARGIN_M)
+                scene, _ = remove_visual_robot(scene, ik, surface_margin_m=ROBOT_FILTER_MARGIN_M)
                 if self.lazy_planning_v1:
                     self._base_geometry_cache = key,scene
             self._base_geometry = scene, ik
         scene, ik = self._base_geometry
+        from scipy.spatial import cKDTree
+        structure = getattr(self, '_capture_obstacles', None)
+        if structure is None or structure['points'] is not scene:
+            from robots.libero.bounded_obstacles import build_obstacles
+            structure = self._capture_obstacles = build_obstacles(scene)
+        def measured_members(points, label):
+            points = np.asarray(points)
+            if not len(points):
+                return points
+            distance, indices = structure['tree'].query(points,
+                distance_upper_bound=np.nextafter(1e-6, np.inf))
+            keep = distance <= 1e-6
+            structure['instance_labels'][label] = indices[keep]
+            return points[keep]
         target = self._contact_pixels(anchor_id)
         if len(target):
-            # A SAM mask can include the arm after approach. Apply the same
-            # public self filter to that mask as to the scene; otherwise our
-            # own palm pixels become a fictitious target/palm collision.
-            target, _ = remove_current_gripper(target, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
-                hand_geometry, robot["gripper_opening_m"])
-            target, _ = ik.remove_measured_arm(target)
-            target, _ = remove_visual_robot(target, ik)
+            # Instance masks reference these same depth pixels. A single
+            # per-capture robot-filtered structure replaces repeated mesh
+            # filtering of each anchor; labels preserve pixel membership.
+            target = measured_members(target, anchor_id)
         payload = []
         held_cloud = np.empty((0, 3))
         if self.held:
             held_cloud = self._instance_pixels(self.held)
             if len(held_cloud):
-                held_cloud, _ = remove_current_gripper(held_cloud, robot['eef_xyz_m'], robot['eef_quat_xyzw'],
-                    hand_geometry, robot['gripper_opening_m'])
-                held_cloud, _ = ik.remove_measured_arm(held_cloud)
-                held_cloud, _ = remove_visual_robot(held_cloud, ik)
+                held_cloud = measured_members(held_cloud, self.held)
                 if len(target):
                     from scipy.spatial import cKDTree
                     # Independent SAM queries can share depth pixels. A
@@ -376,7 +428,9 @@ class MeasuredSkillAdapter:
         # downsamples the remaining obstacles. Otherwise the first subtraction
         # voxelises held pixels and the second can no longer recognise them.
         measured_scene, measured_target = scene, target
-        _, scene = separate_target_points(np.concatenate([target, held_cloud]), scene)
+        from robots.libero.bounded_obstacles import subtract_instances
+        scene = subtract_instances(structure, target, held_cloud,
+            held_margin_m=ROBOT_FILTER_MARGIN_M)
         from robots.libero.v5_geometric_grasp import _voxel
         # A verified held instance moves with the hand. Checking its current
         # pixels again as a stationary contact target makes a braking palm
@@ -388,7 +442,9 @@ class MeasuredSkillAdapter:
         screen = PublicRouteScreen(scene, hand_geometry, ik, opening=robot["gripper_opening_m"],
             contact_points=target, contact_allowed=contact, payload_local=payload,
             initial_pose={'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']},
-            measured_scene_points=measured_scene, measured_target_points=measured_target)
+            measured_scene_points=measured_scene, measured_target_points=measured_target,
+            use_kernel=self.schema6_v1, check_arm=self.schema6_v1,
+            capture_points=structure['points'],capture_key=structure['key'])
         if self.record_public_geometry:
             name = f'bounded_screen_{anchor_id}_{int(contact)}'
             self._record_public_geometry(name+'_scene', screen.points)
@@ -425,14 +481,17 @@ class MeasuredSkillAdapter:
         pose = {'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']}
         contact = PublicRouteScreen(scene, screen.geometry, screen.ik,
             opening=robot['gripper_opening_m'], contact_points=target,
-            contact_allowed=True, initial_pose=pose)
-        # Test the COMPLETE measured instance against the current hand first.
-        # Conditional motion cannot exempt an existing finger-shell overlap.
+            contact_allowed=True, initial_pose=pose,use_kernel=screen.use_kernel,
+            check_arm=screen.check_arm,capture_points=screen.capture_points,capture_key=screen.capture_key)
+        # Retain the complete instance and current overlap baseline. Only new
+        # incursion may reject the outgoing route; held still needs co-motion.
         if not contact._geometry_at(pose)['passed']:
             return contact
         payload = (target-robot['eef_xyz_m'])@Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
         result = PublicRouteScreen(scene, screen.geometry, screen.ik,
-            opening=robot['gripper_opening_m'], payload_local=payload, initial_pose=pose)
+            opening=robot['gripper_opening_m'], payload_local=payload, initial_pose=pose,
+            use_kernel=screen.use_kernel,check_arm=screen.check_arm,
+            capture_points=screen.capture_points,capture_key=screen.capture_key)
         self._screen_cache[cache_key] = result
         return result
 
@@ -455,7 +514,9 @@ class MeasuredSkillAdapter:
             return cache['frames'][key].copy()
         flat = world.reshape(-1, 3)
         ids = np.flatnonzero(np.isfinite(flat).all(axis=1))
-        current = cKDTree(scene).query(flat[ids],
+        structure = getattr(self, '_capture_obstacles', None)
+        tree = structure['tree'] if structure is not None and structure['points'] is scene else cKDTree(scene)
+        current = tree.query(flat[ids],
             distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
         filtered = np.full_like(flat, np.nan)
         filtered[ids[current]] = flat[ids[current]]
@@ -1189,10 +1250,22 @@ class MeasuredSkillAdapter:
         # and obstacle checks, not substituted for the fused fit surface.
         # Existing measured contacts may all have blocked approach/closure
         # routes. Only then expand the same sampler to lower side contours.
+        opposition_cache = None
+        if self.lazy_planning_v1:
+            # Contact normals/opposition depend on measured surface bytes,
+            # not the hand's current pose. Routes and wrist ranking below
+            # still use this request's measured robot and scene.
+            surface_cache = getattr(self,'_grasp_surface_fit_cache',{})
+            key = entity.name,hashlib.sha256(np.asarray(points).tobytes()).digest()
+            if entity.id not in surface_cache or surface_cache[entity.id]['key']!=key:
+                surface_cache[entity.id] = {'key':key,'fits':{}}
+            opposition_cache = surface_cache[entity.id]['fits']
+            self._grasp_surface_fit_cache = surface_cache
         for include_band_seeds in (False, True):
             _, records = sample_unified_grasps(points, np.empty((0, 3)), entity.name,
                 robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.geometry, None,
-                robot['eef_xyz_m'][2], candidate_only=True, include_band_seeds=include_band_seeds)
+                robot['eef_xyz_m'][2], candidate_only=True, include_band_seeds=include_band_seeds,
+                opposition_cache=opposition_cache)
             proposals = [row for row in records if not row['rejected']]
             if not proposals:
                 self.candidate_diagnostics.append({'stage': 'grasp_route_search', 'anchor_id': entity.id,
@@ -1919,7 +1992,7 @@ class MeasuredSkillAdapter:
             consequence.update(expected_steps=15, expected_gripper_opening_m=(.08 if skill == "release" or parameters.get("mode") == "open" else 0.))
         history = None
         if skill == "call_vla":
-            estimate = self.history.estimate(parameters["mode"], entity.name)
+            estimate = self.history.estimate(parameters["mode"], entity.name if entity else 'public_instruction')
             history = {field: estimate[field] for field in ("success_rate", "n", "expected_steps")}
             history["source_manifest_sha256"] = self.history.manifest_sha256
             consequence["expected_steps"] = estimate["expected_steps"] or 240
@@ -2126,6 +2199,9 @@ class MeasuredSkillAdapter:
         Frozen CPU annotation states use this same builder without calling
         perception, task truth, or a simulator to reconstruct observations.
         """
+        if self.schema6_v1 and self.verify_instance_crops_v1:
+            from robots.libero.bounded_instance_crops import score_instance_crops
+            self._binding_crop_evidence = score_instance_crops(self.scene,self.ex.toolkit._state,self.ex.instruction)
         candidates = []
         options = []
         def add(skill, **parameters):
@@ -2135,6 +2211,18 @@ class MeasuredSkillAdapter:
             candidate = self._candidate(skill, parameters, screen_options=screen_options)
             if candidate is not None:
                 candidates.append(candidate)
+        def add_vla(**parameters):
+            if not self.schema6_v1 or not self.vla_options_v2:
+                add('call_vla',**parameters)
+                return
+            from robots.libero.bounded_vla_options import STYLES
+            key = tuple(parameters.get(k) for k in ('anchor_id','target_id','mode','clause_id'))
+            for preparation in ('in_place','initial_pose'):
+                add('call_vla',**parameters,preparation=preparation)
+                if key in getattr(self,'_vla_failed_options',set()):
+                    for style in (('full_task',) if parameters['mode']=='task' else STYLES[1:]):
+                        add('call_vla',**{**parameters,'preparation':preparation,
+                            'prompt_style':style,'seed_variant':1})
         for entity in entities:
             if entity.id == self.held:
                 add('align', anchor_id=entity.id)
@@ -2159,16 +2247,21 @@ class MeasuredSkillAdapter:
             if self.allow_vla:
                 if entity.visible:
                     for mode in fixture_actions(entity.name) or ("pick",):
-                        add("call_vla", anchor_id=entity.id, mode=mode)
+                        add_vla(anchor_id=entity.id, mode=mode)
                 if self.held and entity.id != self.held:
                     for mode in ("on", "in"):
-                        add("call_vla", anchor_id=self.held, target_id=entity.id, mode=mode)
+                        add_vla(anchor_id=self.held, target_id=entity.id, mode=mode)
                 if (self.held is None and entity.visible and not entity.part_of
                         and not fixture_actions(entity.name) and not entity.name.startswith('area ')
                         and entity.name != 'table' and not entity.name.endswith('surface')):
                     for target in entities:
                         if target.visible and target.name.startswith('area '):
-                            add('call_vla', anchor_id=entity.id, target_id=target.id, mode='push')
+                            add_vla(anchor_id=entity.id, target_id=target.id, mode='push')
+        if self.allow_vla and self.schema6_v1 and self.vla_options_v2:
+            from robots.libero.bounded_vla_options import instruction_clauses
+            for index,_ in enumerate(instruction_clauses(self.ex.instruction)):
+                add_vla(mode='instruction',clause_id=index)
+            add_vla(mode='task',prompt_style='full_task')
         add("set_gripper", mode="open")
         add("set_gripper", mode="close")
         if measured_robot(self.p)["gripper_opening_m"] < .075 or self.held:
@@ -2184,7 +2277,8 @@ class MeasuredSkillAdapter:
                 for direction in (-1, 1):
                     add('guarded_move', anchor_id=self.active, axis=axis, direction=direction)
         for mode in ("refresh", "wrist_scan"):
-            add("observe", mode=mode)
+            if mode not in getattr(self, '_stationary_observe_modes', set()):
+                add("observe", mode=mode)
         add("finish")
         add("ask_help")
         if self.request_consequence_workers > 1:
@@ -2215,11 +2309,25 @@ class MeasuredSkillAdapter:
             "anchors": self.anchors(), "robot": self.robot(), "candidates": compact,
             "receipts": self.receipts[-3:], "relations": public_relations, "max_actions": k,
             "execution_prefix": None}
+        if self.schema6_v1 and self.allow_vla and self.vla_options_v2:
+            from robots.libero.bounded_vla_options import instruction_clauses
+            request['instruction_clauses'] = instruction_clauses(self.ex.instruction)
         if self.schema6_v1:
             from rpent.skill_package.progress import VERSION as PROGRESS_VERSION
-            self.public_progress.update(request)
+            from robots.libero.bounded_goal_progress import instruction_goal_metrics
+            normals = getattr(self, '_progress_normals', {})
+            measured_normals = {key: plan['handle_measurement']['pose']['approach_normal_xyz']
+                for key, plan in self.plans.items() if plan.get('handle_measurement', {}).get('pose', {}).get('approach_normal_xyz')}
+            for key, normal in measured_normals.items():
+                normals.setdefault(key, normal)
+            self._progress_normals = normals
+            goal_metrics = instruction_goal_metrics(request, view_axes=self.scene.view_axes, normals=normals)
+            self._progress_goal_directions = {m['anchor_id']:m['direction']
+                for m in goal_metrics if 'direction' in m}
+            self.public_progress.update(request, goal_metrics)
             request['progress'] = {'version': PROGRESS_VERSION,
-                'stagnant_decisions': self.public_progress.stagnant, 'limit': self.public_progress.limit}
+                'stagnant_decisions': self.public_progress.stagnant, 'limit': self.public_progress.limit,
+                'loop_detected': self.public_progress.loop_detected}
             if self.public_progress.exhausted:
                 request['candidates'] = [c for c in request['candidates'] if c['skill'] in {'finish', 'ask_help'}]
         validate(request)
@@ -2420,9 +2528,22 @@ class MeasuredSkillAdapter:
         try:
             outcomes = self._execute_chunk(request, decision, choices, async_decisions=async_decisions)
             if self.schema6_v1:
+                self.public_progress.record_actions(choices, outcomes,
+                    goal_directions=getattr(self,'_progress_goal_directions',{}))
                 by_id = {c['id']: c for c in choices}
                 for receipt in outcomes:
                     params = by_id[receipt['candidate_id']]['parameters']
+                    blocked_observes = getattr(self, '_stationary_observe_modes', set())
+                    if receipt['skill'] == 'observe':
+                        if receipt['stop_reason'] == 'no_measured_scene_change':
+                            blocked_observes.add(params['mode'])
+                    elif receipt.get('steps_used', 0) > 0:
+                        blocked_observes.clear()
+                    self._stationary_observe_modes = blocked_observes
+                    if receipt['skill']=='call_vla' and receipt['outcome']!='success':
+                        self._vla_failed_options = getattr(self,'_vla_failed_options',set())
+                        self._vla_failed_options.add(tuple(params.get(k) for k in
+                            ('anchor_id','target_id','mode','clause_id')))
                     key = params.get('anchor_id') or params.get('target_id') or receipt['before']['held_anchor_id']
                     if key is None and receipt['skill'] == 'set_gripper' and params.get('mode') == 'close':
                         # A missed grasp has no held object. Its measured
@@ -2766,8 +2887,10 @@ class MeasuredSkillAdapter:
             detail = run_guarded(self, parameters)
             reason = detail['guarded_stop_reason']
             outcome = ('success' if reason == 'measured_target_region' else
-                'no_effect' if reason == 'no_measured_progress' else 'interrupted')
-            phase = None if outcome == 'success' else 'contact_failure'
+                'no_effect' if reason == 'no_measured_progress' else
+                'failure' if reason in {'guarded_route_blocked', 'contact_not_settled'} else 'interrupted')
+            phase = (None if outcome == 'success' else 'planning_unreachable'
+                if reason == 'guarded_route_blocked' else 'contact_failure')
         elif skill in {"release", "set_gripper"}:
             opening = skill == "release" or parameters.get("mode") == "open"
             if opening:
@@ -3115,6 +3238,9 @@ class MeasuredSkillAdapter:
         return sorted(names)
 
     def _vla_prompt(self, parameters):
+        from robots.libero.bounded_vla_options import render_variant
+        if parameters['mode'] in {'task','instruction'}:
+            return render_variant(self.ex.instruction,parameters,None),'public instruction'
         # Use exactly the visible/cached identity universe advertised by
         # anchors(). Unadvertised raw tracking remnants are not measurements
         # and cannot veto a prompt for the sole public instance.
@@ -3130,30 +3256,38 @@ class MeasuredSkillAdapter:
         target_name = pi05_instance_description(target, entities, self.scene.view_axes) if target else None
         mode = parameters['mode']
         prompt = f'pick up the {name}' if mode == 'pick' else subtask_phrase(name, mode, target_name)
-        return prompt, name
+        return render_variant(self.ex.instruction,parameters,prompt,(name,target_name or '')), name
 
     def call_vla(self, parameters):
         if not self.allow_vla:
             raise ValueError("call_vla disabled for the oracle upper-bound diagnostic")
         prompt, name = self._vla_prompt(parameters)
-        source = self.scene.entities[parameters["anchor_id"]]
+        source = self.scene.entities.get(parameters.get("anchor_id"))
         mode = parameters["mode"]
         target = self.scene.entities.get(parameters.get("target_id"))
         targeted = getattr(self, 'targeted_vla_measurement_v1', False)
-        monitor_names = self._vla_measurement_names(source, target) if targeted else None
+        monitor_names = self._vla_measurement_names(source, target) if (targeted or self.schema6_v1) else None
         initial = source
         initial_step = self.p.env.execution_budget()["used_sim_steps"]
-        initial_endpoint = self.scene.measure_fixture_endpoint(source, name) if mode in {"open", "close"} else None
+        fixture_parent = self.scene.entities.get(source.part_of,source) if source is not None else None
+        initial_endpoint = self.scene.measure_fixture_endpoint(fixture_parent, name) if mode in {"open", "close"} else None
         initial_stove = self.ex.measure_stove(source) if mode in {"turn_on", "turn_off"} else None
         checks = []
         self.vla_trace = []
         hold_frames = []
         hold_verified = False
         vla_payload_reference = None
-        stationary_reference = None
+        stationary_reference = (self._capture_payload_reference(source.id)
+            if self.schema6_v1 and source is not None and mode=='pick' else None)
         previous_push_measurement = None
         def observe(*, full=False):
             nonlocal hold_verified, vla_payload_reference, stationary_reference, previous_push_measurement
+            if source is None:
+                self.refresh()
+                result = {'progress_vector_m':[*self.robot()['eef_xyz_m'],self.robot()['gripper_opening_m']],
+                    'completed':bool(self.p.env.terminated),'outside_region':False,'evidence':[]}
+                checks.append(result)
+                return result
             if self.schema6_v1:
                 self._incremental_touched.update(k for k in (source.id, parameters.get('target_id')) if k)
             if monitor_names is not None and not full:
@@ -3166,7 +3300,7 @@ class MeasuredSkillAdapter:
             completed = False
             hold_evidence = None
             if mode == "pick" and current and current.visible:
-                if not checks:
+                if not checks and stationary_reference is None:
                     # Static obstacles must precede contact. Capturing them
                     # only after the 3cm lift makes omitted moving rim pixels
                     # part of the supposedly stationary scene. Keep the
@@ -3215,7 +3349,7 @@ class MeasuredSkillAdapter:
                 vla_payload_reference = None
             elif mode in {"open", "close"}:
                 from robots.libero.v5_verification import measured_fixture_endpoint
-                state = self.scene.measure_fixture_endpoint(source, name)
+                state = self.scene.measure_fixture_endpoint(fixture_parent, name)
                 verdict, _ = measured_fixture_endpoint(initial_endpoint, state, mode,
                     drawer="drawer" in source.name or "cabinet" in source.name, signed_drawer_v6=True)
                 completed = verdict is True
@@ -3249,38 +3383,91 @@ class MeasuredSkillAdapter:
             checks.append(result)
             return result
         def prepare():
+            if parameters.get('preparation','in_place' if self.vla_options_v2 else 'initial_pose')=='in_place':
+                return {'success':True,'steps_used':0,'mode':'in_place'}
             route = [{"xyz_m": self.preparation["eef_xyz_m"], "quat_xyzw": self.preparation["eef_quat_xyzw"]}]
             result = SmoothMotion(self.p, self._cloud_and_ik(), self.config).run(route, gripper=self.gripper_command)
             return {**result, "success": result.get("endpoint_error_m", 1.) <= self.config.endpoint_tolerance_m}
+        prediction_index = 0
         def predict(text):
+            nonlocal prediction_index
             observation = dict(self.p._last_obs)
             observation["task_descriptions"] = text
             observation.setdefault("extra_view_images", None)
-            return self.p.model.predict(observation, options={"mode": "eval"})
+            options = {'mode':'eval'}
+            if parameters.get('seed_variant'):
+                offset = 7919*int(parameters['seed_variant'])
+                options.update(sampling_seed=offset+prediction_index,sampling_seed_offset=offset)
+            prediction_index += 1
+            return self.p.model.predict(observation, options=options)
         def step(action):
             self.gripper_command = float(action[6])
             before, after = public_control(self.p, action)
             self.vla_trace.append({"before": before, "after": after, "action": np.asarray(action).tolist()})
+            if self.schema6_v1:
+                self._incremental_route.append(after['eef_xyz_m'])
             return before, after
         def handoff(trace):
             if not trace:
                 return {"steps_used": 0, "completed": True}
             return settle_osc_hold(self.p, self.gripper_command, self.config)
-        result = run_fallback(prompt=prompt, prepare=prepare, predict=predict, step=step, observe=observe,
+        def monitor():
+            robot = self.robot()
+            distance = float(np.linalg.norm(np.asarray(robot['eef_xyz_m'])-source.xyz)) if source is not None else 0.
+            proposed_pick = False
+            if mode=='pick' and self.vla_trace:
+                lowest = min(row['after']['eef_xyz_m'][2] for row in self.vla_trace)
+                aperture,_ = self.holding_aperture(robot['gripper_opening_m'])
+                proposed_pick = robot['eef_xyz_m'][2]-lowest>=.03 and aperture and distance<=.2
+            return {'progress_vector_m':[*robot['eef_xyz_m'],robot['gripper_opening_m']],
+                'completed':bool(self.p.env.terminated or proposed_pick),
+                'outside_region':source is not None and distance>.6,
+                'completion_scope':'proprioceptive_proposal_requires_final_rgbd_verification',
+                'evidence':[{'source':'robot_proprioception','eef_xyz_m':robot['eef_xyz_m'],
+                    'opening_m':robot['gripper_opening_m']}]}
+        result = run_fallback(prompt=prompt, prepare=prepare, predict=predict, step=step,
+            observe=monitor if self.schema6_v1 else observe,
             native_done=lambda: self.p.env.terminated, native_stopped=lambda: self.p.env.terminated or self.p.env.truncated,
             handoff=handoff, budget=self.vla_budget)
         if not (self.p.env.terminated or self.p.env.truncated):
             result["post_handoff_measurement"] = observe(full=True)
+            first_measurement = result['post_handoff_measurement']
+            if (self.schema6_v1 and mode=='pick' and not first_measurement['completed']
+                    and first_measurement.get('public_hold') is not None
+                    and first_measurement['public_hold']['rise_m']>=.03
+                    and self.holding_aperture(self.robot()['gripper_opening_m'])[0]):
+                # A fixed bounded observation motion supplies the existing
+                # co-motion criterion; a static jaw width never establishes
+                # held identity. No force or success threshold is changed.
+                robot = self.robot()
+                prior_grasp = self.grasp_reference
+                prior_active = self.active
+                self.grasp_reference = (self.scene.entities[source.id],robot)
+                self.active = source.id
+                screen = self._lift_payload_screen(source.id,self._cloud_and_ik(source.id,contact=True),vla_payload_reference)
+                target_xyz = np.asarray(robot['eef_xyz_m'])+[0.,0.,.01]
+                probe = SmoothMotion(self.p,screen,self.config).run([{'xyz_m':target_xyz.tolist()}],
+                    gripper=self.gripper_command)
+                self.grasp_reference = prior_grasp
+                self.active = prior_active
+                result['verification_motion'] = probe
+                result['post_handoff_measurement'] = observe(full=False)
+            elif self.schema6_v1 and mode in {'close','push'} and first_measurement['completed']:
+                result['verification_settle'] = settle_osc_hold(self.p,self.gripper_command,self.config)
+                result['post_handoff_measurement'] = observe(full=False)
             final_completed = result["post_handoff_measurement"]["completed"]
             if result['outcome'] == 'success' and not final_completed:
                 result.update(outcome='failure', stop_reason='completion_lost_during_handoff')
             if final_completed:
+                result.update(outcome='success',stop_reason='measured_success_after_handoff')
                 if mode == "pick":
                     self.held = self.active = source.id
                 elif mode in {"on", "in"}:
                     self.held = self.active = None
             elif mode == 'pick':
                 self.held = None
+            if self.schema6_v1:
+                result['steps_used'] = self.p.env.execution_budget()['used_sim_steps']-initial_step
         result["template"] = {"version": PI05_PROMPT_VERSION, "mode": mode, "prompt": prompt}
         result['payload_reference_capture_step'] = (vla_payload_reference['capture_step']
             if vla_payload_reference is not None else None)
@@ -3289,7 +3476,8 @@ class MeasuredSkillAdapter:
         result['payload_stationary_capture_step'] = (vla_payload_reference.get('stationary_capture_step')
             if vla_payload_reference is not None else None)
         result['public_measurement_scope'] = {
-            'version': 'selected-subtask-entities/1' if targeted else 'full-scene/1',
+            'version': ('proprioception_blocks_then_final_rgbd/1' if self.schema6_v1
+                else 'selected-subtask-entities/1' if targeted else 'full-scene/1'),
             'categories': monitor_names, 'post_handoff_full_scene': True,
             'control_check_interval': self.vla_budget.controls_per_check}
         return result

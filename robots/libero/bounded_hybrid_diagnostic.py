@@ -113,6 +113,8 @@ def capture_runtime(adapter, policy) -> dict:
 
     store = getattr(adapter.scene.toolkit, '_state', None)
     if isinstance(store, EnvState):
+        if hasattr(store,'flush'):
+            store.flush()
         if store._step_open:
             raise RuntimeError('cannot checkpoint an unfinished observation capture')
         captured['artifact_state'] = vars(store)
@@ -127,11 +129,36 @@ def restore_runtime(adapter, policy, state: dict) -> None:
     again; atomic artifact writes cannot overwrite a sibling's files.
     """
     saved = copy.deepcopy(state)
+    current_revision = getattr(adapter,'runtime_revision',None)
+    changed_source = current_revision is not None and saved['adapter'].get('runtime_revision') != current_revision
+    defaults = {name:copy.deepcopy(getattr(adapter,name)) for name in (
+        'runtime_revision','schema6_v1','lazy_planning_v1','rendered_self_filter_v1','vla_budget',
+        'verify_instance_crops_v1','vla_options_v2')
+        if hasattr(adapter,name)}
+    tracking_enabled = getattr(adapter.scene,'rgbd_mask_tracking_v1',False)
     for owner, name, keep in ((adapter, "adapter", {"ex", "p", "scene"}),
                               (adapter.scene, "scene", {"toolkit", "rpc"})):
         resources = {key: value for key, value in vars(owner).items() if key in keep}
         vars(owner).clear()
         vars(owner).update(resources | saved[name])
+    if changed_source:
+        vars(adapter).update(defaults)
+        adapter._base_geometry = adapter._capture_obstacles = None
+        adapter._base_geometry_cache = None
+        adapter._screen_cache,adapter._instance_cache = {},{}
+        adapter._grasp_geometry_cache = {}
+        adapter._grasp_surface_fit_cache = {}
+        adapter._self_filtered_capture = None
+        from rpent.skill_package.progress import PublicProgress,DEFAULT_STAGNANT_DECISIONS
+        adapter.public_progress = PublicProgress(DEFAULT_STAGNANT_DECISIONS)
+        adapter._progress_normals,adapter._progress_goal_directions = {},{}
+        adapter._vla_failed_options,adapter._stationary_observe_modes = set(),set()
+        adapter._restoration_migration = {'source_revision':saved['adapter'].get('runtime_revision'),
+            'target_revision':current_revision,'public_geometry_caches_invalidated':True,
+            'progress_reinitialized_from_next_public_request':True}
+        adapter.scene.rgbd_mask_tracking_v1 = tracking_enabled
+        if tracking_enabled and not hasattr(adapter.scene,'_mask_tracking_history'):
+            adapter.scene._mask_tracking_history = {'entries':{},'frames':{}}
     for key in list(vars(adapter.p)):
         if key.startswith("_bounded_"):
             delattr(adapter.p, key)
@@ -142,6 +169,8 @@ def restore_runtime(adapter, policy, state: dict) -> None:
     policy.private_trace = saved["private_trace"]
     if 'artifact_state' in saved:
         store = adapter.scene.toolkit._state
+        if hasattr(store,'flush'):
+            store.flush()
         artifact_state = saved['artifact_state']
         source = artifact_state['_output_dir']
         branch_root = Path(adapter.scene.toolkit._state_output_dir) / 'restored_captures'

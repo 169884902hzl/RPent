@@ -346,6 +346,8 @@
             "turn_on",
             "turn_off",
             "push",
+            "task",
+            "instruction",
             null
           ]
         },
@@ -354,6 +356,32 @@
             -1,
             1
           ]
+        },
+        "preparation": {
+          "enum": [
+            "in_place",
+            "initial_pose"
+          ]
+        },
+        "prompt_style": {
+          "enum": [
+            "template",
+            "original_clause",
+            "full_task",
+            "a1_description"
+          ]
+        },
+        "seed_variant": {
+          "enum": [
+            0,
+            1,
+            2
+          ]
+        },
+        "clause_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
         }
       },
       "required": [],
@@ -711,21 +739,45 @@
             "properties": {
               "parameters": {
                 "required": [
-                  "anchor_id",
                   "mode"
                 ],
                 "properties": {
-                  "anchor_id": {
-                    "not": {
-                      "type": "null"
-                    }
-                  },
                   "mode": {
                     "not": {
                       "type": "null"
                     }
                   }
-                }
+                },
+                "anyOf": [
+                  {
+                    "required": [
+                      "anchor_id"
+                    ],
+                    "properties": {
+                      "anchor_id": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "mode": {
+                        "const": "task"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "clause_id"
+                    ],
+                    "properties": {
+                      "mode": {
+                        "const": "instruction"
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -831,7 +883,9 @@
                       "close",
                       "turn_on",
                       "turn_off",
-                      "push"
+                      "push",
+                      "task",
+                      "instruction"
                     ]
                   }
                 }
@@ -1226,11 +1280,17 @@
           "type": "object",
           "properties": {
             "version": {
-              "const": "public-measured-progress/1"
+              "enum": [
+                "public-measured-progress/1",
+                "public-measured-progress/2-goal-directed"
+              ]
             },
             "stagnant_decisions": {
               "type": "integer",
               "minimum": 0
+            },
+            "loop_detected": {
+              "type": "boolean"
             },
             "limit": {
               "type": [
@@ -1246,6 +1306,14 @@
             "limit"
           ],
           "additionalProperties": false
+        },
+        "instruction_clauses": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       },
       "required": [

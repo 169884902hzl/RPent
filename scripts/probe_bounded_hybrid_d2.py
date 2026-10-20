@@ -95,7 +95,8 @@ def build_plan(output, calibration_ref):
 
 
 @contextmanager
-def runtime(case, endpoints, output, *, domain='d2', artifact_compression_level=None):
+def runtime(case, endpoints, output, *, domain='d2', artifact_compression_level=1,
+            record_public_geometry=False):
     """Use the same public adapter/perception as the original feasibility arm."""
     import robosuite
 
@@ -127,6 +128,8 @@ def runtime(case, endpoints, output, *, domain='d2', artifact_compression_level=
             "sam3_client": Sam3Client(endpoints["sam3"])}, dashboard_events=NullDashboardEventSink(),
             memory=MemoryManager(output / "empty_memory", memory_access="read_only"), state_output_dir=output,
             artifact_compression_level=artifact_compression_level)
+        from robots.libero.bounded_artifacts import AsyncEnvState
+        AsyncEnvState.enable(toolkit._state)
         scene = MeasuredScene(toolkit, endpoints["sam3"], case["episode"]["seed"],
             dual_view_fusion_v1=True, furniture_parts_v1=True, instruction_queries_v1=True,
             wrist_recall_v1=True, occluded_measurement_cache_v2=True, **BOUNDED_SCENE_FLAGS)
@@ -142,12 +145,14 @@ def runtime(case, endpoints, output, *, domain='d2', artifact_compression_level=
         scene.refresh(public_vocabulary(instruction))
         xml = Path(robosuite.__file__).parent / "models/assets/grippers/panda_gripper.xml"
         adapter = MeasuredSkillAdapter(executor, xml, allow_vla=True,
-            record_public_geometry=True, precontact_instance_surface_v1=True)
+            record_public_geometry=record_public_geometry, precontact_instance_surface_v1=True)
         policy = BoundedOracle(LocalRPC(facade), adapter)
         yield facade, adapter, policy, timings
     finally:
         timings.close()
         if toolkit is not None:
+            if hasattr(toolkit._state,'close'):
+                toolkit._state.close()
             toolkit.close()
         facade.close()
 
@@ -175,12 +180,17 @@ def restore_checkpoint(facade, adapter, policy, saved):
     actual = facade.snapshot()
     legacy_observation = ('actuator_state' in saved['physics']
         and 'observation_state' not in saved['physics']['actuator_state'])
-    comparable = ({**actual, 'actuator_state': {k:v for k,v in actual['actuator_state'].items()
-        if k != 'observation_state'}} if legacy_observation else actual)
+    complete_integration = saved['physics'].get('actuator_state',{}).get('integration') is not None
+    if not complete_integration:
+        from robots.libero.v5_branch_state import captured_projection
+        comparable = captured_projection(actual,saved['physics'])
+    else:
+        comparable = actual
     if snapshot_digest(comparable) != snapshot_digest(saved["physics"]):
         raise RuntimeError("fork did not restore full physics/controller/RNG/counter identity")
     adapter._branch_observation_restore = ('legacy_missing_phase_canonical_fresh'
         if legacy_observation else 'captured_sensor_phase_and_buffers_v1')
+    adapter._branch_complete_integration_available = complete_integration
 
 
 def bind_subtask(policy, adapter, spec):
@@ -227,7 +237,9 @@ class SeededPolicy:
         self.input_ledger = input_ledger
 
     def predict(self, obs, options=None):
-        options = {**(options or {}), "sampling_seed": self.seed + self.calls}
+        options = dict(options or {})
+        offset = options.pop('sampling_seed_offset',0)
+        options['sampling_seed'] = self.seed+self.calls+offset
         encoded = self.client.encode_obs(obs)
         fields = {}
         for key, value in encoded.items():
@@ -301,7 +313,25 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                     source, target = bind_subtask(policy, adapter, spec)
                 decisions += 1
                 recovering_binding = source is None or (spec["target_symbol"] and target is None)
-                if recovering_binding:
+                unbound = None
+                if recovering_binding and method=='call_vla':
+                    from robots.libero.bounded_vla_options import clause_for_mode
+                    legal = set(legal_after(request,[]))
+                    phrase = clause_for_mode(adapter.ex.instruction,spec['mode'])
+                    clauses = request.get('instruction_clauses',[])
+                    clause_id = clauses.index(phrase) if phrase in clauses else None
+                    unbound = next((c for c in request['candidates'] if c['id'] in legal
+                        and c['skill']=='call_vla' and c['parameters'].get('preparation')=='in_place'
+                        and (c['parameters']['mode']=='instruction' and c['parameters'].get('clause_id')==clause_id)),None)
+                    if unbound is None:
+                        unbound = next((c for c in request['candidates'] if c['id'] in legal
+                            and c['skill']=='call_vla' and c['parameters']['mode']=='task'
+                            and c['parameters'].get('preparation')=='in_place'),None)
+                if unbound is not None:
+                    decision = {key:request[key] for key in ('schema_version','observation_id','revision')}
+                    decision.update(kind='decision',candidate_ids=[unbound['id']])
+                    result.setdefault('unbound_instruction_calls',[]).append(unbound['parameters'])
+                elif recovering_binding:
                     if recovery_budget is not None:
                         if recovery_used >= recovery_budget:
                             reason = 'binding_recovery_budget'
@@ -326,7 +356,8 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                     if target is not None:
                         parameters["target_id"] = target.id
                     option = next((c for c in request["candidates"] if c["skill"] == "call_vla"
-                                   and c["parameters"] == parameters), None)
+                        and all(c['parameters'].get(k)==v for k,v in parameters.items())
+                        and c['id'] in set(legal_after(request,[]))), None)
                     if option is None:
                         reason = "matching_call_vla_candidate_unavailable"
                         break
@@ -346,9 +377,9 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                         stop = next((j + 1 for j, cid in enumerate(ids) if by_id[cid]["skill"] == "lift"), len(ids))
                         decision["candidate_ids"] = ids[:stop]
                 detail_start = len(adapter.details)
-                if not recovering_binding and result["selected_candidate_id"] is None:
+                if (not recovering_binding or unbound is not None) and result["selected_candidate_id"] is None:
                     result["selected_candidate_id"] = decision["candidate_ids"][0]
-                    result["source_public_id"] = source.id
+                    result["source_public_id"] = source.id if source else None
                     result["target_public_id"] = target.id if target else None
                 with timings.measure("execution.other"):
                     receipts = adapter.execute(request, decision)
@@ -405,6 +436,53 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
     return result, endpoint
 
 
+def native_instruction_replay(facade, adapter, policy, timings, output, seed):
+    """Physically replay uncovered instructions with the public full-task option.
+
+    This does not supply missing private subtask rules or impute a sampled
+    bound. Its outcome uses only the benchmark's native completion signal.
+    """
+    output.mkdir()
+    original_model = adapter.p.model
+    seeded = SeededPolicy(original_model, seed, input_ledger=output/'vla_inputs.jsonl')
+    adapter.p.model = seeded
+    started = time.perf_counter()
+    steps, choices, reason = 0, [], 'call_budget'
+    budget = 1+getattr(adapter,'hybrid_recovery_budget',0)
+    try:
+        for _ in range(budget):
+            if adapter.p.env.terminated or adapter.p.env.truncated:
+                reason = 'native_stop'
+                break
+            with timings.measure('planning.request'):
+                request = adapter.request(k=4)
+            legal = set(legal_after(request,[]))
+            option = next((c for c in request['candidates'] if c['id'] in legal
+                and c['skill']=='call_vla' and c['parameters'].get('mode')=='task'
+                and c['parameters'].get('preparation')=='in_place'),None)
+            if option is None:
+                reason = 'full_instruction_option_unavailable'
+                break
+            decision = {k:request[k] for k in ('schema_version','observation_id','revision')}
+            decision.update(kind='decision',candidate_ids=[option['id']])
+            receipts = adapter.execute(request,decision)
+            choices.append({'request':request,'decision':decision,'receipts':receipts})
+            steps += sum(r['steps_used'] for r in receipts)
+        native = facade.goal_status()
+        result = {'method':'call_vla_full_instruction','success':bool(native['done']),
+            'truth_source':'unchanged_native_task_completion','status':'physical_result',
+            'sim_steps':steps,'decisions':len(choices),'reason':reason,
+            'wall_s':time.perf_counter()-started,'vla_inference_calls':seeded.calls,
+            'scope':'native-only replay; private subtask rules remain uncovered',
+            'choices':choices,'training':False}
+        write(output/'summary.json',result)
+        if not steps and not native['done']:
+            raise RuntimeError('native-only replay made no physical request: '+reason)
+        return result
+    finally:
+        adapter.p.model = original_model
+
+
 def evaluate_case(case, endpoints, output, plan, *, startup=False):
     output.mkdir()
     with runtime(case, endpoints, output) as (facade, adapter, policy, timings):
@@ -418,8 +496,15 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
         write(output / "private_subtask_plan.json", {"version": SPLIT_VERSION,
             "subtasks": subtasks, "unsupported": unsupported, "initial": initial_ref})
         if unsupported:
+            # Missing private rules remain unknown in the sampled bound;
+            # they must not silently turn into an unexecuted failed episode.
+            replay = native_instruction_replay(facade,adapter,policy,timings,
+                output/'full_replay_native',plan['trial_seed_base']+1000000000)
             result = {"case": case, "status": "oracle_rule_uncovered", "success": None,
-                      "unsupported": unsupported, "training": False}
+                      "unsupported": unsupported, "training": False,
+                      'actual_full_replay_success':replay['success'],'full_replay':[replay],
+                      'conditional_rate_product':None,'independent_replay_wall_s':replay['wall_s'],
+                      'source_commit':plan['source_commit']}
             write(output / "summary.json", result)
             return result
         chosen, rows, envelope_rate, decisions_used = [], [], 1., 0
@@ -484,7 +569,13 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
         restore_checkpoint(facade, adapter, policy, initial)
         replay_started = time.perf_counter()
         replay, replay_decisions = [], 0
-        if all(row["selection"]["method"] is not None for row in rows):
+        if any(row['selection']['method'] is None for row in rows):
+            # No method can be inferred from unknown labels. Exercise the
+            # explicit public whole-instruction candidate and keep the
+            # sampled bound unknown, separate from the native replay result.
+            replay.append(native_instruction_replay(facade,adapter,policy,timings,
+                output/'full_replay_native',plan['trial_seed_base']+1000000000))
+        else:
             for index, choice in enumerate(chosen):
                 with timings.measure("planning.request"):
                     request = adapter.request(k=4)

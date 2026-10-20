@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import random
 import types
 
@@ -14,6 +15,66 @@ DATA_FIELDS = ("ctrl", "qacc_warmstart", "mocap_pos", "mocap_quat", "userdata", 
 CONTROLLER_FIELDS = ("goal_pos", "goal_ori", "goal_qpos", "goal_qvel", "_goal_update_mode", "ori_ref", "relative_ori")
 OBSERVABLE_FIELDS = ("_sampling_timestep", "_enabled", "_active", "_time_since_last_sample",
                      "_current_delay", "_current_observed_value", "_sampled")
+
+
+def _plain_state(value):
+    if value is None or isinstance(value, (str, bool, int, float, np.generic)):
+        return True
+    if isinstance(value, np.ndarray):
+        return value.dtype.kind != 'O'
+    if isinstance(value, (list, tuple)):
+        return all(_plain_state(item) for item in value)
+    if isinstance(value, dict):
+        return all(isinstance(key, (str, int)) and _plain_state(item) for key, item in value.items())
+    return False
+
+
+def captured_projection(current, reference):
+    """Compare every saved field of a legacy snapshot without inventing extras.
+
+    New complete snapshots must still use full identity, without projection.
+    The caller records that older snapshots omitted integration/phase state.
+    """
+    if isinstance(reference,dict):
+        missing=set(reference)-set(current)
+        if missing:
+            raise ValueError('captured snapshot fields missing: '+str(sorted(missing)))
+        return {key:captured_projection(current[key],value) for key,value in reference.items()}
+    if isinstance(reference,(list,tuple)):
+        if len(current)!=len(reference):
+            raise ValueError('captured snapshot sequence shape changed')
+        return [captured_projection(a,b) for a,b in zip(current,reference)]
+    return current
+
+
+def integration_state(env):
+    """Capture MuJoCo's full integration vector, including solver warm start."""
+    # Unit-test sensor doubles have no native simulator. Real robosuite uses
+    # these native handles, as does the existing private grasp truth worker.
+    if not hasattr(env.sim.model, '_model'):
+        return None
+    import mujoco
+    model, data = env.sim.model._model, env.sim.data._data
+    spec = int(mujoco.mjtState.mjSTATE_INTEGRATION)
+    values = np.empty(mujoco.mj_stateSize(model, spec), dtype=np.float64)
+    mujoco.mj_getState(model, data, values, spec)
+    return {'spec': spec, 'values': values,
+            'sha256': hashlib.sha256(values.astype('<f8').tobytes()).hexdigest()}
+
+
+def restore_integration(env, saved):
+    """Restore every integration field; legacy snapshots remain identifiable."""
+    if saved is None:
+        return
+    import mujoco
+    model, data = env.sim.model._model, env.sim.data._data
+    spec = int(mujoco.mjtState.mjSTATE_INTEGRATION)
+    values = np.asarray(saved['values'], dtype=np.float64)
+    if saved['spec'] != spec or values.shape != (mujoco.mj_stateSize(model, spec),):
+        raise ValueError('branch integration state specification changed')
+    if hashlib.sha256(values.astype('<f8').tobytes()).hexdigest() != saved['sha256']:
+        raise ValueError('branch integration state checksum mismatch')
+    mujoco.mj_setState(model, data, values, spec)
 
 
 def observation_state(env):
@@ -108,11 +169,15 @@ def actuator_state(wrapper):
         for name, controller in controllers.items():
             if any(getattr(controller, field, None) is not None for field in ("interpolator_pos", "interpolator_ori", "interpolator")):
                 raise ValueError("branch snapshot has no interpolator contract for this controller")
-            controls[name] = {field: copy.deepcopy(getattr(controller, field))
-                              for field in CONTROLLER_FIELDS if hasattr(controller, field)}
+            # Include numeric controller caches/phase flags as well as goals.
+            # Simulator references and callables are resources, not state.
+            fields = {field: value for field, value in vars(controller).items() if _plain_state(value)}
+            fields.update({field:getattr(controller,field) for field in CONTROLLER_FIELDS if hasattr(controller,field)})
+            controls[name] = copy.deepcopy(fields)
         robots.append({"grippers": {name: {"type": type(gripper).__name__, "current_action": copy.deepcopy(gripper.current_action)}
                                      for name, gripper in grippers.items()}, "controllers": controls})
-    return {"model": {field: np.array(getattr(env.sim.model, field), copy=True)
+    return {"integration": integration_state(env),
+            "model": {field: np.array(getattr(env.sim.model, field), copy=True)
                       for field in ("body_pos", "body_quat")},
             "data": {field: np.array(getattr(env.sim.data, field), copy=True)
                      for field in DATA_FIELDS if hasattr(env.sim.data, field)}, "robots": robots,
@@ -149,12 +214,16 @@ def restore_actuators(wrapper, saved):
                 setattr(controller, field, copy.deepcopy(value))
     for field, value in saved["data"].items():
         getattr(env.sim.data, field)[:] = value
+    restore_integration(env, saved.get('integration'))
     env.sim.forward()
     observations = restore_observation_state(wrapper, saved.get('observation_state'))
     # forward() rebuilds solver input. Keep its captured integration warmstart
     # after observations, as required by the strict complete-state identity.
     if 'qacc_warmstart' in saved['data']:
         env.sim.data.qacc_warmstart[:] = saved['data']['qacc_warmstart']
+    # mj_forward/observation code can change integration warm-start fields.
+    # Retain its derived transforms, then restore the exact captured vector.
+    restore_integration(env, saved.get('integration'))
     if "rng" in saved:
         restore_rng(env, saved["rng"])
     return observations

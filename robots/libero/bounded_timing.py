@@ -60,16 +60,33 @@ class EpisodeTimings:
         main = defaultdict(float)
         by_root = defaultdict(lambda: defaultdict(float))
         calls = defaultdict(int)
+        phases = defaultdict(float)
+        oracle_successor = 0.
         for event in self.events[start_event:]:
             totals[event['category']] += event['exclusive_s']
             calls[event['category']+':'+str(event['hook'])] += 1
             if event['thread'] == self.main_thread:
                 main[event['category']] += event['exclusive_s']
                 by_root[event['root_category']][event['category']] += event['exclusive_s']
+                category,root = event['category'],event['root_category']
+                if category.startswith('perception.'):
+                    phase = 'perception'
+                elif root.startswith('decision.'):
+                    phase = 'decision'
+                    if category.startswith('planning.'):
+                        oracle_successor += event['exclusive_s']
+                elif category.startswith('planning.') or category.startswith('private_labels.'):
+                    phase = 'candidates'
+                else:
+                    phase = 'execution'
+                phases[phase] += event['exclusive_s']
         return dict(version='bounded-wall-time/1', wall_s=wall_s,
             main_thread_exclusive_s=dict(main), all_threads_exclusive_s=dict(totals),
             main_thread_unattributed_s=max(0., wall_s-sum(main.values())), calls=dict(calls),
             main_thread_exclusive_by_root_s={key: dict(value) for key, value in by_root.items()},
+            four_stage_s={key:phases[key] for key in ('perception','candidates','decision','execution')},
+            oracle_successor_legal_s=oracle_successor,
+            decision_without_successor_legal_s=max(0.,phases['decision']-oracle_successor),
             worker_times_overlap_main_thread=True,
             scope='client wall time including transport; initial simulator construction excluded')
 

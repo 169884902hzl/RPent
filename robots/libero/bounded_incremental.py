@@ -25,37 +25,58 @@ def roi_change(previous_rgb, current_rgb, previous_world, current_world, lower, 
 
 def refresh_names(adapter, requested):
     state = adapter.ex.toolkit._state
-    if not hasattr(state, 'load_bytes'):
-        return requested
-    frames = {camera: (np.asarray(state.load(camera+'_high.png')),
-        np.asarray(state.load(camera+'_world_high.npz'))) for camera in ('agentview', 'wrist')}
-    previous = getattr(adapter, '_incremental_previous', None)
-    adapter._incremental_previous = frames
+    from collections import defaultdict
+    from robots.libero.bounded_motion import measured_robot
+    from robots.libero.v5_state import relations
+
+    reasons = defaultdict(set)
+    for key in getattr(adapter, '_incremental_touched', set()):
+        reasons[key].add('contacted_in_previous_chunk')
+    if adapter.held:
+        reasons[adapter.held].add('held_object')
+    robot = measured_robot(adapter.p)
+    previous = getattr(adapter, '_incremental_previous_robot', None)
+    adapter._incremental_previous_robot = robot
     if previous is None:
+        adapter.incremental_evidence = [{'anchor_id':e.id,'changed':True,
+            'reasons':['first_physical_capture'], 'capture_step':state.latest_step}
+            for e in adapter.scene.entities.values() if e.name in requested]
         return requested
-    dirty = set(getattr(adapter, '_incremental_touched', set()))
-    dirty.update(key for key in (adapter.held, adapter.active) if key)
     routes = getattr(adapter, '_incremental_route', [])
-    records = []
+    points = np.asarray([previous['eef_xyz_m'], *routes, robot['eef_xyz_m']])
+    # A sphere enclosing the static hand at any orientation, plus the
+    # measured held extent. Segment AABBs conservatively enclose every
+    # swept pose, including the connecting motion between 20 Hz samples.
+    radius = max((np.linalg.norm(np.maximum(np.abs(b['lower']),np.abs(b['upper'])))
+        for b in adapter.geometry['boxes']), default=.1)+.04
+    payload = (adapter.payload_reference or {}).get('target')
+    if payload is not None and len(payload):
+        capture_robot = adapter.payload_reference['robot']
+        radius = max(radius,float(np.linalg.norm(np.asarray(payload)-capture_robot['eef_xyz_m'],axis=1).max()))
+    lows = np.minimum(points[:-1],points[1:])-radius
+    highs = np.maximum(points[:-1],points[1:])+radius
+    if not np.any(np.linalg.norm(points[1:]-points[:-1],axis=1) > 1e-6):
+        lows, highs = np.empty((0,3)), np.empty((0,3))
     for entity in adapter.scene.entities.values():
-        if entity.name not in requested:
-            continue
-        views = {camera: roi_change(previous[camera][0], frames[camera][0],
-            previous[camera][1], frames[camera][1], entity.lower, entity.upper)
-            for camera in frames}
-        evidence = {'changed': any(e['changed'] for e in views.values()), 'views': views}
-        if routes:
-            points = np.asarray(routes)
-            near = ((points >= np.asarray(entity.lower)-.10)
-                & (points <= np.asarray(entity.upper)+.10)).all(axis=1).any()
-            if near:
-                dirty.add(entity.id)
-        records.append({'anchor_id': entity.id, 'capture_step': state.latest_step,
-            'measurement_capture_step': entity.source_step, **evidence})
-        if evidence['changed']:
-            dirty.add(entity.id)
+        if ((highs >= entity.lower).all(axis=1)&(lows <= entity.upper).all(axis=1)).any():
+            reasons[entity.id].add('hand_or_payload_swept_volume')
+    supports = [row.split()[1:] for row in relations(list(adapter.scene.entities.values()),
+        right_axis=adapter.scene.view_axes[0],front_axis=adapter.scene.view_axes[1])]
+    for _ in adapter.scene.entities:
+        changed = False
+        for source, relation, target in supports:
+            if (relation in {'on','in'} and target in set(getattr(adapter, '_last_scene_changes', set()))
+                    and 'support_moved_or_contacted' not in reasons[source]):
+                reasons[source].add('support_moved_or_contacted')
+                changed = True
+        if not changed:
+            break
+    records = [{'anchor_id':e.id,'capture_step':state.latest_step,
+        'measurement_capture_step':e.source_step,'changed':bool(reasons[e.id]),
+        'reasons':sorted(reasons[e.id]),'swept_radius_m':radius}
+        for e in adapter.scene.entities.values() if e.name in requested]
     adapter.incremental_evidence = records
     adapter._incremental_touched = set()
     adapter._incremental_route = []
     known = {e.name for e in adapter.scene.entities.values()}
-    return sorted(set(requested)-known | {e.name for e in adapter.scene.entities.values() if e.id in dirty})
+    return sorted(set(requested)-known | {e.name for e in adapter.scene.entities.values() if reasons[e.id]})

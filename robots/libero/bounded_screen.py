@@ -6,6 +6,7 @@ from __future__ import annotations
 import copy
 import json
 import math
+import itertools
 
 import numpy as np
 from scipy.spatial import cKDTree
@@ -14,26 +15,43 @@ from scipy.spatial.transform import Rotation, Slerp
 from robots.libero.v5_geometric_grasp import collision_counts
 
 
+def _point_array(points):
+    value=np.asarray(points,float)
+    return value if value.ndim==2 and value.shape[1]==3 else value.reshape(-1,3)
+
+
 class PublicRouteScreen:
     """Reuses r9 hulls and IK; certifies only observed hand/payload geometry."""
 
+    # Historical public checkpoints contain static screens without these
+    # fields. They retain their original static contact interpretation.
+    contact_axis = None
+    contact_origin = None
+    use_kernel = False
+    capture_points = None
+    capture_key = None
+    check_arm = False
+
     def __init__(self, points, geometry, pose_screen, *, opening: float = .08,
                  contact_points=None, contact_allowed: bool = False, payload_local=None,
-                 initial_pose=None, measured_scene_points=None, measured_target_points=None):
-        self.points = np.asarray(points, float).reshape(-1, 3)
+                 initial_pose=None, measured_scene_points=None, measured_target_points=None,
+                 use_kernel=False,capture_points=None,capture_key=None,check_arm=False):
+        self.points = _point_array(points)
+        self.use_kernel,self.capture_points,self.capture_key = use_kernel,capture_points,capture_key
+        self.check_arm = check_arm
         self.tree = cKDTree(self.points) if len(self.points) else None
         self.geometry, self.ik, self.opening = geometry, pose_screen, opening
-        self.target = np.asarray(contact_points if contact_points is not None else [], float).reshape(-1, 3)
+        self.target = _point_array(contact_points if contact_points is not None else [])
         # Prefix prediction must subtract instance pixels BEFORE choosing
         # scene/target voxel representatives. Independently sampled clouds
         # need not retain the same depth pixel from a shared voxel.
         self.measured_scene_points = (self.points if measured_scene_points is None
-                                     else np.asarray(measured_scene_points).reshape(-1, 3))
+                                     else _point_array(measured_scene_points))
         self.measured_target_points = (self.target if measured_target_points is None
-                                      else np.asarray(measured_target_points).reshape(-1, 3))
+                                      else _point_array(measured_target_points))
         self.target_tree = cKDTree(self.target) if len(self.target) else None
         self.contact_allowed = contact_allowed
-        self.payload = np.asarray(payload_local if payload_local is not None else [], float).reshape(-1, 3)
+        self.payload = _point_array(payload_local if payload_local is not None else [])
         self._pose_geometry_cache = {}
         self._endpoint_ik_cache = {}
         self.radius = max(np.linalg.norm(np.maximum(np.abs(b["lower"]), np.abs(b["upper"])))
@@ -55,10 +73,9 @@ class PublicRouteScreen:
                 local = (points[ids]-xyz)@site
                 for box in geometry['boxes']:
                     distance = self._halfspace_distance(local, box)
-                    # An actual mesh intersection is never grandfathered.
-                    # Target and other scene pixels obey the same positive
-                    # clearance escape rule, without entering a hull further.
-                    keep = (distance > 0.) & (distance <= .004)
+                    # The measured current pose is already occupied. Only a
+                    # new/deeper incursion may reject its outgoing route.
+                    keep = distance <= .004
                     if keep.any():
                         margin[box['name']] = dict(zip(ids[keep], distance[keep]))
             if len(self.payload):
@@ -66,12 +83,13 @@ class PublicRouteScreen:
                     self.tree, .004, output_type='coo_matrix')
                 self.initial_payload_margin = {
                     (int(i), int(j)): float(d)
-                    for i, j, d in zip(distances.row, distances.col, distances.data) if d > 1e-9}
+                    for i, j, d in zip(distances.row, distances.col, distances.data)}
 
     def with_measured_robot(self, robot):
         """Retain captured collision evidence, reseed only the route's IK."""
         current = copy.copy(self)
         current.ik = self.ik.with_measured_robot(robot)
+        current.__dict__.pop('_geometry_kernel',None)
         return current
 
     def continuing_route(self):
@@ -88,7 +106,26 @@ class PublicRouteScreen:
         current = copy.copy(self)
         current.ik = copy.copy(self.ik)
         current.ik.joints = self.ik.last_solution.copy()
+        current.__dict__.pop('_geometry_kernel',None)
         return current
+
+    def translating_contact(self, axis, measured_xyz):
+        """Predict only the selected contact surface's axial displacement.
+
+        Guarded translation measures actual progress after each increment;
+        this conditional screen never establishes a successful articulation.
+        Other measured scene points stay stationary obstacles.
+        """
+        current = copy.copy(self)
+        current.contact_axis = axis
+        current.contact_origin = np.asarray(measured_xyz, float).copy()
+        current._pose_geometry_cache = {}
+        current._endpoint_ik_cache = {}
+        current.__dict__.pop('_geometry_kernel',None)
+        return current
+
+    def __getstate__(self):
+        return {key:value for key,value in vars(self).items() if key not in {'_geometry_kernel'}}
 
     def endpoint_screen(self, route, robot):
         """Screen an endpoint without certifying its connecting trajectory.
@@ -151,9 +188,9 @@ class PublicRouteScreen:
             bound = np.array([baseline.get(index, .004) for index in ids[near]])
             # Sub-nanometre round-off only; this is not a tracking tolerance.
             blocked = (distance <= .004) & (distance < bound-1e-9)
-            # Keep the normal inclusive boundary for points with no initial
-            # proximity allowance and reject all physical mesh interiors.
-            blocked |= (distance <= 0.) | ((distance <= .004) & (bound == .004))
+            # Initial overlap can be escaped, never deepened. New pixels in
+            # the inclusive 4 mm collision margin remain blocked.
+            blocked |= (distance <= .004) & np.array([index not in baseline for index in ids[near]], dtype=bool)
             retained_margin += int(((distance <= .004) & ~blocked).sum())
             if pad_contact:
                 pad = next((candidate for candidate in self.geometry['boxes']
@@ -193,12 +230,32 @@ class PublicRouteScreen:
         clearance = .2
         last_ik = None
         certificate = None
-        for pose, final in dense_poses():
+        def prepared_poses():
+            pending = iter(dense_poses())
+            if not self.use_kernel or self.contact_axis is not None:
+                yield from pending
+                return
+            # Reject an occupied measured start before expanding any future
+            # spline or building a speculative batch of route poses.
+            first = next(pending,None)
+            if first is None:
+                return
+            yield first
+            while True:
+                batch = list(itertools.islice(pending,32))
+                if not batch:
+                    return
+                if self.use_kernel and self.contact_axis is None:
+                    from robots.libero.bounded_kernel_integration import geometry_kernel,can_accelerate
+                    if can_accelerate(self):
+                        geometry_kernel(self).prepare([pose for pose,_ in batch])
+                yield from batch
+        for pose, final in prepared_poses():
             xyz = np.asarray(pose["xyz_m"])
             rotation = Rotation.from_quat(pose["quat_xyzw"])
             motion_bound = (float(np.linalg.norm(xyz-certificate[0]))
                 + self.radius*float((rotation*certificate[1].inv()).magnitude())) if certificate else float('inf')
-            if certificate and certificate[2]-motion_bound > math.sqrt(3)*.004:
+            if self.contact_axis is None and certificate and certificate[2]-motion_bound > math.sqrt(3)*.004:
                 # Distance to any observed point is 1-Lipschitz in the
                 # maximum displacement of the hand/payload surface. This
                 # certificate includes allowed-contact exclusions and target
@@ -225,11 +282,35 @@ class PublicRouteScreen:
                             "ik_reachable": False, "path_min_clearance_m": max(0., clearance),
                             "at": pose}
                 last_ik = signature
+        if self.check_arm:
+            from robots.libero.bounded_arm_screen import screen_arm_route
+            arm = screen_arm_route(self,base['ik_checks'])
+            base['arm_screen'] = arm
+            if not arm['passed']:
+                return {**base,'reason':arm['reason'],'collision':True,'ik_reachable':True,
+                    'path_min_clearance_m':0.,'at':{'joint_positions_rad':arm['joint_positions_rad']}}
         return {**base, "passed": True, "reason": "public_route_screen_passed", "collision": False,
                 "ik_reachable": True, "path_min_clearance_m": max(0., clearance)}
 
 
-    def _geometry_at(self, pose):
+    def _geometry_at(self,pose):
+        key = (*pose['xyz_m'],*pose['quat_xyzw'])
+        if key in self._pose_geometry_cache:
+            return self._pose_geometry_cache[key]
+        if self.use_kernel and self.contact_axis is None:
+            from robots.libero.bounded_kernel_integration import geometry_kernel,can_accelerate
+            # Reject the current pose before constructing any unused field.
+            # Warm hand-only screens were faster without a new EDT in C2's
+            # real corpus; they can reuse a payload-built capture field.
+            if self._pose_geometry_cache and can_accelerate(self):
+                result = geometry_kernel(self).geometry_at(pose)
+                if result.get('initial_margin_policy')=='positive_clearance_no_further_incursion':
+                    result = {**result,'initial_margin_policy':'measured_current_overlap_no_further_incursion'}
+                self._pose_geometry_cache[key] = result
+                return result
+        return self._geometry_exact(pose)
+
+    def _geometry_exact(self, pose):
         """Reuse exact-pose tests only within this immutable measured screen.
 
         Every sampled pose is still checked. Shared trajectory prefixes and
@@ -247,10 +328,14 @@ class PublicRouteScreen:
         nearby = self.points[nearby_ids]
         counts, scene_hits, retained_margin = self._collisions(
             self.points, nearby_ids, xyz, site, self.initial_margin)
-        target_ids = np.asarray(self.target_tree.query_ball_point(xyz, self.radius+.02), dtype=int) if self.target_tree is not None else np.empty(0, dtype=int)
-        own_points = self.target[target_ids]
+        shift = np.zeros(3)
+        if self.contact_axis is not None:
+            shift[self.contact_axis] = xyz[self.contact_axis]-self.contact_origin[self.contact_axis]
+        target = self.target+shift if self.contact_axis is not None else self.target
+        target_ids = np.asarray(self.target_tree.query_ball_point(xyz-shift, self.radius+.02), dtype=int) if self.target_tree is not None else np.empty(0, dtype=int)
+        own_points = target[target_ids]
         own, target_hits, retained_target_margin = self._collisions(
-            self.target, target_ids, xyz, site, self.initial_target_margin,
+            target, target_ids, xyz, site, self.initial_target_margin,
             pad_contact=self.contact_allowed)
         if any(counts.values()) or any(own.values()):
             result = {"passed": False, "reason": "measured_sweep_collision", "collision": True,
@@ -290,10 +375,12 @@ class PublicRouteScreen:
                             self.tree, .004, output_type='coo_matrix')
                         bound = np.array([self.initial_payload_margin.get((int(i), int(j)), .004)
                             for i, j in zip(pairs.row, pairs.col)])
-                        violations = (pairs.data <= 1e-9) | (pairs.data < bound-1e-9) | (bound == .004)
+                        novel = np.array([(int(i), int(j)) not in self.initial_payload_margin
+                            for i, j in zip(pairs.row, pairs.col)], dtype=bool)
+                        violations = (pairs.data < bound-1e-9) | novel
                         blocked = bool(violations.any())
                         result['initial_payload_margin_pairs_retained'] = int((~violations).sum())
-                        result['initial_margin_policy'] = 'positive_clearance_no_further_incursion'
+                        result['initial_margin_policy'] = 'measured_current_overlap_no_further_incursion'
                         if blocked:
                             hit = np.flatnonzero(violations)[np.argmin(pairs.data[violations])]
                             at, neighbour = pairs.row[hit], pairs.col[hit]
@@ -306,10 +393,10 @@ class PublicRouteScreen:
                             payload_point=world_payload[at].tolist(),
                             obstacle_point=self.points[neighbour].tolist())
         if self.initial_margin:
-            result['initial_margin_policy'] = 'positive_clearance_no_further_incursion'
+            result['initial_margin_policy'] = 'measured_current_overlap_no_further_incursion'
             result['initial_margin_pairs_retained'] = retained_margin
         if self.initial_target_margin:
-            result['initial_margin_policy'] = 'positive_clearance_no_further_incursion'
+            result['initial_margin_policy'] = 'measured_current_overlap_no_further_incursion'
             result['initial_target_margin_pairs_retained'] = retained_target_margin
         self._pose_geometry_cache[key] = result
         return result

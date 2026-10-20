@@ -1,11 +1,24 @@
 """Measured target contact remains separate from scene obstacles."""
 from types import SimpleNamespace
+import pickle
 
 import numpy as np
 import pytest
 from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_screen import PublicRouteScreen
+
+
+def test_saved_screens_share_one_raw_capture_after_pickle_roundtrip():
+    points = np.arange(3000., dtype=float).reshape(-1, 3)
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.01]*3, 'upper': [.01]*3}]}
+    screens = [PublicRouteScreen(points, geometry, SimpleNamespace(),
+        measured_scene_points=points, capture_points=points) for _ in range(3)]
+    assert all(s.measured_scene_points is points for s in screens)
+    restored = pickle.loads(pickle.dumps(screens))
+    capture = restored[0].capture_points
+    assert all(s.measured_scene_points is capture and s.points is capture for s in restored)
+    np.testing.assert_array_equal(capture, points)
 
 
 def test_endpoint_screen_leaves_an_obstructed_connecting_path_unknown():
@@ -74,6 +87,42 @@ def test_contact_ingress_continues_the_screened_endpoint_joint_branch():
     assert screen.ik.joints.tolist() == [0.]
     # A fresh route from the original capture cannot jump to the future pose.
     assert not screen([{**pose, 'xyz_m': [.4, 0., 1.]}])['passed']
+
+
+def test_axial_contact_prediction_keeps_other_scene_obstacles_and_start_overlap():
+    geometry = {'boxes': [
+        {'name': 'finger', 'lower': [-.01]*3, 'upper': [.01]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    route = [pose, {**pose, 'xyz_m': [.03, 0., 1.]}]
+    target = np.array([[.02, 0., 1.]])
+    fixed = PublicRouteScreen([[10., 10., 10.]], geometry, ik,
+        contact_points=target, contact_allowed=True, initial_pose=pose)
+    assert not fixed(route)['passed']
+    moving = fixed.translating_contact(0, pose['xyz_m'])
+    assert moving(route)['passed']
+    assert moving(route)['clearance_certified_samples'] == 0
+    np.testing.assert_array_equal(fixed.target, target)
+    # Only the chosen surface moves. A cabinet/other-object pixel is still
+    # screened at its measured position, even along the selected axis.
+    obstacle = PublicRouteScreen([[.02, 0., 1.]], geometry, ik,
+        contact_points=target, contact_allowed=True, initial_pose=pose)
+    assert not obstacle.translating_contact(0, pose['xyz_m'])(route)['passed']
+    overlap = PublicRouteScreen([[10., 10., 10.]], geometry, ik,
+        contact_points=[[0., 0., 1.]], contact_allowed=True, initial_pose=pose)
+    # USER10/20: the current measured overlap is allowed to stay unchanged;
+    # a route is rejected only for a new/deeper intrusion.
+    assert overlap.translating_contact(0, pose['xyz_m'])(route)['passed']
+
+
+def test_current_overlap_may_escape_but_new_deeper_intrusion_is_rejected():
+    geometry = {'boxes': [{'name':'palm','lower':[-.01]*3,'upper':[.01]*3}]}
+    pose = {'xyz_m':[0.,0.,1.], 'quat_xyzw':[0.,0.,0.,1.]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found':True})
+    # x is rotated into the local y axis, with the same symmetric box bounds.
+    screen = PublicRouteScreen([[.008,0.,1.]], geometry, ik, initial_pose=pose)
+    assert screen([pose, {**pose, 'xyz_m':[-.03,0.,1.]}])['passed']
+    assert not screen([pose, {**pose, 'xyz_m':[.008,0.,1.]}])['passed']
 
 
 def test_target_broad_phase_keeps_real_collisions_and_allowed_finger_contact():
@@ -243,10 +292,10 @@ def test_payload_can_leave_occupied_positive_margin_but_cannot_move_closer():
     assert exit_route['passed']
     incursion = screen([pose, {**pose, 'xyz_m': [.001, 0., 1.]}])
     assert incursion['reason'] == 'measured_payload_collision'
-    # An exact observed-surface intersection gets no starting allowance.
+    # A measured current surface intersection may be escaped (USER10/20).
     intersecting = PublicRouteScreen([[.1, 0., 1.]], geometry, ik,
         payload_local=[[.1, 0., 0.]], initial_pose=pose)
-    assert intersecting([pose])['reason'] == 'measured_payload_collision'
+    assert intersecting([pose, {**pose, 'xyz_m': [-.02, 0., 1.]}])['passed']
 
 
 def test_payload_margin_checks_new_neighbours_even_when_nearest_pair_is_allowed():
@@ -302,18 +351,19 @@ def test_target_positive_margin_escape_matches_scene_without_allowing_new_contac
     deeper = screen([pose, {**pose, 'xyz_m': [.001, 0., 1.]}])
     assert deeper['reason'] == 'measured_sweep_collision'
     assert deeper['target_counts']['rightfinger'] == 1
-    for points in ([[.004, 0., 1.]], [[.008, 0., 1.], [-.02, 0., 1.]]):
+    for points in ([[.004, 0., 1.], [-.02, 0., 1.]], [[.008, 0., 1.], [-.02, 0., 1.]]):
         blocked = PublicRouteScreen([[10., 10., 10.]], geometry, ik,
             contact_points=points, initial_pose=pose)
         assert blocked([pose, {**pose, 'xyz_m': [-.02, 0., 1.]}])['collision']
 
 
-def test_margin_escape_never_allows_mesh_interiors_or_new_obstacles():
+def test_margin_escape_allows_current_overlap_but_not_new_obstacles():
     geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
     ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
     pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
     physical_contact = PublicRouteScreen([[.004, 0., 1.]], geometry, ik, initial_pose=pose)
-    assert physical_contact([pose])['collision']
+    assert physical_contact([pose])['passed']
+    assert physical_contact([pose, {**pose, 'xyz_m': [.004, 0., 1.]}])['collision']
     route = [pose, {**pose, 'xyz_m': [-.02, 0., 1.]}]
     obstacle = PublicRouteScreen([[.008, 0., 1.], [-.02, 0., 1.]], geometry, ik, initial_pose=pose)
     assert obstacle._geometry_at(pose)['passed']

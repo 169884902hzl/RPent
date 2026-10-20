@@ -34,6 +34,17 @@ from robots.libero.bounded_payload import (
 )
 
 
+def test_certified_coarse_fine_preserves_secondary_minima_and_ambiguity_exactly():
+    import json
+    rng = np.random.default_rng(7081)
+    source = rng.uniform([-.02,-.02,-.01],[.02,.02,.01],(300,3))
+    for copies in ((0.,),(.013,),(-.021,.011),(-.024,0.,.024)):
+        target = np.concatenate([source+[0.,shift,0.] for shift in copies])
+        old = contact_axis_registration(source,target,1,.04,coarse_to_fine=False)
+        new = contact_axis_registration(source,target,1,.04,coarse_to_fine=True)
+        assert json.dumps(old,sort_keys=True)==json.dumps(new,sort_keys=True)
+
+
 def test_raw_spatial_edges_do_not_lose_a_connection_at_a_voxel_boundary():
     points = np.array([[0., 0., 1.], [.00099, 0., 1.], [.0037, 0., 1.],
                        [.0064, 0., 1.], [.012, 0., 1.], [np.nan, 0., 1.]])

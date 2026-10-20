@@ -14,7 +14,19 @@ SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
-LEGALITY_VERSION = "public-request-legal/3"
+LEGALITY_VERSION = "public-request-legal/4"
+
+
+def method_family(candidate: dict) -> str:
+    """Classify every source-owned invocation variant without reading labels."""
+    return 'vla' if candidate['skill']=='call_vla' else 'self'
+
+
+def action_binding_required(candidate: dict) -> bool:
+    """Tell measurement intake whether the action needs a resolved anchor."""
+    if method_family(candidate)=='vla':
+        return candidate['parameters'].get('mode') not in {'task','instruction'}
+    return any(key in candidate['parameters'] for key in ('anchor_id','target_id'))
 
 
 def compact_candidate(candidate: dict) -> dict:
@@ -73,8 +85,8 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
 
     def available(candidate):
         progress = request.get('progress', {})
-        if (progress.get('limit') is not None
-                and progress['stagnant_decisions'] >= progress['limit']):
+        if (progress.get('loop_detected') or (progress.get('limit') is not None
+                and progress['stagnant_decisions'] >= progress['limit'])):
             return candidate['skill'] in {'finish', 'ask_help'}
         effect = candidate['consequences']
         if effect['collision'] is True or effect['ik_reachable'] is False:

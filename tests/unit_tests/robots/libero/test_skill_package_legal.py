@@ -6,6 +6,17 @@ import pytest
 from rpent.skill_package.contract import legal_after
 
 
+@pytest.mark.parametrize('mode', ['pick','open','close','on','in','task','instruction'])
+def test_vla_family_and_binding_requirement_cover_all_finite_invocation_modes(mode):
+    from rpent.skill_package.contract import method_family,action_binding_required
+    candidate={'skill':'call_vla','parameters':{'mode':mode,'preparation':'in_place',
+        'prompt_style':'full_task','seed_variant':2}}
+    before=copy.deepcopy(candidate)
+    assert method_family(candidate)=='vla'
+    assert action_binding_required(candidate)==(mode not in {'task','instruction'})
+    assert candidate==before
+
+
 @pytest.fixture
 def public_request():
     candidates = [dict(id='c'+str(i), skill=skill, parameters=params,

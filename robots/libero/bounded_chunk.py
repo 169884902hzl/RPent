@@ -196,7 +196,9 @@ class PublicPrefixPrediction:
             gripper_at_measured_fingers(self.adapter.geometry, self.sensor['finger_positions_m']),
             self.ik, opening=self.sensor['gripper_opening_m'], contact_points=_voxel(target, .002),
             contact_allowed=contact, payload_local=payload,
-            initial_pose={'xyz_m': self.sensor['eef_xyz_m'], 'quat_xyzw': self.sensor['eef_quat_xyzw']})
+            initial_pose={'xyz_m': self.sensor['eef_xyz_m'], 'quat_xyzw': self.sensor['eef_quat_xyzw']},
+            use_kernel=self.base_screen.use_kernel,check_arm=self.base_screen.check_arm,
+            capture_points=self.base_screen.capture_points,capture_key=self.base_screen.capture_key)
         self.screens[cache_key] = result
         return result
 

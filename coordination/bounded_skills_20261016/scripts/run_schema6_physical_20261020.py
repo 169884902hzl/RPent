@@ -76,6 +76,18 @@ def worker(args, plan):
         manifest['schema_version']=plan['schema_version']
         manifest['parent_registration']=row['manifest']
         result=probe.evaluate_case(row['case'],endpoints,args.output/'episode',manifest,startup=args.startup)
+    elif row['kind']=='smoke':
+        # This fixed panel checks source startup and a real skill chunk in
+        # each category. It is not a task-success or feasibility denominator.
+        path=args.source/'coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py'
+        spec=importlib.util.spec_from_file_location('schema6_smoke_episode',path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        (args.output/'episode').mkdir()
+        smoke_args=SimpleNamespace(**(vars(args)|{'startup':True,'common_starts':None,'decision_limit':8}))
+        result=module.bounded_episode(smoke_args,{'case':row['case'],'domain':'original'},endpoints,probe)
+        module.require_physical_startup(result)
+        result.update(panel='fixed10_source_smoke',task_success_evaluation=False,
+            source_commit=plan['source_commit'])
     elif row['kind']=='drawer':
         from robots.libero.bounded_oracle import NoPublicOption
         with probe.runtime(row['case'],endpoints,args.output/'episode',domain='original') as (facade,adapter,policy,timings):
@@ -156,7 +168,8 @@ def worker(args, plan):
         # Real requests, not imports, are required. Native completion is also
         # a physical result, never a reason to forge a successful receipt.
         import glob
-        steps = (result.get('sim_steps',0) or sum(t.get('sim_steps',0) for t in result.get('trials',[]))
+        steps = (sum(r['steps_used'] for r in result.get('first_physical',{}).get('receipts',[]))
+            or result.get('sim_steps',0) or sum(t.get('sim_steps',0) for t in result.get('trials',[]))
             or sum(r['steps_used'] for arm in result.get('arms',[]) for r in arm.get('first_receipts',[])))
         if steps <= 0:
             raise RuntimeError('startup produced no physical execution evidence')

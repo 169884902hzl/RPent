@@ -117,9 +117,11 @@ def capture_annotation_state(oracle, request, *, status=None):
         'plans', 'committed_grasps', 'receipts', 'revision', '_proprio_sample',
         'precontact_instance_surface_v1', 'legacy_chunk_boundaries_v1',
         'compact_infeasible_candidates_v1', 'lazy_planning_v1', 'schema6_v1', 'public_progress',
-        'memory', '_failed_move_anchors', '_move_approach_by_anchor', 'guarded_move_v1')
+        'memory', '_failed_move_anchors', '_move_approach_by_anchor', 'guarded_move_v1',
+        '_stationary_observe_modes', '_progress_normals', 'rendered_self_filter_v1', '_vla_failed_options',
+        'verify_instance_crops_v1','vla_options_v2')
     adapter = object.__new__(MeasuredSkillAdapter)
-    adapter.__dict__.update({key: getattr(original, key) for key in names})
+    adapter.__dict__.update({key: getattr(original, key) for key in names if hasattr(original, key)})
     scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')
     adapter.scene = SimpleNamespace(**{key: getattr(original.scene, key) for key in scene_fields})
     adapter.scene.rgbd_mask_tracking_v1 = getattr(original.scene,'rgbd_mask_tracking_v1',False)
@@ -145,7 +147,7 @@ def capture_annotation_state(oracle, request, *, status=None):
     return copy.deepcopy(state)
 
 
-def rebuild_schema6_captured_request(state, request):
+def rebuild_schema6_captured_request(state, request, *, progress=None, progress_normals=None):
     """Rebuild the current catalog from a trusted captured public observation.
 
     This does not remeasure a scene or step physics. Historical snapshots may
@@ -157,7 +159,7 @@ def rebuild_schema6_captured_request(state, request):
     """
     from rpent.skill_package import VERSION as SCHEMA_VERSION
     from rpent.skill_package.contract import FailureMemory, identity
-    from rpent.skill_package.progress import PublicProgress
+    from rpent.skill_package.progress import PublicProgress,DEFAULT_STAGNANT_DECISIONS
 
     if SCHEMA_VERSION != 'bounded-skills/6':
         raise ValueError('captured catalog reconstruction requires schema6 source')
@@ -171,6 +173,16 @@ def rebuild_schema6_captured_request(state, request):
         raise ValueError('catalog reconstruction requires a frozen CPU annotation state')
     rebuilt = copy.deepcopy(state)
     adapter = rebuilt['adapter']
+    receipt_migrations=[]
+    for index,receipt in enumerate(adapter.receipts):
+        if receipt.get('schema_version') in {'bounded-skills/3','bounded-skills/4','bounded-skills/5'}:
+            before=copy.deepcopy(receipt)
+            receipt['schema_version']=SCHEMA_VERSION
+            validate(receipt)
+            if {k:v for k,v in receipt.items() if k!='schema_version'} != {
+                    k:v for k,v in before.items() if k!='schema_version'}:
+                raise AssertionError('receipt migration changed a measurement')
+            receipt_migrations.append({'index':index,'from':before['schema_version'],'to':SCHEMA_VERSION})
     had_history = 'memory' in vars(adapter)
     was_schema6 = adapter.schema6_v1
     had_progress = 'public_progress' in vars(adapter) and was_schema6
@@ -180,8 +192,11 @@ def rebuild_schema6_captured_request(state, request):
     for screen in adapter._cloud_and_ik.screens.values():
         if not hasattr(screen, '_endpoint_ik_cache'):
             screen._endpoint_ik_cache = {}
-    if not had_progress:
-        adapter.public_progress = PublicProgress(31)
+    if progress is not None:
+        adapter.public_progress = copy.deepcopy(progress)
+        adapter._progress_normals = copy.deepcopy(progress_normals or {})
+    elif not had_progress:
+        adapter.public_progress = PublicProgress(DEFAULT_STAGNANT_DECISIONS)
     if not had_history or not was_schema6:
         prior = adapter.memory if had_history else None
         adapter.memory = FailureMemory()
@@ -229,6 +244,7 @@ def rebuild_schema6_captured_request(state, request):
         'committed_prefix_present': False, 'failure_history_incomplete': not had_history,
         'failure_history_projected_to_merged_catalog': not was_schema6,
         'progress_history_reset': not had_progress, 'contact_plans_reused': True,
+        'receipt_protocol_migrations':receipt_migrations,
         'measurement_source': 'captured_public_rgbd_and_proprioception; no new sensor capture',
         'physics_steps': 0, 'gpu_used': False, 'training_authorized': False}
     return rebuilt, current, flags
@@ -315,3 +331,69 @@ def load_annotation_state(path, sha256):
     if hashlib.sha256(raw).hexdigest() != sha256:
         raise ValueError('offline annotation snapshot hash mismatch')
     return pickle.loads(gzip.decompress(raw))
+
+
+def rebuild_saved_public_screens(adapter):
+    """Apply current collision rules to saved raw public screen measurements.
+
+    Legacy annotations have no RGB image or camera calibration. They use
+    the current public mesh-hull self filter, rather than claiming a new
+    rendered capture/SAM mask. No old collision/IK verdict is inherited.
+    """
+    import numpy as np
+    from scipy.spatial.transform import Rotation
+    from robots.libero.bounded_obstacles import build_obstacles,subtract_instances
+    from robots.libero.bounded_screen import PublicRouteScreen
+    from robots.libero.bounded_self_filter import (
+        ROBOT_FILTER_MARGIN_M,remove_current_gripper,remove_visual_robot)
+    from robots.libero.v5_geometric_grasp import _voxel
+
+    robot=measured_robot(adapter.p)
+    originals=adapter._cloud_and_ik.screens
+    held=originals.get(adapter.held) if adapter.held else None
+    held_pixels=held.measured_target_points if held is not None else np.empty((0,3))
+    captures={};screens={}
+    for key,old in originals.items():
+        if not isinstance(old,PublicRouteScreen):
+            raise ValueError('saved screen does not contain measured route geometry')
+        raw=old.measured_scene_points
+        digest=hashlib.sha256(np.ascontiguousarray(raw).tobytes()).hexdigest()
+        ik=old.ik.with_measured_robot(robot)
+        ik.use_batched_kernel=False  # Keep deterministic source-owned warm solves.
+        if digest not in captures:
+            points,_=remove_current_gripper(raw,robot['eef_xyz_m'],robot['eef_quat_xyzw'],
+                old.geometry,robot['gripper_opening_m'],surface_margin_m=ROBOT_FILTER_MARGIN_M)
+            points,_=ik.remove_measured_arm(points,tolerance_m=ROBOT_FILTER_MARGIN_M)
+            points,_=remove_visual_robot(points,ik,surface_margin_m=ROBOT_FILTER_MARGIN_M)
+            captures[digest]=build_obstacles(points)
+        structure=captures[digest]
+        def present(points):
+            points=np.asarray(points).reshape(-1,3)
+            if not len(points):return points
+            distance=structure['tree'].query(points,distance_upper_bound=np.nextafter(1e-6,np.inf))[0]
+            return points[distance<=1e-6]
+        target=present(old.measured_target_points)
+        carried=present(held_pixels)
+        points=subtract_instances(structure,target,carried,held_margin_m=ROBOT_FILTER_MARGIN_M)
+        payload=(_voxel(carried,.002)-robot['eef_xyz_m'])@Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
+        screens[key]=PublicRouteScreen(points,old.geometry,ik,opening=old.opening,
+            contact_points=np.empty((0,3)) if key==adapter.held else _voxel(target,.002),
+            contact_allowed=old.contact_allowed,payload_local=payload,
+            initial_pose={'xyz_m':robot['eef_xyz_m'],'quat_xyzw':robot['eef_quat_xyzw']},
+            measured_scene_points=structure['points'],measured_target_points=target,
+            capture_points=structure['points'],capture_key=structure['key'])
+        screens[key].contact_axis=getattr(old,'contact_axis',None)
+        screens[key].contact_origin=getattr(old,'contact_origin',None)
+    adapter._cloud_and_ik=FrozenScreens(screens)
+    if not hasattr(adapter,'withdrawal_contact'):
+        adapter.withdrawal_contact=None
+    adapter._screen_cache={}
+    adapter._instance_cache={key:screen.measured_target_points for key,screen in screens.items() if key is not None}
+    adapter._base_geometry=(screens[None].measured_scene_points,screens[None].ik)
+    adapter._capture_obstacles=None
+    adapter._self_filtered_capture=None
+    adapter.instance_boundary_evidence={}
+    adapter.public_geometry_evidence={}
+    return {'scope':'saved_raw_rgbd_public_robot_and_current_12mm_static_mesh_filter',
+        'collision_verdicts_reused':False,'new_camera_capture':False,'rpc_calls':0,
+        'screens':len(screens),'shared_captures':len(captures)}

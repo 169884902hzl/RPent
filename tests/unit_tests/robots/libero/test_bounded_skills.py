@@ -2765,7 +2765,7 @@ def test_lift_plans_complete_measured_payload_without_claiming_a_grasp(adapter, 
     assert not blocked(route)['passed'] and adapter.held is None
 
 
-def test_lift_prediction_keeps_an_existing_finger_shell_overlap(adapter, monkeypatch):
+def test_lift_prediction_current_overlap_does_not_establish_a_measured_grasp(adapter, monkeypatch):
     from robots.libero.bounded_screen import PublicRouteScreen
 
     adapter.active = 'e1'
@@ -2780,7 +2780,7 @@ def test_lift_prediction_keeps_an_existing_finger_shell_overlap(adapter, monkeyp
     original = PublicRouteScreen(reference['scene'], geometry,
         SimpleNamespace(check=lambda *args: {'solution_found': True}), contact_points=target)
     screen = adapter._lift_payload_screen('e1', original)
-    assert not screen([pose])['passed'] and adapter.held is None
+    assert screen([pose])['passed'] and adapter.held is None
 
 
 def test_pre_lift_reference_refines_final_current_depth_mask_before_scene_subtraction(adapter, monkeypatch):
@@ -2883,11 +2883,11 @@ def test_wrist_scan_reference_endpoint_does_not_imply_measured_arrival(adapter, 
     assert receipt['phase'] == 'planning_unreachable'
 
 
-def test_target_mask_uses_same_public_self_filter_as_scene(adapter, monkeypatch):
+def test_target_mask_reuses_captured_robot_filter_without_repeating_mesh_tests(adapter, monkeypatch):
     target = np.array([[.1, .1, .9], [0., 0., 1.]])
     adapter.scene.measurement_clouds['e1'] = target
     ik = SimpleNamespace(remove_measured_arm=lambda points: (points, 0))
-    adapter._base_geometry = (np.array([[.3, .3, .9]]), ik)
+    adapter._base_geometry = (np.array([target[0], [.3, .3, .9]]), ik)
     calls = []
     def hand_filter(points, *args):
         calls.append(np.array(points))
@@ -2897,7 +2897,7 @@ def test_target_mask_uses_same_public_self_filter_as_scene(adapter, monkeypatch)
     monkeypatch.setattr('robots.libero.bounded_skills.PublicRouteScreen', lambda scene, geometry, ik, **kwargs: kwargs)
     # Use the real method, rather than this fixture's no-collision stub.
     screen = MeasuredSkillAdapter._cloud_and_ik(adapter, 'e1', contact=True)
-    assert len(calls) == 1
+    assert len(calls) == 0
     assert len(screen['contact_points']) == 1
     np.testing.assert_allclose(screen['contact_points'][0], target[0])
 
@@ -2979,10 +2979,10 @@ def test_scene_instance_subtraction_precedes_voxel_centroids(adapter, monkeypatc
     adapter.scene.measurement_clouds.update(e1=target, e2=held)
     adapter.held = 'e2'
     adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(load=lambda _: world))
-    ik = SimpleNamespace(remove_measured_arm=lambda points: (points, 0))
+    ik = SimpleNamespace(remove_measured_arm=lambda points, **kwargs: (points, 0))
     monkeypatch.setattr('robots.libero.bounded_skills.PublicPoseScreen', lambda *args, **kwargs: ik)
-    monkeypatch.setattr('robots.libero.bounded_skills.remove_current_gripper', lambda points, *args: (points, 0))
-    monkeypatch.setattr('robots.libero.bounded_skills.remove_visual_robot', lambda points, ik: (points, {}))
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_current_gripper', lambda points, *args, **kwargs: (points, 0))
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_visual_robot', lambda points, ik, **kwargs: (points, {}))
     monkeypatch.setattr('robots.libero.bounded_skills.PublicRouteScreen',
         lambda scene, geometry, ik, **kwargs: {'scene': scene, **kwargs})
     screen = MeasuredSkillAdapter._cloud_and_ik(adapter, 'e1', contact=True)

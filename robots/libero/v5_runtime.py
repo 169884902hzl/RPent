@@ -157,6 +157,7 @@ class MeasuredScene:
     """Stable episode-local IDs bound only to distinct measured instances."""
 
     rgbd_mask_tracking_v1 = False  # Historical snapshots predate the opt-in tracker.
+    pure_class_prompts_v1 = False  # Diagnostic control; deployment awaits binding results.
 
     def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
@@ -185,10 +186,12 @@ class MeasuredScene:
                  region_anchor_cache_v1: bool = False,
                  record_sam_masks_v6: bool = False,
                  grasp_geometry_cleanup_v1: bool = False,
-                 moka_query_ladder_v1: bool = False, rgbd_mask_tracking_v1: bool = False) -> None:
+                 moka_query_ladder_v1: bool = False, rgbd_mask_tracking_v1: bool = False,
+                 pure_class_prompts_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.rgbd_mask_tracking_v1 = rgbd_mask_tracking_v1
+        self.pure_class_prompts_v1 = pure_class_prompts_v1
         if rgbd_mask_tracking_v1:
             from robots.libero.bounded_mask_tracking import TrackedSegmentation
 
@@ -331,10 +334,10 @@ class MeasuredScene:
             measured_names.sort(key=lambda name: name == "microwave")
         for name in measured_names:
             tracking_event_start = len(self.rpc.events) if self.rgbd_mask_tracking_v1 else 0
-            prompt = segmentation_prompt(name)
-            moka_ladder = self.moka_query_ladder_v1 and name == "moka pot"
+            prompt = name if self.pure_class_prompts_v1 else segmentation_prompt(name)
+            moka_ladder = self.moka_query_ladder_v1 and name == "moka pot" and not self.pure_class_prompts_v1
             moka_artifacts = []
-            if placement and name in ("alphabet soup", "tomato sauce"):
+            if placement and name in ("alphabet soup", "tomato sauce") and not self.pure_class_prompts_v1:
                 # After release only the can's lid may remain visible. Its
                 # identity comes from the verified grasp and selected placement;
                 # associate only a unique measurement in that measured target.
@@ -353,7 +356,7 @@ class MeasuredScene:
                     timeout_s=120,
                 )
                 self.calls += 1
-            if self.microwave_recall_geometry_v3 and name == "microwave":
+            if self.microwave_recall_geometry_v3 and name == "microwave" and not self.pure_class_prompts_v1:
                 from robots.libero.v5_perception_geometry import measured_work_surface
                 if self.work_surface_measurement is None:
                     anchors = [e for e in self.entities.values() if e.visible and not e.part_of
@@ -370,7 +373,7 @@ class MeasuredScene:
                         self.calls += 1
                         reply["instances"] = [*reply.get("instances", []), *[
                             {**item, "geometry_query": phrase} for item in alternative.get("instances", [])]]
-            if self.instruction_queries_v1 and placement is None and not moka_ladder:
+            if self.instruction_queries_v1 and placement is None and not moka_ladder and not self.pure_class_prompts_v1:
                 for phrase in instruction_noun_phrases(self.instruction):
                     if category(phrase) != name and not phrase.endswith(name):
                         continue
@@ -381,7 +384,7 @@ class MeasuredScene:
                     self.calls += 1
                     reply["instances"] = [*reply.get("instances", []), *alternative.get("instances", [])]
             if not reply.get("instances") and not moka_ladder:
-                retry_prompt = segmentation_retry_prompt(name)
+                retry_prompt = name if self.pure_class_prompts_v1 else segmentation_retry_prompt(name)
                 reply = self.rpc.call(
                     "sam3.segment_all",
                     kwargs={

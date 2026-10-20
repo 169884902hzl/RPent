@@ -298,6 +298,7 @@ def test_ambiguous_binding_observes_then_rebinds_without_private_instance_select
         'parameters': {'anchor_id': source.id, 'mode': 'open'}, 'consequences': consequences}
     request = base | {'candidates': [action]}
     adapter = SimpleNamespace(request=lambda **_: request, held=None, details=[], last_chunk={},
+        ex=SimpleNamespace(instruction='open the cabinet'),
         p=SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False,
             execution_budget=lambda: {'used_sim_steps': len(executed)}), model=object()))
     def execute(_, decision):
@@ -389,12 +390,18 @@ def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_
     monkeypatch.setattr(probe, 'trial', trial)
     monkeypatch.setattr(bounded_offline_labels, 'capture_annotation_state', lambda *_: {})
     monkeypatch.setattr(bounded_offline_labels, 'save_annotation_state', lambda *_: {})
+    native_calls = []
+    def native_replay(*_):
+        native_calls.append(True)
+        return {'success':False,'wall_s':1.,'sim_steps':5,'method':'call_vla_full_instruction'}
+    monkeypatch.setattr(probe,'native_instruction_replay',native_replay)
     result = probe.evaluate_case(case, {}, tmp_path / 'episode', plan)
     assert methods[:4] == ['self', 'call_vla', 'call_vla', 'call_vla']
     if unknown:
-        assert len(methods) == 4 and result['full_replay'] == []
+        assert len(methods) == 4 and len(result['full_replay']) == 1
+        assert native_calls == [True] and result['full_replay'][0]['sim_steps'] > 0
         assert result['conditional_rate_product'] is None
-        assert result['independent_replay_wall_s'] is None
+        assert result['independent_replay_wall_s'] >= 0.
     else:
         assert methods[4:] == ['self']
         assert len(result['full_replay']) == 1 and result['full_replay'][0]['success'] is False

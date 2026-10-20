@@ -140,3 +140,35 @@ def test_fixed_latency_startup_requires_controls_in_both_report_formats(result, 
     else:
         with pytest.raises(RuntimeError, match='physical request'):
             module.require_physical_startup(result)
+
+
+def test_n1_common_start_requires_complete_state_and_verifies_each_arm(tmp_path):
+    import copy
+    import hashlib
+    import pickle
+    path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py'
+    spec = importlib.util.spec_from_file_location('schema6_common_start',path)
+    module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    physical = {'actuator_state':{'integration':{'sha256':'complete-vector'}},'rng':17}
+    current = copy.deepcopy(physical)
+    facade = SimpleNamespace(snapshot=lambda:copy.deepcopy(current))
+    def save(facade,adapter,policy,destination):
+        destination.write_bytes(pickle.dumps({'physics':facade.snapshot()}))
+    def restore(facade,adapter,policy,saved):
+        current.clear();current.update(copy.deepcopy(saved['physics']))
+    digest=lambda value:hashlib.sha256(json.dumps(value,sort_keys=True).encode()).hexdigest()
+    probe=SimpleNamespace(save_checkpoint=save,restore_checkpoint=restore,snapshot_digest=digest)
+    args=SimpleNamespace(common_starts=tmp_path/'common',worker=0,startup=False,
+        initial_mode='create',output=tmp_path/'baseline')
+    args.output.mkdir()
+    baseline=module.common_start(args,facade,None,None,probe)
+    current['rng']=999
+    args.initial_mode='restore';args.output=tmp_path/'optimized';args.output.mkdir()
+    optimized=module.common_start(args,facade,None,None,probe)
+    assert current==physical
+    assert baseline['actual_complete_initial_sha256']==optimized['actual_complete_initial_sha256']
+    probe.restore_checkpoint=lambda *_:None
+    current['rng']=123
+    args.output=tmp_path/'mismatched';args.output.mkdir()
+    with pytest.raises(ValueError,match='initial state differs'):
+        module.common_start(args,facade,None,None,probe)

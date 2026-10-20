@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """One public, mesh-swept approach route for all parallel-jaw grasps."""
 import math
+import copy
 
 import numpy as np
 from scipy.spatial import cKDTree
@@ -38,7 +39,8 @@ def separate_target_points(target_points, scene_points):
 
 
 def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat, geometry,
-                          pose_screen, height, *, candidate_only=False, include_band_seeds=False):
+                          pose_screen, height, *, candidate_only=False, include_band_seeds=False,
+                          opposition_cache=None):
     """All categories share opposition, sweep/IK screening and ranking."""
     from robots.libero.v5_geometric_grasp import _opposition, side_site_rotation
     from robots.libero.v5_grasp_geometry import (
@@ -78,7 +80,13 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
         for axis_index, offset in enumerate((0., math.pi/4, -math.pi/4, math.pi/2)):
             angle = base_axis+offset
             closing = np.array([math.cos(angle), math.sin(angle), 0.])
-            centre, fit = _opposition(region['points'], seed, closing)
+            key = (*map(float,seed),*map(float,closing))
+            if opposition_cache is not None and key in opposition_cache:
+                centre,fit = copy.deepcopy(opposition_cache[key])
+            else:
+                centre, fit = _opposition(region['points'], seed, closing)
+                if opposition_cache is not None:
+                    opposition_cache[key] = copy.deepcopy((centre,fit))
             if centre is None:
                 records.append({'id': f's{seed_index}_a{axis_index}', 'rejected': [fit['reason']], **fit})
                 continue

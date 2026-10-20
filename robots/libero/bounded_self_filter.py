@@ -11,6 +11,37 @@ from scipy.spatial.transform import Rotation
 
 from robots.libero.v5_geometric_grasp import _rotation, _vector, stl_vertices
 
+ROBOT_FILTER_MARGIN_M = .012  # > 4 mm swept collision margin, USER 2026-10-20.
+
+
+def remove_depth_edge_fliers(world):
+    """Remove isolated depth samples adjacent to a depth discontinuity.
+
+    A surface edge with two supporting neighbours is retained. No simulator
+    segmentation or object identity is consulted.
+    """
+    points = np.asarray(world)
+    if points.ndim == 2:
+        return points.copy(), {'removed_depth_fliers':0,'reason':'unorganized_cloud_has_no_pixel_adjacency'}
+    valid = np.isfinite(points).all(axis=-1) & (np.abs(points).sum(axis=-1) > 1e-6)
+    support = np.zeros(valid.shape, np.uint8)
+    discontinuity = np.zeros(valid.shape, bool)
+    for axis in (0, 1):
+        a, b = [slice(None), slice(None)], [slice(None), slice(None)]
+        a[axis], b[axis] = slice(1, None), slice(None, -1)
+        a, b = tuple(a), tuple(b)
+        both = valid[a] & valid[b]
+        close = np.linalg.norm(points[a]-points[b], axis=-1) <= .02
+        support[a] += both & close
+        support[b] += both & close
+        discontinuity[a] |= both & ~close
+        discontinuity[b] |= both & ~close
+    outlier = valid & discontinuity & (support < 2)
+    result = np.array(points, copy=True)
+    result[outlier] = np.nan
+    return result, {'removed_depth_fliers': int(outlier.sum()), 'neighbour_gap_m': .02,
+                    'minimum_supported_neighbours': 2}
+
 
 def public_robot_mask(world, robot, gripper_xml):
     """Locate robot pixels using only current proprioception and static meshes."""
@@ -25,11 +56,11 @@ def public_robot_mask(world, robot, gripper_xml):
     points = np.asarray(world, float).reshape(-1, 3)
     valid = np.isfinite(points).all(axis=1) & (np.abs(points).sum(axis=1) > 1e-6)
     cloud, _ = remove_current_gripper(points[valid], robot['eef_xyz_m'], robot['eef_quat_xyzw'],
-                                     hand, robot['gripper_opening_m'])
+                                     hand, robot['gripper_opening_m'], surface_margin_m=ROBOT_FILTER_MARGIN_M)
     ik = PublicPoseScreen(xml.parent.parent/'robots/panda/robot.xml', robot['joint_positions_rad'],
         robot['eef_xyz_m'], robot['eef_quat_xyzw'], geometry['site_offset_in_gripper_m'])
-    cloud, _ = ik.remove_measured_arm(cloud)
-    cloud, _ = remove_visual_robot(cloud, ik)
+    cloud, _ = ik.remove_measured_arm(cloud, tolerance_m=ROBOT_FILTER_MARGIN_M)
+    cloud, _ = remove_visual_robot(cloud, ik, surface_margin_m=ROBOT_FILTER_MARGIN_M)
     removed = np.zeros(len(points), bool)
     removed[valid] = cKDTree(cloud).query(points[valid],
         distance_upper_bound=np.nextafter(1e-6, np.inf))[0] > 1e-6

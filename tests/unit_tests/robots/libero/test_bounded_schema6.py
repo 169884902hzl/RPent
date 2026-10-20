@@ -16,6 +16,30 @@ def enable(adapter):
         collision=None, ik_reachable=True, path_min_clearance_m=None, reason='endpoint')
 
 
+def test_passive_observe_without_change_is_not_reoffered_until_action(adapter, monkeypatch):
+    enable(adapter)
+    request = adapter.request(k=1)
+    refresh = next(c for c in request['candidates'] if c['skill'] == 'observe'
+        and c['parameters']['mode'] == 'refresh')
+    receipt = {'candidate_id': refresh['id'], 'skill': 'observe', 'outcome': 'no_effect',
+        'stop_reason': 'no_measured_scene_change', 'steps_used': 0,
+        'before': {'held_anchor_id': None}}
+    monkeypatch.setattr(adapter, '_execute_chunk', lambda *_, **__: [receipt])
+    adapter.execute(request, decision(request, [refresh['id']]))
+    request = adapter.request(k=1)
+    assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh'
+        for c in request['candidates'])
+    assert any(c['skill'] == 'observe' and c['parameters']['mode'] == 'wrist_scan'
+        for c in request['candidates'])
+    close = next(c for c in request['candidates'] if c['skill'] == 'set_gripper'
+        and c['parameters']['mode'] == 'close')
+    receipt.update(candidate_id=close['id'], skill='set_gripper', outcome='success',
+        stop_reason='gripper_command', steps_used=15)
+    adapter.execute(request, decision(request, [close['id']]))
+    assert any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh'
+        for c in adapter.request(k=1)['candidates'])
+
+
 def test_schema6_defaults_enable_tracking_block_monitoring_and_original_progress_limit(adapter):
     from types import SimpleNamespace
     from robots.libero.bounded_skills import MeasuredSkillAdapter
@@ -23,7 +47,7 @@ def test_schema6_defaults_enable_tracking_block_monitoring_and_original_progress
     current=MeasuredSkillAdapter(adapter.ex,'/static/grippers/panda_gripper.xml',allow_vla=False)
     assert current.schema6_v1 and current.lazy_planning_v1
     assert current.vla_budget.controls_per_check is None
-    assert current.public_progress.limit==31
+    assert current.public_progress.limit==11
     assert current.scene.rgbd_mask_tracking_v1 and current.scene.rpc.refresh_captures is None
 
 
@@ -234,6 +258,25 @@ def test_guarded_candidate_only_for_measured_active_furniture(adapter):
     assert legal_after(request,[guarded[0]['id']]) == ()
 
 
+def test_guarded_route_rejection_counts_as_failure_and_stops_identical_retries(adapter, monkeypatch):
+    enable(adapter)
+    adapter.active = 'e1'
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'],
+        name='cabinet drawer', part_of='cabinet')
+    adapter.scene.measure_fixture_handle_pose = lambda *args: {}
+    monkeypatch.setattr('robots.libero.bounded_guarded.run_guarded', lambda *args: {
+        'guarded_stop_reason': 'guarded_route_blocked', 'advance_m': 0.,
+        'executed': False, 'steps_used': 0, 'trace': []})
+    monkeypatch.setattr(adapter, 'refresh', lambda **kwargs: None)
+    for attempt in range(2):
+        request = adapter.request(k=1)
+        option = next(c for c in request['candidates'] if c['skill'] == 'guarded_move')
+        receipt, = adapter.execute(request, decision(request, [option['id']]))
+        assert receipt['outcome'] == 'failure' and receipt['stop_reason'] == 'guarded_route_blocked'
+        assert receipt['phase'] == 'planning_unreachable'
+    assert option['id'] not in {c['id'] for c in adapter.request(k=1)['candidates']}
+
+
 def test_private_drawer_selector_accepts_guarded_direction_without_nudge_distance(adapter):
     from types import SimpleNamespace
     from robots.libero.bounded_oracle import BoundedOracle
@@ -258,15 +301,19 @@ def test_private_drawer_selector_accepts_guarded_direction_without_nudge_distanc
     assert chosen['parameters'] == {'anchor_id': 'e1', 'axis': 'y', 'direction': 1}
 
 
-def test_public_progress_accumulates_subcentimetre_motion():
+def test_public_progress_accumulates_only_goal_directed_subcentimetre_motion():
     monitor = PublicProgress()
     row = {'revision':0,'anchors':[{'id':'a','xyz_m':[0.,0.,0.],'cached':False}],
         'robot':{'held_anchor_id':None},'relations':[],'receipts':[]}
-    monitor.update(row)
+    monitor.update(row, [{'key':'target_distance','value':1.,'resolution':.01}])
     for revision, position in ((1,.004),(2,.008),(3,.012)):
         row['revision'] = revision; row['anchors'][0]['xyz_m'][0] = position
-        monitor.update(row)
-    assert monitor.stagnant == 0 and monitor.last_reasons == ['measured_anchor_displacement:a']
+        monitor.update(row, [{'key':'target_distance','value':1.-position,'resolution':.01}])
+    assert monitor.stagnant == 0 and monitor.last_reasons == ['closer_to_goal:target_distance']
+    row['revision'] = 4
+    row['anchors'][0]['xyz_m'][1] = .5  # unrelated motion is not goal progress
+    monitor.update(row, [{'key':'target_distance','value':.99,'resolution':.01}])
+    assert monitor.stagnant == 1
 
 
 def test_guarded_motion_stops_on_two_public_no_progress_checks(adapter, monkeypatch):
@@ -284,8 +331,10 @@ def test_guarded_motion_stops_on_two_public_no_progress_checks(adapter, monkeypa
                 reason=kwargs['waypoint_check'](index,{})
                 calls.append(reason)
                 if reason: break
-            return {'executed':True,'steps_used':10,'stop_reason':'public_contact_stop'}
+            return {'executed':True,'steps_used':10,'stop_reason':'public_contact_stop','trace':[]}
     monkeypatch.setattr('robots.libero.bounded_guarded.SmoothMotion',Motion)
     detail = run_guarded(adapter, {'anchor_id':'e1','axis':'y','direction':-1})
     assert calls == [None,'no_measured_progress']
     assert detail['advance_m']==0. and detail['guarded_stop_reason']=='no_measured_progress'
+    assert detail['settling']['settled'] and detail['settling']['steps_used'] == 4
+    assert detail['steps_used'] == 14

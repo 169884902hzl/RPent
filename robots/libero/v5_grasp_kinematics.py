@@ -122,6 +122,7 @@ def robot_link_hulls(xml_path):
 
 
 class PublicPoseScreen:
+    use_batched_kernel = False
     def __init__(self, robot_xml, joints, eef_xyz, hand_quat_xyzw, site_offset_hand, *, warm_start=False):
         self.nodes, self.limits, self.reference = robot_chain(str(robot_xml))
         self.joints = np.asarray(joints, dtype=float)
@@ -138,9 +139,11 @@ class PublicPoseScreen:
 
     def with_measured_robot(self, robot):
         """Seed a new route from its current public joint/EEF measurement."""
-        return type(self)(self.reference['path'], robot['joint_positions_rad'],
+        result = type(self)(self.reference['path'], robot['joint_positions_rad'],
             robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.site_offset,
             warm_start=self.warm_start)
+        result.use_batched_kernel = self.use_batched_kernel
+        return result
 
     def begin_route(self, *, max_joint_step_rad=.35):
         """Start a local IK continuation at this capture's measured joints.
@@ -154,7 +157,7 @@ class PublicPoseScreen:
             raise ValueError('positive local IK continuation bound required')
         self.last_solution = np.clip(self.joints, self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6).copy()
 
-    def remove_measured_arm(self, points):
+    def remove_measured_arm(self, points, *, tolerance_m=.002):
         """Remove current robot surfaces using only joint sensors and static meshes.
 
         Moving the hand does not move the arm's old RGB-D pixels. Those pixels
@@ -175,7 +178,7 @@ class PublicPoseScreen:
         counts = {}
         # Matches the route's base 2 mm mesh margin; no broad carve around
         # the target, table, fixtures, or robot workspace is performed.
-        tolerance = .002
+        tolerance = tolerance_m
         base_points = (cloud-self.world_offset)@self.world_rotation
         for hull in robot_link_hulls(self.reference['path']):
             transform = poses[hull['node']]
@@ -211,6 +214,35 @@ class PublicPoseScreen:
             if cached['solution_found'] and (self.warm_start or self.route_joint_step_rad is not None):
                 self.last_solution = np.asarray(next(s['joint_positions_rad'] for s in cached['solves'] if s['solution_found']))
             return cached
+        if self.use_batched_kernel and not self.warm_start and self.route_joint_step_rad is None:
+            from robots.libero.bounded_kernels.ik import BatchedDampedIK
+            kernel = BatchedDampedIK.from_source(self)
+            if self.route_joint_step_rad is not None:
+                kernel.max_joint_step_rad = self.route_joint_step_rad
+            trial = kernel.solve_batch([xyz],[hand_quat_xyzw],reference,
+                continuity=self.route_joint_step_rad is not None)
+            if trial['solution_found'][0]:
+                joints = trial['joint_positions_rad'][0]
+                pose,site,_ = forward_jacobian(self.nodes,joints,self.site_offset)
+                p = float(np.linalg.norm(self.world_offset+self.world_rotation@site-xyz))
+                angle = float((Rotation.from_quat(hand_quat_xyzw)*
+                    Rotation.from_matrix(self.world_rotation@pose[:3,:3]).inv()).magnitude())
+                if p<.008 and angle<.05 and (joints>=lower).all() and (joints<=upper).all():
+                    if self.warm_start or self.route_joint_step_rad is not None:
+                        self.last_solution = joints.copy()
+                    evidence = {'version':VERSION,'source':'static_robot_description_and_public_proprioception',
+                        'robot_xml':self.reference,'solution_found':True,'solves':[{
+                            'position_error_m':p,'orientation_error_rad':angle,'joint_positions_rad':joints.tolist(),
+                            'joint_margin_min_rad':float(np.minimum(joints-self.limits[:,0],self.limits[:,1]-joints).min()),
+                            'function_evaluations':int(trial['function_evaluations'][0]),'solution_found':True,
+                            'method':'c2_batched_damped_least_squares_independent_source_fk_verified'}],
+                        'numerical_failure_is_not_proof_of_infeasibility':True,
+                        'arm_collisions_checked':False,'servo_convergence_certified':False}
+                    if self.route_joint_step_rad is not None:
+                        evidence['local_continuation']={'max_joint_step_rad':self.route_joint_step_rad,
+                            'from_joint_positions_rad':reference.tolist(),'numerical_search_bound_only':True}
+                    self.cache[key] = evidence
+                    return evidence
         position, desired = np.asarray(xyz), Rotation.from_quat(hand_quat_xyzw)
 
         last = None

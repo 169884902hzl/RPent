@@ -67,6 +67,8 @@ Lengths below are executor configuration bounds, not model parameters. Candidate
 | `finish` | Public/native environment completion signal or measured completion evidence | Zero motion/steps | Benchmark native success accepts; otherwise rejected and continue; 2 rejections removes candidate |
 | `ask_help` | No additional measurement | Zero motion/steps | Benchmark replies no human available, continues with concrete recovery candidates |
 
+Before guarded translation, the existing zero-increment OSC hold damps closure motion using public velocity measurements; these controls count toward the same 400-step limit. Planning then predicts that only the selected measured contact surface translates along the selected world axis. The cabinet and other scene points keep their measured positions. Every trajectory sample is screened, with the original collision margins and initial-contact checks; static-world clearance certificates are disabled for this moving-surface assumption. Actual RGB-D registration at each 2 cm checkpoint must confirm progress or stop the skill. This prediction never declares the part moved or the task succeeded. A blocked route or unsettled contact returns `failure` and contributes to the ordinary repeated-action limit.
+
 After motion with a previously verified held object, fresh visible RGB-D bounds are compared with the prior measured bounds transported by the observed EEF rigid transform. If the bounds are separated by more than the existing 15 mm holding-coupling tolerance, the action returns `failure` / `contact_failure` / `public_hold_lost`, marks that anchor `held=false`, and clears its attachment and contact references before generating new candidates. Occluded or stale measurements cannot assert loss. The comparison accounts for wrist rotation and uses public measurements. It checks each selected motion endpoint, including each action passage within a blended chunk. It does not claim continuous RGB-D holding evidence between these checkpoints. A detected loss ends the chunk before any remaining contact action.
 
 Initial lift verification uses that same transported-bounds comparison, a fresh measured lower-bound rise of at least 3 cm, and calibrated nonempty gripper opening. The contact reference retains the complete measured EEF pose after closure, so wrist rotation is included. Visible segmentation centres can change as a surface is uncovered; their displacement remains diagnostic and does not substitute for a material-point track. The 15 mm bounds gap is unchanged. Stale/missing paired motion evidence is `unmeasured`, not success. This endpoint evidence does not establish continuous holding at every intermediate instant or replace private sustained-grasp scoring.
@@ -295,3 +297,110 @@ Exact grasp-query caching keys measured cloud bytes, measured robot pose/fingers
 The development latency configuration may set `VLABudget.controls_per_check=null` to measure once at the end of each returned action block, independent of its length. Native termination and the total control budget are still checked before every control. The initial and post-handoff full measurements remain. This is an executor configuration, never a model option. Dense historical visual checks are stateful; subsampling their saved values is an audit and cannot establish a new branch outcome. The registered N1 pilots pair dense and block cadence on the same saved state and sampling seed.
 
 An independent development configuration, `rgbd_mask_tracking_v1`, can propagate the previous measured instance mask with bidirectional image flow and current depth/appearance checks. Low confidence or a periodic refresh calls the original segmentation service. Each camera retains its own history; episode snapshots restore that history between physical branches. Tracked coordinates are freshly calculated from current RGB-D, and evidence uses operation `rgbd_segmentation_and_tracking/1-dev` plus the per-camera query records. A past SAM score is identity provenance, not a fresh detector probability. This option is disabled by default and excluded from the locked 91307c12 N1 pair. Its saved-frame comparison measures agreement with current SAM, not physical truth or task accuracy.
+
+## USER10/20 10:50 revision: bounded-skills/6, legal/4
+
+This development revision supersedes the preceding executor defaults. Its
+runtime stamp is `libero-bounded-execution/USER1050-1`. It has CPU evidence;
+physical qualification and the registered paired evaluations are separate.
+No training or PRO/confirmation admission is authorized by this interface.
+
+`call_vla` adds finite `preparation` values `in_place` and `initial_pose`.
+Both are published for every measured subtask. `prompt_style` is one of
+`template`, `original_clause`, `full_task`, or `a1_description`; the latter is
+a code-rendered descriptive variant, not a replay of an Astra transcript.
+Failed options expose variants with `seed_variant=1`; sampler offsets are
+applied to inference only, independently of simulator and layout RNG.
+No prompt, speed, force, or arbitrary seed is model-authored.
+
+Requests also publish `instruction_clauses`, split only at explicit action
+connectives. Pronoun replacement reuses the preceding explicit noun phrase.
+Original region language (for example, “middle layer of the drawer”) remains
+verbatim. `mode=instruction, clause_id=i` invokes that public clause without
+binding an anchor. `mode=task` invokes the original public instruction.
+These options remain available when instance binding is unresolved; they do
+not assert any measured held identity. Every ambiguous measured instance
+remains in the catalog. Per-instance crop contrast uses the existing
+segmentation service with class/explicit public noun phrases; it adds
+measurement evidence without selecting an instance or reading task truth.
+
+During a VLA block the monitor reads EEF position, gripper opening and native
+termination. The no-progress window is at least five blocks. A pick proposal
+based on EEF ascent/aperture must pass the existing RGB-D rise and co-motion
+checks after handoff. A fixed 1 cm observation motion can provide the second
+co-motion frame; it is not itself proof of a grasp. Close/push completion
+requires two public confirmations separated by settling. Full scene
+perception runs at the end; subsequent confirmation measures the selected
+entities with the existing mask tracker. Actual controls, preparation,
+verification motion, prompts, sampler seeds and handoff are recorded.
+
+Current-pose robot/payload filtering uses a 12 mm band, greater than the
+unchanged 4 mm swept collision margin. Isolated depth-edge samples need two
+neighbouring surface samples. The measured current overlap may be escaped
+or retained; new/deeper intrusion is rejected. This is a planning convention,
+not a relaxation of grasp/task truth. Selected routes additionally check
+observed arm-link geometry through interpolated public joint solutions.
+Their evidence explicitly excludes self-collision and unseen-space claims.
+
+One measured capture supplies the raw obstacle index, instance membership
+and conservative distance field. Local contact/payload views retain exact
+checks. C2's voxel proof only skips an exact check when conservative bounds
+certify the same result, including the numeric clearance; uncertainty falls
+back to the source check. Damped IK proposals are independently checked by
+source FK, limits and the same local continuity bound before use.
+
+Contact-axis registration first tests an 8 mm coarse grid and refines at
+1 mm. The truncated nearest-surface RMS objective is 1-Lipschitz, so only
+fine samples provably outside the existing compatible-score range are
+skipped. Secondary minima and ambiguous surfaces remain eligible. Saved
+input comparisons must retain the complete numeric result.
+
+Incremental refresh uses hand/payload swept volumes, contacted anchors and
+measured support movement. Cached anchors retain `cached=true` and their
+original `capture_step`. Rendered robot depth uses static visual meshes,
+public joint measurements and the same camera calibration as RGB-D.
+Array encoding runs in an owned background thread; reads, snapshots and
+shutdown wait for pending writes and surface errors. Production diagnostics
+omit redundant public point-cloud dumps while retaining both camera views,
+complete skill traces and private evaluation evidence in separate files.
+
+`progress.version=public-measured-progress/2-goal-directed` tracks distance
+to instruction-bound target regions, directed opening/closing extent and
+signed public contact motion toward that goal. Unrelated anchor motion
+does not count. Repeated action groups require measured absence of target
+progress. The optional `loop_detected` flag is enforced by the shared
+`legal_after` (`public-request-legal/4`). At exhaustion only finish/ask_help
+remain. Original220-only CPU replay r5 with captured camera axes and handle
+normals selects N=11: the sole successful
+episode cut is the user-approved stove-off state39/seed8. N=33 preserves
+every success. The estimated historical wall time saved is 159422.883 s
+and 107791.890 s respectively; this is not an online latency measurement.
+Disabling only the counter leaves loop detection active and
+must not be called “all stopping disabled”. These are internal development
+rules, not LIBERO/PRO benchmark requirements.
+
+Branch checkpoints include `mjSTATE_INTEGRATION`, numeric controller state,
+Python/NumPy/environment RNG, sensor scheduling and artifact cursors. Each
+N1 arm must restore a shared full checkpoint and verify its SHA before its
+first physical request. Historical pairs with different full initial SHAs
+remain descriptive evidence only. Loading a checkpoint from another runtime
+revision invalidates derived geometry caches and records progress migration;
+it does not silently reuse an old collision verdict under the new code.
+
+Reports retain four wall-time stages (perception/candidates/decision/
+execution). Oracle successor planning is separately identified within the
+decision stage; model decoding does not include that diagnostic work.
+
+M7 regenerates schema6 rule labels from each saved original220 observation,
+along newly predicted oracle prefixes. It does not certify old prefixes by
+renaming IDs. Every position binds the exact request, prefix, saved annotation,
+source revision and private outcome contract. The frozen C2 parent inventory
+preserves task/initial-state holdouts and exclusions. All unmeasured VLA
+options remain unknown; no PRO, D2 or confirmation state is admitted.
+Source-eligible effective positions are reported against the old 2414;
+C2 must also recompute cross-split aliases on the rebuilt requests.
+
+B2's expanded VLA catalog is implemented behind `vla_options_v2=false`.
+It becomes active only after the shared schema/contract is synchronized in
+C2's training renderer, inference bridge and HTTP service. Old schema6 rule
+labels never acquire a positive label for a new, unmeasured VLA variant.

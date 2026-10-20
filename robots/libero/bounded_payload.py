@@ -347,7 +347,7 @@ def _surface_registration(predicted, measured, *, reciprocal=False):
 
 
 def contact_axis_registration(reference, current_scene, axis, distance_m, *, endpoint_tolerance_m=.012,
-                              query_workers=1):
+                              query_workers=1, coarse_to_fine=True):
     """Measure a bounded translation without reusing a changing SAM centre.
 
     Fit the pre-contact surface to current self-filtered public depth along
@@ -381,18 +381,37 @@ def contact_axis_registration(reference, current_scene, axis, distance_m, *, end
     # Query shifts in bounded batches. Every source row and shift retains
     # its original order, cap and reduction; only independent NN queries
     # share a call, without numerical approximation or learned geometry.
-    scores, supported = [], []
-    for start in range(0, len(shifts), 8):
-        batch = shifts[start:start+8]
-        offsets = np.zeros((len(batch), 3))
-        offsets[:, axis] = batch
-        # Distances above8mm have the same capped loss and no support.
-        # The next representable bound preserves inclusion at exactly8mm.
-        residual = tree.query((source[None, :, :]+offsets[:, None, :]).reshape(-1, 3),
-            workers=query_workers, distance_upper_bound=np.nextafter(.008, np.inf)
-            )[0].reshape(len(batch), len(source))
-        scores.extend(np.mean(np.minimum(residual, .008)**2, axis=1).tolist())
-        supported.extend(np.mean(residual <= .008, axis=1).tolist())
+    scores, supported = np.full(len(shifts), np.inf), np.zeros(len(shifts))
+    evaluated = np.zeros(len(shifts), bool)
+    def evaluate(indices):
+        for start in range(0, len(indices), 8):
+            ids = np.asarray(indices[start:start+8], dtype=int)
+            offsets = np.zeros((len(ids), 3))
+            offsets[:, axis] = shifts[ids]
+            residual = tree.query((source[None, :, :]+offsets[:, None, :]).reshape(-1, 3),
+                workers=query_workers, distance_upper_bound=np.nextafter(.008, np.inf)
+                )[0].reshape(len(ids), len(source))
+            scores[ids] = np.mean(np.minimum(residual, .008)**2, axis=1)
+            supported[ids] = np.mean(residual <= .008, axis=1)
+            evaluated[ids] = True
+    if coarse_to_fine:
+        # First <=8 mm grid, then 1 mm around its best fit. The truncated
+        # nearest-surface RMS objective is 1-Lipschitz in translation. This
+        # gives a certified lower bound for every remaining fine-grid point;
+        # uncertain secondary minima/ambiguous flat surfaces are still tested.
+        coarse = np.unique(np.r_[np.arange(0,len(shifts),8),len(shifts)-1])
+        evaluate(coarse)
+        centre = shifts[np.argmin(scores)]
+        evaluate(np.flatnonzero(~evaluated & (np.abs(shifts-centre) <= .008)))
+        remaining = np.flatnonzero(~evaluated)
+        if len(remaining):
+            known = np.flatnonzero(evaluated)
+            bounds = np.maximum(0., np.sqrt(scores[known, None])
+                -np.abs(shifts[known, None]-shifts[remaining]))
+            lower = bounds.max(axis=0)**2
+            evaluate(remaining[lower <= scores.min()+.001**2+1e-14])
+    else:
+        evaluate(np.arange(len(shifts)))
     best = int(np.argmin(scores))
     compatible = shifts[np.asarray(scores) <= scores[best]+.001**2]
     translation = np.zeros(3)

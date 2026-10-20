@@ -5,12 +5,25 @@
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
 
 from robots.libero.v5_branch_state import (
     actuator_state,
     attach_branch_state,
     restore_actuators,
 )
+
+
+def test_legacy_projection_checks_every_saved_field_without_claiming_missing_state():
+    from robots.libero.v5_branch_state import captured_projection
+    saved={'actuator_state':{'robots':[{'phase':3}]},'counter':7}
+    current={'actuator_state':{'robots':[{'phase':3,'new_numeric_cache':4}],
+        'integration':{'sha256':'new-only'}},'counter':7}
+    assert captured_projection(current,saved)==saved
+    current['counter']=8
+    assert captured_projection(current,saved)!=saved
+    with pytest.raises(ValueError,match='fields missing'):
+        captured_projection({},saved)
 
 
 def test_branch_open_does_not_change_the_original_holding_command():
@@ -30,6 +43,47 @@ def test_branch_open_does_not_change_the_original_holding_command():
     np.testing.assert_array_equal(gripper.current_action, [1., 1.])
     np.testing.assert_array_equal(controller.goal_pos, [1., 2., 3.])
     np.testing.assert_array_equal(data.ctrl, [.5, .8])
+
+
+def test_branch_restores_numeric_controller_phase_beyond_goal_fields():
+    controller = SimpleNamespace(goal_pos=np.zeros(3), phase=3,
+        integrated_error=np.array([.4]), update=lambda **kwargs: None)
+    env = SimpleNamespace(robots=[SimpleNamespace(gripper=SimpleNamespace(current_action=np.zeros(2)),
+        part_controllers={'arm':controller})], sim=SimpleNamespace(
+        data=SimpleNamespace(), model=SimpleNamespace(body_pos=np.zeros((1,3)),body_quat=np.zeros((1,4))),
+        forward=lambda:None), _get_observations=lambda:{})
+    wrapper = SimpleNamespace(env=env,_update_observables=lambda **kwargs:None)
+    saved = actuator_state(wrapper)
+    controller.phase = 10
+    controller.integrated_error[:] = 20
+    restore_actuators(wrapper,saved)
+    assert controller.phase == 3
+    np.testing.assert_array_equal(controller.integrated_error,[.4])
+
+
+def test_full_native_integration_is_restored_after_forward_and_checksum_verified(monkeypatch):
+    import sys
+    import pytest
+    from robots.libero.v5_branch_state import integration_state
+    native = np.arange(12,dtype=float)
+    model = SimpleNamespace(_model=object(), body_pos=np.zeros((1,3)),body_quat=np.zeros((1,4)))
+    data = SimpleNamespace(_data=native)
+    fake = SimpleNamespace(mjtState=SimpleNamespace(mjSTATE_INTEGRATION=8191),
+        mj_stateSize=lambda m,s:len(native),
+        mj_getState=lambda m,d,out,s:np.copyto(out,d),
+        mj_setState=lambda m,d,values,s:np.copyto(d,values))
+    monkeypatch.setitem(sys.modules,'mujoco',fake)
+    env = SimpleNamespace(robots=[],sim=SimpleNamespace(model=model,data=data,
+        forward=lambda:native.fill(-20)),_get_observations=lambda:{})
+    wrapper = SimpleNamespace(env=env,_update_observables=lambda **kwargs:None)
+    saved = actuator_state(wrapper)
+    native.fill(99)
+    restore_actuators(wrapper,saved)
+    np.testing.assert_array_equal(native,np.arange(12))
+    assert integration_state(env)['sha256'] == saved['integration']['sha256']
+    saved['integration']['values'][0] += 1
+    with pytest.raises(ValueError,match='checksum'):
+        restore_actuators(wrapper,saved)
 
 
 def test_branch_restores_fixture_transform_absent_from_dynamic_state():

@@ -1,4 +1,4 @@
-"""Return one explicitly borrowed schema6 GPU when Codex2 queues a GPU job."""
+"""Return one explicitly borrowed GPU when Codex2 needs its GPU share."""
 import argparse
 import datetime
 import json
@@ -26,10 +26,15 @@ def main():
                 raw = remote(args.host, 'squeue -h -o "%i|%j|%T|%N|%b|%r"')
                 rows = [line.split('|', 5) for line in raw.splitlines()]
                 borrowed = next((row for row in rows if row[0] == str(args.borrow_job)), None)
-                pending = [row[0] for row in rows if row[1].startswith('rd-c2-')
-                    and row[2] == 'PENDING' and 'gpu' in row[4].lower() and row[5] != 'JobHeldUser']
+                c2_active = [row[0] for row in rows if row[1].startswith('rd-c2-')
+                    and row[2] in {'PENDING', 'RUNNING', 'CONFIGURING'}
+                    and 'gpu' in row[4].lower() and row[5] not in {'JobHeldUser', 'JobHeldAdmin'}]
+                c3_running = [row[0] for row in rows if row[1].startswith('rd-c3-')
+                    and row[2] in {'RUNNING', 'CONFIGURING', 'COMPLETING'}
+                    and row[3] == 'node02' and 'gpu' in row[4].lower()]
                 event = {'at': now, 'borrow_job': args.borrow_job,
-                    'borrow_state': borrowed[2] if borrowed else 'not_in_queue', 'c2_pending': pending}
+                    'borrow_state': borrowed[2] if borrowed else 'not_in_queue',
+                    'c2_active': c2_active, 'c3_running': c3_running}
                 if borrowed is not None:
                     if not borrowed[1].startswith('rd-c3-s6-') or borrowed[3] not in {'', 'node02'}:
                         raise ValueError('refuse to modify an unrecognized or non-node02 job')
@@ -39,7 +44,8 @@ def main():
                 # Codex2's start. Recheck when it becomes eligible/running.
                 dependency_wait = (borrowed is not None and borrowed[2] == 'PENDING'
                     and borrowed[5] == 'Dependency')
-                if pending and borrowed is not None and not cancelled and not dependency_wait:
+                if (c2_active and len(c3_running) > 3 and borrowed is not None
+                        and not cancelled and not dependency_wait):
                     pending_since = now
                     remote(args.host, f'scancel {args.borrow_job}')
                     cancelled = True

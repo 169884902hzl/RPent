@@ -574,7 +574,11 @@ def depth_components(world, mask, *, max_gap_m=.012):
     from scipy.sparse.csgraph import connected_components
 
     world, mask = np.asarray(world), np.asarray(mask, dtype=bool)
-    valid = mask & np.isfinite(world).all(axis=2) & (np.linalg.norm(world, axis=2) > 1e-6)
+    # A sparse instance mask does not require norms for the full RGB-D
+    # frame. Preserve row-major vertex/edge order and identical gap tests.
+    valid = np.zeros(mask.shape,dtype=bool)
+    masked = world[mask]
+    valid[mask] = np.isfinite(masked).all(axis=1) & (np.linalg.norm(masked,axis=1)>1e-6)
     labels = np.full(mask.shape, -1, dtype=int)
     pixels = np.flatnonzero(valid)
     if not len(pixels):
@@ -583,7 +587,8 @@ def depth_components(world, mask, *, max_gap_m=.012):
     first, second = [], []
     for dy, dx in ((0, 1), (1, 0)):
         a, b = (slice(0, -dy or None), slice(0, -dx or None)), (slice(dy, None), slice(dx, None))
-        linked = valid[a] & valid[b] & (np.linalg.norm(world[a] - world[b], axis=2) <= max_gap_m)
+        linked = valid[a] & valid[b]
+        linked[linked] = np.linalg.norm(world[a][linked]-world[b][linked],axis=1) <= max_gap_m
         first.append(labels[a][linked])
         second.append(labels[b][linked])
     i, j = np.concatenate(first), np.concatenate(second)

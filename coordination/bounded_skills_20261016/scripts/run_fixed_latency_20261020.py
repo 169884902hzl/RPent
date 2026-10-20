@@ -63,6 +63,34 @@ def require_physical_startup(result):
         raise RuntimeError('startup ended without a completed physical request')
 
 
+def common_start(args, facade, adapter, policy, probe):
+    """Share complete integration/controller/RNG state across source processes."""
+    if getattr(args,'common_starts',None) is None:
+        return None
+    import pickle
+    root=args.common_starts
+    root.mkdir(parents=True,exist_ok=True)
+    path=root/f'{"startup" if args.startup else "state"}_{args.worker:03d}.pkl'
+    if args.initial_mode=='create' and not path.exists():
+        probe.save_checkpoint(facade,adapter,policy,path)
+    if not path.exists():
+        raise ValueError('shared baseline initial state is missing: '+str(path))
+    saved=pickle.loads(path.read_bytes())
+    integration=saved['physics']['actuator_state'].get('integration')
+    if integration is None:
+        raise ValueError('strict pair requires mjSTATE_INTEGRATION; legacy hash cannot be repaired')
+    probe.restore_checkpoint(facade,adapter,policy,saved)
+    expected=probe.snapshot_digest(saved['physics'])
+    actual=probe.snapshot_digest(facade.snapshot())
+    evidence={'checkpoint':str(path),'checkpoint_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+        'expected_complete_initial_sha256':expected,'actual_complete_initial_sha256':actual,
+        'integration_sha256':integration['sha256'],'source_role':args.initial_mode}
+    write(args.output/'common_initial_verified.json',evidence)
+    if actual!=expected:
+        raise ValueError('complete integration/controller/RNG initial state differs; pair not admitted')
+    return evidence
+
+
 def worker(args, plan):
     sys.path.insert(0, str(args.source))
     hooks = module(args.source/'coordination/bounded_skills_20261016/scripts/shared_gpu_episodes_20261019.py', 'latency_hooks')
@@ -145,6 +173,17 @@ def worker(args, plan):
         try:
             if row['runner'] == 'vla_continuation':
                 from scripts import probe_bounded_hybrid_repair as repair
+                if args.common_starts is not None:
+                    original_trial=probe.trial
+                    def paired_trial(*positional,**keywords):
+                        facade,adapter,policy=positional[:3]
+                        evidence=common_start(args,facade,adapter,policy,probe)
+                        values=list(positional)
+                        values[8]=adapter.request(k=4)
+                        result,endpoint=original_trial(*values,**keywords)
+                        result['common_initial']=evidence
+                        return result,endpoint
+                    probe.trial=paired_trial
                 result = repair.evaluate_case(row['case'], endpoints, args.output/'episode',
                     {'evaluation':'hybrid_repair', 'training':False, 'confirmation':False,
                      'source_commit':plan['baseline_commit'], 'schema6_source':plan.get('schema6_source',False),
@@ -173,11 +212,12 @@ def bounded_episode(args, row, endpoints, probe):
     case = row['case']
     with probe.runtime(case, endpoints, args.output/'episode', domain=row['domain']) as (facade, adapter, policy, timings):
         adapter.allow_vla = False
+        common_initial=common_start(args,facade,adapter,policy,probe)
         initial_snapshot = facade.snapshot()
         import pickle
         (args.output/'private_initial_physics.pkl').write_bytes(pickle.dumps(initial_snapshot,protocol=5))
         initial_physics_sha256 = probe.snapshot_digest(initial_snapshot)
-        for index in range(160):
+        for index in range(getattr(args,'decision_limit',160)):
             if adapter.p.env.terminated or adapter.p.env.truncated:
                 break
             begin = time.perf_counter()
@@ -234,6 +274,7 @@ def bounded_episode(args, row, endpoints, probe):
             'wall_s':time.perf_counter()-started, 'timings':timings.summary(time.perf_counter()-timings.started),
             'source_commit':os.environ.get('SOURCE_COMMIT'), 'training':False,
             'initial_physics_sha256': initial_physics_sha256,
+            'common_initial':common_initial,
             'stop_reason': stop_reason,
             'candidate_ids':[loop['decision']['candidate_ids'] if loop['decision'] else None for loop in loops]}
 
@@ -247,9 +288,15 @@ def main():
     parser.add_argument('--worker', type=int)
     parser.add_argument('--startup', action='store_true')
     parser.add_argument('--startup-only', action='store_true')
+    parser.add_argument('--common-starts',type=Path)
+    parser.add_argument('--initial-mode',choices=('create','restore'))
     parser.add_argument('--indices', type=int, nargs='+',
         help='Registered indices; omitted means all 32, in registration order')
     args=parser.parse_args()
+    if (args.common_starts is None)!=(args.initial_mode is None):
+        raise ValueError('common-starts and initial-mode must be provided together')
+    if args.common_starts is not None:
+        args.common_starts=args.common_starts.resolve()
     args.source=args.source.resolve(strict=True)
     args.manifest=args.manifest.resolve(strict=True)
     plan=json.loads(args.manifest.read_bytes())
@@ -325,6 +372,8 @@ def main():
             write(output/'assignment.json',{key+'_url':client._base_url for key,client in endpoints.items()})
             command=[sys.executable,str(Path(__file__).resolve()),'--manifest',str(args.manifest),
                 '--source',str(args.source),'--output',str(output),'--worker',str(index)]
+            if args.common_starts is not None:
+                command.extend(['--common-starts',str(args.common_starts),'--initial-mode',args.initial_mode])
             if startup: command.append('--startup')
             with (output/'worker.log').open('x')as log:
                 result=subprocess.run(command,env=env,stdout=log,stderr=subprocess.STDOUT)

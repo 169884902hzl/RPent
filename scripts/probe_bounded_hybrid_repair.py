@@ -111,9 +111,10 @@ def restore_original_subtask(facade, adapter, policy, reference):
     adapter.p.set_obs(observed)
     actual = facade.snapshot()
     legacy = 'observation_state' not in physics['actuator_state']
-    if legacy:
-        actual = {**actual, 'actuator_state': {key: value
-            for key, value in actual['actuator_state'].items() if key != 'observation_state'}}
+    complete_integration = physics['actuator_state'].get('integration') is not None
+    if not complete_integration:
+        from robots.libero.v5_branch_state import captured_projection
+        actual = captured_projection(actual,physics)
     if probe.snapshot_digest(actual) != probe.snapshot_digest(physics):
         raise ValueError('original subtask start physics did not restore exactly')
     old_adapter = captured['adapter']
@@ -139,6 +140,7 @@ def restore_original_subtask(facade, adapter, policy, reference):
         adapter._screen_cache.clear()
     return {'physics': reference['physics'], 'annotation': reference['annotation'],
         'same_captured_physics': True, 'historical_observation_phase_available': not legacy,
+        'historical_complete_integration_available':complete_integration,
         'public_reconstruction': 'fresh_dual_view_rgbd; old_public_anchor_ids_associated_then_unmeasured_dropped',
         'recovery_history': 'fresh_and_identical_in_both_arms', 'held_id_after_measurement': adapter.held,
         'simulation_object_coordinates_imported_to_public_state': False}
