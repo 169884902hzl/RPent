@@ -1,0 +1,183 @@
+{
+  "source_commit": "3968bdb4f5f88c63be1a60fc34d955ff169af5b3",
+  "rows": [
+    {
+      "trial": 1,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_public_binding_hybrid_20261020/3968bdb4/job10686_0/N8/005_libero_goal_swap_t0_s40/libero_goal_swap_t0_s40/subtask00_open/call_vla_1/choices.jsonl",
+        "sha256": "1c5e34260bd8286c94680dabf48a26102de0fddaed802915a4db28639874a81b"
+      },
+      "private_subtask": {
+        "goal_index": 0,
+        "goal": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "source_symbol": "wooden_cabinet_1_middle_region",
+        "id": "g0:open",
+        "mode": "open",
+        "target_symbol": null
+      },
+      "public_task": {
+        "instruction": "Open the middle layer of the drawer"
+      },
+      "anchors": [
+        {
+          "id": "e118",
+          "label": "cabinet",
+          "xyz_m": [
+            -0.20121103525161743,
+            -0.1778847724199295,
+            1.00173020362854
+          ]
+        },
+        {
+          "id": "e75",
+          "label": "table",
+          "xyz_m": [
+            0.1037234365940094,
+            0.0906236432492733,
+            0.9002764821052551
+          ]
+        },
+        {
+          "id": "e113",
+          "label": "cabinet top surface",
+          "xyz_m": [
+            -0.22610187530517578,
+            -0.17787864804267883,
+            1.0327363014221191
+          ]
+        }
+      ],
+      "template": {
+        "version": "measured-libero-subtask/3-pi05-view",
+        "mode": "open",
+        "prompt": "open the cabinet"
+      },
+      "controls": 25,
+      "private_success": false,
+      "public_stop": "no_progress_blocks"
+    },
+    {
+      "trial": 2,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_public_binding_hybrid_20261020/3968bdb4/job10686_0/N8/005_libero_goal_swap_t0_s40/libero_goal_swap_t0_s40/subtask00_open/call_vla_2/choices.jsonl",
+        "sha256": "3b1e64f2b0bb1c7b324e64bf1546df7e92dfbf13f565648aacc89aafe66f2e69"
+      },
+      "private_subtask": {
+        "goal_index": 0,
+        "goal": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "source_symbol": "wooden_cabinet_1_middle_region",
+        "id": "g0:open",
+        "mode": "open",
+        "target_symbol": null
+      },
+      "public_task": {
+        "instruction": "Open the middle layer of the drawer"
+      },
+      "anchors": [
+        {
+          "id": "e118",
+          "label": "cabinet",
+          "xyz_m": [
+            -0.20121103525161743,
+            -0.1778847724199295,
+            1.00173020362854
+          ]
+        },
+        {
+          "id": "e75",
+          "label": "table",
+          "xyz_m": [
+            0.1037234365940094,
+            0.0906236432492733,
+            0.9002764821052551
+          ]
+        },
+        {
+          "id": "e113",
+          "label": "cabinet top surface",
+          "xyz_m": [
+            -0.22610187530517578,
+            -0.17787864804267883,
+            1.0327363014221191
+          ]
+        }
+      ],
+      "template": {
+        "version": "measured-libero-subtask/3-pi05-view",
+        "mode": "open",
+        "prompt": "open the cabinet"
+      },
+      "controls": 30,
+      "private_success": false,
+      "public_stop": "no_progress_blocks"
+    },
+    {
+      "trial": 3,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_public_binding_hybrid_20261020/3968bdb4/job10686_0/N8/005_libero_goal_swap_t0_s40/libero_goal_swap_t0_s40/subtask00_open/call_vla_3/choices.jsonl",
+        "sha256": "f775101687052605ccf200c0d68e9804d95c79915b6809e7758063407429b1f8"
+      },
+      "private_subtask": {
+        "goal_index": 0,
+        "goal": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "source_symbol": "wooden_cabinet_1_middle_region",
+        "id": "g0:open",
+        "mode": "open",
+        "target_symbol": null
+      },
+      "public_task": {
+        "instruction": "Open the middle layer of the drawer"
+      },
+      "anchors": [
+        {
+          "id": "e118",
+          "label": "cabinet",
+          "xyz_m": [
+            -0.20121103525161743,
+            -0.1778847724199295,
+            1.00173020362854
+          ]
+        },
+        {
+          "id": "e75",
+          "label": "table",
+          "xyz_m": [
+            0.1037234365940094,
+            0.0906236432492733,
+            0.9002764821052551
+          ]
+        },
+        {
+          "id": "e113",
+          "label": "cabinet top surface",
+          "xyz_m": [
+            -0.22610187530517578,
+            -0.17787864804267883,
+            1.0327363014221191
+          ]
+        }
+      ],
+      "template": {
+        "version": "measured-libero-subtask/3-pi05-view",
+        "mode": "open",
+        "prompt": "open the cabinet"
+      },
+      "controls": 30,
+      "private_success": false,
+      "public_stop": "no_progress_blocks"
+    }
+  ],
+  "observation": "public request exposes cabinet and cabinet top surface, but no separate drawer anchor; the VLA prompt therefore lacks an ordinal drawer target",
+  "inference_limit": "these failures do not establish inability of pi0.5 to execute the original fully specified middle-drawer sentence; no such extra prompt was sent",
+  "training": false,
+  "physics_steps": 0
+}

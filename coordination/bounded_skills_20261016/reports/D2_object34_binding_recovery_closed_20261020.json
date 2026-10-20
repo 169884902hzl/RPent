@@ -1,0 +1,1115 @@
+{
+  "rows": [
+    {
+      "case": {
+        "name": "libero_object_task_t3_s40",
+        "episode": {
+          "suite": "libero_object_task",
+          "task": 3,
+          "seed": 40
+        },
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_object_task/pick_up_the_bbq_sauce_and_place_it_in_the_basket.bddl",
+          "sha256": "8c74c1db216913d2d5d321613e0c7de99398005493e3792d1d9e329a9e03e0a9"
+        },
+        "state_sha256": "6cfa4caa523ac16df0ca13a27cd01e9e50941ad2b5daab881abb92c1ca4706f2"
+      },
+      "source_commit": "3968bdb4f5f88c63be1a60fc34d955ff169af5b3",
+      "worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10688_2/N8/004_libero_object_task_t3_s40/worker_summary.json",
+        "sha256": "7b5dec6a5261fe99e1f95453a2345755df8fc630dccbe2581da13c7172806d97"
+      },
+      "trials": [
+        {
+          "method": "self",
+          "trial_seed": 28400000,
+          "reason": "source_binding_missing",
+          "success": false,
+          "sim_steps": 46,
+          "decisions": 5,
+          "vla_inference_calls": 0,
+          "binding_recovery": [
+            {
+              "decision": 0,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 1,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 2,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            },
+            {
+              "decision": 3,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            }
+          ],
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10688_2/N8/004_libero_object_task_t3_s40/libero_object_task_t3_s40/subtask00_pick/self_0/choices.jsonl",
+            "sha256": "4320e4a2e2445bea0f2adf14a67051fdde109e64eb233be69ddf66b711b45b78"
+          },
+          "final_instruction": "Pick the ketchup and place it in the basket",
+          "final_anchors": [
+            {
+              "id": "e118",
+              "label": "basket",
+              "frame": "world",
+              "xyz_m": [
+                0.060614727437496185,
+                0.2708247900009155,
+                0.09328632056713104
+              ],
+              "size_m": [
+                0.14774054586887359,
+                0.16124618351459508,
+                0.13240998629480602
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.87109375,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:3:e118",
+                  "capture_step": 3,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e75",
+              "label": "ketchup",
+              "frame": "world",
+              "xyz_m": [
+                -0.13510226044389936,
+                0.053069986402988434,
+                0.07870497448103768
+              ],
+              "size_m": [
+                0.03490912467241289,
+                0.059680764128764455,
+                0.14149978450062037
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.84765625,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:3:e75",
+                  "capture_step": 3,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e113",
+              "label": "ketchup",
+              "frame": "world",
+              "xyz_m": [
+                0.053909216076135635,
+                -0.10358155518770218,
+                0.05435546115040779
+              ],
+              "size_m": [
+                0.01960226371884346,
+                0.04420222491025924,
+                0.10819687251932919
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.4453125,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:3:e113",
+                  "capture_step": 3,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "method": "call_vla",
+          "trial_seed": 28401000,
+          "reason": "source_binding_missing",
+          "success": false,
+          "sim_steps": 46,
+          "decisions": 5,
+          "vla_inference_calls": 0,
+          "binding_recovery": [
+            {
+              "decision": 0,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 1,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 2,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            },
+            {
+              "decision": 3,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            }
+          ],
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10688_2/N8/004_libero_object_task_t3_s40/libero_object_task_t3_s40/subtask00_pick/call_vla_1/choices.jsonl",
+            "sha256": "3c4e9580155bb34221f0b96025bdb8a85f16cda3782d0f9851c7a7b6104f4b31"
+          },
+          "final_instruction": "Pick the ketchup and place it in the basket",
+          "final_anchors": [
+            {
+              "id": "e118",
+              "label": "basket",
+              "frame": "world",
+              "xyz_m": [
+                0.060614727437496185,
+                0.2708247900009155,
+                0.09328632056713104
+              ],
+              "size_m": [
+                0.14774054586887359,
+                0.16124618351459508,
+                0.13240998629480602
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.87109375,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:7:e118",
+                  "capture_step": 7,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e75",
+              "label": "ketchup",
+              "frame": "world",
+              "xyz_m": [
+                -0.13510226044389936,
+                0.053069986402988434,
+                0.07870497448103768
+              ],
+              "size_m": [
+                0.03490912467241289,
+                0.059680764128764455,
+                0.14149978450062037
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.84765625,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:7:e75",
+                  "capture_step": 7,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e113",
+              "label": "ketchup",
+              "frame": "world",
+              "xyz_m": [
+                0.053909216076135635,
+                -0.10358155518770218,
+                0.05435546115040779
+              ],
+              "size_m": [
+                0.01960226371884346,
+                0.04420222491025924,
+                0.10819687251932919
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.4453125,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:7:e113",
+                  "capture_step": 7,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "method": "call_vla",
+          "trial_seed": 28402000,
+          "reason": "source_binding_missing",
+          "success": false,
+          "sim_steps": 46,
+          "decisions": 5,
+          "vla_inference_calls": 0,
+          "binding_recovery": [
+            {
+              "decision": 0,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 1,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 2,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            },
+            {
+              "decision": 3,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            }
+          ],
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10688_2/N8/004_libero_object_task_t3_s40/libero_object_task_t3_s40/subtask00_pick/call_vla_2/choices.jsonl",
+            "sha256": "442bf440b74c39610c803442284e3a158657b5ac143a8be2200c9006f4e9b6f7"
+          },
+          "final_instruction": "Pick the ketchup and place it in the basket",
+          "final_anchors": [
+            {
+              "id": "e118",
+              "label": "basket",
+              "frame": "world",
+              "xyz_m": [
+                0.060614727437496185,
+                0.2708247900009155,
+                0.09328632056713104
+              ],
+              "size_m": [
+                0.14774054586887359,
+                0.16124618351459508,
+                0.13240998629480602
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.87109375,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:11:e118",
+                  "capture_step": 11,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e75",
+              "label": "ketchup",
+              "frame": "world",
+              "xyz_m": [
+                -0.13510226044389936,
+                0.053069986402988434,
+                0.07870497448103768
+              ],
+              "size_m": [
+                0.03490912467241289,
+                0.059680764128764455,
+                0.14149978450062037
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.84765625,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:11:e75",
+                  "capture_step": 11,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e113",
+              "label": "ketchup",
+              "frame": "world",
+              "xyz_m": [
+                0.053909216076135635,
+                -0.10358155518770218,
+                0.05435546115040779
+              ],
+              "size_m": [
+                0.01960226371884346,
+                0.04420222491025924,
+                0.10819687251932919
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.4453125,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:11:e113",
+                  "capture_step": 11,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "method": "call_vla",
+          "trial_seed": 28403000,
+          "reason": "source_binding_missing",
+          "success": false,
+          "sim_steps": 46,
+          "decisions": 5,
+          "vla_inference_calls": 0,
+          "binding_recovery": [
+            {
+              "decision": 0,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 1,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 2,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            },
+            {
+              "decision": 3,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            }
+          ],
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10688_2/N8/004_libero_object_task_t3_s40/libero_object_task_t3_s40/subtask00_pick/call_vla_3/choices.jsonl",
+            "sha256": "4884789367820388770cb379cd603a0bcbfdf06cb3f40b4c44c0008be90dc8fb"
+          },
+          "final_instruction": "Pick the ketchup and place it in the basket",
+          "final_anchors": [
+            {
+              "id": "e118",
+              "label": "basket",
+              "frame": "world",
+              "xyz_m": [
+                0.060614727437496185,
+                0.2708247900009155,
+                0.09328632056713104
+              ],
+              "size_m": [
+                0.14774054586887359,
+                0.16124618351459508,
+                0.13240998629480602
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.87109375,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:15:e118",
+                  "capture_step": 15,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e75",
+              "label": "ketchup",
+              "frame": "world",
+              "xyz_m": [
+                -0.13510226044389936,
+                0.053069986402988434,
+                0.07870497448103768
+              ],
+              "size_m": [
+                0.03490912467241289,
+                0.059680764128764455,
+                0.14149978450062037
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.84765625,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:15:e75",
+                  "capture_step": 15,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e113",
+              "label": "ketchup",
+              "frame": "world",
+              "xyz_m": [
+                0.053909216076135635,
+                -0.10358155518770218,
+                0.05435546115040779
+              ],
+              "size_m": [
+                0.01960226371884346,
+                0.04420222491025924,
+                0.10819687251932919
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.4453125,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:15:e113",
+                  "capture_step": 15,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": {
+        "name": "libero_object_task_t4_s40",
+        "episode": {
+          "suite": "libero_object_task",
+          "task": 4,
+          "seed": 40
+        },
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_object_task/pick_up_the_ketchup_and_place_it_in_the_basket.bddl",
+          "sha256": "7ca5d3f6a26f08fb060a20c95f814034e52280354d858115cec5bd3ebb284d6c"
+        },
+        "state_sha256": "75e56ab11c1290d62b23961951d366f5a22071ca9fc560dceb98ec7c79b2c770"
+      },
+      "source_commit": "3968bdb4f5f88c63be1a60fc34d955ff169af5b3",
+      "worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10689_3/N8/004_libero_object_task_t4_s40/worker_summary.json",
+        "sha256": "eac9eb97fa2951de8ef4ae4781130bd0489f86ec0860aeb9940ca5c7f93c6f51"
+      },
+      "trials": [
+        {
+          "method": "self",
+          "trial_seed": 29400000,
+          "reason": "source_binding_missing",
+          "success": false,
+          "sim_steps": 46,
+          "decisions": 5,
+          "vla_inference_calls": 0,
+          "binding_recovery": [
+            {
+              "decision": 0,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 1,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 2,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            },
+            {
+              "decision": 3,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            }
+          ],
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10689_3/N8/004_libero_object_task_t4_s40/libero_object_task_t4_s40/subtask00_pick/self_0/choices.jsonl",
+            "sha256": "d61a7c93702d251788a11de7549c15ab5aed0d91cfdd78004ecd0ae3e9074973"
+          },
+          "final_instruction": "Pick the milk and place it in the basket",
+          "final_anchors": [
+            {
+              "id": "e118",
+              "label": "basket",
+              "frame": "world",
+              "xyz_m": [
+                0.08107499033212662,
+                0.24570417404174805,
+                0.09489797800779343
+              ],
+              "size_m": [
+                0.14872992128133772,
+                0.16103216886520383,
+                0.13214733485132454
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.89453125,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:3:e118",
+                  "capture_step": 3,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e75",
+              "label": "milk",
+              "frame": "world",
+              "xyz_m": [
+                -0.17279615253210068,
+                -0.07713264226913452,
+                0.08052917569875717
+              ],
+              "size_m": [
+                0.049850174021862786,
+                0.05113017700080361,
+                0.13121929872905214
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.84375,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:3:e75",
+                  "capture_step": 3,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e113",
+              "label": "milk",
+              "frame": "world",
+              "xyz_m": [
+                0.14891996483008066,
+                0.030871997742603224,
+                0.01796482759527862
+              ],
+              "size_m": [
+                0.08189019173383713,
+                0.039557901893845865,
+                0.015530253831679238
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.81640625,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:3:e113",
+                  "capture_step": 3,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "method": "call_vla",
+          "trial_seed": 29401000,
+          "reason": "source_binding_missing",
+          "success": false,
+          "sim_steps": 46,
+          "decisions": 5,
+          "vla_inference_calls": 0,
+          "binding_recovery": [
+            {
+              "decision": 0,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 1,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 2,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            },
+            {
+              "decision": 3,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            }
+          ],
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10689_3/N8/004_libero_object_task_t4_s40/libero_object_task_t4_s40/subtask00_pick/call_vla_1/choices.jsonl",
+            "sha256": "110539c218730cceb0ac8d3cec9dead8a1e32860a2c0ee9775cb55960d896ee9"
+          },
+          "final_instruction": "Pick the milk and place it in the basket",
+          "final_anchors": [
+            {
+              "id": "e118",
+              "label": "basket",
+              "frame": "world",
+              "xyz_m": [
+                0.08107499033212662,
+                0.24570417404174805,
+                0.09489797800779343
+              ],
+              "size_m": [
+                0.14872992128133772,
+                0.16103216886520383,
+                0.13214733485132454
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.89453125,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:7:e118",
+                  "capture_step": 7,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e75",
+              "label": "milk",
+              "frame": "world",
+              "xyz_m": [
+                -0.17279615253210068,
+                -0.07713264226913452,
+                0.08052917569875717
+              ],
+              "size_m": [
+                0.049850174021862786,
+                0.05113017700080361,
+                0.13121929872905214
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.84375,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:7:e75",
+                  "capture_step": 7,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e113",
+              "label": "milk",
+              "frame": "world",
+              "xyz_m": [
+                0.14891996483008066,
+                0.030871997742603224,
+                0.01796482759527862
+              ],
+              "size_m": [
+                0.08189019173383713,
+                0.039557901893845865,
+                0.015530253831679238
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.81640625,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:7:e113",
+                  "capture_step": 7,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "method": "call_vla",
+          "trial_seed": 29402000,
+          "reason": "source_binding_missing",
+          "success": false,
+          "sim_steps": 46,
+          "decisions": 5,
+          "vla_inference_calls": 0,
+          "binding_recovery": [
+            {
+              "decision": 0,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 1,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 2,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            },
+            {
+              "decision": 3,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            }
+          ],
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10689_3/N8/004_libero_object_task_t4_s40/libero_object_task_t4_s40/subtask00_pick/call_vla_2/choices.jsonl",
+            "sha256": "50f635c93350316d7aa84239f7d91c3daabfdce5209d7c8b4daaa7591838d721"
+          },
+          "final_instruction": "Pick the milk and place it in the basket",
+          "final_anchors": [
+            {
+              "id": "e118",
+              "label": "basket",
+              "frame": "world",
+              "xyz_m": [
+                0.08107499033212662,
+                0.24570417404174805,
+                0.09489797800779343
+              ],
+              "size_m": [
+                0.14872992128133772,
+                0.16103216886520383,
+                0.13214733485132454
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.89453125,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:11:e118",
+                  "capture_step": 11,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e75",
+              "label": "milk",
+              "frame": "world",
+              "xyz_m": [
+                -0.17279615253210068,
+                -0.07713264226913452,
+                0.08052917569875717
+              ],
+              "size_m": [
+                0.049850174021862786,
+                0.05113017700080361,
+                0.13121929872905214
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.84375,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:11:e75",
+                  "capture_step": 11,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e113",
+              "label": "milk",
+              "frame": "world",
+              "xyz_m": [
+                0.14891996483008066,
+                0.030871997742603224,
+                0.01796482759527862
+              ],
+              "size_m": [
+                0.08189019173383713,
+                0.039557901893845865,
+                0.015530253831679238
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.81640625,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:11:e113",
+                  "capture_step": 11,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "method": "call_vla",
+          "trial_seed": 29403000,
+          "reason": "source_binding_missing",
+          "success": false,
+          "sim_steps": 46,
+          "decisions": 5,
+          "vla_inference_calls": 0,
+          "binding_recovery": [
+            {
+              "decision": 0,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 1,
+              "reason": "source_binding_missing",
+              "candidate_id": "1f9311eb6c9f6bb8",
+              "mode": "wrist_scan"
+            },
+            {
+              "decision": 2,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            },
+            {
+              "decision": 3,
+              "reason": "source_binding_missing",
+              "candidate_id": "027cea6b4534fa9c",
+              "mode": "refresh"
+            }
+          ],
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/job10689_3/N8/004_libero_object_task_t4_s40/libero_object_task_t4_s40/subtask00_pick/call_vla_3/choices.jsonl",
+            "sha256": "056184e4b6d1dceaa81a5ec93447ba45ac9d8f68407677712c1fb6da9f7e2b2e"
+          },
+          "final_instruction": "Pick the milk and place it in the basket",
+          "final_anchors": [
+            {
+              "id": "e118",
+              "label": "basket",
+              "frame": "world",
+              "xyz_m": [
+                0.08107499033212662,
+                0.24570417404174805,
+                0.09489797800779343
+              ],
+              "size_m": [
+                0.14872992128133772,
+                0.16103216886520383,
+                0.13214733485132454
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.89453125,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:15:e118",
+                  "capture_step": 15,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e75",
+              "label": "milk",
+              "frame": "world",
+              "xyz_m": [
+                -0.17279615253210068,
+                -0.07713264226913452,
+                0.08052917569875717
+              ],
+              "size_m": [
+                0.049850174021862786,
+                0.05113017700080361,
+                0.13121929872905214
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.84375,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:15:e75",
+                  "capture_step": 15,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            },
+            {
+              "id": "e113",
+              "label": "milk",
+              "frame": "world",
+              "xyz_m": [
+                0.14891996483008066,
+                0.030871997742603224,
+                0.01796482759527862
+              ],
+              "size_m": [
+                0.08189019173383713,
+                0.039557901893845865,
+                0.015530253831679238
+              ],
+              "quat_xyzw": null,
+              "confidence": 0.81640625,
+              "cached": false,
+              "evidence": [
+                {
+                  "measurement_id": "rgbd:15:e113",
+                  "capture_step": 15,
+                  "source": "rgbd",
+                  "cameras": [
+                    "main",
+                    "wrist"
+                  ],
+                  "operation": "segmented_rgbd_bounds"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "finding": "two wrist scans and two refreshes leave duplicate public class names; no VLA inference; public ambiguity remains unresolved",
+  "training": false,
+  "scope": "two D2 development states; no PRO-specific rule added"
+}

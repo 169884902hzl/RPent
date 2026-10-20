@@ -1,3 +1,36 @@
+## 当前进度（2026-10-20，原版三分叉已闭合）
+
+- 原版10682三片均结束；_1唯一旧S15 SubtaskBindingError保留，3968补跑三种子2/3，无基础设施中断。71状态π三次213条全部闭合：接口178/213，实际调用178/201，12条无推理预备拒绝。完整分类、Wilson、逐状态CSV见reports/original71_pi_closed_20261020.*。自身只有首批26条已闭合，不将余下未执行/partial填为失败。
+- D2四片10686_0/10687_1/10688_2/10689_3仍运行，无新程序错误；唯一派发器4104878每分钟检查。source3968不变，后3片缓存SAM；node02暂借第4卡，80CPU/560GB，无C2 GPU可调度作业。
+- object_task_t3/t4新源物理腕扫2+刷新2后，两个同名公开锚点仍存在，4分支均source_binding_missing、各46仿真步、无π推理。这是公开感知误检歧义，不是π接触失败，也不是缺PRO专用规则。
+- 独立重放补全新增支持“已执行前缀原样保留，从保存终点继续”，summary+diagnostic38项CPU和shared3项通过。goal_task_t3/object_task_t3/t4均CPU预检通过，10687共享服务逐条补实际重放；工具session39615，输出D2_missing_replay_20261020/3968bdb4/*_r3，不申请新GPU、不改原始分支。goal_swap_t0的r2实际失败已闭合。
+- 本段以下是历史检查点，勿据旧pending描述重复启动/释放/取消作业。
+
+## 最新闭合、源与下一步（约05:38 UTC）
+
+- 原版10682_0已COMPLETED0:0（2:39），派发器4104878已自动接续10687_1（缓存SAM、source3968）；10682_1/2与10686_0仍R。唯一日志monitor_cached_D2_and_original_20261020.log，首新片6d81 launcher/2372 SAMEntry。余batch2/3尚待卡；没有旧held释放。
+- S15修复原版三seed raw10684.2/session22167：trial1/2均native成功，264/238步；第三仍R（05:20时33块）。这个父allocation不能手动取消。当前新cache实际source6755只用于新片，不热改旧10686/10682。
+- 缺失实际整局补跑已完成：新脚本replay_missing_D2_episode_20261020.py的r1漏接shared request compatibility，10686.0 FAILED1:0、0物理。已补接，r2不可变副本replay_missing_D2_episode_20261020_r2.py，CPUplan SHA545f9889942332239a6f91c094426b7584cd9f0b748030e752c2f50e553763b3；10686.1 COMPLETED0:0，9决策425步、native/predicate都False。initial hash e059ded752df312daa499ad27d82d6a4ebe58b5cba17ae1135936f2a0cab53fd精确匹配。目录D2_missing_replay_20261020/3968bdb4/goal_swap_t0_r2；summary SHA360f7eadc7abb887776e8eec4d897700dc29ff69cbffa0c55b2250ba7e44e5f6。
+- 该补跑不是覆盖原四分支；读者新增--replay-supplement，校验source/case/原结果字节/初态/方法/顺序/独立seed，拒绝替换已有实际重放或重复supplement；36项summary+diagnostic CPU通过，4项shared startup回归通过。真实合并D2_goal0_actual_replay_merged_20261020.json计0/1，39未观测，both_failed仍1。reader不可变副本summarize_bounded_hybrid_d2_supp_e4dc0116_20261020.py，SHA e4dc0116edbdf61d04217b9786c106c87ac1cba44287630d1ef9439f99ace393。根live robots包会遮蔽PYTHONPATH，执行此CPU副本需先sys.path.insert(0,immutable_source)再runpy.run_path；先前那次CPU导入失败无物理，未生成报告。
+- 新script/reader/测试与补跑证据尚未提交；HEAD仍cad5c3a7已推送。下一步逐文件提交这些已物理/CPU验证的改动，更新主报告/COORD状态，继续盯原版尾部和新D2。不要重写被报告SHA引用的远端r1/r2/reader副本。
+- 新真实卡点：goal_swap_t0公开instruction=Open the middle layer of the drawer；公开锚点仅cabinet/table/cabinet top surface，π模板open the cabinet，三次25/30/30步no_progress。诊断goal_swap_t0_public_target_granularity_CPU_20261020.json。是公开部件粒度缺失/提示不足，不能推断π本体不会原版明确中层句；不要读私有目标注入提示或写PRO特例。
+- 原版余39 r4：34worker闭合、108π；实际102成功90、无π6；唯一程序错误旧S15。5个尾部都是microwave open/close，全部已达分叉；没有杯子prefix假设，杯子均已闭合。新卡10687_1正式cache效果与输入字段已从launch核对，真实物理prefix统计见tool session14590。
+- COORD最新错误修复追加offset6906294395..6906295482，SHA68e9699399c30114aa1a4295b0263f7c338b9e7580b19d404dfa56a9056cc164。所有D2 eval-only不训练；确认永久排除。队列未清不结束。
+
+## 实际补上遗漏的整局重放（05:15 UTC）
+
+- 3968新批也已闭合goal_swap_t0（job10686_0/N8/005...），四分支全失败、full_replay空。新增脚本replay_missing_D2_episode_20261020.py，仅从该case已保存private_initial恢复，沿raw selection（包括零比零self）实际执行；原始四条不改。CPU预检plan SHA0cdac443665c91b39ac86440be2b8a7aef3f6f545d0773fe59a207beb90f30ad通过；物理在raw10686.0启动，工具session下一输出记录。目录D2_missing_replay_20261020/3968bdb4/goal_swap_t0。
+- 该新脚本尚未提交。实际结果闭合后再接到新汇总，必须核原case-result SHA、source、case、无已有有效独立重放，不能用补跑择优覆盖旧实际失败。当前reader又补了“实际执行后native成功优先”和“两边零成功仍按已登记self实际执行失败可计”两回归，聚焦12项通过；这两小改也未提交。
+- 现唯一派发器4104878；四R：原版10682三片＋新D2 10686_0。尚无余3片提交，等原版释放GPU。cache入口及3968 startup2/2均已通过。S15修复三seed raw10684.2/session22167仍在，trial1 successTrue/native264，trial2进行中。
+- 正在生成原版余39 r4统计，工具session下一输出记录；不要覆盖旧r1/r2/r3。主报告缓存派发状态需更新到4104878。COORDINATION最新追加已验证：6906291114..6906294395，SHAa39396c3d2a818953afe099e369c4e21c046de337d7239b3e3e88357d75d7b20，note cached_sam_and_replay_notice_20261020.md。
+
+## 当前唯一调度已切换缓存登记（覆盖下面旧PID）
+
+- PID4104878，source3968中dispatch_repaired_d2，log monitor_cached_D2_and_original_20261020.log。3896745已TERM并验证消失。新prep D2_cached_binding_hybrid_20261020/3968bdb4/preparation，继承registry中10686_0，已有输出只建symlink到旧真实路径；没有重提/取消任何现R任务。metadata existing_jobs_reuse.json保留旧SAM入口与未来入口SHA。
+- 新缓存startup10684.6已COMPLETED0:0，2/2首π物理、564.47秒；5项CPU与dispatch preflight通过。余3片未来用缓存，当前10686保持旧入口。四卡R、C2无GPU暂借4；一直监控。
+- S15 raw10684.2/session22167仍R，已闭合trial1 native_success/264步，trial2在执行（05:01时32个预测块）；三个全闭合前不出该case汇总。父分配不能提前取消。
+- 新汇总源码cad5c3a7已推送，远端不可变副本summarize_bounded_hybrid_d2_cad5c3a7_20261020.py；不要覆盖旧af46副本，它被CPU证据引用。
+
 ## 最新续接：缓存兼容通过，等待3968同源startup
 
 - 缓存源150的3条完整物理兼容已闭合：所有12项checks全True（π输入/动作字节、终点哈希、成功/停止、后继请求字节与动作/回执）。reports/sam_cache_full_branch_compatibility_closed_20261020.json。session26208结束0；benchmark26×3亦全字节相等。

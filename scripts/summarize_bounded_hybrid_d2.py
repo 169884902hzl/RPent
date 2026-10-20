@@ -33,13 +33,15 @@ def replay_evidence(report):
     """Require an executed selected-method replay before scoring its native flag."""
     paired = report.get('subtasks', [])
     replay = report.get('full_replay')
-    complete = bool(paired) and all(row['selection']['status'] == 'measured'
+    complete = bool(paired) and all(row['selection']['status'] in {'measured', 'both_failed'}
         and row['selection']['method'] is not None for row in paired)
     label = None
     if replay is None:
         status = 'missing_replay_evidence'
     elif not replay:
         status = 'no_replay_executed'
+    elif report.get('actual_full_replay_success') is True:
+        label, status = True, 'executed_native_success'
     elif not complete:
         status = 'incomplete_selected_methods'
     elif any(type(row.get('success')) is not bool for row in replay):
@@ -56,6 +58,40 @@ def replay_evidence(report):
     return {'label': label, 'status': status,
         'raw_native_success_flag': report.get('actual_full_replay_success'),
         'recorded_replay_subtasks': len(replay or []), 'selected_methods_complete': complete}
+
+
+def attach_replay_supplement(plan, report, supplement, original_reference, supplement_reference):
+    """Attach one explicitly recorded missing replay without replacing a measured run."""
+    if (supplement.get('version') != 'D2-independent-replay-supplement/1'
+            or supplement.get('status') != 'physical_result'
+            or supplement.get('training') is not False or supplement.get('confirmation') is not False):
+        raise ValueError('expected a closed evaluation-only replay supplement')
+    if (supplement['case'] != report['case'] or supplement['source_commit'] != plan['source_commit']
+            or report.get('source_commit') != plan['source_commit']):
+        raise ValueError('supplement case/source differs from the original run')
+    if supplement['original_case_result'] != original_reference:
+        raise ValueError('supplement does not reference these exact original bytes')
+    if ('independent_replay_supplement' in report or replay_evidence(report)['label'] is not None):
+        raise ValueError('a measured replay or prior supplement cannot be replaced')
+    if supplement['initial_physics_sha256'] != supplement['initial']['physics_sha256']:
+        raise ValueError('supplement did not restore its saved initial state')
+    existing = report.get('full_replay') or []
+    if supplement['full_replay'][:len(existing)] != existing:
+        raise ValueError('supplement cannot replace an already executed replay prefix')
+    choices = report.get('subtasks', [])
+    position = 0
+    seed_base = plan['trial_seed_base']+1000000000+1000000*plan['cases'].index(report['case'])
+    for trial in supplement['full_replay']:
+        while position < len(choices) and choices[position]['subtask'] != trial['subtask']:
+            position += 1
+        if (position == len(choices) or trial['method'] != choices[position]['selection']['method']
+                or trial['trial_seed'] != seed_base+10000*position or trial.get('training') is not False):
+            raise ValueError('replay changed the selected methods, order or independent seeds')
+        position += 1
+    return {**report, 'full_replay': supplement['full_replay'],
+        'actual_full_replay_success': supplement['actual_full_replay_success'],
+        'original_independent_replay_evidence': replay_evidence(report),
+        'independent_replay_supplement': supplement_reference}
 
 
 def summarize(plan, reports):
@@ -127,7 +163,11 @@ def summarize(plan, reports):
                     'method', 'trial_seed', 'sim_steps', 'decisions', 'wall_s', 'reason')}
                     for trial in row['trials']]} for row in rows]})
     physical = {name: report for name, report in by_case.items() if report['status'] == 'physical_result'}
-    replay_details = {name: replay_evidence(report) for name, report in physical.items()}
+    replay_details = {name: {**replay_evidence(report),
+        **({'supplement': report['independent_replay_supplement'],
+            'original_evidence': report['original_independent_replay_evidence']}
+            if 'independent_replay_supplement' in report else {})}
+        for name, report in physical.items()}
     replay = [replay_details[name]['label'] if name in physical else None for name in cases]
     envelope = [physical[name].get('sampled_envelope_native_success') if name in physical else None
                 for name in cases]
@@ -167,16 +207,31 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manifest', type=Path, required=True)
     parser.add_argument('--case-result', type=Path, action='append', default=[])
+    parser.add_argument('--replay-supplement', type=Path, action='append', default=[])
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     plan = json.loads(args.manifest.read_bytes())
-    report = summarize(plan, [json.loads(path.read_bytes()) for path in args.case_result])
+    references = [{'path': str(path.resolve()), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+        for path in args.case_result]
+    reports = [json.loads(path.read_bytes()) for path in args.case_result]
+    supplements = []
+    for path in args.replay_supplement:
+        supplement = json.loads(path.read_bytes())
+        matches = [i for i, row in enumerate(reports) if row['case'] == supplement['case']]
+        if len(matches) != 1:
+            raise ValueError('supplement needs exactly one declared original case result')
+        index = matches[0]
+        reference = {'path': str(path.resolve()), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+        reports[index] = attach_replay_supplement(plan, reports[index], supplement,
+            references[index], reference)
+        supplements.append(reference)
+    report = summarize(plan, reports)
     report['summarizer'] = {'path': str(Path(__file__).resolve()),
         'sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     report['manifest'] = {'path': str(args.manifest.resolve()),
         'sha256': hashlib.sha256(args.manifest.read_bytes()).hexdigest()}
-    report['result_sources'] = [{'path': str(path.resolve()),
-        'sha256': hashlib.sha256(path.read_bytes()).hexdigest()} for path in args.case_result]
+    report['result_sources'] = references
+    report['supplemental_replay_sources'] = supplements
     with args.output.open('x') as stream:
         json.dump(report, stream, indent=2)
         stream.write('\n')

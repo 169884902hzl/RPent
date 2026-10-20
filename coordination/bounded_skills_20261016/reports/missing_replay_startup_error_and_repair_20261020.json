@@ -1,0 +1,85 @@
+{
+  "attempt": "10686.0",
+  "status": "program_error_before_physics",
+  "error": "ValueError: request is not the adapter's current observation",
+  "root_cause": "standalone diagnostic omitted the shared launchers install_d2_request_compatibility(probe) hook; deepcopy of the first public request violated the identity contract",
+  "first_physical_file_exists": false,
+  "old_plan": {
+    "version": "D2-independent-replay-supplement/1",
+    "case": {
+      "name": "libero_goal_swap_t0_s40",
+      "episode": {
+        "suite": "libero_goal_swap",
+        "task": 0,
+        "seed": 40
+      },
+      "grasp_measurement_calibration": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+        "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal_swap/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "c89d9a1795775125a8233382317acec699eef865097717b7d0f360ff33842a79"
+      },
+      "state_sha256": "632d02d0a124173ff3ad373d0958b4f655a7a34f840a331c3aa4da73c049fc65"
+    },
+    "source_commit": "3968bdb4f5f88c63be1a60fc34d955ff169af5b3",
+    "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_public_vla_binding_20261020_3968bdb4",
+    "source_worker": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_public_binding_hybrid_20261020/3968bdb4/job10686_0/N8/005_libero_goal_swap_t0_s40/worker_summary.json",
+      "sha256": "cbdaffd6af3a5954a78496de220251b8e55d5d632f83c510e9406385bfa53f9a"
+    },
+    "original_case_result": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_public_binding_hybrid_20261020/3968bdb4/job10686_0/N8/005_libero_goal_swap_t0_s40/libero_goal_swap_t0_s40/summary.json",
+      "sha256": "4c9b62ed67eaf49fd7c08fba620a93c24a09de10a2c74b4b85749eb3b7439fe7"
+    },
+    "initial": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_public_binding_hybrid_20261020/3968bdb4/job10686_0/N8/005_libero_goal_swap_t0_s40/libero_goal_swap_t0_s40/private_initial.pkl",
+      "sha256": "099bea4dbf8cadf8c81c1f4def01c51d26f04986ad5418a1ff6c4c4119c125d8",
+      "physics_sha256": "e059ded752df312daa499ad27d82d6a4ebe58b5cba17ae1135936f2a0cab53fd"
+    },
+    "subtask_plan": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_public_binding_hybrid_20261020/3968bdb4/job10686_0/N8/005_libero_goal_swap_t0_s40/libero_goal_swap_t0_s40/private_subtask_plan.json",
+      "sha256": "25c13890eebbf5c61c06ed344e00977c31af66becf46b53996229630f5f7e798"
+    },
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_public_binding_hybrid_20261020/3968bdb4/preparation/manifest.json",
+      "sha256": "ecd48f215024e800d9d9c3a736bb5c8eeb0867b3de86276dadf7d4273b77f28c"
+    },
+    "selected": [
+      {
+        "subtask": {
+          "goal_index": 0,
+          "goal": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "source_symbol": "wooden_cabinet_1_middle_region",
+          "id": "g0:open",
+          "mode": "open",
+          "target_symbol": null
+        },
+        "method": "self",
+        "sampled_status": "both_failed"
+      }
+    ],
+    "script": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/replay_missing_D2_episode_20261020.py",
+      "sha256": "f9a33b0a8e1e11be6c6af07e80b4e3604d42051bc82398019896550d271d55cd"
+    },
+    "trial_seed_base": 1030400000,
+    "budget": {
+      "sim_steps": 10000,
+      "decisions": 160
+    },
+    "training": false,
+    "confirmation": false,
+    "scope": "one omitted independent replay; includes the registered self tie when both sampled methods failed; no original record replacement"
+  },
+  "sacct": "10686.0|FAILED|1:0\n",
+  "repair": "wire the unchanged shared compatibility hook; new script/output r2, same case/state/method/seed/budget",
+  "original_records_modified": false,
+  "count_as_policy_failure": false,
+  "training": false,
+  "utc": "2026-10-20T05:21:08.430159+00:00"
+}
