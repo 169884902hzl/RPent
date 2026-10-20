@@ -47,6 +47,33 @@ def test_no_progress_exits_after_three_blocks():
     assert result["stop_reason"] == "no_progress_blocks"
 
 
+def test_block_cadence_observes_once_per_variable_length_action_block():
+    controls, measurements = [], []
+    blocks = iter((np.zeros((3, 7)), np.zeros((7, 7))))
+    def observe():
+        measurements.append(len(controls))
+        return {'progress_vector_m': [0, 0, 0], 'completed': len(controls) == 10,
+            'outside_region': False}
+    result = run_fallback(prompt='pick up the bowl', prepare=lambda: {'success': True},
+        predict=lambda _: next(blocks), step=lambda action: (controls.append(action) or {}, {}),
+        observe=observe, native_done=lambda: False, handoff=lambda _: {'completed': True},
+        budget=VLABudget(controls_per_check=None))
+    assert measurements == [0, 3, 10]
+    assert result['steps_used'] == 10 and result['outcome'] == 'success'
+
+
+def test_block_cadence_still_obeys_native_stop_before_the_next_control():
+    controls = []
+    result = run_fallback(prompt='pick up the bowl', prepare=lambda: {'success': True},
+        predict=lambda _: np.zeros((5, 7)), step=lambda action: (controls.append(action) or {}, {}),
+        observe=lambda: {'progress_vector_m': [0, 0, 0], 'completed': False, 'outside_region': False},
+        native_done=lambda: len(controls) == 2,
+        handoff=lambda _: pytest.fail('cannot move after native stop'),
+        budget=VLABudget(controls_per_check=None))
+    assert result['steps_used'] == 2 and result['stop_reason'] == 'native_success'
+    assert len(result['checks']) == 1
+
+
 def test_no_progress_can_be_disabled_and_control_budget_is_exact():
     result = run_fallback(prompt='pick up the bowl', prepare=lambda: {'success': True},
         predict=lambda _: np.zeros((5, 7)), step=lambda _: ({}, {}),

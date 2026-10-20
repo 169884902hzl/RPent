@@ -15,7 +15,7 @@ import numpy as np
 class VLABudget:
     blocks: int = 24
     no_progress_blocks: int | None = 3
-    controls_per_check: int = 1
+    controls_per_check: int | None = 1
     minimum_progress_m: float = .005
     max_controls: int | None = None
 
@@ -107,7 +107,9 @@ def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
                 break
             before, after = timed('control', step, action)
             trace.append({"block": block, "control": index, "action": action.tolist(), "before": before, "after": after})
-            if (index+1) % budget.controls_per_check and index != len(actions)-1:
+            check_due = (index == len(actions)-1 or (budget.controls_per_check is not None
+                and (index+1) % budget.controls_per_check == 0))
+            if not check_due:
                 continue
             measurement = timed('public_observation', observe)
             checks.append(measurement)
