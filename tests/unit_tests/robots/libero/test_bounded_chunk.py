@@ -528,7 +528,7 @@ def test_oracle_executes_prefix_checks_before_blocked_contact_recovery(adapter, 
     assert choices[2]['parameters'] == {'mode': 'close'}
     assert len(oracle.last_labels['positions']) == 3
     assert oracle.private_trace[-1]['await_prefix_measurement']
-    assert all(row['judge'] == 'libero-private-task-progress-rules/13'
+    assert all(row['judge'] == 'libero-private-task-progress-rules/14'
                for row in oracle.last_labels['positions'])
     receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
     assert len(receipts) == 3 and all(r['outcome'] == 'success' for r in receipts)

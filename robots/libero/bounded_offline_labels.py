@@ -116,7 +116,7 @@ def capture_annotation_state(oracle, request, *, status=None):
         'held', 'active', 'grasp_reference', 'payload_reference', 'target_cache',
         'plans', 'committed_grasps', 'receipts', 'revision', '_proprio_sample',
         'precontact_instance_surface_v1', 'legacy_chunk_boundaries_v1',
-        'compact_infeasible_candidates_v1', 'lazy_planning_v1')
+        'compact_infeasible_candidates_v1', 'lazy_planning_v1', 'schema6_v1', 'public_progress')
     adapter = object.__new__(MeasuredSkillAdapter)
     adapter.__dict__.update({key: getattr(original, key) for key in names})
     scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')

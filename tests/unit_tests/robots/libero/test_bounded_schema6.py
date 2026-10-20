@@ -81,6 +81,34 @@ def test_selected_move_resolves_first_passing_variant_in_fixed_order(adapter, mo
     assert resolved['parameters'] == {'anchor_id':'e1','approach':'right','path':'over'}
 
 
+def test_merged_move_uses_selected_endpoint_for_predicted_and_measured_contact_phase(adapter):
+    from types import SimpleNamespace
+
+    from robots.libero.bounded_oracle import BoundedOracle
+    from rpent.skill_package.contract import selected
+
+    enable(adapter)
+    adapter.grasp_geometry = lambda _: {'xyz_m': [.1, .1, .9],
+        'quat_xyzw': [0., 0., 0., 1.], 'width_m': .04,
+        'preferred_approach': 'front', 'preferred_path': 'direct',
+        'approach_xyz_m': [.1, -.02, .9],
+        'approach_route': [{'xyz_m': [.1, -.02, .9], 'quat_xyzw': [0., 0., 0., 1.]}]}
+    request = adapter.request(k=4)
+    original_plan = copy.deepcopy(adapter.plans['e1'])
+    status = {'done': False, 'goals': [['on', 'box_1']], 'satisfied': [False]}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda *_: status), adapter)
+    choices = selected(request, oracle.choose(request))
+    assert [c['skill'] for c in choices[:2]] == ['move_to', 'descend']
+    # The speculative route must not mutate the live contact plan.
+    assert adapter.plans['e1'] == original_plan
+    receipt = adapter.execute(request, decision(request, [choices[0]['id']]))[0]
+    assert receipt['outcome'] == 'success'
+    np.testing.assert_allclose(adapter.committed_grasps['e1']['plan']['move_endpoint_xyz_m'],
+        [.1, .1, 1.02])
+    request = adapter.request(k=1)
+    assert selected(request, oracle.choose(request))[0]['skill'] == 'descend'
+
+
 def test_merged_move_failures_block_selected_public_option_after_two_attempts(adapter, monkeypatch):
     from types import SimpleNamespace
     from robots.libero.bounded_motion import SmoothMotion

@@ -1,0 +1,29 @@
+{
+  "reason": "planner-selected move endpoint differed from the original contact-fit approach; selector repeated move and observe",
+  "old_source": "177d44e99cb8944112b0c4720debf0b5a61d0a05",
+  "new_judge": "libero-private-task-progress-rules/14",
+  "schema_changed": false,
+  "contract_changed": false,
+  "physical_rerun_completed": false,
+  "cancelled_development_jobs": [
+    10787,
+    10788,
+    10789,
+    10790,
+    10791,
+    10792
+  ],
+  "preserved_old_source": true,
+  "old_evidence": [
+    "coordination/bounded_skills_20261016/reports/endpoint_phase_177_evidence.json",
+    "coordination/bounded_skills_20261016/reports/move177_stopped_endpoint_r1.json"
+  ],
+  "tests": {
+    "endpoint_behavior": "reproduced move_to/observe before; move_to/descend after; predicted and measured endpoint, cloned plan isolation",
+    "regression_passed_first_run": 296,
+    "first_run_failures": 8,
+    "first_run_failure_reason": "intentional judge version change; hardcoded old version assertion",
+    "offline_capture_passed": 11
+  },
+  "training": false
+}

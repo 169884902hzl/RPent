@@ -1,0 +1,630 @@
+{
+  "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/177d44e9/drawer40_N8/case000/nudge_choices.jsonl",
+  "first_decisions": [
+    {
+      "selected": [
+        {
+          "id": "cf73cf067b3cdcf7",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e101"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012763264811380681,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 136,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:0:e101"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e101",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e101",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "parameters": {
+            "mode": "wrist_scan"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        }
+      ],
+      "receipts": [
+        {
+          "candidate_id": "cf73cf067b3cdcf7",
+          "skill": "move_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 266,
+          "before": {
+            "eef_xyz_m": [
+              -0.20826569589928465,
+              -0.014658822406232192,
+              1.1780033865224049
+            ],
+            "eef_quat_xyzw": [
+              0.9991059684758472,
+              -0.029346490056412378,
+              -0.030015988044422744,
+              0.0050087662176842955
+            ],
+            "gripper_opening_m": 0.07807916396862505,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.006536539239850667,
+              -0.059294080365192306,
+              1.2154804673418356
+            ],
+            "eef_quat_xyzw": [
+              0.7058792752990293,
+              0.013640623946950287,
+              -0.015643600263879925,
+              0.7080280078163844
+            ],
+            "gripper_opening_m": 0.07897946030974101,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              0.01615054399542371,
+              -0.00335603443300452,
+              0.002817825625521104
+            ]
+          }
+        },
+        {
+          "candidate_id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "outcome": "success",
+          "stop_reason": "fresh_public_views",
+          "steps_used": 23,
+          "before": {
+            "eef_xyz_m": [
+              0.006536539239850667,
+              -0.059294080365192306,
+              1.2154804673418356
+            ],
+            "eef_quat_xyzw": [
+              0.7058792752990293,
+              0.013640623946950287,
+              -0.015643600263879925,
+              0.7080280078163844
+            ],
+            "gripper_opening_m": 0.07897946030974101,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              0.01615054399542371,
+              -0.00335603443300452,
+              0.002817825625521104
+            ]
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.006104545871750464,
+              -0.05984401912039532,
+              1.2555023833360703
+            ],
+            "eef_quat_xyzw": [
+              0.7076242165102317,
+              0.015873029274549366,
+              -0.014518414075415653,
+              0.706261446493198
+            ],
+            "gripper_opening_m": 0.07896525493448758,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.0003756464070436551,
+              -0.0004782076132200096,
+              0.03480166608194328
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "selected": [
+        {
+          "id": "24f04da85796c38b",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012763264811380681,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 65,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:2:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "parameters": {
+            "mode": "wrist_scan"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        }
+      ],
+      "receipts": [
+        {
+          "candidate_id": "24f04da85796c38b",
+          "skill": "move_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 104,
+          "before": {
+            "eef_xyz_m": [
+              0.006104545871750464,
+              -0.05984401912039532,
+              1.2555023833360703
+            ],
+            "eef_quat_xyzw": [
+              0.7076242165102317,
+              0.015873029274549366,
+              -0.014518414075415653,
+              0.706261446493198
+            ],
+            "gripper_opening_m": 0.07896525493448758,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.0003756464070436551,
+              -0.0004782076132200096,
+              0.03480166608194328
+            ]
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.006354400297009515,
+              -0.05970486082048751,
+              1.2155972601507286
+            ],
+            "eef_quat_xyzw": [
+              0.7065736488575001,
+              0.014744500145949524,
+              -0.015748285397571504,
+              0.7073105894603022
+            ],
+            "gripper_opening_m": 0.07896907983920781,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              4.804892793443287e-05,
+              2.6761211520732167e-05,
+              -0.007674062151027266
+            ]
+          }
+        },
+        {
+          "candidate_id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "outcome": "success",
+          "stop_reason": "fresh_public_views",
+          "steps_used": 23,
+          "before": {
+            "eef_xyz_m": [
+              0.006354400297009515,
+              -0.05970486082048751,
+              1.2155972601507286
+            ],
+            "eef_quat_xyzw": [
+              0.7065736488575001,
+              0.014744500145949524,
+              -0.015748285397571504,
+              0.7073105894603022
+            ],
+            "gripper_opening_m": 0.07896907983920781,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              4.804892793443287e-05,
+              2.6761211520732167e-05,
+              -0.007674062151027266
+            ]
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.00594689147267917,
+              -0.060233422279896226,
+              1.255612995980699
+            ],
+            "eef_quat_xyzw": [
+              0.7076154084436448,
+              0.015849846751856994,
+              -0.014561135977023382,
+              0.7062699125760159
+            ],
+            "gripper_opening_m": 0.07896182845288582,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.00035435549941769084,
+              -0.0004596186603554054,
+              0.034796292026061236
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "selected": [
+        {
+          "id": "24f04da85796c38b",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012763264811380681,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 65,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:4:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "parameters": {
+            "mode": "wrist_scan"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        }
+      ],
+      "receipts": [
+        {
+          "candidate_id": "24f04da85796c38b",
+          "skill": "move_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 103,
+          "before": {
+            "eef_xyz_m": [
+              0.00594689147267917,
+              -0.060233422279896226,
+              1.255612995980699
+            ],
+            "eef_quat_xyzw": [
+              0.7076154084436448,
+              0.015849846751856994,
+              -0.014561135977023382,
+              0.7062699125760159
+            ],
+            "gripper_opening_m": 0.07896182845288582,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.00035435549941769084,
+              -0.0004596186603554054,
+              0.034796292026061236
+            ]
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.006356158723678082,
+              -0.05969993400105733,
+              1.2155983229485277
+            ],
+            "eef_quat_xyzw": [
+              0.7065678050020724,
+              0.014734068335116313,
+              -0.015750216526705718,
+              0.7073166015612883
+            ],
+            "gripper_opening_m": 0.07896920559835213,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              7.94693691260022e-05,
+              0.00010358995705609613,
+              -0.007769839423722587
+            ]
+          }
+        },
+        {
+          "candidate_id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "outcome": "success",
+          "stop_reason": "fresh_public_views",
+          "steps_used": 23,
+          "before": {
+            "eef_xyz_m": [
+              0.006356158723678082,
+              -0.05969993400105733,
+              1.2155983229485277
+            ],
+            "eef_quat_xyzw": [
+              0.7065678050020724,
+              0.014734068335116313,
+              -0.015750216526705718,
+              0.7073166015612883
+            ],
+            "gripper_opening_m": 0.07896920559835213,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              7.94693691260022e-05,
+              0.00010358995705609613,
+              -0.007769839423722587
+            ]
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.005948559564194932,
+              -0.06022857973609638,
+              1.255614026008668
+            ],
+            "eef_quat_xyzw": [
+              0.7076154527267566,
+              0.01584990686091539,
+              -0.014561010364995602,
+              0.7062698694493184
+            ],
+            "gripper_opening_m": 0.07896187217873527,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.0003544340517244779,
+              -0.00045969194351221885,
+              0.03479626353055673
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "selected": [
+        {
+          "id": "24f04da85796c38b",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012763264811380681,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 65,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:6:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "parameters": {
+            "mode": "wrist_scan"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        }
+      ],
+      "receipts": [
+        {
+          "candidate_id": "24f04da85796c38b",
+          "skill": "move_to",
+          "outcome": "success",
+          "stop_reason": "endpoint",
+          "steps_used": 103,
+          "before": {
+            "eef_xyz_m": [
+              0.005948559564194932,
+              -0.06022857973609638,
+              1.255614026008668
+            ],
+            "eef_quat_xyzw": [
+              0.7076154527267566,
+              0.01584990686091539,
+              -0.014561010364995602,
+              0.7062698694493184
+            ],
+            "gripper_opening_m": 0.07896187217873527,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.0003544340517244779,
+              -0.00045969194351221885,
+              0.03479626353055673
+            ]
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.006356206474267286,
+              -0.0596998457639667,
+              1.2155983992251531
+            ],
+            "eef_quat_xyzw": [
+              0.7065677016308617,
+              0.014733947917137141,
+              -0.015750358393305547,
+              0.7073167041724222
+            ],
+            "gripper_opening_m": 0.07896920723913906,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              7.915473981987449e-05,
+              0.00010266679070479336,
+              -0.00777002461815821
+            ]
+          }
+        },
+        {
+          "candidate_id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "outcome": "success",
+          "stop_reason": "fresh_public_views",
+          "steps_used": 23,
+          "before": {
+            "eef_xyz_m": [
+              0.006356206474267286,
+              -0.0596998457639667,
+              1.2155983992251531
+            ],
+            "eef_quat_xyzw": [
+              0.7065677016308617,
+              0.014733947917137141,
+              -0.015750358393305547,
+              0.7073167041724222
+            ],
+            "gripper_opening_m": 0.07896920723913906,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              7.915473981987449e-05,
+              0.00010266679070479336,
+              -0.00777002461815821
+            ]
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.0059486049441342,
+              -0.06022849362124191,
+              1.25561410027567
+            ],
+            "eef_quat_xyzw": [
+              0.7076154547294077,
+              0.015849909783843985,
+              -0.014561007737240339,
+              0.706269867431432
+            ],
+            "gripper_opening_m": 0.07896187272103222,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.0003544361131592048,
+              -0.00045969378893497063,
+              0.03479626178305816
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "classification": "repeated approaches after reaching planner-selected endpoint; old preferred contact entry differs"
+}

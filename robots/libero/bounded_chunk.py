@@ -236,13 +236,19 @@ class PublicPrefixPrediction:
             if route is None:
                 raise ValueError('prefix has no measured route')
             if skill == 'move_to':
-                plan = self.adapter.plans.get(params['anchor_id'], {})
+                key = params['anchor_id']
+                plan = self.adapter.plans.get(key, {})
                 if 'surface_contact_options' in plan:
                     # Commit the execution side even for an in-flight move;
                     # its successor must not descend at the default rim.
-                    self.adapter.plans[params['anchor_id']] = copy.deepcopy(
-                        plan['surface_contact_options'][params.get('approach') or next(k
-                            for k in ('above', 'right', 'front', 'left') if k in plan['surface_contact_options'])])
+                    plan = copy.deepcopy(plan['surface_contact_options'][params.get('approach') or next(k
+                        for k in ('above', 'right', 'front', 'left') if k in plan['surface_contact_options'])])
+                if plan:
+                    # A merged move may approach a handle from a different
+                    # direction than its original contact fit. Its successor
+                    # starts at this route's endpoint, not that preferred pose.
+                    self.adapter.plans[key] = {**plan,
+                        'move_endpoint_xyz_m': list(route[-1]['xyz_m'])}
             self.sensor.update(eef_xyz_m=route[-1]['xyz_m'], eef_quat_xyzw=route[-1]['quat_xyzw'])
             if self.ik is not None and self.ik.last_solution is not None:
                 self.sensor['joint_positions_rad'] = self.ik.last_solution.tolist()

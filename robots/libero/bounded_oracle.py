@@ -21,7 +21,7 @@ from robots.libero.bounded_chunk import PublicPrefixPrediction
 from robots.libero.v5_state import fixture_actions
 from rpent.skill_package.contract import LEGALITY_VERSION, is_boundary, legal_after, validate_labels
 
-JUDGE_VERSION = 'libero-private-task-progress-rules/13'
+JUDGE_VERSION = 'libero-private-task-progress-rules/14'
 
 
 class NoPublicOption(ValueError):
@@ -299,9 +299,10 @@ class BoundedOracle:
                 continue
             error = np.linalg.norm(xyz-contact["xyz_m"])
             angular = (Rotation.from_quat(robot["eef_quat_xyzw"])*Rotation.from_quat(contact["quat_xyzw"]).inv()).magnitude()
+            approach_endpoint = contact.get('move_endpoint_xyz_m', contact.get('approach_xyz_m'))
             if error < .02 and angular < .2:
                 chosen = find("set_gripper", mode="close")
-            elif (np.linalg.norm(xyz-contact['approach_xyz_m']) < .025 if contact.get('approach_xyz_m')
+            elif (np.linalg.norm(xyz-approach_endpoint) < .025 if approach_endpoint
                   else np.linalg.norm((xyz-contact["xyz_m"])[:2]) < .03 and xyz[2] >= contact["xyz_m"][2]):
                 chosen = find("align" if angular > .05 else "descend", anchor_id=source.id)
             else:

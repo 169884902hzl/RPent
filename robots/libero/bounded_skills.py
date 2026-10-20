@@ -2646,6 +2646,10 @@ class MeasuredSkillAdapter:
                 outcome = "success" if (detail.get("endpoint_error_m", 1.) <= self.config.endpoint_tolerance_m
                     and angular_error <= .05 and detail["stop_reason"] in {"endpoint", "native_stop", "decision_pending_at_rest_endpoint"}) else "failure"
                 phase = None if outcome == "success" else ("collision" if "collision" in reason else "planning_unreachable")
+                if skill == 'move_to' and outcome == 'success' and key in self.committed_grasps:
+                    endpoint = list(route[-1]['xyz_m'])
+                    self.plans[key]['move_endpoint_xyz_m'] = endpoint
+                    self.committed_grasps[key]['plan']['move_endpoint_xyz_m'] = endpoint
                 if skill == 'descend' and outcome == 'success':
                     self.active = key
                     self.withdrawal_contact = None

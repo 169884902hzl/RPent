@@ -111,3 +111,15 @@ Codex2 GPU作业10786于22:58:10提交；10780/10781于22:58:41实际退出，�
 已重提10787 move100、10788 drawer40，均`after:10786`，仅等Codex2服务实际启动，不提前占卡。随后10789固定32 N1、10790/10791/10792 D2恢复0/1/2按原依赖接续。所有job仍仅node02、nice500、每job1GPU/8CPU/96GB。六个归还监控保持运行；仅在Dependency等待的job不持卡，继续等待，变为可运行或运行后仍按Codex2 GPU排队信号归还。
 
 N1评测入口源码`8c3cdd38bf10d8b0910f6b578b85d384188c9c01`已普通推送，快照`/public/home/sunyihan/rpent_libero_eval/source_schema6_8c3cdd38_20261020`，归档SHA256 `64b46dbbe9b338e509c2598af1ac5426aa7c064541d602b64eaf9c6b2b8219f8`。技能、guarded、增量感知、schema和contract与177完全相同；只修N1旧试点恢复入口并加真实试点启动。新N1 CPU预检通过，manifest `preparation/schema6_8c3cdd38/N1_fixed32.json`，独立输出`results/bounded_skills/schema6_20261020/8c3cdd38/N1_fixed32/`。其余续跑保持177源码与完成回合指针，不混分母。
+
+## 08:20 PDT：合并move的接近阶段与CPU标注修复
+
+177d44e9的drawer case000反复move_to/腕部观察。实物仿真日志显示EEF已到合并规划器选择的上方入口，但oracle仍比较旧接触拟合的侧向approach_xyz_m。因此尚未进入descend；不是没有执行物理控制，也不是碰撞筛查已证明下降可行。
+
+CPU稳定复现：同一已测量侧向接触计划，schema6合并move默认从上方接近，旧选择序列为move_to→observe。修复在公开路线预测和实际成功move后保存该路线的move_endpoint_xyz_m；oracle以此判断接近阶段，仍用原接触点生成descend并完整筛查。预测只更新克隆，真实计划不被污染；未成功的move不提交端点。通用私有规则版本升为libero-private-task-progress-rules/14，不增加任务特例，schema/contract不变。
+
+同时修复capture_annotation_state遗漏schema6_v1/public_progress：CPU快照必须保留当前合并候选和便宜前缀口径。离线11项回归通过（45.69秒），包含在线与离线legal/acceptable/selected逐前缀一致、零仿真步/零RPC新增。日志/tmp/schema6_capture_regression.log。修复前接近端点回归稳定失败，修复后通过。
+
+08:13 PDT停止自己的10787/10788及尚未执行的10789–10792，以免已知阶段错误继续耗卡；完整与中断原件保留在177d44e9目录，旧确认状态不改判。10698、10699、10777和Codex2/保护/held作业未改。Codex2已自行撤销10786，其后续GPU短测将等10749结束，不再等一个已取消的依赖。
+
+接近阶段相关四文件回归296项通过；8项只因原测试硬编码旧judge /13失败（前面的行为断言已过），已更新为/14后单独复跑。首轮日志/tmp/schema6_endpoint_phase_regression.log；版本断言复跑/tmp/schema6_endpoint_phase_judge_rerun.log。旧物理停止汇总reports/move177_stopped_endpoint_r1.json仍为9关闭/8已知、两臂6/8、改善0退步0；未完成91对，unknown1对。逐次阶段证据reports/endpoint_phase_177_evidence.json。新物理分母尚未开始。

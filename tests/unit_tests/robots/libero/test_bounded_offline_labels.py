@@ -29,6 +29,9 @@ class SavedScreen:
         return {'passed': True, 'reason': 'saved_public_geometry', 'collision': False,
             'ik_reachable': True, 'path_min_clearance_m': .05}
 
+    def endpoint_screen(self, route, robot):
+        return self(route)
+
 
 @pytest.fixture
 def captured(monkeypatch):
@@ -60,6 +63,22 @@ def test_saved_state_matches_oracle_path_and_does_not_touch_live_services(captur
         for field in ('legal', 'rule_acceptable', 'selected'):
             assert actual[field] == position[field]
         assert actual['physics_steps'] == 0 and not actual['gpu_used']
+    assert calls == calls_before and not adapter.p.actions
+
+
+def test_schema6_capture_preserves_merged_options_and_prefix_screen_scope(captured):
+    adapter, oracle, _, _, calls = captured
+    adapter.schema6_v1 = adapter.lazy_planning_v1 = True
+    request = adapter.request(k=4)
+    state = capture_annotation_state(oracle, request)
+    assert state['adapter'].schema6_v1
+    assert state['adapter'].public_progress is not adapter.public_progress
+    oracle.choose(request)
+    calls_before = list(calls)
+    for expected in oracle.last_labels['positions']:
+        actual = annotate_prefix(state, request, expected['prefix'])
+        for field in ('legal', 'rule_acceptable', 'selected'):
+            assert actual[field] == expected[field]
     assert calls == calls_before and not adapter.p.actions
 
 
