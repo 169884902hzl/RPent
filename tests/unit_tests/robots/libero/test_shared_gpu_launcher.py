@@ -6,6 +6,8 @@ import subprocess
 import sys
 from pathlib import Path
 from types import SimpleNamespace
+from contextlib import contextmanager
+from unittest.mock import Mock
 
 import pytest
 
@@ -13,6 +15,60 @@ _PATH = Path(__file__).resolve().parents[4]/'coordination/bounded_skills_2026101
 _spec = importlib.util.spec_from_file_location('shared_gpu_launcher', _PATH)
 launcher = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(launcher)
+
+
+@pytest.mark.parametrize('failure', [None, 'ready', 'worker'])
+def test_optional_sam_entry_owns_one_service_pair_and_cleans_up(tmp_path, monkeypatch, failure):
+    import rpent.utils.daemon as daemon_module
+    import rpent.utils.rpc as rpc_module
+    import rpent.utils.rpc.http_rpc as transport_module
+
+    events, commands = [], []
+    class Daemon:
+        def __init__(self, **kwargs):
+            self.name = kwargs['name']
+            commands.append(kwargs['cmd'])
+        def start(self): events.append(('start', self.name))
+        def stop(self): events.append(('stop', self.name))
+    ports = iter((1234, 1235))
+    monkeypatch.setattr(daemon_module, 'ProcessDaemon', Daemon)
+    monkeypatch.setattr(daemon_module, 'pick_free_port', lambda: next(ports))
+    monkeypatch.setattr(transport_module, 'HttpRpcClient', lambda url: SimpleNamespace(_base_url=url))
+    def ready(client, **kwargs):
+        if failure == 'ready':
+            raise RuntimeError('readiness failed')
+    monkeypatch.setattr(rpc_module, 'wait_for_ready', ready)
+    args = SimpleNamespace(sam3_entry=tmp_path/'sam.py', source=tmp_path/'source', output=tmp_path)
+    fallback = Mock(side_effect=AssertionError('must not start a second SAM'))
+    def run():
+        with launcher.owned_services(args, fallback, vla=True) as endpoints:
+            assert set(endpoints) == {'sam3', 'vla'}
+            if failure == 'worker':
+                raise RuntimeError('worker failed')
+    if failure:
+        with pytest.raises(RuntimeError): run()
+    else:
+        run()
+    assert events == [('start', 'bounded_sam3'), ('start', 'bounded_vla'),
+        ('stop', 'bounded_vla'), ('stop', 'bounded_sam3')]
+    assert commands[0][1:4] == [str(args.sam3_entry), '--source', str(args.source)]
+    assert commands[1][1:5] == ['-m', 'rpent.robots.components.pi05_vla_server', '--embodiment', 'libero']
+    fallback.assert_not_called()
+
+
+def test_default_services_keep_original_lifecycle(tmp_path):
+    events = []
+    @contextmanager
+    def original(output, *, vla):
+        assert output == tmp_path and vla is False
+        events.append('start')
+        try:
+            yield {'sam3': 'unchanged'}
+        finally:
+            events.append('stop')
+    with launcher.owned_services(SimpleNamespace(sam3_entry=None, output=tmp_path), original, vla=False) as endpoints:
+        assert endpoints == {'sam3': 'unchanged'}
+    assert events == ['start', 'stop']
 
 
 @pytest.mark.parametrize('job_name', ['rd-bounded-shared-batch', 'rf-user-work', 'c5-user-work', 'c6-user-work'])

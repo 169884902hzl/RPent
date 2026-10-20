@@ -14,6 +14,7 @@ import sys
 import threading
 import time
 import traceback
+from contextlib import contextmanager
 from pathlib import Path
 
 
@@ -23,6 +24,39 @@ def dump(path, value):
 
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+@contextmanager
+def owned_services(args, original, *, vla):
+    """Keep frozen service startup by default; optionally replace its SAM entry."""
+    if args.sam3_entry is None:
+        with original(args.output, vla=vla) as endpoints:
+            yield endpoints
+        return
+    from rpent.utils.daemon import ProcessDaemon, pick_free_port
+    from rpent.utils.rpc import wait_for_ready
+    from rpent.utils.rpc.http_rpc import HttpRpcClient
+
+    commands = [('sam3', [str(args.sam3_entry), '--source', str(args.source)])]
+    if vla:
+        commands.append(('vla', ['-m', 'rpent.robots.components.pi05_vla_server',
+            '--embodiment', 'libero']))
+    owned, endpoints = [], {}
+    try:
+        for name, command in commands:
+            port = pick_free_port()
+            daemon = ProcessDaemon(name='bounded_'+name, cmd=[sys.executable, *command,
+                '--transport', 'http', '--host', '127.0.0.1', '--port', str(port), '--parent-watch'],
+                log_path=str(args.output/(name+'.log')))
+            owned.append((name, daemon))
+            daemon.start()
+            endpoints[name] = HttpRpcClient(f'http://127.0.0.1:{port}')
+        for name, daemon in owned:
+            wait_for_ready(endpoints[name], daemon=daemon, timeout_s=600)
+        yield endpoints
+    finally:
+        for _, daemon in reversed(owned):
+            daemon.stop()
 
 
 class StartupPhysicalReached(Exception):
@@ -483,6 +517,8 @@ def main():
     parser.add_argument('--study-plan',type=Path)
     parser.add_argument('--serial-reference',type=Path,
         help='Reuse a concurrently running identical N1 workload on another allocated GPU')
+    parser.add_argument('--sam3-entry', type=Path,
+        help='Optional equivalent SAM service entry; skill/planning source stays pinned')
     args=parser.parse_args()
     if args.batch_plan:
         batches=json.loads(args.batch_plan.read_bytes())
@@ -494,11 +530,17 @@ def main():
         args.domain=batch['domain']
         args.indices=','.join(map(str,batch['indices']))
         args.levels=str(batches['selected_n'])
+        if batches.get('sam3_entry'):
+            entry=batches['sam3_entry']
+            args.sam3_entry=Path(entry['path']).resolve(strict=True)
+            assert digest(args.sam3_entry)==entry['sha256']
         os.environ['SOURCE_COMMIT']=batch['source_commit']
         os.environ['LIBERO_TYPE']='standard' if args.domain=='original' else 'pro'
     if args.source is None:
         parser.error('--source or --batch-plan is required')
     args.source=args.source.resolve(strict=True)
+    if args.sam3_entry is not None:
+        args.sam3_entry=args.sam3_entry.resolve(strict=True)
     os.environ['PYTHONPATH']=str(args.source)
     os.chdir(args.source)
     sys.path.insert(0,str(args.source))
@@ -555,6 +597,8 @@ def main():
     if args.preflight:
         print(json.dumps({'preflight':'passed','n_cases':len(indices),'levels':levels,
             'source_commit':plan['source_commit'],'launcher_sha256':digest(__file__),
+            'sam3_entry':({'path':str(args.sam3_entry),'sha256':digest(args.sam3_entry)}
+                if args.sam3_entry is not None else None),
             'candidate_concurrency':'serial','psutil_version':psutil.__version__}),flush=True)
         return 0
     args.output=args.output.resolve()
@@ -566,11 +610,13 @@ def main():
         'serial_reference':str(args.serial_reference) if args.serial_reference else None,
         'slurm_job_id':os.environ.get('SLURM_JOB_ID'),'cuda_visible_devices':os.environ.get('CUDA_VISIBLE_DEVICES'),
         'cpu_affinity':sorted(os.sched_getaffinity(0)),'sam_services_per_gpu_job':1,
+        'sam3_entry':({'path':str(args.sam3_entry),'sha256':digest(args.sam3_entry)}
+            if args.sam3_entry is not None else None),
         'episode_isolation':'fresh exec process, fresh simulator/EGL/RNG/IK per episode','training':False})
     sampler=ResourceSampler(args.output);sampler.start()
     try:
         service_started=time.perf_counter()
-        with services(args.output,vla=args.domain=='d2' or plan.get('evaluation') == 'hybrid_repair') as endpoints:
+        with owned_services(args,services,vla=args.domain=='d2' or plan.get('evaluation') == 'hybrid_repair') as endpoints:
             service_startup_s=time.perf_counter()-service_started
             if study:
                 report=run_study(args,plan,study,endpoints,sampler)
