@@ -3257,5 +3257,613 @@
     "training": false,
     "partial_outcomes": "unknown; not failed or overwritten",
     "sacct_before": "10681_0|RUNNING|0:0|01:08:41\n"
+  },
+  "sam_image_feature_cache_benchmark": {
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/sam_feature_cache_manifest_20261020.json",
+      "sha256": "2e00c5c8fe911d7c0bd702f010d82ab603103fc8e39806c000e153346bbd4b06"
+    },
+    "prototype": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/sam3_feature_cache_startup_20261020.py",
+      "sha256": "2372a1c90496123c50e0ceb14395d86fc6496419d82027ffc6d1fce638d94751"
+    },
+    "source": "/public/home/sunyihan/rpent_libero_eval/source_bounded_public_vla_binding_20261020_3968bdb4",
+    "script": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/bench_sam_feature_cache_original_20261020.py",
+      "sha256": "e5e7d4171869b2a994e5b30f5b8e01c255e97042f868b7c2574ab5d88d06e086"
+    },
+    "modes": [
+      {
+        "cache": false,
+        "image_encodes": 23,
+        "cache_hits": 0,
+        "cache_misses": 0,
+        "total_request_s": 6.573933029547334,
+        "requests": [
+          {
+            "wall_s": 0.18608590308576822,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.10682342480868101,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.24547896394506097,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.32766415225341916,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.33902553422376513,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.3032416249625385,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.24779925122857094,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.2280268557369709,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.2458691829815507,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.14368927711620927,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.2959698159247637,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.30470888456329703,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.40448591066524386,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.2522264327853918,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.21226509613916278,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.2140345829539001,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.31442270800471306,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.26974379923194647,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.2633071020245552,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.2554288129322231,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.22665818920359015,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.24091190425679088,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.27724062418565154,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.34676300501450896,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.15620470326393843,
+            "response_sha256": "fe4861cfd8c8ff09b366f896d4d9d53e3769a52b79c8505839ac385bec0085c4",
+            "response_bytes": 2650
+          },
+          {
+            "wall_s": 0.1658572880551219,
+            "response_sha256": "698aff1baa948f64a05c4599b6d48745a584706a78cd106c2ad59ddd3131b134",
+            "response_bytes": 5099
+          }
+        ],
+        "own_cuda_peak_allocated_bytes": 5611002368
+      },
+      {
+        "cache": true,
+        "image_encodes": 4,
+        "cache_hits": 22,
+        "cache_misses": 4,
+        "total_request_s": 2.955780602991581,
+        "requests": [
+          {
+            "wall_s": 0.2890057573094964,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.18417227221652865,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.29427024396136403,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.21221405686810613,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.05733060697093606,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.17897482216358185,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.10138168884441257,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.04561256291344762,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.11653065821155906,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.12119669700041413,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.04549408005550504,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.10467468108981848,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.08071737363934517,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.065671905875206,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.04700615210458636,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.10377222904935479,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.10795055516064167,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.06656665029004216,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.04370416607707739,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.11856194911524653,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.13849630393087864,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.12355198711156845,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.10424274113029242,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.10100450506433845,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.03731366014108062,
+            "response_sha256": "fe4861cfd8c8ff09b366f896d4d9d53e3769a52b79c8505839ac385bec0085c4",
+            "response_bytes": 2650
+          },
+          {
+            "wall_s": 0.06636229669675231,
+            "response_sha256": "698aff1baa948f64a05c4599b6d48745a584706a78cd106c2ad59ddd3131b134",
+            "response_bytes": 5099
+          }
+        ],
+        "own_cuda_peak_allocated_bytes": 6149279232
+      },
+      {
+        "cache": false,
+        "image_encodes": 23,
+        "cache_hits": 0,
+        "cache_misses": 0,
+        "total_request_s": 6.497671148274094,
+        "requests": [
+          {
+            "wall_s": 0.2921281037852168,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.20888229412958026,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.28062706999480724,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.3282026690430939,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.3391527798958123,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.4341809367761016,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.34701809706166387,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.3290732130408287,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.38827470410615206,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.18770102271810174,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.21257529454305768,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.25545441219583154,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.3039683885872364,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.16580255702137947,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.19241733709350228,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.21227815514430404,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.23023788398131728,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.12139657931402326,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.21649699099361897,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.20812798803672194,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.22890930715948343,
+            "response_sha256": "3bc4f9b0261921f4844a942b8c5915c9f3e0af1970c71227f1706f3b42621793",
+            "response_bytes": 5102
+          },
+          {
+            "wall_s": 0.2717464719898999,
+            "response_sha256": "5fc393c15c723aaff56aa1bdd69fa8f23017403f0f0842c8c7bb4f7061d12505",
+            "response_bytes": 4255
+          },
+          {
+            "wall_s": 0.2259072819724679,
+            "response_sha256": "491fe0ea41b4508f10ea4db1d34d4d95ee1e642221788461aded8f3a79382c43",
+            "response_bytes": 3127
+          },
+          {
+            "wall_s": 0.22657984727993608,
+            "response_sha256": "116be86c4cd089b7c12afa99ac1e809a3a98b9f82c34304650037558a631d229",
+            "response_bytes": 3661
+          },
+          {
+            "wall_s": 0.16390649043023586,
+            "response_sha256": "fe4861cfd8c8ff09b366f896d4d9d53e3769a52b79c8505839ac385bec0085c4",
+            "response_bytes": 2650
+          },
+          {
+            "wall_s": 0.1266252719797194,
+            "response_sha256": "698aff1baa948f64a05c4599b6d48745a584706a78cd106c2ad59ddd3131b134",
+            "response_bytes": 5099
+          }
+        ],
+        "own_cuda_peak_allocated_bytes": 5611002368
+      }
+    ],
+    "all_response_bytes_equal": true,
+    "slurm_job_raw_id": "10684",
+    "step_id": "3",
+    "physics_steps": 0,
+    "training": false,
+    "new_gpu_allocations": 0,
+    "scope": "temporary model in existing owned allocation; existing services unchanged; not episode throughput"
+  },
+  "sam_cache_full_branch_compatibility": {
+    "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+    "baseline": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/binding_handoff_15068167_closed_20261020.json",
+      "sha256": "dd708379b280df394714d50cb589e1d94aa024e171819d425474d5322307bfce"
+    },
+    "preparation": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/sam_feature_cache_physical_20261020/15068167/preparation/preparation.json",
+      "sha256": "c58b2453618d821761799d33e29a645c849d0c87b4335900f53c2f247c9c5ca6"
+    },
+    "script": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/compare_sam_cache_full_branches_CPU_20261020.py",
+      "sha256": "dca46c8135aa7111e268a2c9858b96202671f86b57d9f5743bd092cce8eeb648"
+    },
+    "rows": [
+      {
+        "seed": 13401000,
+        "baseline_worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/000_libero_spatial_swap_t2_s40_handoff_r13401000/worker_summary.json",
+          "sha256": "be26a98fe5c26c1d08c30e0a305d47a3c650a426d329ae806e346fe581c1cfac"
+        },
+        "new_worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/sam_feature_cache_physical_20261020/15068167/full_owned10684/N3/000_libero_spatial_swap_t2_s40_handoff_r13401000/worker_summary.json",
+          "sha256": "216c301dadb998aee3c8e5c5a894215f19fb33f96e465b1c1e49f52d82b8bf56"
+        },
+        "checks": {
+          "same_case": true,
+          "same_seed": true,
+          "same_initial_physics": true,
+          "same_initial_request": true,
+          "same_inference_calls": true,
+          "input_bytes_equal": true,
+          "prediction_bytes_equal": true,
+          "same_endpoint_physics": true,
+          "same_private_success": true,
+          "same_public_stop": true,
+          "next_request_bytes_equal": true,
+          "same_bounded_continuation": true
+        },
+        "all_equal": true,
+        "private_success": true,
+        "inference_calls": 11,
+        "wall_s_overlapping_loads": [
+          341.4823963129893,
+          283.9188560000621
+        ]
+      },
+      {
+        "seed": 16401000,
+        "baseline_worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/003_libero_object_swap_t1_s40_handoff_r16401000/worker_summary.json",
+          "sha256": "6e3ed0b9c40f01a711fc3b0964ab3a3b33380975c86b4884abd30c06557ee8f5"
+        },
+        "new_worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/sam_feature_cache_physical_20261020/15068167/full_owned10684/N3/001_libero_object_swap_t1_s40_handoff_r16401000/worker_summary.json",
+          "sha256": "981f415fbd2a12834ea7e51522795112220f841f7b954c71da8b42b005294130"
+        },
+        "checks": {
+          "same_case": true,
+          "same_seed": true,
+          "same_initial_physics": true,
+          "same_initial_request": true,
+          "same_inference_calls": true,
+          "input_bytes_equal": true,
+          "prediction_bytes_equal": true,
+          "same_endpoint_physics": true,
+          "same_private_success": true,
+          "same_public_stop": true,
+          "next_request_bytes_equal": true,
+          "same_bounded_continuation": true
+        },
+        "all_equal": true,
+        "private_success": true,
+        "inference_calls": 15,
+        "wall_s_overlapping_loads": [
+          472.86064097378403,
+          365.6526505686343
+        ]
+      },
+      {
+        "seed": 17402000,
+        "baseline_worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/005_libero_object_swap_t2_s40_handoff_r17402000/worker_summary.json",
+          "sha256": "68131e1e44539df86ff02c1eeac8935d88e73c19211fd268b319b2ea19b63add"
+        },
+        "new_worker": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/sam_feature_cache_physical_20261020/15068167/full_owned10684/N3/002_libero_object_swap_t2_s40_handoff_r17402000/worker_summary.json",
+          "sha256": "dbc4eb24fae90628ed568ac42ea7e30f9012d1473be8ea97af9ad26d4312edba"
+        },
+        "checks": {
+          "same_case": true,
+          "same_seed": true,
+          "same_initial_physics": true,
+          "same_initial_request": true,
+          "same_inference_calls": true,
+          "input_bytes_equal": true,
+          "prediction_bytes_equal": true,
+          "same_endpoint_physics": true,
+          "same_private_success": true,
+          "same_public_stop": true,
+          "next_request_bytes_equal": true,
+          "same_bounded_continuation": true
+        },
+        "all_equal": true,
+        "private_success": false,
+        "inference_calls": 22,
+        "wall_s_overlapping_loads": [
+          490.6692379792221,
+          423.5981645253487
+        ]
+      }
+    ],
+    "pending": [],
+    "all_three_full_branches_equal": true,
+    "physics_steps": 0,
+    "gpu_used": false,
+    "training": false,
+    "scope": "full observed branch compatibility; wall times have different overlapping loads, not controlled episode throughput"
+  },
+  "independent_replay_summary_repair": {
+    "source_worker": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/D2_repaired_hybrid_20261020/15068167/job10681_0/N8/005_libero_goal_swap_t0_s40/worker_summary.json",
+      "sha256": "a8cf6468755b069b2981dd4fd3416e8fa163eac2c03b31ce79d4aa0ec36c4314"
+    },
+    "execution_source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+    "summary_script": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/summarize_bounded_hybrid_d2_current_20261020.py",
+      "sha256": "af46bd0b41dd9bab1f7afa8db2ae59668bcc72b3328ecb1b57176c827ab20d53"
+    },
+    "raw_replay_native_flag": false,
+    "raw_replay_subtasks": 0,
+    "selection": [
+      {
+        "method": "self",
+        "status": "both_failed",
+        "rate": 0.0,
+        "self_rate": 0.0,
+        "vla_success": 0,
+        "vla_n": 3
+      }
+    ],
+    "corrected_metric": {
+      "success": 0,
+      "known_n": 0,
+      "unknown_n": 40,
+      "registered_n": 40,
+      "rate": null,
+      "wilson95": null
+    },
+    "evidence": [
+      {
+        "case": "libero_goal_swap_t0_s40",
+        "label": null,
+        "status": "no_replay_executed",
+        "raw_native_success_flag": false,
+        "recorded_replay_subtasks": 0,
+        "selected_methods_complete": false
+      }
+    ],
+    "both_failed_subtasks": 1,
+    "raw_records_modified": false,
+    "physics_steps": 0,
+    "training": false
   }
 }

@@ -29,6 +29,35 @@ def rate(values):
             'wilson95': interval}
 
 
+def replay_evidence(report):
+    """Require an executed selected-method replay before scoring its native flag."""
+    paired = report.get('subtasks', [])
+    replay = report.get('full_replay')
+    complete = bool(paired) and all(row['selection']['status'] == 'measured'
+        and row['selection']['method'] is not None for row in paired)
+    label = None
+    if replay is None:
+        status = 'missing_replay_evidence'
+    elif not replay:
+        status = 'no_replay_executed'
+    elif not complete:
+        status = 'incomplete_selected_methods'
+    elif any(type(row.get('success')) is not bool for row in replay):
+        status = 'unknown_replay_subtask_outcome'
+    elif any(row['success'] is False for row in replay):
+        label, status = False, 'executed_replay_failed'
+    elif len(replay) != len(paired):
+        status = 'incomplete_replay_records'
+    else:
+        label = report.get('actual_full_replay_success')
+        status = 'executed_complete_replay' if type(label) is bool else 'unknown_native_outcome'
+        if type(label) is not bool:
+            label = None
+    return {'label': label, 'status': status,
+        'raw_native_success_flag': report.get('actual_full_replay_success'),
+        'recorded_replay_subtasks': len(replay or []), 'selected_methods_complete': complete}
+
+
 def summarize(plan, reports):
     """Report subtask outcomes, four exits and independent complete replays."""
     cases = {case['name']: case for case in plan['cases']}
@@ -98,7 +127,8 @@ def summarize(plan, reports):
                     'method', 'trial_seed', 'sim_steps', 'decisions', 'wall_s', 'reason')}
                     for trial in row['trials']]} for row in rows]})
     physical = {name: report for name, report in by_case.items() if report['status'] == 'physical_result'}
-    replay = [physical[name]['actual_full_replay_success'] if name in physical else None for name in cases]
+    replay_details = {name: replay_evidence(report) for name, report in physical.items()}
+    replay = [replay_details[name]['label'] if name in physical else None for name in cases]
     envelope = [physical[name].get('sampled_envelope_native_success') if name in physical else None
                 for name in cases]
     task_suites = []
@@ -107,12 +137,14 @@ def summarize(plan, reports):
         task_suites.append({'suite': suite, 'registered_cases': len(names),
             'sampled_envelope_native': rate([physical[name].get('sampled_envelope_native_success')
                 if name in physical else None for name in names]),
-            'independent_full_replay': rate([physical[name]['actual_full_replay_success']
+            'independent_full_replay': rate([replay_details[name]['label']
                 if name in physical else None for name in names])})
     return {'source_commit': plan['source_commit'], 'registered_cases': 40,
         'case_status': dict(Counter(report['status'] for report in by_case.values())),
         'missing_cases': [name for name in cases if name not in by_case],
         'independent_full_replay': rate(replay), 'sampled_envelope_native': rate(envelope),
+        'independent_replay_evidence': [{'case': name, **detail}
+            for name, detail in replay_details.items()],
         'task_suite_summary': task_suites,
         'conditional_rate_products': [{'case': name,
             'product': physical[name].get('conditional_rate_product') if name in physical else None,
@@ -126,6 +158,7 @@ def summarize(plan, reports):
             'Repeated VLA trials within a subtask are correlated; pooled trial intervals are descriptive.',
             'Sampled best branches are an optimistic envelope, not independent whole-task success.',
             'Downstream subtasks not reached after a failed stage are not attempted observations.',
+            'An empty replay or only a selected-method prefix is unobserved whole-replay evidence; its raw native flag is retained separately.',
             'Rule-acceptable options and measured method success are distinct; this is not model choice accuracy.',
         ]}
 
@@ -138,6 +171,8 @@ def main():
     args = parser.parse_args()
     plan = json.loads(args.manifest.read_bytes())
     report = summarize(plan, [json.loads(path.read_bytes()) for path in args.case_result])
+    report['summarizer'] = {'path': str(Path(__file__).resolve()),
+        'sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     report['manifest'] = {'path': str(args.manifest.resolve()),
         'sha256': hashlib.sha256(args.manifest.read_bytes()).hexdigest()}
     report['result_sources'] = [{'path': str(path.resolve()),

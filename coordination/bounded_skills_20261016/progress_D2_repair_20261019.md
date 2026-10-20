@@ -1,3 +1,21 @@
+## 最新续接：缓存兼容通过，等待3968同源startup
+
+- 缓存源150的3条完整物理兼容已闭合：所有12项checks全True（π输入/动作字节、终点哈希、成功/停止、后继请求字节与动作/回执）。reports/sam_cache_full_branch_compatibility_closed_20261020.json。session26208结束0；benchmark26×3亦全字节相等。
+- 后续D2的缓存登记已准备：results/bounded_skills/D2_cached_binding_hybrid_20261020/3968bdb4/preparation，manifest仍旧ecd48f...不换状态/种子/预算，只改计划顶层sam3_entry。5项CPU预检通过。真实startup在raw10684.6/session2339，两个原样startup案例中object_swap_t1已0、spatial_swap_t1仍规划；未全通过前不换派发。
+- 通过后：停止唯一3896745，复制旧prep/dispatch.jsonl当前记录到新prep（保持已R10686_0），为已有输出建明确只读复用symlink，启动新prep派发器继续余3片。不可重提已R10686_0，不改10682；新旧SAM入口SHA分开登记。可复用source3968里的dispatch_repaired_d2脚本，新的startup-proof/CPU预检门槛仍需核验。
+- 汇总发现真实计量bug：旧150的goal_swap_t0四分支都失败，full_replay=[]，但raw actual_full_replay_success=False。修scripts/summarize_bounded_hybrid_d2.py只在确有完整选择方法的实际重放时计whole-replay；没有执行/只执行选中前缀为unknown，四分支失败仍保留。27相关CPU通过（随后聚焦10项亦通过），reports/D2_replay_evidence_summary_CPU_20261020.json以真实记录证明0个整局尝试、不是1次物理失败。原始记录未改。该reader改动未提交。
+- full40闭合后还需按原用户任务检查未实际整局重放的case；不能用raw false冒充实际结果。可用通用同保存初始态补一次择优方法重放（both_failed零比零按既定self并执行到失败）；不要写PRO专用规则，不混旧源或重选最好seed。当前先完成原版三分叉、s15修复三seed和新D2。
+- 原版余39的r3：19worker闭合、78π分支，执行72成功64；杯pick8/8+6无π拒绝，cup on2/2，关11/14、开22/23、推21/25。唯一程序错误仍旧s15，修复补跑raw10684.2/session22167尚未闭合。原版10682三R+新D2 10686_0 R；队列未清。
+
+## 最新性能诊断（不改变当前物理批）
+
+- HEAD6755e1c8：新增只在独立启动入口启用的SAM多图像特征缓存原型；技能/规划/停止规则均未改。CPU24项通过。原型sam3_feature_cache_startup_20261020.py SHA2372a1c90496123c50e0ceb14395d86fc6496419d82027ffc6d1fce638d94751。
+- 10684.3临时benchmark已COMPLETED0:0：26原版请求×3（off/on/off），响应字节全部相同，耗时6.574/2.956/6.498秒，图像编码23/4/23次。包括2个point RPC；不是整局吞吐。reports/sam_feature_cache_original_20261020.json。
+- 新入口真实startup10684.4 COMPLETED0:0，1/1首π物理请求；随后源150同状态/种子三条完整兼容重放正在10684.5、工具session26208。preparation results/bounded_skills/sam_feature_cache_physical_20261020/15068167/preparation，indices[0,3,5]，full_owned10684。与旧150 full_owned10671比较π输入/动作/终点/后继；通过前不改现有10682/10686作业。
+- S15绑定修复三seed复跑仍raw10684.2/session22167；约04:16首条19块，尚未闭合。这个父分配不能提前取消。
+- 补了两条成功停止轨迹CPU精确重放：末端和终点误差0、unknown0；最早完整v3窗口为π54→handoff9和π56→handoff9（分别π开始后的64/66控制步），公开停止仍55/57。证据stop_success_first_windows_CPU_20261020.json，源150，不重评分任何确认批。
+- 唯一调度仍PID3896745，日志monitor_public_binding_D2_and_original_20261020.log；旧3680760已停。10682三R＋新D2 10686_0 R，cap4因C2无GPU。后续D2三片待原版释放卡；新cache物理兼容通过后才考虑新入口用于尚未提交的片，来源/入口SHA分开登记。
+
 ## 最新物理启动与派发（覆盖下方旧PID）
 
 - D2新源3968bdb4的startup10681.0已COMPLETED0:0，2/2实际首π物理请求，543.40s。新D2 batch0=10686_0已经R；其余3批由唯一派发器PID3896745接续。脚本快照内dispatch_repaired_d2_20261020.py，SHA04f7fbe725127ead2438ceb4c7cf9d724765c7563abaebbdbe4e93c1e84c794a；日志monitor_public_binding_D2_and_original_20261020.log。原3680760不在。

@@ -1,0 +1,119 @@
+{
+  "source_commit": "1506816747489926709bc7fc49a0e730fd5da354",
+  "baseline": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/binding_handoff_15068167_closed_20261020.json",
+    "sha256": "dd708379b280df394714d50cb589e1d94aa024e171819d425474d5322307bfce"
+  },
+  "preparation": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/sam_feature_cache_physical_20261020/15068167/preparation/preparation.json",
+    "sha256": "c58b2453618d821761799d33e29a645c849d0c87b4335900f53c2f247c9c5ca6"
+  },
+  "script": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/compare_sam_cache_full_branches_CPU_20261020.py",
+    "sha256": "dca46c8135aa7111e268a2c9858b96202671f86b57d9f5743bd092cce8eeb648"
+  },
+  "rows": [
+    {
+      "seed": 13401000,
+      "baseline_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/000_libero_spatial_swap_t2_s40_handoff_r13401000/worker_summary.json",
+        "sha256": "be26a98fe5c26c1d08c30e0a305d47a3c650a426d329ae806e346fe581c1cfac"
+      },
+      "new_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/sam_feature_cache_physical_20261020/15068167/full_owned10684/N3/000_libero_spatial_swap_t2_s40_handoff_r13401000/worker_summary.json",
+        "sha256": "216c301dadb998aee3c8e5c5a894215f19fb33f96e465b1c1e49f52d82b8bf56"
+      },
+      "checks": {
+        "same_case": true,
+        "same_seed": true,
+        "same_initial_physics": true,
+        "same_initial_request": true,
+        "same_inference_calls": true,
+        "input_bytes_equal": true,
+        "prediction_bytes_equal": true,
+        "same_endpoint_physics": true,
+        "same_private_success": true,
+        "same_public_stop": true,
+        "next_request_bytes_equal": true,
+        "same_bounded_continuation": true
+      },
+      "all_equal": true,
+      "private_success": true,
+      "inference_calls": 11,
+      "wall_s_overlapping_loads": [
+        341.4823963129893,
+        283.9188560000621
+      ]
+    },
+    {
+      "seed": 16401000,
+      "baseline_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/003_libero_object_swap_t1_s40_handoff_r16401000/worker_summary.json",
+        "sha256": "6e3ed0b9c40f01a711fc3b0964ab3a3b33380975c86b4884abd30c06557ee8f5"
+      },
+      "new_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/sam_feature_cache_physical_20261020/15068167/full_owned10684/N3/001_libero_object_swap_t1_s40_handoff_r16401000/worker_summary.json",
+        "sha256": "981f415fbd2a12834ea7e51522795112220f841f7b954c71da8b42b005294130"
+      },
+      "checks": {
+        "same_case": true,
+        "same_seed": true,
+        "same_initial_physics": true,
+        "same_initial_request": true,
+        "same_inference_calls": true,
+        "input_bytes_equal": true,
+        "prediction_bytes_equal": true,
+        "same_endpoint_physics": true,
+        "same_private_success": true,
+        "same_public_stop": true,
+        "next_request_bytes_equal": true,
+        "same_bounded_continuation": true
+      },
+      "all_equal": true,
+      "private_success": true,
+      "inference_calls": 15,
+      "wall_s_overlapping_loads": [
+        472.86064097378403,
+        365.6526505686343
+      ]
+    },
+    {
+      "seed": 17402000,
+      "baseline_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/binding_handoff_20261020/15068167/full_owned10671/N6/005_libero_object_swap_t2_s40_handoff_r17402000/worker_summary.json",
+        "sha256": "68131e1e44539df86ff02c1eeac8935d88e73c19211fd268b319b2ea19b63add"
+      },
+      "new_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/sam_feature_cache_physical_20261020/15068167/full_owned10684/N3/002_libero_object_swap_t2_s40_handoff_r17402000/worker_summary.json",
+        "sha256": "dbc4eb24fae90628ed568ac42ea7e30f9012d1473be8ea97af9ad26d4312edba"
+      },
+      "checks": {
+        "same_case": true,
+        "same_seed": true,
+        "same_initial_physics": true,
+        "same_initial_request": true,
+        "same_inference_calls": true,
+        "input_bytes_equal": true,
+        "prediction_bytes_equal": true,
+        "same_endpoint_physics": true,
+        "same_private_success": true,
+        "same_public_stop": true,
+        "next_request_bytes_equal": true,
+        "same_bounded_continuation": true
+      },
+      "all_equal": true,
+      "private_success": false,
+      "inference_calls": 22,
+      "wall_s_overlapping_loads": [
+        490.6692379792221,
+        423.5981645253487
+      ]
+    }
+  ],
+  "pending": [],
+  "all_three_full_branches_equal": true,
+  "physics_steps": 0,
+  "gpu_used": false,
+  "training": false,
+  "scope": "full observed branch compatibility; wall times have different overlapping loads, not controlled episode throughput"
+}

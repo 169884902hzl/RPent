@@ -24,7 +24,7 @@ def fixture_report(plan):
         for index, (method, success) in enumerate([
             ('self', False), ('call_vla', False), ('call_vla', True), ('call_vla', None)])]
     return {'case': plan['cases'][0], 'source_commit': 'fixed', 'status': 'physical_result',
-        'actual_full_replay_success': False, 'subtasks': [{'trials': trials,
+        'actual_full_replay_success': False, 'full_replay': [], 'subtasks': [{'trials': trials,
             'subtask': {'id': 'g0:pick', 'mode': 'pick'},
             'selection': {'method': None, 'status': 'incomplete_measurement'}}]}
 
@@ -33,8 +33,8 @@ def test_registered_task_denominator_does_not_erase_missing_cases():
     plan = fixture_plan()
     result = summarize(plan, [fixture_report(plan)])
     assert result['independent_full_replay']['success'] == 0
-    assert result['independent_full_replay']['known_n'] == 1
-    assert result['independent_full_replay']['unknown_n'] == 39
+    assert result['independent_full_replay']['known_n'] == 0
+    assert result['independent_full_replay']['unknown_n'] == 40
     assert result['independent_full_replay']['registered_n'] == 40
     group, = result['subtask_summary']
     assert group['pi05_trials']['success'] == 1
@@ -74,11 +74,15 @@ def test_both_zero_success_is_retained_with_each_branch_reason():
 def test_optimistic_envelope_product_and_independent_replay_remain_separate():
     plan = fixture_plan()
     report = fixture_report(plan)
+    report['subtasks'][0]['trials'][-1]['success'] = False
+    report['subtasks'][0]['selection'] = {'method': 'call_vla', 'status': 'measured'}
+    report['full_replay'] = [{'method': 'call_vla', 'success': False}]
     report.update(sampled_envelope_native_success=True, conditional_rate_product=1/3)
     result = summarize(plan, [report])
     assert result['sampled_envelope_native']['success'] == 1
     assert result['sampled_envelope_native']['unknown_n'] == 39
     assert result['independent_full_replay']['success'] == 0
+    assert result['independent_full_replay']['known_n'] == 1
     assert result['conditional_rate_products'][0]['product'] == 1/3
     assert result['conditional_rate_products'][1]['product'] is None
     assert sum(row['registered_cases'] for row in result['task_suite_summary']) == 40
@@ -87,3 +91,55 @@ def test_optimistic_envelope_product_and_independent_replay_remain_separate():
     assert suite['registered_cases'] == 5
     assert suite['sampled_envelope_native']['success'] == 1
     assert suite['independent_full_replay']['success'] == 0
+
+
+def test_no_replay_does_not_turn_the_initial_native_false_into_a_physical_failure():
+    plan = fixture_plan()
+    report = fixture_report(plan)
+    before = copy.deepcopy(report)
+    result = summarize(plan, [report])
+    evidence, = result['independent_replay_evidence']
+    assert evidence['status'] == 'no_replay_executed'
+    assert evidence['label'] is None and evidence['raw_native_success_flag'] is False
+    assert result['independent_full_replay']['known_n'] == 0
+    assert report == before
+
+
+def test_successful_prefix_before_unselected_subtask_is_not_a_full_replay_failure():
+    plan = fixture_plan()
+    report = fixture_report(plan)
+    first = copy.deepcopy(report['subtasks'][0])
+    first['selection'] = {'method': 'self', 'status': 'measured'}
+    first['subtask']['id'] = 'g0:before'
+    report['subtasks'].insert(0, first)
+    report['full_replay'] = [{'method': 'self', 'success': True}]
+    result = summarize(plan, [report])
+    evidence, = result['independent_replay_evidence']
+    assert evidence['status'] == 'incomplete_selected_methods'
+    assert evidence['label'] is None
+
+
+def test_complete_replay_with_unsatisfied_native_goal_retains_failure():
+    plan = fixture_plan()
+    report = fixture_report(plan)
+    report['subtasks'][0]['selection'] = {'method': 'self', 'status': 'measured'}
+    report['full_replay'] = [{'method': 'self', 'success': True}]
+    result = summarize(plan, [report])
+    evidence, = result['independent_replay_evidence']
+    assert evidence['status'] == 'executed_complete_replay'
+    assert evidence['label'] is False
+    assert result['independent_full_replay']['known_n'] == 1
+
+
+def test_failed_first_replay_subtask_retains_an_actual_failure():
+    plan = fixture_plan()
+    report = fixture_report(plan)
+    report['subtasks'][0]['selection'] = {'method': 'self', 'status': 'measured'}
+    second = copy.deepcopy(report['subtasks'][0])
+    second['subtask']['id'] = 'g0:after'
+    report['subtasks'].append(second)
+    report['full_replay'] = [{'method': 'self', 'success': False}]
+    result = summarize(plan, [report])
+    evidence, = result['independent_replay_evidence']
+    assert evidence['status'] == 'executed_replay_failed' and evidence['label'] is False
+    assert result['independent_full_replay']['known_n'] == 1
