@@ -202,6 +202,7 @@ def bounded_episode(args, row, endpoints, probe):
                 stop_reason = 'no_public_option'
                 break
             decision_end = time.perf_counter()
+            detail_start = len(adapter.details)
             if decision['candidate_ids']:
                 adapter._latency_stage = 'selected_execution'
                 with timings.measure('execution.chunk'):
@@ -212,6 +213,7 @@ def bounded_episode(args, row, endpoints, probe):
             loops.append({'index':index, 'request_s':request_s,
                 'decision_s':decision_end-begin-request_s, 'execution_s':end-decision_end,
                 'loop_s':end-begin, 'request':request,'decision':decision,'receipts':receipts,
+                'execution_details': adapter.details[detail_start:],
                 'request_sha256': hashlib.sha256(json.dumps(request,sort_keys=True,separators=(',',':'),
                     allow_nan=False).encode()).hexdigest(),
                 'timings':timings.summary(end-begin, start_event=event)})

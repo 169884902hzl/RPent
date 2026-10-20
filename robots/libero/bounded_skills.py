@@ -397,6 +397,45 @@ class MeasuredSkillAdapter:
         self._screen_cache[cache_key] = screen
         return screen
 
+    def _lift_payload_screen(self, key, screen, reference=None):
+        """Screen a proposed lift with its measured object moving conditionally.
+
+        This predicts attachment for planning only. The ordinary post-lift
+        RGB-D checks must still establish held identity and motion coupling.
+        """
+        entity = self.scene.entities.get(key)
+        if (not isinstance(screen, PublicRouteScreen) or self.held is not None
+                or key != self.active or self.grasp_reference is None
+                or entity is None or entity.part_of or fixture_actions(entity.name)
+                or self.plans.get(key, {}).get('contact_kind') == 'surface'):
+            return screen
+        robot = measured_robot(self.p)
+        if not self.holding_aperture(robot['gripper_opening_m'])[0]:
+            return screen
+        cache_key = ('pending_lift', key, tuple(robot['eef_xyz_m']), tuple(robot['finger_positions_m']))
+        if cache_key in self._screen_cache:
+            return self._screen_cache[cache_key]
+        reference = reference if reference is not None else self._capture_payload_reference(key)
+        if len(reference['target']) < 40:
+            return screen
+        from robots.libero.v5_geometric_grasp import _voxel
+
+        target = _voxel(reference['target'], .002)
+        scene = _voxel(reference['scene'])
+        pose = {'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']}
+        contact = PublicRouteScreen(scene, screen.geometry, screen.ik,
+            opening=robot['gripper_opening_m'], contact_points=target,
+            contact_allowed=True, initial_pose=pose)
+        # Test the COMPLETE measured instance against the current hand first.
+        # Conditional motion cannot exempt an existing finger-shell overlap.
+        if not contact._geometry_at(pose)['passed']:
+            return contact
+        payload = (target-robot['eef_xyz_m'])@Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
+        result = PublicRouteScreen(scene, screen.geometry, screen.ik,
+            opening=robot['gripper_opening_m'], payload_local=payload, initial_pose=pose)
+        self._screen_cache[cache_key] = result
+        return result
+
     def _self_filtered_world(self, world):
         """Keep exact current pixels present in the public route's scene."""
         if self._base_geometry is None:
@@ -1841,7 +1880,10 @@ class MeasuredSkillAdapter:
                     'recent_failures': 0, 'last_failure': None,
                     'expected_receipt': expected_receipt(self, skill, parameters)}
             contact = skill in {"descend", "lower", "nudge"} or (skill in {"lift", "rotate_wrist"} and self.active is not None)
-            motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=contact), self.config)
+            screen = self._cloud_and_ik(key, contact=contact)
+            if skill == 'lift':
+                screen = self._lift_payload_screen(key, screen)
+            motion = SmoothMotion(self.p, screen, self.config)
             if self.lazy_planning_v1 and not complete:
                 robot = measured_robot(self.p)
                 evidence = motion.screen.endpoint_screen(route, robot)
@@ -2670,11 +2712,18 @@ class MeasuredSkillAdapter:
                     path = [list(before['eef_xyz_m']), *[w['xyz_m'] for w in route]]
                     self._incremental_route = [point.tolist() for a, b in zip(path, path[1:])
                         for point in np.linspace(a, b, max(2, math.ceil(np.linalg.norm(np.asarray(b)-a)/.02)+1))]
-                motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=skill in {"descend", "lower", "nudge"}
-                    or (skill in {"lift", "rotate_wrist"} and self.active is not None)), self.config)
+                screen = self._cloud_and_ik(key, contact=skill in {"descend", "lower", "nudge"}
+                    or (skill in {"lift", "rotate_wrist"} and self.active is not None))
+                if skill == 'lift':
+                    screen = self._lift_payload_screen(key, screen, payload_reference)
+                motion = SmoothMotion(self.p, screen, self.config)
                 detail = motion.run(route, gripper=self.gripper_command, lookahead=lookahead,
                     request_factory=self.snapshot_decision_context if lookahead is not None else None,
                     contact_stop=self._empty_held_gripper)
+                if skill == 'lift' and isinstance(screen, PublicRouteScreen) and len(screen.payload):
+                    detail['conditional_payload'] = {'anchor_id': key,
+                        'source': 'complete_measured_pre_lift_instance', 'held_verified': self.held == key,
+                        'reference_artifacts': payload_reference.get('artifacts') if payload_reference else None}
                 if skill == 'move_to':
                     detail.update(resolved_anchor=key, resolved_approach=parameters.get('approach', 'above'),
                         resolved_path=parameters.get('path', 'over'))
@@ -2879,7 +2928,7 @@ class MeasuredSkillAdapter:
                     and reason.startswith('contact_')):
                 self._contact_retry_references[key] = (key, parameters['axis'], parameters['distance_m'],
                     contact_reference, contact_capture_step)
-        if skill == "lift" and self.grasp_reference is not None:
+        if skill == "lift" and self.grasp_reference is not None and detail.get('executed'):
             source, robot_at_contact = self.grasp_reference
             current = self.scene.entities.get(key)
             if source is not None and current is not None and current.visible:

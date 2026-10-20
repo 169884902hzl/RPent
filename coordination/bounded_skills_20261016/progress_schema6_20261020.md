@@ -179,3 +179,19 @@ CPU诊断第一次因外部脚本目录优先于PYTHONPATH误载live包而缺pro
 通用分叉修复：checkpoint捕获EnvState的观测记录，恢复时在独立目录硬链接原始RGB-D文件并恢复帧游标；保留同一个EnvState对象，工具回调和mask跟踪仍引用正确对象。后续原子写入只替换本分叉文件，不覆盖任何兄弟或源文件。无需重新渲染/测量，不把私有坐标用于公开输入。旧checkpoint无此字段时保留原兼容路径，不能声称历史传感器视图已补齐。
 
 针对性29项CPU回归通过0.88秒，包含同状态多次恢复、RGB-D字节相同、兄弟文件保留、真实控制零步拒绝和VLA129步准入。物理同状态启动仍待新源码复核，D未通过。
+
+新源码e3617367b6cf5afcc20bdd5a18977503df4adbea已普通推送，完整归档SHA256 cb3bc8259c9685ba74896f9dd3e7c380e6a51e6d295ce4e7049b5c9ebfb62607，远端快照source_schema6_e3617367_20261021。七类CPU preflight通过；79项相关回归通过2.72秒。10820(move100)、10821(drawer40)、10822(fixed32 N1)已运行真实启动；10823/10824/10825为D2恢复0/1/2，依次等move100及前档结束。六job均有30秒借卡监控；Codex2GPU pending时取消显式借卡分片并保留关闭结果。接口SHA未变，已登记共享字节6906604401–6906606418，回执preparation_e3617367/interface_delivery.json。尚无本源完整回合，D未通过。
+
+## 分叉恢复物理通过；抬升碰撞的静止目标/完整载荷不一致
+
+10820 move与10821 drawer的真实启动均已通过。drawer两臂从同一完整初态e47090312dabc22167e4510ba168b7eb928dda7a4dbc62ca20794890b25fcc9f出发，各397控制步(move344/descend38/close15)，原来第二臂起点掌部28点碰撞消失，分叉串帧修复有物理证据。10822的VLA试点实际启动及首个bounded chunk均通过。startup_evidence_r1.json保留本源记录；不当成整局成功。
+
+N1启动样本和move后续有零步lift。公开回执被后置持物检查覆盖成public_hold_not_verified，真实execution.screen为measured_sweep_collision。5条同类执行细节已找到，拟修为零步不执行抬升后验证，并在N1每轮保存execution_details。其余物理判据不变。针对性20项通过，完整skills/launcher261项通过171.94秒。
+
+CPU同一原件case000证明：旧接触点云静止筛查有leftfinger7/rightfinger1的目标碰撞。仅把旧接触点云作为载荷仍被场景阻挡，不作为修复；两个阻挡点同时属于现有完整payload_reference.target(精确距离0)，与reference.scene距离分别16.07/40.77mm。因此碰撞屏幕用的较小旧接触云把同一完整测得物体的一部分留成了障碍。复用完整target/scene，按条件随手运动重建载荷屏幕后，原继承v/a/j和零参考两条路线均通过；完整目标仍静止则两条都失败。0RPC/0仿真步。原件CPU_pending_payload_bowl_case000_r1.json、CPU_payload_direction_case000_r2.json、CPU_payload_whole_instance_case000_r3.json，前两份失败假设保留。
+
+新代码只对已经接触、夹爪开度非空、公开可动实体的lift使用现有完整测量的条件载荷；先检查完整物体在当前手指处无壳体重叠，再检查整条手/载荷路线。家具、空夹爪和未接触状态不作载荷假设。held不提前置真，仍由原RGB-D抬高3cm/随动验证判定。22项针对性CPU回归通过10.12秒，含外部障碍与已有指壳碰撞仍拒绝。新代码完整相关回归正在跑，未投入物理分母。
+
+01:13:35集群时间停止10820(3对关闭)、10822(0整局关闭)以及依赖10823–10825，以新快照修复已证实抬升屏幕问题。10821抽屉不受可动物体载荷分支影响，继续收集独立开发证据；10698仍不改。停止原件stopped_e361_pending_lift_20261021.json，失败/未知/中断不删除、不混新源。10698基线32状态已完整关闭：30整局25成功，2VLA试点单列；循环中位109.12秒、整局中位327.25秒，优化臂尚无配对关闭，不能宣称提速。
+
+条件抬升、技能、chunk、schema6、screen和启动器完整相关CPU回归334 passed，213.98秒；原pytest timeout配置警告保留。日志/tmp/schema6_pending_lift_full.log。源码补丁没有降低任何碰撞/抓取/放置判据，后续仍须新快照同launcher真实物理请求验证。

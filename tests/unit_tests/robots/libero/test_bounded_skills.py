@@ -2722,6 +2722,67 @@ def test_lift_keeps_selected_finger_contact_allowed(adapter):
     assert ("e1", True) in seen
 
 
+def test_zero_control_lift_preserves_planning_failure_before_hold_verification(adapter, monkeypatch):
+    adapter.active = 'e1'
+    adapter.grasp_reference = (adapter.scene.entities['e1'], adapter.robot())
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: None)
+    request = adapter.request(k=1)
+    lift = next(c for c in request['candidates'] if c['skill'] == 'lift')
+    monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion.run', lambda *a, **k: {
+        'executed': False, 'stop_reason': 'measured_sweep_collision', 'steps_used': 0,
+        'screen': {'passed': False, 'collision': True}})
+    receipt, = adapter.execute(request, decision(request, [lift['id']]))
+    assert (receipt['outcome'], receipt['phase'], receipt['stop_reason']) == (
+        'failure', 'collision', 'measured_sweep_collision')
+    assert receipt['steps_used'] == 0 and adapter.held is None
+
+
+def test_lift_plans_complete_measured_payload_without_claiming_a_grasp(adapter, monkeypatch):
+    from robots.libero.bounded_screen import PublicRouteScreen
+
+    adapter.active = 'e1'
+    adapter.grasp_reference = (adapter.scene.entities['e1'], adapter.robot())
+    monkeypatch.setattr(adapter, 'holding_aperture', lambda opening: (True, {}))
+    robot = adapter.robot()
+    pose = {'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']}
+    target = np.tile(np.array(robot['eef_xyz_m'])+[0., 0., .02], (40, 1))
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    reference = {'target': target, 'scene': np.array([[10., 10., 10.]])}
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: reference)
+    original = PublicRouteScreen(reference['scene'], geometry, ik,
+        opening=robot['gripper_opening_m'], contact_points=target, initial_pose=pose)
+    route = [pose, {**pose, 'xyz_m': (np.array(robot['eef_xyz_m'])+[0., 0., .1]).tolist()}]
+    assert not original(route)['passed']
+    pending = adapter._lift_payload_screen('e1', original)
+    assert pending(route)['passed']
+    assert adapter.held is None and len(original.target) == 40
+    assert len(pending.target) == 0 and len(pending.payload) > 0
+    # An external object along that payload/hand route remains an obstacle.
+    adapter._screen_cache.clear()
+    reference['scene'] = np.array(robot['eef_xyz_m'])[None, :]+[0., 0., .07]
+    blocked = adapter._lift_payload_screen('e1', original)
+    assert not blocked(route)['passed'] and adapter.held is None
+
+
+def test_lift_prediction_keeps_an_existing_finger_shell_overlap(adapter, monkeypatch):
+    from robots.libero.bounded_screen import PublicRouteScreen
+
+    adapter.active = 'e1'
+    adapter.grasp_reference = (adapter.scene.entities['e1'], adapter.robot())
+    monkeypatch.setattr(adapter, 'holding_aperture', lambda opening: (True, {}))
+    robot = adapter.robot()
+    pose = {'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']}
+    geometry = {'boxes': [{'name': 'finger', 'lower': [-.01]*3, 'upper': [.01]*3}]}
+    target = np.tile(robot['eef_xyz_m'], (40, 1))
+    reference = {'target': target, 'scene': np.array([[10., 10., 10.]])}
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: reference)
+    original = PublicRouteScreen(reference['scene'], geometry,
+        SimpleNamespace(check=lambda *args: {'solution_found': True}), contact_points=target)
+    screen = adapter._lift_payload_screen('e1', original)
+    assert not screen([pose])['passed'] and adapter.held is None
+
+
 def test_rejected_wrist_scan_is_a_failure(adapter):
     request = adapter.request(k=1)
     adapter._cloud_and_ik = lambda *args, **kwargs: lambda poses: {
