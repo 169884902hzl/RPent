@@ -386,8 +386,11 @@ def contact_axis_registration(reference, current_scene, axis, distance_m, *, end
         batch = shifts[start:start+8]
         offsets = np.zeros((len(batch), 3))
         offsets[:, axis] = batch
+        # Distances above8mm have the same capped loss and no support.
+        # The next representable bound preserves inclusion at exactly8mm.
         residual = tree.query((source[None, :, :]+offsets[:, None, :]).reshape(-1, 3),
-            workers=query_workers)[0].reshape(len(batch), len(source))
+            workers=query_workers, distance_upper_bound=np.nextafter(.008, np.inf)
+            )[0].reshape(len(batch), len(source))
         scores.extend(np.mean(np.minimum(residual, .008)**2, axis=1).tolist())
         supported.extend(np.mean(residual <= .008, axis=1).tolist())
     best = int(np.argmin(scores))

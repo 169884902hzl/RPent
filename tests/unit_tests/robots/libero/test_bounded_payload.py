@@ -126,6 +126,25 @@ def test_parallel_registration_preserves_all_measurements_and_verdicts():
             contact_axis_registration(source, scene, 1, .02))
 
 
+def test_capped_registration_queries_match_uncapped_measurements(monkeypatch):
+    from robots.libero import bounded_payload
+    tree_type = bounded_payload.cKDTree
+    source = np.random.default_rng(98).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
+    scenes = [source + [0., shift, 0.] for shift in (0., .008, .02, .08)]
+    capped = [contact_axis_registration(source, scene, 1, .02) for scene in scenes]
+
+    class UncappedTree:
+        def __init__(self, points):
+            self.tree = tree_type(points)
+
+        def query(self, points, **kwargs):
+            kwargs.pop('distance_upper_bound', None)
+            return self.tree.query(points, **kwargs)
+
+    monkeypatch.setattr(bounded_payload, 'cKDTree', UncappedTree)
+    assert capped == [contact_axis_registration(source, scene, 1, .02) for scene in scenes]
+
+
 def test_contact_fit_corrects_normal_compliance_without_tangent_drift():
     x, z = np.mgrid[:20, :12]
     surface = np.stack([x.ravel()*.001, np.zeros(x.size), z.ravel()*.001], axis=-1)
