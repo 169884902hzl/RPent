@@ -195,6 +195,36 @@ def test_n1_resume_preserves_completed_cases_and_interrupted_attempt(tmp_path):
         module.pending_cases(tmp_path, [0])
 
 
+def test_failed_support_context_saves_public_depth_without_rpc_or_physics():
+    import numpy as np
+    path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py'
+    spec = importlib.util.spec_from_file_location('support_public_capture', path)
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    world = np.ones((4, 5, 3))
+    clouds = {'item': np.array([[.1, .2, .3]])}
+    def load(name):
+        assert name in {'agentview_world_high.npz', 'wrist_world_high.npz'}
+        return world
+    class PublicSensors:
+        def raw_obs(self):
+            return {'robot0_eef_pos': [0., 0., 1.], 'robot0_eef_quat': [0., 0., 0., 1.],
+                'robot0_gripper_qpos': [.02, -.02], 'robot0_joint_pos': [0.]*7}
+        def __getattr__(self, name):
+            pytest.fail('diagnostic requested non-public sensor operation: '+name)
+    adapter = SimpleNamespace(p=SimpleNamespace(env=PublicSensors()),
+        ex=SimpleNamespace(toolkit=SimpleNamespace(_state=SimpleNamespace(latest_step=5, load=load))),
+        scene=SimpleNamespace(entities={'item': SimpleNamespace(id='item')}, measurement_clouds=clouds),
+        _latency_stage='selected_execution')
+    payload = {'target': np.array([[.1, .2, .3]])}
+    saved = module.public_support_replay_inputs(adapter, payload)
+    assert saved['capture_step'] == 5 and saved['latency_stage'] == 'selected_execution'
+    assert saved['physics_steps'] == saved['rpc_calls'] == 0 and not saved['training']
+    world[:] = 7.; clouds['item'][:] = 8.; payload['target'][:] = 9.
+    np.testing.assert_array_equal(saved['worlds']['agentview'], np.ones((4, 5, 3)))
+    np.testing.assert_array_equal(saved['measurement_clouds']['item'], [[.1, .2, .3]])
+    np.testing.assert_array_equal(saved['payload_reference']['target'], [[.1, .2, .3]])
+
+
 def test_move_outcome_tracks_parent_goal_and_held_transfer_stage(tmp_path, monkeypatch):
     module, _, _ = setup_launcher(tmp_path, monkeypatch)
     cabinet = SimpleNamespace(id='cabinet', part_of=None)
@@ -272,6 +302,13 @@ def test_n1_common_start_requires_complete_state_and_verifies_each_arm(tmp_path)
     assert current==physical
     assert adapter.source=='optimized' and adapter.refresh_count==2
     assert baseline['actual_complete_initial_sha256']==optimized['actual_complete_initial_sha256']
+    assert not (args.common_starts/'startup_000.pkl').exists()
+    args.startup=True;args.output=tmp_path/'restored_startup';args.output.mkdir()
+    current['rng']=456
+    startup=module.common_start(args,facade,adapter,None,probe)
+    assert current==physical and adapter.refresh_count==3
+    assert startup['actual_complete_initial_sha256']==baseline['actual_complete_initial_sha256']
+    assert not (args.common_starts/'startup_000.pkl').exists()
     probe.restore_checkpoint=lambda *_:None
     current['rng']=123
     args.output=tmp_path/'mismatched';args.output.mkdir()

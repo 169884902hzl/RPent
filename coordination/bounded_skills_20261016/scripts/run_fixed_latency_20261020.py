@@ -72,25 +72,67 @@ def capture_failed_support_routes(output):
     import gzip
     import pickle
     from robots.libero.bounded_screen import PublicRouteScreen
+    from robots.libero.bounded_skills import MeasuredSkillAdapter
     original=PublicRouteScreen.__call__
     captured=0
     directory=output/'failed_support_routes'
     def call(screen,*positional,**kwargs):
         nonlocal captured
+        frame = sys._getframe(1)
+        while frame is not None:
+            owner = frame.f_locals.get('self')
+            if isinstance(owner, MeasuredSkillAdapter) and frame.f_code.co_name == '_execute_one':
+                break
+            frame = frame.f_back
         raw=(pickle.dumps((screen,positional,kwargs),protocol=5)
-            if captured<8 and getattr(screen,'support_separation',False) else None)
+            if frame is not None and captured<8 and getattr(screen,'support_separation',False) else None)
         result=original(screen,*positional,**kwargs)
         if raw is not None and not result['passed']:
             directory.mkdir(exist_ok=True)
             path=directory/f'{captured:02d}.pkl.gz'
             path.write_bytes(gzip.compress(raw,compresslevel=1,mtime=0))
+            public_context = None
+            while frame is not None:
+                owner = frame.f_locals.get('self')
+                if isinstance(owner, MeasuredSkillAdapter):
+                    context = public_support_replay_inputs(owner,
+                        frame.f_locals.get('payload_reference'))
+                    context['caller'] = frame.f_code.co_name
+                    data = pickle.dumps(context, protocol=5)
+                    context_path = directory/f'{captured:02d}_public.pkl.gz'
+                    context_path.write_bytes(gzip.compress(data,compresslevel=1,mtime=0))
+                    public_context = {'path': str(context_path),
+                        'uncompressed_sha256': hashlib.sha256(data).hexdigest()}
+                    break
+                frame = frame.f_back
             write(directory/f'{captured:02d}.json',dict(input=str(path),
                 input_sha256=hashlib.sha256(raw).hexdigest(),result=result,
+                public_context=public_context,
                 source='public_rgbd_static_robot_geometry_and_proprioception',
                 training=False,private_truth_used=False))
             captured+=1
+        del frame
         return result
     PublicRouteScreen.__call__=call
+
+
+def public_support_replay_inputs(adapter, payload_reference=None):
+    """Save current public depth/ownership inputs without querying physics/RPC."""
+    import copy
+    import numpy as np
+    from robots.libero.bounded_motion import measured_robot
+
+    state = adapter.ex.toolkit._state
+    return {'capture_step': state.latest_step, 'robot': measured_robot(adapter.p),
+        'worlds': {camera: np.array(state.load(camera+'_world_high.npz'), copy=True)
+            for camera in ('agentview', 'wrist')},
+        'entities': copy.deepcopy(adapter.scene.entities),
+        'measurement_clouds': copy.deepcopy(adapter.scene.measurement_clouds),
+        'payload_reference': copy.deepcopy(payload_reference),
+        'latency_stage': getattr(adapter, '_latency_stage', None),
+        'sensor_interface': type(adapter.p.env).__module__+'.'+type(adapter.p.env).__name__,
+        'source': 'current_public_rgbd_and_proprioception_only',
+        'physics_steps': 0, 'rpc_calls': 0, 'training': False}
 
 
 def common_start(args, facade, adapter, policy, probe):
@@ -100,7 +142,10 @@ def common_start(args, facade, adapter, policy, probe):
     import pickle
     root=args.common_starts
     root.mkdir(parents=True,exist_ok=True)
-    path=root/f'{"startup" if args.startup else "state"}_{args.worker:03d}.pkl'
+    # Restore probes use the same canonical case state as the scored arm.
+    # Startup aliases existed only for cases previously used as shard heads.
+    prefix = 'startup' if args.startup and args.initial_mode == 'create' else 'state'
+    path=root/f'{prefix}_{args.worker:03d}.pkl'
     if args.initial_mode=='create' and not path.exists():
         probe.save_checkpoint(facade,adapter,policy,path)
     if not path.exists():
@@ -350,6 +395,10 @@ def main():
     indices = args.indices if args.indices is not None else list(range(32))
     if not indices or len(set(indices)) != len(indices) or any(not 0 <= i < 32 for i in indices):
         raise ValueError('indices must be unique registered state indices')
+    if args.common_starts is not None and args.initial_mode == 'restore':
+        for index in indices:
+            if not (args.common_starts/f'state_{index:03d}.pkl').is_file():
+                raise ValueError(f'canonical shared initial state is missing: state_{index:03d}.pkl')
     options = plan.get('runtime_options', {})
     if (set(options) - {'lazy_planning_v1', 'registration_query_workers'}
             or ('lazy_planning_v1' in options and type(options['lazy_planning_v1']) is not bool)
