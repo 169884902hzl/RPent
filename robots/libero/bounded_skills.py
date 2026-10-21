@@ -1860,7 +1860,10 @@ class MeasuredSkillAdapter:
             approaches = [parameters['approach']] if parameters.get('approach') else ('above', 'right', 'front', 'left')
             variant = next(({**parameters, 'approach': approach, 'path': 'over'} for approach in approaches
                 if 'surface_contact_options' not in plan or approach in plan['surface_contact_options']), None)
-            result = self._candidate(skill, variant, complete=False) if variant else None
+            # This provisional direction supplies only the cost/receipt.
+            # Its IK/collision values are discarded below because selected
+            # execution still chooses the first fully screened variant.
+            result = self._candidate(skill, variant, complete=False, screen_options=False) if variant else None
             if result is not None:
                 result.update(id=cid, parameters=parameters)
                 result['consequences'].update(collision=None, ik_reachable=None,
@@ -1956,13 +1959,15 @@ class MeasuredSkillAdapter:
                     'recent_failures': 0, 'last_failure': None,
                     'expected_receipt': expected_receipt(self, skill, parameters)}
             contact = skill in {"descend", "lower", "nudge"} or (skill in {"lift", "rotate_wrist"} and self.active is not None)
-            screen = self._cloud_and_ik(key, contact=contact)
-            if skill == 'lift':
-                screen = self._lift_payload_screen(key, screen)
-            motion = SmoothMotion(self.p, screen, self.config)
             if self.lazy_planning_v1 and not complete:
                 robot = measured_robot(self.p)
-                evidence = motion.screen.endpoint_screen(route, robot)
+                if self.schema6_v1 and skill == 'move_to' and not screen_options:
+                    evidence = dict(passed=True, collision=None, ik_reachable=None, path_min_clearance_m=None)
+                else:
+                    screen = self._cloud_and_ik(key, contact=contact)
+                    if skill == 'lift':
+                        screen = self._lift_payload_screen(key, screen)
+                    evidence = screen.endpoint_screen(route, robot)
                 position = np.asarray(robot['eef_xyz_m'])
                 rotation = Rotation.from_quat(robot['eef_quat_xyzw'])
                 duration = 0.
@@ -1978,6 +1983,10 @@ class MeasuredSkillAdapter:
                     position = np.asarray(waypoint['xyz_m'])
                     rotation = Rotation.from_quat(waypoint['quat_xyzw'])
             else:
+                screen = self._cloud_and_ik(key, contact=contact)
+                if skill == 'lift':
+                    screen = self._lift_payload_screen(key, screen)
+                motion = SmoothMotion(self.p, screen, self.config)
                 trajectory, _, _, evidence = motion.prepare(route)
                 duration = trajectory.duration
             if not evidence['passed']:
@@ -2962,9 +2971,19 @@ class MeasuredSkillAdapter:
             reason = "native_success" if outcome == "success" else "environment_reports_task_incomplete"
         elif skill == "ask_help":
             outcome, reason = "rejected", "no_human_available_use_observe_restage_or_other_approach"
+        vla_observation = detail.get('post_handoff_observation') if skill == 'call_vla' else None
+        reuse_vla_observation = (self.schema6_v1 and vla_observation is not None
+            and vla_observation['used_sim_steps'] == self.p.env.execution_budget()['used_sim_steps']
+            and vla_observation['capture_step'] == self.ex.toolkit._state.latest_step)
         if skill == 'nudge' and key is not None and outcome == 'success':
             contact_registration = self.refresh(contact_motion=(key, parameters['axis'],
                 parameters['distance_m'], contact_reference, contact_capture_step))
+        elif reuse_vla_observation:
+            # call_vla has already observed after settling/verification.
+            # With no intervening physics, another capture repeats that
+            # same measurement and needlessly rebuilds its instance clouds.
+            detail['reused_post_handoff_observation'] = True
+            contact_registration = None
         else:
             self.refresh()
             contact_registration = None
@@ -3532,6 +3551,9 @@ class MeasuredSkillAdapter:
                 self.held = None
             if self.schema6_v1:
                 result['steps_used'] = self.p.env.execution_budget()['used_sim_steps']-initial_step
+                result['post_handoff_observation'] = {
+                    'capture_step': self.ex.toolkit._state.latest_step,
+                    'used_sim_steps': self.p.env.execution_budget()['used_sim_steps']}
         result["template"] = {"version": PI05_PROMPT_VERSION, "mode": mode, "prompt": prompt}
         result['payload_reference_capture_step'] = (vla_payload_reference['capture_step']
             if vla_payload_reference is not None else None)

@@ -4,6 +4,7 @@ import copy
 import numpy as np
 
 from robots.libero.bounded_vla_hold import measured_block_hold
+from tests.unit_tests.robots.libero.test_bounded_skills import adapter  # noqa: F401
 
 
 def pair():
@@ -54,3 +55,41 @@ def test_missing_texture_retains_unmeasured_hold():
     earlier, current, target = pair()
     earlier['views']['agentview']['rgb'][:] = 0
     assert measured_block_hold([earlier], current, target, aperture) == (None, None)
+
+
+def run_observation_reuse(adapter, monkeypatch, *, advance_after_capture):
+    from tests.unit_tests.robots.libero.test_bounded_schema6 import enable
+
+    enable(adapter)
+    adapter.allow_vla = True
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'call_vla')
+    original = adapter.refresh
+    calls = []
+    def refresh(*args, **kwargs):
+        calls.append(True)
+        return original(*args, **kwargs)
+    monkeypatch.setattr(adapter, 'refresh', refresh)
+    def call(_):
+        refresh()
+        observed = {'capture_step': adapter.ex.toolkit._state.latest_step,
+                    'used_sim_steps': adapter.p.env.execution_budget()['used_sim_steps']}
+        if advance_after_capture:
+            adapter.p._step_env(np.zeros(7))
+        return {'outcome': 'failure', 'stop_reason': 'no_progress_blocks',
+                'post_handoff_observation': observed}
+    monkeypatch.setattr(adapter, 'call_vla', call)
+    adapter._execute_one(request, candidate)
+    return len(calls), adapter.details[-1]['execution']
+
+
+def test_vla_final_observation_is_reused_without_intervening_physics(adapter, monkeypatch):
+    calls, detail = run_observation_reuse(adapter, monkeypatch, advance_after_capture=False)
+    assert calls == 1
+    assert detail['reused_post_handoff_observation'] is True
+
+
+def test_vla_final_observation_is_refreshed_after_another_control(adapter, monkeypatch):
+    calls, detail = run_observation_reuse(adapter, monkeypatch, advance_after_capture=True)
+    assert calls == 2
+    assert 'reused_post_handoff_observation' not in detail

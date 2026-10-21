@@ -66,6 +66,19 @@ def test_one_move_per_anchor_and_only_failed_anchor_has_alternates(adapter):
     assert all('path' not in c['parameters'] for c in moves)
 
 
+def test_provisional_merged_move_does_not_build_a_discarded_screen(adapter, monkeypatch):
+    enable(adapter)
+    request = adapter.request()
+    original = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    def unused(*args, **kwargs):
+        raise AssertionError('provisional move constructed a discarded cloud/IK screen')
+    monkeypatch.setattr(adapter, '_cloud_and_ik', unused)
+    repeated = adapter._candidate('move_to', original['parameters'])
+    assert repeated == original
+    assert repeated['consequences']['screen_scope'] == 'planner_selected_variant_pending'
+    assert repeated['consequences']['collision'] is None
+
+
 def test_failed_empty_gripper_closure_offers_alternate_approach_to_contacted_anchor(adapter, monkeypatch):
     enable(adapter)
     adapter.active = 'e1'
