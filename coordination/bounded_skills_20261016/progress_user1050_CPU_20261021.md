@@ -47,3 +47,11 @@ M7新oracle全24片10945已全闭合，聚合cpu/M7_031287f0_closed_r1：2966请
 全技能CPU r19：685 passed/305.03s（/tmp/user1050_CPU_panel_r19.log）。r18运行期间修改测试/launcher，混用旧已加载测试与新函数产生1失败，原日志保留；冻结修改后的r19全通过。帧恢复/N1启动专项15项通过。M7仍为031源5472位置/4427源身份可用、train3238，已登记。
 
 N1严格配对另修：只共享完整物理状态，每臂保留自身源码公开runtime并刷新，刷新前后均核完整SHA，避免把基线公开缓存带到优化臂。实际10698基线为6a2d6bb8（不是3968）；基于其完整源只移植D3快照运输，登记source_N1_6a2d_D3transport_20261021_r1。10985启动因缺PI05_CHECKPOINT_PATH退出1、无物理；已加入模型资源绝对路径CPU预检、补环境变量，失败目录保留。两端CPU preflight均0；10986只做两臂真实startup，不是32局完成。新代码/正式N1不能和旧非完整初态配对数字混用。
+
+接续（07:5x）：10986两臂真实startup已COMPLETED0:0。共同完整初态a176318f3cfd7c73d930f988e28692e24c3a671f5ccb6de54c6af11ddbf874fe，积分5db9db2a...，各臂refresh后完整SHA也相同；baseline186/optimized222ticks。严格N1正式10989已跑（先baseline32再optimized32），另有10996单独pair0开发预览，依赖10993全部退出后启动，结果不与正式32重复计数。baseline首局成功，433.078s/284steps/2decisions；不是after提速证明。算法基线6a2d6bb8+D3transport。
+
+原版默认call_vla标签：9个冻结train+ok原版初态/9类，按固定登记序首个可用状态选，不看新试验结果。stove on/off源220身份全部task_holdout，未采作训练pilot。source645不启用B2扩展目录。CPU预检全部0；startup10991_0真实1次π推理+1控制步；正式10993_0/1均COMPLETED0:0。8状态各3π+1self闭合；container前置self失败没有到达分叉点，保留unknown。π结果：碗3/3，盒1/3，杯2/3，开/关抽屉3/3，开/关微波炉3/3，推盘3/3；self仅碗1/1，其余7个0/1。都是每类1个状态，不能称类别可靠性。
+
+新CPU exporter已实现完整状态/request/prefix/outcome/source绑定、实际wire prompt核验、policy权重SHA、later-recovery选择不贴回旧上下文、私有计量成本单列。两项回归通过。CPU_preview_r1先5位置20试次；实际C2 consumer measured_labels.py（SHA9e79b4cc...）5/5均status ok、coverage_issues空，source contract a0fef740。已通过共享登记交C1/C2；非B2三消费者ACK。CPU最终导出10997已完成，待读CPU_closed_r1并作同样consumer核验后交完整8位置/32试次。preview与full同record_id，不拼接双计。新捕获没有原规则annotation，source_rule_result明确unknown，不复制M7旧规则集合。
+
+B3新原版证据：杯trial1/2私有v3成功但公开completion_lost；rise4.73/6.80cm，1cm向上验证移动在0步被payload margin拒，随动第二帧为0。盒trial3公开成功、私有v3失败：全11帧缺双指接触，支撑间隙5.4cm、TCP相对位移<1mm，不能以共动替代双指真值。旧结果保留。当前本地新增通用_hold_verification_motion：向上被拒后，只从公开筛查通过的其他固定1cm方向选一个，下降不得把测得rise减到3cm以下；不改间隙、力、总预算和共动判据。专项2项通过，全CPU r20=689 passed/319.18s。尚无新方法物理结果，待新快照与10物理面板，然后同cup三seed重放；不要提前声称修复有效。

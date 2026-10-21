@@ -3258,6 +3258,29 @@ class MeasuredSkillAdapter:
         prompt = f'pick up the {name}' if mode == 'pick' else subtask_phrase(name, mode, target_name)
         return render_variant(self.ex.instruction,parameters,prompt,(name,target_name or '')), name
 
+    def _hold_verification_motion(self, screen, rise_m):
+        """Choose one screened 1 cm observation move without weakening hold evidence."""
+        robot = measured_robot(self.p)
+        motion = SmoothMotion(self.p, screen, self.config)
+        rejected = []
+        # Keep the former upward probe first. A blocked direction is not
+        # evidence against a grasp when another bounded observation route is
+        # clear. Retain the same 3 cm rise and ordinary collision criteria.
+        offsets = ([0., 0., .01], [.01, 0., 0.], [-.01, 0., 0.],
+                   [0., .01, 0.], [0., -.01, 0.], [0., 0., -.01])
+        for offset in offsets:
+            if rise_m+offset[2] < .03:
+                continue
+            route = [{'xyz_m': (np.asarray(robot['eef_xyz_m'])+offset).tolist()}]
+            _, _, _, evidence = motion.prepare(route)
+            if evidence['passed']:
+                result = motion.run(route, gripper=self.gripper_command)
+                return {**result, 'verification_offset_m': list(offset),
+                        'rejected_verification_directions': rejected}
+            rejected.append({'offset_m': list(offset), 'screen': evidence})
+        return {'executed': False, 'steps_used': 0, 'stop_reason': 'no_screened_verification_route',
+                'rejected_verification_directions': rejected}
+
     def call_vla(self, parameters):
         if not self.allow_vla:
             raise ValueError("call_vla disabled for the oracle upper-bound diagnostic")
@@ -3445,9 +3468,7 @@ class MeasuredSkillAdapter:
                 self.grasp_reference = (self.scene.entities[source.id],robot)
                 self.active = source.id
                 screen = self._lift_payload_screen(source.id,self._cloud_and_ik(source.id,contact=True),vla_payload_reference)
-                target_xyz = np.asarray(robot['eef_xyz_m'])+[0.,0.,.01]
-                probe = SmoothMotion(self.p,screen,self.config).run([{'xyz_m':target_xyz.tolist()}],
-                    gripper=self.gripper_command)
+                probe = self._hold_verification_motion(screen,first_measurement['public_hold']['rise_m'])
                 self.grasp_reference = prior_grasp
                 self.active = prior_active
                 result['verification_motion'] = probe
