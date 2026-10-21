@@ -3395,9 +3395,9 @@ class MeasuredSkillAdapter:
 
                         body = pickle.dumps(pair, protocol=5)
                         state = self.ex.toolkit._state
-                        name = state.save('bounded_vla_hold_motion.bin', body)
-                        motion['artifact'] = ({'path': str(state.artifact_path(name)),
-                            'sha256': hashlib.sha256(body).hexdigest()} if name else None)
+                        artifact_name = state.save('bounded_vla_hold_motion.bin', body)
+                        motion['artifact'] = ({'path': str(state.artifact_path(artifact_name)),
+                            'sha256': hashlib.sha256(body).hexdigest()} if artifact_name else None)
                         hold_evidence.update(block_motion=motion,
                             relative_displacement_m=motion['relative_displacement_m'],
                             hand_displacement_m=motion['hand_displacement_m'])

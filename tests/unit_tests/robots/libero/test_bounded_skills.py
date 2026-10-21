@@ -214,6 +214,30 @@ def test_targeted_vla_still_checks_each_control_and_fully_remeasures_after_hando
     assert result['public_measurement_scope']['version'] == 'selected-subtask-entities/1'
 
 
+@pytest.mark.parametrize('mode', ['open', 'close'])
+def test_vla_fixture_monitor_keeps_the_selected_instance_name(adapter, monkeypatch, mode):
+    from dataclasses import replace
+
+    adapter.allow_vla = True
+    source = replace(adapter.scene.entities['e1'], name='microwave')
+    adapter.scene.entities['e1'] = source
+    measurements = []
+    def endpoint(parent, name):
+        measurements.append((parent.id, name))
+        return {'moving': None}
+    adapter.scene.measure_fixture_endpoint = endpoint
+    monkeypatch.setattr('robots.libero.v5_verification.measured_fixture_endpoint',
+                        lambda *args, **kwargs: (False, {}))
+    def fallback(**kwargs):
+        assert kwargs['observe']()['completed'] is False
+        assert kwargs['observe']()['completed'] is False
+        return {'outcome': 'failure', 'stop_reason': 'control_budget'}
+    monkeypatch.setattr('robots.libero.bounded_skills.run_fallback', fallback)
+    result = adapter.call_vla({'anchor_id': 'e1', 'mode': mode})
+    assert result['post_handoff_measurement']['completed'] is False
+    assert measurements == [('e1', 'microwave')]*4
+
+
 def test_measured_anchor_still_has_screened_approaches_without_a_contact_fit(adapter):
     adapter.grasp_geometry = lambda entity: None
     request = adapter.request(k=4)
