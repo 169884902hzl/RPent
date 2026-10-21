@@ -138,3 +138,35 @@ one-point fragments. Other container patches mix points from table level
 to14.6cm height. This explains why the strict single-plane fit yields zero
 planes. These are observed public geometry diagnostics, not new relaxed
 collision rules or ground-truth support assignments.
+
+Corrected closed N1 indexing: bounded cases are 0–23 and 26–31; 24/25 are
+VLA continuation pilots and remain separate. Earlier `closed30_pairs` was
+actually 28 bounded pairs; it is preserved and superseded by
+`.../2e3a401a/closed_correct_bounded30_pairs/`. Missing jobs11152/11153
+completed0:0, yielding exactly **30 bounded pairs + 2 separate pilots**,
+no missing cases. All complete initial physics/controller/RNG hashes match.
+Baseline **25/30**, Wilson95[0.6643564949358397, 0.9266345762815146]; round2 **2/30**,
+Wilson95[0.018477023791270378, 0.2132345836261692]. No improvements;23 regressions.
+Local evidence: `reports/execution_repairs_round2_correct30_20261022/`.
+Per-decision four-stage medians, seconds:
+
+| Arm | perception | candidates | decision | execution | whole loop |
+|---|---:|---:|---:|---:|---:|
+| before | 18.866 | 63.403 | 14.717 | 4.327 | 104.276 |
+| after | 0.436 | 4.181 | 2.810 | 0.649 | 9.634 |
+
+Faster timing accompanies zero-control failures and **is not an accuracy-preserving
+speedup**. The oracle-successor legal calculation median is14.548→2.790s;
+this diagnostic computation is distinct from future model inference.
+
+Bisection b136 probes now all closed: container idx1 succeeds2decisions/595steps;
+bowl idx6 succeeds3decisions/261steps; stove idx2 fails32decisions/711steps.
+Therefore container/bowl and stove have separate brackets. Container bracket
+good b136→bad93c; midpoint7f852aeb+D3, exact CPU619pass, submitted as11157.
+Stove bracket good6a2d6bb8→badb136; midpoint2b64eda3+D3 preparing.
+All production skills/planning/perception remain original per bisection source;
+only recorded complete-state D3 transport and launcher are overlaid.
+
+Pending-grip wrist-observation fix is now committed/pushed as edd067fb, exact
+staged9tests pass; it has no physical result yet. Own-layout language-identity
+v2 CPU checks9pass are dirty/uncommitted; no v2 state has been generated.
