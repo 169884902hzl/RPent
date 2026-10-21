@@ -4,7 +4,7 @@ import copy
 import numpy as np
 import pytest
 
-from robots.libero.bounded_train_layouts import generate_layout,overlap,LayoutLimits
+from robots.libero.bounded_train_layouts import generate_layout,overlap,LayoutLimits,instruction_identity_check
 
 PARENT={'split':'train','suite':'libero_object','task':0,'initial_state_sha256':'pinned-parent'}
 OBJECTS=[{'id':name,'xyz_m':[x,0.,.05],'size_m':[.04,.05,.10],
@@ -41,3 +41,26 @@ def test_permanent_layout_distance_and_native_witness_are_required():
     with pytest.raises(ValueError,match='original_task_witness_failed'):
         generate_layout(parent=PARENT,objects=OBJECTS,support=SUPPORT,seed=11020000,
             limits=LayoutLimits(attempts=2),witness_check=lambda _:{'native_predicates_satisfied':False})
+
+
+def test_layout_cannot_change_which_bowl_the_original_instruction_references():
+    objects=[{'id':name,'xyz_m':[x,0.,.05],'size_m':[.03,.03,.03],
+        'yaw_rad':0.,'movable':True} for name,x in
+        [('akita_black_bowl_1',0.),('akita_black_bowl_2',.3),('plate_1',-.1),
+         ('glazed_rim_porcelain_ramekin_1',.1)]]
+    goals=[['on','akita_black_bowl_1','plate_1']]
+    instruction='pick up the black bowl between the plate and the ramekin and place it on the plate'
+    axes=((1.,0.,0.),(0.,-1.,0.))
+    assert instruction_identity_check(objects,goals,instruction,axes)['instruction_identity_consistent']
+    objects[0]['xyz_m'],objects[1]['xyz_m']=objects[1]['xyz_m'],objects[0]['xyz_m']
+    checked=instruction_identity_check(objects,goals,instruction,axes)
+    assert not checked['instruction_identity_consistent']
+    assert checked['movable_sources'][0]['resolved']=='akita_black_bowl_2'
+
+
+def test_native_goal_witness_does_not_override_changed_instruction_binding():
+    with pytest.raises(ValueError,match='original_instruction_binding_changed'):
+        generate_layout(parent=PARENT,objects=OBJECTS,support=SUPPORT,seed=11020000,
+            limits=LayoutLimits(attempts=2),witness_check=lambda _:dict(
+                native_predicates_satisfied=True,nonintersecting=True,
+                instruction_identity_consistent=False))

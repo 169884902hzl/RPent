@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-VERSION = 'original-train-layout/1'
+VERSION = 'original-train-layout/2'
 ORIGINAL_SUITES = {'libero_spatial','libero_object','libero_goal','libero_10','libero_90'}
 SEED_RANGE = (11020000,11029999)
 
@@ -47,6 +47,38 @@ def overlap(a,b,margin):
             if aa.max()+margin<=bb.min() or bb.max()+margin<=aa.min():
                 return False
     return True
+
+
+def instruction_identity_check(objects, goals, instruction, axes):
+    """Private authoring check for movable-source language grounding.
+
+    The existing rule binder must select the original source identity after
+    perturbation. Synthetic geometry here is private construction metadata,
+    never a perception result or a model-visible state. Fixed fixture source
+    poses are unchanged by this generator; their rules are not recreated.
+    """
+    from robots.libero.v5_oracle_policy import OriginalOraclePolicy, _kind, goal_clause
+    from robots.libero.v5_state import Entity
+
+    entities=[];identities={};movable={x['id'] for x in objects if x['movable']}
+    for i,item in enumerate(objects):
+        xy=corners(item);half_z=item['size_m'][2]/2;xyz=item['xyz_m']
+        eid=f'construction-{i}'
+        entities.append(Entity(eid,_kind(item['id']),tuple(xyz),
+            (*xy.min(0),xyz[2]-half_z),(*xy.max(0),xyz[2]+half_z),True,0))
+        identities[eid]=item['id']
+    results=[]
+    for goal in goals:
+        source=goal[1]
+        if source not in movable:
+            continue
+        binder=OriginalOraclePolicy(None)
+        selected=binder.bind(source,entities,goal_clause(instruction,source),axes)
+        actual=identities[selected.id] if selected is not None else None
+        results.append({'source':source,'resolved':actual,'consistent':actual==source})
+    return {'instruction_identity_consistent':all(r['consistent'] for r in results),
+        'movable_sources':results,'source':'private_construction_geometry_and_existing_instruction_binding_rules',
+        'scope':'source-identity rule check; not RGB-D binding accuracy or complete natural-language verification'}
 
 
 def generate_layout(*, parent, objects, support, seed, witness_check,
@@ -109,6 +141,10 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
             witness=witness_check(proposed)
             if not isinstance(witness,dict) or witness.get('native_predicates_satisfied') is not True:
                 reason='original_task_witness_failed'
+            elif witness.get('nonintersecting') is False:
+                reason='original_layout_witness_collision'
+            elif witness.get('instruction_identity_consistent') is False:
+                reason='original_instruction_binding_changed'
         if reason is not None:
             reasons[reason]=reasons.get(reason,0)+1
             continue

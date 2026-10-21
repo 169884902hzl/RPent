@@ -7,6 +7,7 @@ assets, tasks or states are read. GPU pilot/label collection is separate.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import itertools
 import json
@@ -16,7 +17,7 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from robots.libero.bounded_train_layouts import generate_layout
+from robots.libero.bounded_train_layouts import generate_layout, instruction_identity_check
 from robots.libero.v5_branch_state import restore_actuators
 from scripts.bounded_state_exclusions import check_exclusions
 
@@ -105,6 +106,8 @@ def generate_case(manifest,index,seed,output):
         raise ValueError('parent is not an admitted original train position')
     choices=[json.loads(line) for line in pinned(parent['source_link']).decode().splitlines()]
     initial=pickle.loads(pinned(choices[0]['private_pre_execution_snapshot']))
+    annotation=pickle.loads(gzip.decompress(pinned(parent['private_prefix_annotation_state'])))
+    axes=annotation['adapter'].scene.view_axes
     check_exclusions([{'name':name,'episode':episode,
         'state_sha256':parent['initial_state_sha256']}],manifest['permanent_exclusions'])
     bddl=case['bddl'];pinned(bddl)
@@ -146,7 +149,9 @@ def generate_case(manifest,index,seed,output):
             witness.sim.set_state_from_flattened(goal_state)
             apply_layout(witness,layout,skip=goal_bodies)
             bad=penetrations(witness,moving-goal_bodies)
-            return {'native_predicates_satisfied':bool(witness.check_success()) and not initial_bad and not bad,
+            return {'native_predicates_satisfied':bool(witness.check_success()),
+                'nonintersecting':not initial_bad and not bad,
+                **instruction_identity_check(layout,goals,base.language_instruction,axes),
                 'initial_penetrations':initial_bad,'witness_penetrations':bad,
                 'source':'independent_CPU_native_original_task_predicates',
                 'original_controls_replayed':len(actions)}
