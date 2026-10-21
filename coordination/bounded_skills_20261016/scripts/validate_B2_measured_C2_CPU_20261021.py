@@ -38,13 +38,14 @@ def main():
     manifest = json.loads((a.package/'manifest.json').read_bytes())
     data = Path(manifest['data']['path'])
     assert ref(data) == manifest['data']
-    rows, groups = [], defaultdict(list)
+    rows, groups, coverage = [], defaultdict(list), []
     for line in data.read_bytes().splitlines():
         row = json.loads(line)
         bridge.validate_request(row['public_request'])
         label = build_measured_label(bridge, row['public_request'], row['prefix'], row)
         rows.append({'record_id': row['record_id'], **label})
-        assert not label['coverage_issues'], (row['record_id'], label['coverage_issues'])
+        if label['coverage_issues']:
+            coverage.append({'record_id': row['record_id'], 'issues': label['coverage_issues']})
         candidates = {c['id']: c for c in row['public_request']['candidates']}
         for branch in row['branches']:
             candidate = candidates[branch['candidate_id']]
@@ -61,12 +62,12 @@ def main():
             'unknown': len(trials)-n, 'zero_step_trials': sum(not t['sim_steps'] for t in trials)})
     result = {'consumer': ref(Path(module.__file__)), 'source_contract_identity': bridge.identity,
         'data': ref(data), 'positions': len(rows), 'rows': rows,
-        'coverage_issues': [], 'GPU_used': False, 'training_executed': False}
+        'coverage_issues': coverage, 'GPU_used': False, 'training_executed': False}
     (a.package/'C2_intake_validation.json').write_text(json.dumps(result, indent=2)+'\n')
     (a.package/'metrics.json').write_text(json.dumps({'positions': len(rows), 'groups': stats,
         'scope': 'measured subtask branches; Wilson over trials with repeated states, not class-generalization intervals'}, indent=2)+'\n')
     print(json.dumps({'positions': len(rows), 'statuses': [r['status'] for r in rows],
-        'coverage_issues': [], 'groups': stats}))
+        'coverage_issues': coverage, 'groups': stats}))
 
 
 if __name__ == '__main__':

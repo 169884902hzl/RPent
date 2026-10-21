@@ -6,7 +6,8 @@ from robots.libero.bounded_hybrid_paths import select_complete_path
 
 def summary(local_complete=False):
     variant = {'name': 'full_task', 'parameters': {'mode': 'task', 'preparation': 'in_place'}}
-    return {'sampled_envelope_native_success': local_complete,
+    return {'source_commit': 'sampling-tested', 'status': 'physical_result',
+        'sampled_envelope_native_success': local_complete,
         'conditional_rate_product': 1. if local_complete else 0., 'subtasks': [
             {'subtask': {'id': 'g0:pick', 'mode': 'pick'},
                 'selection': {'method': 'self', 'rate': 1., 'status': 'measured',
