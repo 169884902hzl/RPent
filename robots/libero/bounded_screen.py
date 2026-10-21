@@ -32,6 +32,10 @@ class PublicRouteScreen:
     capture_points = None
     capture_key = None
     check_arm = False
+    # The attached surface is voxelised at 2 mm. Half a voxel absorbs the
+    # sub-micrometre nearest-depth-sample changes seen in the container probe;
+    # it applies only to already occupied support, never new obstacles.
+    support_clearance_tolerance_m = .001
 
     def __init__(self, points, geometry, pose_screen, *, opening: float = .08,
                  contact_points=None, contact_allowed: bool = False, payload_local=None,
@@ -272,7 +276,6 @@ class PublicRouteScreen:
                     yield {"xyz_m": ((1-t)*p+t*q).tolist(), "quat_xyzw": slerp(t).as_quat().tolist()}, (
                         index == len(poses)-2 and part == n)
         clearance = .2
-        previous_support_clearances = {}
         last_ik = None
         certificate = None
         def prepared_poses():
@@ -314,13 +317,6 @@ class PublicRouteScreen:
                 base['geometry_evaluations'] += 1
                 if geometry['passed']:
                     certificate = xyz, rotation, geometry['path_min_clearance_m']
-            support_clearances = geometry.get('occupied_support_clearances_m', {})
-            if any(group in previous_support_clearances
-                    and value < previous_support_clearances[group]-1e-9
-                    for group, value in support_clearances.items()):
-                geometry = {**geometry, 'passed':False,'collision':True,
-                    'reason':'measured_support_separation_decreased'}
-            previous_support_clearances.update(support_clearances)
             base["samples"] += 1
             clearance = min(clearance, geometry["path_min_clearance_m"])
             if not geometry["passed"]:
@@ -494,7 +490,8 @@ class PublicRouteScreen:
                             self.tree, .004, output_type='coo_matrix')
                         if getattr(self, 'support_separation', False):
                             bounds = previous[groups[pairs.col]]
-                            violations = (pairs.data < bounds-1e-9) | ~np.isfinite(bounds)
+                            violations = ((pairs.data < bounds-self.support_clearance_tolerance_m)
+                                | ~np.isfinite(bounds))
                             occupied = np.isfinite(bounds)
                             clearances = {int(group): float(pairs.data[(groups[pairs.col] == group) & occupied].min())
                                 for group in np.unique(groups[pairs.col[occupied]])}
@@ -504,7 +501,8 @@ class PublicRouteScreen:
                                     & (np.abs((self.points[pairs.col]-plane['centre'])@plane['normal'])
                                         <= plane['flatness_m']+1e-6))
                                 signed = float(((world_payload-plane['centre'])@plane['normal']).min())
-                                violations[plane_pairs] = signed < plane['initial_clearance_m']-1e-9
+                                violations[plane_pairs] = signed < (
+                                    plane['initial_clearance_m']-self.support_clearance_tolerance_m)
                                 clearances[group] = signed
                             result['occupied_support_clearances_m'] = clearances
                             result['support_plane_count'] = len(planes)

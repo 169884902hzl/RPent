@@ -2794,7 +2794,8 @@ def test_lift_plans_complete_measured_payload_without_claiming_a_grasp(adapter, 
     assert not blocked(route)['passed'] and adapter.held is None
 
 
-def test_lift_prediction_current_overlap_does_not_establish_a_measured_grasp(adapter, monkeypatch):
+@pytest.mark.parametrize('box_name', ['finger', 'rightfinger', 'rightfinger_pad'])
+def test_lift_prediction_current_overlap_does_not_establish_a_measured_grasp(adapter, monkeypatch, box_name):
     from robots.libero.bounded_screen import PublicRouteScreen
 
     adapter.active = 'e1'
@@ -2802,7 +2803,7 @@ def test_lift_prediction_current_overlap_does_not_establish_a_measured_grasp(ada
     monkeypatch.setattr(adapter, 'holding_aperture', lambda opening: (True, {}))
     robot = adapter.robot()
     pose = {'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']}
-    geometry = {'boxes': [{'name': 'finger', 'lower': [-.01]*3, 'upper': [.01]*3}]}
+    geometry = {'boxes': [{'name': box_name, 'lower': [-.01]*3, 'upper': [.01]*3}]}
     target = np.tile(robot['eef_xyz_m'], (40, 1))
     reference = {'target': target, 'scene': np.array([[10., 10., 10.]])}
     monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: reference)
@@ -2810,6 +2811,38 @@ def test_lift_prediction_current_overlap_does_not_establish_a_measured_grasp(ada
         SimpleNamespace(check=lambda *args: {'solution_found': True}), contact_points=target)
     screen = adapter._lift_payload_screen('e1', original)
     assert screen([pose])['passed'] and adapter.held is None
+    assert len(screen.target) == 0 and len(screen.payload) > 0
+
+
+@pytest.mark.parametrize('nonempty', [False, True])
+def test_pending_attachment_requires_nonempty_jaws_and_keeps_external_collisions(adapter, monkeypatch, nonempty):
+    from robots.libero.bounded_screen import PublicRouteScreen
+
+    adapter.active = 'e1'
+    adapter.grasp_reference = (adapter.scene.entities['e1'], adapter.robot())
+    monkeypatch.setattr(adapter, 'holding_aperture', lambda opening: (nonempty, {}))
+    robot = adapter.robot()
+    pose = {'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']}
+    target = np.tile(np.asarray(robot['eef_xyz_m'])+[.015, 0., 0.], (40, 1))
+    geometry = {'boxes': [
+        {'name': 'rightfinger', 'lower': [-.02]*3, 'upper': [.02]*3},
+        {'name': 'rightfinger_pad', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    obstacle = np.asarray(robot['eef_xyz_m'])[None, :]+[.015, 0., .06]
+    reference = {'target': target, 'scene': obstacle}
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: reference)
+    original = PublicRouteScreen(obstacle, geometry,
+        SimpleNamespace(check=lambda *args: {'solution_found': True}),
+        contact_points=target, contact_allowed=True)
+    assert not original([pose])['passed']  # The pre-contact shell rule remains.
+    screen = adapter._lift_payload_screen('e1', original)
+    if nonempty:
+        assert screen([pose])['passed']
+        raised = {**pose, 'xyz_m': (np.asarray(pose['xyz_m'])+[0., 0., .06]).tolist()}
+        assert not screen([pose, raised])['passed']
+        assert len(screen.payload) > 0 and not len(screen.target)
+    else:
+        assert screen is original
+    assert adapter.held is None
 
 
 def test_pre_lift_reference_refines_final_current_depth_mask_before_scene_subtraction(adapter, monkeypatch):
@@ -3485,9 +3518,14 @@ def test_vla_static_obstacles_precede_contact_while_target_motion_reference_stay
     assert result['payload_reference_capture_step'] == 56
 
 
-def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypatch):
+@pytest.mark.parametrize('grip', ['verified', 'pending', 'empty'])
+def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypatch, grip):
     pixels = np.array([[.1, .1, .9], [.1005, .1, .9]])
-    adapter.held = 'e1'
+    adapter.held = 'e1' if grip == 'verified' else None
+    if grip != 'verified':
+        adapter.active = 'e1'
+        adapter.grasp_reference = (adapter.scene.entities['e1'], adapter.robot())
+        monkeypatch.setattr(adapter, 'holding_aperture', lambda opening: (grip != 'empty', {}))
     adapter.scene.measurement_clouds['e1'] = pixels.mean(0, keepdims=True)
     adapter.scene.measurement_clouds_by_view = {'e1': {'main': {'xyz_world': pixels}}}
     ik = SimpleNamespace(remove_measured_arm=lambda points: (points, {}))
@@ -3497,6 +3535,11 @@ def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypa
     monkeypatch.setattr('robots.libero.bounded_skills.remove_visual_robot', lambda points, *args: (points, {}))
     monkeypatch.setattr('robots.libero.bounded_skills.PublicRouteScreen', lambda scene, *args, **kwargs: (scene, kwargs))
     scene, options = MeasuredSkillAdapter._cloud_and_ik(adapter)
+    if grip == 'empty':
+        assert not len(options['payload_local'])
+        assert np.linalg.norm(scene-pixels[0], axis=1).min() < .001
+        assert np.linalg.norm(scene-obstacle[0], axis=1).min() < 1e-12
+        return
     np.testing.assert_allclose(scene, obstacle)
     assert len(options['payload_local']) > 0
     scene, handoff = MeasuredSkillAdapter._cloud_and_ik(adapter, 'e1', contact=True)

@@ -80,8 +80,10 @@ def test_recorded_support_separation_uses_surface_not_nearest_pixel():
     result=screen([pose,up,{**pose,'xyz_m':[0.,5e-6,1.01]}])
     assert result['passed'],result
     assert len(screen._support_planes())==1
-    assert not screen([pose,up,pose])['passed']
-    assert not screen([pose,{**pose,'xyz_m':[0.,0.,.99999]}])['passed']
+    # Returning to the already occupied start is not a new incursion. The
+    # removed temporal-monotonic check rejected this harmless return.
+    assert screen([pose,up,pose])['passed']
+    assert not screen([pose,{**pose,'xyz_m':[0.,0.,.998]}])['passed']
 
 
 def test_planner_only_rejection_does_not_consume_public_stagnation():

@@ -347,7 +347,17 @@ class MeasuredSkillAdapter:
 
     def _cloud_and_ik(self, anchor_id=None, *, contact=False):
         robot = measured_robot(self.p)
-        cache_key = (anchor_id, contact, self.held, tuple(robot["eef_xyz_m"]), tuple(robot["eef_quat_xyzw"]), tuple(robot['finger_positions_m']))
+        attached = self.held
+        pending = self.scene.entities.get(self.active)
+        if (attached is None and self.grasp_reference is not None and pending is not None
+                and not pending.part_of and not fixture_actions(pending.name)
+                and self.plans.get(pending.id, {}).get('contact_kind') != 'surface'
+                and self.holding_aperture(robot['gripper_opening_m'])[0]):
+            # Attachment is conditional until the public lift/co-motion check
+            # verifies it. A closed nonempty hand must not screen its object
+            # as a stationary obstacle during candidate generation either.
+            attached = pending.id
+        cache_key = (anchor_id, contact, attached, tuple(robot["eef_xyz_m"]), tuple(robot["eef_quat_xyzw"]), tuple(robot['finger_positions_m']))
         if cache_key in self._screen_cache:
             return self._screen_cache[cache_key]
         hand_geometry = gripper_at_measured_fingers(self.geometry, robot['finger_positions_m'])
@@ -415,10 +425,10 @@ class MeasuredSkillAdapter:
             target = measured_members(target, anchor_id)
         payload = []
         held_cloud = np.empty((0, 3))
-        if self.held:
-            held_cloud = self._instance_pixels(self.held)
+        if attached:
+            held_cloud = self._instance_pixels(attached)
             if len(held_cloud):
-                held_cloud = measured_members(held_cloud, self.held)
+                held_cloud = measured_members(held_cloud, attached)
                 if len(target):
                     from scipy.spatial import cKDTree
                     # Independent SAM queries can share depth pixels. A
@@ -439,7 +449,7 @@ class MeasuredSkillAdapter:
         # pixels again as a stationary contact target makes a braking palm
         # collide with the object's old location. Its surface is already
         # represented by the moving payload below.
-        target = np.empty((0, 3)) if anchor_id == self.held else _voxel(target, .002)
+        target = np.empty((0, 3)) if anchor_id == attached else _voxel(target, .002)
         if len(held_cloud):
             payload = (_voxel(held_cloud, .002)-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
         screen = PublicRouteScreen(scene, hand_geometry, ik, opening=robot["gripper_opening_m"],
@@ -482,14 +492,11 @@ class MeasuredSkillAdapter:
         target = _voxel(reference['target'], .002)
         scene = _voxel(reference['scene'])
         pose = {'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']}
-        contact = PublicRouteScreen(scene, screen.geometry, screen.ik,
-            opening=robot['gripper_opening_m'], contact_points=target,
-            contact_allowed=True, initial_pose=pose,use_kernel=screen.use_kernel,
-            check_arm=screen.check_arm,capture_points=screen.capture_points,capture_key=screen.capture_key)
-        # Retain the complete instance and current overlap baseline. Only new
-        # incursion may reject the outgoing route; held still needs co-motion.
-        if not contact._geometry_at(pose)['passed']:
-            return contact
+        # The closed, nonempty hand has already contacted this instance.
+        # Model it as an attached body for the proposed lift, rather than
+        # applying the pre-contact finger-shell screen to its current pixels.
+        # Its whole measured surface still checks against the remaining
+        # scene; aperture alone never establishes a verified grasp.
         payload = (target-robot['eef_xyz_m'])@Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
         result = PublicRouteScreen(scene, screen.geometry, screen.ik,
             opening=robot['gripper_opening_m'], payload_local=payload, initial_pose=pose,
