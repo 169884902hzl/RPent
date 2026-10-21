@@ -86,6 +86,37 @@ def test_full_native_integration_is_restored_after_forward_and_checksum_verified
         restore_actuators(wrapper,saved)
 
 
+def test_native_solver_contacts_survive_zero_control_forward_and_restore():
+    import mujoco
+    from robots.libero.v5_branch_state import native_data_state, restore_native_data
+
+    model = mujoco.MjModel.from_xml_string('''<mujoco><worldbody>
+        <geom type="plane" size="1 1 .1"/>
+        <body pos="0 0 .0999"><freejoint/><geom type="sphere" size=".1"/></body>
+        </worldbody></mujoco>''')
+    data = mujoco.MjData(model)
+    data.qvel[2] = 1.
+    mujoco.mj_step(model, data)
+    assert data.ncon > 0
+    env = SimpleNamespace(sim=SimpleNamespace(model=SimpleNamespace(_model=model),
+        data=SimpleNamespace(_data=data)))
+    saved = native_data_state(env)
+    qpos_view = data.qpos
+    integrated = data.qpos.copy()
+    contacts = data.ncon
+    xpos = data.xpos.copy()
+    mujoco.mj_forward(model, data)
+    assert data.ncon == 0
+    np.testing.assert_array_equal(data.qpos, integrated)
+    restore_native_data(env, saved)
+    assert data.ncon == contacts and data.qpos is qpos_view
+    np.testing.assert_array_equal(data.xpos, xpos)
+    assert native_data_state(env)['sha256'] == saved['sha256']
+    saved['values'][0] ^= 1
+    with pytest.raises(ValueError, match='checksum'):
+        restore_native_data(env, saved)
+
+
 def test_branch_restores_fixture_transform_absent_from_dynamic_state():
     model = SimpleNamespace(body_pos=np.array([[0., 0., 0.], [.1, .2, .9]]),
         body_quat=np.array([[1., 0., 0., 0.], [1., 0., 0., 0.]]))

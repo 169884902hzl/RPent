@@ -181,7 +181,8 @@ def restore_checkpoint(facade, adapter, policy, saved):
     legacy_observation = ('actuator_state' in saved['physics']
         and 'observation_state' not in saved['physics']['actuator_state'])
     complete_integration = saved['physics'].get('actuator_state',{}).get('integration') is not None
-    if not complete_integration:
+    native_data = saved['physics'].get('actuator_state',{}).get('native_data') is not None
+    if not complete_integration or not native_data:
         from robots.libero.v5_branch_state import captured_projection
         comparable = captured_projection(actual,saved['physics'])
     else:
@@ -191,6 +192,7 @@ def restore_checkpoint(facade, adapter, policy, saved):
     adapter._branch_observation_restore = ('legacy_missing_phase_canonical_fresh'
         if legacy_observation else 'captured_sensor_phase_and_buffers_v1')
     adapter._branch_complete_integration_available = complete_integration
+    adapter._branch_native_derived_available = native_data
 
 
 def bind_subtask(policy, adapter, spec):
@@ -212,6 +214,25 @@ def bind_subtask(policy, adapter, spec):
             policy.binding._binding_peers.setdefault(symbol, {
                 e.id for e in entities if e.id != entity.id and e.name == entity.name})
     return source, target
+
+
+def unbound_vla_candidate(request, instruction, mode):
+    """Select an existing legal public clause/task call when identity is absent."""
+    from robots.libero.bounded_vla_options import clause_for_mode
+    from rpent.skill_package.contract import legal_after
+
+    legal = set(legal_after(request, []))
+    phrase = clause_for_mode(instruction, mode)
+    clauses = request.get('instruction_clauses', [])
+    clause_id = clauses.index(phrase) if phrase in clauses else None
+    options = [candidate for candidate in request['candidates']
+        if candidate['id'] in legal and candidate['skill'] == 'call_vla'
+        and candidate['parameters'].get('preparation') == 'in_place']
+    clause = next((candidate for candidate in options
+        if clause_id is not None and candidate['parameters']['mode'] == 'instruction'
+        and candidate['parameters'].get('clause_id') == clause_id), None)
+    return clause or next((candidate for candidate in options
+        if candidate['parameters']['mode'] == 'task'), None)
 
 
 class SubtaskRPC:
@@ -331,25 +352,27 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                         and c['skill'] == 'call_vla'
                         and (whole_task or not recovering_binding)
                         and all(c['parameters'].get(k) == v for k, v in required.items())), None)
+                    if forced is None and recovering_binding:
+                        unbound = unbound_vla_candidate(request, adapter.ex.instruction, spec['mode'])
+                        if unbound is not None:
+                            result.setdefault('vla_variant_fallbacks', []).append({
+                                'decision': index, 'reason': 'public_binding_missing',
+                                'requested_parameters': dict(vla_parameters),
+                                'actual_parameters': dict(unbound['parameters']),
+                                'candidate_id': unbound['id']})
+                            forced = unbound
                     if forced is None:
                         reason = 'requested_vla_variant_unavailable'
                         break
+                    whole_task = forced['parameters']['mode'] == 'task'
                     if whole_task:
                         unbound = forced
                         recovering_binding = False
                 elif recovering_binding and method=='call_vla':
-                    from robots.libero.bounded_vla_options import clause_for_mode
-                    legal = set(legal_after(request,[]))
-                    phrase = clause_for_mode(adapter.ex.instruction,spec['mode'])
-                    clauses = request.get('instruction_clauses',[])
-                    clause_id = clauses.index(phrase) if phrase in clauses else None
-                    unbound = next((c for c in request['candidates'] if c['id'] in legal
-                        and c['skill']=='call_vla' and c['parameters'].get('preparation')=='in_place'
-                        and (c['parameters']['mode']=='instruction' and c['parameters'].get('clause_id')==clause_id)),None)
-                    if unbound is None:
-                        unbound = next((c for c in request['candidates'] if c['id'] in legal
-                            and c['skill']=='call_vla' and c['parameters']['mode']=='task'
-                            and c['parameters'].get('preparation')=='in_place'),None)
+                    unbound = unbound_vla_candidate(request, adapter.ex.instruction, spec['mode'])
+                    whole_task = unbound is not None and unbound['parameters']['mode'] == 'task'
+                    if whole_task:
+                        recovering_binding = False
                 if forced is not None:
                     decision = {key:request[key] for key in ('schema_version','observation_id','revision')}
                     decision.update(kind='decision', candidate_ids=[forced['id']])
@@ -407,6 +430,13 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                     result["selected_candidate_id"] = decision["candidate_ids"][0]
                     result["source_public_id"] = source.id if source else None
                     result["target_public_id"] = target.id if target else None
+                if method == 'call_vla':
+                    selected = next(c for c in request['candidates']
+                        if c['id'] == decision['candidate_ids'][0])
+                    if selected['skill'] == 'call_vla':
+                        result.setdefault('executed_vla_variants', []).append({
+                            'decision': index, 'candidate_id': selected['id'],
+                            'parameters': dict(selected['parameters'])})
                 with timings.measure("execution.other"):
                     receipts = adapter.execute(request, decision)
                 record = {"index": index, "request": request, "decision": decision, "receipts": receipts,

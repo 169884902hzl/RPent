@@ -5,7 +5,11 @@
 from __future__ import annotations
 
 import copy
+import ctypes
+from functools import lru_cache
 import hashlib
+from pathlib import Path
+import pickle
 import random
 import types
 
@@ -75,6 +79,56 @@ def restore_integration(env, saved):
     if hashlib.sha256(values.astype('<f8').tobytes()).hexdigest() != saved['sha256']:
         raise ValueError('branch integration state checksum mismatch')
     mujoco.mj_setState(model, data, values, spec)
+
+
+def native_data_state(env):
+    """Retain the native step's derived contacts/transforms as well as qpos.
+
+    mj_step leaves contacts and kinematics at its solver evaluation phase.
+    mj_forward at the final integrated qpos can change an On predicate with
+    zero controls. The integration vector alone does not encode that phase.
+    """
+    model = getattr(env.sim.model, '_model', None)
+    if not hasattr(model, 'nq'):
+        return None
+    import mujoco
+    raw = pickle.dumps(env.sim.data._data, protocol=5)
+    return {'version': 'mujoco-native-data/1', 'mujoco_version': mujoco.__version__,
+        'values': np.frombuffer(raw, dtype=np.uint8).copy(),
+        'sha256': hashlib.sha256(raw).hexdigest()}
+
+
+@lru_cache(maxsize=1)
+def _native_copy_data():
+    """Bind the installed MuJoCo C API; 3.3 omits its Python wrapper."""
+    import mujoco
+    libraries = list(Path(mujoco.__file__).parent.glob('libmujoco.so*'))
+    if len(libraries) != 1:
+        raise RuntimeError('expected the installed MuJoCo shared library')
+    function = ctypes.CDLL(str(libraries[0])).mj_copyData
+    # mujoco.h: mjData* mj_copyData(mjData*, const mjModel*, const mjData*).
+    function.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
+    function.restype = ctypes.c_void_p
+    return function
+
+
+def restore_native_data(env, saved):
+    """Copy the saved native buffers in place, retaining existing array views."""
+    if saved is None:
+        return
+    import mujoco
+    if saved['version'] != 'mujoco-native-data/1' or saved['mujoco_version'] != mujoco.__version__:
+        raise ValueError('branch native MuJoCo version changed')
+    raw = np.asarray(saved['values'], dtype=np.uint8).tobytes()
+    if hashlib.sha256(raw).hexdigest() != saved['sha256']:
+        raise ValueError('branch native data checksum mismatch')
+    source = pickle.loads(raw)
+    target, model = env.sim.data._data, env.sim.model._model
+    if any(getattr(source, key).shape != getattr(target, key).shape
+            for key in ('qpos', 'qvel', 'ctrl', 'xpos', 'geom_xpos', 'site_xpos')):
+        raise ValueError('branch native model dimensions changed')
+    if _native_copy_data()(target._address, model._address, source._address) != target._address:
+        raise RuntimeError('native branch data copy failed')
 
 
 def observation_state(env):
@@ -176,7 +230,7 @@ def actuator_state(wrapper):
             controls[name] = copy.deepcopy(fields)
         robots.append({"grippers": {name: {"type": type(gripper).__name__, "current_action": copy.deepcopy(gripper.current_action)}
                                      for name, gripper in grippers.items()}, "controllers": controls})
-    return {"integration": integration_state(env),
+    return {"integration": integration_state(env), "native_data": native_data_state(env),
             "model": {field: np.array(getattr(env.sim.model, field), copy=True)
                       for field in ("body_pos", "body_quat")},
             "data": {field: np.array(getattr(env.sim.data, field), copy=True)
@@ -224,6 +278,10 @@ def restore_actuators(wrapper, saved):
     # mj_forward/observation code can change integration warm-start fields.
     # Retain its derived transforms, then restore the exact captured vector.
     restore_integration(env, saved.get('integration'))
+    # Undo the forward/observation solver-phase change too. Exact native task
+    # predicates must survive restoration without turning an old success into
+    # a latch or integrating another control.
+    restore_native_data(env, saved.get('native_data'))
     if "rng" in saved:
         restore_rng(env, saved["rng"])
     return observations

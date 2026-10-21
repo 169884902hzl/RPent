@@ -274,6 +274,54 @@ def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, mo
     assert (tmp_path / "branch/choices.jsonl").read_text() == ""
 
 
+def test_registered_variant_with_missing_binding_executes_public_task_fallback(tmp_path, monkeypatch):
+    from contextlib import nullcontext
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    monkeypatch.setattr(probe, 'bind_subtask', lambda *_: (None, None))
+    executed = []
+    physics = lambda: {'sim_state': [1.], 'counters': {'_elapsed_steps': len(executed)}}
+    facade = SimpleNamespace(snapshot=physics, grasp_reference=lambda *_: {},
+        goal_status=lambda: {'satisfied': [True], 'done': True})
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({'physics': physics()}, {}))
+    base = {'schema_version': 'test', 'observation_id': 'o1', 'revision': 1,
+        'max_actions': 4, 'robot': {'held_anchor_id': None}, 'anchors': []}
+    parameters = {'mode': 'task', 'preparation': 'in_place', 'prompt_style': 'full_task'}
+    request = base | {'candidates': [{'id': 'public_full_task', 'skill': 'call_vla',
+        'parameters': parameters, 'consequences': {'collision': False, 'ik_reachable': True,
+            'screen_scope': 'measured'}}]}
+    def execute(_, decision):
+        executed.append(decision['candidate_ids'])
+        return [{'stop_reason': 'native_success'}]
+    adapter = SimpleNamespace(held=None, details=[], last_chunk={}, execute=execute,
+        ex=SimpleNamespace(instruction='pick up the bowl and place it on the plate'),
+        p=SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False,
+            execution_budget=lambda: {'used_sim_steps': len(executed)}), model=object()))
+    spec = {'mode': 'pick', 'source_symbol': 'bowl_1', 'target_symbol': None, 'goal_index': 0}
+    requested = {'preparation': 'initial_pose'}
+    row, _ = probe.trial(facade, adapter, SimpleNamespace(rpc=object()),
+        SimpleNamespace(measure=lambda *_: nullcontext()), spec, 'call_vla', 123,
+        tmp_path/'branch', request, vla_parameters=requested)
+    assert executed == [['public_full_task']]
+    assert row['reason'] == 'native_success' and row['success'] is True
+    assert row['truth_source'] == 'unchanged_native_task_completion'
+    assert row['source_public_id'] is None
+    assert row['vla_variant_fallbacks'] == [{'decision': 0, 'reason': 'public_binding_missing',
+        'requested_parameters': requested, 'actual_parameters': parameters,
+        'candidate_id': 'public_full_task'}]
+    assert row['executed_vla_variants'][0]['parameters'] == parameters
+
+
+def test_unbound_call_never_uses_an_illegal_or_unmeasured_anchor_candidate():
+    from scripts.probe_bounded_hybrid_d2 import unbound_vla_candidate
+
+    request = {'max_actions': 4, 'robot': {'held_anchor_id': None}, 'anchors': [],
+        'candidates': [{'id': 'bad', 'skill': 'call_vla',
+            'parameters': {'mode': 'task', 'preparation': 'in_place'},
+            'consequences': {'collision': True, 'ik_reachable': True}}]}
+    assert unbound_vla_candidate(request, 'pick up the bowl', 'pick') is None
+
+
 @pytest.mark.parametrize('method', ['self', 'call_vla'])
 def test_ambiguous_binding_observes_then_rebinds_without_private_instance_selection(tmp_path, monkeypatch, method):
     from contextlib import nullcontext
