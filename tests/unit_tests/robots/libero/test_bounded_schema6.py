@@ -144,6 +144,37 @@ def test_merged_move_skips_clear_entry_with_blocked_contact_ingress(adapter, mon
         if row['stage'] == 'move_contact_ingress' and row['screen']['passed'] is False]) == 3
 
 
+def test_selected_handle_searches_contact_wrist_before_accepting_clear_entry(adapter, monkeypatch):
+    from types import SimpleNamespace
+    from robots.libero.bounded_motion import SmoothMotion
+
+    enable(adapter)
+    request = adapter.request(k=4)
+    move = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    adapter.plans['e1']['handle_measurement'] = {'source': 'perception'}
+    original = adapter.plans['e1']['quat_xyzw']
+    fitted_quat = [0., 1., 0., 0.]
+    calls = []
+    def fit(entity, plan, *, complete):
+        calls.append((entity.id, complete))
+        return {**plan, 'quat_xyzw': fitted_quat}
+    monkeypatch.setattr(adapter, '_screen_fixture_approaches', fit)
+    monkeypatch.setattr(SmoothMotion, 'prepare', lambda *_: (SimpleNamespace(duration=1.), None, None,
+        dict(passed=True, collision=False, ik_reachable=True, path_min_clearance_m=.01)))
+    monkeypatch.setattr(adapter, '_screen_contact_sequence', lambda *_args, **_kw:
+        dict(passed=True, collision=False, ik_reachable=True, path_min_clearance_m=.01))
+
+    adapter._candidate('move_to', move['parameters'], complete=False)
+    assert calls == [] and adapter.plans['e1']['quat_xyzw'] == original
+    resolved = adapter._candidate('move_to', move['parameters'], complete=True)
+    assert calls == [('e1', True)]
+    assert resolved['id'] == move['id']
+    assert adapter.plans['e1']['quat_xyzw'] == fitted_quat
+    assert adapter.plans['e1']['fixture_route_screened'] is True
+    adapter._candidate('move_to', move['parameters'], complete=True)
+    assert calls == [('e1', True)]
+
+
 def test_selected_blocked_handle_defers_existing_contact_fit_until_execution(adapter, monkeypatch):
     from types import SimpleNamespace
     from robots.libero.bounded_motion import SmoothMotion

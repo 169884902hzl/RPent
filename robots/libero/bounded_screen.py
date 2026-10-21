@@ -27,6 +27,7 @@ class PublicRouteScreen:
     # fields. They retain their original static contact interpretation.
     contact_axis = None
     contact_origin = None
+    contact_reference_pose = None
     use_kernel = False
     capture_points = None
     capture_key = None
@@ -97,9 +98,15 @@ class PublicRouteScreen:
         allowances are measured again, rather than inherited from a pose the
         preceding executed skill has already left.
         """
+        target = self.target
+        if self.contact_reference_pose is not None:
+            reference = self.contact_reference_pose
+            relative = (Rotation.from_quat(robot['eef_quat_xyzw'])
+                * Rotation.from_quat(reference['quat_xyzw']).inv()).as_matrix()
+            target = (target-reference['xyz_m'])@relative.T+robot['eef_xyz_m']
         current = PublicRouteScreen(self.points, self.geometry,
             self.ik.with_measured_robot(robot), opening=self.opening,
-            contact_points=self.target, contact_allowed=self.contact_allowed,
+            contact_points=target, contact_allowed=self.contact_allowed,
             payload_local=self.payload,
             initial_pose={'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot.get('eef_quat_xyzw', [0., 0., 0., 1.])},
             measured_scene_points=self.measured_scene_points,
@@ -107,6 +114,9 @@ class PublicRouteScreen:
             use_kernel=self.use_kernel, capture_points=self.capture_points,
             capture_key=self.capture_key, check_arm=self.check_arm)
         current.contact_axis, current.contact_origin = self.contact_axis, self.contact_origin
+        current.contact_reference_pose = ({'xyz_m': list(robot['eef_xyz_m']),
+            'quat_xyzw': list(robot['eef_quat_xyzw'])}
+            if self.contact_reference_pose is not None else None)
         current.support_separation = getattr(self, 'support_separation', False)
         return current
 
@@ -140,6 +150,19 @@ class PublicRouteScreen:
         current._pose_geometry_cache = {}
         current._endpoint_ik_cache = {}
         current.__dict__.pop('_geometry_kernel',None)
+        return current
+
+    def following_contact(self, measured_pose):
+        """Conditionally move the contacted surface with a closed hand.
+
+        This is a contact-motion prediction, never measured joint progress.
+        The remaining scene stays stationary and keeps its collision checks.
+        """
+        current = copy.copy(self)
+        current.contact_reference_pose = copy.deepcopy(measured_pose)
+        current._pose_geometry_cache = {}
+        current._endpoint_ik_cache = {}
+        current.__dict__.pop('_geometry_kernel', None)
         return current
 
     def __getstate__(self):
@@ -228,6 +251,8 @@ class PublicRouteScreen:
                 "collision": None, "ik_reachable": None, "path_min_clearance_m": None,
                 "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
                 "samples": 0, "geometry_evaluations": 0, "clearance_certified_samples": 0, "ik_checks": []}
+        if self.contact_reference_pose is not None:
+            base['screen_scope'] += ';contact_surface_motion_conditional_on_hand_coupling'
         if self.tree is None or self.ik is None:
             return {**base, "reason": "public_screen_inputs_missing"}
         if hasattr(self.ik, 'begin_route'):
@@ -252,7 +277,7 @@ class PublicRouteScreen:
         certificate = None
         def prepared_poses():
             pending = iter(dense_poses())
-            if not self.use_kernel or self.contact_axis is not None:
+            if not self.use_kernel or self.contact_axis is not None or self.contact_reference_pose is not None:
                 yield from pending
                 return
             # Reject an occupied measured start before expanding any future
@@ -275,7 +300,7 @@ class PublicRouteScreen:
             rotation = Rotation.from_quat(pose["quat_xyzw"])
             motion_bound = (float(np.linalg.norm(xyz-certificate[0]))
                 + self.radius*float((rotation*certificate[1].inv()).magnitude())) if certificate else float('inf')
-            if self.contact_axis is None and certificate and certificate[2]-motion_bound > math.sqrt(3)*.004:
+            if self.contact_axis is None and self.contact_reference_pose is None and certificate and certificate[2]-motion_bound > math.sqrt(3)*.004:
                 # Distance to any observed point is 1-Lipschitz in the
                 # maximum displacement of the hand/payload surface. This
                 # certificate includes allowed-contact exclusions and target
@@ -380,7 +405,7 @@ class PublicRouteScreen:
         key = (*pose['xyz_m'],*pose['quat_xyzw'])
         if key in self._pose_geometry_cache:
             return self._pose_geometry_cache[key]
-        if self.use_kernel and self.contact_axis is None:
+        if self.use_kernel and self.contact_axis is None and self.contact_reference_pose is None:
             from robots.libero.bounded_kernel_integration import geometry_kernel,can_accelerate
             # Reject the current pose before constructing any unused field.
             # Warm hand-only screens were faster without a new EDT in C2's
@@ -415,7 +440,13 @@ class PublicRouteScreen:
         if self.contact_axis is not None:
             shift[self.contact_axis] = xyz[self.contact_axis]-self.contact_origin[self.contact_axis]
         target = self.target+shift if self.contact_axis is not None else self.target
-        target_ids = np.asarray(self.target_tree.query_ball_point(xyz-shift, self.radius+.02), dtype=int) if self.target_tree is not None else np.empty(0, dtype=int)
+        target_query = xyz-shift
+        if self.contact_reference_pose is not None:
+            reference = self.contact_reference_pose
+            relative = (rotation*Rotation.from_quat(reference['quat_xyzw']).inv()).as_matrix()
+            target = (self.target-reference['xyz_m'])@relative.T+xyz
+            target_query = reference['xyz_m']
+        target_ids = np.asarray(self.target_tree.query_ball_point(target_query, self.radius+.02), dtype=int) if self.target_tree is not None else np.empty(0, dtype=int)
         own_points = target[target_ids]
         own, target_hits, retained_target_margin = self._collisions(
             target, target_ids, xyz, site, self.initial_target_margin,

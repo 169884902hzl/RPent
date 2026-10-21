@@ -499,6 +499,18 @@ class MeasuredSkillAdapter:
         self._screen_cache[cache_key] = result
         return result
 
+    def _contact_rotation_screen(self, key, screen):
+        entity = self.scene.entities.get(key)
+        if (not isinstance(screen, PublicRouteScreen) or key != self.active
+                or self.held is not None or self.grasp_reference is None
+                or entity is None or not (entity.part_of or fixture_actions(entity.name))):
+            return screen
+        robot = measured_robot(self.p)
+        if not self.holding_aperture(robot['gripper_opening_m'])[0]:
+            return screen
+        return screen.following_contact({'xyz_m': robot['eef_xyz_m'],
+            'quat_xyzw': robot['eef_quat_xyzw']})
+
     def _self_filtered_world(self, world):
         """Keep exact current pixels present in the public route's scene."""
         if self._base_geometry is None:
@@ -1895,9 +1907,10 @@ class MeasuredSkillAdapter:
         entity = self.scene.entities.get(key)
         if entity is not None and (entity.part_of or fixture_actions(entity.name)):
             alternatives=[]
+            moving_contact = closure.following_contact(endpoint)
             for sign in (-1,1):
                 quat=(Rotation.from_quat(endpoint['quat_xyzw'])*Rotation.from_euler('z',sign*45,degrees=True)).as_quat().tolist()
-                alternatives.append(closure([endpoint,{**endpoint,'quat_xyzw':quat}]))
+                alternatives.append(moving_contact([endpoint,{**endpoint,'quat_xyzw':quat}]))
             passed=next((check for check in alternatives if check['passed']),None)
             return {**(passed or alternatives[-1]),'contact_sequence_stage':'fixture_turn',
                 'contact_sequence':checks,'contact_alternatives':alternatives}
@@ -1926,6 +1939,18 @@ class MeasuredSkillAdapter:
                     path_min_clearance_m=None, screen_scope='planner_selected_variant_pending')
             return result
         if self.schema6_v1 and skill == 'move_to' and complete and 'path' not in parameters:
+            key = parameters['anchor_id']
+            plan = self.plans.get(key)
+            if plan and plan.get('handle_measurement') and not plan.get('fixture_route_screened'):
+                # A reachable stand-off does not establish a usable contact
+                # wrist pose. Resolve the selected handle's symmetric poses
+                # and contact joint margins before accepting its first route.
+                fitted = self._screen_fixture_approaches(
+                    self.scene.entities[key], plan, complete=True)
+                if fitted is not None:
+                    fitted['fixture_route_screened'] = True
+                    self.plans[key] = fitted
+                    self._screen_cache.clear()
             attempts = []
             last = None
             for approach in ([parameters['approach']] if parameters.get('approach') else
@@ -1962,19 +1987,6 @@ class MeasuredSkillAdapter:
                         self.candidate_diagnostics.append({'stage': 'move_variant_resolution',
                             'candidate_id': cid, 'attempts': attempts, 'selected': variant})
                         return result
-            plan = self.plans.get(parameters['anchor_id'])
-            if plan and plan.get('handle_measurement') and not plan.get('fixture_route_screened'):
-                # Lazy requests retain a measured handle without eagerly
-                # searching wrist rolls and stand-offs for every anchor.
-                # If the selected option's routes all fail, reuse that
-                # existing search here, before issuing any control.
-                fitted = self._screen_fixture_approaches(
-                    self.scene.entities[parameters['anchor_id']], plan, complete=True)
-                if fitted is not None:
-                    fitted['fixture_route_screened'] = True
-                    self.plans[parameters['anchor_id']] = fitted
-                    self._screen_cache.clear()
-                    return self._candidate(skill, parameters, complete=True)
             if last is None:
                 return None
             last['id'] = cid
@@ -2023,6 +2035,8 @@ class MeasuredSkillAdapter:
                     screen = self._cloud_and_ik(key, contact=contact)
                     if skill == 'lift':
                         screen = self._lift_payload_screen(key, screen)
+                    elif skill == 'rotate_wrist':
+                        screen = self._contact_rotation_screen(key, screen)
                     evidence = screen.endpoint_screen(route, robot)
                 position = np.asarray(robot['eef_xyz_m'])
                 rotation = Rotation.from_quat(robot['eef_quat_xyzw'])
@@ -2042,6 +2056,8 @@ class MeasuredSkillAdapter:
                 screen = self._cloud_and_ik(key, contact=contact)
                 if skill == 'lift':
                     screen = self._lift_payload_screen(key, screen)
+                elif skill == 'rotate_wrist':
+                    screen = self._contact_rotation_screen(key, screen)
                 motion = SmoothMotion(self.p, screen, self.config)
                 trajectory, _, _, evidence = motion.prepare(route)
                 duration = trajectory.duration
@@ -2951,6 +2967,8 @@ class MeasuredSkillAdapter:
                         screen = self._lift_payload_screen(key, screen, payload_reference)
                         if isinstance(screen, PublicRouteScreen):
                             screen.support_separation = True
+                    elif skill == 'rotate_wrist':
+                        screen = self._contact_rotation_screen(key, screen)
                     if skill == 'move_to':
                         chain = self._screen_contact_sequence(key, route[-1], approach=variant.get('approach'))
                         if not chain['passed']:

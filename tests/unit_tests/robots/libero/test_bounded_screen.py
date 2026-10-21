@@ -90,6 +90,45 @@ def test_contact_ingress_continues_the_screened_endpoint_joint_branch():
     assert not screen([{**pose, 'xyz_m': [.4, 0., 1.]}])['passed']
 
 
+def test_contact_rotation_moves_selected_surface_but_keeps_stationary_obstacles():
+    geometry = {'boxes': [
+        {'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3},
+        {'name': 'leftfinger', 'lower': [-.04, -.005, -.005], 'upper': [.04, .005, .005]},
+        {'name': 'rightfinger', 'lower': [.016, -.026, -.005], 'upper': [.026, -.016, .005]},
+        {'name': 'leftfinger_pad', 'lower': [.028, -.001, -.001], 'upper': [.032, .001, .001]}]}
+    ik = SimpleNamespace(check=lambda *_: {'solution_found': True})
+    start = {'xyz_m': [0., 0., 1.], 'quat_xyzw': Rotation.from_euler('z', 90, degrees=True).as_quat().tolist()}
+    end = {**start, 'quat_xyzw': Rotation.from_euler('z', 180, degrees=True).as_quat().tolist()}
+    screen = PublicRouteScreen([[1., 1., 1.]], geometry, ik,
+        contact_points=[[.03, 0., 1.]], contact_allowed=True, initial_pose=start)
+    assert not screen([start, end])['passed']  # Old location enters a finger shell.
+    coupled = screen.following_contact(start)
+    result = coupled([start, end])
+    assert result['passed']
+    assert 'conditional_on_hand_coupling' in result['screen_scope']
+    np.testing.assert_array_equal(screen.target, [[.03, 0., 1.]])
+
+    blocked = PublicRouteScreen([[.05, 0., 1.]], geometry, ik,
+        contact_points=screen.target, contact_allowed=True, initial_pose=start).following_contact(start)
+    collision = blocked([start, {**start, 'xyz_m': [.1, 0., 1.]}])
+    assert not collision['passed'] and any(collision['counts'].values())
+
+
+def test_contact_rotation_rebases_transformed_surface_at_measured_braking_start():
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *_: {'solution_found': True})
+    ik.with_measured_robot = lambda _: ik
+    start = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    source = PublicRouteScreen([[1., 1., 1.]], geometry, ik,
+        contact_points=[[.03, 0., 1.]], initial_pose=start).following_contact(start)
+    robot = {'eef_xyz_m': [.02, 0., 1.],
+        'eef_quat_xyzw': Rotation.from_euler('z', 90, degrees=True).as_quat().tolist()}
+    current = source.with_measured_robot(robot)
+    np.testing.assert_allclose(current.target, [[.02, .03, 1.]], atol=1e-12)
+    assert current([{'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']}])['passed']
+    np.testing.assert_array_equal(source.target, [[.03, 0., 1.]])
+
+
 def test_axial_contact_prediction_keeps_other_scene_obstacles_and_start_overlap():
     geometry = {'boxes': [
         {'name': 'finger', 'lower': [-.01]*3, 'upper': [.01]*3}]}

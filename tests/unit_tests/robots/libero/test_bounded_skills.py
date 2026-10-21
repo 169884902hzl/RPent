@@ -314,9 +314,11 @@ def test_same_capture_self_filter_reuses_only_identical_inputs(adapter, monkeypa
 
 
 @pytest.mark.parametrize('mode', ['refresh', 'blocked_scan', 'withdrawal'])
-def test_observation_keeps_contact_until_the_hand_actually_withdraws(adapter, monkeypatch, mode):
+@pytest.mark.parametrize('opening_m', [0., .04])
+def test_observation_preserves_pending_object_until_empty_hand_withdraws(adapter, monkeypatch, mode, opening_m):
     original_obs = adapter.p.env.raw_obs
-    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.02, -.02]}
+    adapter.p.env.raw_obs = lambda: {**original_obs(),
+        'robot0_gripper_qpos': [opening_m/2, -opening_m/2]}
     adapter.p.env.position[:] = [.1, .1, .9]
     initial = adapter.request()
     descend = next(c for c in initial['candidates'] if c['skill'] == 'descend')
@@ -337,11 +339,14 @@ def test_observation_keeps_contact_until_the_hand_actually_withdraws(adapter, mo
     receipt = adapter.execute(request, decision(request, [observe['id']]))[0]
     if mode == 'withdrawal':
         assert receipt['steps_used'] > 0
+    else:
+        assert receipt['steps_used'] == 0
+    if mode == 'withdrawal' and opening_m == 0.:
         assert adapter.active is adapter.grasp_reference is None
         assert not adapter.committed_grasps
     else:
-        assert receipt['steps_used'] == 0
         assert adapter.active == 'e1' and adapter.grasp_reference is not None
+        assert adapter.held is None  # Pending identity does not verify attachment.
         assert adapter.committed_grasps['e1'] is committed
         assert any(c['skill'] == 'lift' for c in adapter.request()['candidates'])
 
