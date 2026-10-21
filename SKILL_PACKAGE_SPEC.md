@@ -449,3 +449,12 @@ use native whole-task completion as their outcome; pick subtask candidates
 retain registered sustained-grasp v3. Their distinct outcome scopes and the
 executed candidate IDs are bound into the measured-label contract. A new
 variant receives a label only from its own completed branch.
+
+D2 development plans may register the same three invocation strategies with
+`vla_variants`. Each subtask restores one common checkpoint for the self
+branch and for each strategy's three trials, sharing the same seed triplet
+across strategies. Compare each strategy's x/3 rate separately, prefer self
+on ties, and record the selected strategy's parameters. Independent complete
+replay uses those exact parameters with a new seed. Nine policy trials are
+never pooled into one strategy's success rate. Unknown measurements keep the
+sampled envelope unknown; native full replay remains a separate result.

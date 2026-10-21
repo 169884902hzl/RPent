@@ -513,8 +513,31 @@ def native_instruction_replay(facade, adapter, policy, timings, output, seed):
         adapter.p.model = original_model
 
 
+def choose_variant_branch(trials, variants):
+    """Compare each three-seed invocation separately; never pool nine seeds."""
+    if not variants or len(trials) != 1+3*len(variants):
+        raise ValueError('one self trial and three trials per registered variant required')
+    groups = [choose_branch(trials[0]['success'],
+        [row['success'] for row in trials[1+3*i:4+3*i]]) for i in range(len(variants))]
+    evidence = [{'variant': variant, **group} for variant, group in zip(variants, groups)]
+    if any(group['method'] is None for group in groups):
+        return {'method': None, 'status': 'incomplete_measurement', 'rate': None,
+                'variant_groups': evidence}
+    at = max(range(len(groups)), key=lambda i: groups[i]['rate'])
+    result = dict(groups[at], variant_groups=evidence)
+    result['trial_indices'] = [0] if result['method'] == 'self' else list(range(1+3*at, 4+3*at))
+    if result['method'] == 'call_vla':
+        result['vla_parameters'] = variants[at]['parameters']
+        result['vla_variant'] = variants[at]['name']
+    return result
+
+
 def evaluate_case(case, endpoints, output, plan, *, startup=False):
     output.mkdir()
+    variants = plan.get('vla_variants')
+    if variants is not None and (not plan.get('vla_options_v2') or not variants
+            or len({v['name'] for v in variants}) != len(variants)):
+        raise ValueError('distinct registered variants require the B2 development catalog')
     with runtime(case, endpoints, output) as (facade, adapter, policy, timings):
         configure_development_catalog(adapter, plan)
         if 'recovery_budget' in plan:
@@ -556,12 +579,21 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             trials, endpoints_saved = [], []
             # Startup proves the VLA service/control path directly; it must
             # not spend a full oracle branch's budget before its first call.
-            methods = ("call_vla",) if startup else ("self", "call_vla", "call_vla", "call_vla")
-            for j, method in enumerate(methods):
+            if variants is None:
+                methods = [(0, 'call_vla', None)] if startup else [(0, 'self', None),
+                    *[(j, 'call_vla', None) for j in (1, 2, 3)]]
+            else:
+                methods = [(j, 'call_vla', variant) for variant in variants for j in (1, 2, 3)]
+                methods = methods[:1] if startup else [(0, 'self', None), *methods]
+            for j, method, variant in methods:
                 restore_checkpoint(facade, adapter, policy, branchpoint)
                 seed = plan["trial_seed_base"] + 1000000 * plan["cases"].index(case) + 10000 * index + 1000 * j
+                trial_name = f'{method}_{j}' if variant is None else f'call_vla_{variant["name"]}_{j}'
+                options = {'vla_parameters': variant['parameters']} if variant is not None else {}
                 row, endpoint = trial(facade, adapter, policy, timings, spec, method, seed,
-                    directory / f"{method}_{j}", request, decision_limit=160 - decisions_used)
+                    directory / trial_name, request, decision_limit=160 - decisions_used, **options)
+                if variant is not None:
+                    row['vla_variant'] = variant
                 row.update(branchpoint=branch_ref, offline_annotation_state=annotation,
                            prefix_identity={"candidate_ids": [], "request_sha256": row["request_sha256"]})
                 trials.append(row)
@@ -577,7 +609,11 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                           "training": False, "source_commit": plan["source_commit"]}
                 write(output / "summary.json", result)
                 return result
-            selection = choose_branch(trials[0]["success"], [row["success"] for row in trials[1:]])
+            selection = (choose_variant_branch(trials, variants) if variants is not None else
+                choose_branch(trials[0]["success"], [row["success"] for row in trials[1:]]))
+            choice = {'subtask': spec, 'method': selection['method']}
+            if 'vla_parameters' in selection:
+                choice.update(vla_parameters=selection['vla_parameters'], vla_variant=selection['vla_variant'])
             row = {"subtask": spec, "trials": trials, "selection": selection}
             rows.append(row)
             write(directory / "paired.json", row)
@@ -586,12 +622,12 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 if selection["method"] is not None:
                     # Even the best measured method can fail. Independently
                     # replay it instead of calling an unexecuted replay false.
-                    chosen.append({"subtask": spec, "method": selection["method"]})
+                    chosen.append(choice)
                 break
             envelope_rate *= selection["rate"]
-            candidates = [0] if selection["method"] == "self" else [1, 2, 3]
+            candidates = selection.get('trial_indices', [0] if selection['method'] == 'self' else [1, 2, 3])
             continuation = next(i for i in candidates if trials[i]["success"])
-            chosen.append({"subtask": spec, "method": selection["method"]})
+            chosen.append(choice)
             decisions_used += trials[continuation]["decisions"]
             restore_checkpoint(facade, adapter, policy, endpoints_saved[continuation])
         envelope_done = facade.goal_status()["done"]
@@ -613,7 +649,10 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 seed = plan["trial_seed_base"] + 1000000000 + 1000000 * plan["cases"].index(case) + 10000 * index
                 row, endpoint = trial(facade, adapter, policy, timings, choice["subtask"],
                     choice["method"], seed, output / f"full_replay_{index:02d}", request,
-                    decision_limit=160 - replay_decisions)
+                    decision_limit=160 - replay_decisions,
+                    **({'vla_parameters': choice['vla_parameters']} if 'vla_parameters' in choice else {}))
+                if 'vla_variant' in choice:
+                    row['selected_vla_variant'] = choice['vla_variant']
                 replay.append(row)
                 replay_decisions += row["decisions"]
                 restore_checkpoint(facade, adapter, policy, endpoint)
@@ -626,7 +665,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             "independent_replay_wall_s": time.perf_counter() - replay_started if replay else None,
             "independent_replay_wall_scope": "after restoring initial physics/public cache; includes replay planning, execution and private measurement; excludes forks, method selection and simulator construction",
             "wall_time_breakdown": timings.summary(time.perf_counter() - timings.started),
-            "training": False, "confirmation": False, "source_commit": plan["source_commit"]}
+            "training": False, "confirmation": False, "source_commit": plan["source_commit"],
+            'registered_vla_variants': variants}
         write(output / "summary.json", result)
         return result
 

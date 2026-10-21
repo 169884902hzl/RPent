@@ -446,3 +446,71 @@ def test_registered_vla_variant_executes_exact_option_with_its_own_outcome_scope
     assert executed == ['full_task' if whole_task else preparation]
     assert row['success'] is True
     assert row['truth_source'] == ('unchanged_native_task_completion' if whole_task else 'unchanged_registered_task_predicate')
+
+
+@pytest.mark.parametrize('unknown', [False, True])
+def test_variant_selection_uses_separate_three_trial_rates_and_keeps_unknown(unknown):
+    from scripts.probe_bounded_hybrid_d2 import choose_variant_branch
+
+    variants = [{'name': 'in_place', 'parameters': {'preparation': 'in_place'}},
+        {'name': 'initial_pose', 'parameters': {'preparation': 'initial_pose'}}]
+    outcomes = [False, True, False, False, True, True, None if unknown else False]
+    result = choose_variant_branch([{'success': v} for v in outcomes], variants)
+    assert [group['vla_n'] for group in result['variant_groups'] if 'vla_n' in group] == ([3] if unknown else [3, 3])
+    if unknown:
+        assert result['method'] is None and result['rate'] is None
+    else:
+        assert result['rate'] == 2/3
+        assert result['vla_variant'] == 'initial_pose' and result['trial_indices'] == [4, 5, 6]
+        assert result['vla_parameters'] == {'preparation': 'initial_pose'}
+
+
+def test_d2_independent_replay_uses_the_selected_variant_and_shared_seed_triplets(tmp_path, monkeypatch):
+    from contextlib import contextmanager, nullcontext
+    import time
+
+    from robots.libero import bounded_offline_labels
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    case = {'name': 'D2', 'episode': {'suite': 'libero_spatial_swap', 'task': 0, 'seed': 40}}
+    variants = [{'name': 'in_place', 'parameters': {'preparation': 'in_place'}},
+        {'name': 'initial_pose', 'parameters': {'preparation': 'initial_pose'}},
+        {'name': 'full_task', 'parameters': {'mode': 'task', 'preparation': 'in_place', 'prompt_style': 'full_task'}}]
+    plan = {'cases': [case], 'source_commit': 'tested', 'trial_seed_base': 1000,
+        'vla_options_v2': True, 'vla_variants': variants}
+    state = {'done': False}
+    facade = SimpleNamespace(goal_status=lambda: {
+        'goals': [['open', 'cabinet_1']], 'satisfied': [state['done']], 'done': state['done']})
+    adapter = SimpleNamespace(request=lambda **_: {'candidates': []},
+        ex=SimpleNamespace(instruction='open the cabinet'))
+    timings = SimpleNamespace(measure=lambda *_: nullcontext(), started=time.perf_counter(), summary=lambda *_: {})
+
+    @contextmanager
+    def runtime(*_):
+        yield facade, adapter, object(), timings
+
+    calls = []
+    def trial(*args, **kwargs):
+        parameters = kwargs.get('vla_parameters')
+        calls.append({'method': args[5], 'seed': args[6], 'parameters': parameters})
+        # Only the whole-instruction strategy succeeds; replay must not
+        # silently revert to the first available subtask call.
+        success = parameters is not None and parameters.get('mode') == 'task'
+        return {'success': success, 'decisions': 1, 'sim_steps': 1,
+            'vla_inference_calls': int(args[5] == 'call_vla'), 'request_sha256': 'same'}, {'done': success}
+
+    monkeypatch.setattr(probe, 'runtime', runtime)
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({'done': False}, {}))
+    monkeypatch.setattr(probe, 'restore_checkpoint', lambda _, __, ___, snapshot: state.update(snapshot))
+    monkeypatch.setattr(probe, 'trial', trial)
+    monkeypatch.setattr(bounded_offline_labels, 'capture_annotation_state', lambda *_: {})
+    monkeypatch.setattr(bounded_offline_labels, 'save_annotation_state', lambda *_: {})
+    result = probe.evaluate_case(case, {}, tmp_path/'episode', plan)
+    assert len(calls) == 11
+    assert [c['seed'] for c in calls[1:4]] == [c['seed'] for c in calls[4:7]] == [c['seed'] for c in calls[7:10]]
+    assert calls[-1]['parameters'] == variants[2]['parameters']
+    assert calls[-1]['seed'] == 1000001000
+    assert result['subtasks'][0]['selection']['vla_variant'] == 'full_task'
+    assert result['full_replay'][0]['selected_vla_variant'] == 'full_task'
+    assert result['actual_full_replay_success'] is True
+    assert result['conditional_rate_product'] == 1.
