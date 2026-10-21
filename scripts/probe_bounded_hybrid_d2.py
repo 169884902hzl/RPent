@@ -486,6 +486,7 @@ def native_instruction_replay(facade, adapter, policy, timings, output, seed):
 def evaluate_case(case, endpoints, output, plan, *, startup=False):
     output.mkdir()
     with runtime(case, endpoints, output) as (facade, adapter, policy, timings):
+        configure_development_catalog(adapter, plan)
         if 'recovery_budget' in plan:
             if type(plan['recovery_budget']) is not int or plan['recovery_budget'] not in (0,1,2):
                 raise ValueError('registered hybrid recovery budget must be 0, 1 or 2')
@@ -598,6 +599,18 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             "training": False, "confirmation": False, "source_commit": plan["source_commit"]}
         write(output / "summary.json", result)
         return result
+
+
+def configure_development_catalog(adapter, plan):
+    """Enable the registered B2 catalog for explicit development plans only.
+
+    Model training and serving keep their separate catalog activation. This
+    option changes neither the adapter default nor a historical request.
+    """
+    enabled = plan.get('vla_options_v2', False)
+    if type(enabled) is not bool:
+        raise ValueError('vla_options_v2 must be a boolean')
+    adapter.vla_options_v2 = enabled
 
 
 def main():

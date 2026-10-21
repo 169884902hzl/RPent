@@ -74,6 +74,7 @@ def worker(args, plan):
         manifest['recovery_budget']=row['recovery_budget']
         manifest['source_commit']=plan['source_commit']
         manifest['schema_version']=plan['schema_version']
+        manifest['vla_options_v2']=plan.get('vla_options_v2',False)
         manifest['parent_registration']=row['manifest']
         result=probe.evaluate_case(row['case'],endpoints,args.output/'episode',manifest,startup=args.startup)
     elif row['kind']=='smoke':

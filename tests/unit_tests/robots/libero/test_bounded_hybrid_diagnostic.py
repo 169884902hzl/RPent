@@ -365,7 +365,8 @@ def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_
     from scripts import probe_bounded_hybrid_d2 as probe
 
     case = {'name': 'D2', 'episode': {'suite': 'libero_spatial_swap', 'task': 0, 'seed': 40}}
-    plan = {'cases': [case], 'source_commit': 'tested', 'trial_seed_base': 1000}
+    plan = {'cases': [case], 'source_commit': 'tested', 'trial_seed_base': 1000,
+            'vla_options_v2': True}
     facade = SimpleNamespace(goal_status=lambda: {
         'goals': [['open', 'cabinet_1']], 'satisfied': [False], 'done': False})
     adapter = SimpleNamespace(request=lambda **_: {'candidates': []},
@@ -380,6 +381,7 @@ def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_
     methods = []
 
     def trial(*args, **kwargs):
+        assert args[1].vla_options_v2 is True
         methods.append(args[5])
         return {'success': None if unknown and args[5] == 'call_vla' else False,
             'decisions': 1, 'request_sha256': 'same'}, {}

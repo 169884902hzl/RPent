@@ -57,7 +57,7 @@ def rebuild_schema6_replay(adapter, request, defaults):
 SCHEMA6_REPLAY_FIELDS = (
     'schema6_v1', 'lazy_planning_v1', 'public_progress', '_incremental_touched',
     '_incremental_route', '_failed_move_anchors', '_move_approach_by_anchor',
-    '_grasp_geometry_cache',
+    '_grasp_geometry_cache', 'vla_options_v2',
 )
 
 
@@ -199,6 +199,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
     diagnostic = case['diagnostic']
     budget = VLABudget(**diagnostic['budget'])
     with probe.runtime(case, endpoints, output, domain=diagnostic['domain']) as (facade, adapter, policy, timings):
+        probe.configure_development_catalog(adapter, plan)
         if diagnostic['kind'] == 'replay':
             old = json.loads(Path(diagnostic['old_summary']['path']).read_bytes())
             saved = pickle.loads(Path(diagnostic['branchpoint']['path']).read_bytes())
