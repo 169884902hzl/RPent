@@ -58,6 +58,15 @@ def move_subtask(probe, facade, adapter, policy, specs, anchor_id):
     return None
 
 
+def physical_steps(result):
+    """Read completed controls from bounded, VLA and full-replay reports."""
+    return (sum(r['steps_used'] for r in result.get('first_physical', {}).get('receipts', []))
+        or result.get('sim_steps', 0)
+        or sum(t.get('sim_steps', 0) for t in result.get('trials', []))
+        or sum(t.get('sim_steps', 0) for t in result.get('full_replay', []))
+        or sum(r['steps_used'] for arm in result.get('arms', []) for r in arm.get('first_receipts', [])))
+
+
 def worker(args, plan):
     row=plan['jobs'][args.worker]
     os.environ['LIBERO_TYPE']='pro' if row['kind'] in {'d2', 'd2_replay'} else 'standard'
@@ -194,11 +203,7 @@ def worker(args, plan):
     if args.startup:
         # Real requests, not imports, are required. Native completion is also
         # a physical result, never a reason to forge a successful receipt.
-        import glob
-        steps = (sum(r['steps_used'] for r in result.get('first_physical',{}).get('receipts',[]))
-            or result.get('sim_steps',0) or sum(t.get('sim_steps',0) for t in result.get('trials',[]))
-            or sum(r['steps_used'] for arm in result.get('arms',[]) for r in arm.get('first_receipts',[])))
-        if steps <= 0:
+        if physical_steps(result) <= 0:
             raise RuntimeError('startup produced no physical execution evidence')
     return 0
 

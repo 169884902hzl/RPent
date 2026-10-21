@@ -472,6 +472,8 @@ def native_instruction_replay(facade, adapter, policy, timings, output, seed):
     This does not supply missing private subtask rules or impute a sampled
     bound. Its outcome uses only the benchmark's native completion signal.
     """
+    from rpent.skill_package.contract import legal_after
+
     output.mkdir()
     original_model = adapter.p.model
     seeded = SeededPolicy(original_model, seed, input_ledger=output/'vla_inputs.jsonl')

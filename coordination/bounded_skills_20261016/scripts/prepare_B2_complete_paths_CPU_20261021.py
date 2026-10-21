@@ -17,6 +17,8 @@ def main():
     p.add_argument('--parent-plan', type=Path, required=True)
     p.add_argument('--parent-results', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--repair-plan', type=Path)
+    p.add_argument('--repair-results', type=Path)
     p.add_argument('--allow-incomplete', action='store_true')
     a = p.parse_args()
     a.source = a.source.resolve(strict=True)
@@ -25,11 +27,24 @@ def main():
     from robots.libero.bounded_hybrid_diagnostic import validate_d2_episode
     parent = json.loads(a.parent_plan.read_bytes())
     assert not parent['training'] and not parent['confirmation'] and len(parent['jobs']) == 40
+    repair = json.loads(a.repair_plan.read_bytes()) if a.repair_plan else None
+    if bool(a.repair_plan) != bool(a.repair_results):
+        raise ValueError('repair plan and results must be supplied together')
+    repairs = {}
+    if repair is not None:
+        assert not repair['training'] and not repair['confirmation']
+        repairs = {row['original_case_index']: (i, row) for i, row in enumerate(repair['jobs'])}
     jobs, missing, selections = [], [], []
     for index, source_job in enumerate(parent['jobs']):
         assert source_job['kind'] == 'd2'
         validate_d2_episode(source_job['case']['episode'])
         pointer = a.parent_results/f'closed_{index:03d}.json'
+        expected_source = parent['source_commit']
+        if not pointer.exists() and index in repairs:
+            repair_index, repair_job = repairs[index]
+            assert repair_job['case'] == source_job['case']
+            pointer = a.repair_results/f'closed_{repair_index:03d}.json'
+            expected_source = repair['source_commit']
         if not pointer.exists():
             missing.append(index)
             continue
@@ -38,7 +53,7 @@ def main():
         assert saved['sha256'] == ref(summary_path)['sha256']
         summary = json.loads(summary_path.read_bytes())
         assert summary['case'] == source_job['case']
-        assert summary['source_commit'] == parent['source_commit']
+        assert summary['source_commit'] == expected_source
         assert summary.get('full_replay'), 'source must already contain a real independent replay'
         selection = select_complete_path(summary)
         assert ref(Path(source_job['manifest']['path'])) == source_job['manifest']
@@ -56,12 +71,15 @@ def main():
         raise ValueError('no closed parent cases')
     revision = json.loads((a.source/'SOURCE_REVISION.json').read_bytes())['commit']
     plan = {'schema_version': 'bounded-skills/6', 'training': False, 'confirmation': False,
-        'source_commit': revision, 'sampling_source_commit': parent['source_commit'],
+        'source_commit': revision,
+        'sampling_source_commits': [parent['source_commit']]+([repair['source_commit']] if repair else []),
         'vla_options_v2': True, 'sam_entry': parent['sam_entry'], 'jobs': jobs,
         'parent_plan': ref(a.parent_plan), 'parent_results': str(a.parent_results.resolve()),
         'registered_parent_cases': 40, 'missing_parent_cases': missing,
         'selection': 'best measured complete path from locally sampled prefixes and native-complete VLA suffixes',
         'domain': 'D2_eval_only', 'no_new_fork_sampling': True}
+    if repair is not None:
+        plan.update(sampling_repair_plan=ref(a.repair_plan), sampling_repair_results=str(a.repair_results.resolve()))
     a.output.mkdir(parents=True, exist_ok=False)
     (a.output/'manifest.json').write_text(json.dumps(plan, indent=2)+'\n')
     (a.output/'selections.json').write_text(json.dumps(selections, indent=2)+'\n')

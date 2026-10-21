@@ -514,3 +514,24 @@ def test_d2_independent_replay_uses_the_selected_variant_and_shared_seed_triplet
     assert result['full_replay'][0]['selected_vla_variant'] == 'full_task'
     assert result['actual_full_replay_success'] is True
     assert result['conditional_rate_product'] == 1.
+
+
+def test_native_instruction_replay_executes_public_task_candidate_without_private_rules(tmp_path):
+    from contextlib import nullcontext
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    count = []
+    request = {'schema_version': 'test', 'observation_id': 'o', 'revision': 1,
+        'max_actions': 4, 'robot': {'held_anchor_id': None}, 'anchors': [],
+        'candidates': [{'id': 'full', 'skill': 'call_vla',
+            'parameters': {'mode': 'task', 'preparation': 'in_place'},
+            'consequences': {'collision': False, 'ik_reachable': True, 'screen_scope': 'measured'}}]}
+    def execute(_, decision):
+        count.extend(decision['candidate_ids'])
+        return [{'steps_used': 5}]
+    adapter = SimpleNamespace(p=SimpleNamespace(model=object(),
+        env=SimpleNamespace(terminated=False, truncated=False)),
+        request=lambda **_: request, execute=execute)
+    result = probe.native_instruction_replay(SimpleNamespace(goal_status=lambda: {'done': bool(count)}),
+        adapter, object(), SimpleNamespace(measure=lambda *_: nullcontext()), tmp_path/'replay', 42)
+    assert count == ['full'] and result['success'] is True and result['sim_steps'] == 5

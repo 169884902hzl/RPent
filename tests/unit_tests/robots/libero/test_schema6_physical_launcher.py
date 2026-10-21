@@ -161,6 +161,19 @@ def test_complete_path_worker_restores_initial_physics_and_uses_pro_domain(tmp_p
     assert result['initial_physics_sha256'] == result['parent_initial_physics_sha256']
 
 
+@pytest.mark.parametrize('result,expected', [
+    ({'full_replay': [{'sim_steps': 3}, {'sim_steps': 5}]}, 8),
+    ({'full_replay': [{'sim_steps': 0}]}, 0),
+    ({'first_physical': {'receipts': [{'steps_used': 15}]}, 'sim_steps': 15}, 15),
+])
+def test_startup_counts_actual_complete_replay_controls(result, expected):
+    path = Path(__file__).resolve().parents[4]/'coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py'
+    spec = importlib.util.spec_from_file_location('schema6_replay_physical_count', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert module.physical_steps(result) == expected
+
+
 def test_n1_resume_preserves_completed_cases_and_interrupted_attempt(tmp_path):
     path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py'
     spec = importlib.util.spec_from_file_location('schema6_fixed_latency', path)
