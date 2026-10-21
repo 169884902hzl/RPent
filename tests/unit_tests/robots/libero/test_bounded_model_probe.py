@@ -25,7 +25,7 @@ def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkey
     adapter = SimpleNamespace(p=SimpleNamespace(env=env), details=[])
     def request(*, k):
         assert k == 4 and adapter.allow_vla and adapter.vla_options_v2
-        return {'id': len(requests), 'public_only': True}
+        return {'id': len(requests), 'public_only': True, 'candidates': []}
     adapter.request = request
     def execute(actual, decision):
         assert decision['candidate_ids'] == ['http-'+str(actual['id'])]
@@ -59,6 +59,8 @@ def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkey
         assert saved['status'] == 422 and json.loads(saved['body'])['detail'] == 'source request rejected'
         sent = [json.loads(x) for x in (output/'requests.jsonl').read_text().splitlines()]
         assert len(sent) == 1 and sent[0]['request'] == requests[0]
+        assert sent[0]['model_request'] == requests[0]
+        assert saved['model_request_sha256'] == sent[0]['model_request_sha256']
         assert (output/'choices.jsonl').read_text() == ''
         return
     result = module.run_episode(probe, {'name': 'heldout'}, {}, output, plan, 4, startup=startup)

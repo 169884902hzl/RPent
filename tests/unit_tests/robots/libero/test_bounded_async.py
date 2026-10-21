@@ -7,6 +7,55 @@ from robots.libero.bounded_async import AsyncSkillDecisions
 from tests.unit_tests.robots.libero.test_bounded_skills import adapter, decision
 
 
+def test_model_view_preserves_conditional_transport_and_all_legal_prefixes(adapter):
+    from robots.libero.bounded_async import public_model_request
+    from rpent.skill_package.contract import legal_after, validate
+
+    request = adapter.request(k=4)
+    blocked = copy.deepcopy(request['candidates'][0])
+    blocked['id'] = 'blocked-collision'
+    blocked['consequences'].update(collision=True)
+    unreachable = copy.deepcopy(blocked)
+    unreachable['id'] = 'blocked-ik'
+    unreachable['consequences'].update(collision=False, ik_reachable=False)
+    transport = next(c for c in request['candidates'] if c['skill'] == 'carry_to')
+    transport['consequences'].update(collision=None, ik_reachable=None,
+        screen_scope='conditional_on_prefix')
+    request['candidates'] += [blocked, unreachable]
+    before = copy.deepcopy(request)
+    view = public_model_request(request)
+    validate(view)
+    assert request == before
+    assert transport in view['candidates']
+    assert not {'blocked-collision', 'blocked-ik'} & {c['id'] for c in view['candidates']}
+    # Exercise held-state transitions as well as initial legality.
+    prefixes = [()]
+    for _ in range(3):
+        following = []
+        for prefix in prefixes:
+            assert legal_after(view, prefix) == legal_after(request, prefix)
+            following.extend(prefix+(cid,) for cid in legal_after(request, prefix))
+        prefixes = following
+
+
+def test_http_omits_only_frozen_blockers_and_validates_source_ids(adapter, monkeypatch):
+    from io import StringIO
+    import json
+    from robots.libero.bounded_async import http_choice, public_model_request
+    request = adapter.request(k=1)
+    first = request['candidates'][0]
+    blocked = copy.deepcopy(first)
+    blocked['id'] = 'blocked'
+    blocked['consequences']['collision'] = True
+    request['candidates'].append(blocked)
+    def receive(call, **kwargs):
+        payload = json.loads(call.data)
+        assert payload['skill_request'] == public_model_request(request)
+        return StringIO(json.dumps({'decision': decision(request, [first['id']])}))
+    monkeypatch.setattr('robots.libero.bounded_async.urlopen', receive)
+    assert http_choice('http://offline')(request) == decision(request, [first['id']])
+
+
 def moving_request(adapter, request, first, monkeypatch):
     adapter.geometry['site_offset_in_gripper_m'] = [0., 0., 0.]
     adapter._base_geometry = ([], None)

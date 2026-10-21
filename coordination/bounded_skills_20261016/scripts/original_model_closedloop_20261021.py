@@ -22,7 +22,7 @@ def verified_health(service):
 
 def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
     """Make every semantic choice through HTTP; oracle labels are never read."""
-    from robots.libero.bounded_async import http_choice
+    from robots.libero.bounded_async import http_choice, public_model_request
     service = plan['model_service']
     health = verified_health(service)
     choose = http_choice(service['endpoint'])
@@ -44,8 +44,13 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
                     request = adapter.request(k=k)
                 request_sha = hashlib.sha256(json.dumps(request, sort_keys=True,
                     separators=(',', ':')).encode()).hexdigest()
+                model_request = public_model_request(request)
+                model_request_sha = hashlib.sha256(json.dumps(model_request, sort_keys=True,
+                    separators=(',', ':')).encode()).hexdigest()
                 requests.write(json.dumps({'index': index, 'request': request,
-                    'request_sha256': request_sha})+'\n')
+                    'request_sha256': request_sha, 'model_request': model_request,
+                    'model_request_sha256': model_request_sha,
+                    'model_view': 'omit_frozen_public_blockers/1'})+'\n')
                 requests.flush()
                 try:
                     with timings.measure('decision.model'):
@@ -54,6 +59,7 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
                     body = exc.read().decode('utf-8', errors='replace')
                     (output/'model_http_error.json').write_text(json.dumps({
                         'index': index, 'request_sha256': request_sha,
+                        'model_request_sha256': model_request_sha,
                         'status': exc.code, 'body': body, 'endpoint': service['endpoint']}, indent=2)+'\n')
                     raise RuntimeError(f'model HTTP {exc.code}: {body}') from exc
                 before = len(adapter.details)
@@ -61,6 +67,7 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
                     receipts = adapter.execute(request, decision)
                 record = {'index': index, 'request': request, 'decision': decision,
                     'request_sha256': request_sha,
+                    'model_request_sha256': model_request_sha,
                     'receipts': receipts, 'details': adapter.details[before:],
                     'wall_time_breakdown': timings.summary(time.perf_counter()-begin,
                         start_event=start_event)}

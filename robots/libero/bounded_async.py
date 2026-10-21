@@ -57,10 +57,24 @@ class AsyncSkillDecisions:
         self.worker.shutdown(wait=True, cancel_futures=True)
 
 
+def public_model_request(request: dict) -> dict:
+    """Omit frozen collision/IK blockers without removing any legal prefix.
+
+    Conditional transport options stay present: a predecessor may establish
+    their held-object precondition. The public contract excludes the removed
+    blockers for every prefix of this observation, independently of the task.
+    """
+    candidates = [candidate for candidate in request['candidates']
+        if candidate['consequences']['collision'] is not True
+        and candidate['consequences']['ik_reachable'] is not False]
+    return dict(request, candidates=candidates)
+
+
 def http_choice(endpoint: str, *, timeout_s: float = 120.):
     """Codex2's bounded-choice endpoint; no model or oracle is hidden here."""
     def choose(request):
-        body = json.dumps({"skill_request": request, "k": request["max_actions"], "mode": "cached"}).encode()
+        body = json.dumps({"skill_request": public_model_request(request),
+            "k": request["max_actions"], "mode": "cached"}).encode()
         call = Request(endpoint, data=body, headers={"Content-Type": "application/json"}, method="POST")
         with urlopen(call, timeout=timeout_s) as response:
             result = json.load(response)
