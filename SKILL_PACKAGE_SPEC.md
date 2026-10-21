@@ -456,8 +456,8 @@ branch and for each strategy's three trials, sharing the same seed triplet
 across strategies. Compare each strategy's x/3 rate separately, prefer self
 on ties, and record the selected strategy's parameters. Independent complete
 replay uses those exact parameters with a new seed. Nine policy trials are
-never pooled into one strategy's success rate. Unknown measurements keep the
-sampled envelope unknown; native full replay remains a separate result.
+never pooled into one strategy's success rate. Unknown measurements remain
+unknown in their method comparison; native full replay is a separate result.
 
 For complete-path evaluation, also retain native-complete full-instruction
 branches from each sampled prefix. Compare their conditional observed rate

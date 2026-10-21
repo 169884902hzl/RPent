@@ -48,6 +48,7 @@ def main():
         {'name': 'initial_pose', 'parameters': {'preparation': 'initial_pose'}},
         {'name': 'full_task', 'parameters': {'mode': 'task', 'preparation': 'in_place', 'prompt_style': 'full_task'}},
     ]
+    minimum_remaining = default['cases'][0]['diagnostic']['budget']['max_controls']
     selected, coverage, lines = [], {}, {}
     for category in order:
         ordered = sorted(groups[category], key=lambda row: (row[1]['episode_id'], row[1]['source_link']['line']))
@@ -70,6 +71,8 @@ def main():
                     assert ref(link['path'])['sha256'] == link['sha256']
                     lines[link['path']] = Path(link['path']).read_text().splitlines()
                 row = json.loads(lines[link['path']][link['line']-1])
+                if row['request']['remaining_sim_steps'] < minimum_remaining:
+                    continue
                 if phase_pool == 'held' and row['request']['robot']['held_anchor_id'] is None:
                     continue
                 if phase_pool == 'middle' and row['index'] == 0:
@@ -122,7 +125,8 @@ def main():
         'confirmation': False, 'vla_options_v2': True, 'schema6_source': True,
         'cases': selected, 'permanent_exclusions': default['permanent_exclusions'],
         'frozen_parent_index': index_ref, 'original_cohort': cohort_ref,
-        'selection': 'train+ok only; prefer held then later intermediate; deterministic identity order, no new outcomes; distinct initial identities within category',
+        'selection': 'train+ok only; prefer held then later intermediate; enough remaining public budget for max_controls; deterministic identity order, no new outcomes; distinct initial identities within category',
+        'minimum_remaining_sim_steps': minimum_remaining,
         'registration_generator': ref(__file__), 'coverage': coverage, 'missing_categories': ['stove_on', 'stove_off'],
         'missing_reason': 'both stove tasks are task_holdout in the frozen original220 parent split; excluded from training labels'}
     validate_plan(plan)

@@ -41,6 +41,11 @@ def main():
             summary = Path(pointer['summary'])
             assert pointer['sha256'] == ref(summary)['sha256']
             data = json.loads(summary.read_bytes())
+            sampled = data
+            if 'parent_summary' in data:
+                parent = Path(data['parent_summary']['path'])
+                assert ref(parent) == data['parent_summary']
+                sampled = json.loads(parent.read_bytes())
             name = data['case']['name']
             assert name in a1 and name not in closed
             replay = data.get('full_replay', [])
@@ -50,13 +55,21 @@ def main():
             row = {'case': name, 'suite': data['case']['episode']['suite'],
                 'recovery_budget': budget, 'source_commit': data['source_commit'],
                 'summary': ref(summary), 'A1_M_success': a1[name]['native_success'],
+                'sampling_source_commit': sampled['source_commit'],
+                'parent_sampling_summary': data.get('parent_summary'),
+                'initial_physics_sha256': data.get('initial_physics_sha256'),
                 'success': data['actual_full_replay_success'], 'status': data['status'],
                 'sampled_envelope_success': data.get('sampled_envelope_native_success')
                     if data.get('conditional_rate_product') is not None else None,
                 'conditional_rate_product': data.get('conditional_rate_product'),
                 'replay_records': len(replay), 'replay_sim_steps': sum(t.get('sim_steps', 0) for t in replay),
                 'replay_wall_s': data.get('independent_replay_wall_s'),
-                'replay_stop_reasons': [t.get('reason') for t in replay]}
+                'replay_stop_reasons': [t.get('reason') for t in replay],
+                'subtask_selections': [{'subtask': s['subtask'], 'selection': s['selection'],
+                    'trials': [{'method': t['method'], 'variant': t.get('vla_variant'),
+                        'success': t['success'], 'sim_steps': t.get('sim_steps'),
+                        'vla_inference_calls': t.get('vla_inference_calls'), 'reason': t.get('reason')}
+                        for t in s['trials']]} for s in sampled.get('subtasks', [])]}
             rows.append(row)
             closed[name] = row
         missing = sorted(set(a1)-set(closed))
@@ -74,7 +87,12 @@ def main():
             'sampled_bound_success': sum(r['sampled_envelope_success'] for r in known_bound),
             'unknown_private_rule_cases': [r['case'] for r in values if r['sampled_envelope_success'] is None],
             'zero_replay_step_cases': [r['case'] for r in values if not r['replay_sim_steps']],
-            'sources': sorted({r['source_commit'] for r in values})}
+            'sources': sorted({r['source_commit'] for r in values}),
+            'by_suite': {suite: {'n': len(group), 'success': sum(r['success'] for r in group),
+                'wilson95': wilson(sum(r['success'] for r in group), len(group)),
+                'A1_M_success_on_same_closed_cases': sum(r['A1_M_success'] for r in group)}
+                for suite in sorted({r['suite'] for r in values})
+                for group in [[r for r in values if r['suite'] == suite]]}}
     a.output.mkdir(parents=True, exist_ok=False)
     path = a.output/'paired_cases.jsonl'
     path.write_text(''.join(json.dumps(r, sort_keys=True)+'\n' for r in rows))
