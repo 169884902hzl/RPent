@@ -1,0 +1,474 @@
+{
+  "scope": "same saved public depth/proprioception; no physics, SAM or oracle",
+  "training": false,
+  "physics_steps": 0,
+  "rpc_calls": 0,
+  "source": "source_object_contact_ablation_20261022",
+  "inputs": {
+    "route": {
+      "path": "results/bounded_skills/execution_repairs_20261022/container6_attachment_input/probe/startup_1792624886616931569/failed_support_routes/00.pkl.gz",
+      "sha256": "a3b7b84f00aecabc2a52921eead9967372e9f826d06e90e2b9e9766b01862513"
+    },
+    "context": {
+      "path": "results/bounded_skills/execution_repairs_20261022/container6_attachment_input/probe/startup_1792624886616931569/failed_support_routes/00_public.pkl.gz",
+      "sha256": "bd054d7683a3c39682235957b031762cb87dac7c9d00b642e5cd8a7d920c81c8"
+    },
+    "recorded": {
+      "path": "results/bounded_skills/execution_repairs_20261022/container6_attachment_input/probe/startup_1792624886616931569/failed_support_routes/00.json",
+      "sha256": "94c69ad80c7c2b18ca31bfa43dd2bbe35f329714b343f7912a5bac7b98b2499c"
+    }
+  },
+  "recorded_rejection_reproduced_at_1e_minus_12": true,
+  "rejected_pixel": {
+    "xyz_m": [
+      0.048609547317028046,
+      -0.12335237860679626,
+      0.07588451355695724
+    ],
+    "camera_pixels": {
+      "agentview": {
+        "distance_m": 0.0,
+        "row_col": [
+          559,
+          363
+        ]
+      },
+      "wrist": {
+        "distance_m": 0.010349694563702246,
+        "row_col": [
+          757,
+          612
+        ]
+      }
+    },
+    "distance_to_contact_reference_m": 0.0035650864046101903,
+    "distance_to_existing_attached_surface_m": 0.0036950870625067677,
+    "distance_to_existing_stationary_scene_m": 0.07562304928991274
+  },
+  "arms": {
+    "overwritten_contact_reference": {
+      "wall_s": 0.30145872104912996,
+      "scene_points": 159115,
+      "payload_points": 3351,
+      "result": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.001377071430044794,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 6,
+        "geometry_evaluations": 6,
+        "clearance_certified_samples": 0,
+        "ik_checks": [
+          {
+            "xyz_m": [
+              0.049222654748298,
+              -0.10080755827024454,
+              0.12850732556883207
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 3.1031676915590914e-17,
+                "orientation_error_rad": 6.67941528806168e-16,
+                "joint_positions_rad": [
+                  -0.09794208226216164,
+                  0.5848540546282065,
+                  -0.06177144334863703,
+                  -1.7904414986201025,
+                  0.05086927616156198,
+                  2.374142794677939,
+                  -0.04955467838563731
+                ],
+                "function_evaluations": 1,
+                "joint_margin_min_rad": 1.1779459453717935,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.09794208226216164,
+                0.5848540546282065,
+                -0.06177144334863703,
+                -1.7904414986201025,
+                0.05086927616156198,
+                2.374142794677939,
+                -0.04955467838563731
+              ],
+              "numerical_search_bound_only": true
+            }
+          }
+        ],
+        "occupied_support_clearances_m": {
+          "6": 0.001377071430044794,
+          "11": 0.0038898586608594934,
+          "12": 0.0024925155396979086
+        },
+        "support_plane_count": 0,
+        "occupied_support_clearance_m": 0.001377071430044794,
+        "initial_payload_margin_pairs_retained": 38,
+        "initial_margin_policy": "measured_surface_minimum_no_further_incursion",
+        "reason": "measured_payload_collision",
+        "payload_point": [
+          0.048094249555868024,
+          -0.12440078367060471,
+          0.07368270776280558
+        ],
+        "obstacle_point": [
+          0.048609547317028046,
+          -0.12335237860679626,
+          0.07588451355695724
+        ],
+        "at": {
+          "xyz_m": [
+            0.04922296194884494,
+            -0.10076829028226104,
+            0.12966202806255328
+          ],
+          "quat_xyzw": [
+            0.9477496148222432,
+            0.3190143666593595,
+            0.0004694057588707674,
+            -0.000530214533130774
+          ]
+        }
+      }
+    },
+    "existing_attachment": {
+      "wall_s": 1.393437834456563,
+      "scene_points": 159056,
+      "payload_points": 3336,
+      "result": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": true,
+        "collision": false,
+        "ik_reachable": true,
+        "path_min_clearance_m": 0.007645298508656853,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 46,
+        "geometry_evaluations": 9,
+        "clearance_certified_samples": 37,
+        "ik_checks": [
+          {
+            "xyz_m": [
+              0.049222654748298,
+              -0.10080755827024454,
+              0.12850732556883207
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 3.1031676915590914e-17,
+                "orientation_error_rad": 6.67941528806168e-16,
+                "joint_positions_rad": [
+                  -0.09794208226216164,
+                  0.5848540546282065,
+                  -0.06177144334863703,
+                  -1.7904414986201025,
+                  0.05086927616156198,
+                  2.374142794677939,
+                  -0.04955467838563731
+                ],
+                "function_evaluations": 1,
+                "joint_margin_min_rad": 1.1779459453717935,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.09794208226216164,
+                0.5848540546282065,
+                -0.06177144334863703,
+                -1.7904414986201025,
+                0.05086927616156198,
+                2.374142794677939,
+                -0.04955467838563731
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              0.049222478428397345,
+              -0.100751141061346,
+              0.1500385688622413
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.0004090766585896434,
+                "orientation_error_rad": 5.771781079814672e-05,
+                "joint_positions_rad": [
+                  -0.09642373222388871,
+                  0.5468901817226505,
+                  -0.06389485187856662,
+                  -1.7906713795176634,
+                  0.04803498545531651,
+                  2.3364324302330988,
+                  -0.04775260743192158
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 1.2159098182773493,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.09794208226216164,
+                0.5848540546282065,
+                -0.06177144334863703,
+                -1.7904414986201025,
+                0.05086927616156198,
+                2.374142794677939,
+                -0.04955467838563731
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              0.04922228789026533,
+              -0.10076316800865413,
+              0.17369139953754328
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.0004985179130951511,
+                "orientation_error_rad": 8.854533719388904e-05,
+                "joint_positions_rad": [
+                  -0.09487833393438858,
+                  0.5086482087446503,
+                  -0.06614428472582747,
+                  -1.784944404010426,
+                  0.04468152133226576,
+                  2.2925313409690617,
+                  -0.04560462102614221
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 1.2541517912553495,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.09642373222388871,
+                0.5468901817226505,
+                -0.06389485187856662,
+                -1.7906713795176634,
+                0.04803498545531651,
+                2.3364324302330988,
+                -0.04775260743192158
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              0.049222339822726745,
+              -0.10077940606639298,
+              0.19568595871726924
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.0004370015922490033,
+                "orientation_error_rad": 8.474363141976273e-05,
+                "joint_positions_rad": [
+                  -0.09365993131495141,
+                  0.4760639769022013,
+                  -0.06796905034126215,
+                  -1.7748859248869662,
+                  0.04165299161071648,
+                  2.2499595236531835,
+                  -0.04367162859711745
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 1.2867360230977987,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.09487833393438858,
+                0.5086482087446503,
+                -0.06614428472582747,
+                -1.784944404010426,
+                0.04468152133226576,
+                2.2925313409690617,
+                -0.04560462102614221
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              0.04922252563638725,
+              -0.10079795395648344,
+              0.21778163951364157
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.00044754027813104664,
+                "orientation_error_rad": 9.05292916519119e-05,
+                "joint_positions_rad": [
+                  -0.09262279334216875,
+                  0.4457426856011939,
+                  -0.06957498499342833,
+                  -1.76113825984425,
+                  0.03874106767105032,
+                  2.2059683845628157,
+                  -0.041810499694687225
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 1.31066174015575,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.09365993131495141,
+                0.4760639769022013,
+                -0.06796905034126215,
+                -1.7748859248869662,
+                0.04165299161071648,
+                2.2499595236531835,
+                -0.04367162859711745
+              ],
+              "numerical_search_bound_only": true
+            }
+          },
+          {
+            "xyz_m": [
+              0.04922265474829798,
+              -0.10080755827024454,
+              0.22850732556883208
+            ],
+            "version": "public-panda-pose-screen/1-dev",
+            "source": "static_robot_description_and_public_proprioception",
+            "robot_xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/robots/panda/robot.xml",
+              "sha256": "67f62e98681d2ae0d5c50352105492b0041bcc9b9502e83fed02823195338c90"
+            },
+            "solution_found": true,
+            "solves": [
+              {
+                "position_error_m": 0.00010917969134192887,
+                "orientation_error_rad": 2.653859888778847e-05,
+                "joint_positions_rad": [
+                  -0.09224426156372291,
+                  0.43305501540388075,
+                  -0.07020278377248232,
+                  -1.7514595803381585,
+                  0.037473638703382196,
+                  2.1836264515287436,
+                  -0.04099517564332026
+                ],
+                "function_evaluations": 2,
+                "joint_margin_min_rad": 1.3203404196618416,
+                "solution_found": true,
+                "method": "warm_damped_jacobian"
+              }
+            ],
+            "numerical_failure_is_not_proof_of_infeasibility": true,
+            "arm_collisions_checked": false,
+            "servo_convergence_certified": false,
+            "local_continuation": {
+              "max_joint_step_rad": 0.35,
+              "from_joint_positions_rad": [
+                -0.09262279334216875,
+                0.4457426856011939,
+                -0.06957498499342833,
+                -1.76113825984425,
+                0.03874106767105032,
+                2.2059683845628157,
+                -0.041810499694687225
+              ],
+              "numerical_search_bound_only": true
+            }
+          }
+        ],
+        "arm_screen": {
+          "passed": true,
+          "arm_collisions_checked": true,
+          "joint_samples": 343,
+          "link_exact_checks": 1582,
+          "link_voxel_fast_clear": 813,
+          "margin_m": 0.004,
+          "max_link_sample_motion_m": 0.002,
+          "self_collisions_checked": false,
+          "scope": "public_observed_points_and_static_link_meshes;unseen_space_not_certified"
+        },
+        "reason": "public_route_screen_passed"
+      }
+    }
+  }
+}

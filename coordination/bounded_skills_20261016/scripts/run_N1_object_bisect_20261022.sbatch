@@ -12,15 +12,15 @@
 set -euo pipefail
 ROOT=/public/home/sunyihan/rpent_libero_eval
 case "$SLURM_ARRAY_TASK_ID" in
-    0) COMMIT=99d90ae8 ;;
-    1) COMMIT=daaa1730 ;;
+    0) COMMIT="${BISECT_PARENT:-99d90ae8}" ;;
+    1) COMMIT="${BISECT_CHILD:-daaa1730}" ;;
     *) exit 2 ;;
 esac
 export EXEC_SOURCE="$ROOT/source_bisect_${COMMIT}_D3_20261022"
 export EXEC_MANIFEST="$ROOT/results/bounded_skills/execution_repairs_20261022/object_bisect_${COMMIT}/manifest.json"
 export EXEC_OUTPUT="$ROOT/results/bounded_skills/execution_repairs_20261022/object_bisect_${COMMIT}/probes"
 export EXEC_COMMON="$ROOT/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/common_starts"
-export EXEC_INDICES='26 27 29'
+export EXEC_INDICES="${BISECT_INDICES:-26 27 29}"
 # Historical snapshots used startup aliases only available at old shard heads.
 # Use the registered canonical-state launcher for both bisect arms.
 LAUNCHER="$ROOT/source_attached_staged_20261022/coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py"

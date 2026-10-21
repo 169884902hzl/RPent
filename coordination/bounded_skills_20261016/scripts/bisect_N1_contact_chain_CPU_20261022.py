@@ -20,6 +20,7 @@ def main():
     parser.add_argument('--episode', type=Path, required=True)
     parser.add_argument('--loops', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--compare-grasp-search', action='store_true')
     args = parser.parse_args()
     sys.path.insert(0, str(args.source.resolve()))
     import numpy as np
@@ -78,12 +79,18 @@ def main():
                         distance = float(np.linalg.norm(np.median(points, axis=0)-prior.xyz))
                         options.append((distance, path.parent.name))
                 options.sort()
-                if not options or options[0][0] > .01 or (len(options)>1 and options[1][0]-options[0][0]<.01):
+                aliases = None
+                if len(options)>1 and options[1][0]-options[0][0]<.01:
+                    masks = [store.load(option[1]).astype(bool) for option in options[:2]]
+                    aliases = float((masks[0]&masks[1]).sum()/(masks[0]|masks[1]).sum())
+                if (not options or options[0][0] > .01
+                        or (aliases is not None and aliases < .99)):
                     raise ValueError('current retained masks cannot identify the previous public instance: '+
                         str((entity.id, camera, options)))
                 mask_name = options[0][1]
                 mask_matches.append({'anchor': entity.id, 'camera': camera, 'selected': mask_name,
-                    'nearest_distance_m': options[0][0], 'next_distance_m': options[1][0] if len(options)>1 else None})
+                    'nearest_distance_m': options[0][0], 'next_distance_m': options[1][0] if len(options)>1 else None,
+                    'near_duplicate_mask_iou': aliases})
             mask = store.load(mask_name).astype(bool)
             expected_mask_hash = mask_name.rsplit('_', 1)[-1].removesuffix('.npz')
             if hashlib.sha256(mask.tobytes()).hexdigest()[:16] != expected_mask_hash:
@@ -122,22 +129,47 @@ def main():
     np.testing.assert_allclose(entity.xyz, anchor['xyz_m'], atol=1e-12)
     plan = adapter.grasp_geometry(entity)
     adapter.plans[key] = plan
-    variant = {'anchor_id': key, 'approach': 'above', 'path': 'over'}
+    actual_attempts = row['execution_details'][1]['execution']['internal_planning_attempts']
+    variant = (dict(actual_attempts[0]['parameters']) if args.compare_grasp_search
+        else {'anchor_id': key, 'approach': 'above', 'path': 'over'})
     adapter._commit_grasp({'skill': 'move_to', 'parameters': variant})
     entry = adapter._route('move_to', variant)[-1]
     plan = adapter.plans[key]
     ingress = plan.get('contact_route', [{'xyz_m': plan['xyz_m'], 'quat_xyzw': plan['quat_xyzw']}])
-    actual_attempts = row['execution_details'][1]['execution']['internal_planning_attempts']
-    actual_lift = next(a['screen'] for a in actual_attempts
-        if a['parameters'].get('approach') == 'above'
-        and a['screen'].get('contact_sequence_stage') == 'attached_initial_lift')
-    np.testing.assert_allclose(ingress[-1]['xyz_m'], actual_lift['ik_checks'][0]['xyz_m'], atol=1e-10)
+    if not args.compare_grasp_search:
+        actual_lift = next(a['screen'] for a in actual_attempts
+            if a['parameters'].get('approach') == 'above'
+            and a['screen'].get('contact_sequence_stage') == 'attached_initial_lift')
+        np.testing.assert_allclose(ingress[-1]['xyz_m'], actual_lift['ik_checks'][0]['xyz_m'], atol=1e-10)
     approach = adapter._candidate('move_to', variant, complete=True)
     screen = adapter._cloud_and_ik(key, contact=True)
     if screen.ik.last_solution is not None:
         screen = screen.continuing_route()
     before = screen([entry, *ingress])
     args.output.mkdir(parents=True, exist_ok=False)
+    if args.compare_grasp_search:
+        actual = actual_attempts[0]['screen']
+        np.testing.assert_allclose(before['at']['xyz_m'], actual['at']['xyz_m'], atol=1e-10)
+        assert before['target_counts'] == actual['target_counts']
+        # Compare the existing eager proposal search on the same measured
+        # surface. No sampler parameters, collision allowances or IK limits
+        # change, and no simulation/RPC is used.
+        adapter.lazy_planning_v1 = False
+        adapter._screen_cache.clear()
+        alternate = adapter._compute_grasp_geometry(entity)
+        result = {'scope': 'same retained public inputs; lazy first proposal versus existing full grasp search',
+            'source': str(args.source), 'checkpoint': str(args.checkpoint),
+            'checkpoint_sha256': hashlib.sha256(args.checkpoint.read_bytes()).hexdigest(),
+            'rpc_calls': 0, 'physics_steps': 0, 'training': False,
+            'reproduced_collision_pose_and_target_counts': True,
+            'retained_mask_matches': mask_matches, 'lazy_plan': plan,
+            'lazy_ingress': before, 'existing_eager_plan': alternate,
+            'candidate_diagnostics': adapter.candidate_diagnostics}
+        (args.output/'summary.json').write_text(json.dumps(result, indent=2,
+            default=lambda v: v.tolist() if hasattr(v, 'tolist') else str(v))+'\n')
+        print(json.dumps({'lazy_ingress': before['reason'], 'existing_eager_plan': alternate,
+            'output': str(args.output)}, default=lambda v: v.tolist() if hasattr(v, 'tolist') else str(v)))
+        return
     captured = []
     original = PublicRouteScreen.__call__
 

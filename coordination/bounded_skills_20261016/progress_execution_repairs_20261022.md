@@ -2,6 +2,54 @@
 
 ## 10/22 continuation after attached-object probes
 
+LATEST: ordinary closure/lift removal N1 job11193 is fully closed **20/30**
+versus baseline25/30, improvement1/regression6, all30fullinitial hashes match.
+Exact source tree7bfd88d4, archivecbe79609. Artifacts remote
+`.../object_contact_ablation/N1_30/closed30/`, local
+`reports/object_contact_ablation_20261022/`. Four-stage medians3.469/5.393/
+2.062/.803s, loop12.168s, episode112.228s; many zero-control failures prevent
+an accuracy-preserving speedup claim. All three shards COMPLETED0:0.
+N1 not qualified, so NO repaired90/D2/perturbed collection has started.
+
+Bowl s5 exact public CPU replay now matches collision pose and9rightfinger
+target points. Existing eager search on identical retained measurements finds
+another route-screened grasp `s5_a0_top_distal_pad_edge_cell`; not physical
+success evidence. Original near-duplicate retained masks haveIoU.99634;
+replay logs the choice and still asserts exact collision pose/counts.
+Script `bisect_N1_contact_chain_CPU_20261022.py --compare-grasp-search`;
+r1diagnosis failed on mask ambiguity and is preserved; r2succeeded.
+
+Physical bowl s5:99d90ae8success3dec/540steps and3d3edbb6success4/745,
+both complete initialSHAe11acfa9812cb9b603fcd54fd9a82e87b4cc731645771d4a343bdadb57fbe772.
+Comparisons are11198(99d→daaa) and11200(3d3→03552), child arms still pending
+at this update. Container s6 parent99d success2/600, initialSHA
+c2623466ccabc00d4043533d4af1c45ef6a748b57d99f021f50ed3427c99deff;
+childdaaa is11202_1. Do not count pending/interrupted diagnoses as full failures.
+11191_0closed spatial_swap26success665steps, object_swap27success343steps,
+object_task29failure347steps.11191_1was cancelled after reproduced zero-step
+descend trap on26 and subsequent repetition, no closed result.
+
+New **uncommitted ablation**, not an asserted fix: ordinary move execution
+no longer gates a collision-screened standoff on a future unexecuted descent;
+actual move/descend collision checks and fixture coupling stay intact.
+Working bounded_skills contains this plus the older unrelated dirty SAM
+cache; do NOT stage the SAM hunk.3new fixture/object behavioral tests pass,
+focused32pass. Exact counterfactual tree3c6bc6bfa00bad7d0a154136042faa8e49a6e8e3,
+archive82ce2f0a7df2387c17e2f73bf09e1a5e0d4b63e0bd91eb6716f96dc26f9792e6.
+Local/tmp/rd_standoff_ablation_source_20261022; remote
+source_standoff_ablation_20261022. Full CPU running session11805,
+log/tmp/standoff_gate_ablation_exact_CPU_20261022.log. Then same-state
+index15/1/6/2 probes before any further full30.
+
+Post-N1 preparation only: commit4ea1fcab uses registeredworldXY5cm metric
+(not3Dcentre distance),10tests pass; aa433ad9 adds explicitly registered
+self_repeats, same branchpoint restored per trial,49focusedtests pass.
+Both commits pushed. Full native-buffer+sampler exact aa433 source CPU697
+pass309.30s; archiveSHA4c59f08ec83b72d798d51705d681c48cca7f41f407e1b03e96e91af6637936e2,
+remote source_postN1_aa433ad9_20261022. This source is NOT physically admitted
+and must not be used for90/D2 before N1 qualification. Permanent geometry
+exclusion remains pending in the layout CLI; prototype training_admission=False.
+
 Snapshot `05143337`, archive SHA256
 `1f672177a952f15fa9585b9129b9331743cd81e8bb1d2cb4fe05ffa0b6de7e40`,
 passed exact CPU761 and the three physics probes: container index1 (596steps),
@@ -313,3 +361,42 @@ This is a native derived contact/kinematics phase omission from integration
 state, not an extra failed VLA retry. New native-buffer capture/copy and
 unbound-call fallback pass44focused CPU checks; their exact staged snapshot
 is being privately replayed. Not deployed to11181 or rescored historical D2.
+
+Continuation checkpoint, 2026-10-22:
+
+- Exact strict N1 tree7bfd88d4 (139431e9 object-chain removal on05143337)
+  closes20/30 versus baseline25/30; all30 complete initial hashes match.
+  Reports: `reports/object_contact_ablation_20261022/`; job11193 completed0:0.
+- Bowl s5 good3d3edbb6 succeeds4decisions/745steps; first-round03552c03
+  fails8/23 from the same complete initial state. Removing only the ordinary
+  move-to future ingress veto (actual move/descend screens retained) restores
+  s5 success. Standoff-only tree3c6bc6bf, CPU691pass, job11204 closes all four
+  probes: idx15/1/6/2 = success4/745,2/596,3/261,1/676.
+- Container s6 good99d90ae8 succeeds2/600; daaa1730 fails8/331, same complete
+  initial. CPU replay of job11208's public input reproduces current rejection
+  to1e-12m. A second lift screen narrows the already attached instance and
+  retains a bottle pixel as a stationary obstacle. Reusing the cached complete
+  attachment passes the same route, without changing collision margins.
+- Source fix36dcaca6 and prefix compact-blocker cache fix6178f265 are pushed
+  to user-fork/harness-v5. Strict execution tree2eb42379 excludes native-buffer
+  transport and dirty SAM caches. Archive SHA256
+  a2cd6f44a8833a33e846eb0bac2e9e501219972f18888839487b99359aacbfab.
+  Exact CPU684pass plus startup/exit15pass. Test launcher imports env_server
+  before tests that import MuJoCo; first unordered collection error retained.
+- Job11211 uses this tree for idx19,15,1,6,2. Container19 already succeeds
+  2decisions/600steps. Array11212 waits afterok11211, and additionally verifies
+  all five closed physical results/source IDs before executing the full30.
+  Throttle2 leaves one slot for bisection; no held jobs released.
+- Stove s7 edge99d90ae8 success2/733 versus daaa failure10/385, job11209.
+  Current and99d first665controls+public proprioception have identical SHA
+  1a5b6314b02bf95a9c9ba50680cbd5274813873a405ebb58420fe079dfafd6f5.
+  Old stack refreshes capture5 after zero-step wrist rejection and succeeds;
+  current keeps capture4/1, marks all turns colliding, then reopens. Do not
+  change this yet: if full30 remains below target, test removal separately.
+- Historical daaa bowl s5 job11198_1 cancelled after42partial decisions/
+  4692executed ticks, no closed score. Bisection job11213_0 probes object_task
+  idx29 at b1365785 between good6a2d6bb8 and bad99d90ae8.
+- D2 audit/code evidence is complete in
+  `reports/attached_05143337_20261022/D2_THREE_ISSUES.md`. New D2/90-state/
+  perturbation physical batches remain after N1 qualification. Shared
+  coordination received `reports/attached_reuse_20261022/COORDINATION_NOTICE.md`.
