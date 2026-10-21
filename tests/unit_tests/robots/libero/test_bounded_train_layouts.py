@@ -43,6 +43,16 @@ def test_permanent_layout_distance_and_native_witness_are_required():
             limits=LayoutLimits(attempts=2),witness_check=lambda _:{'native_predicates_satisfied':False})
 
 
+def test_confirmation_distance_cannot_be_bypassed_by_object_height():
+    first = generate()
+    # The registered rule compares settled world XY, not 3D centre distance.
+    excluded = {x['id']: [*x['xyz_m'][:2], x['xyz_m'][2]+.2] for x in first['objects']}
+    other = generate(confirmation_layouts=[excluded])
+    assert other['confirmation_distance_metric'] == 'world_xy_euclidean'
+    assert all(np.linalg.norm(np.asarray(x['xyz_m'])[:2]-excluded[x['id']][:2]) >= .05
+        for x in other['objects'])
+
+
 def test_layout_cannot_change_which_bowl_the_original_instruction_references():
     objects=[{'id':name,'xyz_m':[x,0.,.05],'size_m':[.03,.03,.03],
         'yaw_rad':0.,'movable':True} for name,x in

@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-VERSION = 'original-train-layout/2'
+VERSION = 'original-train-layout/3'
 ORIGINAL_SUITES = {'libero_spatial','libero_object','libero_goal','libero_10','libero_90'}
 SEED_RANGE = (11020000,11029999)
 
@@ -130,7 +130,8 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
                 reason='outside_free_support';break
             for old in confirmation_layouts:
                 q=old.get(item['id'])
-                if q is not None and np.linalg.norm(np.asarray(item['xyz_m'])-q)<limits.confirmation_distance_m:
+                if q is not None and np.linalg.norm(
+                        np.asarray(item['xyz_m'])[:2]-np.asarray(q)[:2])<limits.confirmation_distance_m:
                     reason='near_permanent_confirmation_layout';break
             if reason:break
         if reason is None and any(overlap(a,b,limits.separation_m)
@@ -152,5 +153,6 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
             'limits':vars(limits),'attempt':attempt,'rejected_attempts':reasons,
             'predicate_witness':witness,'PRO':False,'D2':False,'confirmation':False,
             'identity_domain':'own_original_train_layout',
+            'confirmation_distance_metric':'world_xy_euclidean',
             'source_policy':'own original train sampler; no PRO/MAX files or definitions'}
     raise ValueError('no admissible layout: '+str(reasons))
