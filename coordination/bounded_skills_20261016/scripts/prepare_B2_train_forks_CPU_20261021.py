@@ -50,55 +50,56 @@ def main():
     ]
     selected, coverage, lines = [], {}, {}
     for category in order:
-        available = []
-        for parent_id, parent in sorted(groups[category], key=lambda row: (row[1]['episode_id'], row[1]['source_link']['line'])):
-            # A source subset is chosen by state/phase identity only, before
-            # any new policy outcomes. Do not condition on episode success.
-            annotation = parent['private_prefix_annotation_state']
-            saved = load_annotation_state(annotation['path'], annotation['sha256'])
-            status, old = saved['private_status'], saved['adapter']
-            goal_index = next((i for i, value in enumerate(status['satisfied']) if not value), None)
-            if goal_index is None:
-                continue
-            specs, unsupported = split_subtasks(status['goals'], old.ex.instruction)
-            specs = [spec for spec in specs if spec['goal_index'] == goal_index]
-            if not specs:
-                continue
-            source = saved['binding'].get('_bindings', {}).get(status['goals'][goal_index][1])
-            held = old.held is not None and old.held == source
-            mode = next((spec['mode'] for spec in specs
-                if spec['mode'] != 'pick'), None) if held else specs[0]['mode']
-            if mode is None:
-                continue
-            link = parent['source_link']
-            if link['path'] not in lines:
-                assert ref(link['path'])['sha256'] == link['sha256']
-                lines[link['path']] = Path(link['path']).read_text().splitlines()
-            row = json.loads(lines[link['path']][link['line']-1])
-            snapshot = row['private_pre_execution_snapshot']
-            assert snapshot['sha256'] == parent['state_sha256']
-            phase = 'held' if held else 'initial' if row['index'] == 0 else 'intermediate'
-            available.append((parent_id, parent, row, goal_index, mode, phase))
-        wanted = []
-        used_snapshots = set()
-        used_initial = set()
-        # Prefer measured intermediate/held states in half of each category;
-        # then fill with different initial-state identities where possible.
-        for phase_pool, quota in [('middle', args.per_category//2), ('all', args.per_category)]:
-            for value in available:
-                _, parent, row, _, _, phase = value
-                if phase_pool == 'middle' and phase == 'initial':
-                    continue
-                if parent['state_sha256'] in used_snapshots or parent['initial_state_sha256'] in used_initial:
-                    continue
-                wanted.append(value)
-                used_snapshots.add(parent['state_sha256'])
-                used_initial.add(parent['initial_state_sha256'])
+        ordered = sorted(groups[category], key=lambda row: (row[1]['episode_id'], row[1]['source_link']['line']))
+        wanted, loaded = [], {}
+        used_snapshots, used_initial = set(), set()
+        # Prefer actual held states, then later nonterminal intermediate
+        # positions. Outcomes of the newly registered branches are unseen.
+        # Source row identities avoid decompressing unselectable snapshots.
+        for phase_pool, quota in [('held', args.per_category//2),
+                ('middle', args.per_category//2), ('all', args.per_category)]:
+            pool = (sorted(ordered, key=lambda row: (row[1]['episode_id'], -row[1]['source_link']['line']))
+                    if phase_pool == 'middle' else ordered)
+            for parent_id, parent in pool:
                 if len(wanted) >= quota:
                     break
-        coverage[category] = {'selected': len(wanted), 'available_logged_states': len(available),
-            'unique_initial_states': len(used_initial),
+                if parent['state_sha256'] in used_snapshots or parent['initial_state_sha256'] in used_initial:
+                    continue
+                link = parent['source_link']
+                if link['path'] not in lines:
+                    assert ref(link['path'])['sha256'] == link['sha256']
+                    lines[link['path']] = Path(link['path']).read_text().splitlines()
+                row = json.loads(lines[link['path']][link['line']-1])
+                if phase_pool == 'held' and row['request']['robot']['held_anchor_id'] is None:
+                    continue
+                if phase_pool == 'middle' and row['index'] == 0:
+                    continue
+                if parent_id not in loaded:
+                    annotation = parent['private_prefix_annotation_state']
+                    saved = load_annotation_state(annotation['path'], annotation['sha256'])
+                    status, old = saved['private_status'], saved['adapter']
+                    goal_index = next((i for i, value in enumerate(status['satisfied']) if not value), None)
+                    specs = [] if goal_index is None else split_subtasks(status['goals'], old.ex.instruction)[0]
+                    specs = [spec for spec in specs if spec['goal_index'] == goal_index]
+                    source = (saved['binding'].get('_bindings', {}).get(status['goals'][goal_index][1])
+                              if goal_index is not None else None)
+                    held = old.held is not None and old.held == source
+                    mode = (next((spec['mode'] for spec in specs if spec['mode'] != 'pick'), None)
+                            if held else specs[0]['mode'] if specs else None)
+                    phase = 'held' if held else 'initial' if row['index'] == 0 else 'intermediate'
+                    loaded[parent_id] = (goal_index, mode, phase)
+                goal_index, mode, phase = loaded[parent_id]
+                if (mode is None or (phase_pool == 'middle' and phase == 'initial')
+                        or (phase_pool == 'held' and phase != 'held')):
+                    continue
+                assert row['private_pre_execution_snapshot']['sha256'] == parent['state_sha256']
+                wanted.append((parent_id, parent, row, goal_index, mode, phase))
+                used_snapshots.add(parent['state_sha256'])
+                used_initial.add(parent['initial_state_sha256'])
+        coverage[category] = {'selected': len(wanted), 'registered_parent_states': len(ordered),
+            'loaded_eligibility_states': len(loaded), 'unique_initial_states': len(used_initial),
             'phases': {phase: sum(value[-1] == phase for value in wanted) for phase in ('initial', 'intermediate', 'held')}}
+        print(json.dumps({'registered_category': category, **coverage[category]}), flush=True)
         if len(wanted) < args.per_category:
             raise ValueError(f'{category}: only {len(wanted)} distinct train initial states available')
         for parent_id, parent, row, goal_index, mode, phase in wanted:
@@ -121,8 +122,8 @@ def main():
         'confirmation': False, 'vla_options_v2': True, 'schema6_source': True,
         'cases': selected, 'permanent_exclusions': default['permanent_exclusions'],
         'frozen_parent_index': index_ref, 'original_cohort': cohort_ref,
-        'selection': 'train+ok only; deterministic state/phase order, no new outcomes; distinct initial identities within category',
-        'coverage': coverage, 'missing_categories': ['stove_on', 'stove_off'],
+        'selection': 'train+ok only; prefer held then later intermediate; deterministic identity order, no new outcomes; distinct initial identities within category',
+        'registration_generator': ref(__file__), 'coverage': coverage, 'missing_categories': ['stove_on', 'stove_off'],
         'missing_reason': 'both stove tasks are task_holdout in the frozen original220 parent split; excluded from training labels'}
     validate_plan(plan)
     args.output.mkdir(parents=True, exist_ok=False)

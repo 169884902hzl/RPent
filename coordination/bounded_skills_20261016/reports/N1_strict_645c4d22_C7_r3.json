@@ -1,0 +1,921 @@
+{
+  "scope": "N1, complete physics/controller/RNG matched; development, not training",
+  "registered": 32,
+  "closed": 32,
+  "paired": 30,
+  "missing": [],
+  "continuation_pilots": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/N1_strict_645c4d22_C7_r3/continuation_pilots.json",
+    "sha256": "2d7d8aa42e935f6fdfc613288866b675a0fcf0bd7d7ef27e8e6458236a1c1d85"
+  },
+  "before": {
+    "n": 30,
+    "success": 25,
+    "wilson95": [
+      0.6643564949358397,
+      0.9266345762815146
+    ],
+    "wall_median_s": 333.9287446339149,
+    "wall_total_s": 14837.812848679721,
+    "decision_loop_median_s": 104.27586148213595,
+    "decision_loop_p90_s": 253.25339623121545,
+    "loops": 111,
+    "decisions_median": 2.0,
+    "steps_median": 552.0,
+    "per_decision_four_stage_s": {
+      "perception": {
+        "median": 18.866067905444652,
+        "p90": 68.78113966016099
+      },
+      "candidates": {
+        "median": 63.40344592090696,
+        "p90": 141.80445116572082
+      },
+      "decision": {
+        "median": 14.717200338840485,
+        "p90": 37.635726884007454
+      },
+      "execution": {
+        "median": 4.327088894788176,
+        "p90": 12.758152976632118
+      }
+    },
+    "oracle_successor_per_decision_s": {
+      "median": 14.54798154020682,
+      "p90": 37.34105669055134
+    },
+    "phase_total_s": {
+      "perception": 3156.6228830069304,
+      "candidates": 8744.248016629834,
+      "decision": 1753.136993682012,
+      "execution": 663.4247261337005
+    }
+  },
+  "after": {
+    "n": 30,
+    "success": 7,
+    "wilson95": [
+      0.11792388144489496,
+      0.40928326158122164
+    ],
+    "wall_median_s": 235.04701719642617,
+    "wall_total_s": 8016.005169381853,
+    "decision_loop_median_s": 21.130941696930677,
+    "decision_loop_p90_s": 58.09620946375653,
+    "loops": 257,
+    "decisions_median": 9.0,
+    "steps_median": 770.5,
+    "per_decision_four_stage_s": {
+      "perception": {
+        "median": 7.488102169241756,
+        "p90": 26.394110945798456
+      },
+      "candidates": {
+        "median": 9.268413811456412,
+        "p90": 17.249084801226857
+      },
+      "decision": {
+        "median": 3.284127552062273,
+        "p90": 9.211554908752442
+      },
+      "execution": {
+        "median": 1.083746082149446,
+        "p90": 8.429164599534124
+      }
+    },
+    "oracle_successor_per_decision_s": {
+      "median": 2.850089941173792,
+      "p90": 8.704288756847381
+    },
+    "phase_total_s": {
+      "perception": 3247.3985652383417,
+      "candidates": 2578.9899649773724,
+      "decision": 1000.4766360665672,
+      "execution": 783.970628272742
+    }
+  },
+  "improvements": [
+    "bowl_transfer_libero_spatial_t0_s3"
+  ],
+  "regressions": [
+    "container_libero_object_t2_s0",
+    "stove_on_libero_goal_t7_s0",
+    "container_libero_object_t2_s1",
+    "stove_on_libero_goal_t7_s1",
+    "bowl_transfer_libero_spatial_t0_s2",
+    "container_libero_object_t2_s2",
+    "stove_on_libero_goal_t7_s2",
+    "container_libero_object_t2_s3",
+    "stove_on_libero_goal_t7_s3",
+    "container_libero_object_t2_s4",
+    "stove_on_libero_goal_t7_s4",
+    "container_libero_object_t2_s5",
+    "bowl_transfer_libero_spatial_t0_s6",
+    "container_libero_object_t2_s6",
+    "stove_on_libero_goal_t7_s6",
+    "container_libero_object_t2_s7",
+    "stove_on_libero_goal_t7_s7",
+    "libero_object_swap_t0_s40",
+    "libero_object_task_t0_s40"
+  ],
+  "skill_sequence_changes": 30,
+  "categories": {
+    "bowl_transfer": {
+      "before": {
+        "n": 8,
+        "success": 7,
+        "wilson95": [
+          0.5291118177871464,
+          0.9775825085499433
+        ],
+        "wall_median_s": 466.39189501595683,
+        "wall_total_s": 5860.448650372215,
+        "decision_loop_median_s": 119.91100298101082,
+        "decision_loop_p90_s": 282.2128429600969,
+        "loops": 35,
+        "decisions_median": 2.0,
+        "steps_median": 289.5,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 25.747136070858687,
+            "p90": 78.19232777366415
+          },
+          "candidates": {
+            "median": 75.84638987667859,
+            "p90": 154.39786019492897
+          },
+          "decision": {
+            "median": 30.909411580767483,
+            "p90": 40.272046061139555
+          },
+          "execution": {
+            "median": 6.067868800833821,
+            "p90": 13.601609527785332
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 30.78032022016123,
+          "p90": 39.91923958109692
+        },
+        "phase_total_s": {
+          "perception": 1342.819665205665,
+          "candidates": 3349.424611983355,
+          "decision": 811.8372777663171,
+          "execution": 215.9756799438037
+        }
+      },
+      "after": {
+        "n": 8,
+        "success": 6,
+        "wilson95": [
+          0.40927543031016883,
+          0.9285207872478909
+        ],
+        "wall_median_s": 283.3541643237695,
+        "wall_total_s": 2826.3812666595913,
+        "decision_loop_median_s": 47.388731234008446,
+        "decision_loop_p90_s": 76.75677271569147,
+        "loops": 52,
+        "decisions_median": 5.5,
+        "steps_median": 869.5,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 18.93675343762152,
+            "p90": 48.164882792346155
+          },
+          "candidates": {
+            "median": 15.523981128586456,
+            "p90": 19.75474231131375
+          },
+          "decision": {
+            "median": 7.040121198166162,
+            "p90": 12.704498325288295
+          },
+          "execution": {
+            "median": 5.587048886111006,
+            "p90": 9.349220609432086
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 6.4682323154993355,
+          "p90": 12.2075728029944
+        },
+        "phase_total_s": {
+          "perception": 1248.582636342384,
+          "candidates": 795.5176131515764,
+          "decision": 387.5206868229434,
+          "execution": 285.6198378656991
+        }
+      }
+    },
+    "container": {
+      "before": {
+        "n": 8,
+        "success": 8,
+        "wilson95": [
+          0.6755924351161198,
+          1.0
+        ],
+        "wall_median_s": 299.7015732501168,
+        "wall_total_s": 2404.9567742832005,
+        "decision_loop_median_s": 155.29101512092166,
+        "decision_loop_p90_s": 196.48412144486792,
+        "loops": 16,
+        "decisions_median": 2.0,
+        "steps_median": 564.5,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 28.502703548641875,
+            "p90": 60.82820389419794
+          },
+          "candidates": {
+            "median": 96.07282442692667,
+            "p90": 114.34438048303127
+          },
+          "decision": {
+            "median": 15.175191666232422,
+            "p90": 18.76057415921241
+          },
+          "execution": {
+            "median": 7.6351096832659096,
+            "p90": 12.149685585405678
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 14.992440993199125,
+          "p90": 18.73740274272859
+        },
+        "phase_total_s": {
+          "perception": 601.4241074891761,
+          "candidates": 1267.0375025980175,
+          "decision": 250.7069222778082,
+          "execution": 143.12422442948446
+        }
+      },
+      "after": {
+        "n": 8,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.32440756488388023
+        ],
+        "wall_median_s": 128.3501876569353,
+        "wall_total_s": 1091.1828323998488,
+        "decision_loop_median_s": 9.576575211249292,
+        "decision_loop_p90_s": 39.64009114811197,
+        "loops": 67,
+        "decisions_median": 9.0,
+        "steps_median": 586.5,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 3.068347676191479,
+            "p90": 16.957467773091047
+          },
+          "candidates": {
+            "median": 3.792918849736452,
+            "p90": 12.026372422557325
+          },
+          "decision": {
+            "median": 1.9433736093342304,
+            "p90": 3.620271610096097
+          },
+          "execution": {
+            "median": 1.0739970309659839,
+            "p90": 6.88966626515612
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 1.9219521563500166,
+          "p90": 3.5988259171135724
+        },
+        "phase_total_s": {
+          "perception": 364.22186083346605,
+          "candidates": 349.55678059114143,
+          "decision": 108.2796100792475,
+          "execution": 158.36153096193448
+        }
+      }
+    },
+    "stove_on": {
+      "before": {
+        "n": 8,
+        "success": 7,
+        "wilson95": [
+          0.5291118177871464,
+          0.9775825085499433
+        ],
+        "wall_median_s": 126.77844294346869,
+        "wall_total_s": 1132.0179806528613,
+        "decision_loop_median_s": 51.91689889226109,
+        "decision_loop_p90_s": 107.3875921885483,
+        "loops": 15,
+        "decisions_median": 1.0,
+        "steps_median": 675.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 9.94786333758384,
+            "p90": 30.878852407168598
+          },
+          "candidates": {
+            "median": 28.12811629055068,
+            "p90": 38.03558893632144
+          },
+          "decision": {
+            "median": 18.988277717959136,
+            "p90": 21.261700251884758
+          },
+          "execution": {
+            "median": 2.410813049878925,
+            "p90": 18.67795653650537
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 18.86265932675451,
+          "p90": 21.138849946018308
+        },
+        "phase_total_s": {
+          "perception": 287.3259910927154,
+          "candidates": 403.2939592190087,
+          "decision": 185.2501199990511,
+          "execution": 121.99781895941123
+        }
+      },
+      "after": {
+        "n": 8,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.32440756488388023
+        ],
+        "wall_median_s": 335.9227074685041,
+        "wall_total_s": 2332.381483777892,
+        "decision_loop_median_s": 19.711049898993224,
+        "decision_loop_p90_s": 50.39826469765976,
+        "loops": 87,
+        "decisions_median": 12.0,
+        "steps_median": 1309.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 7.693303540814668,
+            "p90": 22.803642141260205
+          },
+          "candidates": {
+            "median": 8.449880169238895,
+            "p90": 15.395199876092375
+          },
+          "decision": {
+            "median": 3.2574090869165957,
+            "p90": 5.952711854036898
+          },
+          "execution": {
+            "median": 0.7057823957875371,
+            "p90": 8.12383627416566
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 2.4955120836384594,
+          "p90": 5.6233320357278
+        },
+        "phase_total_s": {
+          "perception": 954.0214091450907,
+          "candidates": 815.1956642894074,
+          "decision": 253.70345306117088,
+          "execution": 206.11790648289025
+        }
+      }
+    },
+    "libero_spatial_swap": {
+      "before": {
+        "n": 1,
+        "success": 1,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "wall_median_s": 458.7485694019124,
+        "wall_total_s": 458.7485694019124,
+        "decision_loop_median_s": 217.476419813931,
+        "decision_loop_p90_s": 274.4840725131333,
+        "loops": 2,
+        "decisions_median": 2.0,
+        "steps_median": 416.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 50.650351176736876,
+            "p90": 71.20526120229624
+          },
+          "candidates": {
+            "median": 115.8760047936812,
+            "p90": 158.07520233187824
+          },
+          "decision": {
+            "median": 43.11296995659359,
+            "p90": 48.64802707680501
+          },
+          "execution": {
+            "median": 7.837020389270037,
+            "p90": 8.048417824041099
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 42.95439782552421,
+          "p90": 48.48896695412695
+        },
+        "phase_total_s": {
+          "perception": 106.77596503216773,
+          "candidates": 231.7520095873624,
+          "decision": 86.22593991318718,
+          "execution": 16.159349722322077
+        }
+      },
+      "after": {
+        "n": 1,
+        "success": 1,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "wall_median_s": 315.6866176351905,
+        "wall_total_s": 315.6866176351905,
+        "decision_loop_median_s": 38.90211556106806,
+        "decision_loop_p90_s": 77.42480676318519,
+        "loops": 6,
+        "decisions_median": 6.0,
+        "steps_median": 855.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 13.244725135620683,
+            "p90": 43.05882150027901
+          },
+          "candidates": {
+            "median": 15.519302531378344,
+            "p90": 20.87453012051992
+          },
+          "decision": {
+            "median": 6.148285803385079,
+            "p90": 10.444150368217379
+          },
+          "execution": {
+            "median": 3.7758404263295233,
+            "p90": 6.83407344436273
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 4.7052651066333055,
+          "p90": 10.301269116578624
+        },
+        "phase_total_s": {
+          "perception": 134.2780036968179,
+          "candidates": 97.61114268936217,
+          "decision": 42.327365370467305,
+          "execution": 26.102745349984616
+        }
+      }
+    },
+    "libero_object_swap": {
+      "before": {
+        "n": 1,
+        "success": 1,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "wall_median_s": 346.7910848739557,
+        "wall_total_s": 346.7910848739557,
+        "decision_loop_median_s": 162.0941215280909,
+        "decision_loop_p90_s": 197.23317561917938,
+        "loops": 2,
+        "decisions_median": 2.0,
+        "steps_median": 411.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 39.23481208411977,
+            "p90": 59.4466859604232
+          },
+          "candidates": {
+            "median": 95.2582352689933,
+            "p90": 110.88395203142427
+          },
+          "decision": {
+            "median": 18.58860366838053,
+            "p90": 21.712751356977968
+          },
+          "execution": {
+            "median": 9.012407726608217,
+            "p90": 11.43802079539746
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 18.489029777934775,
+          "p90": 21.675360886706038
+        },
+        "phase_total_s": {
+          "perception": 82.15293841576204,
+          "candidates": 190.5164705379866,
+          "decision": 37.17720733676106,
+          "execution": 18.524064741563052
+        }
+      },
+      "after": {
+        "n": 1,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wall_median_s": 106.24797389889136,
+        "wall_total_s": 106.24797389889136,
+        "decision_loop_median_s": 8.565636300016195,
+        "decision_loop_p90_s": 15.625438184663656,
+        "loops": 9,
+        "decisions_median": 9.0,
+        "steps_median": 257.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 1.859033891465515,
+            "p90": 2.930786327272654
+          },
+          "candidates": {
+            "median": 3.68168005021289,
+            "p90": 9.017031829804184
+          },
+          "decision": {
+            "median": 1.9119485593400896,
+            "p90": 2.4360471896827223
+          },
+          "execution": {
+            "median": 1.014808304142207,
+            "p90": 1.7371267681010074
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 1.8969763638451695,
+          "p90": 2.419423868320883
+        },
+        "phase_total_s": {
+          "perception": 22.12260000454262,
+          "candidates": 44.90275033516809,
+          "decision": 13.831056184135377,
+          "execution": 11.88385659456253
+        }
+      }
+    },
+    "libero_spatial_task": {
+      "before": {
+        "n": 1,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wall_median_s": 918.5567746036686,
+        "wall_total_s": 918.5567746036686,
+        "decision_loop_median_s": 65.26068043801934,
+        "decision_loop_p90_s": 240.3310448671692,
+        "loops": 7,
+        "decisions_median": 7.0,
+        "steps_median": 420.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 37.97710114065558,
+            "p90": 94.52234688987957
+          },
+          "candidates": {
+            "median": 24.17803485551849,
+            "p90": 108.60908704493198
+          },
+          "decision": {
+            "median": 1.602114757988602,
+            "p90": 46.66923409085721
+          },
+          "execution": {
+            "median": 1.570192244835198,
+            "p90": 20.457284778729083
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 1.5080192438326776,
+          "p90": 46.50922903520986
+        },
+        "phase_total_s": {
+          "perception": 350.7006688299589,
+          "candidates": 391.16644240543246,
+          "decision": 106.12343607703224,
+          "execution": 52.871837029233575
+        }
+      },
+      "after": {
+        "n": 1,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wall_median_s": 756.0010963575915,
+        "wall_total_s": 756.0010963575915,
+        "decision_loop_median_s": 60.78398867114447,
+        "decision_loop_p90_s": 80.45729103302583,
+        "loops": 12,
+        "decisions_median": 12.0,
+        "steps_median": 2628.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 26.897137665888295,
+            "p90": 59.57519058627077
+          },
+          "candidates": {
+            "median": 14.860749438637868,
+            "p90": 17.33779915138148
+          },
+          "decision": {
+            "median": 8.26206659595482,
+            "p90": 12.860211378289387
+          },
+          "execution": {
+            "median": 6.6292998609133065,
+            "p90": 9.749385136645287
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 8.211386763257906,
+          "p90": 12.215228349575773
+        },
+        "phase_total_s": {
+          "perception": 397.5279143117368,
+          "candidates": 177.7713599279523,
+          "decision": 89.34453557105735,
+          "execution": 77.54587016673759
+        }
+      }
+    },
+    "libero_object_task": {
+      "before": {
+        "n": 1,
+        "success": 1,
+        "wilson95": [
+          0.20654931437723745,
+          1.0
+        ],
+        "wall_median_s": 2248.231431374792,
+        "wall_total_s": 2248.231431374792,
+        "decision_loop_median_s": 110.7950289240107,
+        "decision_loop_p90_s": 319.0952004237101,
+        "loops": 14,
+        "decisions_median": 14.0,
+        "steps_median": 1187.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 7.045283996500075,
+            "p90": 18.793503288784997
+          },
+          "candidates": {
+            "median": 69.86417436390184,
+            "p90": 300.0819942362607
+          },
+          "decision": {
+            "median": 6.193554074969143,
+            "p90": 22.52380059831776
+          },
+          "execution": {
+            "median": 1.7756256447173655,
+            "p90": 6.773139415681363
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 6.0393168344162405,
+          "p90": 22.498470150027426
+        },
+        "phase_total_s": {
+          "perception": 208.42728178901598,
+          "candidates": 1823.4289037645794,
+          "decision": 145.8554506553337,
+          "execution": 52.64693186338991
+        }
+      },
+      "after": {
+        "n": 1,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wall_median_s": 58.12338833510876,
+        "wall_total_s": 58.12338833510876,
+        "decision_loop_median_s": 10.060492982156575,
+        "decision_loop_p90_s": 16.717471143836157,
+        "loops": 4,
+        "decisions_median": 4.0,
+        "steps_median": 160.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 3.1222950774244964,
+            "p90": 4.776777793699876
+          },
+          "candidates": {
+            "median": 4.871854176046327,
+            "p90": 7.302573004830629
+          },
+          "decision": {
+            "median": 1.037119580898434,
+            "p90": 2.051041408861056
+          },
+          "execution": {
+            "median": 0.7722472881432623,
+            "p90": 2.815776612143964
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 1.02193185640499,
+          "p90": 2.036326326103881
+        },
+        "phase_total_s": {
+          "perception": 14.858882655855268,
+          "candidates": 19.524482403881848,
+          "decision": 4.162324726115912,
+          "execution": 6.069536427501589
+        }
+      }
+    },
+    "libero_goal_swap": {
+      "before": {
+        "n": 1,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wall_median_s": 381.40558083727956,
+        "wall_total_s": 381.40558083727956,
+        "decision_loop_median_s": 34.870609659701586,
+        "decision_loop_p90_s": 53.677881081029774,
+        "loops": 9,
+        "decisions_median": 9.0,
+        "steps_median": 425.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 7.730474287178367,
+            "p90": 9.633389979042112
+          },
+          "candidates": {
+            "median": 23.513152015861124,
+            "p90": 25.100185732264073
+          },
+          "decision": {
+            "median": 0.06755299400538206,
+            "p90": 17.309741058386862
+          },
+          "execution": {
+            "median": 1.974131423048675,
+            "p90": 3.0854475261643532
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 0.050063235219568014,
+          "p90": 16.86021812623367
+        },
+        "phase_total_s": {
+          "perception": 74.76228646421805,
+          "candidates": 210.81120662624016,
+          "decision": 59.749289360363036,
+          "execution": 20.506270185578614
+        }
+      },
+      "after": {
+        "n": 1,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wall_median_s": 249.62076907698065,
+        "wall_total_s": 249.62076907698065,
+        "decision_loop_median_s": 18.615311560453847,
+        "decision_loop_p90_s": 29.394973799120635,
+        "loops": 12,
+        "decisions_median": 12.0,
+        "steps_median": 23.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 4.444691345794126,
+            "p90": 6.307705517299473
+          },
+          "candidates": {
+            "median": 9.850924976868555,
+            "p90": 13.057016815338283
+          },
+          "decision": {
+            "median": 3.3800367133226246,
+            "p90": 9.375115830963477
+          },
+          "execution": {
+            "median": 0.6104769790545106,
+            "p90": 0.701264533912763
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 3.062828711932525,
+          "p90": 6.103327456768603
+        },
+        "phase_total_s": {
+          "perception": 59.27591891447082,
+          "candidates": 107.04219948733225,
+          "decision": 63.126241392455995,
+          "execution": 7.636064563877881
+        }
+      }
+    },
+    "libero_goal_task": {
+      "before": {
+        "n": 1,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wall_median_s": 1086.6560022798367,
+        "wall_total_s": 1086.6560022798367,
+        "decision_loop_median_s": 95.1024366649799,
+        "decision_loop_p90_s": 108.35902890469879,
+        "loops": 11,
+        "decisions_median": 11.0,
+        "steps_median": 379.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 9.01350306160748,
+            "p90": 9.197472835890949
+          },
+          "candidates": {
+            "median": 75.54889493109658,
+            "p90": 87.52494311099872
+          },
+          "decision": {
+            "median": 0.07099933503195643,
+            "p90": 21.94022611202672
+          },
+          "execution": {
+            "median": 1.7505714250728488,
+            "p90": 2.4876720970496535
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 0.05591954989358783,
+          "p90": 21.77353376476094
+        },
+        "phase_total_s": {
+          "perception": 102.23397868825123,
+          "candidates": 876.8169099078514,
+          "decision": 70.21135029615834,
+          "execution": 21.618549258913845
+        }
+      },
+      "after": {
+        "n": 1,
+        "success": 0,
+        "wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wall_median_s": 280.37974124075845,
+        "wall_total_s": 280.37974124075845,
+        "decision_loop_median_s": 43.595827331300825,
+        "decision_loop_p90_s": 44.47725849463605,
+        "loops": 8,
+        "decisions_median": 8.0,
+        "steps_median": 23.0,
+        "per_decision_four_stage_s": {
+          "perception": {
+            "median": 7.134944353019819,
+            "p90": 7.565569216711446
+          },
+          "candidates": {
+            "median": 28.412548443768173,
+            "p90": 30.15524976919405
+          },
+          "decision": {
+            "median": 6.123176156776026,
+            "p90": 7.51547316648066
+          },
+          "execution": {
+            "median": 0.5040441039018333,
+            "p90": 0.6054405928589404
+          }
+        },
+        "oracle_successor_per_decision_s": {
+          "median": 6.023885789327323,
+          "p90": 7.341567409317941
+        },
+        "phase_total_s": {
+          "perception": 52.50933933397755,
+          "candidates": 171.86797210155055,
+          "decision": 38.18136285897344,
+          "execution": 4.6332798595540226
+        }
+      }
+    }
+  },
+  "rows": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/N1_strict_645c4d22_C7_r3/paired_states.jsonl",
+    "sha256": "68baed1c2dff49863a5ff5292ef975009246cddeb9f0b04729537c103e29ff54"
+  },
+  "training": false
+}
