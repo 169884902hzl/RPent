@@ -67,6 +67,9 @@ def public_control(primitives, action):
     primitives._bounded_control_index = index+1
     samples.append((index+1, after))
     primitives._bounded_motion_samples = samples[-4:]
+    sweep = getattr(primitives, '_bounded_perception_sweep', None)
+    if sweep is not None:
+        sweep.append({'before': before, 'after': after})
     return before, after
 
 

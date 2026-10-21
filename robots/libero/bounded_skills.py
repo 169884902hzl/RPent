@@ -132,6 +132,8 @@ class MeasuredSkillAdapter:
                 refresh_captures=None)
         self._incremental_touched = set()
         self._incremental_route = []
+        if schema6_v1:
+            self.p._bounded_perception_sweep = []
         self._failed_move_anchors = set()
         self._vla_failed_options = set()
         self._move_approach_by_anchor = {}
@@ -280,6 +282,7 @@ class MeasuredSkillAdapter:
                         changed.add(key)
                         self._contact_retry_references.pop(key, None)
         self._last_scene_changes = changed
+        self._incremental_support_changes = changed & set(self.previous_scene)
         if changed:
             self._stationary_observe_modes = set()
         self.memory.tick(scene_changed=bool(changed), changed_anchors=changed)
@@ -2800,8 +2803,6 @@ class MeasuredSkillAdapter:
             eid: np.asarray(entity.xyz) for eid, entity in entities_before.items() if entity.visible}
         skill, parameters = candidate["skill"], candidate["parameters"]
         key = parameters.get("anchor_id", parameters.get("target_id"))
-        if self.schema6_v1:
-            self._incremental_touched.update(k for k in (key, self.held, self.active) if k)
         if key is None and skill in {'nudge', 'rotate_wrist'}:
             key = self.active
         phase, outcome, reason, detail = None, "unmeasured", "measurement_missing", {}
@@ -2841,10 +2842,6 @@ class MeasuredSkillAdapter:
             if route is None:
                 phase, outcome, reason = "perception", "failure", "current_anchor_unmeasured"
             else:
-                if self.schema6_v1:
-                    path = [list(before['eef_xyz_m']), *[w['xyz_m'] for w in route]]
-                    self._incremental_route = [point.tolist() for a, b in zip(path, path[1:])
-                        for point in np.linspace(a, b, max(2, math.ceil(np.linalg.norm(np.asarray(b)-a)/.02)+1))]
                 screen = self._cloud_and_ik(key, contact=skill in {"descend", "lower", "nudge"}
                     or (skill in {"lift", "rotate_wrist"} and self.active is not None))
                 if skill == 'lift':
@@ -2972,6 +2969,11 @@ class MeasuredSkillAdapter:
         elif skill == "ask_help":
             outcome, reason = "rejected", "no_human_available_use_observe_restage_or_other_approach"
         vla_observation = detail.get('post_handoff_observation') if skill == 'call_vla' else None
+        if self.schema6_v1 and self.p.env.execution_budget()['used_sim_steps'] > start_steps:
+            if skill in {'descend', 'lower', 'lift', 'nudge', 'guarded_move', 'set_gripper', 'release'}:
+                self._incremental_touched.update(k for k in (key, before['held_anchor_id'], self.active) if k)
+            if (skill == 'release' or skill == 'set_gripper' and parameters.get('mode') == 'open') and before['held_anchor_id']:
+                self._incremental_released_payload = True
         reuse_vla_observation = (self.schema6_v1 and vla_observation is not None
             and vla_observation['used_sim_steps'] == self.p.env.execution_budget()['used_sim_steps']
             and vla_observation['capture_step'] == self.ex.toolkit._state.latest_step)
@@ -3336,7 +3338,7 @@ class MeasuredSkillAdapter:
                     'completed':bool(self.p.env.terminated),'outside_region':False,'evidence':[]}
                 checks.append(result)
                 return result
-            if self.schema6_v1:
+            if self.schema6_v1 and self.p.env.execution_budget()['used_sim_steps'] > initial_step:
                 self._incremental_touched.update(k for k in (source.id, parameters.get('target_id')) if k)
             if monitor_names is not None and not full:
                 self.refresh(names=monitor_names)
@@ -3481,8 +3483,6 @@ class MeasuredSkillAdapter:
             self.gripper_command = float(action[6])
             before, after = public_control(self.p, action)
             self.vla_trace.append({"before": before, "after": after, "action": np.asarray(action).tolist()})
-            if self.schema6_v1:
-                self._incremental_route.append(after['eef_xyz_m'])
             return before, after
         def handoff(trace):
             if not trace:

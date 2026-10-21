@@ -151,8 +151,10 @@ def test_n1_common_start_requires_complete_state_and_verifies_each_arm(tmp_path)
     module = importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     physical = {'actuator_state':{'integration':{'sha256':'complete-vector'}},'rng':17}
     current = copy.deepcopy(physical)
-    adapter=SimpleNamespace(source='baseline',refresh_count=0)
-    def refresh():adapter.refresh_count+=1
+    adapter=SimpleNamespace(source='baseline',refresh_count=0, _incremental_previous_robot={'stale':True})
+    def refresh():
+        assert adapter._incremental_previous_robot is None
+        adapter.refresh_count+=1
     adapter.refresh=refresh
     facade = SimpleNamespace(snapshot=lambda:copy.deepcopy(current))
     def save(facade,adapter,policy,destination):
@@ -171,6 +173,7 @@ def test_n1_common_start_requires_complete_state_and_verifies_each_arm(tmp_path)
     assert adapter.source=='baseline' and adapter.refresh_count==1
     current['rng']=999
     adapter.source='optimized'
+    adapter._incremental_previous_robot={'stale':True}
     args.initial_mode='restore';args.output=tmp_path/'optimized';args.output.mkdir()
     optimized=module.common_start(args,facade,adapter,None,probe)
     assert current==physical

@@ -92,6 +92,9 @@ def common_start(args, facade, adapter, policy, probe):
         'public_runtime_source':'current arm; baseline public caches are not imported'}
     if actual!=expected:
         raise ValueError('complete integration/controller/RNG initial state differs; pair not admitted')
+    # Physics was deliberately replaced while retaining this arm's runtime.
+    # Its prior capture cannot certify unchanged anchors at the common state.
+    adapter._incremental_previous_robot = None
     adapter.refresh()
     evidence['post_public_refresh_complete_sha256']=probe.snapshot_digest(facade.snapshot())
     write(args.output/'common_initial_verified.json',evidence)
