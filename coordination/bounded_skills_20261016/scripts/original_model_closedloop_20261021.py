@@ -3,6 +3,7 @@ import hashlib
 import json
 import time
 from collections import Counter
+from urllib.error import HTTPError
 from urllib.request import urlopen
 
 
@@ -33,7 +34,7 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
         _, initial = probe.save_checkpoint(facade, adapter, policy, output/'private_initial.pkl')
         started = time.perf_counter()
         records, skill_steps = [], Counter()
-        with (output/'choices.jsonl').open('x') as ledger:
+        with (output/'choices.jsonl').open('x') as ledger, (output/'requests.jsonl').open('x') as requests:
             for index in range(plan['runtime_budget']['decisions']):
                 if adapter.p.env.terminated or adapter.p.env.truncated:
                     break
@@ -41,14 +42,25 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
                 start_event = len(timings.events)
                 with timings.measure('planning.request'):
                     request = adapter.request(k=k)
-                with timings.measure('decision.model'):
-                    decision = choose(request)
+                request_sha = hashlib.sha256(json.dumps(request, sort_keys=True,
+                    separators=(',', ':')).encode()).hexdigest()
+                requests.write(json.dumps({'index': index, 'request': request,
+                    'request_sha256': request_sha})+'\n')
+                requests.flush()
+                try:
+                    with timings.measure('decision.model'):
+                        decision = choose(request)
+                except HTTPError as exc:
+                    body = exc.read().decode('utf-8', errors='replace')
+                    (output/'model_http_error.json').write_text(json.dumps({
+                        'index': index, 'request_sha256': request_sha,
+                        'status': exc.code, 'body': body, 'endpoint': service['endpoint']}, indent=2)+'\n')
+                    raise RuntimeError(f'model HTTP {exc.code}: {body}') from exc
                 before = len(adapter.details)
                 with timings.measure('execution.chunk'):
                     receipts = adapter.execute(request, decision)
                 record = {'index': index, 'request': request, 'decision': decision,
-                    'request_sha256': hashlib.sha256(json.dumps(request, sort_keys=True,
-                        separators=(',', ':')).encode()).hexdigest(),
+                    'request_sha256': request_sha,
                     'receipts': receipts, 'details': adapter.details[before:],
                     'wall_time_breakdown': timings.summary(time.perf_counter()-begin,
                         start_event=start_event)}

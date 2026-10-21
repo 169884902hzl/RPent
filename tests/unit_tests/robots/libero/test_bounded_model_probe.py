@@ -17,8 +17,9 @@ def test_health_rejects_a_different_checkpoint_even_when_ready(monkeypatch):
         module.verified_health({'health_url': 'offline', 'adapter_sha256': 'registered'})
 
 
-@pytest.mark.parametrize('startup,decisions,steps', [(False, 2, 7), (True, 1, 7)])
-def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkeypatch, startup, decisions, steps):
+@pytest.mark.parametrize('startup,decisions,steps,reject', [(False, 2, 7, False), (True, 1, 7, False),
+    (False, 0, 0, True)])
+def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkeypatch, startup, decisions, steps, reject):
     env = SimpleNamespace(terminated=False, truncated=False)
     requests = []
     adapter = SimpleNamespace(p=SimpleNamespace(env=env), details=[])
@@ -33,6 +34,11 @@ def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkey
     adapter.execute = execute
     def choose(actual):
         requests.append(actual)
+        if reject:
+            from io import BytesIO
+            from urllib.error import HTTPError
+            raise HTTPError('offline', 422, 'Unprocessable Entity', None,
+                BytesIO(b'{"detail":"source request rejected"}'))
         return {'candidate_ids': ['http-'+str(actual['id'])]}
     monkeypatch.setattr('robots.libero.bounded_async.http_choice', lambda endpoint: choose)
     monkeypatch.setattr(module, 'verified_health', lambda _: {'status': 'ok'})
@@ -46,6 +52,15 @@ def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkey
     plan = {'model_service': {'endpoint': 'offline'}, 'source_commit': 'tested',
         'runtime_budget': {'decisions': 160}}
     output = tmp_path/'episode'
+    if reject:
+        with pytest.raises(RuntimeError, match='model HTTP 422.*source request rejected'):
+            module.run_episode(probe, {'name': 'heldout'}, {}, output, plan, 4)
+        saved = json.loads((output/'model_http_error.json').read_text())
+        assert saved['status'] == 422 and json.loads(saved['body'])['detail'] == 'source request rejected'
+        sent = [json.loads(x) for x in (output/'requests.jsonl').read_text().splitlines()]
+        assert len(sent) == 1 and sent[0]['request'] == requests[0]
+        assert (output/'choices.jsonl').read_text() == ''
+        return
     result = module.run_episode(probe, {'name': 'heldout'}, {}, output, plan, 4, startup=startup)
     assert (result['decisions'], result['sim_steps']) == (decisions, steps)
     assert result['oracle_choices_used'] == 0 and result['split'] == 'init_holdout'
@@ -53,3 +68,4 @@ def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkey
     rows = [json.loads(line) for line in (output/'choices.jsonl').read_text().splitlines()]
     assert all(row['wall_time_breakdown']['oracle_successor_legal_s'] == 0 for row in rows)
     assert len(rows) == decisions
+    assert len((output/'requests.jsonl').read_text().splitlines()) == decisions
