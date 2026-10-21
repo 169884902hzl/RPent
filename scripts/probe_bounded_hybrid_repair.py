@@ -69,6 +69,9 @@ def validate_plan(plan):
     for case in plan['cases']:
         probe.load_public_gripper_calibration(case['grasp_measurement_calibration'])
         diagnostic = case['diagnostic']
+        repeats = diagnostic.get('self_repeats', 1)
+        if type(repeats) is not int or repeats < 1:
+            raise ValueError('self_repeats must be a positive integer')
         if diagnostic['domain'] == 'd2':
             validate_d2_episode(case['episode'])
         elif diagnostic['domain'] == 'original':
@@ -297,7 +300,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             else:
                 methods = [(j, 'call_vla', None) for j in ((1,) if startup else (1, 2, 3))]
             if not startup and diagnostic.get('include_self', True):
-                methods.append((0, 'self', None))
+                methods.extend((j, 'self', None) for j in range(diagnostic.get('self_repeats', 1)))
             for index, method, variant in methods:
                 probe.restore_checkpoint(facade, adapter, policy, saved)
                 adapter.vla_budget = budget

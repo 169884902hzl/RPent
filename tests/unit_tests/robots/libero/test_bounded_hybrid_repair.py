@@ -88,6 +88,44 @@ def test_repair_accepts_registered_d2_replays_but_never_test_tasks_or_training(t
         validate_plan(value)
 
 
+@pytest.mark.parametrize('count', [0, -1, True, 1.5])
+def test_repair_rejects_invalid_self_repeat_registration(tmp_path, count):
+    value = plan(tmp_path)
+    value['cases'][0]['diagnostic']['self_repeats'] = count
+    with pytest.raises(ValueError, match='self_repeats'):
+        validate_plan(value)
+
+
+def test_original_self_repeats_restore_the_same_branchpoint(tmp_path, monkeypatch):
+    from contextlib import contextmanager
+    from scripts import probe_bounded_hybrid_repair as repair
+
+    facade = SimpleNamespace(goal_status=lambda: {
+        'goals': [['on', 'bowl', 'plate']], 'satisfied': [False]})
+    request, saved = {}, {}
+    adapter = SimpleNamespace(ex=SimpleNamespace(instruction='put the bowl on the plate'),
+        request=lambda **_: request)
+    @contextmanager
+    def runtime(*_args, **_kwargs):
+        yield facade, adapter, object(), object()
+    monkeypatch.setattr(repair.probe, 'runtime', runtime)
+    monkeypatch.setattr(repair.probe, 'save_checkpoint', lambda *_args: (saved, {}))
+    restored, calls = [], []
+    monkeypatch.setattr(repair.probe, 'restore_checkpoint', lambda *args: restored.append(args[-1]))
+    def run_trial(_facade, _adapter, _policy, _timings, _spec, method, seed, output, actual, **kwargs):
+        assert actual is request
+        calls.append((method, seed, output.name))
+        return {'success': True, 'decisions': 1}, {}
+    monkeypatch.setattr(repair, 'run_trial', run_trial)
+    case = {'diagnostic': {'domain': 'original', 'kind': 'original_fork',
+        'budget': {}, 'subtask_mode': 'pick', 'trial_seed_base': 1000, 'self_repeats': 2}}
+    result = repair.evaluate_case(case, {}, tmp_path/'case', {'source_commit': 'test'})
+    assert calls == [('call_vla', 2000, 'call_vla_1'), ('call_vla', 3000, 'call_vla_2'),
+        ('call_vla', 4000, 'call_vla_3'), ('self', 1000, 'self_0'), ('self', 2000, 'self_1')]
+    assert len(restored) == 5 and all(value is saved for value in restored)
+    assert len(result['trials']) == 5
+
+
 def test_self_continuation_cannot_silently_call_vla_again(tmp_path):
     request = {'candidates':[{'id':'vla','skill':'call_vla'}]}
     rpc = object()

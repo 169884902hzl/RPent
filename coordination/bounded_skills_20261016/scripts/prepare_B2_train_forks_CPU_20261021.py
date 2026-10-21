@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--default-manifest', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--per-category', type=int, default=10)
+    parser.add_argument('--self-repeats', type=int, default=1)
     args = parser.parse_args()
     args.source = args.source.resolve(strict=True)
     sys.path.insert(0, str(args.source))
@@ -115,6 +116,7 @@ def main():
                 'original_subtask_start': {'physics': row['private_pre_execution_snapshot'],
                     'annotation': parent['private_prefix_annotation_state'], 'decision_index': row['index']},
                 'trial_seed_base': 30200000+len(selected)*10000, 'include_self': True,
+                'self_repeats': args.self_repeats,
                 'targeted_vla_measurement_v1': True, 'vla_variants': variants,
                 'budget': default['cases'][0]['diagnostic']['budget']}
             case['saved_start_phase'] = phase
