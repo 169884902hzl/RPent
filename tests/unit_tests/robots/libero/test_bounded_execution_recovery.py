@@ -5,11 +5,14 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
 from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_chunk import check_receipt
 from robots.libero.bounded_screen import PublicRouteScreen
 from rpent.skill_package.progress import PublicProgress
+from tests.unit_tests.robots.libero.test_bounded_skills import adapter as adapter
+from tests.unit_tests.robots.libero.test_bounded_skills import decision
 
 FIXTURE=json.loads((Path(__file__).parent/'fixtures/execution_zero_step_receipts_20261022.json').read_bytes())
 
@@ -88,3 +91,29 @@ def test_planner_only_rejection_does_not_consume_public_stagnation():
     p.record_actions([candidate],[{'candidate_id':'a','steps_used':0,'phase':'planning_unreachable'}])
     p.update({'revision':1},[])
     assert p.stagnant==0 and not p.action_groups
+
+
+@pytest.mark.parametrize('name,opening,retained',[
+    ('box',.036835659236338025,True),('box',.001,False),
+    ('box',.08,False),('microwave',.036835659236338025,False)])
+def test_scan_preserves_nonempty_pending_object_grasp_without_claiming_hold(adapter,name,opening,retained):
+    from dataclasses import replace
+
+    request=adapter.request(k=1)
+    source=replace(adapter.scene.entities['e1'],name=name)
+    adapter.scene.entities['e1']=source
+    adapter.scene.vocabulary={name}
+    adapter.active='e1'
+    adapter.grasp_reference=(source,adapter.robot())
+    adapter.gripper_command=1.
+    raw=adapter.p.env.raw_obs
+    adapter.p.env.raw_obs=lambda:{**raw(),'robot0_gripper_qpos':[opening/2,-opening/2]}
+    # Use the same 36.8 mm aperture as the real rejected container lift.
+    scan=next(c for c in request['candidates'] if c['skill']=='observe'
+        and c['parameters']['mode']=='wrist_scan')
+    receipt,=adapter.execute(request,decision(request,[scan['id']]))
+    assert receipt['steps_used']>0
+    assert (adapter.active=='e1') is retained
+    assert (adapter.grasp_reference is not None) is retained
+    assert adapter.held is None
+    assert all(change['held'] is None for change in receipt['changes'])

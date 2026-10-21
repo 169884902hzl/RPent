@@ -1,0 +1,415 @@
+{
+  "closed": 19,
+  "success": 2,
+  "counts": {
+    "receipts": 166,
+    "zero_step_unsuccessful": 124,
+    "zero_step_planning": 83,
+    "zero_step_lift": 8,
+    "zero_lift_held_null": 8
+  },
+  "zero_step_unsuccessful_by_skill_reason": [
+    {
+      "skill": "move_to",
+      "reason": "measured_sweep_collision",
+      "n": 49
+    },
+    {
+      "skill": "move_to",
+      "reason": "numerical_ik_not_found",
+      "n": 26
+    },
+    {
+      "skill": "observe",
+      "reason": "no_measured_scene_change",
+      "n": 20
+    },
+    {
+      "skill": "ask_help",
+      "reason": "no_human_available_use_observe_restage_or_other_approach",
+      "n": 17
+    },
+    {
+      "skill": "lift",
+      "reason": "measured_support_separation_decreased",
+      "n": 6
+    },
+    {
+      "skill": "observe",
+      "reason": "measured_sweep_collision",
+      "n": 3
+    },
+    {
+      "skill": "lift",
+      "reason": "measured_payload_collision",
+      "n": 2
+    },
+    {
+      "skill": "move_to",
+      "reason": "predicted_anchor_changed",
+      "n": 1
+    }
+  ],
+  "internal_attempts_by_reason": {
+    "endpoint": 15,
+    "measured_support_separation_decreased": 90,
+    "measured_sweep_collision": 396,
+    "measured_payload_collision": 34,
+    "numerical_ik_not_found": 420
+  },
+  "rows": [
+    {
+      "index": 1,
+      "case": "container_libero_object_t2_s0",
+      "success": false,
+      "wall_s": 192.9540321798995,
+      "decisions": 16,
+      "counts": {
+        "receipts": 20,
+        "zero_step_unsuccessful": 12,
+        "zero_step_planning": 7,
+        "zero_step_lift": 2,
+        "zero_lift_held_null": 2
+      },
+      "opens_after_zero_lift_before_executed_lift": [
+        4
+      ],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case001/summary.json",
+        "sha256": "bd61c6946a1992d49a0696fb26087141aa3fd878c03728c4d5e05a0725aee2d2"
+      },
+      "loops_sha256": "cddfea54000222b6e3ec5edaadc9abbe8694524938899e5a8108fd6944c4f8cd"
+    },
+    {
+      "index": 2,
+      "case": "stove_on_libero_goal_t7_s0",
+      "success": false,
+      "wall_s": 138.0731212021783,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case002/summary.json",
+        "sha256": "19b46f9a5d3443a76a6497330a9f269588ddb29468f0ca2062d34ce09b57e2f3"
+      },
+      "loops_sha256": "62e92b8cf5be75e350fa0c1e7bc4d1ae665e5126bcce70d643a645919298f536"
+    },
+    {
+      "index": 4,
+      "case": "container_libero_object_t2_s1",
+      "success": false,
+      "wall_s": 107.81811626069248,
+      "decisions": 5,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 5,
+        "zero_step_planning": 2,
+        "zero_step_lift": 2,
+        "zero_lift_held_null": 2
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case004/summary.json",
+        "sha256": "1256629f77ec23b3372dd0fe4aad9fde8dcc47550db7d7bf7f833b5fc879aa18"
+      },
+      "loops_sha256": "48f084783f15447dd76eb83df0c8eefce421b3088e52b8c06006f202179e0279"
+    },
+    {
+      "index": 5,
+      "case": "stove_on_libero_goal_t7_s1",
+      "success": false,
+      "wall_s": 131.2101567517966,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case005/summary.json",
+        "sha256": "5e91486a3b877d3f3bf05141113aa7cab0b7bc280b213e760c9a92d7f206888a"
+      },
+      "loops_sha256": "e5702ec9fecb45598724cb81efb90fb95972db61acce7cd8c5d96c907d0ecf62"
+    },
+    {
+      "index": 6,
+      "case": "bowl_transfer_libero_spatial_t0_s2",
+      "success": false,
+      "wall_s": 135.9660347821191,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case006/summary.json",
+        "sha256": "b420690595f4d53b22a9a4c9e9f4ac66ec82d81d1af37c4debc95001dcad9d2d"
+      },
+      "loops_sha256": "5aca4cf4357e5c8af09e24be847ce7f62fdec11054d14530bf6516b0e94d9648"
+    },
+    {
+      "index": 7,
+      "case": "container_libero_object_t2_s2",
+      "success": false,
+      "wall_s": 98.02740745386109,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case007/summary.json",
+        "sha256": "77079c25a88cde5dbe8dcdc0c562873f72b440e7b817e880a04d9b93831e5869"
+      },
+      "loops_sha256": "2f52334bac3b53e6affe9ac1da4f36da3fa55cfdcc6e0d7513159e4c32c6c47a"
+    },
+    {
+      "index": 8,
+      "case": "stove_on_libero_goal_t7_s2",
+      "success": false,
+      "wall_s": 127.05280262604356,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case008/summary.json",
+        "sha256": "7e5649ff984850f7c11cd741a5b81772d148e63cf72113bd59295ed85caeea8d"
+      },
+      "loops_sha256": "ad1b1097b567479a530121f6f273358461a58f0a3504d369d130f87c1cd0da7e"
+    },
+    {
+      "index": 10,
+      "case": "container_libero_object_t2_s3",
+      "success": false,
+      "wall_s": 99.86496395617723,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case010/summary.json",
+        "sha256": "452614cf548cf6341dc7c2a975d670e173758081e5ca4b12c4833c905cb09bd7"
+      },
+      "loops_sha256": "db1a3725048d0069c3cb947d3c9af0a80f09242eb2c4927b5c287c43aca031a3"
+    },
+    {
+      "index": 11,
+      "case": "stove_on_libero_goal_t7_s3",
+      "success": false,
+      "wall_s": 135.23438523197547,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case011/summary.json",
+        "sha256": "beca9baefac72de2dcef96a9aa86ee33d139cab89dc739add0e14d029d556c29"
+      },
+      "loops_sha256": "1c8325eb1b19615b5eed6b43292b23eaecc7af2045740edd02703f464c19d464"
+    },
+    {
+      "index": 13,
+      "case": "container_libero_object_t2_s4",
+      "success": false,
+      "wall_s": 96.75492599327117,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case013/summary.json",
+        "sha256": "d697ba03477136a79944eb42a2df8384e17894864a231991af8a4b6fe4efc155"
+      },
+      "loops_sha256": "6da0911ddafa41ca2bc56ef255b8539817071f095b2f8e6f46f25e470c638b34"
+    },
+    {
+      "index": 14,
+      "case": "stove_on_libero_goal_t7_s4",
+      "success": false,
+      "wall_s": 136.08338603610173,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case014/summary.json",
+        "sha256": "82ecb7409660aa7884ffd1f9c310c95279ef2eab39d8ec4526b140939edae003"
+      },
+      "loops_sha256": "2644f08f10a8729fcc0a24c5560bdd322709f715cd029ce724ea3146583a2a86"
+    },
+    {
+      "index": 16,
+      "case": "container_libero_object_t2_s5",
+      "success": true,
+      "wall_s": 135.1845441777259,
+      "decisions": 2,
+      "counts": {
+        "receipts": 6
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case016/summary.json",
+        "sha256": "f0de822f3f24ddd7e89f13d6aba23e025099bc487ec65a9167088b84d17eabfc"
+      },
+      "loops_sha256": "411fb2199349866a5c3edd6a78fd5588abf0dd0c407426eb6c6e3ec4ff7a319e"
+    },
+    {
+      "index": 18,
+      "case": "bowl_transfer_libero_spatial_t0_s6",
+      "success": true,
+      "wall_s": 254.376740291249,
+      "decisions": 6,
+      "counts": {
+        "receipts": 12,
+        "zero_step_unsuccessful": 4,
+        "zero_step_planning": 2,
+        "zero_step_lift": 2,
+        "zero_lift_held_null": 2
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case018/summary.json",
+        "sha256": "40db4ba93b13eee43bf522d1a488f61b5ee436fea1b889bb7f01f4feadaecd95"
+      },
+      "loops_sha256": "b5fc92cd0ebf9807b531c664e0adab9c5229eab47dcab789af017f73f1eafdd2"
+    },
+    {
+      "index": 19,
+      "case": "container_libero_object_t2_s6",
+      "success": false,
+      "wall_s": 107.43479243014008,
+      "decisions": 5,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 5,
+        "zero_step_planning": 2,
+        "zero_step_lift": 2,
+        "zero_lift_held_null": 2
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case019/summary.json",
+        "sha256": "023e7ad6c2507f847994c8e83e364e4b65bb527cdc8b6a32a1e8371026fe0445"
+      },
+      "loops_sha256": "a0fa8edc2cbdf796ebf272beb5f0ceaa21c5255c4aa8a823c8a1d9a78ed8c9e4"
+    },
+    {
+      "index": 20,
+      "case": "stove_on_libero_goal_t7_s6",
+      "success": false,
+      "wall_s": 128.3650846290402,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case020/summary.json",
+        "sha256": "44a476370921dc59de52b3ae68fd6c14959646df4fe50539043e96182672f06a"
+      },
+      "loops_sha256": "87e3fb98bedc977573402d86d7a85d8222f65b81038ad213eb347ae089e5a0a0"
+    },
+    {
+      "index": 22,
+      "case": "container_libero_object_t2_s7",
+      "success": false,
+      "wall_s": 97.3576137367636,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case022/summary.json",
+        "sha256": "5a0c710317c72687d3e7af21508f0dc48297f9a5ec44d0b8a86d7693533657ac"
+      },
+      "loops_sha256": "be3983127f9ff70283f655185259f41c583e271db61af3561a5fb1ee3fbaccdc"
+    },
+    {
+      "index": 23,
+      "case": "stove_on_libero_goal_t7_s7",
+      "success": false,
+      "wall_s": 120.92334644729272,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case023/summary.json",
+        "sha256": "11335e0a81e5e3191a9e51dc0365d727415c406c06483d1e30de753cc3af4acf"
+      },
+      "loops_sha256": "3c572e6759f28c060ebe763a7cef4833bb075efb2f4a82b9dc6894a9ae5fe113"
+    },
+    {
+      "index": 27,
+      "case": "libero_object_swap_t0_s40",
+      "success": false,
+      "wall_s": 75.43089782306924,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard1/case027/summary.json",
+        "sha256": "bf996575ab4a21c0332d15fd3e4b3a7e7b30b3a2d1c93881d4a58aa286958e8a"
+      },
+      "loops_sha256": "9487da1f92b63da1fc65325885a0baa6ee3dcdca0f1ff82130e0148acba7f0be"
+    },
+    {
+      "index": 29,
+      "case": "libero_object_task_t0_s40",
+      "success": false,
+      "wall_s": 50.96266285609454,
+      "decisions": 8,
+      "counts": {
+        "receipts": 8,
+        "zero_step_unsuccessful": 7,
+        "zero_step_planning": 5
+      },
+      "opens_after_zero_lift_before_executed_lift": [],
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/03552c03/regress19_shard0/case029/summary.json",
+        "sha256": "9d6969c7f0a610854dca39ea60c9437b790ba369f947bdff0271b9c65e5d921f"
+      },
+      "loops_sha256": "d678555c0405fbb9ef995f58b25875b8c2a837525d5f8ea8083d847a30034ea2"
+    }
+  ],
+  "script_sha256": "57afbd0a338fa964837029da2168c5e13cecc0532cfb67078c49300b6dc18b84",
+  "scope": "CPU audit of observed receipts; opening sequences are diagnostic flags, not proven grasp losses",
+  "training": false
+}

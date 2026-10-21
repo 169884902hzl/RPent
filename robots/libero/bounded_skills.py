@@ -3123,7 +3123,12 @@ class MeasuredSkillAdapter:
             if lost_held is not None:
                 outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_lost'
         if skill == 'observe':
+            pending_source = self.grasp_reference[0] if self.grasp_reference is not None else None
+            pending_object_grasp = (pending_source is not None and self.active == pending_source.id
+                and not pending_source.part_of and not fixture_actions(pending_source.name)
+                and self.holding_aperture(self.robot()['gripper_opening_m'])[0])
             if (parameters['mode'] == 'wrist_scan' and self.held is None
+                    and not pending_object_grasp
                     and np.linalg.norm(np.asarray(self.robot()['eef_xyz_m'])-before['eef_xyz_m'])
                     > self.config.endpoint_tolerance_m):
                 # A measured scan withdrawal breaks unverified surface
@@ -3139,6 +3144,12 @@ class MeasuredSkillAdapter:
                 if not self.withdrawal_contact or 'withdrawal_surface' not in self.withdrawal_contact:
                     self.withdrawal_contact = None
                 self.committed_grasps.clear()
+            elif pending_object_grasp:
+                # A zero-step lift did not test attachment. Moving the closed
+                # wrist to observe does not prove that the object was left
+                # behind. Preserve the pending contact for the next measured
+                # lift; aperture alone still cannot set held=True.
+                detail['pending_object_grasp_preserved'] = pending_source.id
             elif self.active is None:
                 self.committed_grasps.clear()
             # A passive refresh or an unexecuted scan has not broken the

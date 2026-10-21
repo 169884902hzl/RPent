@@ -73,3 +73,68 @@ Seed segment 11020000–11029999 was recorded before the CPU generation.
 This is **not training-admitted**: exhaustive geometric confirmation-distance
 checks and additional asset distractor insertion remain pending; no GPU
 pilot/labels have run, and no PRO/MAX inputs were used.
+
+Round 1 closed: **2/19**, Wilson95 [0.02936, 0.31394], paired original
+baseline **19/19**. Categories: container 1/8, stove_on 0/7, bowl 1/2,
+object_swap 0/1, object_task 0/1. All complete initial hashes verified.
+Closed evidence: `ROOT/results/bounded_skills/execution_repairs_20261022/03552c03/closed19_pairs/`.
+Receipt audit: 166 receipts, 124 unsuccessful zero-step receipts, 83
+zero-step planner rejections; all 8 zero-step lift held checks are null.
+Exact audit script `/tmp/audit_execution_receipts_20261022.py`, remote ROOT
+copy; output `.../03552c03/closed19_receipt_audit.json`.
+
+Round 2 at the inspected checkpoint: 15 closed, 1 success, 14 failures,
+therefore full30 upper bound **16/30** even if every remaining state succeeds.
+Both rounds are conclusively below20; commit bisection starts, while the
+complete round2 N1 continues. Remaining11 job **11145** waits for11143/11144;
+11144 already completed0:0. Failed support route exact public input pickles
+were saved and CPU-replayed with identical failure reasons. Their plane fit
+count is **0**: the local patch fails planarity criteria, so the plane-only
+fix does not address these real inputs. Do not call that repair effective.
+
+Bisection midpoint **93c1213cc33c318c52b487f97b07c326fde60382**, 3 probes
+indices1(container),2(stove),6(bowl). D3 transport-only overlay is identical
+in meaning to accepted baseline6a2d+D3; branch state file SHA
+`b26296a7c11d1919f3f1d977f65cadcff147fad2633cb45645c33d0c4ed55e05`.
+Local `/tmp/rd_bisect_93c1213c_D3_20261022`, bundle SHA
+`8b539362fa53f55eeb505d30923f0607add2a9c513939996c52b274a7e0a9011`.
+Remote `ROOT/source_bisect_93c1213c_D3_20261022`; CPU panel running in
+session25958, log `/tmp/bisect_93c1213c_D3_CPU_20261022.log`. Not yet physical.
+
+CPU stove isolation used actual original saved annotation
+`ROOT/results/bounded_skills/feasibility_20261017/job9248_10/stove_on_libero_goal_t7_s0_oracle_k4/private_prefix_state_0000.pkl.gz`, SHA
+`e9730648686bc6f31acf4dd77784c5ba59d3ba7c710f931bfcb850abae595cfc`.
+Explicit above/over passes current source at6.944mm clearance,564 predicted
+steps; merged schema6 on the SAME saved measured plan rejects the ingress
+against one rightfinger target point, then returns failed left/around.
+This isolates a planning/guard difference without new SAM/RPC or physics.
+Output `.../2e3a401a/CPU_stove_saved_plan_schema6_r2.json`. It is not a strict
+N1 whole-episode replay and does not establish the first bad commit yet.
+
+Additional supported F4 bug: successful wrist-scan withdrawal unconditionally
+clears a nonempty pending object grip, after which oracle opens it. Working
+patch preserves pending identity while calibrated aperture excludes empty
+jaws; it never claims held=True. Targeted9 tests passed. **Uncommitted,
+not in any GPU snapshot**, pending bisection integration. Pre-existing dirty
+SAM-cache diff before this new edit is saved
+`/tmp/pre_pending_grasp_cache_20261022.patch`; exclude it when staging.
+
+Round2 19 closed: **2/19**; remaining11 continues as11145. Binary midpoint
+93c1213c+D3 CPU panel passed626 test executions (RGB-D file was explicitly
+listed as well as included in the glob), log above. Physical job **11147**
+passed real startup. Container probe failed; stove probe also reproduces
+descend31-control braking rejection then zero-step trapping. Thus the first
+regression in the three-probe diagnostic lies before/equal93c1213c, rather
+than in the later support-plane patch. Next midpoint **b1365785** is preparing
+under `/tmp/rd_bisect_b1365785_D3_20261022`, exact archived CPU panel session
+77819; no physical submission yet. No production skill source is patched in
+the bisection archives; only the already accepted complete D3 transport and
+the recorded launcher are overlaid.
+
+Failed patch geometry is now quantified at `.../2e3a401a/support_patch_diagnostics_CPU.json`.
+Container s0 support component has167 points, median plane residual0.122mm
+but maximum9.78mm; some other initial-contact components are isolated
+one-point fragments. Other container patches mix points from table level
+to14.6cm height. This explains why the strict single-plane fit yields zero
+planes. These are observed public geometry diagnostics, not new relaxed
+collision rules or ground-truth support assignments.
