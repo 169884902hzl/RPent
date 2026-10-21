@@ -123,12 +123,18 @@ def public_support_replay_inputs(adapter, payload_reference=None):
     from robots.libero.bounded_motion import measured_robot
 
     state = adapter.ex.toolkit._state
+    attached = next((screen for key, screen in adapter._screen_cache.items()
+        if len(key) > 2 and key[0] == adapter.active and key[1] is True
+            and len(getattr(screen, 'payload', []))), None)
     return {'capture_step': state.latest_step, 'robot': measured_robot(adapter.p),
         'worlds': {camera: np.array(state.load(camera+'_world_high.npz'), copy=True)
             for camera in ('agentview', 'wrist')},
         'entities': copy.deepcopy(adapter.scene.entities),
         'measurement_clouds': copy.deepcopy(adapter.scene.measurement_clouds),
         'payload_reference': copy.deepcopy(payload_reference),
+        'cached_attachment_geometry': ({'scene': attached.points.copy(),
+            'target': attached.target.copy(), 'payload_local': attached.payload.copy()}
+            if attached is not None else None),
         'latency_stage': getattr(adapter, '_latency_stage', None),
         'sensor_interface': type(adapter.p.env).__module__+'.'+type(adapter.p.env).__name__,
         'source': 'current_public_rgbd_and_proprioception_only',

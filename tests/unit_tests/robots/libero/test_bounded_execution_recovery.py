@@ -44,6 +44,30 @@ def test_object_ingress_does_not_require_a_pregrasp_payload(adapter, monkeypatch
     assert result['passed'] and 'contact_sequence_stage' not in result
 
 
+@pytest.mark.parametrize('label,parent,executes', [('box', None, True),
+    ('stove', None, False), ('cabinet top drawer', 'cabinet', False)])
+def test_future_contact_rejection_does_not_veto_a_clear_object_standoff(
+        adapter, monkeypatch, label, parent, executes):
+    from dataclasses import replace
+
+    adapter.schema6_v1 = adapter.lazy_planning_v1 = True
+    adapter._cloud_and_ik().endpoint_screen = lambda *_args: {
+        'passed': True, 'collision': None, 'ik_reachable': True,
+        'path_min_clearance_m': None, 'reason': 'endpoint'}
+    request = adapter.request(k=1)
+    # Supply fixture identity to the ordinary measured-anchor mock without
+    # requiring that mock to implement a separate perception frontend.
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name=label, part_of=parent)
+    next(a for a in request['anchors'] if a['id'] == 'e1')['label'] = label
+    move = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    monkeypatch.setattr(adapter, '_screen_contact_sequence', lambda *_args, **_kwargs: {
+        'passed': False, 'collision': True, 'ik_reachable': True,
+        'path_min_clearance_m': 0., 'reason': 'measured_sweep_collision'})
+    receipt, = adapter.execute(request, decision(request, [move['id']]))
+    assert (receipt['steps_used'] > 0) is executes
+    assert bool(adapter.p.actions) is executes
+
+
 def test_real_zero_step_lifts_do_not_claim_grasp_failure():
     rows=[r for r in FIXTURE['cases'] if r['receipt']['skill']=='lift']
     assert rows
@@ -54,6 +78,28 @@ def test_real_zero_step_lifts_do_not_claim_grasp_failure():
         assert any(c['metric']=='held' for c in conditions)
         check_receipt({'expected_receipt':conditions},receipt,{})
         assert all(c['measured'] is None and c['passed'] is None for c in receipt['expectation_checks'])
+
+
+def test_pending_lift_preserves_existing_complete_attached_surface(adapter, monkeypatch):
+    """Container s6's narrower contact reference retained its own bottle face."""
+    adapter.active = 'e1'
+    adapter.held = None
+    adapter.grasp_reference = {'anchor_id': 'e1'}
+    raw_obs = adapter.p.env.raw_obs
+    monkeypatch.setattr(adapter.p.env, 'raw_obs', lambda: {
+        **raw_obs(), 'robot0_gripper_qpos': [.03695724923886471/2, -.03695724923886471/2]})
+    robot = adapter.robot()
+    # The real rejected public pixel is on the dressing bottle, 3.565 mm
+    # from the contact-only reference. The full attachment screen has
+    # already separated that instance from its stationary surroundings.
+    point = np.array([.048609547317028046, -.12335237860679626, .07588451355695724])
+    payload = (point-robot['eef_xyz_m']) @ Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
+    screen = PublicRouteScreen([[1., 1., 1.]],
+        {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]},
+        SimpleNamespace(check=lambda *_args: {'solution_found': True}), payload_local=[payload])
+    monkeypatch.setattr(adapter, '_capture_payload_reference',
+        lambda *_args: pytest.fail('complete attachment replaced by narrower contact reference'))
+    assert adapter._lift_payload_screen('e1', screen) is screen
 
 
 def test_real_container_support_pair_can_separate_without_pair_identity_lock():

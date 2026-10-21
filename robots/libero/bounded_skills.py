@@ -473,7 +473,7 @@ class MeasuredSkillAdapter:
         RGB-D checks must still establish held identity and motion coupling.
         """
         entity = self.scene.entities.get(key)
-        if (not isinstance(screen, PublicRouteScreen) or self.held is not None
+        if (not isinstance(screen, PublicRouteScreen) or len(screen.payload) or self.held is not None
                 or key != self.active or self.grasp_reference is None
                 or entity is None or entity.part_of or fixture_actions(entity.name)
                 or self.plans.get(key, {}).get('contact_kind') == 'surface'):
@@ -2971,12 +2971,17 @@ class MeasuredSkillAdapter:
                             screen.support_separation = True
                     elif skill == 'rotate_wrist':
                         screen = self._contact_rotation_screen(key, screen)
-                    if skill == 'move_to':
+                    entity = self.scene.entities.get(key)
+                    if (skill == 'move_to' and entity is not None
+                            and (entity.part_of or fixture_actions(entity.name))):
                         chain = self._screen_contact_sequence(key, route[-1], approach=variant.get('approach'))
                         if not chain['passed']:
                             detail = {'executed':False,'stop_reason':chain['reason'],'steps_used':0,'screen':chain}
                             attempts.append({'parameters':variant,'reason':chain['reason'],'executed':False,'screen':chain})
                             continue
+                    # An ordinary move ends at a screened stand-off. A
+                    # predicted later descent must not veto that safe view;
+                    # the actual descent retains its full finger-shell check.
                     motion = SmoothMotion(self.p, screen, self.config)
                     detail = motion.run(route, gripper=self.gripper_command, lookahead=lookahead,
                         request_factory=self.snapshot_decision_context if lookahead is not None else None,
