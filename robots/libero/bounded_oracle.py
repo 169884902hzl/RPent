@@ -254,14 +254,17 @@ class BoundedOracle:
                     # A pre-execution anchor guard did not test the grasp.
                     # Use the freshly measured and screened lift option;
                     # reopening here would discard an untested contact.
-                    guarded_before_lift = last and last.get('steps_used') == 0 and last.get('stop_reason') == 'predicted_anchor_changed'
+                    guarded_before_lift = last and last.get('steps_used') == 0
                     failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success' and not guarded_before_lift
                     chosen = None if failed_lift else find("lift", anchor_id=source.id)
                     if chosen is None and not failed_lift:
                         # Await the prefix's actual contact measurement
                         # before discarding an unmeasured grasp.
                         chosen = measure_contact()
-                    chosen = chosen or find("set_gripper", mode="open")
+                    if guarded_before_lift and chosen is None:
+                        chosen = measure_contact() or find('observe', mode='wrist_scan')
+                    else:
+                        chosen = chosen or find("set_gripper", mode="open")
                 elif predicate in {"turnon", "turnoff", "turn_on", "turn_off"}:
                     direction = 1 if "on" in predicate else -1
                     normal = contact.get('handle_measurement', {}).get('pose', {}).get('approach_normal_xyz')

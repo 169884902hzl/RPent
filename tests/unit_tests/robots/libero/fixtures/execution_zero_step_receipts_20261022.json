@@ -1,0 +1,3004 @@
+{
+  "scope": "exact saved N1 public failure diagnostic subsets, not complete clouds or task truth",
+  "source_file_sha256": "00fbf884b6b32f15c9e0f8054395b28124567372c14573fec1ca0e0301282994",
+  "cases": [
+    {
+      "case": 1,
+      "index": 0,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case001/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0008367268658201392,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 2,
+        "geometry_evaluations": 2,
+        "clearance_certified_samples": 0,
+        "initial_payload_margin_pairs_retained": 40,
+        "initial_margin_policy": "measured_current_overlap_no_further_incursion",
+        "reason": "measured_payload_collision",
+        "payload_point": [
+          0.07111086925751056,
+          -0.09792068520679476,
+          0.00146410370652314
+        ],
+        "obstacle_point": [
+          0.07095583528280258,
+          -0.09710756689310074,
+          0.001341977040283382
+        ],
+        "at": {
+          "xyz_m": [
+            0.04934457195268164,
+            -0.10094758358302333,
+            0.12767233776394737
+          ],
+          "quat_xyzw": [
+            0.9406631970095622,
+            0.339340960876207,
+            0.00046982087886325303,
+            -0.0004912552330230778
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-0",
+        "candidate_id": "994e6cc558d9f3ab",
+        "skill": "lift",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_payload_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            0.049344608004585414,
+            -0.10095554464944931,
+            0.12767207582894663
+          ],
+          "eef_quat_xyzw": [
+            0.9406631914533361,
+            0.33934101205959055,
+            0.00046264087545809046,
+            -0.00047301439470740685
+          ],
+          "gripper_opening_m": 0.036835659236338025,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -4.0084688435572856e-05,
+            -0.00023363295290472022,
+            -9.87310325694472e-05
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            0.049344608004585414,
+            -0.10095554464944931,
+            0.12767207582894663
+          ],
+          "eef_quat_xyzw": [
+            0.9406631914533361,
+            0.33934101205959055,
+            0.00046264087545809046,
+            -0.00047301439470740685
+          ],
+          "gripper_opening_m": 0.036835659236338025,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -4.0084688435572856e-05,
+            -0.00023363295290472022,
+            -9.87310325694472e-05
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e99",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e98",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:2:e99",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:5:e98",
+            "capture_step": 5,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e98",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e98",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.0,
+            "passed": true
+          },
+          {
+            "condition": {
+              "metric": "object_rise_m",
+              "anchor_id": "e98",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "held",
+              "anchor_id": "e98",
+              "minimum": 1.0,
+              "maximum": 1.0
+            },
+            "measured": 0.0,
+            "passed": false
+          }
+        ]
+      },
+      "reason": "measured_payload_collision"
+    },
+    {
+      "case": 1,
+      "index": 2,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case001/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 142,
+        "geometry_evaluations": 23,
+        "clearance_certified_samples": 119,
+        "reason": "measured_sweep_collision",
+        "counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 43,
+          "rightfinger_pad": 0
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        },
+        "public_target_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [
+            [
+              0.0498724989593029,
+              -0.1167091354727745,
+              0.14578448235988617
+            ],
+            [
+              0.04533388093113899,
+              -0.11577070504426956,
+              0.14588214457035065
+            ],
+            [
+              0.04390609264373779,
+              -0.11529451608657837,
+              0.14585308730602264
+            ],
+            [
+              0.04625662788748741,
+              -0.11595065146684647,
+              0.14593514800071716
+            ],
+            [
+              0.047973472625017166,
+              -0.11177631467580795,
+              0.14578773081302643
+            ],
+            [
+              0.04765234515070915,
+              -0.11644309759140015,
+              0.14581137895584106
+            ],
+            [
+              0.041377436369657516,
+              -0.11381717026233673,
+              0.14594437181949615
+            ],
+            [
+              0.04189036786556244,
+              -0.1141093373298645,
+              0.14595851302146912
+            ],
+            [
+              0.04019877687096596,
+              -0.11166137456893921,
+              0.14677350223064423
+            ],
+            [
+              0.04364269599318504,
+              -0.11618570238351822,
+              0.14601002633571625
+            ],
+            [
+              0.04010321572422981,
+              -0.11247723549604416,
+              0.14671733975410461
+            ],
+            [
+              0.04321899637579918,
+              -0.11137805879116058,
+              0.14669011533260345
+            ],
+            [
+              0.043181050568819046,
+              -0.11458825320005417,
+              0.1466677337884903
+            ],
+            [
+              0.043271228671073914,
+              -0.11377491801977158,
+              0.14672093093395233
+            ],
+            [
+              0.043162040412425995,
+              -0.10978283733129501,
+              0.14665652811527252
+            ],
+            [
+              0.051745250821113586,
+              -0.11377724260091782,
+              0.1461782306432724
+            ],
+            [
+              0.049420055001974106,
+              -0.11557094007730484,
+              0.14664724469184875
+            ],
+            [
+              0.0461767353117466,
+              -0.11589808762073517,
+              0.14657922089099884
+            ],
+            [
+              0.050412897020578384,
+              -0.11708594113588333,
+              0.14631086587905884
+            ],
+            [
+              0.0488147996366024,
+              -0.11326070129871368,
+              0.14628762006759644
+            ],
+            [
+              0.04629473015666008,
+              -0.1134844720363617,
+              0.1466490775346756
+            ],
+            [
+              0.047570135444402695,
+              -0.11656409502029419,
+              0.14647653698921204
+            ],
+            [
+              0.04624752700328827,
+              -0.11189232021570206,
+              0.14662113785743713
+            ],
+            [
+              0.04478020966053009,
+              -0.11363013833761215,
+              0.14668217301368713
+            ],
+            [
+              0.05094607546925545,
+              -0.11542017757892609,
+              0.1466282606124878
+            ],
+            [
+              0.0447281114757061,
+              -0.11523759365081787,
+              0.14665138721466064
+            ],
+            [
+              0.04858934134244919,
+              -0.11727990210056305,
+              0.14615365862846375
+            ],
+            [
+              0.052370231598615646,
+              -0.116078220307827,
+              0.14655093848705292
+            ],
+            [
+              0.05243085324764252,
+              -0.11527489125728607,
+              0.1465870887041092
+            ],
+            [
+              0.05383283644914627,
+              -0.11196450889110565,
+              0.14649879932403564
+            ],
+            [
+              0.05480971187353134,
+              -0.11665172129869461,
+              0.14615821838378906
+            ],
+            [
+              0.05389788746833801,
+              -0.11354387551546097,
+              0.1465376615524292
+            ]
+          ],
+          "rightfinger_pad": []
+        },
+        "at": {
+          "xyz_m": [
+            0.0558291362483692,
+            -0.16493150290223468,
+            0.15891772994323985
+          ],
+          "quat_xyzw": [
+            0.9974043115530451,
+            0.0720044268124265,
+            -2.0408669786304105e-05,
+            -3.739380330082108e-05
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-2",
+        "candidate_id": "45f5bc53001b1ecd",
+        "skill": "move_to",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_sweep_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            0.05639730176754395,
+            -0.09948618045814636,
+            0.3264523920363455
+          ],
+          "eef_quat_xyzw": [
+            0.9913797394695469,
+            0.1310198201039236,
+            -6.587732657110801e-05,
+            -0.00012070378998621032
+          ],
+          "gripper_opening_m": 0.07999910539950356,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -1.0980455467403937e-05,
+            -7.401758401538304e-05,
+            0.034368523473888184
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            0.05639730176754395,
+            -0.09948618045814636,
+            0.3264523920363455
+          ],
+          "eef_quat_xyzw": [
+            0.9913797394695469,
+            0.1310198201039236,
+            -6.587732657110801e-05,
+            -0.00012070378998621032
+          ],
+          "gripper_opening_m": 0.07999910539950356,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -1.0980455467403937e-05,
+            -7.401758401538304e-05,
+            0.034368523473888184
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e99",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e98",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:2:e99",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e98",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e98",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e98",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.17196793500856283,
+            "passed": false
+          }
+        ]
+      },
+      "reason": "measured_sweep_collision"
+    },
+    {
+      "case": 2,
+      "index": 0,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case002/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 1,
+        "geometry_evaluations": 1,
+        "clearance_certified_samples": 0,
+        "reason": "measured_sweep_collision",
+        "counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "rightfinger": 1
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        },
+        "public_target_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "rightfinger": [
+            [
+              -0.45609548687934875,
+              0.21072138845920563,
+              0.9584556818008423
+            ]
+          ]
+        },
+        "at": {
+          "xyz_m": [
+            -0.4440208091846311,
+            0.1736208761831282,
+            0.9585162451118708
+          ],
+          "quat_xyzw": [
+            0.9994577799706061,
+            -0.007036244692761651,
+            -0.0013724710536502094,
+            -0.0321364845628296
+          ],
+          "time_s": 0.0
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-0",
+        "candidate_id": "75ed3d7dd24e32c5",
+        "skill": "descend",
+        "outcome": "failure",
+        "phase": "planning_unreachable",
+        "stop_reason": "braking_screen_rejected",
+        "steps_used": 31,
+        "before": {
+          "eef_xyz_m": [
+            -0.42345275278163685,
+            0.19605086964609178,
+            1.0756013126687507
+          ],
+          "eef_quat_xyzw": [
+            0.9997551387553676,
+            -0.012819020139638149,
+            -0.014586528267874958,
+            -0.010609827896095462
+          ],
+          "gripper_opening_m": 0.0799891911963842,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -0.0062918435487682054,
+            0.00587500867169515,
+            -0.0033454454229677605
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            -0.4440208091846311,
+            0.1736208761831282,
+            0.9585162451118708
+          ],
+          "eef_quat_xyzw": [
+            0.9994577799706061,
+            -0.007036244692761651,
+            -0.0013724710536502094,
+            -0.0321364845628296
+          ],
+          "gripper_opening_m": 0.08026609341956248,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -0.013269713808383387,
+            -0.01447096352449264,
+            -0.07553875326250313
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e99",
+            "displacement_m": [
+              0.00757966935634613,
+              -0.0051440224051475525,
+              -6.496906280517578e-06
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e98",
+            "displacement_m": [
+              -0.0026500150561332703,
+              0.0011771060526371002,
+              7.152557373046875e-07
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e114",
+            "displacement_m": null,
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e54",
+            "displacement_m": [
+              0.008844435214996338,
+              -0.005833469331264496,
+              -2.6226043701171875e-06
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:3:e99",
+            "capture_step": 3,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:3:e98",
+            "capture_step": 3,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:2:e114",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:3:e54",
+            "capture_step": 3,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e99",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": 0.03044909527548418,
+            "passed": false
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e99",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.05178862131803061,
+            "passed": false
+          }
+        ]
+      },
+      "reason": "braking_screen_rejected"
+    },
+    {
+      "case": 2,
+      "index": 1,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case002/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 2,
+        "geometry_evaluations": 2,
+        "clearance_certified_samples": 0,
+        "reason": "measured_sweep_collision",
+        "counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 27,
+          "rightfinger_pad": 32
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        },
+        "public_target_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [
+            [
+              -0.453922301530838,
+              0.21043308079242706,
+              0.9585450887680054
+            ],
+            [
+              -0.4533061385154724,
+              0.21147069334983826,
+              0.9577237963676453
+            ],
+            [
+              -0.4517550468444824,
+              0.21014556288719177,
+              0.9586341977119446
+            ],
+            [
+              -0.4508979320526123,
+              0.20895402133464813,
+              0.9591372609138489
+            ],
+            [
+              -0.44907915592193604,
+              0.21218913793563843,
+              0.9554799795150757
+            ],
+            [
+              -0.44482505321502686,
+              0.21149778366088867,
+              0.9568148851394653
+            ],
+            [
+              -0.4364393949508667,
+              0.21152763068675995,
+              0.9559051990509033
+            ],
+            [
+              -0.43225979804992676,
+              0.21084389090538025,
+              0.9572281837463379
+            ],
+            [
+              -0.4461466670036316,
+              0.2104770988225937,
+              0.9583938121795654
+            ],
+            [
+              -0.4482990503311157,
+              0.2107641100883484,
+              0.9583046436309814
+            ],
+            [
+              -0.4487393796443939,
+              0.20866912603378296,
+              0.9592254161834717
+            ],
+            [
+              -0.44102272391319275,
+              0.20872268080711365,
+              0.9590669274330139
+            ],
+            [
+              -0.44205719232559204,
+              0.21135033667087555,
+              0.9578105807304382
+            ],
+            [
+              -0.443160742521286,
+              0.20900632441043854,
+              0.9589789509773254
+            ],
+            [
+              -0.4440079629421234,
+              0.21019236743450165,
+              0.9584780335426331
+            ],
+            [
+              -0.4420747756958008,
+              0.2107769399881363,
+              0.9580605626106262
+            ],
+            [
+              -0.4406064450740814,
+              0.21081243455410004,
+              0.9581364393234253
+            ],
+            [
+              -0.44011667370796204,
+              0.21133248507976532,
+              0.9577852487564087
+            ],
+            [
+              -0.43845105171203613,
+              0.21052218973636627,
+              0.9582393169403076
+            ],
+            [
+              -0.43414509296417236,
+              0.21051286160945892,
+              0.9580400586128235
+            ],
+            [
+              -0.4381352663040161,
+              0.21112261712551117,
+              0.9578427672386169
+            ],
+            [
+              -0.4363248348236084,
+              0.21023721992969513,
+              0.9583280682563782
+            ],
+            [
+              -0.43548744916915894,
+              0.20905664563179016,
+              0.9588267207145691
+            ],
+            [
+              -0.4360457956790924,
+              0.21110334992408752,
+              0.9578154683113098
+            ],
+            [
+              -0.4333697557449341,
+              0.20877426862716675,
+              0.9589143991470337
+            ],
+            [
+              -0.4320599436759949,
+              0.2104935199022293,
+              0.9580128788948059
+            ],
+            [
+              -0.4341047704219818,
+              0.21108543872833252,
+              0.9577901363372803
+            ]
+          ],
+          "rightfinger_pad": [
+            [
+              -0.4517550468444824,
+              0.21014556288719177,
+              0.9586341977119446
+            ],
+            [
+              -0.4508979320526123,
+              0.20895402133464813,
+              0.9591372609138489
+            ],
+            [
+              -0.4546501040458679,
+              0.2083849310874939,
+              0.9593009948730469
+            ],
+            [
+              -0.4526328146457672,
+              0.20812849700450897,
+              0.9593005180358887
+            ],
+            [
+              -0.44907915592193604,
+              0.21218913793563843,
+              0.9554799795150757
+            ],
+            [
+              -0.44482505321502686,
+              0.21149778366088867,
+              0.9568148851394653
+            ],
+            [
+              -0.4364393949508667,
+              0.21152763068675995,
+              0.9559051990509033
+            ],
+            [
+              -0.43225979804992676,
+              0.21084389090538025,
+              0.9572281837463379
+            ],
+            [
+              -0.4461466670036316,
+              0.2104770988225937,
+              0.9583938121795654
+            ],
+            [
+              -0.4482990503311157,
+              0.2107641100883484,
+              0.9583046436309814
+            ],
+            [
+              -0.4487393796443939,
+              0.20866912603378296,
+              0.9592254161834717
+            ],
+            [
+              -0.44102272391319275,
+              0.20872268080711365,
+              0.9590669274330139
+            ],
+            [
+              -0.44205719232559204,
+              0.21135033667087555,
+              0.9578105807304382
+            ],
+            [
+              -0.443160742521286,
+              0.20900632441043854,
+              0.9589789509773254
+            ],
+            [
+              -0.4440079629421234,
+              0.21019236743450165,
+              0.9584780335426331
+            ],
+            [
+              -0.4420747756958008,
+              0.2107769399881363,
+              0.9580605626106262
+            ],
+            [
+              -0.4406064450740814,
+              0.21081243455410004,
+              0.9581364393234253
+            ],
+            [
+              -0.44011667370796204,
+              0.21133248507976532,
+              0.9577852487564087
+            ],
+            [
+              -0.43889057636260986,
+              0.20843982696533203,
+              0.9591545462608337
+            ],
+            [
+              -0.43845105171203613,
+              0.21052218973636627,
+              0.9582393169403076
+            ],
+            [
+              -0.43414509296417236,
+              0.21051286160945892,
+              0.9580400586128235
+            ],
+            [
+              -0.4381352663040161,
+              0.21112261712551117,
+              0.9578427672386169
+            ],
+            [
+              -0.4367642402648926,
+              0.2081577330827713,
+              0.9592419862747192
+            ],
+            [
+              -0.4363248348236084,
+              0.21023721992969513,
+              0.9583280682563782
+            ],
+            [
+              -0.43548744916915894,
+              0.20905664563179016,
+              0.9588267207145691
+            ],
+            [
+              -0.4360457956790924,
+              0.21110334992408752,
+              0.9578154683113098
+            ],
+            [
+              -0.4333697557449341,
+              0.20877426862716675,
+              0.9589143991470337
+            ],
+            [
+              -0.4320599436759949,
+              0.2104935199022293,
+              0.9580128788948059
+            ],
+            [
+              -0.4312654733657837,
+              0.20849411189556122,
+              0.9589973092079163
+            ],
+            [
+              -0.4341047704219818,
+              0.21108543872833252,
+              0.9577901363372803
+            ],
+            [
+              -0.4466104209423065,
+              0.20838947594165802,
+              0.9592993855476379
+            ],
+            [
+              -0.4446128010749817,
+              0.20813429355621338,
+              0.9592989683151245
+            ]
+          ]
+        },
+        "initial_margin_policy": "measured_current_overlap_no_further_incursion",
+        "initial_target_margin_pairs_retained": 2,
+        "at": {
+          "xyz_m": [
+            -0.44300073791605643,
+            0.1723520977469238,
+            0.9570738579518603
+          ],
+          "quat_xyzw": [
+            0.9994695311721544,
+            -0.004035080035602813,
+            -0.0020147290340325583,
+            -0.03225391843698107
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-1",
+        "candidate_id": "4dc2bda53b19033a",
+        "skill": "move_to",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_sweep_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            -0.4440208091846311,
+            0.1736208761831282,
+            0.9585162451118708
+          ],
+          "eef_quat_xyzw": [
+            0.9994577799706061,
+            -0.007036244692761651,
+            -0.0013724710536502094,
+            -0.0321364845628296
+          ],
+          "gripper_opening_m": 0.08026609341956248,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -0.013269713808383387,
+            -0.01447096352449264,
+            -0.07553875326250313
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            -0.4440208091846311,
+            0.1736208761831282,
+            0.9585162451118708
+          ],
+          "eef_quat_xyzw": [
+            0.9994577799706061,
+            -0.007036244692761651,
+            -0.0013724710536502094,
+            -0.0321364845628296
+          ],
+          "gripper_opening_m": 0.08026609341956248,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -0.013269713808383387,
+            -0.01447096352449264,
+            -0.07553875326250313
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e99",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e98",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e114",
+            "displacement_m": null,
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e54",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:4:e99",
+            "capture_step": 4,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:4:e98",
+            "capture_step": 4,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:2:e114",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:4:e54",
+            "capture_step": 4,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e99",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e99",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.05068751786381662,
+            "passed": false
+          }
+        ]
+      },
+      "reason": "measured_sweep_collision"
+    },
+    {
+      "case": 6,
+      "index": 0,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case006/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.002670894711304758,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 2,
+        "geometry_evaluations": 2,
+        "clearance_certified_samples": 0,
+        "initial_payload_margin_pairs_retained": 9,
+        "initial_margin_policy": "measured_current_overlap_no_further_incursion",
+        "reason": "measured_payload_collision",
+        "payload_point": [
+          -0.06691944383742196,
+          0.2240709271521544,
+          0.9199651317123293
+        ],
+        "obstacle_point": [
+          -0.0646764412522316,
+          0.22433166205883026,
+          0.918393075466156
+        ],
+        "at": {
+          "xyz_m": [
+            -0.09255638239005988,
+            0.24868121332139143,
+            0.9423132914847712
+          ],
+          "quat_xyzw": [
+            0.9963745719286005,
+            -0.08506839983552276,
+            0.0002603432893997671,
+            0.0010059745988502417
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-0",
+        "candidate_id": "dfac584b7770ffcf",
+        "skill": "lift",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_payload_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            -0.09262280730605875,
+            0.24868736641734115,
+            0.9422367978368673
+          ],
+          "eef_quat_xyzw": [
+            0.9963750494999694,
+            -0.08506304679517146,
+            0.00017523306639853712,
+            0.001004040450997462
+          ],
+          "gripper_opening_m": 0.008316004353327227,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            7.809651220136438e-05,
+            0.0005082225563053008,
+            0.0001892708444411658
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            -0.09262280730605875,
+            0.24868736641734115,
+            0.9422367978368673
+          ],
+          "eef_quat_xyzw": [
+            0.9963750494999694,
+            -0.08506304679517146,
+            0.00017523306639853712,
+            0.001004040450997462
+          ],
+          "gripper_opening_m": 0.008316004353327227,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            7.809651220136438e-05,
+            0.0005082225563053008,
+            0.0001892708444411658
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e15",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e12",
+            "displacement_m": null,
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e11",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e47",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e107",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e22",
+            "displacement_m": null,
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e95",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e104",
+            "displacement_m": null,
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:5:e15",
+            "capture_step": 5,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:2:e12",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:5:e11",
+            "capture_step": 5,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:5:e47",
+            "capture_step": 5,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:5:e107",
+            "capture_step": 5,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:2:e22",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:5:e95",
+            "capture_step": 5,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:2:e104",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e15",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e15",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.0,
+            "passed": true
+          },
+          {
+            "condition": {
+              "metric": "object_rise_m",
+              "anchor_id": "e15",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "held",
+              "anchor_id": "e15",
+              "minimum": 1.0,
+              "maximum": 1.0
+            },
+            "measured": 0.0,
+            "passed": false
+          }
+        ]
+      },
+      "reason": "measured_payload_collision"
+    },
+    {
+      "case": 6,
+      "index": 2,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case006/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 207,
+        "geometry_evaluations": 43,
+        "clearance_certified_samples": 164,
+        "reason": "measured_sweep_collision",
+        "counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 13,
+          "rightfinger_pad": 0
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        },
+        "public_target_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [
+            [
+              -0.1434667855501175,
+              0.16801778972148895,
+              0.9507586359977722
+            ],
+            [
+              -0.14601029455661774,
+              0.17169564962387085,
+              0.950846254825592
+            ],
+            [
+              -0.14477720856666565,
+              0.17070434987545013,
+              0.9507697224617004
+            ],
+            [
+              -0.1487949937582016,
+              0.17628096044063568,
+              0.9507449269294739
+            ],
+            [
+              -0.14728803932666779,
+              0.17438265681266785,
+              0.9508882164955139
+            ],
+            [
+              -0.14742006361484528,
+              0.1760963499546051,
+              0.9507801532745361
+            ],
+            [
+              -0.14975576102733612,
+              0.17975057661533356,
+              0.9510496854782104
+            ],
+            [
+              -0.14981739223003387,
+              0.18229617178440094,
+              0.9509994387626648
+            ],
+            [
+              -0.14973211288452148,
+              0.1805891990661621,
+              0.9510689973831177
+            ],
+            [
+              -0.15007704496383667,
+              0.18258781731128693,
+              0.9507330656051636
+            ],
+            [
+              -0.14998792111873627,
+              0.1840229034423828,
+              0.950860321521759
+            ],
+            [
+              -0.15094543993473053,
+              0.1841200590133667,
+              0.9511692523956299
+            ],
+            [
+              -0.1510118991136551,
+              0.18666915595531464,
+              0.9511151313781738
+            ]
+          ],
+          "rightfinger_pad": []
+        },
+        "at": {
+          "xyz_m": [
+            -0.13050252976856028,
+            0.13378909765052335,
+            0.9636744983099446
+          ],
+          "quat_xyzw": [
+            0.9738416165600963,
+            0.22722787147226242,
+            1.1373578402274094e-05,
+            -1.234686815670153e-05
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-2",
+        "candidate_id": "f7d178bbd792fe9a",
+        "skill": "move_to",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_sweep_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            -0.08804997413911098,
+            0.24084046891818137,
+            1.1386639796645766
+          ],
+          "eef_quat_xyzw": [
+            0.9779294032646706,
+            -0.20893553003433846,
+            0.00011033367264349231,
+            -0.00011977543576799767
+          ],
+          "gripper_opening_m": 0.07999871779136716,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -4.273828191082429e-05,
+            -7.402791342703274e-05,
+            0.03425556201244918
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            -0.08804997413911098,
+            0.24084046891818137,
+            1.1386639796645766
+          ],
+          "eef_quat_xyzw": [
+            0.9779294032646706,
+            -0.20893553003433846,
+            0.00011033367264349231,
+            -0.00011977543576799767
+          ],
+          "gripper_opening_m": 0.07999871779136716,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -4.273828191082429e-05,
+            -7.402791342703274e-05,
+            0.03425556201244918
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e15",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e12",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e11",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e47",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e107",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e22",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e95",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e104",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e86",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:9:e15",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e12",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e11",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e47",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e107",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e22",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e95",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e104",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:9:e86",
+            "capture_step": 9,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e15",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e15",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.9842329370574608,
+            "passed": false
+          }
+        ]
+      },
+      "reason": "measured_sweep_collision"
+    },
+    {
+      "case": 7,
+      "index": 0,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case007/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0010724635414568755,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 2,
+        "geometry_evaluations": 2,
+        "clearance_certified_samples": 0,
+        "initial_payload_margin_pairs_retained": 71,
+        "initial_margin_policy": "measured_current_overlap_no_further_incursion",
+        "reason": "measured_payload_collision",
+        "payload_point": [
+          0.06548372342456801,
+          -0.12018577123482953,
+          0.005604945739856093
+        ],
+        "obstacle_point": [
+          0.0647718757390976,
+          -0.12106610089540482,
+          0.006115996278822422
+        ],
+        "at": {
+          "xyz_m": [
+            0.05533998684680877,
+            -0.10000824926097178,
+            0.13533782478557624
+          ],
+          "quat_xyzw": [
+            0.9991345113684104,
+            0.04159524969545753,
+            0.0002513435301853922,
+            -1.4893297606079547e-05
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-0",
+        "candidate_id": "fd9731c0bcde77c3",
+        "skill": "lift",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_payload_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            0.0553398672336782,
+            -0.10000386483058595,
+            0.13533490380726595
+          ],
+          "eef_quat_xyzw": [
+            0.9991343813812024,
+            0.04159837997345811,
+            0.00025000734807729757,
+            -1.4896653772488174e-05
+          ],
+          "gripper_opening_m": 0.03643173982463234,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -1.4217309929713078e-06,
+            -0.00017146415589602837,
+            -4.713880847391957e-05
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            0.0553398672336782,
+            -0.10000386483058595,
+            0.13533490380726595
+          ],
+          "eef_quat_xyzw": [
+            0.9991343813812024,
+            0.04159837997345811,
+            0.00025000734807729757,
+            -1.4896653772488174e-05
+          ],
+          "gripper_opening_m": 0.03643173982463234,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -1.4217309929713078e-06,
+            -0.00017146415589602837,
+            -4.713880847391957e-05
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e15",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e12",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:2:e15",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:5:e12",
+            "capture_step": 5,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e12",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e12",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.0,
+            "passed": true
+          },
+          {
+            "condition": {
+              "metric": "object_rise_m",
+              "anchor_id": "e12",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "held",
+              "anchor_id": "e12",
+              "minimum": 1.0,
+              "maximum": 1.0
+            },
+            "measured": 0.0,
+            "passed": false
+          }
+        ]
+      },
+      "reason": "measured_payload_collision"
+    },
+    {
+      "case": 7,
+      "index": 1,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case007/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 13,
+        "geometry_evaluations": 4,
+        "clearance_certified_samples": 9,
+        "reason": "measured_sweep_collision",
+        "counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0,
+          "leftfinger": 26,
+          "leftfinger_pad": 33,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        },
+        "public_target_collision_points": {
+          "palm": [],
+          "leftfinger": [
+            [
+              0.05294198542833328,
+              -0.11832613497972488,
+              0.12252931296825409
+            ],
+            [
+              0.05708729475736618,
+              -0.11706186085939407,
+              0.12322989851236343
+            ],
+            [
+              0.05750073492527008,
+              -0.11688614636659622,
+              0.12537960708141327
+            ],
+            [
+              0.05390113219618797,
+              -0.11813200265169144,
+              0.12407676130533218
+            ],
+            [
+              0.05571132153272629,
+              -0.11764095723628998,
+              0.12897989153862
+            ],
+            [
+              0.05869656056165695,
+              -0.11636731028556824,
+              0.13176724314689636
+            ],
+            [
+              0.05637781322002411,
+              -0.11742951720952988,
+              0.1312723606824875
+            ],
+            [
+              0.0546320416033268,
+              -0.1179700568318367,
+              0.12547890841960907
+            ],
+            [
+              0.055372532457113266,
+              -0.11774761229753494,
+              0.12782765924930573
+            ],
+            [
+              0.05776291713118553,
+              -0.11679070442914963,
+              0.12648694217205048
+            ],
+            [
+              0.05801532045006752,
+              -0.11669671535491943,
+              0.12758664786815643
+            ],
+            [
+              0.05839825049042702,
+              -0.11652596294879913,
+              0.12970586121082306
+            ],
+            [
+              0.05839608609676361,
+              -0.11673662811517715,
+              0.13905127346515656
+            ],
+            [
+              0.05789002403616905,
+              -0.11692425608634949,
+              0.1368798017501831
+            ],
+            [
+              0.05703262612223625,
+              -0.11722014099359512,
+              0.13355089724063873
+            ],
+            [
+              0.05476122722029686,
+              -0.11804043501615524,
+              0.1368354856967926
+            ],
+            [
+              0.05782415717840195,
+              -0.11699210852384567,
+              0.13590654730796814
+            ],
+            [
+              0.05467938259243965,
+              -0.11811108142137527,
+              0.13585101068019867
+            ],
+            [
+              0.05920232832431793,
+              -0.11618019640445709,
+              0.1339513510465622
+            ],
+            [
+              0.050936926156282425,
+              -0.1178681030869484,
+              0.14569617807865143
+            ],
+            [
+              0.05250639468431473,
+              -0.11770796030759811,
+              0.14570631086826324
+            ],
+            [
+              0.05486754700541496,
+              -0.11749576777219772,
+              0.14526775479316711
+            ],
+            [
+              0.05565033480525017,
+              -0.11779773235321045,
+              0.13924169540405273
+            ],
+            [
+              0.05602959170937538,
+              -0.11750936508178711,
+              0.14318762719631195
+            ],
+            [
+              0.055960819125175476,
+              -0.11763649433851242,
+              0.1412900686264038
+            ],
+            [
+              0.058522775769233704,
+              -0.11654382199048996,
+              0.14191387593746185
+            ]
+          ],
+          "leftfinger_pad": [
+            [
+              0.05571132153272629,
+              -0.11764095723628998,
+              0.12897989153862
+            ],
+            [
+              0.05869656056165695,
+              -0.11636731028556824,
+              0.13176724314689636
+            ],
+            [
+              0.05637781322002411,
+              -0.11742951720952988,
+              0.1312723606824875
+            ],
+            [
+              0.055372532457113266,
+              -0.11774761229753494,
+              0.12782765924930573
+            ],
+            [
+              0.05960863456130028,
+              -0.11573554575443268,
+              0.12763887643814087
+            ],
+            [
+              0.05801532045006752,
+              -0.11669671535491943,
+              0.12758664786815643
+            ],
+            [
+              0.05839825049042702,
+              -0.11652596294879913,
+              0.12970586121082306
+            ],
+            [
+              0.05947541818022728,
+              -0.11608397960662842,
+              0.1350535899400711
+            ],
+            [
+              0.05839608609676361,
+              -0.11673662811517715,
+              0.13905127346515656
+            ],
+            [
+              0.05789002403616905,
+              -0.11692425608634949,
+              0.1368798017501831
+            ],
+            [
+              0.05703262612223625,
+              -0.11722014099359512,
+              0.13355089724063873
+            ],
+            [
+              0.05476122722029686,
+              -0.11804043501615524,
+              0.1368354856967926
+            ],
+            [
+              0.05782415717840195,
+              -0.11699210852384567,
+              0.13590654730796814
+            ],
+            [
+              0.05467938259243965,
+              -0.11811108142137527,
+              0.13585101068019867
+            ],
+            [
+              0.05920232832431793,
+              -0.11618019640445709,
+              0.1339513510465622
+            ],
+            [
+              0.05999705195426941,
+              -0.11583711206912994,
+              0.13816891610622406
+            ],
+            [
+              0.05960027500987053,
+              -0.11600840091705322,
+              0.13606324791908264
+            ],
+            [
+              0.05990492179989815,
+              -0.11590798944234848,
+              0.13718190789222717
+            ],
+            [
+              0.048744384199380875,
+              -0.1172584593296051,
+              0.1462457776069641
+            ],
+            [
+              0.05050649121403694,
+              -0.11707299202680588,
+              0.14636658132076263
+            ],
+            [
+              0.050936926156282425,
+              -0.1178681030869484,
+              0.14569617807865143
+            ],
+            [
+              0.05205784738063812,
+              -0.11691651493310928,
+              0.14636464416980743
+            ],
+            [
+              0.05250639468431473,
+              -0.11770796030759811,
+              0.14570631086826324
+            ],
+            [
+              0.05486754700541496,
+              -0.11749576777219772,
+              0.14526775479316711
+            ],
+            [
+              0.05487927794456482,
+              -0.11664208769798279,
+              0.14619985222816467
+            ],
+            [
+              0.05565033480525017,
+              -0.11779773235321045,
+              0.13924169540405273
+            ],
+            [
+              0.05602959170937538,
+              -0.11750936508178711,
+              0.14318762719631195
+            ],
+            [
+              0.05607692524790764,
+              -0.11653420329093933,
+              0.1459929496049881
+            ],
+            [
+              0.055960819125175476,
+              -0.11763649433851242,
+              0.1412900686264038
+            ],
+            [
+              0.0600845068693161,
+              -0.11576694995164871,
+              0.139151930809021
+            ],
+            [
+              0.058522775769233704,
+              -0.11654382199048996,
+              0.14191387593746185
+            ],
+            [
+              0.05810609087347984,
+              -0.11636893451213837,
+              0.1453639417886734
+            ]
+          ],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        },
+        "at": {
+          "xyz_m": [
+            0.05553500756819388,
+            -0.08176560867368324,
+            0.13533406767474676
+          ],
+          "quat_xyzw": [
+            0.9991404411184915,
+            0.04145257012838629,
+            0.00025100482909752765,
+            -1.8651358210115668e-05
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-1",
+        "candidate_id": "c0ce4054287d6f0f",
+        "skill": "move_to",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_sweep_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            0.05531745324710488,
+            -0.1001520327965723,
+            0.13533408159290244
+          ],
+          "eef_quat_xyzw": [
+            0.9991389749404423,
+            0.041487895987758816,
+            0.00025085357179743117,
+            -1.7718786874203256e-05
+          ],
+          "gripper_opening_m": 0.07736251193334362,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -2.9885315431095922e-05,
+            -0.00019755728798180142,
+            -1.096285818014131e-06
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            0.05531745324710488,
+            -0.1001520327965723,
+            0.13533408159290244
+          ],
+          "eef_quat_xyzw": [
+            0.9991389749404423,
+            0.041487895987758816,
+            0.00025085357179743117,
+            -1.7718786874203256e-05
+          ],
+          "gripper_opening_m": 0.07736251193334362,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -2.9885315431095922e-05,
+            -0.00019755728798180142,
+            -1.096285818014131e-06
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e15",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e12",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:2:e15",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:7:e12",
+            "capture_step": 7,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e12",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e12",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.031802060987425655,
+            "passed": true
+          }
+        ]
+      },
+      "reason": "measured_sweep_collision"
+    },
+    {
+      "case": 27,
+      "index": 0,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case027/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 17,
+        "geometry_evaluations": 6,
+        "clearance_certified_samples": 11,
+        "reason": "measured_sweep_collision",
+        "counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "rightfinger": 5
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        },
+        "public_target_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "rightfinger": [
+            [
+              -0.19892308115959167,
+              -0.11553732305765152,
+              0.08017029613256454
+            ],
+            [
+              -0.19674041867256165,
+              -0.11536258459091187,
+              0.08018799871206284
+            ],
+            [
+              -0.19466213881969452,
+              -0.11519870162010193,
+              0.08015457540750504
+            ],
+            [
+              -0.19284488260746002,
+              -0.11506222933530807,
+              0.0799877718091011
+            ],
+            [
+              -0.19178806245326996,
+              -0.1150059774518013,
+              0.07942495495080948
+            ]
+          ]
+        },
+        "at": {
+          "xyz_m": [
+            -0.18606863830347994,
+            -0.18060025556115572,
+            0.06521500131044627
+          ],
+          "quat_xyzw": [
+            0.9994243635529109,
+            0.03392552927898309,
+            2.852075428127474e-18,
+            1.782547142579671e-19
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-0",
+        "candidate_id": "2fe07f40259ca240",
+        "skill": "descend",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_sweep_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            -0.18585193936899597,
+            -0.2018375777530615,
+            0.0654530032193064
+          ],
+          "eef_quat_xyzw": [
+            0.9994367607730188,
+            0.03355446655165634,
+            -0.0005008330191894198,
+            -9.03119885849831e-05
+          ],
+          "gripper_opening_m": 0.07999948301224097,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -0.003195493914801037,
+            -0.017251075021820713,
+            -0.016737305342763555
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            -0.18585193936899597,
+            -0.2018375777530615,
+            0.0654530032193064
+          ],
+          "eef_quat_xyzw": [
+            0.9994367607730188,
+            0.03355446655165634,
+            -0.0005008330191894198,
+            -9.03119885849831e-05
+          ],
+          "gripper_opening_m": 0.07999948301224097,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -0.003195493914801037,
+            -0.017251075021820713,
+            -0.016737305342763555
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e118",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e75",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:3:e118",
+            "capture_step": 3,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:2:e75",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e118",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e118",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.0012598908209730723,
+            "passed": true
+          }
+        ]
+      },
+      "reason": "measured_sweep_collision"
+    },
+    {
+      "case": 27,
+      "index": 1,
+      "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/N1_strict_645c4d22_r1/optimized/case027/loops.jsonl",
+      "screen": {
+        "source": "fused_rgbd_public_robot_and_static_geometry",
+        "passed": false,
+        "collision": true,
+        "ik_reachable": null,
+        "path_min_clearance_m": 0.0,
+        "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
+        "samples": 17,
+        "geometry_evaluations": 6,
+        "clearance_certified_samples": 11,
+        "reason": "measured_sweep_collision",
+        "counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 0,
+          "rightfinger_pad": 0
+        },
+        "target_counts": {
+          "palm": 0,
+          "leftfinger": 0,
+          "leftfinger_pad": 0,
+          "rightfinger": 5,
+          "rightfinger_pad": 0
+        },
+        "public_scene_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [],
+          "rightfinger_pad": []
+        },
+        "public_target_collision_points": {
+          "palm": [],
+          "leftfinger": [],
+          "leftfinger_pad": [],
+          "rightfinger": [
+            [
+              -0.19892308115959167,
+              -0.11553732305765152,
+              0.08017029613256454
+            ],
+            [
+              -0.19674041867256165,
+              -0.11536258459091187,
+              0.08018799871206284
+            ],
+            [
+              -0.19466213881969452,
+              -0.11519870162010193,
+              0.08015457540750504
+            ],
+            [
+              -0.19284488260746002,
+              -0.11506222933530807,
+              0.0799877718091011
+            ],
+            [
+              -0.19178806245326996,
+              -0.1150059774518013,
+              0.07942495495080948
+            ]
+          ],
+          "rightfinger_pad": []
+        },
+        "at": {
+          "xyz_m": [
+            -0.18604939155044833,
+            -0.18062293413035235,
+            0.06525728717784382
+          ],
+          "quat_xyzw": [
+            0.9994265951432438,
+            0.03385960343706377,
+            -8.898315183964855e-05,
+            -1.6045757937854612e-05
+          ]
+        }
+      },
+      "receipt": {
+        "schema_version": "bounded-skills/6",
+        "kind": "receipt",
+        "observation_id": "public-1",
+        "candidate_id": "e147fbfbb277bb9b",
+        "skill": "move_to",
+        "outcome": "failure",
+        "phase": "collision",
+        "stop_reason": "measured_sweep_collision",
+        "steps_used": 0,
+        "before": {
+          "eef_xyz_m": [
+            -0.18585193936899597,
+            -0.2018375777530615,
+            0.0654530032193064
+          ],
+          "eef_quat_xyzw": [
+            0.9994367607730188,
+            0.03355446655165634,
+            -0.0005008330191894198,
+            -9.03119885849831e-05
+          ],
+          "gripper_opening_m": 0.07999948301224097,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -0.003195493914801037,
+            -0.017251075021820713,
+            -0.016737305342763555
+          ]
+        },
+        "after": {
+          "eef_xyz_m": [
+            -0.18585193936899597,
+            -0.2018375777530615,
+            0.0654530032193064
+          ],
+          "eef_quat_xyzw": [
+            0.9994367607730188,
+            0.03355446655165634,
+            -0.0005008330191894198,
+            -9.03119885849831e-05
+          ],
+          "gripper_opening_m": 0.07999948301224097,
+          "held_anchor_id": null,
+          "velocity_m_s": [
+            -0.003195493914801037,
+            -0.017251075021820713,
+            -0.016737305342763555
+          ]
+        },
+        "changes": [
+          {
+            "anchor_id": "e118",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          },
+          {
+            "anchor_id": "e75",
+            "displacement_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "held": null,
+            "relation": null,
+            "fixture_state": null
+          }
+        ],
+        "evidence": [
+          {
+            "measurement_id": "rgbd:4:e118",
+            "capture_step": 4,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          },
+          {
+            "measurement_id": "rgbd:2:e75",
+            "capture_step": 2,
+            "source": "rgbd",
+            "cameras": [
+              "main",
+              "wrist"
+            ],
+            "operation": "rgbd_segmentation_and_tracking/1-dev"
+          }
+        ],
+        "expectation_checks": [
+          {
+            "condition": {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e118",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            "measured": null,
+            "passed": null
+          },
+          {
+            "condition": {
+              "metric": "angular_error_rad",
+              "anchor_id": "e118",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            "measured": 0.0013959790308091958,
+            "passed": true
+          }
+        ]
+      },
+      "reason": "measured_sweep_collision"
+    }
+  ]
+}

@@ -76,6 +76,9 @@ def check_receipt(candidate, receipt, detail):
         metric = condition['metric']
         value = (float(receipt['after']['held_anchor_id'] == condition['anchor_id'])
                  if metric == 'held' else values.get(metric))
+        if receipt['steps_used'] == 0 and receipt['outcome'] != 'success':
+            # A rejected plan did not test a grip, release, or motion result.
+            value = None
         if value is not None and not np.isfinite(value):
             value = None
         passed = None if value is None else bool(

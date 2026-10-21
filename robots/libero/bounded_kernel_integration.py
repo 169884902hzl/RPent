@@ -25,6 +25,10 @@ def capture_fields(points,key=None):
 
 def can_accelerate(screen):
     """Keep warm unladen routes on the source until a payload built the EDT."""
+    if screen.initial_margin or screen.initial_target_margin or screen.initial_payload_margin:
+        # The source owns changing initial-contact semantics. Keep its exact
+        # checks until the accelerator supports the same surface minimum rule.
+        return False
     if len(screen.payload):
         return True
     fields = _captures.get(screen.capture_key)

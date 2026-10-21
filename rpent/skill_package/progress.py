@@ -23,9 +23,12 @@ class PublicProgress:
         self.loop_detected = False
         self.goal_contact = {}
         self.seen_motion_receipts = set()
+        self.skip_planning_rejection = False
 
     def record_actions(self, candidates, receipts, *, goal_directions=None):
-        executed = {r['candidate_id'] for r in receipts}
+        self.skip_planning_rejection = bool(receipts) and all(
+            r.get('steps_used') == 0 and r.get('phase') == 'planning_unreachable' for r in receipts)
+        executed = {r['candidate_id'] for r in receipts if r.get('steps_used', 0) > 0}
         group = [(c['skill'], c['parameters']) for c in candidates if c['id'] in executed]
         if group:
             self.action_groups.append(json.dumps(group, sort_keys=True, separators=(',', ':')))
@@ -57,6 +60,11 @@ class PublicProgress:
     def update(self, request, metrics=None):
         """Consume lower-is-better public goal metrics with explicit resolution."""
         if self.last_revision == request['revision']:
+            return self.stagnant
+        if getattr(self, 'skip_planning_rejection', False):
+            self.last_revision = request['revision']
+            self.skip_planning_rejection = False
+            self.last_reasons = ['internal_planning_rejection_not_task_attempt']
             return self.stagnant
         first = self.last_revision is None
         if not hasattr(self, 'best'):  # Trusted historical CPU snapshots.

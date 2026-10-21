@@ -235,6 +235,8 @@ class SmoothMotion:
     def run(self, waypoints: list[dict], *, gripper: float = -1., blend: bool = True,
             lookahead=None, request_factory=None, contact_stop=None, initial_derivatives=None,
             waypoint_check=None) -> dict:
+        if hasattr(self.screen, 'rebase_start'):
+            self.screen = self.screen.rebase_start(measured_robot(self.p))
         reference_start, inherited, inherited_source = self._reference_start(initial_derivatives)
         trajectory, origin, poses, screen = self.prepare(waypoints, blend=blend, initial_derivatives=initial_derivatives)
         if not screen["passed"]:

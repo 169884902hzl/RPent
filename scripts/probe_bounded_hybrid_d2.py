@@ -414,13 +414,15 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                 ledger.write(json.dumps(record, default=lambda x: x.tolist() if hasattr(x, "tolist") else str(x)) + "\n")
                 ledger.flush()
                 if getattr(adapter, 'schema6_v1', False) and any(
-                        r.get('skill') in {'finish','ask_help'} for r in receipts):
+                        (r.get('skill') == 'finish' or r.get('skill') == 'ask_help'
+                         and r.get('outcome') == 'rejected') for r in receipts):
                     reason = 'public_terminal_selection'
                     break
                 completed = (source is not None and adapter.held == source.id if spec["mode"] == "pick"
                              else facade.goal_status()["satisfied"][spec["goal_index"]])
                 failed = recovery_budget is not None and bool(receipts) and any(
-                    r['outcome'] != 'success' for r in receipts)
+                    r['outcome'] != 'success' and not (r['steps_used'] == 0
+                        and r.get('phase') == 'planning_unreachable') for r in receipts)
                 retry_exhausted = False
                 if failed and not recovering_binding and recovery_budget is not None:
                     retry_exhausted = recovery_used >= recovery_budget

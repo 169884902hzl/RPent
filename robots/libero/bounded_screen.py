@@ -85,11 +85,28 @@ class PublicRouteScreen:
                     (int(i), int(j)): float(d)
                     for i, j, d in zip(distances.row, distances.col, distances.data)}
 
+    def rebase_start(self, robot):
+        """Create this skill's start-clearance baseline from measured pose."""
+        return self.with_measured_robot(robot)
+
     def with_measured_robot(self, robot):
-        """Retain captured collision evidence, reseed only the route's IK."""
-        current = copy.copy(self)
-        current.ik = self.ik.with_measured_robot(robot)
-        current.__dict__.pop('_geometry_kernel',None)
+        """Rebase outgoing clearance at the measured skill/braking start.
+
+        The capture, contact permissions and geometry stay the same. Initial
+        allowances are measured again, rather than inherited from a pose the
+        preceding executed skill has already left.
+        """
+        current = PublicRouteScreen(self.points, self.geometry,
+            self.ik.with_measured_robot(robot), opening=self.opening,
+            contact_points=self.target, contact_allowed=self.contact_allowed,
+            payload_local=self.payload,
+            initial_pose={'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot.get('eef_quat_xyzw', [0., 0., 0., 1.])},
+            measured_scene_points=self.measured_scene_points,
+            measured_target_points=self.measured_target_points,
+            use_kernel=self.use_kernel, capture_points=self.capture_points,
+            capture_key=self.capture_key, check_arm=self.check_arm)
+        current.contact_axis, current.contact_origin = self.contact_axis, self.contact_origin
+        current.support_separation = getattr(self, 'support_separation', False)
         return current
 
     def continuing_route(self):
@@ -185,12 +202,13 @@ class PublicRouteScreen:
                 & (local[:, 2] >= lower[2]) & (local[:, 2] <= upper[2]))
             distance = self._halfspace_distance(local[near], box)
             baseline = initial_margin.get(box['name'], {})
-            bound = np.array([baseline.get(index, .004) for index in ids[near]])
-            # Sub-nanometre round-off only; this is not a tracking tolerance.
+            # A box can slide across the same measured surface. Pixel-pair
+            # identity changes during translation/rotation and cannot define
+            # penetration. Preserve the box's minimum occupied clearance.
+            bound = min(baseline.values()) if baseline else .004
             blocked = (distance <= .004) & (distance < bound-1e-9)
-            # Initial overlap can be escaped, never deepened. New pixels in
-            # the inclusive 4 mm collision margin remain blocked.
-            blocked |= (distance <= .004) & np.array([index not in baseline for index in ids[near]], dtype=bool)
+            if not baseline:
+                blocked |= distance <= .004
             retained_margin += int(((distance <= .004) & ~blocked).sum())
             if pad_contact:
                 pad = next((candidate for candidate in self.geometry['boxes']
@@ -228,6 +246,7 @@ class PublicRouteScreen:
                     yield {"xyz_m": ((1-t)*p+t*q).tolist(), "quat_xyzw": slerp(t).as_quat().tolist()}, (
                         index == len(poses)-2 and part == n)
         clearance = .2
+        previous_support_clearance = None
         last_ik = None
         certificate = None
         def prepared_poses():
@@ -269,6 +288,13 @@ class PublicRouteScreen:
                 base['geometry_evaluations'] += 1
                 if geometry['passed']:
                     certificate = xyz, rotation, geometry['path_min_clearance_m']
+            support_clearance = geometry.get('occupied_support_clearance_m')
+            if (support_clearance is not None and previous_support_clearance is not None
+                    and support_clearance < previous_support_clearance-1e-9):
+                geometry = {**geometry, 'passed':False,'collision':True,
+                    'reason':'measured_support_separation_decreased'}
+            if support_clearance is not None:
+                previous_support_clearance = support_clearance
             base["samples"] += 1
             clearance = min(clearance, geometry["path_min_clearance_m"])
             if not geometry["passed"]:
@@ -292,6 +318,20 @@ class PublicRouteScreen:
         return {**base, "passed": True, "reason": "public_route_screen_passed", "collision": False,
                 "ik_reachable": True, "path_min_clearance_m": max(0., clearance)}
 
+
+    def _payload_groups(self):
+        """Connected obstacle surfaces from this immutable measured capture."""
+        if not hasattr(self, '_payload_obstacle_groups'):
+            from scipy.sparse import coo_matrix
+            from scipy.sparse.csgraph import connected_components
+            cells, inverse = np.unique(np.floor(self.points/.008).astype(np.int64),
+                axis=0, return_inverse=True)
+            pairs = cKDTree(cells).query_pairs(1.75, output_type='ndarray')
+            n = len(cells)
+            graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(n, n))
+            _, groups = connected_components(graph, directed=False)
+            self._payload_obstacle_groups = groups[inverse]
+        return self._payload_obstacle_groups
 
     def _geometry_at(self,pose):
         key = (*pose['xyz_m'],*pose['quat_xyzw'])
@@ -367,20 +407,32 @@ class PublicRouteScreen:
                 if payload_clearance < .004:
                     blocked = True
                     if self.initial_payload_margin:
-                        # As for hand shells, an occupied positive planning
-                        # margin may be left, never deepened. Compare every
-                        # nearby surface pair: accepting just the nearest
-                        # one could hide a different, newly entered obstacle.
+                        # Group connected measured obstacle surfaces. An
+                        # attached body's nearest sampled point may change
+                        # while separating from its support; the surface's
+                        # minimum clearance must not decrease.
+                        groups = (self._payload_groups() if getattr(self, 'support_separation', False)
+                            else np.arange(len(self.points)))
+                        previous = np.full(int(groups.max())+1, np.inf)
+                        for (_, j), distance in self.initial_payload_margin.items():
+                            previous[groups[j]] = min(previous[groups[j]], distance)
                         pairs = cKDTree(world_payload).sparse_distance_matrix(
                             self.tree, .004, output_type='coo_matrix')
-                        bound = np.array([self.initial_payload_margin.get((int(i), int(j)), .004)
-                            for i, j in zip(pairs.row, pairs.col)])
-                        novel = np.array([(int(i), int(j)) not in self.initial_payload_margin
-                            for i, j in zip(pairs.row, pairs.col)], dtype=bool)
-                        violations = (pairs.data < bound-1e-9) | novel
+                        if getattr(self, 'support_separation', False):
+                            bounds = previous[groups[pairs.col]]
+                            violations = (pairs.data < bounds-1e-9) | ~np.isfinite(bounds)
+                            occupied = np.isfinite(bounds)
+                            result['occupied_support_clearance_m'] = (float(pairs.data[occupied].min())
+                                if occupied.any() else .004)
+                        else:
+                            bounds = np.array([self.initial_payload_margin.get((int(i), int(j)), .004)
+                                for i, j in zip(pairs.row, pairs.col)])
+                            violations = (pairs.data < bounds-1e-9) | np.array([
+                                (int(i), int(j)) not in self.initial_payload_margin
+                                for i, j in zip(pairs.row, pairs.col)], dtype=bool)
                         blocked = bool(violations.any())
                         result['initial_payload_margin_pairs_retained'] = int((~violations).sum())
-                        result['initial_margin_policy'] = 'measured_current_overlap_no_further_incursion'
+                        result['initial_margin_policy'] = 'measured_surface_minimum_no_further_incursion'
                         if blocked:
                             hit = np.flatnonzero(violations)[np.argmin(pairs.data[violations])]
                             at, neighbour = pairs.row[hit], pairs.col[hit]

@@ -277,7 +277,7 @@ def bounded_episode(args, row, endpoints, probe):
                         'initial_physics_sha256': initial_physics_sha256, 'training':False}
                 if index >= 9:
                     raise RuntimeError('startup did not reach a physical control request')
-            if not decision['candidate_ids'] or any(r['skill'] in {'finish','ask_help'} for r in receipts):
+            if not decision['candidate_ids'] or any((r['skill'] == 'finish' or r['skill'] == 'ask_help' and r['outcome'] == 'rejected') for r in receipts):
                 break
         return {'case':case, 'status':'physical_result', 'schema_version':VERSION,
             'success':bool(adapter.p.env.terminated or facade._native_success_events),

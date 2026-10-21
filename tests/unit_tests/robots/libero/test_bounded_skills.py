@@ -2757,7 +2757,7 @@ def test_zero_control_lift_preserves_planning_failure_before_hold_verification(a
         'screen': {'passed': False, 'collision': True}})
     receipt, = adapter.execute(request, decision(request, [lift['id']]))
     assert (receipt['outcome'], receipt['phase'], receipt['stop_reason']) == (
-        'failure', 'collision', 'measured_sweep_collision')
+        'failure', 'planning_unreachable', 'measured_sweep_collision')
     assert receipt['steps_used'] == 0 and adapter.held is None
 
 

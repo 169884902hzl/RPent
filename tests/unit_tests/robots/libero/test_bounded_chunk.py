@@ -480,7 +480,7 @@ def test_oracle_refreshes_blocked_lift_before_discarding_unmeasured_grasp(adapte
 @pytest.mark.parametrize('steps,reason,expected', [
     (0, 'predicted_anchor_changed', 'lift'),
     (1, 'predicted_anchor_changed', 'set_gripper'),
-    (0, 'measured_sweep_collision', 'set_gripper'),
+    (0, 'measured_sweep_collision', 'lift'),
     (10, 'public_hold_lost', 'set_gripper'),
 ])
 def test_oracle_retries_fresh_lift_after_zero_motion_anchor_guard(adapter, steps, reason, expected):

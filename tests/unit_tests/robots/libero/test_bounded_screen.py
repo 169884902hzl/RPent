@@ -58,8 +58,9 @@ def test_current_joint_seed_keeps_captured_scene_payload_and_margin_evidence():
     current = screen.with_measured_robot(robot)
     assert received == [robot] and current.ik is new_ik and screen.ik is old_ik
     assert current.points is screen.points and current.payload is screen.payload
-    assert current.initial_payload_margin == screen.initial_payload_margin
-    assert current._pose_geometry_cache is screen._pose_geometry_cache
+    assert current.initial_payload_margin != screen.initial_payload_margin
+    assert not current.initial_payload_margin  # Current pose moved clear of the old near pair.
+    assert current._pose_geometry_cache is not screen._pose_geometry_cache
 
 
 def test_contact_ingress_continues_the_screened_endpoint_joint_branch():

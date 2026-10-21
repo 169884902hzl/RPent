@@ -347,7 +347,7 @@ class MeasuredSkillAdapter:
 
     def _cloud_and_ik(self, anchor_id=None, *, contact=False):
         robot = measured_robot(self.p)
-        cache_key = (anchor_id, contact, self.held, tuple(robot["eef_xyz_m"]), tuple(robot['finger_positions_m']))
+        cache_key = (anchor_id, contact, self.held, tuple(robot["eef_xyz_m"]), tuple(robot["eef_quat_xyzw"]), tuple(robot['finger_positions_m']))
         if cache_key in self._screen_cache:
             return self._screen_cache[cache_key]
         hand_geometry = gripper_at_measured_fingers(self.geometry, robot['finger_positions_m'])
@@ -495,6 +495,7 @@ class MeasuredSkillAdapter:
             opening=robot['gripper_opening_m'], payload_local=payload, initial_pose=pose,
             use_kernel=screen.use_kernel,check_arm=screen.check_arm,
             capture_points=screen.capture_points,capture_key=screen.capture_key)
+        result.support_separation = True
         self._screen_cache[cache_key] = result
         return result
 
@@ -1856,6 +1857,58 @@ class MeasuredSkillAdapter:
             quat = (Rotation.from_quat(quat)*Rotation.from_euler("z", parameters["angle_deg"], degrees=True)).as_quat().tolist()
         return [{"xyz_m": point.tolist(), "quat_xyzw": quat}]
 
+    def _screen_contact_sequence(self, key, entry, *, approach=None):
+        """Screen approach ingress, closure and the first post-contact motion.
+
+        These are conditional plans from current depth, not success labels or
+        hidden controls. An unselected continuation is never executed here.
+        """
+        plan = self.plans.get(key)
+        if not plan:
+            return {'passed': True, 'reason': 'noncontact_measured_approach'}
+        if 'surface_contact_options' in plan:
+            plan = plan['surface_contact_options'].get(approach)
+        if not plan:
+            return {'passed': False, 'reason': 'measured_contact_approach_missing'}
+        ingress = plan.get('contact_route', [{'xyz_m': plan['xyz_m'], 'quat_xyzw': plan['quat_xyzw']}])
+        screen = self._cloud_and_ik(key, contact=True)
+        if isinstance(screen, PublicRouteScreen) and screen.ik.last_solution is not None:
+            screen = screen.continuing_route()
+        result = screen([entry, *ingress])
+        if not result['passed'] or not isinstance(screen, PublicRouteScreen):
+            return result
+        endpoint = ingress[-1]
+        width = plan.get('width_m')
+        if width is None:
+            return result
+        opening = measured_robot(self.p)['gripper_opening_m']
+        checks = []
+        continuation_ik = screen.continuing_route().ik
+        for aperture in np.linspace(opening, min(opening, width), 4):
+            geometry = gripper_at_measured_fingers(self.geometry, [aperture/2, -aperture/2])
+            closure = PublicRouteScreen(screen.points, geometry, continuation_ik,
+                opening=float(aperture), contact_points=screen.target, contact_allowed=True,
+                initial_pose=endpoint)
+            check = closure([endpoint]);checks.append(check)
+            if not check['passed']:
+                return {**check, 'contact_sequence_stage': 'closure', 'contact_sequence': checks}
+        entity = self.scene.entities.get(key)
+        if entity is not None and (entity.part_of or fixture_actions(entity.name)):
+            alternatives=[]
+            for sign in (-1,1):
+                quat=(Rotation.from_quat(endpoint['quat_xyzw'])*Rotation.from_euler('z',sign*45,degrees=True)).as_quat().tolist()
+                alternatives.append(closure([endpoint,{**endpoint,'quat_xyzw':quat}]))
+            passed=next((check for check in alternatives if check['passed']),None)
+            return {**(passed or alternatives[-1]),'contact_sequence_stage':'fixture_turn',
+                'contact_sequence':checks,'contact_alternatives':alternatives}
+        payload=(screen.target-np.asarray(endpoint['xyz_m']))@Rotation.from_quat(endpoint['quat_xyzw']).as_matrix()
+        lift = PublicRouteScreen(screen.points,geometry,continuation_ik,opening=float(aperture),
+            payload_local=payload,initial_pose=endpoint)
+        lift.support_separation=True
+        raised={**endpoint,'xyz_m':(np.asarray(endpoint['xyz_m'])+[0.,0.,.03]).tolist()}
+        check=lift([endpoint,raised])
+        return {**check,'contact_sequence_stage':'attached_initial_lift','contact_sequence':checks}
+
     def _candidate(self, skill, parameters, *, screen_options=True, complete=False):
         cid = hashlib.sha256(identity({"skill": skill, "parameters": parameters}).encode()).hexdigest()[:16]
         if self.schema6_v1 and skill == 'move_to' and not complete and 'path' not in parameters:
@@ -1896,7 +1949,7 @@ class MeasuredSkillAdapter:
                             screen = self._cloud_and_ik(parameters['anchor_id'], contact=True)
                             if isinstance(screen, PublicRouteScreen):
                                 screen = screen.continuing_route()
-                            evidence = screen([entry, *ingress])
+                            evidence = self._screen_contact_sequence(parameters['anchor_id'], entry, approach=approach)
                             self.candidate_diagnostics.append({'stage': 'move_contact_ingress',
                                 'candidate_id': cid, 'parameters': variant, 'screen': evidence})
                             if not evidence['passed']:
@@ -2795,6 +2848,27 @@ class MeasuredSkillAdapter:
                              "public_transport_hold": holding, "boundary_hold_checks": boundary_hold})
         return receipts
 
+    def _retreat_executed_path(self):
+        """Try the last actually executed path backwards, with fresh screening."""
+        if not getattr(self, '_escape_available', False):
+            return {'executed': False, 'steps_used': 0, 'stop_reason': 'no_unused_executed_path'}
+        self._escape_available = False
+        route, previous = [], np.asarray(self.robot()['eef_xyz_m'])
+        travelled = 0.
+        for row in reversed(self._escape_trace):
+            xyz = np.asarray(row['eef_xyz_m'])
+            if np.linalg.norm(xyz-previous) >= .008:
+                route.append({'xyz_m': xyz.tolist(), 'quat_xyzw': row['eef_quat_xyzw']})
+                travelled += float(np.linalg.norm(xyz-previous))
+                previous = xyz
+                if travelled >= .12:
+                    break
+        if not route:
+            return {'executed': False, 'steps_used': 0, 'stop_reason': 'executed_path_has_no_translation'}
+        key = getattr(self, '_escape_anchor', None)
+        return SmoothMotion(self.p, self._cloud_and_ik(key, contact=key is not None),
+            self.config).run(route, gripper=self.gripper_command)
+
     def _execute_one(self, request, candidate, *, lookahead=None):
         before = self.robot()
         start_steps = self.p.env.execution_budget()["used_sim_steps"]
@@ -2842,14 +2916,62 @@ class MeasuredSkillAdapter:
             if route is None:
                 phase, outcome, reason = "perception", "failure", "current_anchor_unmeasured"
             else:
-                screen = self._cloud_and_ik(key, contact=skill in {"descend", "lower", "nudge"}
-                    or (skill in {"lift", "rotate_wrist"} and self.active is not None))
+                # All variants use this same current capture. Rejecting a
+                # geometric proposal is an internal planning attempt, not a
+                # robot action or a consumed task-recovery attempt.
+                variants = [parameters]
+                if skill in {'move_to', 'descend'} and self.schema6_v1:
+                    variants += [{**parameters, 'approach': approach, 'path': path}
+                        for approach in ('above', 'right', 'front', 'left')
+                        for path in ('over', 'direct', 'around')
+                        if (approach, path) != (parameters.get('approach'), parameters.get('path'))]
+                lift_routes = [route]
                 if skill == 'lift':
-                    screen = self._lift_payload_screen(key, screen, payload_reference)
-                motion = SmoothMotion(self.p, screen, self.config)
-                detail = motion.run(route, gripper=self.gripper_command, lookahead=lookahead,
-                    request_factory=self.snapshot_decision_context if lookahead is not None else None,
-                    contact_stop=self._empty_held_gripper)
+                    goal = np.asarray(route[-1]['xyz_m'])
+                    lift_routes += [[{**route[-1], 'xyz_m':(goal+delta).tolist()}]
+                        for delta in ([.02,0.,0.],[-.02,0.,0.],[0.,.02,0.],[0.,-.02,0.])]
+                    variants = [parameters]*len(lift_routes)
+                attempts = []
+                for attempt_index, variant in enumerate(variants[:13]):
+                    if skill == 'lift':
+                        route = lift_routes[attempt_index]
+                    if skill in {'move_to', 'descend'}:
+                        probe = {**candidate, 'parameters': variant}
+                        self._commit_grasp(probe)
+                        route = self._route(skill, variant)
+                        if skill == 'descend' and variant is not parameters:
+                            approach_route = self._route('move_to', variant)
+                            route = [*approach_route, *route] if approach_route and route else None
+                    if route is None:
+                        attempts.append({'parameters': variant, 'reason': 'current_anchor_unmeasured'})
+                        continue
+                    screen = self._cloud_and_ik(key, contact=skill in {'descend', 'lower', 'nudge'}
+                        or (skill in {'lift', 'rotate_wrist'} and self.active is not None))
+                    if skill == 'lift':
+                        screen = self._lift_payload_screen(key, screen, payload_reference)
+                        if isinstance(screen, PublicRouteScreen):
+                            screen.support_separation = True
+                    if skill == 'move_to':
+                        chain = self._screen_contact_sequence(key, route[-1], approach=variant.get('approach'))
+                        if not chain['passed']:
+                            detail = {'executed':False,'stop_reason':chain['reason'],'steps_used':0,'screen':chain}
+                            attempts.append({'parameters':variant,'reason':chain['reason'],'executed':False,'screen':chain})
+                            continue
+                    motion = SmoothMotion(self.p, screen, self.config)
+                    detail = motion.run(route, gripper=self.gripper_command, lookahead=lookahead,
+                        request_factory=self.snapshot_decision_context if lookahead is not None else None,
+                        contact_stop=self._empty_held_gripper)
+                    attempts.append({'parameters': variant, 'reason': detail['stop_reason'],
+                        'executed': detail.get('executed', False), 'screen': detail.get('screen')})
+                    if detail.get('executed') or detail['stop_reason'] in {'endpoint', 'native_stop'}:
+                        parameters = variant
+                        break
+                detail['internal_planning_attempts'] = attempts
+                trace = detail.get('trace', [])
+                if trace:
+                    self._escape_trace = [copy.deepcopy(row['before']) for row in trace]
+                    self._escape_anchor = key
+                    self._escape_available = True
                 if skill == 'lift' and isinstance(screen, PublicRouteScreen) and len(screen.payload):
                     detail['conditional_payload'] = {'anchor_id': key,
                         'source': 'complete_measured_pre_lift_instance', 'held_verified': self.held == key,
@@ -2889,7 +3011,7 @@ class MeasuredSkillAdapter:
                     # measured contact. Keep its handle identity through
                     # the recovery decision instead of inventing obstacles
                     # at the unchanged fingers after a zero-step rejection.
-                    if skill != 'nudge' or detail.get('executed'):
+                    if detail.get('executed'):
                         self.committed_grasps.pop(key, None)
         elif skill == 'guarded_move':
             from robots.libero.bounded_guarded import run_guarded
@@ -2967,7 +3089,10 @@ class MeasuredSkillAdapter:
             outcome = "success" if self.p.env.terminated else "rejected"
             reason = "native_success" if outcome == "success" else "environment_reports_task_incomplete"
         elif skill == "ask_help":
-            outcome, reason = "rejected", "no_human_available_use_observe_restage_or_other_approach"
+            detail = self._retreat_executed_path()
+            outcome = 'interrupted' if detail.get('executed') else 'rejected'
+            reason = ('no_human_retreat_and_reobserve' if detail.get('executed')
+                else 'no_human_available_use_observe_restage_or_other_approach')
         vla_observation = detail.get('post_handoff_observation') if skill == 'call_vla' else None
         if self.schema6_v1 and self.p.env.execution_budget()['used_sim_steps'] > start_steps:
             if skill in {'descend', 'lower', 'lift', 'nudge', 'guarded_move', 'set_gripper', 'release'}:
@@ -2986,11 +3111,13 @@ class MeasuredSkillAdapter:
             # same measurement and needlessly rebuilds its instance clouds.
             detail['reused_post_handoff_observation'] = True
             contact_registration = None
+        elif skill in MOTION_SKILLS and self.p.env.execution_budget()['used_sim_steps'] == start_steps:
+            contact_registration = None
         else:
             self.refresh()
             contact_registration = None
         lost_held = None
-        if skill in MOTION_SKILLS:
+        if skill in MOTION_SKILLS and self.p.env.execution_budget()['used_sim_steps'] > start_steps:
             holding, lost_held = self._recheck_transport_hold(before, entities_before)
             detail['public_transport_hold'] = holding
             if lost_held is not None:
@@ -3124,6 +3251,12 @@ class MeasuredSkillAdapter:
                 'cameras': ['main', 'wrist'] if self.scene.dual_view_fusion_v1 else ['main'],
                 'operation': (f"paired_contact_axis:{parameters['axis']}:compatible_interval_m="
                     + json.dumps(fit['compatible_axis_interval_m']))})
+        if (receipt['steps_used'] == 0 and receipt['outcome'] == 'failure'
+                and skill in MOTION_SKILLS and detail.get('screen', {}).get('passed') is False):
+            receipt['phase'] = 'planning_unreachable'
+        if receipt['steps_used'] == 0 and receipt.get('phase') == 'planning_unreachable':
+            self._planning_zero_step_count = getattr(self, '_planning_zero_step_count', 0)+1
+            detail['internal_planning_rejection_index'] = self._planning_zero_step_count
         check_receipt(candidate, receipt, detail)
         if skill == 'guarded_move':
             receipt['advance_m'] = detail['advance_m']
@@ -3452,7 +3585,23 @@ class MeasuredSkillAdapter:
             if parameters.get('preparation','in_place' if self.vla_options_v2 else 'initial_pose')=='in_place':
                 return {'success':True,'steps_used':0,'mode':'in_place'}
             route = [{"xyz_m": self.preparation["eef_xyz_m"], "quat_xyzw": self.preparation["eef_quat_xyzw"]}]
-            result = SmoothMotion(self.p, self._cloud_and_ik(), self.config).run(route, gripper=self.gripper_command)
+            start = np.asarray(self.robot()['eef_xyz_m'])
+            goal = np.asarray(route[-1]['xyz_m'])
+            height = max(start[2],goal[2])+.08
+            variants = [route, [{'xyz_m':[*start[:2],height]},
+                {'xyz_m':[*goal[:2],height]}, *route]]
+            for direction in (1.,-1.):
+                middle=(start+goal)/2+direction*.12*np.asarray(self.scene.view_axes[0])
+                middle[2]=max(start[2],goal[2])
+                variants.append([{'xyz_m':middle.tolist()},*route])
+            attempts=[]
+            for variant in variants:
+                result = SmoothMotion(self.p, self._cloud_and_ik(), self.config).run(
+                    variant,gripper=self.gripper_command)
+                attempts.append({'stop_reason':result['stop_reason'],'screen':result.get('screen')})
+                if result.get('executed'):
+                    break
+            result['internal_planning_attempts']=attempts
             return {**result, "success": result.get("endpoint_error_m", 1.) <= self.config.endpoint_tolerance_m}
         prediction_index = 0
         def predict(text):
