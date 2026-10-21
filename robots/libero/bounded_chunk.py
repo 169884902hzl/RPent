@@ -328,7 +328,11 @@ class PublicPrefixPrediction:
             result = []
             for original in originals:
                 cached = self._stationary_candidate_cache.get(original['id'])
-                if cached is None or original['skill'] in {'carry_to', 'lower', 'lift', 'set_gripper', 'release'}:
+                if (cached is None
+                        or cached['consequences']['screen_scope'] == 'blocked_at_current_prefix'
+                        or original['skill'] in {'carry_to', 'lower', 'lift', 'set_gripper', 'release'}):
+                    # A compact blocker contains no reusable endpoint result.
+                    # Recheck it rather than erasing its only failure field.
                     cached = self.candidate(original)
                 else:
                     cached = copy.deepcopy(cached)

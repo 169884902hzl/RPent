@@ -37,6 +37,35 @@ def physical_grip(adapter, *, empty=False):
     adapter.scene.refresh = refresh
 
 
+def test_stationary_prefix_rechecks_compact_blocker_before_reusing_ik(adapter):
+    """Regress stove7 lazy-off probe11205's invalid post-close context."""
+    from rpent.skill_package.contract import compact_candidate
+
+    adapter.schema6_v1 = True
+    adapter.compact_infeasible_candidates_v1 = True
+    request = adapter.request(k=4)
+    original = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    blocked = copy.deepcopy(original)
+    blocked['consequences'].update(collision=True, ik_reachable=None)
+    blocked = compact_candidate(blocked)
+    prediction = PublicPrefixPrediction(adapter, request)
+    prediction.original = {blocked['id']: blocked}
+    prediction._stationary_candidate_cache = {blocked['id']: blocked}
+    prediction._pose_changed = False
+    prediction.prefix = ['a-close-before-context']
+    calls = []
+
+    def recheck(candidate):
+        calls.append(candidate['id'])
+        return copy.deepcopy(original)
+
+    prediction.candidate = recheck
+    context = prediction.context()
+    assert calls == [blocked['id']]
+    validate(context)
+    assert context['candidates'][0]['consequences'] == original['consequences']
+
+
 def grip_sequence(request):
     return [next(c for c in request['candidates'] if c['skill'] == skill and (
         c['parameters'].get('anchor_id') == 'e1' if skill != 'set_gripper'
