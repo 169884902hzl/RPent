@@ -36,8 +36,13 @@ def main():
     p.add_argument('--replay-results', type=Path, action='append', required=True)
     p.add_argument('--a1-table', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--allow-budget-subset', action='store_true',
+        help='Report closed 40-case budgets separately before the full three-budget delivery.')
     a = p.parse_args()
-    assert len(a.replay_preparation) == len(a.replay_results) == 3
+    assert len(a.replay_preparation) == len(a.replay_results)
+    assert 1 <= len(a.replay_preparation) <= 3
+    if not a.allow_budget_subset:
+        assert len(a.replay_preparation) == 3
     with a.a1_table.open() as stream:
         a1 = {r['case']: r['A1_M_native_success'] == 'True' for r in csv.DictReader(stream)}
     assert len(a1) == 40 and sum(a1.values()) == 28
@@ -95,20 +100,24 @@ def main():
             'uncovered_private_rules': [r['case'] for r in cohort if r['private_rule_status'] != 'physical_result'],
             'improvements': [r['case'] for r in cohort if r['full_replay_success'] and not r['A1_M_native_success']],
             'regressions': [r['case'] for r in cohort if not r['full_replay_success'] and r['A1_M_native_success']]}
-    assert seen == {0, 1, 2} and len(rows) == 120
+    assert seen <= {0, 1, 2} and len(rows) == 40*len(seen)
+    if not a.allow_budget_subset:
+        assert seen == {0, 1, 2}
     a.output.mkdir(parents=True, exist_ok=False)
     with (a.output/'episodes.jsonl').open('x') as stream:
         for row in rows:
             stream.write(json.dumps(row)+'\n')
     report = {'source': 'measured B2 group comparisons and independent complete-path replays',
         'training': False, 'confirmation': False, 'evaluation_domain': 'D2',
+        'closed_recovery_budgets': sorted(seen), 'complete_all_three_budgets': seen == {0, 1, 2},
+        'success_definition': 'actual_full_replay_success: final facade.goal_status().done, all registered BDDL predicates; not an ever-success flag',
         'A1_pairing_scope': 'same registered task and seed; not a common full-physics fork against A1',
         'sampled_scope': 'conditional sampled prefixes, not an exhaustive optimal-policy bound; unknown retained',
         'by_recovery_budget': summaries}
     (a.output/'summary.json').write_text(json.dumps(report, indent=2)+'\n')
     manifest = {'replay_plans': manifests, 'A1_M_table': reference(a.a1_table),
         'rows': reference(a.output/'episodes.jsonl'), 'summary': reference(a.output/'summary.json'),
-        'collector': reference(Path(__file__)), 'closed_episodes': 120, 'training': False}
+        'collector': reference(Path(__file__)), 'closed_episodes': len(rows), 'training': False}
     (a.output/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n')
     print(json.dumps(report))
 
