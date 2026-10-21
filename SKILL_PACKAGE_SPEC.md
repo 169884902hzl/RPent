@@ -458,3 +458,12 @@ on ties, and record the selected strategy's parameters. Independent complete
 replay uses those exact parameters with a new seed. Nine policy trials are
 never pooled into one strategy's success rate. Unknown measurements keep the
 sampled envelope unknown; native full replay remains a separate result.
+
+For complete-path evaluation, also retain native-complete full-instruction
+branches from each sampled prefix. Compare their conditional observed rate
+with that of the locally chosen complete path. A local pick tie cannot erase
+a measured whole-task completion when its later placement failed. Select
+the best measured complete path, preserve self preference when completed
+paths tie, and replay it from the captured full initial state with independent
+seeds. This uses existing branch results and adds no PRO-specific progress
+rules. Uncovered rules remain explicit and use native-only replay.

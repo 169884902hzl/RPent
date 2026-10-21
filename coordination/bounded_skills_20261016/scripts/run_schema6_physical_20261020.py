@@ -60,7 +60,7 @@ def move_subtask(probe, facade, adapter, policy, specs, anchor_id):
 
 def worker(args, plan):
     row=plan['jobs'][args.worker]
-    os.environ['LIBERO_TYPE']='pro' if row['kind']=='d2' else 'standard'
+    os.environ['LIBERO_TYPE']='pro' if row['kind'] in {'d2', 'd2_replay'} else 'standard'
     os.environ['LIBERO_GRASP_DIAGNOSTIC_MODELS']=str(args.output/'private_grasp_models')
     helper=hooks(args.source);helper.bootstrap_source('d2')
     helper.install_d2_restore_compatibility()
@@ -79,6 +79,30 @@ def worker(args, plan):
             manifest['vla_variants'] = plan['vla_variants']
         manifest['parent_registration']=row['manifest']
         result=probe.evaluate_case(row['case'],endpoints,args.output/'episode',manifest,startup=args.startup)
+    elif row['kind']=='d2_replay':
+        import pickle
+        from robots.libero.bounded_hybrid_paths import select_complete_path, replay_complete_path
+        parent = json.loads(checked(row['parent_summary']).read_bytes())
+        selection = select_complete_path(parent)
+        if selection != row['path_selection']:
+            raise ValueError('registered complete-path selection changed')
+        initial = pickle.loads(checked(row['parent_initial']).read_bytes())
+        with probe.runtime(row['case'], endpoints, args.output/'episode') as (facade, adapter, policy, timings):
+            probe.restore_checkpoint(facade, adapter, policy, initial)
+            adapter.hybrid_recovery_budget = row['recovery_budget']
+            if not adapter.vla_options_v2:
+                raise ValueError('saved replay state has no B2 catalog')
+            actual = probe.snapshot_digest(facade.snapshot())
+            if actual != probe.snapshot_digest(initial['physics']):
+                raise ValueError('complete replay did not start from the full captured initial state')
+            result = replay_complete_path(probe, facade, adapter, policy, timings,
+                selection, row['replay_seed_base'], args.output/'replay')
+            result.update(case=row['case'], source_commit=plan['source_commit'],
+                parent_summary=row['parent_summary'], parent_initial=row['parent_initial'],
+                sampling_source_commit=parent['source_commit'], private_rule_status=parent['status'],
+                unsupported=parent.get('unsupported', []),
+                initial_physics_sha256=actual, parent_initial_physics_sha256=probe.snapshot_digest(initial['physics']),
+                recovery_budget=row['recovery_budget'])
     elif row['kind']=='smoke':
         # This fixed panel checks source startup and a real skill chunk in
         # each category. It is not a task-success or feasibility denominator.
@@ -199,6 +223,9 @@ def main():
         for key in ('bddl','grasp_measurement_calibration'):
             if key in row['case']:checked(row['case'][key])
         if 'manifest' in row:checked(row['manifest'])
+        if row.get('kind') == 'd2_replay':
+            for key in ('parent_summary', 'parent_initial'):
+                checked(row[key])
         if 'position' in row:
             for key in ('snapshot','annotation_state'):checked(row['position'][key])
     if args.preflight:

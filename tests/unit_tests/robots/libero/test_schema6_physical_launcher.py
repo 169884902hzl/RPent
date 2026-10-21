@@ -114,6 +114,53 @@ def test_worker_passes_registered_invocation_groups_into_d2_evaluator(tmp_path, 
     assert received[0]['recovery_budget'] == 1
 
 
+def test_complete_path_worker_restores_initial_physics_and_uses_pro_domain(tmp_path, monkeypatch):
+    import os
+    import pickle
+    from contextlib import contextmanager, nullcontext
+    from scripts import probe_bounded_hybrid_d2 as probe
+    from robots.libero.bounded_hybrid_paths import select_complete_path
+    from tests.unit_tests.robots.libero.test_bounded_hybrid_paths import summary
+
+    path = Path(__file__).resolve().parents[4]/'coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py'
+    spec = importlib.util.spec_from_file_location('schema6_complete_path_worker', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    parent = tmp_path/'parent.json'
+    parent.write_text(json.dumps(summary()))
+    initial = tmp_path/'initial.pkl'
+    physics = {'sim_state': [1.]}
+    initial.write_bytes(pickle.dumps({'physics': physics}))
+    ref = lambda p: {'path': str(p), 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
+    output = tmp_path/'out'
+    output.mkdir()
+    (output/'assignment.json').write_text(json.dumps({'sam3_url': 'http://127.0.0.1:1', 'vla_url': 'http://127.0.0.1:2'}))
+    plan = {'source_commit': 'tested', 'jobs': [{'kind': 'd2_replay', 'case': {},
+        'recovery_budget': 1, 'parent_summary': ref(parent), 'parent_initial': ref(initial),
+        'replay_seed_base': 1000000000, 'path_selection': select_complete_path(summary())}]}
+    monkeypatch.setenv('LIBERO_TYPE', 'standard')
+    monkeypatch.setenv('LIBERO_GRASP_DIAGNOSTIC_MODELS', str(tmp_path/'models'))
+    monkeypatch.setattr(module, 'hooks', lambda _: SimpleNamespace(
+        bootstrap_source=lambda *_: None, install_d2_restore_compatibility=lambda: None,
+        install_d2_request_compatibility=lambda *_: None))
+    facade = SimpleNamespace(snapshot=lambda: physics, goal_status=lambda: {'done': True})
+    adapter = SimpleNamespace(vla_options_v2=True, request=lambda **_: {})
+    @contextmanager
+    def runtime(*args, **kwargs):
+        assert os.environ['LIBERO_TYPE'] == 'pro'
+        yield facade, adapter, object(), SimpleNamespace(measure=lambda *_: nullcontext())
+    monkeypatch.setattr(probe, 'runtime', runtime)
+    monkeypatch.setattr(probe, 'restore_checkpoint', lambda *_: None)
+    def trial(*args, **kwargs):
+        assert kwargs['vla_parameters']['mode'] == 'task'
+        return {'decisions': 1, 'success': True, 'sim_steps': 10}, {}
+    monkeypatch.setattr(probe, 'trial', trial)
+    assert module.worker(SimpleNamespace(source=tmp_path, output=output, worker=0, startup=False), plan) == 0
+    result = json.loads((output/'summary.json').read_bytes())
+    assert result['actual_full_replay_success'] is True
+    assert result['initial_physics_sha256'] == result['parent_initial_physics_sha256']
+
+
 def test_n1_resume_preserves_completed_cases_and_interrupted_attempt(tmp_path):
     path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py'
     spec = importlib.util.spec_from_file_location('schema6_fixed_latency', path)
