@@ -3300,6 +3300,9 @@ class MeasuredSkillAdapter:
         initial_stove = self.ex.measure_stove(source) if mode in {"turn_on", "turn_off"} else None
         checks = []
         self.vla_trace = []
+        block_frames = []
+        block_capture_s = 0.
+        block_capture_count = 0
         hold_frames = []
         hold_verified = False
         vla_payload_reference = None
@@ -3361,14 +3364,30 @@ class MeasuredSkillAdapter:
                         hand_displacement_m=float(np.linalg.norm(hand_delta)))
                     hold_verified = coupling <= .015 and (hold_verified or np.linalg.norm(hand_delta) >= .005)
                     completed = hold_verified
-                    if completed:
-                        # Install measured ownership before run_fallback
-                        # invokes handoff(), not only after braking. Otherwise
-                        # held-object pixels are screened as scene obstacles.
-                        self.held = self.active = source.id
-                        self.payload_reference = vla_payload_reference
-                        self._instance_cache.clear()
-                        self._screen_cache.clear()
+                if raised and not completed and block_frames:
+                    from robots.libero.bounded_vla_hold import capture_public_block, measured_block_hold
+
+                    motion, pair = measured_block_hold(block_frames, capture_public_block(self.p),
+                        vla_payload_reference['target'], self.holding_aperture)
+                    if motion is not None:
+                        import pickle
+
+                        body = pickle.dumps(pair, protocol=5)
+                        state = self.ex.toolkit._state
+                        name = state.save('bounded_vla_hold_motion.bin', body)
+                        motion['artifact'] = ({'path': str(state.artifact_path(name)),
+                            'sha256': hashlib.sha256(body).hexdigest()} if name else None)
+                        hold_evidence.update(block_motion=motion,
+                            relative_displacement_m=motion['relative_displacement_m'],
+                            hand_displacement_m=motion['hand_displacement_m'])
+                        completed = hold_verified = True
+                if completed:
+                    # Ownership still needs observed co-motion. It can come
+                    # from completed policy blocks without an extra probe.
+                    self.held = self.active = source.id
+                    self.payload_reference = vla_payload_reference
+                    self._instance_cache.clear()
+                    self._screen_cache.clear()
             elif mode == 'pick':
                 hold_frames.clear()
                 hold_verified = False
@@ -3416,7 +3435,20 @@ class MeasuredSkillAdapter:
             return {**result, "success": result.get("endpoint_error_m", 1.) <= self.config.endpoint_tolerance_m}
         prediction_index = 0
         def predict(text):
-            nonlocal prediction_index
+            nonlocal prediction_index, block_capture_s, block_capture_count
+            if (self.schema6_v1 and mode == 'pick' and source is not None
+                    and self.holding_aperture(measured_robot(self.p)['gripper_opening_m'])[0]):
+                from time import perf_counter
+                from robots.libero.bounded_vla_hold import capture_public_block
+
+                started = perf_counter()
+                frame = capture_public_block(self.p)
+                block_capture_s += perf_counter()-started
+                if frame is not None:
+                    block_capture_count += 1
+                    if self.holding_aperture(frame['robot']['gripper_opening_m'])[0]:
+                        block_frames.append(frame)
+                        del block_frames[:-8]
             observation = dict(self.p._last_obs)
             observation["task_descriptions"] = text
             observation.setdefault("extra_view_images", None)
@@ -3455,6 +3487,14 @@ class MeasuredSkillAdapter:
             observe=monitor if self.schema6_v1 else observe,
             native_done=lambda: self.p.env.terminated, native_stopped=lambda: self.p.env.terminated or self.p.env.truncated,
             handoff=handoff, budget=self.vla_budget)
+        if block_capture_s:
+            # run_fallback times this callback as inference. Attribute our
+            # sensor copies to detection while keeping the total unchanged.
+            result['timing_s']['inference'] -= block_capture_s
+            result['timing_s']['public_observation'] += block_capture_s
+            result['public_block_capture'] = {'wall_s': block_capture_s,
+                'captures': block_capture_count, 'retained_frames': len(block_frames),
+                'source': 'native_rgbd_once_per_prediction_block', 'sam_calls': 0}
         if not (self.p.env.terminated or self.p.env.truncated):
             result["post_handoff_measurement"] = observe(full=True)
             first_measurement = result['post_handoff_measurement']

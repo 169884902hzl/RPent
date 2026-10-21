@@ -327,7 +327,16 @@ measurement evidence without selecting an instance or reading task truth.
 During a VLA block the monitor reads EEF position, gripper opening and native
 termination. The no-progress window is at least five blocks. A pick proposal
 based on EEF ascent/aperture must pass the existing RGB-D rise and co-motion
-checks after handoff. One screened 1 cm observation motion can provide the
+checks after handoff. During a pick, native-resolution RGB-D is retained at
+prediction-block boundaries with a calibrated nonempty jaw aperture, up to
+eight frames. This adds no SAM query or control. The final measured instance
+can be tracked backward into those frames with the existing bidirectional
+RGB/depth tracker. An earlier nonempty aperture, at least 5 mm measured hand
+motion and at most 15 mm relative displacement establish co-motion. The
+accepted sensor pair is saved with its hash; sensor-copy time is attributed
+to public observation, not policy inference. This measurement neither edits
+stationary obstacle ownership nor certifies a new route.
+When this evidence is unavailable, one screened 1 cm observation motion can provide the
 second co-motion frame. Its fixed direction order is up, +x, -x, +y, -y, down;
 a downward option must retain at least 3 cm measured rise. Only the first
 fully screened direction executes. If none passes, no verification motion
