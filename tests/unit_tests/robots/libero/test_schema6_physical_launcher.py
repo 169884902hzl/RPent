@@ -81,6 +81,39 @@ def test_failed_startup_raises_before_dispatching_any_full_case(tmp_path, monkey
     assert stats['formal'] == [] and not list(output.glob('closed_*.json'))
 
 
+@pytest.mark.parametrize('variants', [None, [{'name': 'in_place', 'parameters': {'preparation': 'in_place'}}]])
+def test_worker_passes_registered_invocation_groups_into_d2_evaluator(tmp_path, monkeypatch, variants):
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    path = Path(__file__).resolve().parents[4]/'coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py'
+    spec = importlib.util.spec_from_file_location('schema6_variant_worker', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    parent = tmp_path/'parent.json'
+    parent.write_text(json.dumps({'cases': [{'name': 'D2'}]}))
+    case = {'name': 'D2'}
+    plan = {'source_commit': 'tested', 'schema_version': 'bounded-skills/6',
+        'vla_options_v2': True, 'jobs': [{'kind': 'd2', 'recovery_budget': 1, 'case': case,
+            'manifest': {'path': str(parent), 'sha256': hashlib.sha256(parent.read_bytes()).hexdigest()}}]}
+    if variants is not None:
+        plan['vla_variants'] = variants
+    output = tmp_path/'out'
+    output.mkdir()
+    (output/'assignment.json').write_text(json.dumps({'sam3_url': 'http://127.0.0.1:1', 'vla_url': 'http://127.0.0.1:2'}))
+    monkeypatch.setattr(module, 'hooks', lambda _: SimpleNamespace(
+        bootstrap_source=lambda *_: None, install_d2_restore_compatibility=lambda: None,
+        install_d2_request_compatibility=lambda *_: None))
+    received = []
+    def evaluate(actual_case, _, __, registered, **kwargs):
+        assert actual_case == case and kwargs['startup'] is False
+        received.append(registered)
+        return {'status': 'physical_result'}
+    monkeypatch.setattr(probe, 'evaluate_case', evaluate)
+    assert module.worker(SimpleNamespace(source=tmp_path, output=output, worker=0, startup=False), plan) == 0
+    assert received[0].get('vla_variants') == variants
+    assert received[0]['recovery_budget'] == 1
+
+
 def test_n1_resume_preserves_completed_cases_and_interrupted_attempt(tmp_path):
     path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_fixed_latency_20261020.py'
     spec = importlib.util.spec_from_file_location('schema6_fixed_latency', path)
