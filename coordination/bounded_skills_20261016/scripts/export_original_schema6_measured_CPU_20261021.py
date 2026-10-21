@@ -89,8 +89,8 @@ def main():
                                'source': reference(worker_path)})
             continue
         saved = pickle.loads(start.read_bytes())
-        if saved['public_runtime']['adapter'].get('vla_options_v2', False):
-            raise ValueError('this export is restricted to the published default VLA catalog')
+        if saved['public_runtime']['adapter'].get('vla_options_v2', False) != plan.get('vla_options_v2', False):
+            raise ValueError('captured B2 catalog differs from its registration')
         if saved['physics']['actuator_state'].get('integration') is None:
             raise ValueError('new measured labels require complete integration state')
         request = saved['request']
@@ -108,6 +108,8 @@ def main():
                     'self_continuation': 'bounded oracle until registered subtask or budget',
                     'vla_budget': case['diagnostic']['budget'],
                     'truth_code': reference(a.source / 'robots/libero/v5_grasp_truth.py')}
+        if plan.get('vla_options_v2'):
+            contract['full_task_call_vla'] = 'unchanged_native_task_completion; not sustained-grasp truth'
         binding = {'request_sha256': digest(request), 'prefix': [],
                    'snapshot_sha256': reference(start)['sha256'],
                    'outcome_contract_sha256': digest(contract),
@@ -155,13 +157,14 @@ def main():
                 raise ValueError('private trial truth changed')
             audit = {'trial': trial, 'candidate': candidate, 'actual_policy_hashes': hashes,
                      'choices': choices_ref, 'wire_inputs': inputs, 'execution_prompts': prompts}
-            audit_path = root / f'label_invocation_{trial["trial_seed"]}.json'
+            invocation = f'{cid}_' if plan.get('vla_options_v2') else ''
+            audit_path = root / f'label_invocation_{invocation}{trial["trial_seed"]}.json'
             if audit_path.exists():
                 if json.loads(audit_path.read_bytes()) != audit:
                     raise ValueError('invocation audit changed')
             else:
                 audit_path.write_bytes(canonical(audit) + b'\n')
-            entry = {'sample_id': f'{case["name"]}/{trial["method"]}/{trial["trial_seed"]}',
+            entry = {'sample_id': f'{case["name"]}/{cid if plan.get("vla_options_v2") else trial["method"]}/{trial["trial_seed"]}',
                      'seed': trial['trial_seed'], 'status': 'closed', 'success': trial['success'],
                      'wall_s': max(0., trial['wall_s']-trial.get('private_metrology_s', 0.)),
                      'raw_wall_s': trial['wall_s'], 'private_metrology_s': trial.get('private_metrology_s', 0.),
@@ -199,8 +202,8 @@ def main():
               'by_category': dict(categories), 'unresolved_cases': unresolved,
               'policy_revision': policy_revision, 'policy_hashes': hashes, 'data': reference(data),
               'manifest': reference(a.manifest), 'PRO': False, 'confirmation': False,
-              'B2_new_catalog_active': False, 'training_executed': False,
-              'release_scope': 'current published call_vla only; new variants remain unknown; consumer validation required'}
+              'B2_new_catalog_active': bool(plan.get('vla_options_v2')), 'training_executed': False,
+              'release_scope': 'only executed candidates acquire measured labels; all others remain unknown; no model training executed'}
     (a.output / 'manifest.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report), flush=True)
 

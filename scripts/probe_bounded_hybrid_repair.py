@@ -176,10 +176,12 @@ def first_self_chunk(facade, adapter, policy, spec, output):
         policy.rpc = original
 
 
-def run_trial(facade, adapter, policy, timings, spec, method, seed, output, request, *, decision_limit=160):
+def run_trial(facade, adapter, policy, timings, spec, method, seed, output, request, *,
+              decision_limit=160, vla_parameters=None):
     start_event, started = len(timings.events), time.perf_counter()
     result, endpoint = probe.trial(facade, adapter, policy, timings, spec, method,
-        seed, output, request, decision_limit=decision_limit)
+        seed, output, request, decision_limit=decision_limit,
+        **({'vla_parameters': vla_parameters} if vla_parameters is not None else {}))
     result['wall_time_breakdown'] = timings.summary(time.perf_counter()-started, start_event=start_event)
     write(output / 'summary.json', result)
     return result, endpoint
@@ -285,17 +287,29 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             trials = []
             # Trial identities/seeds are fixed independently of scheduling.
             # Diagnose fallback contact before a slow bounded-self branch.
-            methods = ([(1, 'call_vla')] if startup else
-                [(1, 'call_vla'), (2, 'call_vla'), (3, 'call_vla')])
+            variants = diagnostic.get('vla_variants')
+            if variants is not None:
+                if not plan.get('vla_options_v2'):
+                    raise ValueError('explicit VLA variants require the registered B2 catalog')
+                methods = [(j, 'call_vla', variant) for variant in variants for j in (1, 2, 3)]
+                if startup:
+                    methods = methods[:1]
+            else:
+                methods = [(j, 'call_vla', None) for j in ((1,) if startup else (1, 2, 3))]
             if not startup and diagnostic.get('include_self', True):
-                methods.append((0, 'self'))
-            for index, method in methods:
+                methods.append((0, 'self', None))
+            for index, method, variant in methods:
                 probe.restore_checkpoint(facade, adapter, policy, saved)
                 adapter.vla_budget = budget
                 adapter.targeted_vla_measurement_v1 = diagnostic.get('targeted_vla_measurement_v1', False)
+                name = f'{method}_{index}' if variant is None else f'call_vla_{variant["name"]}_{index}'
+                parameters = variant['parameters'] if variant is not None else None
                 row, _ = run_trial(facade, adapter, policy, timings, spec, method,
-                    diagnostic['trial_seed_base']+index*1000, output / f'{method}_{index}', request,
-                    decision_limit=max(0, 160-prefix_decisions))
+                    diagnostic['trial_seed_base']+index*1000, output / name, request,
+                    decision_limit=max(0, 160-prefix_decisions), vla_parameters=parameters)
+                if variant is not None:
+                    row['vla_variant'] = variant
+                    write(output / name / 'summary.json', row)
                 trials.append(row)
             continuation = None
         else:

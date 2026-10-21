@@ -409,3 +409,40 @@ def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_
         assert len(result['full_replay']) == 1 and result['full_replay'][0]['success'] is False
         assert result['conditional_rate_product'] == 0.
         assert result['independent_replay_wall_s'] >= 0.
+
+
+@pytest.mark.parametrize('preparation,whole_task', [('in_place', False), ('initial_pose', False), ('in_place', True)])
+def test_registered_vla_variant_executes_exact_option_with_its_own_outcome_scope(tmp_path, monkeypatch, preparation, whole_task):
+    from contextlib import nullcontext
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    source = SimpleNamespace(id='source')
+    monkeypatch.setattr(probe, 'bind_subtask', lambda *_: (source, None))
+    executed = []
+    physics = lambda: {'sim_state': [1.], 'counters': {'_elapsed_steps': len(executed)}}
+    facade = SimpleNamespace(snapshot=physics,
+        goal_status=lambda: {'satisfied': [bool(executed)], 'done': bool(executed)})
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({'physics': physics()}, {}))
+    base = {'schema_version': 'test', 'observation_id': 'o', 'revision': 1,
+        'max_actions': 4, 'robot': {'held_anchor_id': None}, 'anchors': []}
+    candidates = [{'id': name, 'skill': 'call_vla', 'parameters': parameters,
+        'consequences': {'collision': False, 'ik_reachable': True, 'screen_scope': 'measured'}}
+        for name, parameters in [('in_place', {'anchor_id': 'source', 'mode': 'open', 'preparation': 'in_place'}),
+            ('initial_pose', {'anchor_id': 'source', 'mode': 'open', 'preparation': 'initial_pose'}),
+            ('full_task', {'mode': 'task', 'preparation': 'in_place', 'prompt_style': 'full_task'})]]
+    request = base | {'candidates': candidates}
+    adapter = SimpleNamespace(details=[], last_chunk={}, held=None,
+        p=SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False,
+            execution_budget=lambda: {'used_sim_steps': len(executed)}), model=object()))
+    def execute(_, decision):
+        executed.extend(decision['candidate_ids'])
+        return [{'stop_reason': 'native_success' if whole_task else 'measured_success'}]
+    adapter.execute = execute
+    variant = {'mode': 'task', 'preparation': 'in_place', 'prompt_style': 'full_task'} if whole_task else {'preparation': preparation}
+    spec = {'mode': 'pick' if whole_task else 'open', 'source_symbol': 'cabinet', 'target_symbol': None, 'goal_index': 0}
+    row, _ = probe.trial(facade, adapter, SimpleNamespace(rpc=object()),
+        SimpleNamespace(measure=lambda *_: nullcontext()), spec, 'call_vla', 123,
+        tmp_path/'branch', request, vla_parameters=variant)
+    assert executed == ['full_task' if whole_task else preparation]
+    assert row['success'] is True
+    assert row['truth_source'] == ('unchanged_native_task_completion' if whole_task else 'unchanged_registered_task_predicate')

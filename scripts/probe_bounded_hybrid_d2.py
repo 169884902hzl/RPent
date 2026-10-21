@@ -267,7 +267,8 @@ class SeededPolicy:
         return value
 
 
-def trial(facade, adapter, policy, timings, spec, method, seed, output, first_request, *, decision_limit=160):
+def trial(facade, adapter, policy, timings, spec, method, seed, output, first_request, *,
+          decision_limit=160, vla_parameters=None):
     """Execute one branch, preserving its private endpoint before metrology."""
     from robots.libero.bounded_oracle import NoPublicOption
     from rpent.skill_package.contract import legal_after
@@ -295,7 +296,9 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
     seeded = SeededPolicy(original_model, seed, input_ledger=output/'vla_inputs.jsonl')
     if method == "call_vla":
         adapter.p.model = seeded
-    reference_grasp = facade.grasp_reference(spec["source_symbol"]) if spec["mode"] == "pick" else None
+    whole_task = vla_parameters is not None and vla_parameters.get('mode') == 'task'
+    reference_grasp = (facade.grasp_reference(spec["source_symbol"])
+        if spec["mode"] == "pick" and not whole_task else None)
     reason, decisions, endpoint = "decision_limit", 0, None
     recovery_budget = getattr(adapter, 'hybrid_recovery_budget', None)
     recovery_used = 0
@@ -314,7 +317,27 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                 decisions += 1
                 recovering_binding = source is None or (spec["target_symbol"] and target is None)
                 unbound = None
-                if recovering_binding and method=='call_vla':
+                forced = None
+                if method == 'call_vla' and vla_parameters is not None:
+                    required = dict(vla_parameters)
+                    if required.get('mode') != 'task':
+                        required['mode'] = spec['mode']
+                        if source is not None:
+                            required['anchor_id'] = source.id
+                        if target is not None:
+                            required['target_id'] = target.id
+                    legal = set(legal_after(request, []))
+                    forced = next((c for c in request['candidates'] if c['id'] in legal
+                        and c['skill'] == 'call_vla'
+                        and (whole_task or not recovering_binding)
+                        and all(c['parameters'].get(k) == v for k, v in required.items())), None)
+                    if forced is None:
+                        reason = 'requested_vla_variant_unavailable'
+                        break
+                    if whole_task:
+                        unbound = forced
+                        recovering_binding = False
+                elif recovering_binding and method=='call_vla':
                     from robots.libero.bounded_vla_options import clause_for_mode
                     legal = set(legal_after(request,[]))
                     phrase = clause_for_mode(adapter.ex.instruction,spec['mode'])
@@ -327,7 +350,10 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                         unbound = next((c for c in request['candidates'] if c['id'] in legal
                             and c['skill']=='call_vla' and c['parameters']['mode']=='task'
                             and c['parameters'].get('preparation')=='in_place'),None)
-                if unbound is not None:
+                if forced is not None:
+                    decision = {key:request[key] for key in ('schema_version','observation_id','revision')}
+                    decision.update(kind='decision', candidate_ids=[forced['id']])
+                elif unbound is not None:
                     decision = {key:request[key] for key in ('schema_version','observation_id','revision')}
                     decision.update(kind='decision',candidate_ids=[unbound['id']])
                     result.setdefault('unbound_instruction_calls',[]).append(unbound['parameters'])
@@ -409,7 +435,11 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                     break
         endpoint, endpoint_ref = save_checkpoint(facade, adapter, policy, output / "private_endpoint.pkl")
         metrology_started = time.perf_counter()
-        if reference_grasp is not None:
+        if whole_task:
+            truth = facade.goal_status()
+            success = bool(truth['done'])
+            result['truth_source'] = 'unchanged_native_task_completion'
+        elif reference_grasp is not None:
             # Private diagnostic integration is outside the executed branch's
             # budget and endpoint, and never supplies its public stop rule.
             truth = facade.measure_grasp_hold(spec["source_symbol"], reference_grasp)

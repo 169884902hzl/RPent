@@ -435,7 +435,17 @@ to its acceptable set; it does not remove that action from public legality.
 Measured scene change resets the existing failure memory and permits a new
 attempt. Rule-label releases bind this oracle revision independently.
 
-B2's expanded VLA catalog is implemented behind `vla_options_v2=false`.
-It becomes active only after the shared schema/contract is synchronized in
-C2's training renderer, inference bridge and HTTP service. Old schema6 rule
-labels never acquire a positive label for a new, unmeasured VLA variant.
+B2's expanded VLA catalog defaults to `vla_options_v2=false` in model-facing
+integrations. Explicit oracle, development-fork and D2 evaluation plans enable
+it with `vla_options_v2=true` (user decision, 2026-10-20 22:40 PDT). Model training
+and serving activate it after C2 synchronizes the training renderer, inference
+bridge and HTTP service. Old schema6 rule labels never acquire a positive
+label for a new, unmeasured VLA variant.
+
+Original train-state forks compare in-place subtask calls, subtask calls after
+returning to the initial pose, and in-place full-instruction calls with three
+shared policy seeds, plus a bounded self branch. Full-instruction candidates
+use native whole-task completion as their outcome; pick subtask candidates
+retain registered sustained-grasp v3. Their distinct outcome scopes and the
+executed candidate IDs are bound into the measured-label contract. A new
+variant receives a label only from its own completed branch.
