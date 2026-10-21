@@ -1,0 +1,76 @@
+"""Run the published HTTP model on frozen original init-heldout identities."""
+import hashlib
+import json
+import time
+from collections import Counter
+from urllib.request import urlopen
+
+
+def verified_health(service):
+    """Require the registered adapter and public contract, not just HTTP 200."""
+    with urlopen(service['health_url'], timeout=30) as response:
+        health = json.load(response)
+    if health['status'] != 'ok' or health['adapter_sha256'] != service['adapter_sha256']:
+        raise ValueError('model service adapter differs from registration')
+    package = health['skill_package']
+    for key in ('schema_sha256', 'contract_sha256'):
+        if package[key] != service[key]:
+            raise ValueError('model service contract differs from registration: '+key)
+    return health
+
+
+def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
+    """Make every semantic choice through HTTP; oracle labels are never read."""
+    from robots.libero.bounded_async import http_choice
+    service = plan['model_service']
+    health = verified_health(service)
+    choose = http_choice(service['endpoint'])
+    output.mkdir()
+    (output/'service_health_before.json').write_text(json.dumps(health, indent=2)+'\n')
+    with probe.runtime(case, endpoints, output, domain='original') as (facade, adapter, policy, timings):
+        adapter.allow_vla = True
+        adapter.vla_options_v2 = True
+        _, initial = probe.save_checkpoint(facade, adapter, policy, output/'private_initial.pkl')
+        started = time.perf_counter()
+        records, skill_steps = [], Counter()
+        with (output/'choices.jsonl').open('x') as ledger:
+            for index in range(plan['runtime_budget']['decisions']):
+                if adapter.p.env.terminated or adapter.p.env.truncated:
+                    break
+                begin = time.perf_counter()
+                start_event = len(timings.events)
+                with timings.measure('planning.request'):
+                    request = adapter.request(k=k)
+                with timings.measure('decision.model'):
+                    decision = choose(request)
+                before = len(adapter.details)
+                with timings.measure('execution.chunk'):
+                    receipts = adapter.execute(request, decision)
+                record = {'index': index, 'request': request, 'decision': decision,
+                    'request_sha256': hashlib.sha256(json.dumps(request, sort_keys=True,
+                        separators=(',', ':')).encode()).hexdigest(),
+                    'receipts': receipts, 'details': adapter.details[before:],
+                    'wall_time_breakdown': timings.summary(time.perf_counter()-begin,
+                        start_event=start_event)}
+                ledger.write(json.dumps(record, default=str)+'\n')
+                ledger.flush()
+                records.append(record)
+                for receipt in receipts:
+                    skill_steps[receipt['skill']] += receipt['steps_used']
+                if startup and sum(skill_steps.values()) > 0:
+                    break
+                if any(r['skill'] in {'finish', 'ask_help'} for r in receipts):
+                    break
+        after = verified_health(service)
+        (output/'service_health_after.json').write_text(json.dumps(after, indent=2)+'\n')
+        return {'case': case, 'status': 'startup_physical' if startup else 'physical_result',
+            'success': bool(facade.goal_status()['done']), 'decisions': len(records),
+            'sim_steps': sum(skill_steps.values()), 'skill_sim_steps': dict(skill_steps),
+            'k': k, 'model_service': service, 'initial_snapshot': initial,
+            'source_commit': plan['source_commit'], 'split': 'init_holdout',
+            'training': False, 'confirmation': False, 'oracle_choices_used': 0,
+            'wall_s': time.perf_counter()-started,
+            'wall_time_breakdown': timings.summary(time.perf_counter()-timings.started),
+            'selected_option_ids': [r['decision']['candidate_ids'] for r in records],
+            'native_truncated': bool(adapter.p.env.truncated),
+            'last_receipts': records[-1]['receipts'] if records else []}

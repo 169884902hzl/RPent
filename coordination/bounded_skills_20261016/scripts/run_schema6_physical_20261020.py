@@ -112,6 +112,12 @@ def worker(args, plan):
                 unsupported=parent.get('unsupported', []),
                 initial_physics_sha256=actual, parent_initial_physics_sha256=probe.snapshot_digest(initial['physics']),
                 recovery_budget=row['recovery_budget'])
+    elif row['kind']=='model':
+        from coordination.bounded_skills_20261016.scripts.original_model_closedloop_20261021 import run_episode
+        if row['split'] != 'init_holdout' or not plan['evaluation_only']:
+            raise ValueError('model probe requires original init-heldout evaluation')
+        result = run_episode(probe, row['case'], endpoints, args.output/'episode', plan,
+            row['k'], startup=args.startup)
     elif row['kind']=='smoke':
         # This fixed panel checks source startup and a real skill chunk in
         # each category. It is not a task-success or feasibility denominator.
