@@ -63,6 +63,36 @@ def require_physical_startup(result):
         raise RuntimeError('startup ended without a completed physical request')
 
 
+def capture_failed_support_routes(output):
+    """Keep exact public lift-screen inputs for CPU regression diagnosis.
+
+    Opt-in diagnostic runs only. Serialization time remains in their timing;
+    latency comparison runs leave this disabled.
+    """
+    import gzip
+    import pickle
+    from robots.libero.bounded_screen import PublicRouteScreen
+    original=PublicRouteScreen.__call__
+    captured=0
+    directory=output/'failed_support_routes'
+    def call(screen,*positional,**kwargs):
+        nonlocal captured
+        raw=(pickle.dumps((screen,positional,kwargs),protocol=5)
+            if captured<8 and getattr(screen,'support_separation',False) else None)
+        result=original(screen,*positional,**kwargs)
+        if raw is not None and not result['passed']:
+            directory.mkdir(exist_ok=True)
+            path=directory/f'{captured:02d}.pkl.gz'
+            path.write_bytes(gzip.compress(raw,compresslevel=1,mtime=0))
+            write(directory/f'{captured:02d}.json',dict(input=str(path),
+                input_sha256=hashlib.sha256(raw).hexdigest(),result=result,
+                source='public_rgbd_static_robot_geometry_and_proprioception',
+                training=False,private_truth_used=False))
+            captured+=1
+        return result
+    PublicRouteScreen.__call__=call
+
+
 def common_start(args, facade, adapter, policy, probe):
     """Share complete integration/controller/RNG state across source processes."""
     if getattr(args,'common_starts',None) is None:
@@ -115,6 +145,9 @@ def worker(args, plan):
     from robots.libero.bounded_timing import EpisodeTimings
     from robots.libero.bounded_skills import MeasuredSkillAdapter
     from rpent.utils.rpc.http_rpc import HttpRpcClient
+
+    if os.environ.get('EXEC_CAPTURE_FAILED_SUPPORT')=='1':
+        capture_failed_support_routes(args.output)
 
     hooks.install_d2_request_compatibility(probe)
     runtime_options = plan.get('runtime_options', {})

@@ -57,6 +57,30 @@ def test_box_surface_minimum_allows_new_pixels_but_rejects_deeper_incursion():
     assert not screen([pose,{**pose,'xyz_m':[0.,.001,1.]}])['passed']
 
 
+def test_recorded_support_separation_uses_surface_not_nearest_pixel():
+    row=next(r for r in FIXTURE['cases'] if r['case']==1 and r['reason']=='measured_payload_collision')
+    point=np.asarray(row['screen']['payload_point'])
+    obstacle=np.asarray(row['screen']['obstacle_point'])
+    pose={'xyz_m':[0.,0.,1.], 'quat_xyzw':[0.,0.,0.,1.]}
+    # The new physical replay rejected a sub-micrometre clearance decrease
+    # at sample 2. Sampled Euclidean distances have tangential pixel error;
+    # signed height above this observed plane increases throughout the lift.
+    plane=np.array([obstacle+[x,y,0.] for x in np.arange(-.02,.021,.004)
+        for y in np.arange(-.02,.021,.004)])
+    geometry={'boxes':[{'name':'palm','lower':[-.005]*3,'upper':[.005]*3}]}
+    screen=PublicRouteScreen(plane,geometry,SimpleNamespace(check=lambda *a:{'solution_found':True}),
+        payload_local=[point-np.asarray(pose['xyz_m'])],initial_pose=pose)
+    screen.support_separation=True
+    shift=np.array([0.,5e-6,1e-7])
+    assert np.linalg.norm(point+shift-obstacle)<np.linalg.norm(point-obstacle)
+    up={**pose,'xyz_m':(np.asarray(pose['xyz_m'])+shift).tolist()}
+    result=screen([pose,up,{**pose,'xyz_m':[0.,5e-6,1.01]}])
+    assert result['passed'],result
+    assert len(screen._support_planes())==1
+    assert not screen([pose,up,pose])['passed']
+    assert not screen([pose,{**pose,'xyz_m':[0.,0.,.99999]}])['passed']
+
+
 def test_planner_only_rejection_does_not_consume_public_stagnation():
     p=PublicProgress(11)
     p.update({'revision':0},[])

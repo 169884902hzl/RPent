@@ -79,7 +79,8 @@ class PublicRouteScreen:
                     if keep.any():
                         margin[box['name']] = dict(zip(ids[keep], distance[keep]))
             if len(self.payload):
-                distances = cKDTree(self.payload@rotation.T+xyz).sparse_distance_matrix(
+                self._initial_payload_world = self.payload@rotation.T+xyz
+                distances = cKDTree(self._initial_payload_world).sparse_distance_matrix(
                     self.tree, .004, output_type='coo_matrix')
                 self.initial_payload_margin = {
                     (int(i), int(j)): float(d)
@@ -246,7 +247,7 @@ class PublicRouteScreen:
                     yield {"xyz_m": ((1-t)*p+t*q).tolist(), "quat_xyzw": slerp(t).as_quat().tolist()}, (
                         index == len(poses)-2 and part == n)
         clearance = .2
-        previous_support_clearance = None
+        previous_support_clearances = {}
         last_ik = None
         certificate = None
         def prepared_poses():
@@ -288,13 +289,13 @@ class PublicRouteScreen:
                 base['geometry_evaluations'] += 1
                 if geometry['passed']:
                     certificate = xyz, rotation, geometry['path_min_clearance_m']
-            support_clearance = geometry.get('occupied_support_clearance_m')
-            if (support_clearance is not None and previous_support_clearance is not None
-                    and support_clearance < previous_support_clearance-1e-9):
+            support_clearances = geometry.get('occupied_support_clearances_m', {})
+            if any(group in previous_support_clearances
+                    and value < previous_support_clearances[group]-1e-9
+                    for group, value in support_clearances.items()):
                 geometry = {**geometry, 'passed':False,'collision':True,
                     'reason':'measured_support_separation_decreased'}
-            if support_clearance is not None:
-                previous_support_clearance = support_clearance
+            previous_support_clearances.update(support_clearances)
             base["samples"] += 1
             clearance = min(clearance, geometry["path_min_clearance_m"])
             if not geometry["passed"]:
@@ -332,6 +333,48 @@ class PublicRouteScreen:
             _, groups = connected_components(graph, directed=False)
             self._payload_obstacle_groups = groups[inverse]
         return self._payload_obstacle_groups
+
+    def _support_planes(self):
+        """Fit occupied support patches, not nearest depth-pixel distances.
+
+        A lateral subpixel move can reduce unsigned point-to-point distance
+        while the payload separates from the actual measured surface. Only
+        locally planar occupied patches get this signed-distance treatment;
+        other obstacles retain the exact point-cloud collision check.
+        """
+        if not hasattr(self, '_occupied_support_planes'):
+            groups = self._payload_groups()
+            occupied = {}
+            for _, j in self.initial_payload_margin:
+                occupied.setdefault(int(groups[j]), set()).add(j)
+            planes = {}
+            for group, ids in occupied.items():
+                contacts = self.points[sorted(ids)]
+                neighbours = np.unique(np.concatenate(self.tree.query_ball_point(contacts, .02)))
+                patch = self.points[neighbours[groups[neighbours] == group]]
+                if len(patch) < 6:
+                    continue
+                centre = patch.mean(0)
+                _, singular, axes = np.linalg.svd(patch-centre, full_matrices=False)
+                # A line or a curved/corner patch cannot establish a support
+                # plane. The residual bound describes observed flatness,
+                # never an extra collision clearance.
+                if singular[1] < .002 or singular[2] > .05*singular[1]:
+                    continue
+                normal = axes[-1]
+                residual = np.abs((patch-centre)@normal)
+                if residual.max() > .001:
+                    continue
+                origin = getattr(self, '_initial_payload_world', None)
+                if origin is None:
+                    continue
+                if (origin.mean(0)-centre)@normal < 0:
+                    normal = -normal
+                planes[group] = {'centre': centre, 'normal': normal,
+                    'flatness_m': float(residual.max()),
+                    'initial_clearance_m': float(((origin-centre)@normal).min())}
+            self._occupied_support_planes = planes
+        return self._occupied_support_planes
 
     def _geometry_at(self,pose):
         key = (*pose['xyz_m'],*pose['quat_xyzw'])
@@ -422,6 +465,18 @@ class PublicRouteScreen:
                             bounds = previous[groups[pairs.col]]
                             violations = (pairs.data < bounds-1e-9) | ~np.isfinite(bounds)
                             occupied = np.isfinite(bounds)
+                            clearances = {int(group): float(pairs.data[(groups[pairs.col] == group) & occupied].min())
+                                for group in np.unique(groups[pairs.col[occupied]])}
+                            planes = self._support_planes()
+                            for group, plane in planes.items():
+                                plane_pairs = ((groups[pairs.col] == group)
+                                    & (np.abs((self.points[pairs.col]-plane['centre'])@plane['normal'])
+                                        <= plane['flatness_m']+1e-6))
+                                signed = float(((world_payload-plane['centre'])@plane['normal']).min())
+                                violations[plane_pairs] = signed < plane['initial_clearance_m']-1e-9
+                                clearances[group] = signed
+                            result['occupied_support_clearances_m'] = clearances
+                            result['support_plane_count'] = len(planes)
                             result['occupied_support_clearance_m'] = (float(pairs.data[occupied].min())
                                 if occupied.any() else .004)
                         else:
