@@ -42,3 +42,34 @@ an opt-in diagnostic launcher capture of exact failed public support route
 inputs (not enabled for final latency comparisons). Focused screen,
 receipt and launcher checks: 43 passed. Exact new-snapshot CPU/physics still
 pending; first-round failures remain intact.
+
+Exact `2e3a401a` archive SHA256
+`4175068bd3842fac9e6affc466fb8c0e803b6728a377d89c188c0304788ff07d`
+passed **735 CPU tests**, 294.61 s; log
+`/tmp/F_exact_2e3a401a_CPU_20261022.log`. Round 2 jobs **11143/11144** use
+the same 19 indices/common complete initial states, each after its round 1
+shard. Diagnostic failed-support input capture is enabled in round 2, so its
+timings include serialization overhead; final latency regressions disable it.
+
+First interim strict pairing (15/19 closed, not the full 30): original
+baseline 15/15 versus round 1 1/15. All 15 complete physics/controller/RNG
+initial hashes matched. Per-decision four-stage medians (seconds): baseline
+28.188 / 60.714 / 16.553 / 8.090; round 1
+0.455 / 4.486 / 3.077 / 0.714, in perception/candidates/decision/execution
+order. The lower runtime coincides with many zero-control failures; it is
+not an accuracy-preserving speedup. Raw paired records:
+`ROOT/results/bounded_skills/execution_repairs_20261022/03552c03/interim_pairs_v1/`.
+
+Own-layout CPU prototype: geometry/admission unit checks **7 passed**.
+`scripts/generate_bounded_train_layouts.py` rebuilt the final original-train
+goal witness in an independent renderer-free CPU simulator by replaying 27
+saved original controls. First generated bowl state, seed **11020000**,
+native predicates feasible and no object penetrations in initial/witness
+states. Exact private generated-state SHA256:
+`88f06bdf0e62f992bc440798a9bb1c788a6a7260835c3466ab474e77d51b5490`.
+Remote registration/output: `ROOT/rd_train_layout_CPU_20261022/`;
+local metadata: `coordination/bounded_skills_20261016/preparation/train_layout_CPU_20261022/`.
+Seed segment 11020000–11029999 was recorded before the CPU generation.
+This is **not training-admitted**: exhaustive geometric confirmation-distance
+checks and additional asset distractor insertion remain pending; no GPU
+pilot/labels have run, and no PRO/MAX inputs were used.

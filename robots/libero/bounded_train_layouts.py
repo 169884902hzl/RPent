@@ -1,0 +1,120 @@
+"""Own-layout perturbations of original train tasks; never reads PRO/MAX.
+
+This generator owns private scene construction only. Its coordinates and task
+witness are not exposed to the public perception/runtime input. The caller
+must verify original train admission and evaluate a native predicate witness
+in a separate CPU simulator before admitting a generated state.
+"""
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass
+
+import numpy as np
+
+VERSION = 'original-train-layout/1'
+ORIGINAL_SUITES = {'libero_spatial','libero_object','libero_goal','libero_10','libero_90'}
+SEED_RANGE = (11020000,11029999)
+
+
+@dataclass(frozen=True)
+class LayoutLimits:
+    translation_m: float = .12
+    yaw_rad: float = math.pi
+    separation_m: float = .01
+    confirmation_distance_m: float = .05
+    attempts: int = 200
+
+
+def corners(item):
+    """Conservative projected box at a proposed yaw, including its full size."""
+    half=np.asarray(item['size_m'],float)[:2]/2
+    xy=np.array([[-1,-1],[1,-1],[1,1],[-1,1]])*half
+    c,s=math.cos(item['yaw_rad']),math.sin(item['yaw_rad'])
+    return xy@np.array([[c,s],[-s,c]])+np.asarray(item['xyz_m'])[:2]
+
+
+def overlap(a,b,margin):
+    """Separating-axis test for tabletop oriented bounds, retaining a gap."""
+    az,bz=a['xyz_m'][2],b['xyz_m'][2]
+    if abs(az-bz)>=(a['size_m'][2]+b['size_m'][2])/2+margin:
+        return False
+    ac,bc=corners(a),corners(b)
+    for poly in (ac,bc):
+        for edge in (poly[1]-poly[0],poly[2]-poly[1]):
+            axis=np.array([-edge[1],edge[0]])/np.linalg.norm(edge)
+            aa,bb=ac@axis,bc@axis
+            if aa.max()+margin<=bb.min() or bb.max()+margin<=aa.min():
+                return False
+    return True
+
+
+def generate_layout(*, parent, objects, support, seed, witness_check,
+                    confirmation_layouts=(), limits=LayoutLimits()):
+    """Sample own offsets/yaws, reject intersections and failed task witnesses.
+
+    ``witness_check`` receives proposed poses and must test native predicates
+    in an independent CPU instance. Merely leaving goal text unchanged cannot
+    establish that the perturbed task remains satisfiable.
+    """
+    if parent.get('split')!='train' or parent.get('suite') not in ORIGINAL_SUITES:
+        raise ValueError('only frozen original train tasks are admitted')
+    if parent.get('PRO') or parent.get('D2') or parent.get('confirmation'):
+        raise ValueError('evaluation/confirmation states cannot enter perturbation labels')
+    if not SEED_RANGE[0]<=seed<=SEED_RANGE[1]:
+        raise ValueError('seed outside registered own-layout range')
+    if not callable(witness_check):
+        raise TypeError('independent native task witness callback required')
+    rng=np.random.default_rng(seed)
+    low,high=np.asarray(support['lower_m']),np.asarray(support['upper_m'])
+    if not np.all(high>low) or len({x['id'] for x in objects})!=len(objects):
+        raise ValueError('invalid support bounds or duplicate object identity')
+    for item in objects:
+        values=np.r_[item['xyz_m'],item['size_m'],item['yaw_rad']]
+        if not np.isfinite(values).all() or not np.all(np.asarray(item['size_m'])>0):
+            raise ValueError('finite positive measured/static object geometry required')
+    fixed=[dict(x) for x in objects if not x['movable']]
+    moving=[x for x in objects if x['movable']]
+    reasons={}
+    for attempt in range(limits.attempts):
+        proposed=[dict(x) for x in fixed]
+        bases=[np.asarray(x['xyz_m']) for x in moving]
+        # Permute existing positions as well as offset/yaw them. This is our
+        # generic sampler, independent of PRO swap/task names or definitions.
+        order=rng.permutation(len(moving))
+        for i,item in enumerate(moving):
+            pos=bases[order[i]].copy()
+            pos[:2]+=rng.uniform(-limits.translation_m,limits.translation_m,2)
+            pos[2]=high[2]+item['size_m'][2]/2
+            proposed.append({**item,'xyz_m':pos.tolist(),
+                'yaw_rad':float(item['yaw_rad']+rng.uniform(-limits.yaw_rad,limits.yaw_rad))})
+        reason=None
+        for item in proposed:
+            if not item['movable']:
+                continue
+            footprint=corners(item)
+            if not ((footprint>=low[:2]+limits.separation_m).all()
+                    and (footprint<=high[:2]-limits.separation_m).all()):
+                reason='outside_free_support';break
+            for old in confirmation_layouts:
+                q=old.get(item['id'])
+                if q is not None and np.linalg.norm(np.asarray(item['xyz_m'])-q)<limits.confirmation_distance_m:
+                    reason='near_permanent_confirmation_layout';break
+            if reason:break
+        if reason is None and any(overlap(a,b,limits.separation_m)
+                for i,a in enumerate(proposed) for b in proposed[i+1:]
+                if a['movable'] or b['movable']):
+            reason='intersecting_object_bounds'
+        if reason is None:
+            witness=witness_check(proposed)
+            if not isinstance(witness,dict) or witness.get('native_predicates_satisfied') is not True:
+                reason='original_task_witness_failed'
+        if reason is not None:
+            reasons[reason]=reasons.get(reason,0)+1
+            continue
+        return {'version':VERSION,'layout_seed':seed,'parent':parent,'objects':proposed,
+            'limits':vars(limits),'attempt':attempt,'rejected_attempts':reasons,
+            'predicate_witness':witness,'PRO':False,'D2':False,'confirmation':False,
+            'identity_domain':'own_original_train_layout',
+            'source_policy':'own original train sampler; no PRO/MAX files or definitions'}
+    raise ValueError('no admissible layout: '+str(reasons))

@@ -1,0 +1,192 @@
+{
+  "layout": {
+    "version": "original-train-layout/1",
+    "layout_seed": 11020000,
+    "parent": {
+      "suite": "libero_spatial",
+      "task": 0,
+      "seed": 10,
+      "split": "train",
+      "initial_state_sha256": "f6ce6f7f25326bedc23933bb436b5f6eb4810cef61184635c75395e557e1808f"
+    },
+    "objects": [
+      {
+        "id": "plate_1",
+        "xyz_m": [
+          0.0588179717149916,
+          0.18666998570389426,
+          0.9094597825222624
+        ],
+        "size_m": [
+          0.13762122203357283,
+          0.1374699120165222,
+          0.01894636973086461
+        ],
+        "local_centre_m": [
+          0.0008174202368321226,
+          0.0003476331090821183,
+          0.006959999999999948
+        ],
+        "yaw_rad": 1.5644579885797465,
+        "movable": false
+      },
+      {
+        "id": "wooden_cabinet_1",
+        "xyz_m": [
+          0.02818987926952359,
+          -0.26488082684053044,
+          1.018788404919031
+        ],
+        "size_m": [
+          0.25458,
+          0.2210142943833165,
+          0.2184031901619382
+        ],
+        "local_centre_m": [
+          0.003939999999999999,
+          0.0011971471916582543,
+          0.11378840491903092
+        ],
+        "yaw_rad": 2.6797168907715383,
+        "movable": false
+      },
+      {
+        "id": "flat_stove_1",
+        "xyz_m": [
+          -0.30515556345944506,
+          -0.1357084843320462,
+          0.92001
+        ],
+        "size_m": [
+          0.29702209181940786,
+          0.19,
+          0.07002000000000008
+        ],
+        "local_centre_m": [
+          0.0964889540902961,
+          0.0,
+          0.015010000000000023
+        ],
+        "yaw_rad": 0.0,
+        "movable": false
+      },
+      {
+        "id": "akita_black_bowl_1",
+        "xyz_m": [
+          -0.17857492274041045,
+          0.30831070966868,
+          0.9252709642617439
+        ],
+        "size_m": [
+          0.10719994032407795,
+          0.10700720136999811,
+          0.05054192852348781
+        ],
+        "local_centre_m": [
+          -0.00018394273742781964,
+          -0.00039007049531757446,
+          0.02686096426174383
+        ],
+        "yaw_rad": 3.908069075509043,
+        "movable": true
+      },
+      {
+        "id": "akita_black_bowl_2",
+        "xyz_m": [
+          -0.2972218755643745,
+          0.15166814380533192,
+          0.925270964261744
+        ],
+        "size_m": [
+          0.10719994032407822,
+          0.10700720136999833,
+          0.05054192852348795
+        ],
+        "local_centre_m": [
+          -0.00018394273742782657,
+          -0.0003900704953175814,
+          0.02686096426174387
+        ],
+        "yaw_rad": 2.7447537657143313,
+        "movable": true
+      },
+      {
+        "id": "cookies_1",
+        "xyz_m": [
+          0.06943445366560162,
+          -0.02080583423222407,
+          0.9094
+        ],
+        "size_m": [
+          0.062079999999999996,
+          0.08261999999999999,
+          0.01879999999999994
+        ],
+        "local_centre_m": [
+          -1.734723475976807e-18,
+          0.0,
+          0.0
+        ],
+        "yaw_rad": 2.686483866900859,
+        "movable": true
+      },
+      {
+        "id": "glazed_rim_porcelain_ramekin_1",
+        "xyz_m": [
+          -0.14293519234250526,
+          0.1573611731880324,
+          0.9210049506364143
+        ],
+        "size_m": [
+          0.08931981998487562,
+          0.08909331420129615,
+          0.04200990127282859
+        ],
+        "local_centre_m": [
+          -9.038527521407907e-06,
+          0.00011838534428417966,
+          0.02166000000000005
+        ],
+        "yaw_rad": 2.5523781291767556,
+        "movable": true
+      }
+    ],
+    "limits": {
+      "translation_m": 0.12,
+      "yaw_rad": 3.141592653589793,
+      "separation_m": 0.01,
+      "confirmation_distance_m": 0.05,
+      "attempts": 200
+    },
+    "attempt": 44,
+    "rejected_attempts": {
+      "intersecting_object_bounds": 44
+    },
+    "predicate_witness": {
+      "native_predicates_satisfied": true,
+      "initial_penetrations": [],
+      "witness_penetrations": [],
+      "source": "independent_CPU_native_original_task_predicates",
+      "original_controls_replayed": 27
+    },
+    "PRO": false,
+    "D2": false,
+    "confirmation": false,
+    "identity_domain": "own_original_train_layout",
+    "source_policy": "own original train sampler; no PRO/MAX files or definitions"
+  },
+  "state_sha256": "88f06bdf0e62f992bc440798a9bb1c788a6a7260835c3466ab474e77d51b5490",
+  "parent_id": "original220/bowl_transfer_libero_spatial_t0_s10/0",
+  "original_bddl": {
+    "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+    "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+  },
+  "CPU_only": true,
+  "GPU_rollouts": 0,
+  "training_admission": false,
+  "pending": [
+    "complete geometric confirmation-distance exclusion",
+    "additional asset distractor insertion",
+    "N1-qualified physical pilot"
+  ]
+}
