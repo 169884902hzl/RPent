@@ -17,6 +17,33 @@ from tests.unit_tests.robots.libero.test_bounded_skills import decision
 FIXTURE=json.loads((Path(__file__).parent/'fixtures/execution_zero_step_receipts_20261022.json').read_bytes())
 
 
+def test_object_ingress_does_not_require_a_pregrasp_payload(adapter, monkeypatch):
+    """Regress bowl s0's accepted ingress before its speculative lift reject."""
+    from dataclasses import replace
+
+    endpoint = {
+        'xyz_m': [-.05939897020450896, .25219549349060766, .9421273639186665],
+        'quat_xyzw': [.9937001961305982, -.11207104983005521, 0., 0.],
+    }
+    entry = {**endpoint, 'xyz_m': [*endpoint['xyz_m'][:2], endpoint['xyz_m'][2]+.15]}
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='bowl', part_of=None)
+    adapter.plans['e1'] = {**endpoint, 'width_m': .00571145941005056}
+    geometry = {'boxes': [{'name': 'palm', 'lower': [.2]*3, 'upper': [.21]*3}]}
+    screen = PublicRouteScreen(
+        [[-.02981247752904892, .23530204594135284, .9400051832199097]],
+        geometry, SimpleNamespace(last_solution=None, check=lambda *_: {'solution_found': True}),
+        contact_points=[[-.03008072264492511, .2352297455072403, .9407573676109313]],
+        contact_allowed=True)
+    monkeypatch.setattr(adapter, '_cloud_and_ik', lambda *_args, **_kwargs: screen)
+    # No closed hand or attachment has been measured at this approach.
+    # The actual descend/lift remain screened when those skills execute.
+    monkeypatch.setattr('robots.libero.bounded_skills.gripper_at_measured_fingers',
+        lambda *_args: pytest.fail('pre-grasp approach assumed a future closure'))
+    assert screen([entry, endpoint])['passed']
+    result = adapter._screen_contact_sequence('e1', entry, approach='above')
+    assert result['passed'] and 'contact_sequence_stage' not in result
+
+
 def test_real_zero_step_lifts_do_not_claim_grasp_failure():
     rows=[r for r in FIXTURE['cases'] if r['receipt']['skill']=='lift']
     assert rows

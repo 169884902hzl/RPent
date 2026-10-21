@@ -1877,10 +1877,11 @@ class MeasuredSkillAdapter:
         return [{"xyz_m": point.tolist(), "quat_xyzw": quat}]
 
     def _screen_contact_sequence(self, key, entry, *, approach=None):
-        """Screen approach ingress, closure and the first post-contact motion.
+        """Screen ingress, plus coupled contact motion for fixture handles.
 
         These are conditional plans from current depth, not success labels or
-        hidden controls. An unselected continuation is never executed here.
+        hidden controls. Ordinary object closure and lift use the fresh
+        measured attachment at execution, rather than a pre-grasp payload.
         """
         plan = self.plans.get(key)
         if not plan:
@@ -1895,6 +1896,9 @@ class MeasuredSkillAdapter:
             screen = screen.continuing_route()
         result = screen([entry, *ingress])
         if not result['passed'] or not isinstance(screen, PublicRouteScreen):
+            return result
+        entity = self.scene.entities.get(key)
+        if entity is None or not (entity.part_of or fixture_actions(entity.name)):
             return result
         endpoint = ingress[-1]
         width = plan.get('width_m')
@@ -1911,23 +1915,14 @@ class MeasuredSkillAdapter:
             check = closure([endpoint]);checks.append(check)
             if not check['passed']:
                 return {**check, 'contact_sequence_stage': 'closure', 'contact_sequence': checks}
-        entity = self.scene.entities.get(key)
-        if entity is not None and (entity.part_of or fixture_actions(entity.name)):
-            alternatives=[]
-            moving_contact = closure.following_contact(endpoint)
-            for sign in (-1,1):
-                quat=(Rotation.from_quat(endpoint['quat_xyzw'])*Rotation.from_euler('z',sign*45,degrees=True)).as_quat().tolist()
-                alternatives.append(moving_contact([endpoint,{**endpoint,'quat_xyzw':quat}]))
-            passed=next((check for check in alternatives if check['passed']),None)
-            return {**(passed or alternatives[-1]),'contact_sequence_stage':'fixture_turn',
-                'contact_sequence':checks,'contact_alternatives':alternatives}
-        payload=(screen.target-np.asarray(endpoint['xyz_m']))@Rotation.from_quat(endpoint['quat_xyzw']).as_matrix()
-        lift = PublicRouteScreen(screen.points,geometry,continuation_ik,opening=float(aperture),
-            payload_local=payload,initial_pose=endpoint)
-        lift.support_separation=True
-        raised={**endpoint,'xyz_m':(np.asarray(endpoint['xyz_m'])+[0.,0.,.03]).tolist()}
-        check=lift([endpoint,raised])
-        return {**check,'contact_sequence_stage':'attached_initial_lift','contact_sequence':checks}
+        alternatives=[]
+        moving_contact = closure.following_contact(endpoint)
+        for sign in (-1,1):
+            quat=(Rotation.from_quat(endpoint['quat_xyzw'])*Rotation.from_euler('z',sign*45,degrees=True)).as_quat().tolist()
+            alternatives.append(moving_contact([endpoint,{**endpoint,'quat_xyzw':quat}]))
+        passed=next((check for check in alternatives if check['passed']),None)
+        return {**(passed or alternatives[-1]),'contact_sequence_stage':'fixture_turn',
+            'contact_sequence':checks,'contact_alternatives':alternatives}
 
     def _candidate(self, skill, parameters, *, screen_options=True, complete=False):
         cid = hashlib.sha256(identity({"skill": skill, "parameters": parameters}).encode()).hexdigest()[:16]
