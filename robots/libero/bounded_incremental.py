@@ -38,7 +38,11 @@ def swept_bounds(geometry, controls, payload_reference=None, margin_m=.04):
                     lower, upper = np.asarray(box['lower']), np.asarray(box['upper'])
                     local = lower+corners*(upper-lower)+shift
                 radius = max(radius, float(np.linalg.norm(local, axis=1).max()))
-                ends.append(local@rotation.as_matrix().T+robot['eef_xyz_m'])
+                # Static hand boxes use the gripper SITE frame, whereas
+                # payload points above are expressed in the measured EEF
+                # frame. Match PublicRouteScreen's fixed quarter-turn.
+                frame = rotation if box is None else rotation*Rotation.from_euler('z', -np.pi/2)
+                ends.append(local@frame.as_matrix().T+robot['eef_xyz_m'])
             points = np.concatenate(ends)
             padding = margin_m+radius*angle
             lows.append(points.min(axis=0)-padding)

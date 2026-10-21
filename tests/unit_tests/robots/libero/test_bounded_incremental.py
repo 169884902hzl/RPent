@@ -76,8 +76,21 @@ def test_rotating_hand_envelope_contains_intermediate_mesh_corner():
     geometry = {'boxes': [{'lower': [.09, -.002, -.002], 'upper': [.1, .002, .002]}]}
     lo, hi = swept_bounds(geometry, [{'before': before, 'after': after}], margin_m=0.)
     for angle in np.linspace(0., 90., 31):
-        point = Rotation.from_euler('z', angle, degrees=True).apply([.1, 0., 0.])+before['eef_xyz_m']
+        point = Rotation.from_euler('z', angle-90., degrees=True).apply([.1, 0., 0.])+before['eef_xyz_m']
         assert ((lo <= point) & (point <= hi)).all()
+
+
+def test_hand_site_quarter_turn_and_payload_eef_frame_are_distinct():
+    robot = measured_robot(FakePrimitives())
+    geometry = {'boxes': [{'lower': [.09, -.002, -.002], 'upper': [.1, .002, .002]}]}
+    control = {'before': robot, 'after': deepcopy(robot)}
+    lo, hi = swept_bounds(geometry, [control], margin_m=0.)
+    np.testing.assert_allclose(lo[0], [-.002, -.1, .998], atol=1e-12)
+    np.testing.assert_allclose(hi[0], [.002, -.09, 1.002], atol=1e-12)
+    payload = {'robot': robot, 'target': [[.2, 0., 1.], [.21, .01, 1.01]]}
+    lo, hi = swept_bounds(geometry, [control], payload, margin_m=0.)
+    np.testing.assert_allclose(lo[1], [.2, 0., 1.], atol=1e-12)
+    np.testing.assert_allclose(hi[1], [.21, .01, 1.01], atol=1e-12)
 
 
 def test_newly_seen_support_is_not_reported_as_a_moved_support():
