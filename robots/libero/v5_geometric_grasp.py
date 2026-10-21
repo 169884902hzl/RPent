@@ -206,16 +206,20 @@ def _voxel(points, size=.004):
     return points[np.sort(index)]
 
 
-def _opposition(points, centre, closing):
+def _opposition(points, centre, closing, *, point_tree=None):
     """Measure both flanks and their local surface normals, without learned weights."""
     from scipy.spatial import cKDTree
     tangent = np.array([-closing[1], closing[0], 0.])
-    delta = points - centre
+    # The existing height band rules out most surface pixels before either
+    # horizontal projection. Keep their original order and the same measured
+    # subtraction; this does not approximate the flank or normal tests.
+    local_points = points[abs(points[:, 2]-centre[2]) <= .010]
+    delta = local_points - centre
     # A rim candidate describes a local patch. The opposite rim of the same
     # bowl can lie on this strip but outside the open jaws; including it
     # incorrectly rejects a narrow local rim as the full bowl diameter.
-    band = points[(abs(delta @ tangent) <= .012) & (abs(delta[:, 2]) <= .010)
-                  & (abs(delta @ closing) <= .08 / 2)]
+    band = local_points[(abs(delta @ tangent) <= .012)
+                        & (abs(delta @ closing) <= .08 / 2)]
     if len(band) < 20:
         return None, {'reason': 'opposing_surfaces_not_measured', 'points': len(band)}
     projection = (band - centre) @ closing
@@ -224,7 +228,7 @@ def _opposition(points, centre, closing):
     if width < .004 or width + .008 >= .08:
         return None, {'reason': 'width_outside_gripper_range', 'width_m': width}
     qualities, counts, patch_counts, contact_centres = [], [], [], []
-    tree = cKDTree(points)
+    tree = cKDTree(points) if point_tree is None else point_tree
     for sign, edge in ((-1, lower), (1, upper)):
         flank = band[abs(projection - edge) <= .004]
         counts.append(len(flank))

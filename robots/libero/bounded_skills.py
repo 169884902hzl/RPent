@@ -1535,7 +1535,10 @@ class MeasuredSkillAdapter:
             'selected_yaw_deg': selected['yaw_deg'] if selected else None})
         if selected is None:
             return None
-        pixels = self._instance_pixels(entity.id).tolist()
+        # This is internal measured geometry, never a candidate field. Keep
+        # its contiguous array rather than millions of boxed coordinates:
+        # cached plans and public-prefix clones copy the exact same pixels.
+        pixels = np.array(self._instance_pixels(entity.id), copy=True)
         def contact_plan(option, approach=None):
             normal = np.asarray(option['normal_xyz'])
             return {k: option[k] for k in ('xyz_m', 'quat_xyzw', 'approach_xyz_m')} | {

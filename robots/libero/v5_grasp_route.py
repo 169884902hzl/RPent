@@ -67,6 +67,7 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
         edge_contact[2] = min(b['upper'][2] for b in pads)-.001
         pad_contacts.append(('_distal_pad_edge_cell', edge_contact))
     base_axis = math.atan2(*region['closing_axis_xy'][::-1])
+    point_tree = cKDTree(region['points'])
     records = []
     def seeds():
         yield from region['seeds']
@@ -84,7 +85,7 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
             if opposition_cache is not None and key in opposition_cache:
                 centre,fit = copy.deepcopy(opposition_cache[key])
             else:
-                centre, fit = _opposition(region['points'], seed, closing)
+                centre, fit = _opposition(region['points'], seed, closing, point_tree=point_tree)
                 if opposition_cache is not None:
                     opposition_cache[key] = copy.deepcopy((centre,fit))
             if centre is None:
