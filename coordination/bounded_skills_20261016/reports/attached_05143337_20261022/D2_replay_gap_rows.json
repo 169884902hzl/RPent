@@ -1,0 +1,2879 @@
+{
+  "scope": "closed D2 raw-artifact explanation; independent seeds are not deterministic replays",
+  "training": false,
+  "rescore": false,
+  "rows": [
+    {
+      "case": "libero_object_swap_t2_s40",
+      "recovery_budget": 0,
+      "classification": "handoff_completion_not_retained",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1017400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 94,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 94,
+              "blocks_used": 17,
+              "handoff_steps": 7,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": -2.5655108089419655e-05,
+            "relative_displacement_max_m": 0.0001214759118691734
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case007/replay/subtask00/private_truth.json",
+            "sha256": "59ec92153fe3e5642aa5dbaa635dea8fab034fbad16ee96898fc1faad8f55d5b"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case007/replay/subtask00/choices.jsonl",
+            "sha256": "4061cae9dbc150c205e32ae2da667195ffd9ad4f9e42f4b465805d8cf4489205"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery0/case007/summary.json",
+        "sha256": "e72f8f3060bde470f26ed1299d06dcb52babe8a040c2a3800fbdcb76a89ef08b"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case007/summary.json",
+        "sha256": "e0444eaff21a7af5186db0f6a6e4f953644af16a74237d690f41cee06ab6cfdd"
+      }
+    },
+    {
+      "case": "libero_spatial_task_t1_s40",
+      "recovery_budget": 0,
+      "classification": "native_solver_phase_lost_at_endpoint_restore",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "native_success",
+          "seed": 1021400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "native_success",
+              "skill_stop_reason": "native_success",
+              "steps_used": 112,
+              "blocks_used": 23,
+              "handoff_steps": null,
+              "post_handoff_completed": null
+            }
+          ],
+          "truth_source": "unchanged_native_task_completion",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case011/replay/subtask00/private_truth.json",
+            "sha256": "c54d506737e37251cc8b10682d47e67dd1fd7581c78f8fcefe7ed092d58ef49f"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case011/replay/subtask00/choices.jsonl",
+            "sha256": "efc5d42ddd5e261f770f9b2d6197268ae833888e506bedf9a4d66a955f95aa8b"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery0/case011/summary.json",
+        "sha256": "63fb63d9ca047c33ac1171a7806712ab1c77aab0436eccabaa3b1efe31d271c9"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case011/summary.json",
+        "sha256": "73c43bf5bfa5f70c3361e65f4b766c8f06928a22a46d242e3767867940e37d6e"
+      }
+    },
+    {
+      "case": "libero_spatial_task_t2_s40",
+      "recovery_budget": 0,
+      "classification": "handoff_completion_not_retained",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1022400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 22401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 22403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 22401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 22403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 22401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 22403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 109,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 109,
+              "blocks_used": 17,
+              "handoff_steps": 24,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": -5.261767168307507e-06,
+            "relative_displacement_max_m": 0.00022589012139887678
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case012/replay/subtask00/private_truth.json",
+            "sha256": "632f5c83cb9df496be2c873488880a82b213161ffe046e62a51b3d5e5d738e66"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case012/replay/subtask00/choices.jsonl",
+            "sha256": "c6a8ba9a6afba3e0db82c773d90506ab0aff89294c57e8c2ce61551b4d0c58fe"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery0/case012/summary.json",
+        "sha256": "fd1a1d85ab1211402ca11039e9327d5ba60c48b0716d25533f93ceca39e9e183"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case012/summary.json",
+        "sha256": "9cfc5745ba456cb9142bb0ef9b07fb030afd1bd5d077a17f2af2a70b0b0e716e"
+      }
+    },
+    {
+      "case": "libero_object_task_t4_s40",
+      "recovery_budget": 0,
+      "classification": "independent_vla_replay_block_budget",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1029400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 29403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 29403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 29403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 127,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 127,
+              "blocks_used": 24,
+              "handoff_steps": 7,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "unchanged_native_task_completion",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case019/replay/subtask00/private_truth.json",
+            "sha256": "3619bb30f7a6bee936ceab6f858110c027d062bcae99bfe264f0cbe408346645"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case019/replay/subtask00/choices.jsonl",
+            "sha256": "2c942a7437e21bbe0f6771db42266e2c9694fdf628a62cf94746888bba3d11a8"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery0/case019/summary.json",
+        "sha256": "6ea32ca331336453618423b5a76dc574d8418b1a63735c1ef790c0e179541c59"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case019/summary.json",
+        "sha256": "65c199c8978785d6756a318a391e4e3fda757850c30f0d9cf14bc7ff0982cc4d"
+      }
+    },
+    {
+      "case": "libero_goal_swap_t1_s40",
+      "recovery_budget": 0,
+      "classification": "public_completion_false_positive_against_private_grasp_v3",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "measured_success_after_handoff",
+          "seed": 1031400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 31401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 31401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 31401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 56,
+              "blocks_used": 9,
+              "handoff_steps": 11,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": 0.04336177063252744,
+            "relative_displacement_max_m": 0.000723365381746435
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case021/replay/subtask00/private_truth.json",
+            "sha256": "65e098885ecb6f5b6df1727e168ed3b0685d1c1af41bf9b4cbd9768b135d7364"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case021/replay/subtask00/choices.jsonl",
+            "sha256": "1745f53ab904195d63a3148a0e8ef718a765304a4df4a16df83c367aa6383544"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery0/case021/summary.json",
+        "sha256": "ced3f8e27523cd2919e4d462fa6fc12897987b2fcf6330581b8f6606b921ff02"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case021/summary.json",
+        "sha256": "7fdece0a430e7c4b27631070bdbcd8c5afc52c21dce11499a1e4825f885045d9"
+      }
+    },
+    {
+      "case": "libero_goal_task_t2_s40",
+      "recovery_budget": 0,
+      "classification": "independent_vla_replay_block_budget",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "seed": 1037400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 84,
+              "blocks_used": 15,
+              "handoff_steps": 9,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.03351883994042315,
+            "relative_displacement_max_m": 0.00019685167641651137
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case027/replay/subtask00/private_truth.json",
+            "sha256": "e1f7ad7d2818cdeb8edf6a2a4a2fcb0c893a0825b5dc451a357376606a2aaba6"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case027/replay/subtask00/choices.jsonl",
+            "sha256": "8860034f30abec82ce4fd5882b9dd6d49010868d363184c00b1d03e9834a0065"
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1037410000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 137,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 137,
+              "blocks_used": 24,
+              "handoff_steps": 17,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "unchanged_registered_task_predicate",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case027/replay/subtask01/private_truth.json",
+            "sha256": "52a4ea0ef489e0bdff231e665db46b78e1ab1c8fdae3fb04733b32f955288bb7"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case027/replay/subtask01/choices.jsonl",
+            "sha256": "0273f481b7187d82ec479b617202f4068d860466c0d524d932add0e186b41cc4"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery0/case027/summary.json",
+        "sha256": "11b0f347f573babae6039a6ebf94e89e6154c3d0a4dce7c48d5a6e659486a965"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery0/case027/summary.json",
+        "sha256": "ecc8c2dfd45468799a231f1e6da366e8fec95481f2be0b7e3cbb543255c6edb3"
+      }
+    },
+    {
+      "case": "libero_object_swap_t2_s40",
+      "recovery_budget": 1,
+      "classification": "handoff_completion_not_retained",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1017400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 94,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 133,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 94,
+              "blocks_used": 17,
+              "handoff_steps": 7,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 133,
+              "blocks_used": 12,
+              "handoff_steps": 24,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 5,
+            "clearance_min_m": 0.04549475546870776,
+            "relative_displacement_max_m": 0.0005751353135002845
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case007/replay/subtask00/private_truth.json",
+            "sha256": "e0128ed9f8980b5349e6196933a341284464b60c1733abefdb2ac07b8cbf77b0"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case007/replay/subtask00/choices.jsonl",
+            "sha256": "40dd91279eed6dc1ba8f4d8a24a6428723aef7fae73d5b0b2b806f94d29251f6"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery1/case007/summary.json",
+        "sha256": "7c7d2ad38556c439f59e948b2e11f4cd33054143e474067c5537b2961f0d37e7"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case007/summary.json",
+        "sha256": "ad75500bdf18e0a8e83320b9b23fcde972accc9e55cf0abb676e999970ba9881"
+      }
+    },
+    {
+      "case": "libero_spatial_task_t1_s40",
+      "recovery_budget": 1,
+      "classification": "native_solver_phase_lost_at_endpoint_restore",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "native_success",
+          "seed": 1021400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "native_success",
+              "skill_stop_reason": "native_success",
+              "steps_used": 112,
+              "blocks_used": 23,
+              "handoff_steps": null,
+              "post_handoff_completed": null
+            }
+          ],
+          "truth_source": "unchanged_native_task_completion",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case011/replay/subtask00/private_truth.json",
+            "sha256": "c54d506737e37251cc8b10682d47e67dd1fd7581c78f8fcefe7ed092d58ef49f"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case011/replay/subtask00/choices.jsonl",
+            "sha256": "8390f3e8e4cbe4944eba5b9807b98523d1b61816d8d4d9cc560f2d13946cea31"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery1/case011/summary.json",
+        "sha256": "bc2a32181c17316af72d044cf1fe6751ab016429bf5090d17367e714c228499b"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case011/summary.json",
+        "sha256": "5712292d20b1816217fba06b5ee36041fb00ad56041df3c6874c11f367faa3c3"
+      }
+    },
+    {
+      "case": "libero_goal_task_t2_s40",
+      "recovery_budget": 1,
+      "classification": "independent_vla_replay_block_budget",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "seed": 1037400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 84,
+              "blocks_used": 15,
+              "handoff_steps": 9,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.03351883994042315,
+            "relative_displacement_max_m": 0.00019685167641651137
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case027/replay/subtask00/private_truth.json",
+            "sha256": "e33f8e42e499598dd8edd3093f63a1a7bb61eefaad98ca3b9a841d592c4746f4"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case027/replay/subtask00/choices.jsonl",
+            "sha256": "2076fb9efb4c99953580de04bf4ff1755a5afb2e5959ad11be3cef12addbbbe7"
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1037410000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 137,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 131,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 137,
+              "blocks_used": 24,
+              "handoff_steps": 17,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 131,
+              "blocks_used": 24,
+              "handoff_steps": 11,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "unchanged_registered_task_predicate",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case027/replay/subtask01/private_truth.json",
+            "sha256": "52a4ea0ef489e0bdff231e665db46b78e1ab1c8fdae3fb04733b32f955288bb7"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case027/replay/subtask01/choices.jsonl",
+            "sha256": "782a1629de392fa0d500570124b967fde715878b7f60f44ff9b419af78daa90b"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery1/case027/summary.json",
+        "sha256": "5387250efef52d3541fdf1f9da051301aa17031087666d6f68bb5b1fd5482664"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case027/summary.json",
+        "sha256": "32b094952ff2358736ff61b39f4bcd8bafff06bccfecd25b4c11e70c51ecada2"
+      }
+    },
+    {
+      "case": "libero_goal_task_t3_s40",
+      "recovery_budget": 1,
+      "classification": "independent_vla_replay_no_progress_stop",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1038400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 38403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 38403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 38403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "no_progress_blocks",
+              "steps_used": 120,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "no_progress_blocks",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "no_progress_blocks",
+              "skill_stop_reason": "no_progress_blocks",
+              "steps_used": 120,
+              "blocks_used": 23,
+              "handoff_steps": 5,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "no_progress_blocks",
+              "skill_stop_reason": "no_progress_blocks",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "unchanged_native_task_completion",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case028/replay/subtask00/private_truth.json",
+            "sha256": "3bd23de223f61d05b48ea105d1432c5d5fd69f13b00ac5526f685eccb4054f33"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case028/replay/subtask00/choices.jsonl",
+            "sha256": "2b1b0853a1b24985fc8a70e54dcc4850b4c3a831e0edd9261eab17e077a2f47f"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery1/case028/summary.json",
+        "sha256": "0fdd4f60cb28f005c6acc1d4049a42c075162f6d4675a39da13dc559ba4d872a"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case028/summary.json",
+        "sha256": "84abc724b3065bd0a7e8d55daa95be873892e3ea38ed09acd271545248cac84d"
+      }
+    },
+    {
+      "case": "libero_10_swap_t4_s40",
+      "recovery_budget": 1,
+      "classification": "public_completion_false_positive_against_private_grasp_v3",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "measured_success_after_handoff",
+          "seed": 1044400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 44401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 59,
+              "blocks_used": 10,
+              "handoff_steps": 9,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": 0.0703792015045322,
+            "relative_displacement_max_m": 0.0004976972536095718
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case034/replay/subtask00/private_truth.json",
+            "sha256": "e66271c04077afdb687c7dececff7e31ed87a2090b886642d1c86833b6ba5f4d"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case034/replay/subtask00/choices.jsonl",
+            "sha256": "4779c993963f31ade009308314e9c112decc48b6421bbe82d26410bfe2e81d99"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_nativefix_09ee76e0/repair_recovery1/case001/summary.json",
+        "sha256": "54b2394069cffec832f353f2f59f8c61f4bf2d2aa7107f63ed75a75c44f8594a"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case034/summary.json",
+        "sha256": "e1911e590a03ce20c1246070e96b6f929bc9faa283f8caca07a08a3f967a8e02"
+      }
+    },
+    {
+      "case": "libero_10_task_t4_s40",
+      "recovery_budget": 1,
+      "classification": "selected_variant_unavailable_after_partial_replay",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "seed": 1049400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 49401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 72,
+              "blocks_used": 12,
+              "handoff_steps": 12,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.041857125846142096,
+            "relative_displacement_max_m": 0.0005082618918568348
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case039/replay/subtask00/private_truth.json",
+            "sha256": "8a6ee45bde02c677bf5ca9cfe28acd1dbf7043e2e3ddb36189170122a81e27b2"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case039/replay/subtask00/choices.jsonl",
+            "sha256": "380a571505e1c293080aa00425663ad990ee19a6571546f7c1161b3792568919"
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "self",
+          "success": true,
+          "reason": "subtask_completed",
+          "seed": 1049410000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 49410000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [],
+          "truth_source": "unchanged_registered_task_predicate",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case039/replay/subtask01/private_truth.json",
+            "sha256": "e949e2b9db40d4bb7282d3907f16e10f894c8f3cddc851fe3ec8e5d8c4635de1"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case039/replay/subtask01/choices.jsonl",
+            "sha256": "23bc62db8604779e7bb3c66e7b25b91019fdbabdd01ee500dc22871a77a54848"
+          }
+        },
+        {
+          "subtask": "g1:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "requested_vla_variant_unavailable",
+          "seed": 1049420000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 49421000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49422000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49423000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49421000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49422000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49423000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49421000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49422000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49423000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": -3.6259940439098415e-08,
+            "relative_displacement_max_m": 0.0005719780260386946
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case039/replay/subtask02/private_truth.json",
+            "sha256": "2e8ee39a76e5878d378a9546a742d114069915255d76dbb8032a5afa8215f9f9"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case039/replay/subtask02/choices.jsonl",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_nativefix_09ee76e0/repair_recovery1/case006/summary.json",
+        "sha256": "62e01e4363583ec05654b417d344b455b552655a67d26b1417e829a2a2b5b1a9"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery1/case039/summary.json",
+        "sha256": "44af9eff35ac53c244b076334cd817bff609d1ceed0818c6132a158cdf2235bf"
+      }
+    },
+    {
+      "case": "libero_spatial_swap_t3_s40",
+      "recovery_budget": 2,
+      "classification": "independent_vla_replay_block_budget",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1014400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 14403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 14403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 14403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 130,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 129,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 139,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 130,
+              "blocks_used": 24,
+              "handoff_steps": 10,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 129,
+              "blocks_used": 24,
+              "handoff_steps": 9,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 139,
+              "blocks_used": 24,
+              "handoff_steps": 19,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": -1.8743574531354668e-06,
+            "relative_displacement_max_m": 0.0003355103526561965
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case004/replay/subtask00/private_truth.json",
+            "sha256": "2460895226ed6dd85716aa33bb0307ebadb1632e5a2bf103751cb25d19e80f82"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case004/replay/subtask00/choices.jsonl",
+            "sha256": "7f86ca8b409a9246072a8c3713575c1a753d7f2581de1a9c40481ea322262db4"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery2/case004/summary.json",
+        "sha256": "772d78c1ed868f8b93e04fee36fbf2e09d102636a0b02c3664160a361ff804a7"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case004/summary.json",
+        "sha256": "a0e2e745746a206cde9b7d681a68bbbf8baa4d2c9d6aa1d6248eeaede0bef7b6"
+      }
+    },
+    {
+      "case": "libero_object_swap_t2_s40",
+      "recovery_budget": 2,
+      "classification": "selected_variant_unavailable_after_partial_replay",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "requested_vla_variant_unavailable",
+          "seed": 1017400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 17403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 94,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 133,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 94,
+              "blocks_used": 17,
+              "handoff_steps": 7,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 133,
+              "blocks_used": 12,
+              "handoff_steps": 24,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 5,
+            "clearance_min_m": 0.04549475546870776,
+            "relative_displacement_max_m": 0.0005751353135002845
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case007/replay/subtask00/private_truth.json",
+            "sha256": "9e5396f71591d8c7dec4fca352e62c078d3972ac25f0d6c9ecf5699618d89e7a"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case007/replay/subtask00/choices.jsonl",
+            "sha256": "aae2200792b5b2ff9a1b76f106c94d9f5923d3480fd5fde75dd01a73ba407937"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery2/case007/summary.json",
+        "sha256": "2e9e04617d21f6f5af887b8d29287aa50cada190c7f6cf595b453fb9c9d7fd26"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case007/summary.json",
+        "sha256": "0b5b5b3a2e92cdc1f57a2dd9eb2b240bc562a7d85d8b58e03872886a179edac8"
+      }
+    },
+    {
+      "case": "libero_spatial_task_t1_s40",
+      "recovery_budget": 2,
+      "classification": "native_solver_phase_lost_at_endpoint_restore",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "native_success",
+          "seed": 1021400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 21403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "native_success",
+              "skill_stop_reason": "native_success",
+              "steps_used": 112,
+              "blocks_used": 23,
+              "handoff_steps": null,
+              "post_handoff_completed": null
+            }
+          ],
+          "truth_source": "unchanged_native_task_completion",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case011/replay/subtask00/private_truth.json",
+            "sha256": "c54d506737e37251cc8b10682d47e67dd1fd7581c78f8fcefe7ed092d58ef49f"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case011/replay/subtask00/choices.jsonl",
+            "sha256": "d37c816e6e4374fda0bd5a82d51a1b544f192ea59e0e2795d30e85c30470e636"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery2/case011/summary.json",
+        "sha256": "3e4c8042413504e530f27b0a3b143e79f485c683fd3b743efa5f77d6fdf267a1"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case011/summary.json",
+        "sha256": "2b22715e34a8da0292afff9da757ef038812e9f93354965a7751cf3d48a2ba07"
+      }
+    },
+    {
+      "case": "libero_goal_swap_t2_s40",
+      "recovery_budget": 2,
+      "classification": "handoff_completion_not_retained",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1032400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 32402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 32402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 32402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 133,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 62,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 22,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 133,
+              "blocks_used": 24,
+              "handoff_steps": 13,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 62,
+              "blocks_used": 10,
+              "handoff_steps": 12,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 22,
+              "blocks_used": 2,
+              "handoff_steps": 12,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": -0.00011128538043103653,
+            "relative_displacement_max_m": 0.006066986239627079
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case022/replay/subtask00/private_truth.json",
+            "sha256": "870a66de6d172a3c19690a1587051b9698087e8804b6ecc83c640341ac9bbcd0"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case022/replay/subtask00/choices.jsonl",
+            "sha256": "7e27d8cf7ee00397f6e3d7f5a21d032c1fcb6636982aee9834f3142040b64f8c"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery2/case022/summary.json",
+        "sha256": "8220ff3bf08eec3fb6e38af7dda45a334d5e9d71a5f1d15221eca726534a0cb1"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case022/summary.json",
+        "sha256": "3daf8456138674537a7c8d477be072db6dbc6cd8c7e17ce9ac1aadf21125d1c4"
+      }
+    },
+    {
+      "case": "libero_goal_task_t1_s40",
+      "recovery_budget": 2,
+      "classification": "own_skill_zero_control_guard_then_observation_collision",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "seed": 1036400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 36401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 36402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 36403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 36401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 36402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 36403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 36401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 36402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 36403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 93,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 93,
+              "blocks_used": 16,
+              "handoff_steps": 13,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 26,
+              "blocks_used": 1,
+              "handoff_steps": 7,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.04379928010367673,
+            "relative_displacement_max_m": 0.0001340334849055412
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case026/replay/subtask00/private_truth.json",
+            "sha256": "a8208927b3e641f68efd6894b353307c5a758273fe2cff3335b47838fb9ba775"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case026/replay/subtask00/choices.jsonl",
+            "sha256": "c49d9348c816bd9558632979704b109ca3fcabaa897723e2ad3165b26f0f0936"
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "self",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1036410000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 36410000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "lower",
+              "outcome": "failure",
+              "stop_reason": "predicted_anchor_changed",
+              "steps_used": 0,
+              "phase": "perception"
+            },
+            {
+              "skill": "observe",
+              "outcome": "failure",
+              "stop_reason": "measured_payload_collision",
+              "steps_used": 0,
+              "phase": "collision"
+            },
+            {
+              "skill": "observe",
+              "outcome": "failure",
+              "stop_reason": "measured_payload_collision",
+              "steps_used": 0,
+              "phase": "collision"
+            }
+          ],
+          "vla_stops": [],
+          "truth_source": "unchanged_registered_task_predicate",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case026/replay/subtask01/private_truth.json",
+            "sha256": "042197f4cfba63e19930d89f6c0a5c4268916bcf770de6aa22b8b87380edda97"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case026/replay/subtask01/choices.jsonl",
+            "sha256": "d980ae449d9150a6493fc26f5c98842551df411e00d61f7d0897d4cebf495882"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery2/case026/summary.json",
+        "sha256": "316780a07793c2c76b309eb7b75cdd1c4b77c71703392f534fa693115d2ed987"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case026/summary.json",
+        "sha256": "1680295456d73d340a8a12c181649614827a987798446f354ce2329dfd649f6e"
+      }
+    },
+    {
+      "case": "libero_goal_task_t2_s40",
+      "recovery_budget": 2,
+      "classification": "selected_variant_unavailable_after_partial_replay",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "seed": 1037400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 84,
+              "blocks_used": 15,
+              "handoff_steps": 9,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.03351883994042315,
+            "relative_displacement_max_m": 0.00019685167641651137
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case027/replay/subtask00/private_truth.json",
+            "sha256": "5a352141402bf017f4d776548527958b18cc2ac3e560bd75a2a04c1e94f0e47b"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case027/replay/subtask00/choices.jsonl",
+            "sha256": "907a8fe39dbd68f406c6c96dd6e98a5d000fe175956be7bb6ac0baded22f3474"
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "call_vla",
+          "success": false,
+          "reason": "requested_vla_variant_unavailable",
+          "seed": 1037410000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37411000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 37413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 137,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 131,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 137,
+              "blocks_used": 24,
+              "handoff_steps": 17,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 131,
+              "blocks_used": 24,
+              "handoff_steps": 11,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "unchanged_registered_task_predicate",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case027/replay/subtask01/private_truth.json",
+            "sha256": "52a4ea0ef489e0bdff231e665db46b78e1ab1c8fdae3fb04733b32f955288bb7"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case027/replay/subtask01/choices.jsonl",
+            "sha256": "e5399a44c3f8db102eefb739ecfdaf9497bd35c4d7543b583d22f0d97909275f"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery2/case027/summary.json",
+        "sha256": "3d53535a1ba47d41fb5aeb1aa4176fc8f500840940c354ea086c613c30c1407d"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case027/summary.json",
+        "sha256": "3722001a8fe12a9e3adb8811c30135f7c6fb57d8e0a206e5f880e3abd447defd"
+      }
+    },
+    {
+      "case": "libero_goal_task_t3_s40",
+      "recovery_budget": 2,
+      "classification": "selected_variant_unavailable_after_partial_replay",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "requested_vla_variant_unavailable",
+          "seed": 1038400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 38403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 38403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 38403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "no_progress_blocks",
+              "steps_used": 120,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "no_progress_blocks",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "no_progress_blocks",
+              "skill_stop_reason": "no_progress_blocks",
+              "steps_used": 120,
+              "blocks_used": 23,
+              "handoff_steps": 5,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "no_progress_blocks",
+              "skill_stop_reason": "no_progress_blocks",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "unchanged_native_task_completion",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case028/replay/subtask00/private_truth.json",
+            "sha256": "3bd23de223f61d05b48ea105d1432c5d5fd69f13b00ac5526f685eccb4054f33"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case028/replay/subtask00/choices.jsonl",
+            "sha256": "6dda9e51c434361be91e4398ba1e0cd4243d7816bbc47ec5774c89193230dcbf"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery2/case028/summary.json",
+        "sha256": "e0c0a3251c3b93d7f76f029fef0a43a227481845d0795dd277537cc1b82a6519"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case028/summary.json",
+        "sha256": "e293433eac238056c1cec5328159cd75a5f71a78f0357c1abc6e578389b7af16"
+      }
+    },
+    {
+      "case": "libero_10_swap_t4_s40",
+      "recovery_budget": 2,
+      "classification": "public_completion_false_positive_against_private_grasp_v3",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "measured_success_after_handoff",
+          "seed": 1044400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 44401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 44403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 59,
+              "blocks_used": 10,
+              "handoff_steps": 9,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": 0.0703792015045322,
+            "relative_displacement_max_m": 0.0004976972536095718
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case034/replay/subtask00/private_truth.json",
+            "sha256": "e66271c04077afdb687c7dececff7e31ed87a2090b886642d1c86833b6ba5f4d"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case034/replay/subtask00/choices.jsonl",
+            "sha256": "203a885474272febc9b7dcc30bacf15155cb7286c66d2877e570d50dc2cecb2d"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_variants_439ffcde/D2_recovery2/case034/summary.json",
+        "sha256": "133338a45197a001bc23d553fc8ae463c916c5bca8decebfd1eadc0a68559317"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case034/summary.json",
+        "sha256": "91ef3bf9b104177282dec25c47a892cd9d57d6b647f26566545a477d5a4e59ed"
+      }
+    },
+    {
+      "case": "libero_10_task_t2_s40",
+      "recovery_budget": 2,
+      "classification": "independent_vla_replay_block_budget",
+      "branches": [
+        {
+          "subtask": "g0:turn_on",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "seed": 1047400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 47401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 136,
+              "blocks_used": 24,
+              "handoff_steps": 16,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "unchanged_registered_task_predicate",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case037/replay/subtask00/private_truth.json",
+            "sha256": "d0706cd859310c76582f32bd37fa65fd60da4151e22b7ddbf7bcb55f95d00215"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case037/replay/subtask00/choices.jsonl",
+            "sha256": "743a270deae7695a93bf2e7461a13a88c56e22c2446b65255b9109fd737b1abe"
+          }
+        },
+        {
+          "subtask": "g1:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "seed": 1047410000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 47412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47412000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 47413000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 128,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 127,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 128,
+              "blocks_used": 24,
+              "handoff_steps": 8,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 127,
+              "blocks_used": 24,
+              "handoff_steps": 7,
+              "post_handoff_completed": false
+            }
+          ],
+          "truth_source": "unchanged_native_task_completion",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case037/replay/subtask01/private_truth.json",
+            "sha256": "d0706cd859310c76582f32bd37fa65fd60da4151e22b7ddbf7bcb55f95d00215"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case037/replay/subtask01/choices.jsonl",
+            "sha256": "9108a830b264086299f9b8231df8315e109ef1681b11357cb398fccc62171c79"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_nativefix_09ee76e0/repair_recovery2/case003/summary.json",
+        "sha256": "0a4b63cac1533957f2d61f4bbc12a439cd1e63fcf798dabc019a3d36e625c6e9"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case037/summary.json",
+        "sha256": "dfe97d71f5daa66e77807ea87943a67646e88eab2ae56137d72d778ca9f89317"
+      }
+    },
+    {
+      "case": "libero_10_task_t4_s40",
+      "recovery_budget": 2,
+      "classification": "selected_variant_unavailable_after_partial_replay",
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "seed": 1049400000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 49401000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49402000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49403000,
+              "same_complete_initial": true,
+              "same_first_wire": true,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49401000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49402000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49403000,
+              "same_complete_initial": true,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 72,
+              "blocks_used": 12,
+              "handoff_steps": 12,
+              "post_handoff_completed": true
+            }
+          ],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.041857125846142096,
+            "relative_displacement_max_m": 0.0005082618918568348
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case039/replay/subtask00/private_truth.json",
+            "sha256": "9df2c87e43d6308611ecdde471a82ad146444f0422a3e8553f7f4ea541ecedd3"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case039/replay/subtask00/choices.jsonl",
+            "sha256": "305e2a3558302e319afa17e45bbbc5abe5a5334d3b67b3368262b1799d18b079"
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "self",
+          "success": true,
+          "reason": "subtask_completed",
+          "seed": 1049410000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 49410000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [],
+          "truth_source": "unchanged_registered_task_predicate",
+          "private_grasp_summary": null,
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case039/replay/subtask01/private_truth.json",
+            "sha256": "e949e2b9db40d4bb7282d3907f16e10f894c8f3cddc851fe3ec8e5d8c4635de1"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case039/replay/subtask01/choices.jsonl",
+            "sha256": "23bc62db8604779e7bb3c66e7b25b91019fdbabdd01ee500dc22871a77a54848"
+          }
+        },
+        {
+          "subtask": "g1:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "requested_vla_variant_unavailable",
+          "seed": 1049420000,
+          "sample_comparisons": [
+            {
+              "sample_seed": 49421000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49422000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49423000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49421000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49422000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49423000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49421000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49422000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            },
+            {
+              "sample_seed": 49423000,
+              "same_complete_initial": false,
+              "same_first_wire": false,
+              "same_first_action_block": false
+            }
+          ],
+          "failure_receipts": [],
+          "vla_stops": [],
+          "truth_source": "private_sustained_grasp_v3_post_branch_window",
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": -3.6259940439098415e-08,
+            "relative_displacement_max_m": 0.0005719780260386946
+          },
+          "evidence": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case039/replay/subtask02/private_truth.json",
+            "sha256": "2e8ee39a76e5878d378a9546a742d114069915255d76dbb8032a5afa8215f9f9"
+          },
+          "choices": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case039/replay/subtask02/choices.jsonl",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "sampling_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_nativefix_09ee76e0/repair_recovery2/case005/summary.json",
+        "sha256": "dc586e8991c84f74ce4deed98f18fd6718f99f24b26600d5ed47da163f383cec"
+      },
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/B2_complete_09ee76e0/recovery2/case039/summary.json",
+        "sha256": "c43fbfa0789c0a9b6842e29d5115d112f2ae0206aee24dcd6d8e7a7f88f09a18"
+      }
+    }
+  ],
+  "counts": {
+    "handoff_completion_not_retained": 4,
+    "native_solver_phase_lost_at_endpoint_restore": 3,
+    "independent_vla_replay_block_budget": 5,
+    "public_completion_false_positive_against_private_grasp_v3": 3,
+    "independent_vla_replay_no_progress_stop": 1,
+    "selected_variant_unavailable_after_partial_replay": 5,
+    "own_skill_zero_control_guard_then_observation_collision": 1
+  }
+}

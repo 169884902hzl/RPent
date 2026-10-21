@@ -1,0 +1,53 @@
+........................................................................ [ 10%]
+........................................................................ [ 21%]
+........................................................................ [ 32%]
+........................................................................ [ 43%]
+........................................................................ [ 54%]
+........................................................................ [ 65%]
+........................................................................ [ 76%]
+........................................................................ [ 87%]
+........................................................................ [ 98%]
+.........                                                                [100%]
+=============================== warnings summary ===============================
+../../home/agilex/cobot_magic/rpent_libero_eval/.venv/lib/python3.10/site-packages/_pytest/config/__init__.py:1464
+  /home/agilex/cobot_magic/rpent_libero_eval/.venv/lib/python3.10/site-packages/_pytest/config/__init__.py:1464: PytestConfigWarning: Unknown config option: timeout
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+tests/unit_tests/robots/libero/test_bounded_exclusions.py::test_build_plan_embeds_registry_without_changing_category_cohort
+  /home/agilex/cobot_magic/rpent_libero_eval/.venv/lib/python3.10/site-packages/rlinf/utils/omega_resolver.py:25: UserWarning: register_new_resolver() is deprecated and will be removed in a future release.
+  Use register_resolver() instead.
+  See https://github.com/omry/omegaconf/issues/426 for migration instructions.
+  
+    OmegaConf.register_new_resolver("multiply", lambda x, y: x * y)
+
+tests/unit_tests/robots/libero/test_bounded_exclusions.py::test_build_plan_embeds_registry_without_changing_category_cohort
+  /home/agilex/cobot_magic/rpent_libero_eval/.venv/lib/python3.10/site-packages/rlinf/utils/omega_resolver.py:26: UserWarning: register_new_resolver() is deprecated and will be removed in a future release.
+  Use register_resolver() instead.
+  See https://github.com/omry/omegaconf/issues/426 for migration instructions.
+  
+    OmegaConf.register_new_resolver("int_div", lambda x, y: x // y)
+
+tests/unit_tests/robots/libero/test_bounded_exclusions.py::test_build_plan_embeds_registry_without_changing_category_cohort
+  /home/agilex/cobot_magic/rpent_libero_eval/.venv/lib/python3.10/site-packages/rlinf/utils/omega_resolver.py:27: UserWarning: register_new_resolver() is deprecated and will be removed in a future release.
+  Use register_resolver() instead.
+  See https://github.com/omry/omegaconf/issues/426 for migration instructions.
+  
+    OmegaConf.register_new_resolver("subtract", lambda x, y: x - y)
+
+tests/unit_tests/robots/libero/test_bounded_exclusions.py::test_build_plan_embeds_registry_without_changing_category_cohort
+  /home/agilex/cobot_magic/rpent_libero_eval/.venv/lib/python3.10/site-packages/rlinf/utils/omega_resolver.py:28: UserWarning: register_new_resolver() is deprecated and will be removed in a future release.
+  Use register_resolver() instead.
+  See https://github.com/omry/omegaconf/issues/426 for migration instructions.
+  
+    OmegaConf.register_new_resolver("not", lambda x: not bool(x))
+
+tests/unit_tests/robots/libero/test_bounded_exclusions.py::test_build_plan_embeds_registry_without_changing_category_cohort
+  /home/agilex/cobot_magic/rpent_libero_eval/.venv/lib/python3.10/site-packages/rlinf/utils/omega_resolver.py:29: UserWarning: register_new_resolver() is deprecated and will be removed in a future release.
+  Use register_resolver() instead.
+  See https://github.com/omry/omegaconf/issues/426 for migration instructions.
+  
+    OmegaConf.register_new_resolver(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+657 passed, 6 warnings in 372.80s (0:06:12)

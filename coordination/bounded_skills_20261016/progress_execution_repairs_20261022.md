@@ -1,5 +1,62 @@
 # USER 10/21 09:00 execution repairs
 
+## 10/22 continuation after attached-object probes
+
+Snapshot `05143337`, archive SHA256
+`1f672177a952f15fa9585b9129b9331743cd81e8bb1d2cb4fe05ffa0b6de7e40`,
+passed exact CPU761 and the three physics probes: container index1 (596steps),
+bowl index6 (261steps), stove index2 (676steps). Complete N1 job11181 closed
+all30: baseline25/30, attached snapshot18/30, improvement1/regression8.
+All registered complete initial hashes match. Four-stage medians per decision
+(perception/candidates/decision/execution seconds): baseline
+18.8661/63.4034/14.7172/4.3271; attached1.6653/5.0122/2.0750/.7065.
+Whole decision loops104.2759→12.0273s, whole episodes333.9287→112.6007s.
+Oracle successor annotation is14.5480→2.0604s of the decision phase, not
+model inference. This is not an accuracy-preserving speedup. Full evidence:
+`results/bounded_skills/execution_repairs_20261022/05143337/N1_30/closed30/`;
+local reports under `reports/attached_05143337_20261022/`.
+
+New bowl index0 first-bad edge is physically proven: parent3d3edbb6 succeeds
+291steps/2decisions, child03552c03 fails23steps/8decisions. Both complete
+initial SHA `9a9cb2f45cce0ea2d27c79aefa910135651a87b1823f56f4055f5131574e6ddf`.
+Jobs11186_0/1 completed0:0; exact CPU panels657/661pass. The saved public-input
+replay isolates accepted approach/ingress versus rejected predicted initial
+lift. Probe sources retain production code with accepted D3 transport only.
+11184 was a manifest trailing literal-newline error before physics; fixed
+11186 preserved those logs. Old daaa bowl job11164 was cancelled after >100
+loops without closure; it is an interrupted diagnosis, not a scored result.
+
+Production commit139431e9 removes ordinary-object pre-grasp closure/lift
+expansion; actual descend/lift collision checks, fixture coupled-turn checks,
+and F4 null/pending-grip semantics remain. Focused29tests pass. Strict ablation
+tree `7bfd88d4b5942732cc6369994cd157ccd46305ca` is05143337 plus only this
+two-file diff, excluding the newer D2 transport and the dirty SAM point cache.
+Archive SHA256 `cbe796095ea123c0cc3a05ce85b6300fe78883b23186acd2cd6154501a927070`.
+Exact CPU panel running, then index0 probe and full30 if that probe passes.
+Other object probes26/27/29 compare99d90ae8 anddaaa1730 using existing exact
+CPU-validated sources; job11188, nice500/node02, two GPUs. Codex2's11173
+remains untouched; total C3 concurrent use stays at most3.
+
+D2 audit now closes all245 unavailable variants:144first binding-missing
+early exits,26binding-lost-after-recovery exits,18placements lacking public
+held identity,50public terminal catalogs,7region/target mismatches. The last
+seven bind internal cabinet top_region to exterior top-surface e82; the
+current in catalog uses container identities including parent e118. No
+PRO-specific binding rule has been added. `a06f3e00` fixes the unbound
+fallback path (first170 cases) using existing legal public options and
+records actual fallback mode/scoring scope.
+
+Native-success endpoint loss: CPU replays112original controls with zero
+integration residual; forward alone changes official On=False. Capturing and
+restoring original native MjData buffers restores True byte-for-byte. This is
+CPU evidence, not a new D2 GPU rate; exact a06f3e00 CPU764pass.
+The22 sampling/replay gaps are individually attributed in
+`reports/attached_05143337_20261022/D2_replay_gap_{table.md,rows.json}`.
+Counts4handoff completion lost,3native endpoint phase lost,5replay block
+budget,3public-vs-private-v3 grasp disagreement,1no-progress stop,
+5variant unavailable after partial replay,1own guard/observe collision.
+Old D2 rates8/40,16/40,15/40 remain unchanged. New120 remain after N1 target.
+
 Authorized: F1–F6 execution repair; CPU actual N1 diagnostic subsets first, full CPU; same-complete-initial19 regressions then full N1 30; after N1 target redo original90 self>=2 and initial-pose>=3, D2 40x0/1/2; own original-train perturb generator,20pi pilot then60labels. No training. PRO/D2 eval only, permanent confirmation exclusions unchanged.
 
 Resources: only node02/nice500; <=3 GPUs, optional4 only no C2 demand, total CPU+C2<=80/memory600GB. Protected p3/c5/c6/rf/RVRT and old held untouched. Live at start p3-agent-select11131_3 occupies1GPU/16CPU; C2 fit11137 now1GPU/4CPU. Two currently available GPUs.
@@ -170,3 +227,89 @@ only recorded complete-state D3 transport and launcher are overlaid.
 Pending-grip wrist-observation fix is now committed/pushed as edd067fb, exact
 staged9tests pass; it has no physical result yet. Own-layout language-identity
 v2 CPU checks9pass are dirty/uncommitted; no v2 state has been generated.
+
+Continuation evidence (10/22): container7f probe11157 succeeds2decisions/595steps;
+container99d90ae8 probe11160 also succeeds2decisions/595steps. Parent99d bowl
+probe11161 succeeds3decisions/261steps. Container first326 action+public
+proprioception trace SHA is identical for7f and bad93:
+`701f0c9a355fce0f19537a2926ad217faaf1774c49f79cedd379f67b7b4a5bd7`.
+The later bad lift is an unexecuted finger-shell collision, overwritten by
+`public_hold_not_verified`; current F4 already prevents that overwrite.
+Parent99d→childdaaa1730 is now the container/bowl diagnostic edge. Exact CPU
+99d559pass; daaa562pass. Child container11162 and bowl11164 (verify submitted
+ID in remote preparation) pending, not scored failures before closure.
+
+Stove2b64eda3 probe11158 closes **failure**,34decisions/1046steps; source is
+before schema6. Same b136 source with only registered `lazy_planning_v1=False`
+probe11159 succeeds **1decision/676steps**: move564,descend38,close15,turn59.
+This flag ablation restores the original symmetric-wrist/contact-margin
+search and native completion; it does not prove the full current stack fixed.
+The first lazy source a1db4772 is probing as11163, scene tracking option omitted
+because this historical source predates that feature. Its original CPU panel
+520pass/2 stale-fixture failures is retained; fixture-only corrections21pass,
+including rejection of unsupported header migration; production unchanged.
+
+Saved measured stove plan diagnostic r3 identifies the exact new rejection as
+**fixture_turn**, not ingress or closure. Both ±45deg checks compare the hand
+to a stationary selected knob cloud; external scene counts are0. The report
+is `.../2e3a401a/CPU_stove_saved_plan_contact_stages_r3.json`.
+Two temporary support-fit hypotheses (trimmed local consensus and broad
+connected-support regrouping) did not resolve the real failures; no such
+changes were applied to production.
+
+Current owned patch, staged tree90a2fec334ea80b64d56cd0eff369b3834b383a4,
+resolves selected measured handles before accepting a merely reachable
+stand-off, and predicts the clamped contact surface's motion during a wrist
+turn. Other scene obstacles remain stationary; collision checks and native
+task predicates are unchanged. New geometry tests include a static-obstacle
+negative case and measured braking-start rebase. Focused52tests pass; exact
+full panel runs under `/tmp/rd_selected_contact_staged_r3_20261022`, log
+`/tmp/selected_contact_exact_r3_CPU_20261022.log`. No GPU result for this patch.
+The preceding selected-wrist-only full panel664pass/1failure exposed a stale
+withdrawal test that contradicted edd pending-grip semantics. The updated
+empty/nonempty six-case test passes and never asserts held=True for pending.
+Unverified point-SAM cache code/tests remain dirty and excluded from all
+staged source archives. Generator v2 remains CPU-only/uncommitted.
+
+Attached-body correction committed as **0514333776503c8af58d2ab656b8a3393c168a22**,
+tree c61788dc6905818d783b4fedbc5beccadcee9d32; pushed to user-fork/harness-v5.
+The origin upstream push returned403; the authorized user-fork push succeeded.
+Exact archive /tmp/rd_attached_staged_20261022.tar.gz SHA256
+1f672177a952f15fa9585b9129b9331743cd81e8bb1d2cb4fe05ffa0b6de7e40.
+Whole requested CPU panel **761 passed**,317.83s; no dirty SAM-cache code included.
+Raw saved support route CPU replay under the old owning source rejects both
+container001 and bowl006; the exact corrected source passes46/9 samples.
+Pinned replay evidence reports/attached_05143337_20261022/CPU_support_replay.json
+(SHA256 f9cbebec9fb8d9b7041eafcc32c3fcbf3b0591055b601f629c5b4c82d43a92f7).
+
+Jobs11176/11177 failed preflight before any controls: new plan retained old
+baseline_source. Preserved originals; corrected r2 plan SHA256
+c84c426cfc9d9904b0d7d5ad13ff533a1bbecdeb6ec5f41dcfeed02d6cf4e127,
+manual same-launcher CPU preflight passed. Jobs **11178(container1),11179(bowl6)**
+passed real physical startup; whole episodes still pending. Stove2 job11180
+waits after11178. Node02 only/nice500; old historical daaa bowl11164 retained;
+C2 curve11173 runs its own GPU; our maximum remains3 GPUs.
+
+Closed D2 artifact audit confirms exactly **245** unavailable-variant trials,
+**144** with missing public binding (8 cases,18 each across3 recovery tiers).
+Explicit requested-variant matching exits before the pre-existing unbound
+instruction/full-task fallback. CPU patch and regression checks are in progress,
+not in05143337 or any physical source. All22 sampled-success/replay-failure
+rows are indexed with trial seeds, initial hashes, selected parameters and
+failed receipts; individual physical causes are not yet established.
+
+The three exact05143337 probes are closed success: container1 2decisions/596steps,
+bowl6 3/261, stove2 1/676; jobs11178/11179/11180 completed0:0.
+Bowl still has a zero-control lower rejection before its successful release;
+probe task success does not certify every primitive. Full fresh bounded30
+(no pilots24/25) submitted **11181**,3shards,throttle2 while historical11164
+uses a GPU. Same exact archive and r2 plan/common starts; no source edits
+were copied into its execution snapshot. C2 runs11173; totalC3<=3.
+
+D2 spatial_task_t1_s40 independent replay controls112 reproduced saved endpoint
+with initial/final max residual **0.0**. Native done before forward=True;
+a zero-control forward changes it=False, and old endpoint restoration=False.
+This is a native derived contact/kinematics phase omission from integration
+state, not an extra failed VLA retry. New native-buffer capture/copy and
+unbound-call fallback pass44focused CPU checks; their exact staged snapshot
+is being privately replayed. Not deployed to11181 or rescored historical D2.
