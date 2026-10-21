@@ -1,0 +1,134 @@
+{
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/cup_hold_1fd_closed_r1/manifest.json",
+    "sha256": "f0f213fc0a03d330a6879ae49eaa794f9307b5fad0a07f3a46550cde7b876749"
+  },
+  "source_commit": "1fd0e18070eccf2d6126a2dbdf1e168b4f945208",
+  "source_archive_sha256": "45abb240252254bf6021c00953f6b188567d7c8043245ed9283a90841aa50721",
+  "registered_states": 1,
+  "policy_seeds": 3,
+  "before": {
+    "TP": 0,
+    "TN": 1,
+    "FP": 0,
+    "FN": 2
+  },
+  "after": {
+    "TP": 2,
+    "TN": 1,
+    "FP": 0,
+    "FN": 0
+  },
+  "private_success": {
+    "k": 2,
+    "n": 3,
+    "wilson95": [
+      0.2076596008020477,
+      0.9385080552796037
+    ]
+  },
+  "after_agreement": {
+    "k": 3,
+    "n": 3,
+    "wilson95": [
+      0.4385029682449546,
+      1.0
+    ]
+  },
+  "rows": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/cpu/cup_hold_1fd_closed_r1/paired_attempts.jsonl",
+    "sha256": "018fdc84271fa04f7bc74778b31450e7f5bf7ad0ba631d31e8493824862c0763"
+  },
+  "scope": "same original train-identity state and three existing seeds, diagnostic repeat, not new independent states or full episodes",
+  "confirmation": false,
+  "training_performed": false,
+  "B2_catalog_active": false,
+  "CPU_panel": "693passed312.33s",
+  "physical_panel": 11021,
+  "startup": 11022,
+  "formal": 11023,
+  "post_handoff_first_skills": "two true holds proceed carry_to then release with success receipts; placement/native task success not separately assessed",
+  "paired_rows": [
+    {
+      "after": {
+        "private": true,
+        "public": "success"
+      },
+      "after_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/1fd0e180/cup_hold_replay_r1/formal/job11023_0/N3/000_cup_transfer_libero_10_t4_s1_hold_replay_1/worker_summary.json",
+        "sha256": "995a71b5e43134a8752d1dd21a26af68c0cb3f6a9a8df5464c1cacdcad780458"
+      },
+      "before": {
+        "private": true,
+        "public": "failure"
+      },
+      "before_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/e4bac511/cup_hold_replay_r1/formal/job11000_0/N3/000_cup_transfer_libero_10_t4_s1_hold_replay_1/worker_summary.json",
+        "sha256": "7461fe50f14f027d1817b0b8e86fe6751e30a7052942efeffc7b4ef550b98209"
+      },
+      "initial_physics_sha256": "8540f9e8b9de84e00fd34ac8984700dd94583fb48331867706fff3fb04b19a73",
+      "paired_equal": {
+        "control_trace": true,
+        "initial_physics_sha256": true,
+        "request_sha256": true,
+        "vla_inputs": true,
+        "vla_predictions": true
+      },
+      "trial_seed": 28271000
+    },
+    {
+      "after": {
+        "private": true,
+        "public": "success"
+      },
+      "after_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/1fd0e180/cup_hold_replay_r1/formal/job11023_0/N3/001_cup_transfer_libero_10_t4_s1_hold_replay_2/worker_summary.json",
+        "sha256": "110a6ff66150968d5ff240aa0a04a425ab13e4b187967f35e0d3a6ce33bb75eb"
+      },
+      "before": {
+        "private": true,
+        "public": "failure"
+      },
+      "before_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/e4bac511/cup_hold_replay_r1/formal/job11000_0/N3/001_cup_transfer_libero_10_t4_s1_hold_replay_2/worker_summary.json",
+        "sha256": "d1d4eb6765a2bb196d983024b5d0c44dc6a7039c938cabf9dba12f8954a1be66"
+      },
+      "initial_physics_sha256": "8540f9e8b9de84e00fd34ac8984700dd94583fb48331867706fff3fb04b19a73",
+      "paired_equal": {
+        "control_trace": true,
+        "initial_physics_sha256": true,
+        "request_sha256": true,
+        "vla_inputs": true,
+        "vla_predictions": true
+      },
+      "trial_seed": 28272000
+    },
+    {
+      "after": {
+        "private": false,
+        "public": "failure"
+      },
+      "after_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/1fd0e180/cup_hold_replay_r1/formal/job11023_0/N3/002_cup_transfer_libero_10_t4_s1_hold_replay_3/worker_summary.json",
+        "sha256": "9891c3b364be70e18b7e108d07923dc2d0c18e7d2daba76da72197b717779903"
+      },
+      "before": {
+        "private": false,
+        "public": "failure"
+      },
+      "before_worker": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/schema6_20261020/e4bac511/cup_hold_replay_r1/formal/job11000_0/N3/002_cup_transfer_libero_10_t4_s1_hold_replay_3/worker_summary.json",
+        "sha256": "0775a1929bf3ff05bd02a27a4096dd2d17e3204c3f199a19a8228dc9724e7849"
+      },
+      "initial_physics_sha256": "8540f9e8b9de84e00fd34ac8984700dd94583fb48331867706fff3fb04b19a73",
+      "paired_equal": {
+        "control_trace": true,
+        "initial_physics_sha256": true,
+        "request_sha256": true,
+        "vla_inputs": true,
+        "vla_predictions": true
+      },
+      "trial_seed": 28273000
+    }
+  ]
+}
