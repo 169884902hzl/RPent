@@ -24,6 +24,7 @@ def test_current_pixels_beyond_old_extent_can_seed_same_surface_without_owning_o
 from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_payload import (
+    _inside_bounds,
     _surface_registration,
     complete_moving_boundary,
     complete_spatial_payload_component,
@@ -32,6 +33,17 @@ from robots.libero.bounded_payload import (
     moving_payload_pixels,
     stationary_surface_registration,
 )
+
+
+def test_xyz_bounds_preserve_inclusive_nan_and_infinity_behavior():
+    rng = np.random.default_rng(1821)
+    points = rng.random((32, 29, 3))
+    points[0, :3] = [[0., .25, .5], [1., .75, .5], [np.nan, np.inf, -np.inf]]
+    lower, upper = np.array([0., .25, .5]), np.array([1., .75, .5])
+    expected = (points >= lower).all(axis=-1) & (points <= upper).all(axis=-1)
+    assert np.array_equal(_inside_bounds(points, lower, upper), expected)
+    flat = points.reshape(-1, 3)
+    assert np.array_equal(_inside_bounds(flat, lower, upper), expected.ravel())
 
 
 def test_certified_coarse_fine_preserves_secondary_minima_and_ambiguity_exactly():

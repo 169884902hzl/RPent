@@ -10,6 +10,13 @@ from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation
 
 
+def _inside_bounds(points, lower, upper):
+    """Inclusive XYZ bounds without per-pixel three-channel reductions."""
+    return ((points[..., 0] >= lower[0]) & (points[..., 0] <= upper[0])
+            & (points[..., 1] >= lower[1]) & (points[..., 1] <= upper[1])
+            & (points[..., 2] >= lower[2]) & (points[..., 2] <= upper[2]))
+
+
 def complete_spatial_payload_component(points, seeds, stationary_points, lower, upper):
     """Associate current raw depth components inside measured payload bounds.
 
@@ -108,8 +115,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         return mask.copy(), evidence
     flat = world.reshape(-1, 3)
     eligible = (np.isfinite(flat).all(axis=1)
-        & (flat >= moving.min(0)-1e-6).all(axis=1)
-        & (flat <= moving.max(0)+1e-6).all(axis=1))
+        & _inside_bounds(flat, moving.min(0)-1e-6, moving.max(0)+1e-6))
     ids = np.flatnonzero(eligible)
     owned = ids[cKDTree(moving).query(flat[ids],
         distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6]
@@ -128,7 +134,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     bounded_world = world
     if surface_extent is not None:
         lower, upper = np.asarray(surface_extent)
-        eligible = ((world >= lower).all(axis=2) & (world <= upper).all(axis=2)) | current
+        eligible = _inside_bounds(world, lower, upper) | current
         bounded_world = world.copy()
         bounded_world[~eligible] = np.nan
         evidence['measured_surface_extent_m'] = [lower.tolist(), upper.tolist()]
@@ -205,7 +211,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
             if np.any(next_lower < lower) or np.any(next_upper > upper):
                 lower, upper = next_lower, next_upper
                 bounded_world = world.copy()
-                eligible = ((world >= lower).all(axis=2) & (world <= upper).all(axis=2)) | current
+                eligible = _inside_bounds(world, lower, upper) | current
                 bounded_world[~eligible] = np.nan
                 evidence['measured_surface_extent_m'] = [lower.tolist(), upper.tolist()]
                 if appearance:
