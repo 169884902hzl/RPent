@@ -91,3 +91,21 @@
 - 新oracle11512/11513当前37/40，预览20/37独立回放、25/35采样成功，另2unknown，余3未闭合。740858e4支持只汇总恢复1和显式两片；CPU收尾11546依赖两片完成，保留0/2历史不重跑。
 - 25候选补测11544仍等联合臂，需把失败11536依赖换新job。1e7dd21a新增measured-subtask-choice/2返回器，6CPU通过；exact旧A的snapshot/request/prefix/candidate/outcome/source绑定不变，三次全保留，提示/未执行不确定保留unknown，不把B上下文结果移植过来。尚未物理验证，不称已交75结果。
 - 已逐文件提交并推送user-fork/harness-v5到1e7dd21a；origin为上游无写权限，未改远端，不强推。
+
+- 8a07e44a面板已完成：主796/346.73s；RGB-D4项因环境模块导入顺序单独运行通过。真实固定10→D2 startup→joint72新作业11547已排；11544依赖已修成afterok11547。onpolicy返回CPU11548依赖11544，旧结果不覆盖。返回器180bcc98/compact165脚本27be2501；证据提交3b1f7864已推user-fork。compact165仅已准备，尚未运行（排最后）。
+- 新oracle当前38/40；11512最后状态在full_replay_01，11513最后状态subtask03_on的π分支继续。不是挂起。11546会在两片均闭合后做最终恢复1汇总，不重复0/2。C1已获MODEL_CLOSED_JOINT_REPAIR，C2已获ONPOLICY75_RETURN_ROUTE；后者明确尚未实测、只补exact旧A选中候选，不冒充完整self/VLA比较。
+
+- 11512 COMPLETED0:0/1:38:17，20局9成功；11513当前19局13成功，最后case019已进full_replay_00。合计39闭合22成功（预览）。用户p3第三个作业优先拿走释放卡，11547正常Resources排队；不动它们。
+- 联合72的CPU汇总11550依赖11547，脚本aggregate_A1_joint_CPU_20261023.py（389c024f）分别算持续抓取、登记目标、native整局，逐种子/逐状态配对，unknown保留。若组合清楚优于基线，再做通用公开锚点variant及90/65回归；未得到结果前不提前新增runtime variant。
+- 额外CPU11549仅原版train/自扰动日志285端点(另3无计量)，复核FP简单guard：baseline TP77/TN168/FP26/FN14；相对位移10mm TP75/FP25；empty上界+2mm TP63/FP22；相对位移≤手位移一半 TP77/FP25。未找到可靠公开判据，未改阈值或执行源码。raw CPU_original_completion_all_r1，guard_sensitivity_r2.json已本地保存public_hold_guard_sensitivity.json及REPLAY_GAPS15补充；ab1a3292已提交。
+
+- 11513 COMPLETED0:0/1:47:43，11546 CPU汇总COMPLETED0:0/2s。恢复1全40闭合，独立整局23/40[.42195,.71491]，采样28/38[.57991,.85028]，2unknown单列，零缺局/零0步完整回放。旧21→23，2好0坏；首次回放请求后完整物理哈希新旧0/40相同，不能作因果修复提升。原件oracle_retry_fb9b3865/CPU_closed40，机器表与markdown已镜像本地，C1已获ORACLE40_CLOSED告知。11547现运行固定10，当前仅1闭合，startup/正式72尚未开始。
+
+## 公开测量组合调用 v7 开发继续（2026-10-23）
+- A1 绝对坐标联合72全部闭合：登记目标3/36→13/36，native整局3/36→10/36；逐种子两臂完整初态相同。持续抓取/原子子任务3/36→6/36，与放置和整局判据分列。改善集中少数状态，不将三次重复当独立布局。
+- 25候选75补测已闭合并交C2：exact旧A绑定25位置/75实测/0unknowncontext，数据SHA9149638f133a914e090b6a25d531afcdc029105fe7950305a5729a828dd3ba05；只是补选中候选，不能拿standalone比较标签unknown25冒充缺测。
+- 通用公开测量版新增call_vla.preparation=measured_anchor：仅用公开锚点复用合格move_to/carry_to，π失败也可在公开持物证据下复用搬运尾段；不引入A1坐标。schema7 SHA546299a6f4d956ddc6a249edc5e64bb532a135e1199e345b222c687611b72182。旧schema6数据/服务不变。
+- 第一份修复完整树a339455e CPU804通过/318.53s，RGBD4通过；再修launcher固定6的入口，19 CPU通过，精确最终树efa57340221c82cb359d72514c7062edb34de599（归档SHA0835e1993a83d7d5f4987f9658115873c4d67a293f094d8171b1c3b3b8e9cf50）完整CPU面板继续。未上v7 GPU。
+- 原版90/自产扰动65重新注册1630试次=1165旧方法回归+465公开组合调用，旧种子/预算/重复数不变；全部重新生成v7公开请求，不迁移旧标签。N2从旧完整物理branchpoint提取、N1复用同一完整canonical，准备中。当前node02有3个用户p3运行，仅借实际空闲1卡，无Codex2 GPU作业；不动用户作业。
+
+- 最终efa57340主CPU805通过/311.38s，单独RGBD4通过；11558 CPU提取N2十二完整初态COMPLETED。11559固定10＋三类measured_anchor试点在node02运行，实际借用唯一空闲卡；独立watcher每30秒检查C2 GPU需求，需求出现即取消此明确借卡作业、保留闭合回合。未完成物理前不宣称v7成功率。
