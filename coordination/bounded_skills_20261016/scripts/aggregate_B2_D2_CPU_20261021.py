@@ -28,15 +28,18 @@ def main():
     p.add_argument('--a1', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--allow-incomplete', action='store_true')
+    p.add_argument('--budgets', type=int, nargs='+', default=[0, 1, 2], choices=[0, 1, 2])
+    p.add_argument('--shards', type=int, nargs='+', help='Read the registered numbered shards instead of an unsharded batch')
     a = p.parse_args()
     original = json.loads(a.a1.read_bytes())
     a1 = {row['case']: row for row in original['episodes'] if row['group'] == 'A1-M'}
     assert len(a1) == 40 and sum(row['native_success'] for row in a1.values()) == 28
     rows, reports = [], {}
-    for budget in (0, 1, 2):
-        directory = a.root / f'D2_recovery{budget}'
+    for budget in a.budgets:
+        directories = ([a.root / f'D2_recovery{budget}_shard{s}' for s in a.shards]
+            if a.shards else [a.root / f'D2_recovery{budget}'])
         closed = {}
-        for path in sorted(directory.glob('closed_*.json')):
+        for path in sorted(p for directory in directories for p in directory.glob('closed_*.json')):
             pointer = json.loads(path.read_bytes())
             summary = Path(pointer['summary'])
             assert pointer['sha256'] == ref(summary)['sha256']
@@ -85,6 +88,7 @@ def main():
             'regressions': [r['case'] for r in values if r['A1_M_success'] and not r['success']],
             'sampled_bound_known': len(known_bound),
             'sampled_bound_success': sum(r['sampled_envelope_success'] for r in known_bound),
+            'sampled_bound_wilson95': wilson(sum(r['sampled_envelope_success'] for r in known_bound), len(known_bound)),
             'unknown_private_rule_cases': [r['case'] for r in values if r['sampled_envelope_success'] is None],
             'zero_replay_step_cases': [r['case'] for r in values if not r['replay_sim_steps']],
             'sources': sorted({r['source_commit'] for r in values}),
