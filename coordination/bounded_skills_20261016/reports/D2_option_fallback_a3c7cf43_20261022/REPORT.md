@@ -10,7 +10,7 @@ D2三档40局已全部闭合，独立整局回放成功为12/40、21/40、20/40�
 | 1 | 21/40 | [37.50%, 67.06%] | 24/38，另2 unknown | 5/12 |
 | 2 | 20/40 | [35.20%, 64.80%] | 26/38，另2 unknown | 5/13 |
 
-逐局对照见 [paired_table.md](closed120/paired_table.md)，可核原件的JSONL见 [paired_cases.jsonl](closed120/paired_cases.jsonl)。每档未知私有子任务规则为 `libero_10_swap_t3_s40`、`libero_10_task_t3_s40`；它们仍有真实原生整局回放，计入40分母，仅采样上界unknown。三档都是独立策略采样，不能要求随恢复预算单调，不以D2选择训练阈值。
+逐局对照见 [paired_table.md](closed120/paired_table.md)，可核原件的JSONL见 [paired_cases.jsonl](closed120/paired_cases.jsonl)，8套件和Wilson区间见 [by_suite_table.md](closed120/by_suite_table.md)。每档未知私有子任务规则为 `libero_10_swap_t3_s40`、`libero_10_task_t3_s40`；它们仍有真实原生整局回放，计入40分母，仅采样上界unknown。三档都是独立策略采样，不能要求随恢复预算单调，不以D2选择训练阈值。
 
 所有120个回合均有独立回放尝试记录；恢复0有4条在第0步被执行层或候选限制拒绝，按失败保留，不称产生了物理控制：object_swap_t4、goal_swap_t4、libero_10_swap_t0、libero_10_task_t1。恢复1/2没有零步回放。114条可直接比较的完整首态digest均一致，另6条为无私有拆分规则的原生整句回放，没有伪造对应采样首态。
 
