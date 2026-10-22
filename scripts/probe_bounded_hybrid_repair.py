@@ -88,6 +88,9 @@ def validate_plan(plan):
         repeats = diagnostic.get('self_repeats', 1)
         if type(repeats) is not int or repeats < 1:
             raise ValueError('self_repeats must be a positive integer')
+        vla_repeats = diagnostic.get('vla_repeats', 3)
+        if type(vla_repeats) is not int or vla_repeats < 1:
+            raise ValueError('vla_repeats must be a positive integer')
         if diagnostic['domain'] == 'd2':
             validate_d2_episode(case['episode'])
         elif diagnostic['domain'] == 'original':
@@ -314,11 +317,13 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             if variants is not None:
                 if not plan.get('vla_options_v2'):
                     raise ValueError('explicit VLA variants require the registered B2 catalog')
-                methods = [(j, 'call_vla', variant) for variant in variants for j in (1, 2, 3)]
+                methods = [(j, 'call_vla', variant) for variant in variants
+                    for j in range(1, diagnostic.get('vla_repeats', 3) + 1)]
                 if startup:
                     methods = methods[:1]
             else:
-                methods = [(j, 'call_vla', None) for j in ((1,) if startup else (1, 2, 3))]
+                methods = [(j, 'call_vla', None) for j in
+                    ((1,) if startup else range(1, diagnostic.get('vla_repeats', 3) + 1))]
             if not startup and diagnostic.get('include_self', True):
                 methods.extend((j, 'self', None) for j in range(diagnostic.get('self_repeats', 1)))
             for index, method, variant in methods:

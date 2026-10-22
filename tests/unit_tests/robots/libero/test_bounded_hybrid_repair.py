@@ -121,7 +121,8 @@ def test_repair_rejects_invalid_self_repeat_registration(tmp_path, count):
 
 
 @pytest.mark.parametrize('own_world', [False, True])
-def test_original_self_repeats_restore_the_same_branchpoint(tmp_path, monkeypatch, own_world):
+@pytest.mark.parametrize('vla_repeats', [3, 10])
+def test_original_self_repeats_restore_the_same_branchpoint(tmp_path, monkeypatch, own_world, vla_repeats):
     from contextlib import contextmanager
     from scripts import probe_bounded_hybrid_repair as repair
 
@@ -147,12 +148,13 @@ def test_original_self_repeats_restore_the_same_branchpoint(tmp_path, monkeypatc
         return {'success': True, 'decisions': 1}, {}
     monkeypatch.setattr(repair, 'run_trial', run_trial)
     case = {'diagnostic': {'domain': 'original', 'kind': 'original_fork',
-        'budget': {}, 'subtask_mode': 'pick', 'trial_seed_base': 1000, 'self_repeats': 2}}
+        'budget': {}, 'subtask_mode': 'pick', 'trial_seed_base': 1000,
+        'self_repeats': 2, 'vla_repeats': vla_repeats}}
     result = repair.evaluate_case(case, {}, tmp_path/'case', {'source_commit': 'test'})
-    assert calls == [('call_vla', 2000, 'call_vla_1'), ('call_vla', 3000, 'call_vla_2'),
-        ('call_vla', 4000, 'call_vla_3'), ('self', 1000, 'self_0'), ('self', 2000, 'self_1')]
-    assert len(restored) == 5 and all(value is saved for value in restored)
-    assert len(result['trials']) == 5
+    assert calls == [('call_vla', 1000+j*1000, f'call_vla_{j}')
+        for j in range(1, vla_repeats+1)] + [('self', 1000, 'self_0'), ('self', 2000, 'self_1')]
+    assert len(restored) == vla_repeats+2 and all(value is saved for value in restored)
+    assert len(result['trials']) == vla_repeats+2
     assert runtime_arguments == [{'domain':'original',
         **({'constructed_start':constructed} if own_world else {})}]
 
