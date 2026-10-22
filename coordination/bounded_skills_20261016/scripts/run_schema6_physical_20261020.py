@@ -89,6 +89,9 @@ def worker(args, plan):
     elif row['kind']=='layout_pilot':
         from coordination.bounded_skills_20261016.scripts.run_own_layout_pi_pilot_20261022 import run_case
         result = run_case(row, plan, endpoints, args.output/'episode', startup=args.startup)
+    elif row['kind']=='layout_collect':
+        from coordination.bounded_skills_20261016.scripts.collect_own_layout_prefixes_20261022 import run_case
+        result = run_case(row, plan, endpoints, args.output/'episode', startup=args.startup)
     elif row['kind']=='d2':
         manifest=json.loads(checked(row['manifest']).read_bytes())
         manifest['recovery_budget']=row['recovery_budget']
@@ -242,9 +245,9 @@ def main():
     if plan['training'] or plan['schema_version']!='bounded-skills/6':raise ValueError('wrong evaluation registration')
     if args.worker is not None:return worker(args,plan)
     for row in plan['jobs']:
-        if row.get('kind') == 'layout_pilot':
+        if row.get('kind') in {'layout_pilot', 'layout_collect'}:
             from coordination.bounded_skills_20261016.scripts.run_own_layout_pi_pilot_20261022 import validate_job
-            validate_job(row, plan)
+            validate_job({**row, 'kind': 'layout_pilot'}, plan)
         for key in ('bddl','grasp_measurement_calibration'):
             if key in row['case']:checked(row['case'][key])
         if 'manifest' in row:checked(row['manifest'])

@@ -193,8 +193,10 @@ def main():
                 entry['effective_prompt_sha256'] = hashlib.sha256(prompts[0].encode()).hexdigest() if inputs else None
                 entry['prompt_wire_status'] = 'observed' if inputs else 'not_invoked'
             branches[cid]['trials'].append(entry)
+        own_layout = case['diagnostic'].get('own_layout')
         row = {'version': 'measured-subtask-choice/2',
-               'record_id': 'original-schema6-measured/' + case['name'] + '/' + binding['snapshot_sha256'][:16],
+               'record_id': ('own-layout-schema6-measured/' if own_layout else 'original-schema6-measured/')
+                   + case['name'] + '/' + binding['snapshot_sha256'][:16],
                'public_request': request, 'prefix': [], 'binding': binding,
                'branches': list(branches.values()), 'unknown_trials': unknown,
                'outcome_contract': contract, 'snapshot': reference(start), 'source': reference(worker_path),
@@ -206,6 +208,10 @@ def main():
                'parent_links_scope': 'frozen initial-state split identity only; not old request/prefix compatibility',
                'origin_episode_success': None, 'origin_episode_success_reason': 'subtask forks do not establish whole-episode outcome',
                'scope': 'same-state subtask outcome with method continuation; not immediate first-action success'}
+        if own_layout:
+            row.update(identity_domain='own_original_train_layout', own_layout=own_layout,
+                initial_state_sha256_scope='original train root for split lineage; actual constructed state is binding.snapshot_sha256',
+                parent_links_scope='original train task lineage plus registered own layout; no old request or outcome labels transferred')
         records.append(row)
         categories[case['category']] += 1
     a.output.mkdir(parents=True, exist_ok=False)
