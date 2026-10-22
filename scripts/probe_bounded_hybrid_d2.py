@@ -308,6 +308,11 @@ def consumes_recovery(receipt):
         return False
     if receipt.get('steps_used') == 0 and receipt.get('phase') == 'planning_unreachable':
         return False
+    if (receipt.get('steps_used') == 0
+            and receipt.get('stop_reason') == 'predicted_anchor_changed'):
+        # A predecessor invalidated the chunk's measured parameters. Request
+        # a new decision; no attempted control or recovery was performed.
+        return False
     return not (receipt.get('skill') == 'observe'
         and receipt.get('outcome') == 'no_effect'
         and receipt.get('stop_reason') == 'no_measured_scene_change')

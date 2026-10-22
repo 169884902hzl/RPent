@@ -295,6 +295,18 @@ def test_unchanged_observations_do_not_spend_recovery_on_recorded_d2_receipts():
             'stop_reason': 'measured_sweep_collision'})
 
 
+def test_stale_chunk_anchor_does_not_charge_an_unexecuted_action():
+    from scripts.probe_bounded_hybrid_d2 import consumes_recovery
+
+    # object_swap_t1 recovery0: opening moved the source down 7.4cm; the
+    # following move correctly stopped before executing stale parameters.
+    receipt = {'skill': 'move_to', 'outcome': 'failure', 'phase': 'perception',
+        'stop_reason': 'predicted_anchor_changed', 'steps_used': 0}
+    assert not consumes_recovery(receipt)
+    assert consumes_recovery(dict(receipt, steps_used=1))
+    assert consumes_recovery(dict(receipt, stop_reason='measured_sweep_collision'))
+
+
 def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, monkeypatch):
     from scripts import probe_bounded_hybrid_d2 as probe
 
