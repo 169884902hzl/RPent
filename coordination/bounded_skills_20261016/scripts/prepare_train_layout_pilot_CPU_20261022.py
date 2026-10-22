@@ -28,6 +28,7 @@ def main():
     p.add_argument('--witness-positions', type=Path)
     p.add_argument('--native-witness-parents', action='store_true')
     p.add_argument('--seed-start', type=int, default=11020100)
+    p.add_argument('--distractor', action='append', default=[])
     p.add_argument('--worker', type=int)
     a = p.parse_args()
     if a.worker is None:
@@ -89,6 +90,9 @@ def main():
                 matched = next((v for v in options if v['parent_case'] == case['name']), None)
                 if matched is not None:
                     job['native_witness'] = matched
+        if a.distractor:
+            record['distractors'] = a.distractor
+            record['generator_files'].append(ref(a.source/'robots/libero/bounded_layout_distractors.py'))
         a.registration.parent.mkdir(parents=True, exist_ok=True)
         with a.registration.open('x') as stream:
             json.dump(record, stream, indent=2)
@@ -108,7 +112,8 @@ def main():
     from scripts.generate_bounded_train_layouts import generate_case
     output = Path(record['output'])/f'case{a.worker:03d}'
     result = generate_case(plan, job['case_index'], job['seed'], output,
-        record['registry'], record['original_geometry'], native_witness=job.get('native_witness'))
+        record['registry'], record['original_geometry'], native_witness=job.get('native_witness'),
+        distractors=job.get('distractors', record.get('distractors', ())))
     print(json.dumps({'case': a.worker, 'seed': job['seed'],
         'state_sha256': result['state_sha256'],
         'predicate_witness': result['layout']['predicate_witness'], 'policy_calls': 0}))

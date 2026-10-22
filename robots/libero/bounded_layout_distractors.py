@@ -17,6 +17,13 @@ from robots.libero.bounded_train_layouts import ORIGINAL_SUITES
 _IDENTIFIER = re.compile(r'^[a-z][a-z0-9_]*$')
 
 
+def task_object_assets(object_names, goals) -> set[str]:
+    """Find original task object classes before adding unrelated distractors."""
+    symbols = {symbol for goal in goals for symbol in goal[1:]}
+    return {re.sub(r'_\d+$', '', name) for name in object_names
+        if any(symbol == name or symbol.startswith(name+'_') for symbol in symbols)}
+
+
 def section(text: str, name: str) -> tuple[int, int]:
     """Locate one balanced original BDDL section without rewriting its tokens."""
     matches = list(re.finditer(r'\(\s*:'+re.escape(name)+r'\b', text, re.I))
@@ -70,19 +77,31 @@ def add_distractors(text: str, *, parent: dict, distractors: list[dict],
         if re.search(r'(?<![a-z0-9_])'+re.escape(row['id'])+r'(?![a-z0-9_])', text, re.I):
             raise ValueError('distractor identity already occurs in original task')
     task = {name: text[slice(*section(text, name))] for name in ('language', 'goal')}
-    region_lines, object_lines, init_lines = [], [], []
+    region_lines, init_lines, object_groups = [], [], {}
     coordinates = ' '.join(format(float(v), '.17g') for v in rect)
     for row in distractors:
         region = row['id']+'_initial_region'
         if re.search(r'\b'+re.escape(region)+r'\b', text, re.I):
             raise ValueError('distractor initial region already exists')
         region_lines.append(f'\n      ({region} (:target {support_symbol}) (:ranges (({coordinates}))))\n')
-        object_lines.append(f"\n    {row['id']} - {row['asset']}\n")
+        object_groups.setdefault(row['asset'], []).append(row['id'])
         init_lines.append(f"\n    (On {row['id']} {support_symbol}_{region})\n")
     result = text
-    for name, additions in (('regions', region_lines), ('objects', object_lines), ('init', init_lines)):
+    for name, additions in (('regions', region_lines), ('init', init_lines)):
         _, stop = section(result, name)
         result = result[:stop-1]+''.join(additions)+result[stop-1:]
+    for asset, names in object_groups.items():
+        start, stop = section(result, 'objects')
+        matches = list(re.finditer(r'-\s*'+re.escape(asset)+r'(?=[\s)])', result[start:stop], re.I))
+        if len(matches) > 1:
+            raise ValueError('original task repeats one object type group: '+asset)
+        if matches:
+            # LIBERO stores one name list per asset type. A second typed
+            # declaration replaces its original instances in that parser.
+            at = start+matches[0].start()
+            result = result[:at]+' '.join(names)+' '+result[at:]
+        else:
+            result = result[:stop-1]+'\n    '+' '.join(names)+' - '+asset+'\n'+result[stop-1:]
     assert all(result[slice(*section(result, name))] == original for name, original in task.items())
     return result, {'version': 'original-asset-distractors/1', 'parent': dict(parent),
         'original_bddl_sha256': hashlib.sha256(text.encode()).hexdigest(),

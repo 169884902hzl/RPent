@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 
-from robots.libero.bounded_layout_distractors import add_distractors, section, transplant_named_state
+from robots.libero.bounded_layout_distractors import add_distractors, section, task_object_assets, transplant_named_state
 
 TEXT = '''(define (problem LIBERO_Tabletop_Manipulation)
 (:domain robosuite)
@@ -31,6 +31,22 @@ def test_added_asset_does_not_rewrite_task_language_goal_or_object_interest():
     assert '(On rd_extra_1 main_table_rd_extra_1_initial_region)' in result
     assert audit['task_language_and_goal_bytes_unchanged']
     assert not audit['training_admission']
+
+
+def test_same_asset_addition_preserves_original_instances_in_one_typed_group():
+    text = TEXT.replace('plate_1 - plate)', 'plate_1 - plate alphabet_soup_1 - alphabet_soup)')
+    result, _ = add_distractors(text, parent=PARENT,
+        distractors=[{'id':'rd_extra_1','asset':'alphabet_soup'},
+                     {'id':'rd_extra_2','asset':'alphabet_soup'}],
+        support_symbol='main_table', ranges=[-.3,-.3,.3,.3], available_assets={'alphabet_soup'})
+    objects = result[slice(*section(result, 'objects'))]
+    assert objects.count('- alphabet_soup') == 1
+    assert 'alphabet_soup_1 rd_extra_1 rd_extra_2 - alphabet_soup' in objects
+
+
+def test_distractor_selection_preserves_the_named_source_and_destination_classes():
+    assert task_object_assets(['alphabet_soup_1','basket_1','milk_1'],
+        [['in','alphabet_soup_1','basket_1_contain_region']]) == {'alphabet_soup','basket'}
 
 
 @pytest.mark.parametrize('field,value', [('split', 'init_holdout'), ('PRO', True),
