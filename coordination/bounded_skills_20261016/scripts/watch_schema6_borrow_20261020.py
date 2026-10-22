@@ -16,6 +16,8 @@ def main():
     parser.add_argument('--host', default='gpu5880-ts')
     parser.add_argument('--borrow-job', required=True, type=int)
     parser.add_argument('--ledger', required=True)
+    parser.add_argument('--reclaim-on-any-c2', action='store_true',
+        help='This explicitly borrowed slot belongs to C2 even below three C3 jobs')
     args = parser.parse_args()
     pending_since = None
     cancelled = False
@@ -44,7 +46,7 @@ def main():
                 # Codex2's start. Recheck when it becomes eligible/running.
                 dependency_wait = (borrowed is not None and borrowed[2] == 'PENDING'
                     and borrowed[5] == 'Dependency')
-                if (c2_active and len(c3_running) > 3 and borrowed is not None
+                if (c2_active and (len(c3_running) > 3 or args.reclaim_on_any_c2) and borrowed is not None
                         and not cancelled and not dependency_wait):
                     pending_since = now
                     remote(args.host, f'scancel {args.borrow_job}')
