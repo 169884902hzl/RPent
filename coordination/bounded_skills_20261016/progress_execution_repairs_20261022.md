@@ -1,5 +1,28 @@
 # USER 10/21 09:00 execution repairs
 
+## 2026-10-22 latest continuation
+
+- Strict N1 job11212 is closed: 30/30 paired states, complete initial SHA matched
+  on both arms. Baseline is 25/30; attached-reuse tree is 23/30, with one
+  improvement and three regressions. Median decision loop is 104.276 -> 16.601 s;
+  median episode wall time is 333.929 -> 124.652 s. The 24/30 development target
+  is not met, so the authorized 90-state and D2 batches remain stopped.
+- The zero-control refresh removal was isolated in job11220 on stove s7 and
+  succeeded at 2 decisions/733 sim steps. F4 null receipt semantics and pending
+  grip retention remain. Its exact CPU panel passed 685 tests.
+- Object swap bisection is closed: 99d90ae8 succeeds 2/343 steps; daaa1730 fails
+  after 32 decisions/738 steps. The first bad behavior is daaa's fixture contact
+  ingress precheck being applied to ordinary object grasping. Commit 7c2711ee
+  restricts that precheck to fixture contacts; ordinary selected grasps use the
+  full route search introduced in 562cd59d.
+- The saved object_task public-input replay shows the lazy catalog's selected
+  grasp is 7 mm lower and collides, while the eager full search passes. The
+  selected-action full grasp resolver is committed in 562cd59d and covered by
+  ebf41749. CPU suite after the ingress fix: 307 passed.
+- Job11221 is retained as a failed preflight pairing (ordinary git archive lacked
+  registered D3 transport and produced no physical controls). Job11222 reruns the
+  post-fix object_task probe on the exact attached-reuse D3 base; result pending.
+
 ## 10/22 continuation after attached-object probes
 
 LATEST: ordinary closure/lift removal N1 job11193 is fully closed **20/30**

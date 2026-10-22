@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--loops', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--compare-grasp-search', action='store_true')
+    parser.add_argument('--compare-lazy-endpoint', action='store_true')
     args = parser.parse_args()
     sys.path.insert(0, str(args.source.resolve()))
     import numpy as np
@@ -39,7 +40,12 @@ def main():
     cache = saved['physics']['actuator_state']['observation_state']['cache']
     observed = {key: cache[key] for key in (
         'robot0_eef_pos', 'robot0_eef_quat', 'robot0_gripper_qpos', 'robot0_joint_pos')}
-    frame_root, = (args.episode/'restored_captures').iterdir()
+    restored = args.episode/'restored_captures'
+    if restored.is_dir():
+        frame_root, = restored.iterdir()
+    else:
+        # Historical D3 transport refreshes this arm directly into episode/.
+        frame_root = args.episode
     capture_step = max(e['capture_step'] for anchor in request['anchors'] for e in anchor['evidence'])
     class RetainedFrames(RecordedFrames):
         def save(self, name, value, *, step=-1):
@@ -111,7 +117,8 @@ def main():
     adapter = object.__new__(MeasuredSkillAdapter)
     vars(adapter).update(copy.deepcopy(runtime['adapter']))
     adapter.scene = scene
-    adapter.p = SimpleNamespace(env=SimpleNamespace(raw_obs=lambda: observed))
+    adapter.p = SimpleNamespace(env=SimpleNamespace(raw_obs=lambda: observed,
+        execution_budget=lambda: {'used_sim_steps': 0, 'remaining_sim_steps': 10000}))
     adapter.ex = SimpleNamespace(toolkit=scene.toolkit, instruction=request['instruction'])
     adapter.record_public_geometry = False
     adapter._base_geometry = adapter._base_geometry_cache = None
@@ -129,6 +136,38 @@ def main():
     np.testing.assert_allclose(entity.xyz, anchor['xyz_m'], atol=1e-12)
     plan = adapter.grasp_geometry(entity)
     adapter.plans[key] = plan
+    if args.compare_lazy_endpoint:
+        # Isolate a1db's first deferred proposal and endpoint screening using
+        # this arm's retained first capture, before executing any control.
+        from robots.libero.bounded_motion import SmoothMotion
+        lazy_route = adapter._route('descend', {'anchor_id': key})
+        screen = adapter._cloud_and_ik(key, contact=True)
+        cheap = screen.endpoint_screen(lazy_route, measured_robot(adapter.p))
+        actual = next(c['consequences'] for c in request['candidates']
+            if c['skill'] == 'descend' and c['parameters']['anchor_id'] == key)
+        np.testing.assert_allclose(plan['width_m'], actual['expected_width_m'], atol=1e-10)
+        assert cheap['collision'] == actual['collision'], (cheap, actual)
+        _, _, _, complete = SmoothMotion(adapter.p, screen, adapter.config).prepare(lazy_route)
+        adapter.lazy_planning_v1 = False
+        adapter._screen_cache.clear()
+        adapter._base_geometry = None
+        eager = adapter._compute_grasp_geometry(entity)
+        adapter.plans[key] = eager
+        eager_route = adapter._route('descend', {'anchor_id': key})
+        _, _, _, eager_complete = SmoothMotion(adapter.p,
+            adapter._cloud_and_ik(key, contact=True), adapter.config).prepare(eager_route)
+        result = {'scope': 'same retained public capture; deferred and full grasp search',
+            'checkpoint': str(args.checkpoint), 'training': False, 'physics_steps': 0,
+            'rpc_calls': 0, 'anchor': key, 'retained_mask_matches': mask_matches,
+            'lazy_plan': plan, 'lazy_route': lazy_route, 'endpoint': cheap,
+            'lazy_complete': complete, 'eager_plan': eager, 'eager_route': eager_route,
+            'eager_complete': eager_complete}
+        args.output.mkdir(parents=True, exist_ok=False)
+        (args.output/'summary.json').write_text(json.dumps(result, indent=2,
+            default=lambda v: v.tolist() if hasattr(v, 'tolist') else str(v))+'\n')
+        print(json.dumps({name: result[name] for name in ('endpoint', 'lazy_complete', 'eager_complete')},
+            default=lambda v: v.tolist() if hasattr(v, 'tolist') else str(v)))
+        return
     actual_attempts = row['execution_details'][1]['execution']['internal_planning_attempts']
     variant = (dict(actual_attempts[0]['parameters']) if args.compare_grasp_search
         else {'anchor_id': key, 'approach': 'above', 'path': 'over'})
