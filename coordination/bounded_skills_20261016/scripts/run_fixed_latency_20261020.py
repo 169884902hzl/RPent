@@ -130,6 +130,11 @@ def public_support_replay_inputs(adapter, payload_reference=None):
         'worlds': {camera: np.array(state.load(camera+'_world_high.npz'), copy=True)
             for camera in ('agentview', 'wrist')},
         'entities': copy.deepcopy(adapter.scene.entities),
+        'active_anchor': adapter.active,
+        'verified_held_anchor': adapter.held,
+        'grasp_reference': copy.deepcopy(adapter.grasp_reference),
+        'contact_plans': copy.deepcopy(adapter.plans),
+        'committed_grasps': copy.deepcopy(adapter.committed_grasps),
         'measurement_clouds': copy.deepcopy(adapter.scene.measurement_clouds),
         'payload_reference': copy.deepcopy(payload_reference),
         'cached_attachment_geometry': ({'scene': attached.points.copy(),

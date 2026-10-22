@@ -78,7 +78,15 @@ def worker(args, plan):
     assignment=json.loads((args.output/'assignment.json').read_bytes())
     endpoints={key:HttpRpcClient(assignment[key+'_url']) for key in ('sam3','vla')}
     helper.install_d2_request_compatibility(probe)
-    if row['kind']=='d2':
+    if row['kind']=='original_fork':
+        from scripts import probe_bounded_hybrid_repair as repair
+        manifest = json.loads(checked(row['manifest']).read_bytes())
+        if row['case']['diagnostic']['domain'] != 'original':
+            raise ValueError('original train fork cannot consume D2 or PRO positions')
+        manifest['source_commit'] = plan['source_commit']
+        result = repair.evaluate_case(row['case'], endpoints, args.output/'episode',
+            manifest, startup=args.startup)
+    elif row['kind']=='d2':
         manifest=json.loads(checked(row['manifest']).read_bytes())
         manifest['recovery_budget']=row['recovery_budget']
         manifest['source_commit']=plan['source_commit']

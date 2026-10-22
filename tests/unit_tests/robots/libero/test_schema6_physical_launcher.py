@@ -114,6 +114,40 @@ def test_worker_passes_registered_invocation_groups_into_d2_evaluator(tmp_path, 
     assert received[0]['recovery_budget'] == 1
 
 
+def test_original_fork_worker_preserves_registered_repeats_and_original_domain(tmp_path, monkeypatch):
+    from scripts import probe_bounded_hybrid_repair as repair
+
+    path = Path(__file__).resolve().parents[4]/'coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py'
+    spec = importlib.util.spec_from_file_location('original_fork_worker', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    case = {'name': 'original_train', 'diagnostic': {'domain': 'original', 'self_repeats': 2}}
+    parent = tmp_path/'original90.json'
+    parent.write_text(json.dumps({'evaluation': 'hybrid_repair', 'training': False,
+        'confirmation': False, 'cases': [case], 'vla_options_v2': True, 'schema6_source': True}))
+    plan = {'source_commit': 'exact', 'jobs': [{'kind': 'original_fork', 'case': case,
+        'manifest': {'path': str(parent), 'sha256': hashlib.sha256(parent.read_bytes()).hexdigest()}}]}
+    output = tmp_path/'out'
+    output.mkdir()
+    (output/'assignment.json').write_text(json.dumps({'sam3_url': 'http://127.0.0.1:1',
+        'vla_url': 'http://127.0.0.1:2'}))
+    monkeypatch.setattr(module, 'hooks', lambda _: SimpleNamespace(
+        bootstrap_source=lambda *_: None, install_d2_restore_compatibility=lambda: None,
+        install_d2_request_compatibility=lambda *_: None))
+    received = []
+    def evaluate(actual, endpoints, directory, registration, *, startup):
+        import os
+        assert os.environ['LIBERO_TYPE'] == 'standard'
+        assert actual['diagnostic']['self_repeats'] == 2
+        assert registration['schema6_source'] and registration['vla_options_v2']
+        assert registration['source_commit'] == 'exact'
+        received.append(actual)
+        return {'status': 'physical_result'}
+    monkeypatch.setattr(repair, 'evaluate_case', evaluate)
+    assert module.worker(SimpleNamespace(source=tmp_path, output=output, worker=0, startup=False), plan) == 0
+    assert received == [case]
+
+
 def test_complete_path_worker_restores_initial_physics_and_uses_pro_domain(tmp_path, monkeypatch):
     import os
     import pickle
@@ -214,11 +248,16 @@ def test_failed_support_context_saves_public_depth_without_rpc_or_physics():
     adapter = SimpleNamespace(p=SimpleNamespace(env=PublicSensors()),
         ex=SimpleNamespace(toolkit=SimpleNamespace(_state=SimpleNamespace(latest_step=5, load=load))),
         scene=SimpleNamespace(entities={'item': SimpleNamespace(id='item')}, measurement_clouds=clouds),
+        _screen_cache={}, active='item', held=None, grasp_reference=('actual_public_sample', {}),
+        plans={'item': {'width_m': .04}}, committed_grasps={'item': {'source_step': 3}},
         _latency_stage='selected_execution')
     payload = {'target': np.array([[.1, .2, .3]])}
     saved = module.public_support_replay_inputs(adapter, payload)
     assert saved['capture_step'] == 5 and saved['latency_stage'] == 'selected_execution'
     assert saved['physics_steps'] == saved['rpc_calls'] == 0 and not saved['training']
+    assert saved['active_anchor'] == 'item' and saved['verified_held_anchor'] is None
+    assert saved['grasp_reference'] == ('actual_public_sample', {})
+    assert saved['committed_grasps']['item']['source_step'] == 3
     world[:] = 7.; clouds['item'][:] = 8.; payload['target'][:] = 9.
     np.testing.assert_array_equal(saved['worlds']['agentview'], np.ones((4, 5, 3)))
     np.testing.assert_array_equal(saved['measurement_clouds']['item'], [[.1, .2, .3]])
