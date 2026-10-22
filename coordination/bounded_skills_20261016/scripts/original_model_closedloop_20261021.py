@@ -98,7 +98,8 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domai
                         recovery_used = 0
                 if startup and sum(skill_steps.values()) > 0:
                     break
-                if any(r['skill'] in {'finish', 'ask_help'} for r in receipts):
+                if any(r['skill'] == 'finish' or r['skill'] == 'ask_help'
+                        and r.get('outcome') == 'rejected' for r in receipts):
                     break
         after = verified_health(service)
         (output/'service_health_after.json').write_text(json.dumps(after, indent=2)+'\n')

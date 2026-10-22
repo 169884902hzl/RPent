@@ -19,7 +19,8 @@ def test_health_rejects_a_different_checkpoint_even_when_ready(monkeypatch):
 
 @pytest.mark.parametrize('startup,decisions,steps,reject', [(False, 2, 7, False), (True, 1, 7, False),
     (False, 0, 0, True)])
-def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkeypatch, startup, decisions, steps, reject):
+@pytest.mark.parametrize('first_skill', ['move_to', 'ask_help'])
+def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkeypatch, startup, decisions, steps, reject, first_skill):
     env = SimpleNamespace(terminated=False, truncated=False)
     requests = []
     adapter = SimpleNamespace(p=SimpleNamespace(env=env), details=[])
@@ -29,7 +30,8 @@ def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkey
     adapter.request = request
     def execute(actual, decision):
         assert decision['candidate_ids'] == ['http-'+str(actual['id'])]
-        return [{'skill': 'move_to' if len(requests) == 1 else 'finish',
+        return [{'skill': first_skill if len(requests) == 1 else 'finish',
+            'outcome': 'interrupted' if len(requests) == 1 and first_skill == 'ask_help' else 'success',
             'steps_used': 7 if len(requests) == 1 else 0}]
     adapter.execute = execute
     def choose(actual):
