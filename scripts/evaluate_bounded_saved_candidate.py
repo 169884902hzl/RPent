@@ -62,6 +62,9 @@ def evaluate_candidate_at_saved_state(query, probe, facade, adapter, policy, out
     initial = probe.snapshot_digest(facade.snapshot())
     if initial != probe.snapshot_digest(saved['physics']):
         raise ValueError('complete saved state did not restore exactly')
+    if digest(adapter.latest_request) != digest(request):
+        raise ValueError('restored public execution cache differs from captured request')
+    adapter.latest_request = request
     if candidate['id'] not in legal_after(request, []):
         raise ValueError('frozen choice is not legal in its captured public request')
     output.mkdir()
