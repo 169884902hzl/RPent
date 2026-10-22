@@ -109,3 +109,13 @@
 - 原版90/自产扰动65重新注册1630试次=1165旧方法回归+465公开组合调用，旧种子/预算/重复数不变；全部重新生成v7公开请求，不迁移旧标签。N2从旧完整物理branchpoint提取、N1复用同一完整canonical，准备中。当前node02有3个用户p3运行，仅借实际空闲1卡，无Codex2 GPU作业；不动用户作业。
 
 - 最终efa57340主CPU805通过/311.38s，单独RGBD4通过；11558 CPU提取N2十二完整初态COMPLETED。11559固定10＋三类measured_anchor试点在node02运行，实际借用唯一空闲卡；独立watcher每30秒检查C2 GPU需求，需求出现即取消此明确借卡作业、保留闭合回合。未完成物理前不宣称v7成功率。
+
+## v7 物理接续登记（2026-10-23 05:53 SG，工作未结束）
+- 精确执行树efa57340221c82cb359d72514c7062edb34de599；ROOT/source_measured_vla_efa57340_20261023，归档rd_measured_vla_v7_r4_20261023.tar.gz；CPU805＋RGBD4通过。root普通schema/包默认仍6，独立v7快照才用schema7。
+- 11559 COMPLETED：固定10/10均物理非零；公开组合pilot3共9闭合：原版持物碗放置3/3、自产扰动空手碗pick0/3（2 completion_lost_during_handoff、1 handoff_hold_not_settled）、原版中途抽屉0/3（预定位扫掠，0步0推理）。启动额外持物试次23步/3推理/native成功。不把试点混入正式155。原件measured_anchor_efa57340/{smoke10_receipt,pilot3_receipt}.json。
+- 11563 N1正在串行30（indices0–23,26–31；noVLA）。依赖在固定10通过后解除、利用新空卡，保留同完整canonical。前2局成功、首局174.746s，对旧同初态175.642s，无提速结论。11560 N2正在跑12状态168分叉=旧132+新36；12个完整物理初态由11558 CPU从旧真实branchpoint提取。
+- 11561/11562为155两个分片（1630=旧1165＋新增465），已ready、等Resources；新调用实际startup验证且固定10全部通过后不再人为等重复试点。N1/N2/155原件均在option_ceiling_20261022/measured_anchor_efa57340。当前2个用户p3＋C3的N1/N2占4卡，无C2GPU需求。
+- 11564/11565/11566是N2/155/N1闭合后的CPU汇总，依赖分别11560、11561:11562、11563。汇总脚本ROOT/aggregate_measured_v7_CPU_20261023.py（旧方法逐试次、附加方法单列、unknown不冒充失败）和aggregate_strict_latency_v7_CPU_20261023.py（明确30索引，四段时延＋后继legal）。若CPU汇总程序失败，修复后补汇总，绝不重跑物理换分数。
+- 资源守护本地在跑：watch_registered_gpu_slots_20261023.py --jobs 11559 11560 11561 11562 11563，ledger /tmp/rd_v7_registered_slots_11559_11563.jsonl；C2排队且无空卡时只取消本次显式登记的等待作业及一个运行借用分片、保留closed状态，之后依原manifest续；旧held/其他项目不动。
+- D2 v7恢复1四变体40已CPU注册、未提交（必须先评估原版90/自扰动65和N1/N2）。measured_anchor_efa57340/preparation/D2_recovery1{,_shard0,_shard1}.json；继续用原D2配置，schema7，variants=in_place/initial_pose/full_task/measured_anchor，原种子和恢复1不变，所有40须独立完整回放。旧23/40、28/38＋2unknown不覆盖；旧模型10/40已闭合，服务已停；本轮不训练。
+- 剩余：当前物理全闭合→逐初态/逐调用比较和C7→评估/修有证据的程序问题→新4变体D2恢复1全40采样＋独立回放→炉灶165CPU缩减（最后）→C1/C2证据交付与逐文件提交推送。不得队列未清空即交回。
