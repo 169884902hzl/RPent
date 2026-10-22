@@ -1,0 +1,21 @@
+{
+  "job": "11396",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--cpus-per-task=16",
+    "--mem=120G",
+    "--job-name=rd-c3-s6-B2-groups-layout-panel",
+    "/public/home/sunyihan/rpent_libero_eval/source_own_layout_labels_c7520ae1_20261022/coordination/bounded_skills_20261016/scripts/run_schema6_stage_20261020.sbatch"
+  ],
+  "source_commit": "c7520ae1219e4b67549b418b9438b271109dd49a",
+  "environment": {
+    "SCHEMA6_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_own_layout_labels_c7520ae1_20261022",
+    "SCHEMA6_MANIFEST": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/preparation/smoke10_plus_layout.json",
+    "SCHEMA6_OUTPUT": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/smoke10_plus_layout",
+    "SCHEMA6_CONCURRENCY": "8"
+  },
+  "training": false
+}

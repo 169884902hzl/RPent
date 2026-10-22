@@ -1,0 +1,30 @@
+{
+  "source_tree": "c7520ae1219e4b67549b418b9438b271109dd49a",
+  "parent_tree": "fe925acdb6e07cc6848d77b0fb30410daa082b69",
+  "changed_files": [
+    "robots/libero/bounded_layout_distractors.py",
+    "tests/unit_tests/robots/libero/test_bounded_layout_distractors.py",
+    "scripts/probe_bounded_hybrid_repair.py",
+    "tests/unit_tests/robots/libero/test_bounded_hybrid_repair.py",
+    "coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py",
+    "coordination/bounded_skills_20261016/scripts/collect_own_layout_prefixes_20261022.py",
+    "tests/unit_tests/robots/libero/test_bounded_layout_collection.py",
+    "coordination/bounded_skills_20261016/scripts/export_original_schema6_measured_CPU_20261021.py",
+    "coordination/bounded_skills_20261016/scripts/prepare_train_layout_pilot_CPU_20261022.py"
+  ],
+  "archive_sha256": "26abd8a4aef9a43767fe69a42a23cd84f6e2f62250121c9f2c008027b7cb4cce",
+  "execution_planning_oracle_chunk_unchanged": true,
+  "training": false,
+  "physical_admission": false,
+  "CPU_suite": {
+    "passed": 778,
+    "wall_s": 314.49,
+    "log": "/tmp/rd_own_layout_labels_r2_exact_CPU_20261022.log",
+    "log_sha256": "60f7b2700d73c6696ff59b04b38319abb8b3760ad20b9f4a1bb82c03acb9c114"
+  },
+  "manifest_tool_tests": {
+    "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_own_layout_manifest.py tests/unit_tests/robots/libero/test_bounded_layout_collection.py tests/unit_tests/robots/libero/test_bounded_measured_export.py -q",
+    "passed": 8,
+    "returncode": 0
+  }
+}
