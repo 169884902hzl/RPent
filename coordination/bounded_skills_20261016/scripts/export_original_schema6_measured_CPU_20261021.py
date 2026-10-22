@@ -51,6 +51,15 @@ def invocation_prompt(inputs, executions):
     return prompts, None
 
 
+def claim_invocation(seen, trial):
+    """Requested variants can fall back to the same actual option and seed."""
+    key = (trial['selected_candidate_id'], trial['trial_seed'])
+    if key in seen:
+        return False
+    seen.add(key)
+    return True
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source', type=Path, required=True)
@@ -144,6 +153,7 @@ def main():
         context_sha = digest(binding)
         branches = {}
         unknown = []
+        invocations = set()
         for trial in trials:
             choices_ref = trial['choices']
             if reference(choices_ref['path']) != choices_ref:
@@ -171,6 +181,11 @@ def main():
                 unknown.append({'trial_seed': trial['trial_seed'], 'reason': prompt_issue,
                     'original_reason': trial['reason'], 'source': choices_ref})
                 continue
+            if not claim_invocation(invocations, trial):
+                unknown.append({'trial_seed': trial['trial_seed'],
+                    'reason': 'duplicate_actual_candidate_and_seed',
+                    'original_reason': trial['reason'], 'source': choices_ref})
+                continue
             if cid not in branches:
                 branches[cid] = {'candidate_id': cid, 'method_family': family,
                                  'action_binding_requirement': 'required' if required else 'not_required',
@@ -186,7 +201,7 @@ def main():
             audit_path = root / f'label_invocation_{invocation}{trial["trial_seed"]}.json'
             if audit_path.exists():
                 if json.loads(audit_path.read_bytes()) != audit:
-                    raise ValueError('invocation audit changed')
+                    raise ValueError('invocation audit changed: ' + str(audit_path))
             else:
                 audit_path.write_bytes(canonical(audit) + b'\n')
             entry = {'sample_id': f'{case["name"]}/{cid if plan.get("vla_options_v2") else trial["method"]}/{trial["trial_seed"]}',

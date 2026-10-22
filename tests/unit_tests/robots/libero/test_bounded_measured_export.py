@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 
+
 def module():
     path = Path(__file__).resolve().parents[4] / (
         'coordination/bounded_skills_20261016/scripts/'
@@ -50,3 +51,14 @@ def test_prompt_change_in_later_recovery_is_unknown_for_the_initial_option():
         wire('pick up the soup')], execution)
     assert prompts == ['pick up the soup']
     assert issue == 'effective_prompt_changed_during_continuation'
+
+
+def test_requested_variants_cannot_duplicate_the_same_actual_candidate_and_seed():
+    m = module()
+    seen = set()
+    trial = {'selected_candidate_id': 'actual_full_task', 'trial_seed': 34331000,
+        'vla_variant': {'name': 'in_place'}}
+    assert m.claim_invocation(seen, trial)
+    assert not m.claim_invocation(seen, {**trial, 'vla_variant': {'name': 'full_task'}})
+    assert m.claim_invocation(seen, {**trial, 'trial_seed': 34332000})
+    assert m.claim_invocation(seen, {**trial, 'selected_candidate_id': 'actual_subtask'})
