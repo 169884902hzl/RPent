@@ -1990,7 +1990,8 @@ class MeasuredSkillAdapter:
                         plan = self.plans.get(parameters['anchor_id'])
                         if plan is not None and 'surface_contact_options' in plan:
                             plan = plan['surface_contact_options'].get(approach)
-                        if plan is not None:
+                        entity = self.scene.entities.get(parameters['anchor_id'])
+                        if plan is not None and entity is not None and fixture_actions(entity.name):
                             entry = self._route('move_to', variant)[-1]
                             ingress = plan.get('contact_route',
                                 [{'xyz_m': plan['xyz_m'], 'quat_xyzw': plan['quat_xyzw']}])
