@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from time import perf_counter
 
@@ -18,6 +18,20 @@ class VLABudget:
     controls_per_check: int | None = 1
     minimum_progress_m: float = .005
     max_controls: int | None = None
+
+
+def whole_instruction_budget(budget: VLABudget) -> VLABudget:
+    """Use the existing original-development envelope for a complete task.
+
+    Original90/own-layout development already pins 104 five-control blocks
+    and 520 controls. Its original-initial-state selfcheck closed 106/110 on
+    2026-10-22. Subtasks retain their budget. An explicit total-control cap
+    remains authoritative, as do nondefault block profiles. PRO/D2 outcomes
+    do not select this limit.
+    """
+    if budget.max_controls is not None or budget.blocks != VLABudget().blocks:
+        return budget
+    return replace(budget, blocks=104, max_controls=520)
 
 
 class DevelopmentHistory:

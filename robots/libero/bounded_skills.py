@@ -3729,10 +3729,13 @@ class MeasuredSkillAdapter:
                 'completion_scope':'proprioceptive_proposal_requires_final_rgbd_verification',
                 'evidence':[{'source':'robot_proprioception','eef_xyz_m':robot['eef_xyz_m'],
                     'opening_m':robot['gripper_opening_m']}]}
+        from rpent.skill_package.vla import whole_instruction_budget
+
+        budget = whole_instruction_budget(self.vla_budget) if mode == 'task' else self.vla_budget
         result = run_fallback(prompt=prompt, prepare=prepare, predict=predict, step=step,
             observe=monitor if self.schema6_v1 else observe,
             native_done=lambda: self.p.env.terminated, native_stopped=lambda: self.p.env.terminated or self.p.env.truncated,
-            handoff=handoff, budget=self.vla_budget)
+            handoff=handoff, budget=budget)
         if block_capture_s:
             # run_fallback times this callback as inference. Attribute our
             # sensor copies to detection while keeping the total unchanged.

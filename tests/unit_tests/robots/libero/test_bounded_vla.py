@@ -5,7 +5,30 @@ import json
 import numpy as np
 import pytest
 
-from rpent.skill_package.vla import DevelopmentHistory, VLABudget, run_fallback
+from rpent.skill_package.vla import DevelopmentHistory, VLABudget, run_fallback, whole_instruction_budget
+
+
+def test_full_instruction_can_finish_after_the_subtask_block_envelope():
+    for whole, expected in ((False, 120), (True, 150)):
+        controls = []
+        budget = VLABudget(no_progress_blocks=5, controls_per_check=None)
+        if whole:
+            budget = whole_instruction_budget(budget)
+        result = run_fallback(prompt='whole public instruction', prepare=lambda: {'success': True},
+            predict=lambda _: np.zeros((5, 7)),
+            step=lambda action: (controls.append(action) or {}, {}),
+            observe=lambda: {'progress_vector_m': [len(controls)*.01],
+                'completed': False, 'outside_region': False},
+            native_done=lambda: len(controls) == 150,
+            handoff=lambda _: {'completed': True}, budget=budget)
+        assert result['steps_used'] == expected
+        assert (result['outcome'] == 'success') is whole
+
+
+@pytest.mark.parametrize('budget', [VLABudget(blocks=2), VLABudget(blocks=35),
+    VLABudget(blocks=104, max_controls=520), VLABudget(max_controls=17)])
+def test_full_instruction_preserves_registered_or_explicit_control_limits(budget):
+    assert whole_instruction_budget(budget) is budget
 
 
 def invoke(observe, *, native=lambda: False):
