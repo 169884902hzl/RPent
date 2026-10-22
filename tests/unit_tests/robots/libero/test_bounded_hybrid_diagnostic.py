@@ -450,7 +450,7 @@ def test_startup_calls_vla_before_any_full_oracle_branch(tmp_path, monkeypatch, 
     case = {'name': 'D2', 'episode': {'suite': 'libero_spatial_swap', 'task': 0, 'seed': 40}}
     plan = {'cases': [case], 'source_commit': 'tested', 'trial_seed_base': 1000}
     facade = SimpleNamespace(goal_status=lambda: {'goals': [['on', 'bowl_1', 'plate_1']],
-                                                  'satisfied': [False]})
+                                                  'satisfied': [False], 'done': False})
     adapter = SimpleNamespace(request=lambda **kwargs: {'candidates': []},
         ex=SimpleNamespace(instruction='put the bowl on the plate'))
     timings = SimpleNamespace(measure=lambda *_: nullcontext())
