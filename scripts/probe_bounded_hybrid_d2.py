@@ -624,6 +624,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             write(output / "summary.json", result)
             return result
         chosen, rows, envelope_rate, decisions_used = [], [], 1., 0
+        envelope_done = bool(status['done'])
         for index, spec in enumerate(subtasks):
             if facade.goal_status()["satisfied"][spec["goal_index"]]:
                 continue
@@ -692,7 +693,11 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             chosen.append(choice)
             decisions_used += trials[continuation]["decisions"]
             restore_checkpoint(facade, adapter, policy, endpoints_saved[continuation])
-        envelope_done = facade.goal_status()["done"]
+            selected_trial = trials[continuation]
+            envelope_done = (selected_trial['native_task_success']
+                if 'native_task_success' in selected_trial else facade.goal_status()['done'])
+            if envelope_done:
+                break
         from robots.libero.bounded_hybrid_paths import select_complete_path, replay_complete_path
 
         sampled = {"status": "physical_result", "subtasks": rows,

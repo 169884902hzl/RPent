@@ -479,7 +479,8 @@ def test_startup_calls_vla_before_any_full_oracle_branch(tmp_path, monkeypatch, 
 
 
 @pytest.mark.parametrize('unknown', [False, True])
-def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_path, monkeypatch, unknown):
+@pytest.mark.parametrize('metrology_done', [False, True])
+def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_path, monkeypatch, unknown, metrology_done):
     from contextlib import contextmanager, nullcontext
     import time
 
@@ -489,8 +490,9 @@ def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_
     case = {'name': 'D2', 'episode': {'suite': 'libero_spatial_swap', 'task': 0, 'seed': 40}}
     plan = {'cases': [case], 'source_commit': 'tested', 'trial_seed_base': 1000,
             'vla_options_v2': True}
+    state = {'done': False}
     facade = SimpleNamespace(goal_status=lambda: {
-        'goals': [['open', 'cabinet_1']], 'satisfied': [False], 'done': False})
+        'goals': [['open', 'cabinet_1']], 'satisfied': [state['done']], 'done': state['done']})
     adapter = SimpleNamespace(request=lambda **_: {'candidates': []},
         ex=SimpleNamespace(instruction='open the cabinet'))
     timings = SimpleNamespace(measure=lambda *_: nullcontext(), started=time.perf_counter(),
@@ -505,12 +507,13 @@ def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_
     def trial(*args, **kwargs):
         assert args[1].vla_options_v2 is True
         methods.append(args[5])
+        state['done'] = metrology_done
         return {'success': None if unknown and args[5] == 'call_vla' else False,
-            'decisions': 1, 'request_sha256': 'same'}, {}
+            'native_task_success': False, 'decisions': 1, 'request_sha256': 'same'}, {'done': False}
 
     monkeypatch.setattr(probe, 'runtime', runtime)
-    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({}, {}))
-    monkeypatch.setattr(probe, 'restore_checkpoint', lambda *_: None)
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: (dict(state), {}))
+    monkeypatch.setattr(probe, 'restore_checkpoint', lambda *args: state.update(args[-1]))
     monkeypatch.setattr(probe, 'trial', trial)
     monkeypatch.setattr(bounded_offline_labels, 'capture_annotation_state', lambda *_: {})
     monkeypatch.setattr(bounded_offline_labels, 'save_annotation_state', lambda *_: {})
@@ -520,6 +523,7 @@ def test_full_replay_executes_measured_zero_zero_tie_but_not_unknown_method(tmp_
         return {'success':False,'wall_s':1.,'sim_steps':5,'method':'call_vla_full_instruction'}
     monkeypatch.setattr(probe,'native_instruction_replay',native_replay)
     result = probe.evaluate_case(case, {}, tmp_path / 'episode', plan)
+    assert result['sampled_envelope_native_success'] is False
     assert methods[:4] == ['self', 'call_vla', 'call_vla', 'call_vla']
     if unknown:
         assert len(methods) == 4 and len(result['full_replay']) == 1
