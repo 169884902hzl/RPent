@@ -1,0 +1,89 @@
+{
+  "known_confirmation_geometry": {
+    "registry": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+      "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+    },
+    "sources": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+        "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+        "geometry_records": 200
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+        "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+        "geometry_records": 200
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+        "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+        "geometry_records": 400
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+        "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+        "geometry_records": 400
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+        "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+        "geometry_records": 200
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+        "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+        "record_count": 100,
+        "role": "moka_registered_layout_confirmation",
+        "geometry_records": 100
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+        "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+        "geometry_records": 665
+      }
+    ],
+    "geometry_records_checked": 2165,
+    "original_confirmation_geometry_records_missing": 0,
+    "known_original_geometry_records_checked": 665,
+    "coverage_complete": false,
+    "training_admission": false,
+    "distance_metric": "world_xy_euclidean",
+    "minimum_distance_m": 0.05,
+    "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+  },
+  "prior_CPU_sample": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/v4_fullstate_seed11020001/manifest.json",
+    "sha256": "0fd1b83d7c253ea60cc1be686dc450d54e87684365e3235f6c5032c4666c4779"
+  },
+  "object_distances": [
+    {
+      "object": "akita_black_bowl_1",
+      "minimum_body_xy_distance_m": 0.09339176560489242,
+      "registered_layouts_with_object": 567,
+      "passes_5cm": true
+    },
+    {
+      "object": "akita_black_bowl_2",
+      "minimum_body_xy_distance_m": 0.2158612125043427,
+      "registered_layouts_with_object": 156,
+      "passes_5cm": true
+    },
+    {
+      "object": "cookies_1",
+      "minimum_body_xy_distance_m": 0.6068360331461382,
+      "registered_layouts_with_object": 54,
+      "passes_5cm": true
+    },
+    {
+      "object": "glazed_rim_porcelain_ramekin_1",
+      "minimum_body_xy_distance_m": 0.15994460175526146,
+      "registered_layouts_with_object": 54,
+      "passes_5cm": true
+    }
+  ],
+  "all_known_5cm_pass": true,
+  "controls_executed": 0,
+  "policy_calls": 0,
+  "training_admission": false
+}

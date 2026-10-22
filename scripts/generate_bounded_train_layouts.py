@@ -30,7 +30,7 @@ def pinned(ref):
     return raw
 
 
-def confirmation_geometry(reference):
+def confirmation_geometry(reference, original_geometry_reference=None):
     """Read only pinned private exclusion geometry, including reserve rows."""
     registry = json.loads(pinned(reference))
     layouts, sources = [], []
@@ -59,12 +59,32 @@ def confirmation_geometry(reference):
             raise ValueError('Moka exclusion requires settled world XY')
         layouts.append({symbol: [*xy, 0.]})
     sources.append({**moka_ref, 'geometry_records': len(data['records'])})
-    # Original665 and the named reservations contain identities, not a
-    # complete settled-geometry table. Never promote this partial check to
-    # permission to train or silently release a missing confirmation row.
+    original_count = 0
+    if original_geometry_reference is not None:
+        reconstruction = json.loads(pinned(original_geometry_reference))
+        if reconstruction['registry'] != reference or reconstruction['controls_executed'] != 0:
+            raise ValueError('original exclusion geometry does not match the pinned registry')
+        expected = {row['state_sha256']
+            for plan in registry['original665']['source_plans']
+            for row in json.loads(pinned(plan))['cases']}
+        rows = [json.loads(line) for line in pinned(reconstruction['data']).splitlines()]
+        identities = [row['state_sha256'] for row in rows]
+        if len(set(identities)) != len(identities) or set(identities) != expected:
+            raise ValueError('original exclusion geometry is incomplete or duplicated')
+        for row in rows:
+            positions = row['body_origins_world_m']
+            if (row['permanent_training_exclusion'] is not True or not positions
+                    or any(len(xyz) != 3 or not np.isfinite(xyz).all() for xyz in positions.values())):
+                raise ValueError('invalid original confirmation geometry')
+            layouts.append(positions)
+        original_count = len(rows)
+        sources.append({**reconstruction['data'], 'geometry_records': original_count})
+    # Complete known geometry does not establish exhaustive historical
+    # registration or authorize training. Every registered reserve stays out.
     return layouts, {'registry': reference, 'sources': sources,
         'geometry_records_checked': len(layouts),
-        'original_confirmation_geometry_records_missing': registry['counts']['official_original_confirmation_states'],
+        'original_confirmation_geometry_records_missing': registry['counts']['official_original_confirmation_states']-original_count,
+        'known_original_geometry_records_checked': original_count,
         'coverage_complete': False, 'training_admission': False,
         'distance_metric': 'world_xy_euclidean', 'minimum_distance_m': .05,
         'source_policy': 'private geometry exclusion only; no outcomes, instructions or labels consumed'}
@@ -133,7 +153,7 @@ def penetrations(env,moving):
         and owner(c.geom1)!=owner(c.geom2)]
 
 
-def generate_case(manifest,index,seed,output,confirmation_reference=None):
+def generate_case(manifest,index,seed,output,confirmation_reference=None,original_geometry_reference=None):
     from libero.libero.envs.env_wrapper import ControlEnv
     case=manifest['cases'][index]
     episode=case['episode'];name=case['name'].split('_B2_')[0]
@@ -194,7 +214,7 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None):
                 'initial_penetrations':initial_bad,'witness_penetrations':bad,
                 'source':'independent_CPU_native_original_task_predicates',
                 'original_controls_replayed':len(actions)}
-        exclusions, geometry_evidence = (confirmation_geometry(confirmation_reference)
+        exclusions, geometry_evidence = (confirmation_geometry(confirmation_reference, original_geometry_reference)
             if confirmation_reference is not None else ((), None))
         layout=generate_layout(parent={**episode,'split':'train',
             'initial_state_sha256':parent['initial_state_sha256']},objects=objects,
@@ -211,7 +231,7 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None):
             'integration_sha256':physics['actuator_state']['integration']['sha256'],
             'native_data_sha256':physics['actuator_state']['native_data']['sha256'],
             'confirmation_geometry_exclusions':geometry_evidence,
-            'pending':['complete geometric confirmation-distance exclusion',
+            'pending':['historical confirmation inventory completeness',
                 'additional asset distractor insertion','N1-qualified physical pilot']}
         (output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
         return report
@@ -227,12 +247,20 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--confirmation-reconciliation',type=Path)
     parser.add_argument('--confirmation-reconciliation-sha256')
+    parser.add_argument('--original-confirmation-geometry', type=Path)
+    parser.add_argument('--original-confirmation-geometry-sha256')
     args=parser.parse_args()
     if bool(args.confirmation_reconciliation) != bool(args.confirmation_reconciliation_sha256):
         parser.error('confirmation reconciliation requires both path and SHA256')
+    if bool(args.original_confirmation_geometry) != bool(args.original_confirmation_geometry_sha256):
+        parser.error('original confirmation geometry requires both path and SHA256')
+    if args.original_confirmation_geometry and not args.confirmation_reconciliation:
+        parser.error('original geometry must be associated with a pinned confirmation registry')
     reference = ({'path':str(args.confirmation_reconciliation),
         'sha256':args.confirmation_reconciliation_sha256} if args.confirmation_reconciliation else None)
-    result=generate_case(json.loads(args.manifest.read_bytes()),args.case,args.seed,args.output,reference)
+    original = ({'path': str(args.original_confirmation_geometry),
+        'sha256': args.original_confirmation_geometry_sha256} if args.original_confirmation_geometry else None)
+    result=generate_case(json.loads(args.manifest.read_bytes()),args.case,args.seed,args.output,reference,original)
     print(json.dumps({'state_sha256':result['state_sha256'],
         'native_witness':result['layout']['predicate_witness'],'training_admission':False}))
 

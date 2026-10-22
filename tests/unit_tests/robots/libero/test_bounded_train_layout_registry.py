@@ -44,3 +44,32 @@ def test_pool_bytes_cannot_change_under_a_registered_hash(tmp_path):
     Path(pool['path']).write_text('{}')
     with pytest.raises(ValueError, match='registered original source changed'):
         confirmation_geometry(ref)
+
+
+def test_known_original_geometry_requires_exact_registered_state_set(tmp_path):
+    ref, _ = registry(tmp_path)
+    from pathlib import Path
+
+    data = json.loads(Path(ref['path']).read_bytes())
+    plan = pin(tmp_path/'original_plan.json', {'cases': [{'state_sha256': 'state-a'}]})
+    data['original665'] = {'source_plans': [plan]}
+    data['counts']['official_original_confirmation_states'] = 1
+    ref = pin(tmp_path/'registry.json', data)
+    row = {'state_sha256': 'state-a', 'permanent_training_exclusion': True,
+        'body_origins_world_m': {'bottle_1': [.3, .4, .1]}}
+    raw = (json.dumps(row)+'\n').encode()
+    path = tmp_path/'original_geometry.jsonl'
+    path.write_bytes(raw)
+    summary = {'registry': ref, 'controls_executed': 0,
+        'data': {'path': str(path), 'sha256': hashlib.sha256(raw).hexdigest()}}
+    original = pin(tmp_path/'original_summary.json', summary)
+    layouts, evidence = confirmation_geometry(ref, original)
+    assert layouts[-1] == row['body_origins_world_m']
+    assert evidence['known_original_geometry_records_checked'] == 1
+    assert evidence['original_confirmation_geometry_records_missing'] == 0
+    assert evidence['training_admission'] is False and evidence['coverage_complete'] is False
+    path.write_bytes(raw+raw)
+    summary['data']['sha256'] = hashlib.sha256(raw+raw).hexdigest()
+    duplicate = pin(tmp_path/'duplicate_summary.json', summary)
+    with pytest.raises(ValueError, match='incomplete or duplicated'):
+        confirmation_geometry(ref, duplicate)
