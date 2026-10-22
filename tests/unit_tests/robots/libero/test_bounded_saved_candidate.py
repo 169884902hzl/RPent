@@ -78,3 +78,16 @@ def test_return_packet_keeps_exact_binding_and_three_raw_failures(tmp_path):
     report['binding'] = dict(query['binding'], snapshot_sha256='new-context')
     with pytest.raises(ValueError, match='context changed'):
         measured_row(query, report, 'policy-hash')
+
+
+def test_original_runtime_does_not_import_the_own_layout_constructor(monkeypatch):
+    import sys
+    from types import SimpleNamespace
+    from coordination.bounded_skills_20261016.scripts.run_onpolicy_saved_candidates_20261023 import runtime_world
+    # The real qualified90 source predates this constructor and its keyword.
+    monkeypatch.setitem(sys.modules, 'scripts.probe_bounded_hybrid_repair', SimpleNamespace())
+    assert runtime_world({'diagnostic': {}}, {}) == {}
+    generated = object()
+    monkeypatch.setitem(sys.modules, 'scripts.probe_bounded_hybrid_repair',
+        SimpleNamespace(constructed_original_start=lambda case, plan: generated))
+    assert runtime_world({'diagnostic': {'own_layout': {}}}, {}) == {'constructed_start': generated}

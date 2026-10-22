@@ -28,6 +28,14 @@ def load_module(name, path):
     return module
 
 
+def runtime_world(case, plan):
+    """Only generated layouts need the newer world-construction interface."""
+    if 'own_layout' not in case['diagnostic']:
+        return {}
+    from scripts.probe_bounded_hybrid_repair import constructed_original_start
+    return {'constructed_start': constructed_original_start(case, plan)}
+
+
 def worker(args, plan):
     job = plan['jobs'][args.worker]
     source = Path(job['execution_source'])
@@ -39,7 +47,6 @@ def worker(args, plan):
     helper.bootstrap_source('d2')
     helper.install_d2_restore_compatibility()
     from scripts import probe_bounded_hybrid_d2 as probe
-    from scripts.probe_bounded_hybrid_repair import constructed_original_start
     from rpent.utils.rpc.http_rpc import HttpRpcClient
 
     producer = plan['measurement_producer']
@@ -48,12 +55,12 @@ def worker(args, plan):
     assignment = json.loads((args.output/'assignment.json').read_bytes())
     endpoints = {key: HttpRpcClient(assignment[key+'_url']) for key in ('sam3', 'vla')}
     row = job['query']
-    constructed = constructed_original_start(job['case'], plan)
+    world = runtime_world(job['case'], plan)
     episode = args.output/'episode'
     episode.mkdir(exist_ok=True)
     trials = []
     with probe.runtime(job['case'], endpoints, episode, domain='original',
-            constructed_start=constructed) as (facade, adapter, policy, timings):
+            **world) as (facade, adapter, policy, timings):
         for repeat in range(1 if args.startup else 3):
             target = episode/f'trial{repeat}'
             seed = job['noise_seed_base']+repeat*1000
