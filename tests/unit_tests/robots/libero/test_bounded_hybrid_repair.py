@@ -120,7 +120,8 @@ def test_repair_rejects_invalid_self_repeat_registration(tmp_path, count):
         validate_plan(value)
 
 
-def test_original_self_repeats_restore_the_same_branchpoint(tmp_path, monkeypatch):
+@pytest.mark.parametrize('own_world', [False, True])
+def test_original_self_repeats_restore_the_same_branchpoint(tmp_path, monkeypatch, own_world):
     from contextlib import contextmanager
     from scripts import probe_bounded_hybrid_repair as repair
 
@@ -129,8 +130,12 @@ def test_original_self_repeats_restore_the_same_branchpoint(tmp_path, monkeypatc
     request, saved = {}, {}
     adapter = SimpleNamespace(ex=SimpleNamespace(instruction='put the bowl on the plate'),
         request=lambda **_: request)
+    constructed = {'private_validated_layout': True} if own_world else None
+    monkeypatch.setattr(repair, 'constructed_original_start', lambda *_: constructed)
+    runtime_arguments = []
     @contextmanager
     def runtime(*_args, **_kwargs):
+        runtime_arguments.append(_kwargs)
         yield facade, adapter, object(), object()
     monkeypatch.setattr(repair.probe, 'runtime', runtime)
     monkeypatch.setattr(repair.probe, 'save_checkpoint', lambda *_args: (saved, {}))
@@ -148,6 +153,8 @@ def test_original_self_repeats_restore_the_same_branchpoint(tmp_path, monkeypatc
         ('call_vla', 4000, 'call_vla_3'), ('self', 1000, 'self_0'), ('self', 2000, 'self_1')]
     assert len(restored) == 5 and all(value is saved for value in restored)
     assert len(result['trials']) == 5
+    assert runtime_arguments == [{'domain':'original',
+        **({'constructed_start':constructed} if own_world else {})}]
 
 
 def test_self_continuation_cannot_silently_call_vla_again(tmp_path):
