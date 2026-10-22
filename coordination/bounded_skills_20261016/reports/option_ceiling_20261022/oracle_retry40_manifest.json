@@ -1,0 +1,145 @@
+{
+  "training": false,
+  "confirmation": false,
+  "domain": "D2_eval_only",
+  "complete": true,
+  "recovery": {
+    "1": {
+      "closed": 40,
+      "success": 23,
+      "wilson95": [
+        0.42195068541991065,
+        0.7149060744004962
+      ],
+      "missing": [],
+      "paired_counts_A1_then_B2": {
+        "FT": 6,
+        "TT": 17,
+        "TF": 11,
+        "FF": 6
+      },
+      "improvements": [
+        "libero_spatial_swap_t0_s40",
+        "libero_object_swap_t1_s40",
+        "libero_object_task_t2_s40",
+        "libero_object_task_t4_s40",
+        "libero_10_swap_t1_s40",
+        "libero_10_task_t4_s40"
+      ],
+      "regressions": [
+        "libero_object_swap_t3_s40",
+        "libero_spatial_task_t0_s40",
+        "libero_spatial_task_t4_s40",
+        "libero_object_task_t3_s40",
+        "libero_goal_swap_t4_s40",
+        "libero_10_swap_t0_s40",
+        "libero_10_swap_t2_s40",
+        "libero_spatial_swap_t4_s40",
+        "libero_object_swap_t4_s40",
+        "libero_goal_task_t0_s40",
+        "libero_goal_task_t2_s40"
+      ],
+      "sampled_bound_known": 38,
+      "sampled_bound_success": 28,
+      "sampled_bound_wilson95": [
+        0.5799115381253364,
+        0.8502837874520186
+      ],
+      "unknown_private_rule_cases": [
+        "libero_10_task_t3_s40",
+        "libero_10_swap_t3_s40"
+      ],
+      "zero_replay_step_cases": [],
+      "sources": [
+        "fb9b386542e01d9eb510146decc6c284051dba8a"
+      ],
+      "by_suite": {
+        "libero_10_swap": {
+          "n": 5,
+          "success": 2,
+          "wilson95": [
+            0.11762077423264783,
+            0.769275718723987
+          ],
+          "A1_M_success_on_same_closed_cases": 3
+        },
+        "libero_10_task": {
+          "n": 5,
+          "success": 4,
+          "wilson95": [
+            0.37553462976252533,
+            0.9637758913675698
+          ],
+          "A1_M_success_on_same_closed_cases": 3
+        },
+        "libero_goal_swap": {
+          "n": 5,
+          "success": 2,
+          "wilson95": [
+            0.11762077423264783,
+            0.769275718723987
+          ],
+          "A1_M_success_on_same_closed_cases": 3
+        },
+        "libero_goal_task": {
+          "n": 5,
+          "success": 2,
+          "wilson95": [
+            0.11762077423264783,
+            0.769275718723987
+          ],
+          "A1_M_success_on_same_closed_cases": 4
+        },
+        "libero_object_swap": {
+          "n": 5,
+          "success": 3,
+          "wilson95": [
+            0.2307242812760128,
+            0.882379225767352
+          ],
+          "A1_M_success_on_same_closed_cases": 4
+        },
+        "libero_object_task": {
+          "n": 5,
+          "success": 4,
+          "wilson95": [
+            0.37553462976252533,
+            0.9637758913675698
+          ],
+          "A1_M_success_on_same_closed_cases": 3
+        },
+        "libero_spatial_swap": {
+          "n": 5,
+          "success": 4,
+          "wilson95": [
+            0.37553462976252533,
+            0.9637758913675698
+          ],
+          "A1_M_success_on_same_closed_cases": 4
+        },
+        "libero_spatial_task": {
+          "n": 5,
+          "success": 2,
+          "wilson95": [
+            0.11762077423264783,
+            0.769275718723987
+          ],
+          "A1_M_success_on_same_closed_cases": 4
+        }
+      }
+    }
+  },
+  "A1_M": {
+    "success": 28,
+    "n": 40,
+    "source": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_preparation_c6b62442/preparation/A1_M_40_reference.json",
+      "sha256": "83fc9535d4c00ce5d407820491252b202ba7a6e48a2359cc86f76d1ac729ecda"
+    }
+  },
+  "rows": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/oracle_retry_fb9b3865/CPU_closed40/paired_cases.jsonl",
+    "sha256": "cd54620eb65d001b0cd44def4774f12ca1f592a4d213a4a4dc71a7197fa5d893"
+  },
+  "scope": "independent native full replay; sampled envelope is a separate diagnostic, not a measured episode success rate"
+}

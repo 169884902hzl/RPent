@@ -1,0 +1,44 @@
+| 局 | 新oracle回放 | 新采样上限 | 旧oracle回放 | 旧采样上限 | 模型 | A1-M |
+|---|---:|---:|---:|---:|---:|---:|
+| libero_spatial_swap_t0_s40 | 1 | 1 | 1 | 1 | 1 | 0 |
+| libero_spatial_swap_t1_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_spatial_swap_t3_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_object_swap_t1_s40 | 1 | 1 | 1 | 1 | 0 | 0 |
+| libero_object_swap_t3_s40 | 0 | 0 | 0 | 0 | 0 | 1 |
+| libero_spatial_task_t0_s40 | 0 | 0 | 0 | 0 | 0 | 1 |
+| libero_spatial_task_t2_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_spatial_task_t4_s40 | 0 | 0 | 0 | 0 | 0 | 1 |
+| libero_object_task_t1_s40 | 1 | 1 | 1 | 1 | 1 | 1 |
+| libero_object_task_t3_s40 | 0 | 0 | 0 | 0 | 1 | 1 |
+| libero_goal_swap_t0_s40 | 0 | 0 | 0 | 0 | 0 | 0 |
+| libero_goal_swap_t2_s40 | 0 | 1 | 0 | 0 | 0 | 0 |
+| libero_goal_swap_t4_s40 | 0 | 0 | 0 | 0 | 0 | 1 |
+| libero_goal_task_t1_s40 | 1 | 1 | 1 | 1 | 1 | 1 |
+| libero_goal_task_t3_s40 | 0 | 1 | 0 | 1 | 0 | 0 |
+| libero_10_swap_t0_s40 | 0 | 0 | 0 | 0 | 0 | 1 |
+| libero_10_swap_t2_s40 | 0 | 0 | 0 | 0 | 0 | 1 |
+| libero_10_swap_t4_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_10_task_t1_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_10_task_t3_s40 | 0 | ? | 0 | ? | 0 | 0 |
+| libero_object_swap_t0_s40 | 1 | 1 | 1 | 1 | 1 | 1 |
+| libero_spatial_swap_t2_s40 | 1 | 1 | 1 | 1 | 1 | 1 |
+| libero_spatial_swap_t4_s40 | 0 | 1 | 0 | 0 | 0 | 1 |
+| libero_object_swap_t2_s40 | 1 | 1 | 1 | 1 | 1 | 1 |
+| libero_object_swap_t4_s40 | 0 | 1 | 0 | 0 | 0 | 1 |
+| libero_spatial_task_t1_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_spatial_task_t3_s40 | 0 | 0 | 0 | 0 | 0 | 0 |
+| libero_object_task_t0_s40 | 1 | 1 | 1 | 1 | 1 | 1 |
+| libero_object_task_t2_s40 | 1 | 1 | 1 | 1 | 0 | 0 |
+| libero_object_task_t4_s40 | 1 | 1 | 1 | 1 | 1 | 0 |
+| libero_goal_swap_t1_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_goal_swap_t3_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_goal_task_t0_s40 | 0 | 0 | 0 | 0 | 0 | 1 |
+| libero_goal_task_t2_s40 | 0 | 1 | 0 | 1 | 0 | 1 |
+| libero_goal_task_t4_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_10_swap_t1_s40 | 1 | 1 | 0 | 0 | 0 | 0 |
+| libero_10_swap_t3_s40 | 0 | ? | 0 | ? | 0 | 0 |
+| libero_10_task_t0_s40 | 1 | 1 | 1 | 1 | 0 | 1 |
+| libero_10_task_t2_s40 | 1 | 1 | 0 | 1 | 1 | 1 |
+| libero_10_task_t4_s40 | 1 | 1 | 1 | 1 | 0 | 0 |
+
+同任务/初态编号协议；各历史臂的完整物理初态未认证为相同，不作因果选择错误归因。
