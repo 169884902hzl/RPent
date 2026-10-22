@@ -17,7 +17,7 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from robots.libero.bounded_train_layouts import generate_layout, instruction_identity_check
+from robots.libero.bounded_train_layouts import LayoutLimits, generate_layout, instruction_identity_check
 from robots.libero.v5_branch_state import actuator_state, restore_actuators
 from scripts.bounded_state_exclusions import check_exclusions
 
@@ -153,6 +153,51 @@ def penetrations(env,moving):
         and owner(c.geom1)!=owner(c.geom2)]
 
 
+def saved_control_rows(rows):
+    """Ignore terminal/log-only rows when replaying the last real controls."""
+    physical = [row for row in rows if 'private_pre_execution_snapshot' in row
+        and any(detail.get('execution', {}).get('trace')
+            for detail in row.get('execution_details', []))]
+    if not physical:
+        raise ValueError('original log contains no saved physical control segment')
+    return physical
+
+
+def construction_support(env):
+    """Use the original arena's workspace metadata, including floor tasks."""
+    domain = env.env
+    name = domain.workspace_name
+    size = getattr(domain, name+'_full_size', getattr(domain, 'table_full_size', None))
+    offset = np.asarray(domain.workspace_offset, float)
+    if size is not None:
+        size = np.asarray(size, float)
+        return {'lower_m': (offset-np.r_[size[:2]/2, size[2]]).tolist(),
+            'upper_m': (offset+np.r_[size[:2]/2, 0.]).tolist(),
+            'source': 'original_arena_workspace_dimensions'}
+    # FloorArena has no table-size attribute. Bound construction by ORIGINAL
+    # initial placement regions plus the already registered 12cm offset;
+    # the task's goal regions do not choose the perturbation area. Floor's
+    # fixture workspace_offset is below the actual collision plane.
+    initial = domain.parsed_problem['initial_state']
+    regions = domain.parsed_problem['regions']
+    boxes = [box for relation in initial if len(relation) == 3 and relation[0] == 'on'
+        and relation[2] in regions and regions[relation[2]]['target'] == name
+        for box in regions[relation[2]]['ranges']]
+    planes = [i for i in range(env.sim.model.ngeom)
+        if env.sim.model.geom_id2name(i) == name and int(env.sim.model.geom_type[i]) == 0]
+    if not boxes or len(planes) != 1:
+        raise ValueError('original workspace lacks dimensions or a bounded initial floor region')
+    boxes = np.asarray(boxes, float)
+    margin = LayoutLimits().translation_m
+    low = boxes[:, :2].min(0)+offset[:2]-margin
+    high = boxes[:, 2:].max(0)+offset[:2]+margin
+    top = float(env.sim.data.geom_xpos[planes[0], 2])
+    thickness = float(env.sim.model.geom_size[planes[0], 2])
+    return {'lower_m': [*low, top-thickness], 'upper_m': [*high, top],
+        'source': 'original_initial_regions_and_native_floor_plane',
+        'initial_region_margin_m': margin}
+
+
 def generate_case(manifest,index,seed,output,confirmation_reference=None,original_geometry_reference=None):
     from libero.libero.envs.env_wrapper import ControlEnv
     case=manifest['cases'][index]
@@ -172,7 +217,7 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
     bddl=case['bddl'];pinned(bddl)
     # Build the predicate witness in a distinct CPU simulator by replaying the
     # final saved original-train control segment. Never infer it from success text.
-    last=choices[-1]
+    last=saved_control_rows(choices)[-1]
     final=pickle.loads(pinned(last['private_pre_execution_snapshot']))
     actions=[row['action'] for d in last['execution_details']
         for row in d.get('execution',{}).get('trace',[])]
@@ -195,10 +240,7 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
         for item in objects:
             if any(symbol.startswith(item['id']) for symbol in destinations):
                 item['movable']=False
-        size=np.asarray(base.env.table_full_size)
-        offset=np.asarray(base.env.workspace_offset)
-        support={'lower_m':(offset-np.r_[size[:2]/2,size[2]]).tolist(),
-            'upper_m':(offset+np.r_[size[:2]/2,0.]).tolist()}
+        support=construction_support(base)
         moving={x['id'] for x in objects if x['movable']}
         goal_bodies={name for name in base.env.objects_dict
             if any(symbol.startswith(name) for symbol in goal_symbols)}
@@ -218,7 +260,8 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
             if confirmation_reference is not None else ((), None))
         layout=generate_layout(parent={**episode,'split':'train',
             'initial_state_sha256':parent['initial_state_sha256']},objects=objects,
-            support=support,seed=seed,witness_check=validate,confirmation_layouts=exclusions)
+            support=support,seed=seed,witness_check=validate,confirmation_layouts=exclusions,
+            limits=LayoutLimits(attempts=2000))
         restore(base,initial);apply_layout(base,layout['objects'])
         physics={'sim_state':base.sim.get_state().flatten(), 'actuator_state':actuator_state(base)}
         raw=pickle.dumps({**physics,
@@ -230,6 +273,7 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
             'GPU_rollouts':0,'training_admission':False,
             'integration_sha256':physics['actuator_state']['integration']['sha256'],
             'native_data_sha256':physics['actuator_state']['native_data']['sha256'],
+            'construction_support':support,
             'confirmation_geometry_exclusions':geometry_evidence,
             'pending':['historical confirmation inventory completeness',
                 'additional asset distractor insertion','N1-qualified physical pilot']}

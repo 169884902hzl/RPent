@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-VERSION = 'original-train-layout/4'
+VERSION = 'original-train-layout/5'
 ORIGINAL_SUITES = {'libero_spatial','libero_object','libero_goal','libero_10','libero_90'}
 SEED_RANGE = (11020000,11029999)
 

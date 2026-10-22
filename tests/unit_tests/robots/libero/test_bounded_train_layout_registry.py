@@ -7,6 +7,43 @@ import pytest
 from scripts.generate_bounded_train_layouts import confirmation_geometry
 
 
+def test_native_witness_uses_last_saved_control_not_terminal_summary():
+    from scripts.generate_bounded_train_layouts import saved_control_rows
+    row = {'private_pre_execution_snapshot': {'path': 'actual_snapshot'},
+        'execution_details': [{'execution': {'trace': [{'action': [0.]*7}]}}]}
+    assert saved_control_rows([{'kind': 'header'}, row, {'success': True}]) == [row]
+    with pytest.raises(ValueError, match='no saved physical'):
+        saved_control_rows([{'success': True}])
+
+
+@pytest.mark.parametrize('workspace', ['main_table', 'kitchen_table', 'living_room_table'])
+def test_construction_uses_the_actual_workspace_dimension_attribute(workspace):
+    from types import SimpleNamespace
+    from scripts.generate_bounded_train_layouts import construction_support
+    name = 'table_full_size' if workspace == 'main_table' else workspace+'_full_size'
+    domain = SimpleNamespace(workspace_name=workspace, workspace_offset=(0., 0., .9),
+        **{name: (1., 1.2, .05)})
+    support = construction_support(SimpleNamespace(env=domain))
+    assert support['upper_m'] == [.5, .6, .9]
+    assert support['lower_m'] == [-.5, -.6, .85]
+
+
+def test_floor_uses_collision_plane_and_initial_regions_not_goal_region():
+    from types import SimpleNamespace
+    import numpy as np
+    from scripts.generate_bounded_train_layouts import construction_support
+    domain = SimpleNamespace(workspace_name='floor', workspace_offset=(0., 0., -.035),
+        parsed_problem={'initial_state': [['on', 'item', 'initial']],
+            'regions': {'initial': {'target': 'floor', 'ranges': [[-.2, -.1, .2, .3]]},
+                'goal': {'target': 'floor', 'ranges': [[3., 3., 4., 4.]]}}})
+    model = SimpleNamespace(ngeom=1, geom_id2name=lambda _: 'floor',
+        geom_type=[0], geom_size=np.array([[3., 3., .125]]))
+    support = construction_support(SimpleNamespace(env=domain,
+        sim=SimpleNamespace(model=model, data=SimpleNamespace(geom_xpos=np.zeros((1, 3))))))
+    np.testing.assert_allclose(support['lower_m'], [-.32, -.22, -.125])
+    np.testing.assert_allclose(support['upper_m'], [.32, .42, 0.])
+
+
 def pin(path, value):
     raw = json.dumps(value).encode()
     path.write_bytes(raw)
