@@ -71,7 +71,6 @@ def test_lazy_catalog_skips_smooth_plans_but_selected_collision_returns_receipt(
 def test_selected_lazy_grasp_resolves_full_route_before_chunk(adapter, monkeypatch):
     adapter.lazy_planning_v1 = True
     adapter.scene.measurement_clouds['e1'] = np.repeat([[.1, .1, .9]], 40, axis=0)
-    entity = adapter.scene.entities['e1']
     deferred = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
         'width_m': .03, 'approach_xyz_m': [.1, .1, 1.],
         'preferred_approach': 'above', 'approach_route': [],
@@ -90,6 +89,8 @@ def test_selected_lazy_grasp_resolves_full_route_before_chunk(adapter, monkeypat
     assert calls == [True]
     assert adapter.plans['e1']['grasp_candidate_id'] == 'full-route'
     assert adapter.plans['e1']['grasp_route_deferred'] is False
+    adapter._resolve_selected_grasp({'skill': 'move_to', 'parameters': {'anchor_id': 'e1'}})
+    assert calls == [True]
 
 
 def test_identical_grasp_measurement_cache_isolated_and_invalidated_by_cloud(adapter,monkeypatch):

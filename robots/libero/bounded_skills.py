@@ -1377,11 +1377,11 @@ class MeasuredSkillAdapter:
         if not self.lazy_planning_v1 or candidate['skill'] not in {'move_to', 'descend'}:
             return
         key = candidate['parameters']['anchor_id']
+        plan = self.plans.get(key)
+        if not plan or not plan.get('grasp_route_deferred'):
+            return
         entity = self.scene.entities.get(key)
         if entity is None or not entity.visible or self.active == key or fixture_actions(entity.name):
-            return
-        plan = self.plans.get(key)
-        if plan is None:
             return
         initial_candidate = plan.get('grasp_candidate_id')
         resolved = self._compute_grasp_geometry(entity, complete=True)
@@ -1996,7 +1996,7 @@ class MeasuredSkillAdapter:
                         if plan is not None and 'surface_contact_options' in plan:
                             plan = plan['surface_contact_options'].get(approach)
                         entity = self.scene.entities.get(parameters['anchor_id'])
-                        if plan is not None and entity is not None and fixture_actions(entity.name):
+                        if plan is not None and entity is not None and (entity.part_of or fixture_actions(entity.name)):
                             entry = self._route('move_to', variant)[-1]
                             ingress = plan.get('contact_route',
                                 [{'xyz_m': plan['xyz_m'], 'quat_xyzw': plan['quat_xyzw']}])
