@@ -1377,16 +1377,21 @@ class MeasuredSkillAdapter:
         if not self.lazy_planning_v1 or candidate['skill'] not in {'move_to', 'descend'}:
             return
         key = candidate['parameters']['anchor_id']
-        plan = self.plans.get(key)
-        if not plan or not plan.get('grasp_route_deferred'):
-            return
         entity = self.scene.entities.get(key)
-        if entity is None or not entity.visible or self.active == key:
+        if entity is None or not entity.visible or self.active == key or fixture_actions(entity.name):
             return
+        plan = self.plans.get(key)
+        if plan is None:
+            return
+        initial_candidate = plan.get('grasp_candidate_id')
         resolved = self._compute_grasp_geometry(entity, complete=True)
         self.candidate_diagnostics.append({'stage': 'selected_grasp_resolution',
-            'anchor_id': key, 'initial_candidate': plan.get('grasp_candidate_id'),
+            'anchor_id': key, 'initial_candidate': initial_candidate,
             'selected_candidate': resolved.get('grasp_candidate_id') if resolved else None})
+        self.details.append({'selected_grasp_resolution': {'anchor_id': key,
+            'initial_candidate': initial_candidate,
+            'selected_candidate': resolved.get('grasp_candidate_id') if resolved else None,
+            'complete_route_screen': resolved is not None}})
         if resolved is not None:
             self.plans[key] = resolved
             self.committed_grasps.pop(key, None)
