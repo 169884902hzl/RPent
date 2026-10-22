@@ -16,7 +16,8 @@ def test_original_clause_keeps_drawer_interior_wording_and_resolves_pronoun():
     assert render_variant(instruction,{'mode':'instruction','clause_id':1},None)==clauses[1]
 
 
-def test_two_preparations_and_unbound_instruction_choices_are_published(adapter):
+def test_registered_preparations_and_unbound_instruction_choices_are_published(adapter):
+    from rpent.skill_package import VERSION
     adapter.schema6_v1 = True
     adapter.allow_vla = True
     adapter.vla_options_v2 = True
@@ -24,7 +25,10 @@ def test_two_preparations_and_unbound_instruction_choices_are_published(adapter)
     validate(request)
     calls = [c for c in request['candidates'] if c['skill']=='call_vla']
     picks = [c for c in calls if c['parameters'].get('anchor_id')=='e1']
-    assert {c['parameters']['preparation'] for c in picks} == {'in_place','initial_pose'}
+    expected={'in_place','initial_pose'} | ({'measured_anchor'} if VERSION=='bounded-skills/7' else set())
+    assert {c['parameters']['preparation'] for c in picks} == expected
+    unbound=[c for c in calls if c['parameters']['mode'] in {'task','instruction'}]
+    assert all(c['parameters']['preparation'] in {'in_place','initial_pose'} for c in unbound)
     assert any(c['parameters']['mode']=='task' and 'anchor_id' not in c['parameters'] for c in calls)
     assert any(c['parameters']['mode']=='instruction' for c in calls)
     assert request['instruction_clauses'] == instruction_clauses(adapter.ex.instruction)

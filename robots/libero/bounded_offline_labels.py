@@ -161,8 +161,8 @@ def rebuild_schema6_captured_request(state, request, *, progress=None, progress_
     from rpent.skill_package.contract import FailureMemory, identity
     from rpent.skill_package.progress import PublicProgress,DEFAULT_STAGNANT_DECISIONS
 
-    if SCHEMA_VERSION != 'bounded-skills/6':
-        raise ValueError('captured catalog reconstruction requires schema6 source')
+    if SCHEMA_VERSION not in {'bounded-skills/6','bounded-skills/7'}:
+        raise ValueError('captured catalog reconstruction requires schema6 or schema7 source')
     if state['version'] != VERSION or state['request_sha256'] != request_digest(request):
         raise ValueError('captured state belongs to a different request or version')
     if request['schema_version'] not in {f'bounded-skills/{v}' for v in (3, 4, 5, 6)}:

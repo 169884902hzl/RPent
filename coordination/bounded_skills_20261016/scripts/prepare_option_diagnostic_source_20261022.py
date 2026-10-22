@@ -92,7 +92,9 @@ def main():
                 'tests/unit_tests/robots/libero/test_bounded_model_probe.py']
         if a.staged:
             files += ['robots/libero/bounded_vla_staged.py','rpent/skill_package/schema7.json',
-                'tests/unit_tests/robots/libero/test_bounded_vla_staged.py']
+                'tests/unit_tests/robots/libero/test_bounded_vla_staged.py',
+                'robots/libero/bounded_offline_labels.py',
+                'tests/unit_tests/robots/libero/test_bounded_vla_options.py']
         for f in files:
             blob=subprocess.check_output(['git','rev-parse','HEAD:'+f],cwd=root,text=True).strip()
             subprocess.run(['git','update-index','--add','--cacheinfo','100644,'+blob+','+f],cwd=root,env=env,check=True);blobs[f]=blob
