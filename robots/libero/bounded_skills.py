@@ -3300,6 +3300,25 @@ class MeasuredSkillAdapter:
                     outcome, phase, reason = "failure", "contact_failure", "public_hold_not_verified"
             else:
                 outcome, phase, reason = "unmeasured", "verification_error", "lifted_object_not_visible"
+        elif skill == "lift" and detail.get('executed') and payload_reference is not None:
+            source = entities_before.get(key)
+            current = self.scene.entities.get(key)
+            if source is not None and current is not None and current.visible:
+                robot_at_contact = payload_reference['robot']
+                holding = self._held_motion_evidence(source, current, robot_at_contact, self.robot())
+                opening = self.robot()["gripper_opening_m"]
+                aperture, aperture_evidence = self.holding_aperture(opening)
+                rise = current.lower[2] - source.lower[2]
+                detail["public_hold"] = {"rise_m": rise,
+                    "relative_displacement_m": None, "opening_m": opening,
+                    "aperture": aperture_evidence, "bounds_co_motion": holding}
+                if holding is not None and rise >= .03 and not holding['lost'] and aperture:
+                    self.held = key
+                    self.payload_reference = payload_reference
+                else:
+                    outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_not_verified'
+            else:
+                outcome, phase, reason = 'unmeasured', 'verification_error', 'lifted_object_not_visible'
         if self.p.env.terminated:
             # Native completion is a public stop condition. Reaching it can
             # interrupt a wrist turn before its nominal waypoint; that is not
