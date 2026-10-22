@@ -61,6 +61,7 @@ def main():
                 'sampling_source_commit': sampled['source_commit'],
                 'parent_sampling_summary': data.get('parent_summary'),
                 'initial_physics_sha256': data.get('initial_physics_sha256'),
+                'first_replay_initial_physics_sha256': replay[0].get('initial_physics_sha256'),
                 'success': data['actual_full_replay_success'], 'status': data['status'],
                 'sampled_envelope_success': data.get('sampled_envelope_native_success')
                     if data.get('conditional_rate_product') is not None else None,
