@@ -189,11 +189,25 @@ def common_start(args, facade, adapter, policy, probe):
     return evidence
 
 
+def configure_libero_domain(row, plan):
+    """Select the registered suite configuration before importing LIBERO."""
+    domain=row['domain']
+    if domain not in {'original','d2'}:
+        raise ValueError('unregistered LIBERO domain')
+    os.environ['LIBERO_TYPE']='standard' if domain=='original' else 'pro'
+    if 'libero_config_by_domain' in plan:
+        reference=plan['libero_config_by_domain'][domain]
+        path=Path(reference['path']).resolve(strict=True)
+        if hashlib.sha256(path.read_bytes()).hexdigest()!=reference['sha256']:
+            raise ValueError('registered domain configuration changed')
+        os.environ['LIBERO_CONFIG_PATH']=str(path.parent)
+
+
 def worker(args, plan):
     sys.path.insert(0, str(args.source))
     hooks = module(args.source/'coordination/bounded_skills_20261016/scripts/shared_gpu_episodes_20261019.py', 'latency_hooks')
     row = plan['cases'][args.worker]
-    os.environ['LIBERO_TYPE'] = 'standard' if row['domain'] == 'original' else 'pro'
+    configure_libero_domain(row,plan)
     os.environ['LIBERO_GRASP_DIAGNOSTIC_MODELS'] = str(args.output/'private_grasp_models')
     hooks.bootstrap_source(row['domain'], evaluation='hybrid_repair')
     hooks.install_d2_restore_compatibility()
