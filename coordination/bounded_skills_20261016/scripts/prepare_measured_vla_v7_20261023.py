@@ -66,10 +66,33 @@ def prepare_n2(source, out, common):
     print(json.dumps({'N2_states':12,'trials':168,'output':str(out)}))
 
 
+def prepare_d2(source, out, common):
+    """Register evaluation only; submission follows the original/layout checks."""
+    parent=BASE/'oracle_retry_fb9b3865/preparation/D2_recovery1.json'
+    panel=json.loads(parent.read_bytes())
+    assert len(panel['jobs'])==40 and all(j['recovery_budget']==1 for j in panel['jobs'])
+    common={**common,'libero_config':reference(ROOT/'runtime_config/config.yaml')}
+    panel.update(common,parent_registration=reference(parent),evaluation_only=True,
+        runtime_change='public measured-anchor preparation and transport added; other invocation budgets unchanged',
+        source_archive=reference(ROOT/'rd_measured_vla_v7_r4_20261023.tar.gz'),
+        submission_condition='original90/layout65 and N1/N2 physical evidence assessed first')
+    panel['vla_variants']=[
+        {'name':'in_place','parameters':{'preparation':'in_place'}},
+        {'name':'initial_pose','parameters':{'preparation':'initial_pose'}},
+        {'name':'full_task','parameters':{'mode':'task','preparation':'in_place','prompt_style':'full_task'}},
+        {'name':'measured_anchor','parameters':{'preparation':'measured_anchor'}}]
+    write(out/'preparation/D2_recovery1.json',panel)
+    for shard in range(2):
+        write(out/f'preparation/D2_recovery1_shard{shard}.json',dict(panel,jobs=panel['jobs'][shard::2]))
+    write(out/'preparation/D2_vla_startup.json',dict(panel,jobs=panel['jobs'][:1]))
+    print(json.dumps({'D2_states':40,'recovery_budget':1,'variants':4,'submitted':False,'output':str(out)}))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--n2', action='store_true')
+    parser.add_argument('--d2', action='store_true')
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     revision = json.loads((source/'SOURCE_REVISION.json').read_bytes())
@@ -84,6 +107,8 @@ def main():
         'libero_config':config, 'training':False, 'confirmation':False, 'vla_options_v2':True}
     if args.n2:
         return prepare_n2(source,out,common)
+    if args.d2:
+        return prepare_d2(source,out,common)
     parents = BASE/'regression155_f6987f0d/preparation'
     sam = json.loads((parents/'all155.json').read_bytes())['sam_entry']
     jobs = []
