@@ -1,5 +1,7 @@
 """Later recovery decisions must not acquire labels for an earlier request."""
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
 
 
@@ -34,3 +36,17 @@ def test_measured_label_context_rejects_selection_after_binding_recovery():
     later['index'] = 0
     later['request'] = {**request, 'revision': 2}
     assert m.verify_trial_context(trial, [later], request, 'physics')[0] is False
+
+
+def test_prompt_change_in_later_recovery_is_unknown_for_the_initial_option():
+    m = module()
+    def wire(prompt):
+        return {'fields': {'task_descriptions': hashlib.sha256(
+            json.dumps([prompt], sort_keys=True).encode()).hexdigest()}}
+    execution = [{'template': {'prompt': 'pick up the soup'}}]
+    assert m.invocation_prompt([wire('pick up the soup')], execution) == (['pick up the soup'], None)
+    prompts, issue = m.invocation_prompt([
+        wire('pick up the soup'), wire('pick up the soup and place it in the basket'),
+        wire('pick up the soup')], execution)
+    assert prompts == ['pick up the soup']
+    assert issue == 'effective_prompt_changed_during_continuation'

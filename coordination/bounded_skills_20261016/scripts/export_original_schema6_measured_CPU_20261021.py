@@ -38,6 +38,19 @@ def verify_trial_context(trial, choices, request, initial_physics_sha256):
     return True, None
 
 
+def invocation_prompt(inputs, executions):
+    """Only one unchanged effective prompt can label the initial VLA option."""
+    prompts = sorted({e['template']['prompt'] for e in executions if 'template' in e})
+    if not inputs:
+        return prompts, None
+    if len(prompts) != 1:
+        return prompts, 'initial_candidate_prompt_not_unique'
+    wire_hash = hashlib.sha256(json.dumps([prompts[0]], sort_keys=True).encode()).hexdigest()
+    if any(x['fields']['task_descriptions'] != wire_hash for x in inputs):
+        return prompts, 'effective_prompt_changed_during_continuation'
+    return prompts, None
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source', type=Path, required=True)
@@ -149,23 +162,21 @@ def main():
             if candidate['parameters'].get('target_id'):
                 resolved = resolved and trial['target_public_id'] is not None
             status = 'resolved' if required and resolved else 'missing' if required else 'not_applicable'
+            inputs = trial.get('vla_inputs', [])
+            executions = [detail['execution'] for row in choices
+                          for detail in row.get('execution_details', [])
+                          if detail.get('candidate_id') == cid and 'execution' in detail]
+            prompts, prompt_issue = invocation_prompt(inputs, executions)
+            if prompt_issue is not None:
+                unknown.append({'trial_seed': trial['trial_seed'], 'reason': prompt_issue,
+                    'original_reason': trial['reason'], 'source': choices_ref})
+                continue
             if cid not in branches:
                 branches[cid] = {'candidate_id': cid, 'method_family': family,
                                  'action_binding_requirement': 'required' if required else 'not_required',
                                  'trials': []}
                 if family == 'vla':
                     branches[cid]['policy_revision'] = policy_revision
-            inputs = trial.get('vla_inputs', [])
-            executions = [detail['execution'] for row in choices
-                          for detail in row.get('execution_details', [])
-                          if detail.get('candidate_id') == cid and 'execution' in detail]
-            prompts = sorted({e['template']['prompt'] for e in executions if 'template' in e})
-            if inputs:
-                if len(prompts) != 1:
-                    raise ValueError('invoked VLA needs one actual execution prompt')
-                wire_hash = hashlib.sha256(json.dumps([prompts[0]], sort_keys=True).encode()).hexdigest()
-                if any(x['fields']['task_descriptions'] != wire_hash for x in inputs):
-                    raise ValueError('rendered prompt differs from actual inference wire input')
             evidence = trial['evidence']
             if reference(evidence['path']) != evidence:
                 raise ValueError('private trial truth changed')
