@@ -85,17 +85,72 @@ def choose_branch(self_success: bool | None, vla_success: list[bool | None]) -> 
             "vla_success": sum(vla_success), "vla_n": 3}
 
 
+_BYTE_JSON_TOKENS = np.asarray([str(i).encode()+b',' for i in range(256)], dtype='S4')
+
+
 def snapshot_digest(snapshot: dict) -> str:
-    """Hash full physical/controller/RNG/counter state independently of pickle."""
+    """Hash the same canonical JSON without expanding large native byte lists."""
     def convert(value):
         if isinstance(value, np.ndarray):
             return value.tolist()
         if isinstance(value, np.generic):
             return value.item()
         raise TypeError(type(value).__name__)
-    raw = json.dumps(snapshot, sort_keys=True, separators=(",", ":"),
-                     default=convert, allow_nan=False).encode()
-    return hashlib.sha256(raw).hexdigest()
+    def encoded(value):
+        return json.dumps(value, sort_keys=True, separators=(",", ":"),
+            default=convert, allow_nan=False).encode()
+
+    def large_bytes(value):
+        return (isinstance(value, np.ndarray) and value.dtype == np.uint8
+            and value.ndim == 1 and value.size >= 65536)
+
+    containing = {}
+    def contains_bytes(value):
+        if large_bytes(value):
+            return True
+        if isinstance(value, (dict, list, tuple)):
+            key = id(value)
+            if key not in containing:
+                members = value.values() if isinstance(value, dict) else value
+                containing[key] = any(contains_bytes(item) for item in members)
+            return containing[key]
+        return False
+
+    if not contains_bytes(snapshot):
+        return hashlib.sha256(encoded(snapshot)).hexdigest()
+    digest = hashlib.sha256()
+    def update(value):
+        if large_bytes(value):
+            digest.update(b'[')
+            for start in range(0, len(value), 1 << 20):
+                end = min(start+(1 << 20), len(value))
+                # Fixed-width ASCII tokens vectorize the decimal conversion.
+                # Only NUL padding is removed; the resulting JSON bytes are
+                # identical to dumps(array.tolist(), separators=(",", ":")).
+                block = _BYTE_JSON_TOKENS[value[start:end]].tobytes().translate(None, b'\0')
+                digest.update(block[:-1] if end == len(value) else block)
+            digest.update(b']')
+        elif not contains_bytes(value):
+            digest.update(encoded(value))
+        elif isinstance(value, dict):
+            digest.update(b'{')
+            for index, key in enumerate(sorted(value)):
+                if index:
+                    digest.update(b',')
+                # Let the standard encoder retain all its key semantics,
+                # including numeric keys and escaped/non-ASCII strings.
+                digest.update(encoded({key: None})[1:-5])
+                update(value[key])
+            digest.update(b'}')
+        else:
+            digest.update(b'[')
+            for index, item in enumerate(value):
+                if index:
+                    digest.update(b',')
+                update(item)
+            digest.update(b']')
+    update(snapshot)
+    return digest.hexdigest()
 
 
 def capture_runtime(adapter, policy) -> dict:

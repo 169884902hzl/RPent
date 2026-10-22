@@ -46,11 +46,25 @@ def main():
     p.add_argument('--policy-hashes', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--allow-incomplete', action='store_true', help='Preview; pending cases remain explicitly unresolved')
+    p.add_argument('--digest-accelerator', type=Path)
+    p.add_argument('--digest-accelerator-sha256')
     a = p.parse_args()
+    if bool(a.digest_accelerator) != bool(a.digest_accelerator_sha256):
+        p.error('a canonical digest accelerator requires its registered SHA256')
     sys.path.insert(0, str(a.source.resolve(strict=True)))
     from robots.libero.bounded_hybrid_diagnostic import snapshot_digest
     from rpent.skill_package.contract import action_binding_required, legal_after, method_family
     from scripts.bounded_state_exclusions import check_exclusions
+    digest_tool = None
+    if a.digest_accelerator is not None:
+        import importlib.util
+        digest_tool = reference(a.digest_accelerator)
+        if digest_tool['sha256'] != a.digest_accelerator_sha256:
+            raise ValueError('registered canonical digest accelerator changed')
+        spec = importlib.util.spec_from_file_location('canonical_snapshot_digest_tool', a.digest_accelerator)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        snapshot_digest = module.snapshot_digest
 
     plan = json.loads(a.manifest.read_bytes())
     if json.loads((a.source / 'SOURCE_REVISION.json').read_bytes())['commit'] != plan['source_commit']:
@@ -204,6 +218,8 @@ def main():
               'manifest': reference(a.manifest), 'PRO': False, 'confirmation': False,
               'B2_new_catalog_active': bool(plan.get('vla_options_v2')), 'training_executed': False,
               'release_scope': 'only executed candidates acquire measured labels; all others remain unknown; no model training executed'}
+    if digest_tool is not None:
+        report['canonical_digest_accelerator'] = digest_tool
     (a.output / 'manifest.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report), flush=True)
 

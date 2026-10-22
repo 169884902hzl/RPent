@@ -176,6 +176,30 @@ def test_physical_identity_includes_controller_and_counter_state():
     assert snapshot_digest(first) != snapshot_digest(first | {"counter": 11})
 
 
+@pytest.mark.parametrize('size,stride', [(65536, 1), (1048593, 1), (262144, 2)])
+def test_native_byte_stream_hash_matches_legacy_canonical_json(size, stride):
+    import hashlib
+    import json
+    blob = np.arange(size*stride, dtype=np.uint8)[::stride]
+    snapshot = {'actuator_state': {'native_data': {'values': blob, 'version': 'native/1'},
+        'controller': np.array([-0., 1.25]), 'rng': (3, np.int64(7))},
+        'escaped\nfield': ['雪', {False: 'f', True: 't'}],
+        'numeric_keys': {3: [blob], 1: None}}
+    def convert(value):
+        return value.tolist() if isinstance(value, np.ndarray) else value.item()
+    expected = hashlib.sha256(json.dumps(snapshot, sort_keys=True, separators=(',', ':'),
+        default=convert, allow_nan=False).encode()).hexdigest()
+    assert snapshot_digest(snapshot) == expected
+    blob[0] ^= 1
+    assert snapshot_digest(snapshot) != expected
+
+
+def test_native_byte_hash_keeps_nonfinite_scalar_rejection():
+    snapshot = {'native': np.zeros(65536, np.uint8), 'bad': float('nan')}
+    with pytest.raises(ValueError, match='Out of range float'):
+        snapshot_digest(snapshot)
+
+
 def test_runtime_restore_selects_captured_rgbd_and_keeps_sibling_files(tmp_path):
     from rpent.session import EnvState
 
