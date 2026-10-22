@@ -165,7 +165,8 @@ def rebuild_schema6_captured_request(state, request, *, progress=None, progress_
         raise ValueError('captured catalog reconstruction requires schema6 or schema7 source')
     if state['version'] != VERSION or state['request_sha256'] != request_digest(request):
         raise ValueError('captured state belongs to a different request or version')
-    if request['schema_version'] not in {f'bounded-skills/{v}' for v in (3, 4, 5, 6)}:
+    supported=(3,4,5,6,7) if SCHEMA_VERSION=='bounded-skills/7' else (3,4,5,6)
+    if request['schema_version'] not in {f'bounded-skills/{v}' for v in supported}:
         raise ValueError('unsupported captured request version')
     if request.get('execution_prefix') is not None:
         raise ValueError('committed legacy prefix requires a new capture after it completes')
@@ -175,7 +176,8 @@ def rebuild_schema6_captured_request(state, request, *, progress=None, progress_
     adapter = rebuilt['adapter']
     receipt_migrations=[]
     for index,receipt in enumerate(adapter.receipts):
-        if receipt.get('schema_version') in {'bounded-skills/3','bounded-skills/4','bounded-skills/5'}:
+        if (receipt.get('schema_version') in {f'bounded-skills/{v}' for v in supported}
+                and receipt['schema_version'] != SCHEMA_VERSION):
             before=copy.deepcopy(receipt)
             receipt['schema_version']=SCHEMA_VERSION
             validate(receipt)

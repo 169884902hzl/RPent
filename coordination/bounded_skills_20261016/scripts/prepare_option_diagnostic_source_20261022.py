@@ -21,6 +21,10 @@ def staged_adapter(raw):
         nonlocal raw
         assert raw.count(before)==1,before
         raw=raw.replace(before,after)
+    replace('        candidates = []\n        options = []\n',
+        '        from robots.libero.bounded_vla_staged import receipt_format\n'
+        '        receipt_format(self, VERSION)\n'
+        '        candidates = []\n        options = []\n')
     replace("            for preparation in ('in_place','initial_pose'):\n",
         "            preparations = ('in_place','initial_pose') + (('measured_anchor',)\n"
         "                if parameters.get('anchor_id') and parameters['mode'] not in {'task','instruction'} else ())\n"
@@ -92,6 +96,7 @@ def main():
                 'tests/unit_tests/robots/libero/test_bounded_model_probe.py']
         if a.staged:
             files += ['robots/libero/bounded_vla_staged.py','rpent/skill_package/schema7.json',
+                'SKILL_PACKAGE_SPEC.md',
                 'tests/unit_tests/robots/libero/test_bounded_vla_staged.py',
                 'robots/libero/bounded_offline_labels.py',
                 'tests/unit_tests/robots/libero/test_bounded_vla_options.py']

@@ -88,3 +88,15 @@ def test_v7_measured_preparation_requires_an_anchored_subtask():
     validator.validate(candidate)
     candidate['parameters']={'mode':'task','preparation':'measured_anchor'}
     with pytest.raises(ValidationError):validator.validate(candidate)
+
+
+def test_history_format_conversion_does_not_modify_the_frozen_request():
+    receipt={'schema_version':'bounded-skills/6','outcome':'failure',
+        'expectation_checks':[{'passed':None,'measured':None}]}
+    saved_request={'receipts':[receipt]}
+    value=SimpleNamespace(receipts=[receipt])
+    staged.receipt_format(value,'bounded-skills/7')
+    assert saved_request['receipts'][0]['schema_version']=='bounded-skills/6'
+    assert value.receipts[0]['schema_version']=='bounded-skills/7'
+    assert {k:v for k,v in value.receipts[0].items() if k!='schema_version'}=={
+        k:v for k,v in receipt.items() if k!='schema_version'}

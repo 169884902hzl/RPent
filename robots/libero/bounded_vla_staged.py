@@ -5,6 +5,15 @@ from time import perf_counter
 import numpy as np
 
 
+def receipt_format(adapter, version):
+    """Render older public measurements in v7 without mutating saved requests."""
+    if version!='bounded-skills/7':
+        return
+    adapter.receipts=[{**r,'schema_version':version}
+        if r.get('schema_version') in {'bounded-skills/3','bounded-skills/4','bounded-skills/5','bounded-skills/6'}
+        else r for r in adapter.receipts]
+
+
 def estimate_steps(adapter, parameters):
     """Estimate overhead from public bounds and the existing executor limits."""
     robot=adapter.robot();start=np.asarray(robot['eef_xyz_m'])
