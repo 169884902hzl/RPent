@@ -53,9 +53,11 @@ def combination_trial(facade, adapter, policy, timings, row, output, arm, seed):
     probe.write(output/'transport.json', transported)
     _, endpoint_ref = probe.save_checkpoint(facade, adapter, policy, output/'private_final_endpoint.pkl')
     used = adapter.p.env.execution_budget()['used_sim_steps']-before
+    goal_success = bool(facade.goal_status()['satisfied'][spec['goal_index']])
     score = private_score(facade, spec, reference)
     return {'arm': arm, 'trial_seed': seed, 'policy_result': result,
         'policy_reported_success': result['success'], **score,
+        'registered_goal_success': goal_success,
         'total_sim_steps': used, 'preposition_steps': staged['steps_used'],
         'transport_steps': transported['steps_used'], 'endpoint': endpoint_ref,
         'wall_s': time.perf_counter()-started,
