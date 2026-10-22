@@ -1,0 +1,49 @@
+{
+  "watch": {
+    "at": "2026-10-22T08:03:27.614550+00:00",
+    "pid": 2407601,
+    "jobs": "/tmp/D2_layout_packets_borrow_jobs_20261022.json",
+    "ledger": "/tmp/D2_layout_packets_borrow_fixed_v2_20261022.jsonl",
+    "priority": [
+      "11403_1",
+      "11403_0",
+      "11400_1",
+      "11400_0"
+    ],
+    "previous_start_failed": "array id rejected before monitoring began",
+    "source_fix": "support array task IDs and expanded squeue"
+  },
+  "live_events": [
+    {
+      "at": "2026-10-22T08:03:59.021029+00:00",
+      "c3_running": [
+        "11403_1",
+        "11403_0",
+        "11400_1",
+        "11400_0"
+      ],
+      "c2_demand": [],
+      "done": false
+    },
+    {
+      "at": "2026-10-22T08:04:30.404779+00:00",
+      "c3_running": [
+        "11403_1",
+        "11403_0",
+        "11400_1",
+        "11400_0"
+      ],
+      "c2_demand": [],
+      "done": false
+    }
+  ],
+  "regression_tests": {
+    "passed": 3,
+    "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_borrow_resources.py -q"
+  },
+  "bug": "str.isdigit rejected registered Slurm array task IDs before the monitor began",
+  "fixed_source_commit": "9d35620e",
+  "limitation": "cancellation command regression uses fake SSH; no real C2 demand or cancellation occurred in this live check",
+  "current_queue_c2_demand": [],
+  "training": false
+}
