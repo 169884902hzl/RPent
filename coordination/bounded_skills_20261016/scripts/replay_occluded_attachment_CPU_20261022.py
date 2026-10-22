@@ -14,6 +14,8 @@ def main():
     for name in ('source', 'input', 'context', 'recorded', 'output'):
         p.add_argument('--'+name, type=Path, required=True)
     p.add_argument('--compare_surface_distance', action='store_true')
+    p.add_argument('--use-prior-reference', action='store_true',
+        help='Counterfactual: attach the complete last measured instance, with current surface support')
     a = p.parse_args()
     sys.path.insert(0, str(a.source))
     import robots.libero.env_server
@@ -49,10 +51,11 @@ def main():
         stationary &= static_distance <= body_distance+.001
     tracked = current[match & ~stationary]
     assert len(tracked) >= 40, 'not enough current public surface support'
+    payload_source = reference if a.use_prior_reference else tracked
     robot = context['robot']
-    scene = subtract_instances(build_obstacles(points), np.empty((0, 3)), tracked,
+    scene = subtract_instances(build_obstacles(points), np.empty((0, 3)), payload_source,
         held_margin_m=ROBOT_FILTER_MARGIN_M)
-    payload = (_voxel(tracked, .002)-robot['eef_xyz_m']) @ Rotation.from_quat(
+    payload = (_voxel(payload_source, .002)-robot['eef_xyz_m']) @ Rotation.from_quat(
         robot['eef_quat_xyzw']).as_matrix()
     fresh = PublicRouteScreen(scene, old.geometry, copy.deepcopy(old.ik), opening=old.opening,
         payload_local=payload, initial_pose={'xyz_m': robot['eef_xyz_m'],
@@ -67,6 +70,9 @@ def main():
             for name, path in [('route', a.input), ('context', a.context), ('recorded', a.recorded)]},
         'reference_capture_step': entity.source_step, 'current_capture_step': context['capture_step'],
         'reference_pixels': len(reference), 'tracked_current_pixels': len(tracked),
+        'used_prior_reference': a.use_prior_reference,
+        'payload_source_capture_step': entity.source_step if a.use_prior_reference else context['capture_step'],
+        'prior_surface_scope': 'conditional attachment prediction; not a new current-frame measurement',
         'association': 'body_nearer_by_1mm' if a.compare_surface_distance else '4mm_static_veto',
         'stationary_veto_pixels': int((match & stationary).sum()),
         'old_payload_points': len(old.payload), 'new_payload_points': len(payload),
