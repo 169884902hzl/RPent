@@ -133,6 +133,7 @@ def main():
     subprocess.run(['tar','-xzf',str(a.archive),'-C',str(a.output)],check=True)
     evidence={'base':BASE,'commit':tree,'overlay_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),
         'files':blobs,'archive_sha256':hashlib.sha256(a.archive.read_bytes()).hexdigest(),'execution_stack_unchanged':not a.fulltask,'runtime_change':('measured_anchor_vla/1; schema7' if a.staged else 'whole_instruction_default_budget; separate_native_completion; HTTP_evaluation_logging' if a.fulltask else None),'dirty_tree_included':False,'training':False}
+    evidence['private_diagnostic_progress_contract']='private-registered-goal-or-subtask/1'
     (a.output/'SOURCE_REVISION.json').write_text(json.dumps(evidence,indent=2)+'\n')
     Path(str(a.archive)+'.json').write_text(json.dumps(evidence,indent=2)+'\n')
     print(json.dumps(evidence))
