@@ -69,7 +69,7 @@ def physical_steps(result):
 
 def worker(args, plan):
     row=plan['jobs'][args.worker]
-    os.environ['LIBERO_TYPE']='pro' if row['kind'] in {'d2', 'd2_replay', 'option_factor'} else 'standard'
+    os.environ['LIBERO_TYPE']='pro' if row['kind'] in {'d2', 'd2_replay', 'option_factor', 'a1_preparation'} else 'standard'
     os.environ['LIBERO_GRASP_DIAGNOSTIC_MODELS']=str(args.output/'private_grasp_models')
     helper=hooks(args.source);helper.bootstrap_source('d2')
     helper.install_d2_restore_compatibility()
@@ -78,7 +78,10 @@ def worker(args, plan):
     assignment=json.loads((args.output/'assignment.json').read_bytes())
     endpoints={key:HttpRpcClient(assignment[key+'_url']) for key in ('sam3','vla')}
     helper.install_d2_request_compatibility(probe)
-    if row['kind']=='option_factor':
+    if row['kind']=='a1_preparation':
+        from scripts.probe_bounded_A1_preparation import run_case
+        result = run_case(row, plan, endpoints, args.output/'episode', startup=args.startup)
+    elif row['kind']=='option_factor':
         from scripts.probe_bounded_option_ceiling import run_case
         result = run_case(row, plan, endpoints, args.output/'episode', startup=args.startup)
     elif row['kind']=='original_fork':
