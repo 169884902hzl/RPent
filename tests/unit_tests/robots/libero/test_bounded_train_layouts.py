@@ -66,6 +66,21 @@ def test_confirmation_clusters_do_not_confine_proposals_to_parent_neighbourhood(
         for old in excluded) >= .05 for item in layout['objects'])
 
 
+def test_multiple_assets_keep_independently_valid_excluded_pool_placements():
+    objects = [{**OBJECTS[0], 'id': f'item{i}', 'xyz_m': [x, 0., .05]}
+        for i,x in enumerate(np.linspace(-.2, .2, 8))]
+    excluded = [{item['id']: [float(x), float(y), 0.] for item in objects}
+        for x in np.arange(-.26, .261, .04) for y in np.arange(-.16, .161, .04)]
+    layout = generate_layout(parent=PARENT, objects=objects, support=SUPPORT, seed=11020102,
+        confirmation_layouts=excluded, limits=LayoutLimits(attempts=2, placement_attempts=200),
+        witness_check=lambda _: {'native_predicates_satisfied': True})
+    assert len(layout['objects']) == 8
+    for i,item in enumerate(layout['objects']):
+        assert all(not overlap(item, other, .01) for other in layout['objects'][:i])
+        assert all(np.linalg.norm(np.asarray(item['xyz_m'])[:2]-old[item['id']][:2]) >= .05
+            for old in excluded)
+
+
 def test_confirmation_distance_uses_registered_body_origin_not_bounds_centre():
     objects = [{**item, 'local_centre_m':[.1,0.,0.]} for item in OBJECTS]
 

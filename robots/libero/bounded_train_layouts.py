@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-VERSION = 'original-train-layout/5'
+VERSION = 'original-train-layout/6'
 ORIGINAL_SUITES = {'libero_spatial','libero_object','libero_goal','libero_10','libero_90'}
 SEED_RANGE = (11020000,11029999)
 
@@ -24,6 +24,7 @@ class LayoutLimits:
     separation_m: float = .01
     confirmation_distance_m: float = .05
     attempts: int = 200
+    placement_attempts: int = 100
 
 
 def corners(item):
@@ -108,6 +109,25 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
             raise ValueError('finite positive measured/static object geometry required')
     fixed=[dict(x) for x in objects if not x['movable']]
     moving=[x for x in objects if x['movable']]
+    excluded = {item['id']: np.asarray([old[item['id']][:2]
+        for old in confirmation_layouts if item['id'] in old], float).reshape(-1, 2)
+        for item in moving}
+
+    def rejected(item, placed):
+        footprint = corners(item)
+        if not ((footprint >= low[:2]+limits.separation_m).all()
+                and (footprint <= high[:2]-limits.separation_m).all()):
+            return 'outside_free_support'
+        c,s = math.cos(item['yaw_rad']),math.sin(item['yaw_rad'])
+        position = np.asarray(item['xyz_m'])[:2]-np.array([[c,-s],[s,c]]) @ np.asarray(
+            item.get('local_centre_m', [0., 0., 0.]))[:2]
+        if len(excluded[item['id']]) and (np.linalg.norm(
+                excluded[item['id']]-position, axis=1) < limits.confirmation_distance_m).any():
+            return 'near_permanent_confirmation_layout'
+        if any(overlap(item, other, limits.separation_m) for other in placed):
+            return 'intersecting_object_bounds'
+        return None
+
     reasons={}
     for attempt in range(limits.attempts):
         proposed=[dict(x) for x in fixed]
@@ -117,41 +137,29 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
         order=rng.permutation(len(moving))
         strategy = 'offset_and_permute' if attempt % 2 == 0 else 'uniform_free_support'
         for i,item in enumerate(moving):
-            pos=bases[order[i]].copy()
-            if strategy == 'offset_and_permute':
-                pos[:2]+=rng.uniform(-limits.translation_m,limits.translation_m,2)
+            # Re-sample this object's rejected placement without discarding
+            # all already valid objects. Whole-layout rejection makes the
+            # five-centimetre exclusion probability multiply across assets.
+            for _ in range(limits.placement_attempts):
+                pos = bases[order[i]].copy()
+                if strategy == 'offset_and_permute':
+                    pos[:2] += rng.uniform(-limits.translation_m, limits.translation_m, 2)
+                else:
+                    pos[:2] = rng.uniform(low[:2], high[:2])
+                pos[2] = high[2]+item['size_m'][2]/2
+                candidate = {**item, 'xyz_m': pos.tolist(),
+                    'yaw_rad': float(item['yaw_rad']+rng.uniform(-limits.yaw_rad, limits.yaw_rad))}
+                reason = rejected(candidate, proposed)
+                if reason is None:
+                    proposed.append(candidate)
+                    break
+                reasons[reason] = reasons.get(reason, 0)+1
             else:
-                # Reserved layouts can cover the entire offset neighbourhood.
-                # Propose elsewhere on the same support, then apply the same
-                # footprint, exclusion, collision and original-task checks.
-                pos[:2]=rng.uniform(low[:2],high[:2])
-            pos[2]=high[2]+item['size_m'][2]/2
-            proposed.append({**item,'xyz_m':pos.tolist(),
-                'yaw_rad':float(item['yaw_rad']+rng.uniform(-limits.yaw_rad,limits.yaw_rad))})
-        reason=None
-        for item in proposed:
-            if not item['movable']:
-                continue
-            footprint=corners(item)
-            if not ((footprint>=low[:2]+limits.separation_m).all()
-                    and (footprint<=high[:2]-limits.separation_m).all()):
-                reason='outside_free_support';break
-            c,s=math.cos(item['yaw_rad']),math.sin(item['yaw_rad'])
-            # Registered settled_geometry uses object-body positions.
-            # Off-centre assets (e.g. pan handles) must use that same
-            # point, rather than gaining clearance from a shifted box.
-            position=np.asarray(item['xyz_m'])[:2]-np.array([[c,-s],[s,c]]) @ np.asarray(
-                item.get('local_centre_m',[0.,0.,0.]))[:2]
-            for old in confirmation_layouts:
-                q=old.get(item['id'])
-                if q is not None and np.linalg.norm(
-                        position-np.asarray(q)[:2])<limits.confirmation_distance_m:
-                    reason='near_permanent_confirmation_layout';break
-            if reason:break
-        if reason is None and any(overlap(a,b,limits.separation_m)
-                for i,a in enumerate(proposed) for b in proposed[i+1:]
-                if a['movable'] or b['movable']):
-            reason='intersecting_object_bounds'
+                break
+        if len(proposed) != len(objects):
+            reasons['object_placement_exhausted'] = reasons.get('object_placement_exhausted', 0)+1
+            continue
+        reason = None
         if reason is None:
             witness=witness_check(proposed)
             if not isinstance(witness,dict) or witness.get('native_predicates_satisfied') is not True:

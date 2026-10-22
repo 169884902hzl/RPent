@@ -16,6 +16,28 @@ def test_native_witness_uses_last_saved_control_not_terminal_summary():
         saved_control_rows([{'success': True}])
 
 
+def test_cpu_constructor_keeps_physics_and_proprioception_without_rendered_camera_buffers(monkeypatch):
+    from types import SimpleNamespace
+    from scripts import generate_bounded_train_layouts as generator
+    captured = []
+    monkeypatch.setattr(generator, 'restore_actuators', lambda env, state: captured.append(state))
+    applied = []
+    env = SimpleNamespace(env=SimpleNamespace(_observables={'robot0_eef_pos': object()}),
+        sim=SimpleNamespace(set_state_from_flattened=applied.append))
+    sensors = {'observables': {'robot0_eef_pos': {'value': [1., 2., 3.]},
+        'agentview_image': {'value': [[0, 0, 0]]}},
+        'cache': {'robot0_eef_pos': [1., 2., 3.], 'agentview_image': [[0, 0, 0]]}}
+    state = {'integration': 'exact', 'native_data': 'exact', 'rng': 'exact',
+        'observation_state': sensors}
+    assert generator.restore(env, {'sim_state': [7.], 'actuator_state': state}) == ['agentview_image']
+    assert applied == [[7.]] and captured[0]['integration'] == captured[0]['native_data'] == 'exact'
+    assert set(captured[0]['observation_state']['observables']) == {'robot0_eef_pos'}
+    assert 'agentview_image' in sensors['observables']
+    env.env._observables['unrecorded_joint'] = object()
+    with pytest.raises(ValueError, match='proprioceptive observable identity'):
+        generator.restore(env, {'sim_state': [7.], 'actuator_state': state})
+
+
 @pytest.mark.parametrize('workspace', ['main_table', 'kitchen_table', 'living_room_table'])
 def test_construction_uses_the_actual_workspace_dimension_attribute(workspace):
     from types import SimpleNamespace
@@ -44,9 +66,10 @@ def test_floor_uses_collision_plane_and_initial_regions_not_goal_region():
     np.testing.assert_allclose(support['upper_m'], [.32, .42, 0.])
 
 
-@pytest.mark.parametrize('split,domain,expected', [
-    ('train', 'original', True), ('init_holdout', 'original', False), ('train', 'd2', False)])
-def test_witness_replays_recorded_native_success_only_from_original_train(tmp_path, split, domain, expected):
+@pytest.mark.parametrize('split,domain,same_seed,expected', [
+    ('train', 'original', True, True), ('init_holdout', 'original', True, False),
+    ('train', 'd2', True, False), ('train', 'original', False, False)])
+def test_witness_replays_recorded_native_success_only_from_original_train(tmp_path, split, domain, same_seed, expected):
     import pickle
     from robots.libero.bounded_hybrid_diagnostic import snapshot_digest
     from scripts.generate_bounded_train_layouts import training_witness_controls
@@ -63,6 +86,8 @@ def test_witness_replays_recorded_native_success_only_from_original_train(tmp_pa
         'initial_physics_sha256': snapshot_digest(physics)}]}})
     reference = {'worker': worker, 'trial_seed': 7}
     parents = {'original-train': {'split': split}}
+    if not same_seed:
+        case = {**case, 'episode': {**case['episode'], 'seed': 3}}
     if expected:
         restored, controls, provenance = training_witness_controls(reference, case, parents)
         assert restored == physics and controls == [[0., 0., .01, 0., 0., 0., 1.]]

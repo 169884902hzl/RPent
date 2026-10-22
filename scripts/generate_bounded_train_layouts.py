@@ -93,8 +93,26 @@ def confirmation_geometry(reference, original_geometry_reference=None):
 
 
 def restore(env,snapshot):
+    """Restore physics in the CPU constructor, retaining its sensor interface."""
     env.sim.set_state_from_flattened(snapshot['sim_state'])
-    restore_actuators(env,snapshot['actuator_state'])
+    state = dict(snapshot['actuator_state'])
+    sensors = state.get('observation_state')
+    omitted = []
+    if sensors is not None:
+        actual = set(env.env._observables)
+        recorded = set(sensors['observables'])
+        omitted = sorted(recorded-actual)
+        if actual-recorded or any(not name.endswith(('_image', '_depth')) for name in omitted):
+            raise ValueError('construction proprioceptive observable identity changed')
+        if omitted:
+            # A saved rendered rollout has camera observables; this CPU-only
+            # world constructor deliberately has no cameras. Keep the exact
+            # integration/controller/RNG and all matching proprioception.
+            state['observation_state'] = {**sensors,
+                'observables': {key:value for key,value in sensors['observables'].items() if key in actual},
+                'cache': {key:value for key,value in sensors['cache'].items() if key not in omitted}}
+    restore_actuators(env,state)
+    return omitted
 
 
 def object_box(env,name,obj):
@@ -201,14 +219,15 @@ def construction_support(env):
 
 
 def training_witness_controls(reference, case, parents):
-    """Reuse recorded successful controls from the same original train task."""
+    """Reuse recorded successful controls from the same original train initial state."""
     worker = json.loads(pinned(reference['worker']))
     source = worker['case']
     if (source['diagnostic']['domain'] != 'original' or source['episode']['suite'] not in ORIGINAL_SUITES
-            or any(source['episode'][key] != case['episode'][key] for key in ('suite', 'task'))
+            or any(source['episode'][key] != case['episode'][key] for key in ('suite', 'task', 'seed'))
+            or source.get('state_sha256') != case.get('state_sha256')
             or not source['source_training_parent_ids']
             or any(parents[key]['split'] != 'train' for key in source['source_training_parent_ids'])):
-        raise ValueError('native witness must belong to the same original train task')
+        raise ValueError('native witness must belong to the same original train task and initial state')
     trial = next(row for row in worker['result']['trials']
         if row['trial_seed'] == reference['trial_seed']
         and row.get('vla_variant', {}).get('name') == 'full_task')
@@ -264,7 +283,8 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
         witness_source = {'source': 'last_original_expert_control_segment'}
         if not witness.check_success() and native_witness is not None:
             start, actions, witness_source = training_witness_controls(native_witness,case,parents)
-            restore(witness,start)
+            omitted = restore(witness,start)
+            witness_source['CPU_constructor_camera_observables_omitted'] = omitted
             for action in actions:
                 witness.step(np.asarray(action))
         if not witness.check_success():

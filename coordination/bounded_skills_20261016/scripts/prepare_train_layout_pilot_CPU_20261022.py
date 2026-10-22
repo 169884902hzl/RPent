@@ -70,8 +70,9 @@ def main():
             for job in record['jobs']:
                 case = plan['cases'][job['case_index']]
                 options = witnesses[(case['episode']['suite'], case['episode']['task'])]
-                if options:
-                    job['native_witness'] = next((v for v in options if v['parent_case'] == case['name']), options[0])
+                matched = next((v for v in options if v['parent_case'] == case['name']), None)
+                if matched is not None:
+                    job['native_witness'] = matched
         a.registration.parent.mkdir(parents=True, exist_ok=True)
         with a.registration.open('x') as stream:
             json.dump(record, stream, indent=2)
