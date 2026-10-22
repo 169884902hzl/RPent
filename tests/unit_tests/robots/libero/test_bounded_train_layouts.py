@@ -53,6 +53,18 @@ def test_confirmation_distance_cannot_be_bypassed_by_object_height():
         for x in other['objects'])
 
 
+def test_new_distractor_identity_cannot_bypass_same_asset_confirmation_exclusion():
+    item = {**OBJECTS[0], 'id': 'rd_distractor_1', 'asset_type': 'alphabet_soup',
+        'confirmation_match_symbols': ['alphabet_soup_1', 'alphabet_soup_2']}
+    options = dict(parent=PARENT, objects=[item], support=SUPPORT, seed=11020000,
+        witness_check=lambda _: {'native_predicates_satisfied': True})
+    first = generate_layout(**options)['objects'][0]['xyz_m']
+    exclusions = [{'alphabet_soup_1': first}, {'alphabet_soup_2': [first[0]+.02,first[1],first[2]]}]
+    other = generate_layout(**options, confirmation_layouts=exclusions)['objects'][0]['xyz_m']
+    assert all(np.linalg.norm(np.asarray(other)[:2]-np.asarray(old[key])[:2]) >= .05
+        for old in exclusions for key in old)
+
+
 def test_confirmation_clusters_do_not_confine_proposals_to_parent_neighbourhood():
     # The actual registered pools exclude almost every +/-12 cm offset.
     # There is still free tabletop above/below this covered horizontal band.

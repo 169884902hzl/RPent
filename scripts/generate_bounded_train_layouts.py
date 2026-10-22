@@ -12,6 +12,7 @@ import hashlib
 import itertools
 import json
 import pickle
+import re
 from pathlib import Path
 
 import numpy as np
@@ -274,7 +275,7 @@ def training_witness_controls(reference, case, parents):
 
 
 def generate_case(manifest,index,seed,output,confirmation_reference=None,original_geometry_reference=None,
-                  native_witness=None):
+                  native_witness=None, distractors=()):
     from libero.libero.envs.env_wrapper import ControlEnv
     case=manifest['cases'][index]
     episode=case['episode'];name=case['name'].split('_B2_')[0]
@@ -313,6 +314,44 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
                 witness.step(np.asarray(action))
         if not witness.check_success():
             raise ValueError('CPU original control replay did not produce a native predicate witness')
+        authored_world = None
+        if distractors:
+            from libero.libero.envs import OBJECTS_DICT
+            from robots.libero.bounded_layout_distractors import add_distractors, transplant_original_world
+
+            support = construction_support(base)
+            offset = np.asarray(base.env.workspace_offset)[:2]
+            ranges = np.r_[np.asarray(support['lower_m'])[:2]-offset,
+                           np.asarray(support['upper_m'])[:2]-offset]
+            additions = [{'id': f'rd_distractor_{i+1}', 'asset': asset}
+                for i, asset in enumerate(distractors)]
+            text, composition = add_distractors(pinned(bddl).decode(),
+                parent={**episode, 'split': 'train'}, distractors=additions,
+                support_symbol=base.env.workspace_name, ranges=ranges.tolist(),
+                available_assets=set(OBJECTS_DICT))
+            output.parent.mkdir(parents=True, exist_ok=True)
+            authored_path = output.with_name(output.name+'_authored.bddl')
+            with authored_path.open('x') as stream:
+                stream.write(text)
+            extra_options = {**options, 'bddl_file_name': str(authored_path)}
+            extra_base, extra_witness = ControlEnv(**extra_options), ControlEnv(**extra_options)
+            try:
+                extra_base.seed(seed);extra_witness.seed(seed)
+                extra_base.reset();extra_witness.reset()
+                initial_transfer = transplant_original_world(base, extra_base)
+                witness_transfer = transplant_original_world(witness, extra_witness)
+                if (extra_base.env.parsed_problem['goal_state'] != base.env.parsed_problem['goal_state']
+                        or extra_base.language_instruction != base.language_instruction):
+                    raise ValueError('authored world changed the original task')
+            except BaseException:
+                extra_base.close();extra_witness.close()
+                raise
+            base.close();witness.close()
+            base,witness=extra_base,extra_witness
+            initial={'sim_state':base.sim.get_state().flatten(), 'actuator_state':actuator_state(base)}
+            authored_world = {**composition, 'bddl': {'path': str(authored_path),
+                'sha256': hashlib.sha256(authored_path.read_bytes()).hexdigest()},
+                'initial_transfer': initial_transfer, 'witness_transfer': witness_transfer}
         goal_state=witness.sim.get_state().flatten().copy()
         goals=base.env.parsed_problem['goal_state']
         goal_symbols={symbol for goal in goals for symbol in goal[1:]}
@@ -341,6 +380,13 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
                 'original_controls_replayed':len(actions)}
         exclusions, geometry_evidence = (confirmation_geometry(confirmation_reference, original_geometry_reference)
             if confirmation_reference is not None else ((), None))
+        if authored_world is not None:
+            for item in objects:
+                addition = next((row for row in authored_world['distractors'] if row['id'] == item['id']), None)
+                if addition is not None:
+                    item['asset_type'] = addition['asset']
+                    item['confirmation_match_symbols'] = sorted({symbol for old in exclusions for symbol in old
+                        if re.fullmatch(re.escape(addition['asset'])+r'(?:_\d+)?', symbol)})
         layout=generate_layout(parent={**episode,'split':'train',
             'initial_state_sha256':parent['initial_state_sha256']},objects=objects,
             support=support,seed=seed,witness_check=validate,confirmation_layouts=exclusions,
@@ -348,7 +394,8 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
         restore(base,initial);apply_layout(base,layout['objects'])
         physics={'sim_state':base.sim.get_state().flatten(), 'actuator_state':actuator_state(base)}
         raw=pickle.dumps({**physics,
-            'layout':layout,'parent_id':parent_id},protocol=5)
+            'layout':layout,'parent_id':parent_id,
+            **({'authored_world':authored_world} if authored_world is not None else {})},protocol=5)
         output.mkdir(parents=True,exist_ok=False)
         (output/'private_generated_state.pkl').write_bytes(raw)
         report={'layout':layout,'state_sha256':hashlib.sha256(raw).hexdigest(),
@@ -360,7 +407,10 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
             'native_predicate_witness_source':witness_source,
             'confirmation_geometry_exclusions':geometry_evidence,
             'pending':['historical confirmation inventory completeness',
-                'additional asset distractor insertion','N1-qualified physical pilot']}
+                *([] if authored_world is not None else ['additional asset distractor insertion']),
+                'N1-qualified physical pilot']}
+        if authored_world is not None:
+            report['authored_world'] = authored_world
         (output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
         return report
     finally:
@@ -377,6 +427,8 @@ def main():
     parser.add_argument('--confirmation-reconciliation-sha256')
     parser.add_argument('--original-confirmation-geometry', type=Path)
     parser.add_argument('--original-confirmation-geometry-sha256')
+    parser.add_argument('--distractor', action='append', default=[],
+                        help='Installed original LIBERO asset to add; repeat for multiple objects')
     args=parser.parse_args()
     if bool(args.confirmation_reconciliation) != bool(args.confirmation_reconciliation_sha256):
         parser.error('confirmation reconciliation requires both path and SHA256')
@@ -388,7 +440,8 @@ def main():
         'sha256':args.confirmation_reconciliation_sha256} if args.confirmation_reconciliation else None)
     original = ({'path': str(args.original_confirmation_geometry),
         'sha256': args.original_confirmation_geometry_sha256} if args.original_confirmation_geometry else None)
-    result=generate_case(json.loads(args.manifest.read_bytes()),args.case,args.seed,args.output,reference,original)
+    result=generate_case(json.loads(args.manifest.read_bytes()),args.case,args.seed,args.output,reference,original,
+                         distractors=args.distractor)
     print(json.dumps({'state_sha256':result['state_sha256'],
         'native_witness':result['layout']['predicate_witness'],'training_admission':False}))
 

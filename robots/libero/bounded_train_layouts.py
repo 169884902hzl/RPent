@@ -65,7 +65,7 @@ def instruction_identity_check(objects, goals, instruction, axes):
     for i,item in enumerate(objects):
         xy=corners(item);half_z=item['size_m'][2]/2;xyz=item['xyz_m']
         eid=f'construction-{i}'
-        entities.append(Entity(eid,_kind(item['id']),tuple(xyz),
+        entities.append(Entity(eid,_kind(item.get('asset_type', item['id'])),tuple(xyz),
             (*xy.min(0),xyz[2]-half_z),(*xy.max(0),xyz[2]+half_z),True,0))
         identities[eid]=item['id']
     results=[]
@@ -109,8 +109,9 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
             raise ValueError('finite positive measured/static object geometry required')
     fixed=[dict(x) for x in objects if not x['movable']]
     moving=[x for x in objects if x['movable']]
-    excluded = {item['id']: np.asarray([old[item['id']][:2]
-        for old in confirmation_layouts if item['id'] in old], float).reshape(-1, 2)
+    excluded = {item['id']: np.asarray([old[symbol][:2]
+        for old in confirmation_layouts
+        for symbol in item.get('confirmation_match_symbols', [item['id']]) if symbol in old], float).reshape(-1, 2)
         for item in moving}
 
     def rejected(item, placed):
