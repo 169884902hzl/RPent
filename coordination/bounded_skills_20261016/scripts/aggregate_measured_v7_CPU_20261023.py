@@ -97,9 +97,12 @@ def main():
         assert seen==expected and len(new_added)==3,(name,len(new_added),seen,expected)
         states.append({'case':name,'category':category,
             'old_native_successes':sum(t.get('native_task_success') is True for t in old_trials.values()),
+            'old_native_known':sum(type(t.get('native_task_success')) is bool for t in old_trials.values()),
             'new_legacy_native_successes':sum(t.get('native_task_success') is True for t in new_legacy),
+            'new_legacy_native_known':sum(type(t.get('native_task_success')) is bool for t in new_legacy),
             'measured_local_successes':sum(t['success'] is True for t in new_added),
             'measured_native_successes':sum(t.get('native_task_success') is True for t in new_added),
+            'measured_native_known':sum(type(t.get('native_task_success')) is bool for t in new_added),
             'new_method_reasons':dict(Counter(t['reason'] for t in new_added)),
             'before':previous['raw'],'after':new['raw']})
     a.output.mkdir(parents=True,exist_ok=False)
