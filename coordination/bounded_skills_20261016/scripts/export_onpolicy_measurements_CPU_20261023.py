@@ -5,8 +5,14 @@ import json
 from pathlib import Path
 
 from rpent.skill_package.contract import action_binding_required, method_family
-from scripts.evaluate_bounded_saved_candidate import checked, digest
-from coordination.bounded_skills_20261016.scripts.export_original_schema6_measured_CPU_20261021 import invocation_prompt, reference
+from coordination.bounded_skills_20261016.scripts.export_original_schema6_measured_CPU_20261021 import digest, invocation_prompt, reference
+
+
+def checked(ref):
+    path = Path(ref['path'])
+    if reference(path) != ref:
+        raise ValueError('registered measurement changed: '+str(path))
+    return path
 
 
 def measured_row(query, report, policy_revision):
