@@ -71,11 +71,21 @@ def main():
     for name in ('source', 'default-manifest', 'captures', 'sam-entry', 'output'):
         p.add_argument('--' + name, type=Path, required=True)
     p.add_argument('--batch-size', type=int, default=20)
+    p.add_argument('--previous-manifest', type=Path, action='append', default=[])
     a = p.parse_args()
     source = a.source.resolve(strict=True)
     revision = json.loads((source / 'SOURCE_REVISION.json').read_bytes())['commit']
     default = json.loads(a.default_manifest.read_bytes())
-    selected, seen, records = [], set(), []
+    selected, seen, records, previous = [], set(), [], []
+    previous_count = 0
+    for path in a.previous_manifest:
+        prior = json.loads(path.read_bytes())
+        if prior['source_commit'] != revision or prior['training'] or prior['confirmation']:
+            raise ValueError('previous packet has a different source or domain')
+        seen.update(c['diagnostic']['original_subtask_start']['physics']['sha256']
+            for c in prior['cases'])
+        previous_count += len(prior['cases'])
+        previous.append(reference(path))
     for path in sorted(a.captures.glob('case*/episode/point*/point.json')):
         point = json.loads(path.read_bytes())
         if not point['label_eligible']:
@@ -83,7 +93,7 @@ def main():
         identity = point['physics']['sha256']
         if identity in seen:
             continue
-        selected.append(measured_case(point, default, len(selected)))
+        selected.append(measured_case(point, default, previous_count + len(selected)))
         seen.add(identity)
         records.append(reference(path))
     if not selected:
@@ -94,6 +104,7 @@ def main():
         schema6_source=True, vla_options_v2=True, cases=selected,
         frozen_parent_index=point['frozen_parent_index'],
         own_layout_captures=records,
+        previous_packets=previous,
         selection='all distinct eligible actual prefix captures in identity order; no method outcomes used')
     # This reuses the owning runtime's input validation; it executes no physics.
     import sys
