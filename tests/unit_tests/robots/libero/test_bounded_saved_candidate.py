@@ -43,3 +43,38 @@ def test_changed_frozen_binding_never_acquires_a_measurement(changed):
         query['candidate']['parameters']['mode'] = 'on'
     with pytest.raises(ValueError):
         frozen_choice_request(query, saved)
+
+
+def test_return_packet_keeps_exact_binding_and_three_raw_failures(tmp_path):
+    import json
+    from coordination.bounded_skills_20261016.scripts.export_onpolicy_measurements_CPU_20261023 import measured_row
+    from coordination.bounded_skills_20261016.scripts.export_original_schema6_measured_CPU_20261021 import reference
+    query, saved = frozen_case()
+    saved['request']['anchors'] = [{'id': 'bowl'}]
+    query['public_request'] = saved['request']
+    query['binding'].update(request_sha256=digest(saved['request']), source_revision='old-source')
+    query.update(query_id='query', record_id='old-record', record_aliases=['old-record'],
+        source_episode_id='episode', split='holdout', requested_valid_repeats=3)
+    trials = []
+    for seed in range(3):
+        directory = tmp_path/str(seed)
+        directory.mkdir()
+        result = {'binding': query['binding'], 'query_id': 'query', 'candidate_id': 'selected',
+            'candidate_parameters': query['candidate']['parameters'], 'source_revision': 'old-source',
+            'seed': seed, 'status': 'closed', 'success': False, 'reason': 'preparation_rejected',
+            'sim_steps': 0, 'wall_s': 1., 'private_metrology_s': 0., 'vla_inputs': []}
+        path = directory/'summary.json'
+        path.write_text(json.dumps(result))
+        (directory/'choices.jsonl').write_text(json.dumps({'request': saved['request'],
+            'decision': {'candidate_ids': ['selected']}, 'execution_details': []})+'\n')
+        trials.append({'result': result, 'summary': reference(path)})
+    report = {'binding': query['binding'], 'query_id': 'query', 'candidate': query['candidate'],
+        'case': {'category': 'bowl'}, 'trials': trials}
+    row = measured_row(query, report, 'policy-hash')
+    assert row['binding'] == query['binding'] and row['record_id'] == 'old-record'
+    assert len(row['branches'][0]['trials']) == 3 and row['unknown_trials'] == []
+    assert all(t['success'] is False and t['sim_steps'] == 0 for t in row['branches'][0]['trials'])
+    assert row['training_admission'] is False
+    report['binding'] = dict(query['binding'], snapshot_sha256='new-context')
+    with pytest.raises(ValueError, match='context changed'):
+        measured_row(query, report, 'policy-hash')
