@@ -25,6 +25,7 @@ def main():
     p.add_argument('--output', type=Path)
     p.add_argument('--registry', type=Path)
     p.add_argument('--original-geometry', type=Path)
+    p.add_argument('--witness-positions', type=Path)
     p.add_argument('--worker', type=int)
     a = p.parse_args()
     if a.worker is None:
@@ -39,6 +40,21 @@ def main():
         indices = [i for values in groups.values() for i in values[:2]]
         indices += [groups['bowl_transfer'][2], groups['box_transfer'][2]]
         assert len(indices) == len(set(indices)) == 20
+        witnesses = defaultdict(list)
+        if a.witness_positions is not None:
+            for line in a.witness_positions.read_bytes().splitlines():
+                position = json.loads(line)
+                assert position['source_split'] == 'train' and not position['PRO'] and not position['confirmation']
+                worker = json.loads(checked(position['source']).read_bytes())
+                source = worker['case']
+                assert source['diagnostic']['domain'] == 'original'
+                for trial in worker['result'].get('trials', []):
+                    if (trial.get('vla_variant', {}).get('name') == 'full_task'
+                            and trial['success'] is True
+                            and trial.get('truth_source') == 'unchanged_native_task_completion'):
+                        witnesses[(source['episode']['suite'], source['episode']['task'])].append({
+                            'worker': position['source'], 'trial_seed': trial['trial_seed'],
+                            'parent_case': source['name']})
         record = {'parent': ref(a.parent), 'source': str(a.source),
             'registry': ref(a.registry), 'original_geometry': ref(a.original_geometry),
             'generator_files': [ref(a.source/'scripts/generate_bounded_train_layouts.py'),
@@ -49,6 +65,13 @@ def main():
             'jobs': [{'case_index': index, 'seed': 11020100+j,
                 'category': plan['cases'][index]['category'],
                 'parent_case': plan['cases'][index]['name']} for j, index in enumerate(indices)]}
+        if a.witness_positions is not None:
+            record['witness_positions'] = ref(a.witness_positions)
+            for job in record['jobs']:
+                case = plan['cases'][job['case_index']]
+                options = witnesses[(case['episode']['suite'], case['episode']['task'])]
+                if options:
+                    job['native_witness'] = next((v for v in options if v['parent_case'] == case['name']), options[0])
         a.registration.parent.mkdir(parents=True, exist_ok=True)
         with a.registration.open('x') as stream:
             json.dump(record, stream, indent=2)
@@ -68,7 +91,7 @@ def main():
     from scripts.generate_bounded_train_layouts import generate_case
     output = Path(record['output'])/f'case{a.worker:03d}'
     result = generate_case(plan, job['case_index'], job['seed'], output,
-        record['registry'], record['original_geometry'])
+        record['registry'], record['original_geometry'], native_witness=job.get('native_witness'))
     print(json.dumps({'case': a.worker, 'seed': job['seed'],
         'state_sha256': result['state_sha256'],
         'predicate_witness': result['layout']['predicate_witness'], 'policy_calls': 0}))

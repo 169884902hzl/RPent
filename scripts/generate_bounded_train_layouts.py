@@ -17,7 +17,9 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from robots.libero.bounded_train_layouts import LayoutLimits, generate_layout, instruction_identity_check
+from robots.libero.bounded_train_layouts import (
+    ORIGINAL_SUITES, LayoutLimits, generate_layout, instruction_identity_check,
+)
 from robots.libero.v5_branch_state import actuator_state, restore_actuators
 from scripts.bounded_state_exclusions import check_exclusions
 
@@ -198,7 +200,38 @@ def construction_support(env):
         'initial_region_margin_m': margin}
 
 
-def generate_case(manifest,index,seed,output,confirmation_reference=None,original_geometry_reference=None):
+def training_witness_controls(reference, case, parents):
+    """Reuse recorded successful controls from the same original train task."""
+    worker = json.loads(pinned(reference['worker']))
+    source = worker['case']
+    if (source['diagnostic']['domain'] != 'original' or source['episode']['suite'] not in ORIGINAL_SUITES
+            or any(source['episode'][key] != case['episode'][key] for key in ('suite', 'task'))
+            or not source['source_training_parent_ids']
+            or any(parents[key]['split'] != 'train' for key in source['source_training_parent_ids'])):
+        raise ValueError('native witness must belong to the same original train task')
+    trial = next(row for row in worker['result']['trials']
+        if row['trial_seed'] == reference['trial_seed']
+        and row.get('vla_variant', {}).get('name') == 'full_task')
+    if trial['success'] is not True or trial.get('truth_source') != 'unchanged_native_task_completion':
+        raise ValueError('recorded whole-task native success required for a witness')
+    choices = [json.loads(line) for line in pinned(trial['choices']).splitlines()]
+    actions = [sample['action'] for row in choices for detail in row['execution_details']
+        for sample in detail.get('execution', {}).get('trace', [])]
+    if not actions:
+        raise ValueError('native witness has no saved physical controls')
+    path = Path(reference['worker']['path']).parent/source['name']/'private_branchpoint.pkl'
+    raw = path.read_bytes()
+    physics = pickle.loads(raw)['physics']
+    from robots.libero.bounded_hybrid_diagnostic import snapshot_digest
+    if snapshot_digest(physics) != trial['initial_physics_sha256']:
+        raise ValueError('native witness controls and saved initial state differ')
+    return physics, actions, {'worker': reference['worker'], 'trial_seed': trial['trial_seed'],
+        'choices': trial['choices'], 'branchpoint': {'path': str(path),
+            'sha256': hashlib.sha256(raw).hexdigest()}, 'source': 'recorded_original_train_full_task_controls'}
+
+
+def generate_case(manifest,index,seed,output,confirmation_reference=None,original_geometry_reference=None,
+                  native_witness=None):
     from libero.libero.envs.env_wrapper import ControlEnv
     case=manifest['cases'][index]
     episode=case['episode'];name=case['name'].split('_B2_')[0]
@@ -228,6 +261,12 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
         base.reset();witness.reset();restore(base,initial);restore(witness,final)
         for action in actions:
             witness.step(np.asarray(action))
+        witness_source = {'source': 'last_original_expert_control_segment'}
+        if not witness.check_success() and native_witness is not None:
+            start, actions, witness_source = training_witness_controls(native_witness,case,parents)
+            restore(witness,start)
+            for action in actions:
+                witness.step(np.asarray(action))
         if not witness.check_success():
             raise ValueError('CPU original control replay did not produce a native predicate witness')
         goal_state=witness.sim.get_state().flatten().copy()
@@ -274,6 +313,7 @@ def generate_case(manifest,index,seed,output,confirmation_reference=None,origina
             'integration_sha256':physics['actuator_state']['integration']['sha256'],
             'native_data_sha256':physics['actuator_state']['native_data']['sha256'],
             'construction_support':support,
+            'native_predicate_witness_source':witness_source,
             'confirmation_geometry_exclusions':geometry_evidence,
             'pending':['historical confirmation inventory completeness',
                 'additional asset distractor insertion','N1-qualified physical pilot']}

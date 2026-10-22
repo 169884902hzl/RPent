@@ -44,6 +44,34 @@ def test_floor_uses_collision_plane_and_initial_regions_not_goal_region():
     np.testing.assert_allclose(support['upper_m'], [.32, .42, 0.])
 
 
+@pytest.mark.parametrize('split,domain,expected', [
+    ('train', 'original', True), ('init_holdout', 'original', False), ('train', 'd2', False)])
+def test_witness_replays_recorded_native_success_only_from_original_train(tmp_path, split, domain, expected):
+    import pickle
+    from robots.libero.bounded_hybrid_diagnostic import snapshot_digest
+    from scripts.generate_bounded_train_layouts import training_witness_controls
+    case = {'name': 'same_original_task', 'episode': {'suite': 'libero_object', 'task': 0, 'seed': 2},
+        'diagnostic': {'domain': domain}, 'source_training_parent_ids': ['original-train']}
+    physics = {'sim_state': [0., 1.], 'actuator_state': {}}
+    folder = tmp_path/case['name']; folder.mkdir()
+    (folder/'private_branchpoint.pkl').write_bytes(pickle.dumps({'physics': physics}))
+    choices = pin(tmp_path/'choices.jsonl', {'execution_details': [
+        {'execution': {'trace': [{'action': [0., 0., .01, 0., 0., 0., 1.]}]}}]})
+    worker = pin(tmp_path/'worker_summary.json', {'case': case, 'result': {'trials': [{
+        'trial_seed': 7, 'vla_variant': {'name': 'full_task'}, 'success': True,
+        'truth_source': 'unchanged_native_task_completion', 'choices': choices,
+        'initial_physics_sha256': snapshot_digest(physics)}]}})
+    reference = {'worker': worker, 'trial_seed': 7}
+    parents = {'original-train': {'split': split}}
+    if expected:
+        restored, controls, provenance = training_witness_controls(reference, case, parents)
+        assert restored == physics and controls == [[0., 0., .01, 0., 0., 0., 1.]]
+        assert provenance['choices'] == choices
+    else:
+        with pytest.raises(ValueError, match='same original train task'):
+            training_witness_controls(reference, case, parents)
+
+
 def pin(path, value):
     raw = json.dumps(value).encode()
     path.write_bytes(raw)
