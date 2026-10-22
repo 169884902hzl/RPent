@@ -254,7 +254,9 @@ def main():
     args.manifest=args.manifest.resolve(strict=True);sys.path.insert(0,str(args.source))
     plan=json.loads(args.manifest.read_bytes())
     if not 1 <= args.episode_concurrency <= 8:raise ValueError('episode concurrency must be1..8')
-    if plan['training'] or plan['schema_version']!='bounded-skills/6':raise ValueError('wrong evaluation registration')
+    from rpent.skill_package import VERSION
+    if plan['training'] or plan['schema_version'] != VERSION:
+        raise ValueError('evaluation registration differs from the execution schema')
     if args.worker is not None:return worker(args,plan)
     for row in plan['jobs']:
         if row.get('kind') in {'layout_pilot', 'layout_collect'}:

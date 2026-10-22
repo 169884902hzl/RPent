@@ -14,6 +14,7 @@ import pytest
 
 
 def setup_launcher(tmp_path, monkeypatch, *, fail_startup=False):
+    from rpent.skill_package import VERSION
     path = Path(__file__).resolve().parents[4] / 'coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py'
     spec = importlib.util.spec_from_file_location('schema6_physical_launcher', path)
     module = importlib.util.module_from_spec(spec)
@@ -21,7 +22,7 @@ def setup_launcher(tmp_path, monkeypatch, *, fail_startup=False):
     entry = tmp_path / 'sam.py'
     entry.write_text('# fake service entry\n')
     manifest = tmp_path / 'manifest.json'
-    manifest.write_text(json.dumps({'training': False, 'schema_version': 'bounded-skills/6',
+    manifest.write_text(json.dumps({'training': False, 'schema_version': VERSION,
         'source_commit': 'test', 'jobs': [{'case': {}} for _ in range(9)],
         'sam_entry': {'path': str(entry), 'sha256': hashlib.sha256(entry.read_bytes()).hexdigest()}}))
     output = tmp_path / 'output'
@@ -79,6 +80,21 @@ def test_failed_startup_raises_before_dispatching_any_full_case(tmp_path, monkey
     with pytest.raises(subprocess.CalledProcessError):
         module.main()
     assert stats['formal'] == [] and not list(output.glob('closed_*.json'))
+
+
+def test_registration_must_match_executing_schema(tmp_path, monkeypatch):
+    import rpent.skill_package as package
+
+    monkeypatch.setattr(package, 'VERSION', 'bounded-skills/7')
+    module, output, stats = setup_launcher(tmp_path, monkeypatch)
+    assert module.main() == 0
+    manifest = tmp_path / 'manifest.json'
+    plan = json.loads(manifest.read_bytes())
+    plan['schema_version'] = 'bounded-skills/6'
+    manifest.write_text(json.dumps(plan))
+    with pytest.raises(ValueError, match='execution schema'):
+        module.main()
+    assert stats['startup'] == 1
 
 
 @pytest.mark.parametrize('variants', [None, [{'name': 'in_place', 'parameters': {'preparation': 'in_place'}}]])
