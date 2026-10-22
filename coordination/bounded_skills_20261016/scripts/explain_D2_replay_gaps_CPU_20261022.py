@@ -13,6 +13,23 @@ def load(ref):
     return json.loads(raw)
 
 
+def own_failure_cause(receipts):
+    """Name the first measured own-skill failure without inferring collision."""
+    failures = [r for r in receipts if r['skill'] != 'call_vla']
+    if not failures:
+        return None
+    motion = [r for r in failures if r['skill'] not in {'observe', 'finish', 'ask_help'}]
+    first = next(iter(motion), failures[0])
+    if first['stop_reason'] == 'predicted_anchor_changed':
+        return 'own_skill_predicted_anchor_changed'
+    if first['phase'] == 'collision' and first['steps_used'] == 0:
+        return 'own_skill_zero_control_collision_guard'
+    if all(r['skill'] == 'observe' and r['stop_reason'] == 'no_measured_scene_change'
+            for r in failures):
+        return 'own_observation_no_scene_change_consumed_recovery'
+    return 'own_skill_execution_or_verification_failure'
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--audit', type=Path, required=True)
@@ -68,8 +85,8 @@ def main():
             cause = 'native_solver_phase_lost_at_endpoint_restore'
         elif failed['reason'] == 'measured_success_after_handoff':
             cause = 'public_completion_false_positive_against_private_grasp_v3'
-        elif any(r['skill'] != 'call_vla' for r in failed['failure_receipts']):
-            cause = 'own_skill_zero_control_guard_then_observation_collision'
+        elif own_failure_cause(failed['failure_receipts']) is not None:
+            cause = own_failure_cause(failed['failure_receipts'])
         elif failed['reason'] == 'requested_vla_variant_unavailable':
             cause = 'selected_variant_unavailable_after_partial_replay'
         elif any(v['stop_reason'] == 'completion_lost_during_handoff' for v in failed['vla_stops']):

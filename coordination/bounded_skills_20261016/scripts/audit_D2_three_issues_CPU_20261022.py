@@ -26,6 +26,15 @@ def params(trial):
     return variant.get('parameters') if isinstance(variant, dict) else None
 
 
+def replay_choices(replay, sampling):
+    """Read both the separate-path and original in-batch replay formats."""
+    if 'path_selection' in replay:
+        return replay['path_selection'].get('choices', [])
+    return [{'subtask': row['subtask'], **{key: row['selection'][key]
+        for key in ('method', 'vla_parameters', 'vla_variant')
+        if key in row['selection']}} for row in sampling.get('subtasks', [])]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--episodes', type=Path, required=True)
@@ -49,7 +58,7 @@ def main():
                 and episode['full_replay_success'] is False):
             continue
         branches = []
-        choices = replay['path_selection'].get('choices', [])
+        choices = replay_choices(replay, sampling)
         for index, trial in enumerate(replay['full_replay']):
             choice = choices[index] if index < len(choices) else {}
             subtask = next((s for s in sampling.get('subtasks', [])
