@@ -216,7 +216,7 @@ def bind_subtask(policy, adapter, spec):
     return source, target
 
 
-def unbound_vla_candidate(request, instruction, mode):
+def unbound_vla_candidate(request, instruction, mode, *, preparation='in_place'):
     """Select an existing legal public clause/task call when identity is absent."""
     from robots.libero.bounded_vla_options import clause_for_mode
     from rpent.skill_package.contract import legal_after
@@ -225,14 +225,18 @@ def unbound_vla_candidate(request, instruction, mode):
     phrase = clause_for_mode(instruction, mode)
     clauses = request.get('instruction_clauses', [])
     clause_id = clauses.index(phrase) if phrase in clauses else None
-    options = [candidate for candidate in request['candidates']
-        if candidate['id'] in legal and candidate['skill'] == 'call_vla'
-        and candidate['parameters'].get('preparation') == 'in_place']
-    clause = next((candidate for candidate in options
-        if clause_id is not None and candidate['parameters']['mode'] == 'instruction'
-        and candidate['parameters'].get('clause_id') == clause_id), None)
-    return clause or next((candidate for candidate in options
-        if candidate['parameters']['mode'] == 'task'), None)
+    for selected_preparation in dict.fromkeys((preparation, 'in_place')):
+        options = [candidate for candidate in request['candidates']
+            if candidate['id'] in legal and candidate['skill'] == 'call_vla'
+            and candidate['parameters'].get('preparation') == selected_preparation]
+        clause = next((candidate for candidate in options
+            if clause_id is not None and candidate['parameters']['mode'] == 'instruction'
+            and candidate['parameters'].get('clause_id') == clause_id), None)
+        selected = clause or next((candidate for candidate in options
+            if candidate['parameters']['mode'] == 'task'), None)
+        if selected is not None:
+            return selected
+    return None
 
 
 class SubtaskRPC:
@@ -353,7 +357,8 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                         and (whole_task or not recovering_binding)
                         and all(c['parameters'].get(k) == v for k, v in required.items())), None)
                     if forced is None and recovering_binding:
-                        unbound = unbound_vla_candidate(request, adapter.ex.instruction, spec['mode'])
+                        unbound = unbound_vla_candidate(request, adapter.ex.instruction, spec['mode'],
+                            preparation=required.get('preparation', 'in_place'))
                         if unbound is not None:
                             result.setdefault('vla_variant_fallbacks', []).append({
                                 'decision': index, 'reason': 'public_binding_missing',

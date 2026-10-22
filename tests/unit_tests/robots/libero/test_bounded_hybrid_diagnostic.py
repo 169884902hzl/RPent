@@ -298,7 +298,8 @@ def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, mo
     assert (tmp_path / "branch/choices.jsonl").read_text() == ""
 
 
-def test_registered_variant_with_missing_binding_executes_public_task_fallback(tmp_path, monkeypatch):
+@pytest.mark.parametrize('preferred_available', [False, True])
+def test_registered_variant_with_missing_binding_executes_public_task_fallback(tmp_path, monkeypatch, preferred_available):
     from contextlib import nullcontext
     from scripts import probe_bounded_hybrid_d2 as probe
 
@@ -314,6 +315,13 @@ def test_registered_variant_with_missing_binding_executes_public_task_fallback(t
     request = base | {'candidates': [{'id': 'public_full_task', 'skill': 'call_vla',
         'parameters': parameters, 'consequences': {'collision': False, 'ik_reachable': True,
             'screen_scope': 'measured'}}]}
+    selected_id = 'public_full_task'
+    if preferred_available:
+        parameters = {**parameters, 'preparation': 'initial_pose'}
+        selected_id = 'public_full_task_initial'
+        request['candidates'].append({'id': selected_id, 'skill': 'call_vla',
+            'parameters': parameters, 'consequences': {'collision': False,
+                'ik_reachable': True, 'screen_scope': 'measured'}})
     def execute(_, decision):
         executed.append(decision['candidate_ids'])
         return [{'stop_reason': 'native_success'}]
@@ -326,13 +334,13 @@ def test_registered_variant_with_missing_binding_executes_public_task_fallback(t
     row, _ = probe.trial(facade, adapter, SimpleNamespace(rpc=object()),
         SimpleNamespace(measure=lambda *_: nullcontext()), spec, 'call_vla', 123,
         tmp_path/'branch', request, vla_parameters=requested)
-    assert executed == [['public_full_task']]
+    assert executed == [[selected_id]]
     assert row['reason'] == 'native_success' and row['success'] is True
     assert row['truth_source'] == 'unchanged_native_task_completion'
     assert row['source_public_id'] is None
     assert row['vla_variant_fallbacks'] == [{'decision': 0, 'reason': 'public_binding_missing',
         'requested_parameters': requested, 'actual_parameters': parameters,
-        'candidate_id': 'public_full_task'}]
+        'candidate_id': selected_id}]
     assert row['executed_vla_variants'][0]['parameters'] == parameters
 
 
