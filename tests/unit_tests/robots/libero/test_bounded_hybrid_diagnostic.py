@@ -277,6 +277,24 @@ def test_checkpoint_restores_success_history_and_client_stops_after_sibling(tmp_
     assert facade._native_success_events[0]['elapsed_steps'] == 12
 
 
+def test_unchanged_observations_do_not_spend_recovery_on_recorded_d2_receipts():
+    import json
+    from pathlib import Path
+    from scripts.probe_bounded_hybrid_d2 import consumes_recovery
+
+    path = Path(__file__).parent / 'fixtures/observe_recovery_receipts_20261022.json'
+    rows = json.loads(path.read_text())['rows']
+    for row in rows:
+        unchanged = [r for r in row['receipts'] if r['skill'] == 'observe'
+            and r['stop_reason'] == 'no_measured_scene_change']
+        assert unchanged
+        assert not any(consumes_recovery(r) for r in unchanged)
+        # A physical action failure remains charged, even with the same text.
+        assert consumes_recovery({**unchanged[0], 'skill': 'lift'})
+        assert consumes_recovery({**unchanged[0], 'outcome': 'failure',
+            'stop_reason': 'measured_sweep_collision'})
+
+
 def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, monkeypatch):
     from scripts import probe_bounded_hybrid_d2 as probe
 
@@ -361,7 +379,8 @@ def test_unbound_call_never_uses_an_illegal_or_unmeasured_anchor_candidate():
 
 
 @pytest.mark.parametrize('method', ['self', 'call_vla'])
-def test_ambiguous_binding_observes_then_rebinds_without_private_instance_selection(tmp_path, monkeypatch, method):
+@pytest.mark.parametrize('recovery_budget', [None, 0])
+def test_ambiguous_binding_observes_then_rebinds_without_private_instance_selection(tmp_path, monkeypatch, method, recovery_budget):
     from contextlib import nullcontext
 
     from scripts import probe_bounded_hybrid_d2 as probe
@@ -384,12 +403,16 @@ def test_ambiguous_binding_observes_then_rebinds_without_private_instance_select
         'parameters': {'anchor_id': source.id, 'mode': 'open'}, 'consequences': consequences}
     request = base | {'candidates': [action]}
     adapter = SimpleNamespace(request=lambda **_: request, held=None, details=[], last_chunk={},
+        hybrid_recovery_budget=recovery_budget,
         ex=SimpleNamespace(instruction='open the cabinet'),
         p=SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False,
             execution_budget=lambda: {'used_sim_steps': len(executed)}), model=object()))
     def execute(_, decision):
         executed.append(decision['candidate_ids'])
-        return [{'stop_reason': 'measured_success'}]
+        return [{'skill': 'observe', 'outcome': 'no_effect', 'steps_used': 23,
+            'stop_reason': 'no_measured_scene_change'}] if len(executed) == 1 else [
+            {'skill': 'descend', 'outcome': 'success', 'steps_used': 8,
+             'stop_reason': 'measured_success'}]
     adapter.execute = execute
     policy = SimpleNamespace(rpc=object(), choose=lambda _: base | {'candidate_ids': ['open']})
     timings = SimpleNamespace(measure=lambda *_: nullcontext())
@@ -400,6 +423,7 @@ def test_ambiguous_binding_observes_then_rebinds_without_private_instance_select
     assert result['success'] is True and result['decisions'] == 2
     assert result['selected_candidate_id'] == 'open'
     assert result['source_public_id'] == source.id
+    assert result['recovery_used'] == 0
     assert result['binding_recovery'] == [{'decision': 0, 'reason': 'source_binding_missing',
         'candidate_id': 'scan', 'mode': 'wrist_scan'}]
 

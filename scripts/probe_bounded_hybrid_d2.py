@@ -301,6 +301,17 @@ class SeededPolicy:
         return value
 
 
+def consumes_recovery(receipt):
+    """Charge failed actions, not an unchanged observation or unexecuted plan."""
+    if receipt.get('outcome') == 'success':
+        return False
+    if receipt.get('steps_used') == 0 and receipt.get('phase') == 'planning_unreachable':
+        return False
+    return not (receipt.get('skill') == 'observe'
+        and receipt.get('outcome') == 'no_effect'
+        and receipt.get('stop_reason') == 'no_measured_scene_change')
+
+
 def trial(facade, adapter, policy, timings, spec, method, seed, output, first_request, *,
           decision_limit=160, vla_parameters=None):
     """Execute one branch, preserving its private endpoint before metrology."""
@@ -396,11 +407,6 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                     decision.update(kind='decision',candidate_ids=[unbound['id']])
                     result.setdefault('unbound_instruction_calls',[]).append(unbound['parameters'])
                 elif recovering_binding:
-                    if recovery_budget is not None:
-                        if recovery_used >= recovery_budget:
-                            reason = 'binding_recovery_budget'
-                            break
-                        recovery_used += 1
                     # Missing/ambiguous public identity is not permission to
                     # choose a private instance. Give both arms the existing
                     # screened observation recovery before declaring it absent.
@@ -465,11 +471,9 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                     break
                 completed = (source is not None and adapter.held == source.id if spec["mode"] == "pick"
                              else facade.goal_status()["satisfied"][spec["goal_index"]])
-                failed = recovery_budget is not None and bool(receipts) and any(
-                    r['outcome'] != 'success' and not (r['steps_used'] == 0
-                        and r.get('phase') == 'planning_unreachable') for r in receipts)
+                failed = recovery_budget is not None and any(consumes_recovery(r) for r in receipts)
                 retry_exhausted = False
-                if failed and not recovering_binding and recovery_budget is not None:
+                if failed and recovery_budget is not None:
                     retry_exhausted = recovery_used >= recovery_budget
                     if not retry_exhausted:
                         recovery_used += 1
