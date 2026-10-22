@@ -66,15 +66,19 @@ def prepare_n2(source, out, common):
     print(json.dumps({'N2_states':12,'trials':168,'output':str(out)}))
 
 
-def prepare_d2(source, out, common):
+def prepare_d2(source, out, common, archive):
     """Register evaluation only; submission follows the original/layout checks."""
     parent=BASE/'oracle_retry_fb9b3865/preparation/D2_recovery1.json'
     panel=json.loads(parent.read_bytes())
     assert len(panel['jobs'])==40 and all(j['recovery_budget']==1 for j in panel['jobs'])
     common={**common,'libero_config':reference(ROOT/'runtime_config/config.yaml')}
+    revision=json.loads((source/'SOURCE_REVISION.json').read_bytes())
+    archive_ref=reference(archive)
+    assert archive_ref['sha256']==revision['archive_sha256']
     panel.update(common,parent_registration=reference(parent),evaluation_only=True,
         runtime_change='public measured-anchor preparation and transport added; other invocation budgets unchanged',
-        source_archive=reference(ROOT/'rd_measured_vla_v7_r4_20261023.tar.gz'),
+        source_archive=archive_ref,
+        private_progress_contract=revision.get('private_diagnostic_progress_contract'),
         submission_condition='original90/layout65 and N1/N2 physical evidence assessed first')
     panel['vla_variants']=[
         {'name':'in_place','parameters':{'preparation':'in_place'}},
@@ -93,6 +97,7 @@ def main():
     parser.add_argument('--source', type=Path, required=True)
     parser.add_argument('--n2', action='store_true')
     parser.add_argument('--d2', action='store_true')
+    parser.add_argument('--archive',type=Path)
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     revision = json.loads((source/'SOURCE_REVISION.json').read_bytes())
@@ -108,7 +113,8 @@ def main():
     if args.n2:
         return prepare_n2(source,out,common)
     if args.d2:
-        return prepare_d2(source,out,common)
+        if args.archive is None:parser.error('--d2 requires the exact source --archive')
+        return prepare_d2(source,out,common,args.archive)
     parents = BASE/'regression155_f6987f0d/preparation'
     sam = json.loads((parents/'all155.json').read_bytes())['sam_entry']
     jobs = []
