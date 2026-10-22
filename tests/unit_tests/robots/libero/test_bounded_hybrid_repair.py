@@ -47,11 +47,12 @@ def test_scope_diagnostic_migrates_only_the_public_version_header(old_version, m
         migrate_replay_header(adapter, request)
 
 
-def test_schema6_replay_rebuilds_measured_options_after_legacy_runtime_restore():
+def test_schema6_replay_rebuilds_measured_options_after_legacy_runtime_restore(monkeypatch):
     from copy import deepcopy
 
     from rpent.skill_package.progress import PublicProgress
     from scripts.probe_bounded_hybrid_repair import rebuild_schema6_replay
+    monkeypatch.setattr('rpent.skill_package.VERSION', 'bounded-skills/6')
 
     old = {'schema_version': 'bounded-skills/3', 'candidates': [
         {'id': 'old', 'skill': 'move_to', 'parameters': {'anchor_id': 'e1', 'approach': 'above', 'path': 'over'}}]}
@@ -76,6 +77,22 @@ def test_schema6_replay_rebuilds_measured_options_after_legacy_runtime_restore()
     assert events == ['fresh_public_measurements', 'new_catalog']
     adapter._failed_move_anchors.add('e1')
     assert defaults['_failed_move_anchors'] == set()
+
+
+def test_schema7_reconstructs_a_v6_context_without_transferring_its_request(monkeypatch):
+    from copy import deepcopy
+    from scripts.probe_bounded_hybrid_repair import rebuild_schema6_replay, migrate_replay_header
+    monkeypatch.setattr('rpent.skill_package.VERSION', 'bounded-skills/7')
+    old={'schema_version':'bounded-skills/6','candidates':[{'id':'old'}]}
+    current={'schema_version':'bounded-skills/7','candidates':[{'id':'new'}]}
+    events=[]
+    adapter=SimpleNamespace(latest_request=deepcopy(old),refresh=lambda:events.append('remeasure'),
+        request=lambda **_:current)
+    with pytest.raises(ValueError,match='unsupported'):
+        migrate_replay_header(adapter,old)
+    result=rebuild_schema6_replay(adapter,old,{})
+    assert result is current and events==['remeasure']
+    assert old=={'schema_version':'bounded-skills/6','candidates':[{'id':'old'}]}
 
 
 def test_scope_diagnostic_rejects_unregistered_schema_migrations():

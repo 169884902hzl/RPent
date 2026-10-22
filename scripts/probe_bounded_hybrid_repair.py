@@ -36,7 +36,7 @@ def migrate_replay_header(adapter, request):
 
 
 def rebuild_schema6_replay(adapter, request, defaults):
-    """Re-measure a historical checkpoint for the changed schema6 catalog.
+    """Re-measure a historical checkpoint for the changed measured catalog.
 
     Schema6 merges move options, so a version-header rewrite cannot preserve
     their meaning. Keep the restored physics and retry history, initialize
@@ -44,8 +44,9 @@ def rebuild_schema6_replay(adapter, request, defaults):
     """
     from rpent.skill_package import VERSION
 
-    if VERSION != 'bounded-skills/6' or request['schema_version'] not in {
-            'bounded-skills/3', 'bounded-skills/4', 'bounded-skills/5'}:
+    prior = {'bounded-skills/6': {'bounded-skills/3', 'bounded-skills/4', 'bounded-skills/5'},
+        'bounded-skills/7': {'bounded-skills/3', 'bounded-skills/4', 'bounded-skills/5', 'bounded-skills/6'}}
+    if request['schema_version'] not in prior.get(VERSION, set()):
         raise ValueError('unsupported schema6 checkpoint reconstruction')
     if request != adapter.latest_request:
         raise ValueError('saved request differs from its restored cache')
