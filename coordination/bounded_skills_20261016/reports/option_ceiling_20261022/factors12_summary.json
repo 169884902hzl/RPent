@@ -1,0 +1,1378 @@
+{
+  "states": 12,
+  "attempts": 144,
+  "source_commit": "6c1de6144868364fb30596fb4f20c355cf12ba39",
+  "rows": [
+    {
+      "case": "libero_spatial_swap_t4_s40",
+      "subtask": "g0:pick",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            65,
+            65,
+            109
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 1,
+          "n": 3,
+          "wilson95": [
+            0.06149194472039621,
+            0.7923403991979522
+          ],
+          "native_success": 0,
+          "improvements": 1,
+          "regressions": 0,
+          "sim_steps": [
+            129,
+            88,
+            127
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 2,
+            "measured_success_after_handoff": 1
+          }
+        },
+        "a1_budget_only": {
+          "success": 1,
+          "n": 3,
+          "wilson95": [
+            0.06149194472039621,
+            0.7923403991979522
+          ],
+          "native_success": 0,
+          "improvements": 1,
+          "regressions": 0,
+          "sim_steps": [
+            163,
+            171,
+            154
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 2,
+            "measured_success_after_handoff": 1
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            150,
+            150,
+            150
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "pick up the leftmost bowl",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "gripper_closed_thresh": 0.06,
+          "lift_thresh": 0.05,
+          "max_chunks": 30,
+          "prompt": "Pick the akita black bowl in the top layer of the wooden cabinet and place it on the plate"
+        },
+        "A1_tool_call_id": "chatcmpl-tool-a97deea8e4cb4da3",
+        "A1_ordinal": 19,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_swap_t4_s40/transcript_spatial_swap_t4_s40.json",
+          "sha256": "ca1665585858715242ab9dc9a1112a2289a4c65f2f5c7f977367ea6eab8fc7f1"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard0/case000/summary.json",
+        "sha256": "db7cae90db052e256da54bfd996783b13d3a8225264648068a0b3b1b82a01047"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_object_swap_t3_s40",
+      "subtask": "g0:pick",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            128,
+            143,
+            129
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            128,
+            97,
+            132
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            67,
+            68,
+            67
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            60,
+            60,
+            60
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "pick up the bbq sauce",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "gripper_closed_thresh": 0.06,
+          "lift_thresh": 0.05,
+          "max_chunks": 12,
+          "prompt": "pick up the brown BBQ sauce bottle with red cap"
+        },
+        "A1_tool_call_id": "chatcmpl-tool-b85e8c491f6f639d",
+        "A1_ordinal": 18,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_swap_t3_s40/transcript_object_swap_t3_s40.json",
+          "sha256": "3234d804c76efd4a8d4fd7e53f4a78613d9f8bf5186518cb3ad632921ae17279"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard0/case001/summary.json",
+        "sha256": "ac4485bfd57e974d1324e3b7bdbcfee2a634701af2c06e45f57964a0ce5537a1"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_10_swap_t0_s40",
+      "subtask": "g0:pick",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            129,
+            130,
+            130
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            129,
+            129,
+            141
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            80,
+            84,
+            76
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            70,
+            70,
+            70
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "put both the alphabet soup and the tomato sauce in the basket",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "max_chunks": 14,
+          "prompt": "pick up the alphabet soup can",
+          "gripper_closed_thresh": 0.04
+        },
+        "A1_tool_call_id": "chatcmpl-tool-95af8c6b18cbc152",
+        "A1_ordinal": 19,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_10_swap_t0_s40/transcript_10_swap_t0_s40.json",
+          "sha256": "d0b4f670f3e9b1a0803bb099b4a8a46030d1bc9929777f9717b7a01c28d277ce"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard0/case002/summary.json",
+        "sha256": "ecb38da0a2484eb59ab711966d503177825a9cbd3f376211fb037d6e89bd8972"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_object_swap_t4_s40",
+      "subtask": "g0:in",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            0,
+            0,
+            0
+          ],
+          "reasons": {
+            "requested_vla_variant_unavailable": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            0,
+            0,
+            0
+          ],
+          "reasons": {
+            "requested_vla_variant_unavailable": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            0,
+            0,
+            0
+          ],
+          "reasons": {
+            "requested_vla_variant_unavailable": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 3,
+          "n": 3,
+          "wilson95": [
+            0.4385029682449546,
+            1.0
+          ],
+          "native_success": 3,
+          "improvements": 3,
+          "regressions": 0,
+          "sim_steps": [
+            19,
+            19,
+            18
+          ],
+          "reasons": {
+            "native_success": 3
+          }
+        }
+      },
+      "baseline_prompt": "Pick the ketchup and place it in the basket",
+      "baseline_prompt_source": "public_instruction; baseline never invoked policy; primitive contrast also exposes the unavailable-call path",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "gripper_closed_thresh": 0.06,
+          "lift_thresh": 0.05,
+          "max_chunks": 20,
+          "prompt": "pick up the ketchup"
+        },
+        "A1_tool_call_id": "chatcmpl-tool-a5334e38b10c15a5",
+        "A1_ordinal": 12,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_swap_t4_s40/transcript_object_swap_t4_s40.json",
+          "sha256": "330026280119109628a0bb550ceefbac228fb6cc430beeebd041f317a2d32d42"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard0/case003/summary.json",
+        "sha256": "71bb92c7c55b408137d89b0976ccb2ef9a6614fc6720ea5a32bf0487a4c0c65c"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_spatial_task_t0_s40",
+      "subtask": "g0:pick",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            65,
+            73,
+            77
+          ],
+          "reasons": {
+            "measured_success_after_handoff": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            67,
+            73,
+            64
+          ],
+          "reasons": {
+            "measured_success_after_handoff": 2,
+            "failed_chunk_recovery_budget": 1
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            56,
+            57,
+            56
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            50,
+            50,
+            50
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "pick up the rightmost bowl",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "gripper_closed_thresh": 0.06,
+          "lift_thresh": 0.05,
+          "max_chunks": 10,
+          "prompt": "grasp the upper right black bowl by the rim"
+        },
+        "A1_tool_call_id": "chatcmpl-tool-9563a3d4f639382c",
+        "A1_ordinal": 17,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_spatial_task_t0_s40/transcript_spatial_task_t0_s40.json",
+          "sha256": "f5e39ffa95a2d57989b9b6c555a7c63c32af673526ba52ca942e3c63b3a660af"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard1/case000/summary.json",
+        "sha256": "21b6191938c90e5699260a00452a1b766356e0c0bc00c08e564d85cae92ac2e5"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_object_task_t3_s40",
+      "subtask": "g0:pick",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            135,
+            133,
+            129
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            128,
+            128,
+            127
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            109,
+            110,
+            114
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            75,
+            80,
+            80
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "Pick the ketchup",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "prompt": "pick up the ketchup",
+          "max_chunks": 20,
+          "lift_thresh": 0.08,
+          "gripper_closed_thresh": 0.06
+        },
+        "A1_tool_call_id": "chatcmpl-tool-bc03d66905932bfa",
+        "A1_ordinal": 11,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_task_t3_s40/transcript_object_task_t3_s40.json",
+          "sha256": "3dac9acbf4e8efc118881329fd453e244a4ec47e31fbc0cfb2760fb8462daeff"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard1/case001/summary.json",
+        "sha256": "3adb6d16f000711229d97af1701b9a10d8cd495fb1e1ee7a7625bd8727acbc09"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_10_swap_t2_s40",
+      "subtask": "g1:pick",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            124,
+            131,
+            135
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            124,
+            131,
+            131
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            124,
+            131,
+            135
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            120,
+            120,
+            120
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "pick up the moka pot",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "prompt": "pick up the moka pot",
+          "max_chunks": 24,
+          "lift_thresh": 0.05,
+          "gripper_closed_thresh": 0.06
+        },
+        "A1_tool_call_id": "chatcmpl-tool-976c806524206a4f",
+        "A1_ordinal": 24,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_swap_t2_s40/transcript_10_swap_t2_s40.json",
+          "sha256": "3a875871ea8b3a660f7017d1da51292a442f93d8c1dbb3ea32df0766d94e24bd"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard1/case002/summary.json",
+        "sha256": "fda5a31b4bbbc00ab6a1f8e6921def2bae7968add342e91d98bc61d8f942cf32"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_goal_task_t2_s40",
+      "subtask": "g0:on",
+      "stats": {
+        "baseline": {
+          "success": 3,
+          "n": 3,
+          "wilson95": [
+            0.4385029682449546,
+            1.0
+          ],
+          "native_success": 3,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            19,
+            26,
+            26
+          ],
+          "reasons": {
+            "native_success": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 3,
+          "n": 3,
+          "wilson95": [
+            0.4385029682449546,
+            1.0
+          ],
+          "native_success": 3,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            23,
+            24,
+            23
+          ],
+          "reasons": {
+            "native_success": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 3,
+          "n": 3,
+          "wilson95": [
+            0.4385029682449546,
+            1.0
+          ],
+          "native_success": 3,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            19,
+            26,
+            26
+          ],
+          "reasons": {
+            "native_success": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 3,
+          "n": 3,
+          "wilson95": [
+            0.4385029682449546,
+            1.0
+          ],
+          "native_success": 3,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            19,
+            26,
+            26
+          ],
+          "reasons": {
+            "native_success": 3
+          }
+        }
+      },
+      "baseline_prompt": "put the wine bottle on the bowl",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "prompt": "put the wine bottle in the bowl",
+          "max_chunks": 24,
+          "lift_thresh": 0.05,
+          "gripper_closed_thresh": 0.06
+        },
+        "A1_tool_call_id": "chatcmpl-tool-9a5d3650014f8ba8",
+        "A1_ordinal": 16,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_task_t2_s40/transcript_goal_task_t2_s40.json",
+          "sha256": "3d5f5220e5ed2666dbaf8246e0f8445cac8461847999066db97278adb3eaf783"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard1/case003/summary.json",
+        "sha256": "04e2e287416d15952d107a7b093f56c177df9292444a21af0fbd2aae21e2eb66"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_spatial_task_t4_s40",
+      "subtask": "g0:pick",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            131,
+            76,
+            136
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            143,
+            129,
+            135
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            160,
+            156,
+            158
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            150,
+            150,
+            150
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "pick up the rightmost bowl",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "gripper_closed_thresh": 0.06,
+          "lift_thresh": 0.05,
+          "max_chunks": 30,
+          "prompt": "Pick the akita black bowl on the top of the wooden cabinet and place it on the plate"
+        },
+        "A1_tool_call_id": "chatcmpl-tool-ad9abefe77f874c5",
+        "A1_ordinal": 19,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_task_t4_s40/transcript_spatial_task_t4_s40.json",
+          "sha256": "8119d0136825b1f627ebdb60a51cedefb65f9312051bd01fc3a3a0b9c636e460"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard2/case000/summary.json",
+        "sha256": "12cea8f278871e34e10a4532d22765d954dedb63b071ebc71313296951e6c714"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_goal_task_t0_s40",
+      "subtask": "g0:open",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            137,
+            125,
+            134
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            127,
+            126,
+            127
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            184,
+            185,
+            182
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            175,
+            175,
+            175
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "open the cabinet bottom drawer",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_doubled",
+        "parameters": {
+          "prompt": "pull the lowest gray drawer handle outward",
+          "max_chunks": 35
+        },
+        "A1_tool_call_id": "chatcmpl-tool-9f6c338ac8366461",
+        "A1_ordinal": 11,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_goal_task_t0_s40/transcript_goal_task_t0_s40.json",
+          "sha256": "a9ef330aac6fc1d6a6178d37f5de1e06c272c088b93910a8640c6309a119a616"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard2/case001/summary.json",
+        "sha256": "52fa981a88e9ec405750e28d6d2acf8a8871c727f98d1619ca50ddf5810def44"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_goal_swap_t4_s40",
+      "subtask": "g0:on",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            32,
+            31,
+            32
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            49,
+            31,
+            30
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            66,
+            66,
+            66
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            60,
+            60,
+            60
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "Put the bowl on the top of the drawer",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "prompt": "pick up the patterned bowl",
+          "max_chunks": 12,
+          "lift_thresh": 0.05,
+          "gripper_closed_thresh": 0.06
+        },
+        "A1_tool_call_id": "chatcmpl-tool-a94f0349ce8556a3",
+        "A1_ordinal": 11,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_swap_t4_s40/transcript_goal_swap_t4_s40.json",
+          "sha256": "a2984f5ea74e937474521e5db0176869d30ef9c10bda29d63ac45fd0384aaa50"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard2/case002/summary.json",
+        "sha256": "069db185bc9e4422eb00d9fe025926a76432daa8a56f3c0f838b84ebb5efd12f"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    },
+    {
+      "case": "libero_10_task_t2_s40",
+      "subtask": "g1:pick",
+      "stats": {
+        "baseline": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            133,
+            131,
+            126
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_prompt_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            126,
+            135,
+            128
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_budget_only": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            105,
+            110,
+            105
+          ],
+          "reasons": {
+            "failed_chunk_recovery_budget": 3
+          }
+        },
+        "a1_primitive": {
+          "success": 0,
+          "n": 3,
+          "wilson95": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          "native_success": 0,
+          "improvements": 0,
+          "regressions": 0,
+          "sim_steps": [
+            100,
+            100,
+            100
+          ],
+          "reasons": {
+            "primitive_return": 3
+          }
+        }
+      },
+      "baseline_prompt": "turn on the stove and put the pan on it",
+      "baseline_prompt_source": "observed_baseline_template",
+      "A1_tool": {
+        "tool": "pi0_pick",
+        "parameters": {
+          "gripper_closed_thresh": 0,
+          "lift_thresh": 999,
+          "max_chunks": 20,
+          "prompt": "turn on the stove"
+        },
+        "A1_tool_call_id": "chatcmpl-tool-85daaf4003e90fdd",
+        "A1_ordinal": 11,
+        "A1_source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_task_t2_s40/transcript_10_task_t2_s40.json",
+          "sha256": "d8da3696ac94d9cb5ddf35b97d9d86e5206e32a9bd7f2805c8ddc82c563ca65e"
+        }
+      },
+      "baseline_budget": {
+        "blocks": 24,
+        "no_progress_blocks": 5,
+        "controls_per_check": null,
+        "minimum_progress_m": 0.005,
+        "max_controls": null
+      },
+      "summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/factor6c1de614/shard2/case003/summary.json",
+        "sha256": "a66937422d09b1896e35a34c7ce6a2d2ddb14f6a1386e8ac608e75c96ec55572"
+      },
+      "A1_full_initial_certified": false,
+      "same_current_complete_initial": true
+    }
+  ],
+  "by_arm": {
+    "baseline": {
+      "subtask_success": 3,
+      "native_success": 3,
+      "n": 36
+    },
+    "a1_prompt_only": {
+      "subtask_success": 4,
+      "native_success": 3,
+      "n": 36
+    },
+    "a1_budget_only": {
+      "subtask_success": 4,
+      "native_success": 3,
+      "n": 36
+    },
+    "a1_primitive": {
+      "subtask_success": 6,
+      "native_success": 6,
+      "n": 36
+    }
+  },
+  "H4": "12/12 public EEF positions match within1e-9m; full A1 integration/controller/RNG state absent, so equality remains uncertified",
+  "limits": "three correlated policy seeds per current saved state, evaluation only; primitive contrast is against budget-only, and an unavailable baseline call cannot isolate contact quality",
+  "training": false,
+  "confirmation": false,
+  "D2": true
+}

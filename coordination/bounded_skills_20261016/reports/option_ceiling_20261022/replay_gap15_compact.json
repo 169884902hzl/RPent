@@ -1,0 +1,1061 @@
+{
+  "rows": [
+    {
+      "case": "libero_object_swap_t1_s40",
+      "recovery_budget": 0,
+      "classification": "own_skill_predicted_anchor_changed",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery0/case006/summary.json",
+        "sha256": "1ceff5ebc5126c3e2d06155a40eed9a3cbcaffa35ea824f37049f939879c495e"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 87,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 87,
+              "blocks_used": 15,
+              "handoff_steps": 12,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.06322445648776542,
+            "relative_displacement_max_m": 0.00045236450482691434
+          }
+        },
+        {
+          "subtask": "g0:in",
+          "method": "self",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "move_to",
+              "outcome": "failure",
+              "stop_reason": "predicted_anchor_changed",
+              "steps_used": 0,
+              "phase": "perception"
+            }
+          ],
+          "vla_stops": [],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_spatial_task_t2_s40",
+      "recovery_budget": 0,
+      "classification": "handoff_completion_not_retained",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery0/case012/summary.json",
+        "sha256": "0ae02ca3bb1ac285c70b01dd10d1889ca56a673c239be3feea44dc68ac131515"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 109,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 109,
+              "blocks_used": 17,
+              "handoff_steps": 24,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": -5.261760112396097e-06,
+            "relative_displacement_max_m": 0.00022589012139887678
+          }
+        }
+      ]
+    },
+    {
+      "case": "libero_object_task_t3_s40",
+      "recovery_budget": 0,
+      "classification": "independent_vla_replay_block_budget",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery0/case018/summary.json",
+        "sha256": "d988cf418f12f87262654b3475806369939275706a45f811d188787e73928db9"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 136,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 127,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 136,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 125,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 136,
+              "blocks_used": 24,
+              "handoff_steps": 16,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 127,
+              "blocks_used": 24,
+              "handoff_steps": 7,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 136,
+              "blocks_used": 24,
+              "handoff_steps": 16,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 125,
+              "blocks_used": 24,
+              "handoff_steps": 5,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": 0.1386820230044998,
+            "relative_displacement_max_m": 2.28458376268445e-08
+          }
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_swap_t1_s40",
+      "recovery_budget": 0,
+      "classification": "public_completion_false_positive_against_private_grasp_v3",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery0/case021/summary.json",
+        "sha256": "aed0a53291aa5a3608c46762a65de86a39e155f5d9d14896e1a9f69596cec236"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "measured_success_after_handoff",
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 56,
+              "blocks_used": 9,
+              "handoff_steps": 11,
+              "post_handoff_completed": true
+            }
+          ],
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": 0.04336177064322022,
+            "relative_displacement_max_m": 0.000723365381746435
+          }
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_task_t2_s40",
+      "recovery_budget": 0,
+      "classification": "own_observation_no_scene_change_consumed_recovery",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery0/case027/summary.json",
+        "sha256": "5d79424be4d81c499092eb3edc908190fde23ca11be77dd4fd96a4c690fd09a0"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 84,
+              "blocks_used": 15,
+              "handoff_steps": 9,
+              "post_handoff_completed": true
+            }
+          ],
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.03351883995037408,
+            "relative_displacement_max_m": 0.00019685167641651137
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "self",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23,
+              "phase": null
+            }
+          ],
+          "vla_stops": [],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_10_swap_t1_s40",
+      "recovery_budget": 0,
+      "classification": "independent_vla_replay_block_budget",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery0/case031/summary.json",
+        "sha256": "dd52fb3fe041e1f30dae43bd9092d0af8b50afe2c036f80c0ddf16392cea7882"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 86,
+              "blocks_used": 15,
+              "handoff_steps": 11,
+              "post_handoff_completed": true
+            }
+          ],
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.05115334301884056,
+            "relative_displacement_max_m": 8.80591669110937e-05
+          }
+        },
+        {
+          "subtask": "g0:in",
+          "method": "call_vla",
+          "success": true,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": null
+        },
+        {
+          "subtask": "g1:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "preparation_not_reached",
+              "steps_used": 0,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "preparation_not_reached",
+              "skill_stop_reason": null,
+              "steps_used": 0,
+              "blocks_used": 0,
+              "handoff_steps": null,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_task_t2_s40",
+      "recovery_budget": 1,
+      "classification": "own_observation_no_scene_change_consumed_recovery",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery1/case027/summary.json",
+        "sha256": "67ba62ed91dadfdfcbf85730cfbc2f9e865025dad9d65739054037d12f5de440"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 84,
+              "blocks_used": 15,
+              "handoff_steps": 9,
+              "post_handoff_completed": true
+            }
+          ],
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.03351883995037408,
+            "relative_displacement_max_m": 0.00019685167641651137
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "self",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23,
+              "phase": null
+            },
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 0,
+              "phase": null
+            }
+          ],
+          "vla_stops": [],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_task_t3_s40",
+      "recovery_budget": 1,
+      "classification": "independent_vla_replay_no_progress_stop",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/native_changed_paths6/results/case002/summary.json",
+        "sha256": "7c80a295c30aed42c4a4e0ef8db24562c42679e467b8d72ca474e1b15ead9d36"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "no_progress_blocks",
+              "steps_used": 120,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "no_progress_blocks",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "no_progress_blocks",
+              "skill_stop_reason": "no_progress_blocks",
+              "steps_used": 120,
+              "blocks_used": 23,
+              "handoff_steps": 5,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "no_progress_blocks",
+              "skill_stop_reason": "no_progress_blocks",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_10_task_t2_s40",
+      "recovery_budget": 1,
+      "classification": "handoff_completion_not_retained",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery1/case037/summary.json",
+        "sha256": "a7ba24e169e486def9a6f35561a2754e932f97f79e7627025ffbe31fb4076018"
+      },
+      "branches": [
+        {
+          "subtask": "g0:turn_on",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 136,
+              "blocks_used": 24,
+              "handoff_steps": 16,
+              "post_handoff_completed": true
+            }
+          ],
+          "private_grasp_summary": null
+        },
+        {
+          "subtask": "g1:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 65,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 128,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 65,
+              "blocks_used": 11,
+              "handoff_steps": 10,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 128,
+              "blocks_used": 24,
+              "handoff_steps": 8,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_swap_t2_s40",
+      "recovery_budget": 2,
+      "classification": "handoff_completion_not_retained",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery2_b/case002/summary.json",
+        "sha256": "890ba3b4e7d5009e785169c7fe9b5b65f6228c02841e3b64afe4d79460381721"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 133,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 62,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 22,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 133,
+              "blocks_used": 24,
+              "handoff_steps": 13,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 62,
+              "blocks_used": 10,
+              "handoff_steps": 12,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 22,
+              "blocks_used": 2,
+              "handoff_steps": 12,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": {
+            "success": false,
+            "n": 11,
+            "dual_finger_samples": 0,
+            "clearance_min_m": -0.00011128537048010756,
+            "relative_displacement_max_m": 0.006066986239627079
+          }
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_swap_t4_s40",
+      "recovery_budget": 2,
+      "classification": "independent_vla_replay_block_budget",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery2_b/case004/summary.json",
+        "sha256": "679658f9226a73085a76ebbb85e88adf29f26c8b9f7ecca7e9f477e293ce93be"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 131,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "preparation_not_reached",
+              "steps_used": 0,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "preparation_not_reached",
+              "steps_used": 0,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "preparation_not_reached",
+              "steps_used": 0,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "preparation_not_reached",
+              "steps_used": 0,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 131,
+              "blocks_used": 24,
+              "handoff_steps": 9,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "preparation_not_reached",
+              "skill_stop_reason": null,
+              "steps_used": 0,
+              "blocks_used": 0,
+              "handoff_steps": null,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "preparation_not_reached",
+              "skill_stop_reason": null,
+              "steps_used": 0,
+              "blocks_used": 0,
+              "handoff_steps": null,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "preparation_not_reached",
+              "skill_stop_reason": null,
+              "steps_used": 0,
+              "blocks_used": 0,
+              "handoff_steps": null,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "preparation_not_reached",
+              "skill_stop_reason": null,
+              "steps_used": 0,
+              "blocks_used": 0,
+              "handoff_steps": null,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_task_t1_s40",
+      "recovery_budget": 2,
+      "classification": "own_skill_predicted_anchor_changed",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery2_b/case006/summary.json",
+        "sha256": "1f4a99d335131e1cab3f5c7f0d78651be2e6eb1a90f1d70e266ff2554843eba6"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 93,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 93,
+              "blocks_used": 16,
+              "handoff_steps": 13,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 26,
+              "blocks_used": 1,
+              "handoff_steps": 7,
+              "post_handoff_completed": true
+            }
+          ],
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.04379928011340495,
+            "relative_displacement_max_m": 0.0001340334849055412
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "self",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "lower",
+              "outcome": "failure",
+              "stop_reason": "predicted_anchor_changed",
+              "steps_used": 0,
+              "phase": "perception"
+            },
+            {
+              "skill": "observe",
+              "outcome": "failure",
+              "stop_reason": "measured_payload_collision",
+              "steps_used": 0,
+              "phase": "collision"
+            },
+            {
+              "skill": "observe",
+              "outcome": "failure",
+              "stop_reason": "measured_payload_collision",
+              "steps_used": 0,
+              "phase": "collision"
+            }
+          ],
+          "vla_stops": [],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_task_t2_s40",
+      "recovery_budget": 2,
+      "classification": "own_observation_no_scene_change_consumed_recovery",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery2_b/case007/summary.json",
+        "sha256": "d9ee62e5f7ae06b15b7a948e60d4f3f2880e5dcca4c3b870af4da4e304f7d30a"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 84,
+              "blocks_used": 15,
+              "handoff_steps": 9,
+              "post_handoff_completed": true
+            }
+          ],
+          "private_grasp_summary": {
+            "success": true,
+            "n": 11,
+            "dual_finger_samples": 11,
+            "clearance_min_m": 0.03351883995037408,
+            "relative_displacement_max_m": 0.00019685167641651137
+          }
+        },
+        {
+          "subtask": "g0:on",
+          "method": "self",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23,
+              "phase": null
+            },
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 0,
+              "phase": null
+            },
+            {
+              "skill": "observe",
+              "outcome": "no_effect",
+              "stop_reason": "no_measured_scene_change",
+              "steps_used": 23,
+              "phase": null
+            }
+          ],
+          "vla_stops": [],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_task_t3_s40",
+      "recovery_budget": 2,
+      "classification": "selected_variant_unavailable_after_partial_replay",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/native_changed_paths6/results/case005/summary.json",
+        "sha256": "d28714d18a765997006bf132b5467f3e4ecbbf2748315ceb0dca8b966640e20a"
+      },
+      "branches": [
+        {
+          "subtask": "g0:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "requested_vla_variant_unavailable",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "no_progress_blocks",
+              "steps_used": 120,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "no_progress_blocks",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "no_progress_blocks",
+              "skill_stop_reason": "no_progress_blocks",
+              "steps_used": 120,
+              "blocks_used": 23,
+              "handoff_steps": 5,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "no_progress_blocks",
+              "skill_stop_reason": "no_progress_blocks",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": null
+        }
+      ]
+    },
+    {
+      "case": "libero_10_task_t2_s40",
+      "recovery_budget": 2,
+      "classification": "handoff_completion_not_retained",
+      "replay_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/D2_recovery2_b/case017/summary.json",
+        "sha256": "66bd1022e35023e6b6a85572ad46e7945f62f397a12c7752a43cf35769a4ff21"
+      },
+      "branches": [
+        {
+          "subtask": "g0:turn_on",
+          "method": "call_vla",
+          "success": true,
+          "reason": "measured_success_after_handoff",
+          "failure_receipts": [],
+          "vla_stops": [
+            {
+              "stop_reason": "measured_success_after_handoff",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 136,
+              "blocks_used": 24,
+              "handoff_steps": 16,
+              "post_handoff_completed": true
+            }
+          ],
+          "private_grasp_summary": null
+        },
+        {
+          "subtask": "g1:pick",
+          "method": "call_vla",
+          "success": false,
+          "reason": "failed_chunk_recovery_budget",
+          "failure_receipts": [
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "completion_lost_during_handoff",
+              "steps_used": 65,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 128,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 126,
+              "phase": "contact_failure"
+            },
+            {
+              "skill": "call_vla",
+              "outcome": "failure",
+              "stop_reason": "block_budget",
+              "steps_used": 127,
+              "phase": "contact_failure"
+            }
+          ],
+          "vla_stops": [
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "completion_lost_during_handoff",
+              "skill_stop_reason": "measured_success",
+              "steps_used": 65,
+              "blocks_used": 11,
+              "handoff_steps": 10,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 128,
+              "blocks_used": 24,
+              "handoff_steps": 8,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 126,
+              "blocks_used": 24,
+              "handoff_steps": 6,
+              "post_handoff_completed": false
+            },
+            {
+              "stop_reason": "block_budget",
+              "skill_stop_reason": "block_budget",
+              "steps_used": 127,
+              "blocks_used": 24,
+              "handoff_steps": 7,
+              "post_handoff_completed": false
+            }
+          ],
+          "private_grasp_summary": null
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "own_skill_predicted_anchor_changed": 2,
+    "handoff_completion_not_retained": 4,
+    "independent_vla_replay_block_budget": 3,
+    "public_completion_false_positive_against_private_grasp_v3": 1,
+    "own_observation_no_scene_change_consumed_recovery": 3,
+    "independent_vla_replay_no_progress_stop": 1,
+    "selected_variant_unavailable_after_partial_replay": 1
+  },
+  "source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/CPU_closed120_selected_paths/explanations/rows.json",
+  "historical_scores_unchanged": true
+}

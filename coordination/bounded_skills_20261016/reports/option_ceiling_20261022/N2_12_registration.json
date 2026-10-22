@@ -1,0 +1,1288 @@
+{
+  "version": "N2/1",
+  "cases": [
+    {
+      "category": "drawer_open",
+      "domain": "original90",
+      "case": {
+        "name": "drawer_open_libero_goal_t0_s0_B2_d006",
+        "category": "drawer_open",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 0,
+          "seed": 0
+        },
+        "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+          "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+        },
+        "purpose": "development_feasibility_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/drawer_open_libero_goal_t0_s0/6"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "subtask_mode": "open",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_5/drawer_open_libero_goal_t0_s0_oracle_k4/private_decision_snapshots/006.pkl",
+              "sha256": "14350e2208e08136efc32b2969321a78cd9d58046f4d8c0766c39270ed41b79d",
+              "model_visible": false,
+              "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_5/drawer_open_libero_goal_t0_s0_oracle_k4/private_prefix_state_0006.pkl.gz",
+              "sha256": "db2dae9fc6e076e4c6506788406e661e19acc4a2efa01e1afbfd2240a11bf253",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "bf32613ea7fec5d23d120d1899f8d1c1ebf7585d77c9f5c019323f253a636a0b",
+              "model_visible": false
+            },
+            "decision_index": 6
+          },
+          "trial_seed_base": 30600000,
+          "include_self": true,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          },
+          "self_repeats": 2
+        },
+        "saved_start_phase": "intermediate"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/preparation/manifest.json",
+        "sha256": "0a446f86d8d0f135b916841bd9f499b1dbd37c0c28ea1798ed2c86d0d2267e87"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_5/drawer_open_libero_goal_t0_s0_oracle_k4/private_decision_snapshots/006.pkl",
+          "sha256": "14350e2208e08136efc32b2969321a78cd9d58046f4d8c0766c39270ed41b79d",
+          "model_visible": false,
+          "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_5/drawer_open_libero_goal_t0_s0_oracle_k4/private_prefix_state_0006.pkl.gz",
+          "sha256": "db2dae9fc6e076e4c6506788406e661e19acc4a2efa01e1afbfd2240a11bf253",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "bf32613ea7fec5d23d120d1899f8d1c1ebf7585d77c9f5c019323f253a636a0b",
+          "model_visible": false
+        },
+        "decision_index": 6
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "drawer_open",
+      "domain": "own_layout65",
+      "case": {
+        "name": "drawer_open_libero_goal_t0_s0_B2_d006_layout11020608_prefix000",
+        "category": "drawer_open",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 0,
+          "seed": 0
+        },
+        "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+          "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+        },
+        "purpose": "own_original_train_layout_development_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/drawer_open_libero_goal_t0_s0/0"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "own_layout": {
+            "generated_state": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case008/private_generated_state.pkl",
+              "sha256": "9cabc35c60bf355a9aa48ad7e4bf24ab20670fa638693731a6e5399278b61bbf"
+            },
+            "construction_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case008/manifest.json",
+              "sha256": "3c6c4a92ec157587825396ce629adb351bf8f51bfd42ad20c7c6fb8cb544ed83"
+            },
+            "frozen_parent_index": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/M7_parent_index_20261021.json",
+              "sha256": "787fa248f126b73b141703f53e62ab948f6743ab5217416afe7a57999f7b8e26"
+            },
+            "layout_seed": 11020608,
+            "prefix_checkpoint": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case008/episode/point000/private_branchpoint.pkl",
+              "sha256": "e597015e1c26425020675df0b01b414a2deb266d21850f38af6fab0726a05fa6",
+              "physics_sha256": "511f161dcc76593d7cf599cb96c4cf5f9d5900db1e01f0ca236552437ed560e1"
+            },
+            "capture_source_commit": "c7520ae1219e4b67549b418b9438b271109dd49a",
+            "identity_scope": "new authored world and actual prefix; original parent is split lineage only"
+          },
+          "subtask_mode": "open",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case008/episode/point000/private_physics.pkl",
+              "sha256": "141315e8f37904b155c8e007a84bc6c53067739c0b4bc12b7b21d5017085c3fc"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case008/episode/point000/private_annotation.pkl",
+              "sha256": "37a277ea421e4e5dfeab668b3da5856b4d56df27b5ca74109cab7da9d1d4dd38",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "8fccb1e13d7536042b0feaa570b0d1d86ce37e45191fca6f57474cdd3e59d609",
+              "model_visible": false
+            },
+            "decision_index": 0
+          },
+          "trial_seed_base": 34240000,
+          "include_self": true,
+          "self_repeats": 2,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "in_place",
+              "parameters": {
+                "preparation": "in_place"
+              }
+            },
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            },
+            {
+              "name": "full_task",
+              "parameters": {
+                "mode": "task",
+                "preparation": "in_place",
+                "prompt_style": "full_task"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          }
+        },
+        "saved_start_phase": "initial",
+        "layout_seed": 11020608,
+        "state_identity_scope": "CPU authored world; complete rendered identity captured separately",
+        "identity_domain": "own_original_train_layout"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/measured_packet1/manifest.json",
+        "sha256": "3e7e79f4fc305fef425bc600c8674fec4bbfdc118aa2787ac63ac18798a0199d"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case008/episode/point000/private_physics.pkl",
+          "sha256": "141315e8f37904b155c8e007a84bc6c53067739c0b4bc12b7b21d5017085c3fc"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case008/episode/point000/private_annotation.pkl",
+          "sha256": "37a277ea421e4e5dfeab668b3da5856b4d56df27b5ca74109cab7da9d1d4dd38",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "8fccb1e13d7536042b0feaa570b0d1d86ce37e45191fca6f57474cdd3e59d609",
+          "model_visible": false
+        },
+        "decision_index": 0
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "drawer_close",
+      "domain": "original90",
+      "case": {
+        "name": "drawer_close_libero_90_t0_s1_B2_d018",
+        "category": "drawer_close",
+        "episode": {
+          "suite": "libero_90",
+          "task": 0,
+          "seed": 1
+        },
+        "state_sha256": "3b276852bd5e5728fa8b66b1b3c4a4707b57a2681cf2c6b6ccdab9cd9a92e6a4",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+          "sha256": "a0824cbe6b3146c00984f5a01307a3e39aac9ddc434ee4ff040b5536a0c48bbc"
+        },
+        "purpose": "development_feasibility_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/drawer_close_libero_90_t0_s1/18"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "subtask_mode": "close",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_15/drawer_close_libero_90_t0_s1_oracle_k4/private_decision_snapshots/018.pkl",
+              "sha256": "9247f609e2fc7b703b70f68bdf1a4ff9e67662b0dae7bf934e28eda635075301",
+              "model_visible": false,
+              "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_15/drawer_close_libero_90_t0_s1_oracle_k4/private_prefix_state_0018.pkl.gz",
+              "sha256": "c72575dd4a45fb308e5e17a096ebf3236e8cc88197a7bfbcd99e7eceefcd7857",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "0e3370ba5d87ee655a4a34e8cb6a6fd2bc2f5dafb7ddf8d0040305c961765309",
+              "model_visible": false
+            },
+            "decision_index": 18
+          },
+          "trial_seed_base": 30700000,
+          "include_self": true,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          },
+          "self_repeats": 2
+        },
+        "saved_start_phase": "intermediate"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/preparation/manifest.json",
+        "sha256": "0a446f86d8d0f135b916841bd9f499b1dbd37c0c28ea1798ed2c86d0d2267e87"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_15/drawer_close_libero_90_t0_s1_oracle_k4/private_decision_snapshots/018.pkl",
+          "sha256": "9247f609e2fc7b703b70f68bdf1a4ff9e67662b0dae7bf934e28eda635075301",
+          "model_visible": false,
+          "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_15/drawer_close_libero_90_t0_s1_oracle_k4/private_prefix_state_0018.pkl.gz",
+          "sha256": "c72575dd4a45fb308e5e17a096ebf3236e8cc88197a7bfbcd99e7eceefcd7857",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "0e3370ba5d87ee655a4a34e8cb6a6fd2bc2f5dafb7ddf8d0040305c961765309",
+          "model_visible": false
+        },
+        "decision_index": 18
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "drawer_close",
+      "domain": "own_layout65",
+      "case": {
+        "name": "drawer_close_libero_90_t0_s1_B2_d018_layout11020610_prefix000",
+        "category": "drawer_close",
+        "episode": {
+          "suite": "libero_90",
+          "task": 0,
+          "seed": 1
+        },
+        "state_sha256": "3b276852bd5e5728fa8b66b1b3c4a4707b57a2681cf2c6b6ccdab9cd9a92e6a4",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+          "sha256": "a0824cbe6b3146c00984f5a01307a3e39aac9ddc434ee4ff040b5536a0c48bbc"
+        },
+        "purpose": "own_original_train_layout_development_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/drawer_close_libero_90_t0_s1/0"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "own_layout": {
+            "generated_state": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case010/private_generated_state.pkl",
+              "sha256": "5df5d3cbcd0f41967e9bfd012bf8569776b24f80a93eb74d5874eed72076ad75"
+            },
+            "construction_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case010/manifest.json",
+              "sha256": "7ee95febf0fedd11cadd652645bf08d39a58b4bb6e9a4cca34204f83b2ad9c9b"
+            },
+            "frozen_parent_index": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/M7_parent_index_20261021.json",
+              "sha256": "787fa248f126b73b141703f53e62ab948f6743ab5217416afe7a57999f7b8e26"
+            },
+            "layout_seed": 11020610,
+            "prefix_checkpoint": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case010/episode/point000/private_branchpoint.pkl",
+              "sha256": "3c67e9d4b4f82bf8c47ca235f718728cbfe6c27713dbc30a210c3c1cd6f9be92",
+              "physics_sha256": "ed47838f51a7e64245382e86ad78edf1d77d6fd4cdb4b53ac8f9c41a81e1c69e"
+            },
+            "capture_source_commit": "c7520ae1219e4b67549b418b9438b271109dd49a",
+            "identity_scope": "new authored world and actual prefix; original parent is split lineage only"
+          },
+          "subtask_mode": "close",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case010/episode/point000/private_physics.pkl",
+              "sha256": "f65b737a41ffa91f6d0345890dec34a64439b6c45af2bf5eda15a0c92207a91e"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case010/episode/point000/private_annotation.pkl",
+              "sha256": "dd738036124ce5a9fef9d28774f90741613b0993a0c659fe3020e24e8d75f8c4",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "7f77ce9c948ca964953eb0af66cdededecf400988c9e07f8fafca58d94b265e6",
+              "model_visible": false
+            },
+            "decision_index": 0
+          },
+          "trial_seed_base": 34280000,
+          "include_self": true,
+          "self_repeats": 2,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "in_place",
+              "parameters": {
+                "preparation": "in_place"
+              }
+            },
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            },
+            {
+              "name": "full_task",
+              "parameters": {
+                "mode": "task",
+                "preparation": "in_place",
+                "prompt_style": "full_task"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          }
+        },
+        "saved_start_phase": "initial",
+        "layout_seed": 11020610,
+        "state_identity_scope": "CPU authored world; complete rendered identity captured separately",
+        "identity_domain": "own_original_train_layout"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/measured_packet1/manifest.json",
+        "sha256": "3e7e79f4fc305fef425bc600c8674fec4bbfdc118aa2787ac63ac18798a0199d"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case010/episode/point000/private_physics.pkl",
+          "sha256": "f65b737a41ffa91f6d0345890dec34a64439b6c45af2bf5eda15a0c92207a91e"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case010/episode/point000/private_annotation.pkl",
+          "sha256": "dd738036124ce5a9fef9d28774f90741613b0993a0c659fe3020e24e8d75f8c4",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "7f77ce9c948ca964953eb0af66cdededecf400988c9e07f8fafca58d94b265e6",
+          "model_visible": false
+        },
+        "decision_index": 0
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "microwave_open",
+      "domain": "original90",
+      "case": {
+        "name": "microwave_open_libero_90_t35_s0_B2_d009",
+        "category": "microwave_open",
+        "episode": {
+          "suite": "libero_90",
+          "task": 35,
+          "seed": 0
+        },
+        "state_sha256": "96948bc173dcf571d949ecfc06b91778e1637bebce12ce55b656db8efe1e2a11",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE7_open_the_microwave.bddl",
+          "sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f"
+        },
+        "purpose": "development_feasibility_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/microwave_open_libero_90_t35_s0/9"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "subtask_mode": "open",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_7/microwave_open_libero_90_t35_s0_oracle_k4/private_decision_snapshots/009.pkl",
+              "sha256": "1e340330a1f241690cb18ae323928621a84156166546362d69af3e063dc207a9",
+              "model_visible": false,
+              "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_7/microwave_open_libero_90_t35_s0_oracle_k4/private_prefix_state_0009.pkl.gz",
+              "sha256": "764e6f366bc15226b8d5eac3ccbefb40d677c95b83bdd0794817eb8dcdea9d75",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "aa67c3acbd22b39f0b528b5c6999103a834f8de187d31d7988266678ef800166",
+              "model_visible": false
+            },
+            "decision_index": 9
+          },
+          "trial_seed_base": 30800000,
+          "include_self": true,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          },
+          "self_repeats": 2
+        },
+        "saved_start_phase": "intermediate"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/preparation/manifest.json",
+        "sha256": "0a446f86d8d0f135b916841bd9f499b1dbd37c0c28ea1798ed2c86d0d2267e87"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_7/microwave_open_libero_90_t35_s0_oracle_k4/private_decision_snapshots/009.pkl",
+          "sha256": "1e340330a1f241690cb18ae323928621a84156166546362d69af3e063dc207a9",
+          "model_visible": false,
+          "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_7/microwave_open_libero_90_t35_s0_oracle_k4/private_prefix_state_0009.pkl.gz",
+          "sha256": "764e6f366bc15226b8d5eac3ccbefb40d677c95b83bdd0794817eb8dcdea9d75",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "aa67c3acbd22b39f0b528b5c6999103a834f8de187d31d7988266678ef800166",
+          "model_visible": false
+        },
+        "decision_index": 9
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "microwave_open",
+      "domain": "own_layout65",
+      "case": {
+        "name": "microwave_open_libero_90_t35_s0_B2_d009_layout11020612_prefix000",
+        "category": "microwave_open",
+        "episode": {
+          "suite": "libero_90",
+          "task": 35,
+          "seed": 0
+        },
+        "state_sha256": "96948bc173dcf571d949ecfc06b91778e1637bebce12ce55b656db8efe1e2a11",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE7_open_the_microwave.bddl",
+          "sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f"
+        },
+        "purpose": "own_original_train_layout_development_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/microwave_open_libero_90_t35_s0/0"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "own_layout": {
+            "generated_state": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case012/private_generated_state.pkl",
+              "sha256": "8c21a364133127897cade65c6fa4ce6071b793db408105fe820c4a61546351e6"
+            },
+            "construction_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case012/manifest.json",
+              "sha256": "fdfaafc509466fe2ce20c2d3e66931e0d4c03365fa8c1b5f42de874da057a249"
+            },
+            "frozen_parent_index": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/M7_parent_index_20261021.json",
+              "sha256": "787fa248f126b73b141703f53e62ab948f6743ab5217416afe7a57999f7b8e26"
+            },
+            "layout_seed": 11020612,
+            "prefix_checkpoint": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case012/episode/point000/private_branchpoint.pkl",
+              "sha256": "7a3a9f755bb11af2e25131dd219ab9b3b35bf64f75fe0bdad172dbdd915fea4a",
+              "physics_sha256": "c6623fb93283ecba0d33a5824407c3b3b00d03ee73fe8f4866c636b169d73763"
+            },
+            "capture_source_commit": "c7520ae1219e4b67549b418b9438b271109dd49a",
+            "identity_scope": "new authored world and actual prefix; original parent is split lineage only"
+          },
+          "subtask_mode": "open",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case012/episode/point000/private_physics.pkl",
+              "sha256": "58861d958ca241aeef584caab89ce9224bff111c6c8a1f4989759e92cc71610c"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case012/episode/point000/private_annotation.pkl",
+              "sha256": "ff9d42bd6b8c15a644a31bce321988d38bafb3c0b0452df1076270ed86d72d80",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "cdc44049e31736d1e802de71b815ba2542cb9759b6497f4c7e8256e3076b6616",
+              "model_visible": false
+            },
+            "decision_index": 0
+          },
+          "trial_seed_base": 34460000,
+          "include_self": true,
+          "self_repeats": 2,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "in_place",
+              "parameters": {
+                "preparation": "in_place"
+              }
+            },
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            },
+            {
+              "name": "full_task",
+              "parameters": {
+                "mode": "task",
+                "preparation": "in_place",
+                "prompt_style": "full_task"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          }
+        },
+        "saved_start_phase": "initial",
+        "layout_seed": 11020612,
+        "state_identity_scope": "CPU authored world; complete rendered identity captured separately",
+        "identity_domain": "own_original_train_layout"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/measured_packet2/manifest.json",
+        "sha256": "e9f37603ced6661b360a687362a67be2eaa41349d657e49041b16521178d6d25"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case012/episode/point000/private_physics.pkl",
+          "sha256": "58861d958ca241aeef584caab89ce9224bff111c6c8a1f4989759e92cc71610c"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case012/episode/point000/private_annotation.pkl",
+          "sha256": "ff9d42bd6b8c15a644a31bce321988d38bafb3c0b0452df1076270ed86d72d80",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "cdc44049e31736d1e802de71b815ba2542cb9759b6497f4c7e8256e3076b6616",
+          "model_visible": false
+        },
+        "decision_index": 0
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "microwave_close",
+      "domain": "original90",
+      "case": {
+        "name": "microwave_close_libero_90_t33_s0_B2_d013",
+        "category": "microwave_close",
+        "episode": {
+          "suite": "libero_90",
+          "task": 33,
+          "seed": 0
+        },
+        "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+          "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+        },
+        "purpose": "development_feasibility_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/microwave_close_libero_90_t33_s0/13"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "subtask_mode": "close",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_6/microwave_close_libero_90_t33_s0_oracle_k4/private_decision_snapshots/013.pkl",
+              "sha256": "e3685baea2ffa83903bb2eea3b3ea21cb08d9b1e5a0f9de93fa9b86a80029c3a",
+              "model_visible": false,
+              "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_6/microwave_close_libero_90_t33_s0_oracle_k4/private_prefix_state_0013.pkl.gz",
+              "sha256": "fc9c4d53a4e19e7ff12d3200a48bab4bf9f5b4f056d03f8e0b9ea54bd40eac5d",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "95dc6908a3b31332078274ad5c97da35809d0372543584d3899eebe4d4111495",
+              "model_visible": false
+            },
+            "decision_index": 13
+          },
+          "trial_seed_base": 30900000,
+          "include_self": true,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          },
+          "self_repeats": 2
+        },
+        "saved_start_phase": "intermediate"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/preparation/manifest.json",
+        "sha256": "0a446f86d8d0f135b916841bd9f499b1dbd37c0c28ea1798ed2c86d0d2267e87"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_6/microwave_close_libero_90_t33_s0_oracle_k4/private_decision_snapshots/013.pkl",
+          "sha256": "e3685baea2ffa83903bb2eea3b3ea21cb08d9b1e5a0f9de93fa9b86a80029c3a",
+          "model_visible": false,
+          "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_6/microwave_close_libero_90_t33_s0_oracle_k4/private_prefix_state_0013.pkl.gz",
+          "sha256": "fc9c4d53a4e19e7ff12d3200a48bab4bf9f5b4f056d03f8e0b9ea54bd40eac5d",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "95dc6908a3b31332078274ad5c97da35809d0372543584d3899eebe4d4111495",
+          "model_visible": false
+        },
+        "decision_index": 13
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "microwave_close",
+      "domain": "own_layout65",
+      "case": {
+        "name": "microwave_close_libero_90_t33_s10_B2_d003_layout11020614_prefix000",
+        "category": "microwave_close",
+        "episode": {
+          "suite": "libero_90",
+          "task": 33,
+          "seed": 10
+        },
+        "state_sha256": "0a4090b02b2e2fbf6001eb4e9854b13f6837b91e4fb720d671f2070b825be6ef",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+          "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+        },
+        "purpose": "own_original_train_layout_development_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/microwave_close_libero_90_t33_s10/0"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "own_layout": {
+            "generated_state": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case014/private_generated_state.pkl",
+              "sha256": "92e1bdda26417927afe17d1956dead04fae0456cd8331e1ddcb0d9a2b62c699d"
+            },
+            "construction_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case014/manifest.json",
+              "sha256": "c16956a92bdfafdfcc90cc4623b70057b13d5fb42db6eae72b0971368f4c1a21"
+            },
+            "frozen_parent_index": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/M7_parent_index_20261021.json",
+              "sha256": "787fa248f126b73b141703f53e62ab948f6743ab5217416afe7a57999f7b8e26"
+            },
+            "layout_seed": 11020614,
+            "prefix_checkpoint": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case014/episode/point000/private_branchpoint.pkl",
+              "sha256": "be8c4c899543033cc03a1d8df5f4ff232f0d725a5533e1048403749160cc8c06",
+              "physics_sha256": "ca97b2d69c894879f4881f8c861b4703343503de3b62f5cf4be6bd506b718af4"
+            },
+            "capture_source_commit": "c7520ae1219e4b67549b418b9438b271109dd49a",
+            "identity_scope": "new authored world and actual prefix; original parent is split lineage only"
+          },
+          "subtask_mode": "close",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case014/episode/point000/private_physics.pkl",
+              "sha256": "05a92681a28eefc1b2645396d6fae54d46cccaa79280232ca62acdd2cc2eeeb5"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case014/episode/point000/private_annotation.pkl",
+              "sha256": "5b328ac57a45fafbee6536ad05a228a053ad6fd8bb79655544a425ac5edbc95d",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "72c28086beb29953339ce0c96068b8e9733cf57bd38db4302ae5f82b49e27eb4",
+              "model_visible": false
+            },
+            "decision_index": 0
+          },
+          "trial_seed_base": 34500000,
+          "include_self": true,
+          "self_repeats": 2,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "in_place",
+              "parameters": {
+                "preparation": "in_place"
+              }
+            },
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            },
+            {
+              "name": "full_task",
+              "parameters": {
+                "mode": "task",
+                "preparation": "in_place",
+                "prompt_style": "full_task"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          }
+        },
+        "saved_start_phase": "initial",
+        "layout_seed": 11020614,
+        "state_identity_scope": "CPU authored world; complete rendered identity captured separately",
+        "identity_domain": "own_original_train_layout"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/measured_packet2/manifest.json",
+        "sha256": "e9f37603ced6661b360a687362a67be2eaa41349d657e49041b16521178d6d25"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case014/episode/point000/private_physics.pkl",
+          "sha256": "05a92681a28eefc1b2645396d6fae54d46cccaa79280232ca62acdd2cc2eeeb5"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case014/episode/point000/private_annotation.pkl",
+          "sha256": "5b328ac57a45fafbee6536ad05a228a053ad6fd8bb79655544a425ac5edbc95d",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "72c28086beb29953339ce0c96068b8e9733cf57bd38db4302ae5f82b49e27eb4",
+          "model_visible": false
+        },
+        "decision_index": 0
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "plate_push",
+      "domain": "original90",
+      "case": {
+        "name": "plate_push_libero_goal_t5_s0_B2_d065",
+        "category": "plate_push",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 5,
+          "seed": 0
+        },
+        "state_sha256": "cea30572c1ece1c5d5a53c64fef51544c3a02dbb6bf6bc06d02d3a03ea719aa7",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/push_the_plate_to_the_front_of_the_stove.bddl",
+          "sha256": "26f22f8ad39a4b2b344b049115c45661a877fa0b4821fb78246725e7e87d8c0b"
+        },
+        "purpose": "development_feasibility_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/plate_push_libero_goal_t5_s0/65"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "subtask_mode": "push",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_8/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/065.pkl",
+              "sha256": "95ae1f0747466ed9faa0a5d91bb7c33f668b1a7653cf72afe870d41b97055e88",
+              "model_visible": false,
+              "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_8/plate_push_libero_goal_t5_s0_oracle_k4/private_prefix_state_0065.pkl.gz",
+              "sha256": "6e22405320ddad6c5f82f8d48ee23f3910dd95e4a8c90a93a0562d37f8f3ec1e",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "b9cb21f5a62f07433e6c759a15aaf0d7652a8f9f2bbe03d45f937fded9599016",
+              "model_visible": false
+            },
+            "decision_index": 65
+          },
+          "trial_seed_base": 31000000,
+          "include_self": true,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          },
+          "self_repeats": 2
+        },
+        "saved_start_phase": "intermediate"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/preparation/manifest.json",
+        "sha256": "0a446f86d8d0f135b916841bd9f499b1dbd37c0c28ea1798ed2c86d0d2267e87"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_8/plate_push_libero_goal_t5_s0_oracle_k4/private_decision_snapshots/065.pkl",
+          "sha256": "95ae1f0747466ed9faa0a5d91bb7c33f668b1a7653cf72afe870d41b97055e88",
+          "model_visible": false,
+          "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_8/plate_push_libero_goal_t5_s0_oracle_k4/private_prefix_state_0065.pkl.gz",
+          "sha256": "6e22405320ddad6c5f82f8d48ee23f3910dd95e4a8c90a93a0562d37f8f3ec1e",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "b9cb21f5a62f07433e6c759a15aaf0d7652a8f9f2bbe03d45f937fded9599016",
+          "model_visible": false
+        },
+        "decision_index": 65
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "plate_push",
+      "domain": "own_layout65",
+      "case": {
+        "name": "plate_push_libero_goal_t5_s10_B2_d002_layout11020616_prefix000",
+        "category": "plate_push",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 5,
+          "seed": 10
+        },
+        "state_sha256": "4ba9cae141e8f225b486fd83b9646384462158a7f333bc113efe882150aed013",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_goal/push_the_plate_to_the_front_of_the_stove.bddl",
+          "sha256": "26f22f8ad39a4b2b344b049115c45661a877fa0b4821fb78246725e7e87d8c0b"
+        },
+        "purpose": "own_original_train_layout_development_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/plate_push_libero_goal_t5_s10/0"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "own_layout": {
+            "generated_state": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case016/private_generated_state.pkl",
+              "sha256": "16205be3511b9ae8355a079b211b8a96d8471d7f330b7ee325d91bf3cbc16000"
+            },
+            "construction_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case016/manifest.json",
+              "sha256": "0b459f251075075d29a2e5e7991dbcd4e5c562aba4d0e17e87ef878aa5305fd7"
+            },
+            "frozen_parent_index": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/M7_parent_index_20261021.json",
+              "sha256": "787fa248f126b73b141703f53e62ab948f6743ab5217416afe7a57999f7b8e26"
+            },
+            "layout_seed": 11020616,
+            "prefix_checkpoint": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case016/episode/point000/private_branchpoint.pkl",
+              "sha256": "4a06a3c2084bdc86ab018a2c089e185dd40b905f4132decdd5570514c8d25498",
+              "physics_sha256": "493fce26e344e9dc175493fd925099c58759913e89478ae22e25b62900029a40"
+            },
+            "capture_source_commit": "c7520ae1219e4b67549b418b9438b271109dd49a",
+            "identity_scope": "new authored world and actual prefix; original parent is split lineage only"
+          },
+          "subtask_mode": "push",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case016/episode/point000/private_physics.pkl",
+              "sha256": "6954a9824b02ba5a6fcf3349107a08ced489e7a1a8093cf08c1ef6fdac875e07"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case016/episode/point000/private_annotation.pkl",
+              "sha256": "4a1d9e9a3ff5c7b3c1357b999cebe9bbb418851beb5b4fc530dbdefea16eda83",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "42b28fe6af6ef0080701eee4a8badcbcc680c9844e1b180f07a276e832cfa2cf",
+              "model_visible": false
+            },
+            "decision_index": 0
+          },
+          "trial_seed_base": 34540000,
+          "include_self": true,
+          "self_repeats": 2,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "in_place",
+              "parameters": {
+                "preparation": "in_place"
+              }
+            },
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            },
+            {
+              "name": "full_task",
+              "parameters": {
+                "mode": "task",
+                "preparation": "in_place",
+                "prompt_style": "full_task"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          }
+        },
+        "saved_start_phase": "initial",
+        "layout_seed": 11020616,
+        "state_identity_scope": "CPU authored world; complete rendered identity captured separately",
+        "identity_domain": "own_original_train_layout"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/measured_packet2/manifest.json",
+        "sha256": "e9f37603ced6661b360a687362a67be2eaa41349d657e49041b16521178d6d25"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case016/episode/point000/private_physics.pkl",
+          "sha256": "6954a9824b02ba5a6fcf3349107a08ced489e7a1a8093cf08c1ef6fdac875e07"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case016/episode/point000/private_annotation.pkl",
+          "sha256": "4a1d9e9a3ff5c7b3c1357b999cebe9bbb418851beb5b4fc530dbdefea16eda83",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "42b28fe6af6ef0080701eee4a8badcbcc680c9844e1b180f07a276e832cfa2cf",
+          "model_visible": false
+        },
+        "decision_index": 0
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "box_transfer",
+      "domain": "original90",
+      "case": {
+        "name": "box_transfer_libero_object_t0_s1_B2_d001",
+        "category": "box_transfer",
+        "episode": {
+          "suite": "libero_object",
+          "task": 0,
+          "seed": 1
+        },
+        "state_sha256": "2fe669827623c130cb212d851d2ac5189aa22d888856b2c056ee744b2b698bcc",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+          "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+        },
+        "purpose": "development_feasibility_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/box_transfer_libero_object_t0_s1/1"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "subtask_mode": "pick",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_12/box_transfer_libero_object_t0_s1_oracle_k4/private_decision_snapshots/001.pkl",
+              "sha256": "a748ddd48f99661bfe8f6e39a19ba3426260735217ffdc1c3c02f98b0ca26a35",
+              "model_visible": false,
+              "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_12/box_transfer_libero_object_t0_s1_oracle_k4/private_prefix_state_0001.pkl.gz",
+              "sha256": "b9c527a899f9effd8dc3c2c3f8e4ab98e28a792a6f9808f014ea0ea93e7c4133",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "3a2dabca5212cf9235b1b7e9fca1625ff68f1c4853a4bbf84c39c80160877acb",
+              "model_visible": false
+            },
+            "decision_index": 1
+          },
+          "trial_seed_base": 30300000,
+          "include_self": true,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          },
+          "self_repeats": 2
+        },
+        "saved_start_phase": "intermediate"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/preparation/manifest.json",
+        "sha256": "0a446f86d8d0f135b916841bd9f499b1dbd37c0c28ea1798ed2c86d0d2267e87"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_12/box_transfer_libero_object_t0_s1_oracle_k4/private_decision_snapshots/001.pkl",
+          "sha256": "a748ddd48f99661bfe8f6e39a19ba3426260735217ffdc1c3c02f98b0ca26a35",
+          "model_visible": false,
+          "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job9248_12/box_transfer_libero_object_t0_s1_oracle_k4/private_prefix_state_0001.pkl.gz",
+          "sha256": "b9c527a899f9effd8dc3c2c3f8e4ab98e28a792a6f9808f014ea0ea93e7c4133",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "3a2dabca5212cf9235b1b7e9fca1625ff68f1c4853a4bbf84c39c80160877acb",
+          "model_visible": false
+        },
+        "decision_index": 1
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    },
+    {
+      "category": "box_transfer",
+      "domain": "own_layout65",
+      "case": {
+        "name": "box_transfer_libero_object_t0_s1_B2_d001_layout11020602_prefix000",
+        "category": "box_transfer",
+        "episode": {
+          "suite": "libero_object",
+          "task": 0,
+          "seed": 1
+        },
+        "state_sha256": "2fe669827623c130cb212d851d2ac5189aa22d888856b2c056ee744b2b698bcc",
+        "bddl": {
+          "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_object/pick_up_the_alphabet_soup_and_place_it_in_the_basket.bddl",
+          "sha256": "df088984da13131f8332ee0f13a7896c6a97afd02ee5007a42e8fc5e0893571e"
+        },
+        "purpose": "own_original_train_layout_development_no_training",
+        "grasp_measurement_calibration": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+          "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+        },
+        "source_training_parent_ids": [
+          "original220/box_transfer_libero_object_t0_s1/0"
+        ],
+        "diagnostic": {
+          "kind": "original_fork",
+          "domain": "original",
+          "own_layout": {
+            "generated_state": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case002/private_generated_state.pkl",
+              "sha256": "14ea808bb4daa5ae87324574dfa0d37d2fb994b68684f1461007b7a9967a18ea"
+            },
+            "construction_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_assets_unambiguous_8a0f380a/states/case002/manifest.json",
+              "sha256": "58fdcedc7de116a2cf0b65e2b130ba26ca5c0f9c67f02d5aef68db5ca789813d"
+            },
+            "frozen_parent_index": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/M7_parent_index_20261021.json",
+              "sha256": "787fa248f126b73b141703f53e62ab948f6743ab5217416afe7a57999f7b8e26"
+            },
+            "layout_seed": 11020602,
+            "prefix_checkpoint": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case002/episode/point000/private_branchpoint.pkl",
+              "sha256": "6b4a6ff9fa143bde0dd7098e3b2b5803ffeac28a9572aeada3e9665a0136dda8",
+              "physics_sha256": "645a36da28f795c1e9c5d2f748dc79d8f8f81e8e946fa94beb4414c1ee492c71"
+            },
+            "capture_source_commit": "c7520ae1219e4b67549b418b9438b271109dd49a",
+            "identity_scope": "new authored world and actual prefix; original parent is split lineage only"
+          },
+          "subtask_mode": "pick",
+          "goal_index": 0,
+          "original_subtask_start": {
+            "physics": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case002/episode/point000/private_physics.pkl",
+              "sha256": "505a172f4f39fe3fa7b66d024e2a2b105830d775338b8adc7c4e9069fbaa013f"
+            },
+            "annotation": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case002/episode/point000/private_annotation.pkl",
+              "sha256": "2c5f51322d45d0027532d24bc5d9f41fbb42e0359287bdb463f9831d05ac8969",
+              "version": "libero-offline-prefix-label/1",
+              "request_sha256": "80806c8fec08f357299331662be4dd2f6af758a2c0ab010a98d94a8e30d2cc84",
+              "model_visible": false
+            },
+            "decision_index": 0
+          },
+          "trial_seed_base": 34080000,
+          "include_self": true,
+          "self_repeats": 2,
+          "targeted_vla_measurement_v1": true,
+          "vla_variants": [
+            {
+              "name": "in_place",
+              "parameters": {
+                "preparation": "in_place"
+              }
+            },
+            {
+              "name": "initial_pose",
+              "parameters": {
+                "preparation": "initial_pose"
+              }
+            },
+            {
+              "name": "full_task",
+              "parameters": {
+                "mode": "task",
+                "preparation": "in_place",
+                "prompt_style": "full_task"
+              }
+            }
+          ],
+          "budget": {
+            "blocks": 104,
+            "no_progress_blocks": 5,
+            "controls_per_check": null,
+            "minimum_progress_m": 0.005,
+            "max_controls": 520
+          }
+        },
+        "saved_start_phase": "initial",
+        "layout_seed": 11020602,
+        "state_identity_scope": "CPU authored world; complete rendered identity captured separately",
+        "identity_domain": "own_original_train_layout"
+      },
+      "parent_manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/measured_packet1/manifest.json",
+        "sha256": "3e7e79f4fc305fef425bc600c8674fec4bbfdc118aa2787ac63ac18798a0199d"
+      },
+      "complete_state": {
+        "physics": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case002/episode/point000/private_physics.pkl",
+          "sha256": "505a172f4f39fe3fa7b66d024e2a2b105830d775338b8adc7c4e9069fbaa013f"
+        },
+        "annotation": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout_runtime_c7520ae1/collect20/case002/episode/point000/private_annotation.pkl",
+          "sha256": "2c5f51322d45d0027532d24bc5d9f41fbb42e0359287bdb463f9831d05ac8969",
+          "version": "libero-offline-prefix-label/1",
+          "request_sha256": "80806c8fec08f357299331662be4dd2f6af758a2c0ab010a98d94a8e30d2cc84",
+          "model_visible": false
+        },
+        "decision_index": 0
+      },
+      "pair_protocol": "same complete integration, controllers, RNG; verify digest before each arm; fresh public measurements; no partial-state substitution"
+    }
+  ],
+  "states": 12,
+  "reference_execution_commit": "9d00ee63ab2196b95f8374e8245d9dea2ed8782b",
+  "training": false,
+  "confirmation": false,
+  "physical_results": 0
+}
