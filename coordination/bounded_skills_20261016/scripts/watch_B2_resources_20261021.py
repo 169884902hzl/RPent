@@ -11,7 +11,7 @@ def release_candidate(rows, priority):
     active = {'RUNNING', 'CONFIGURING', 'COMPLETING'}
     c3 = [r for r in rows if r[1].startswith('rd-c3-') and r[2] in active
         and r[3] == 'node02' and 'gpu' in r[4].lower()]
-    c2 = [r for r in rows if r[1].startswith('rd-c2-')
+    c2 = [r for r in rows if r[1].startswith(('rd-c2-', 'rd-bounded-choice-'))
         and r[2] in {'PENDING', 'RUNNING', 'CONFIGURING'} and 'gpu' in r[4].lower()
         and r[5] not in {'JobHeldUser', 'JobHeldAdmin'}]
     chosen = next((r for job in priority for r in c3 if r[0] == str(job)
