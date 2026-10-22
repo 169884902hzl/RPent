@@ -42,6 +42,7 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domai
         with (output/'choices.jsonl').open('x') as ledger, (output/'requests.jsonl').open('x') as requests:
             for index in range(plan['runtime_budget']['decisions']):
                 if adapter.p.env.terminated or adapter.p.env.truncated:
+                    stop_reason = 'native_success' if adapter.p.env.terminated else 'native_truncated'
                     break
                 begin = time.perf_counter()
                 start_event = len(timings.events)
@@ -97,9 +98,11 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domai
                         # Public contact/hold transition, never an oracle goal or label.
                         recovery_used = 0
                 if startup and sum(skill_steps.values()) > 0:
+                    stop_reason = 'startup_physical'
                     break
                 if any(r['skill'] == 'finish' or r['skill'] == 'ask_help'
                         and r.get('outcome') == 'rejected' for r in receipts):
+                    stop_reason = receipts[-1].get('stop_reason', receipts[-1]['skill'])
                     break
         after = verified_health(service)
         (output/'service_health_after.json').write_text(json.dumps(after, indent=2)+'\n')
