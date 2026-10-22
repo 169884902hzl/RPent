@@ -3,7 +3,10 @@ import argparse
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
+import pickle
+import sys
 
 ROOT = Path('/public/home/sunyihan/rpent_libero_eval')
 BASE = ROOT/'results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022'
@@ -19,9 +22,54 @@ def write(path, value):
         json.dump(value, stream, indent=2)
 
 
+def prepare_n2(source, out, common):
+    """Extract the N2 baseline's complete captured physics, without its adapter."""
+    sys.path.insert(0, str(source))
+    os.environ.setdefault('MUJOCO_GL','egl')
+    os.environ.setdefault('PYOPENGL_PLATFORM','egl')
+    import robots.libero.env_server
+    from robots.libero.bounded_hybrid_diagnostic import snapshot_digest
+
+    parent = BASE/'N2/after_fulltask/preparation/panel.json'
+    panel = json.loads(parent.read_bytes())
+    cases, registration = [], []
+    for index, old in enumerate(panel['jobs']):
+        case = copy.deepcopy(old['case'])
+        closed = BASE/f'N2/after_fulltask/formal/closed_{index:03d}.json'
+        summary_path = Path(json.loads(closed.read_bytes())['summary'])
+        summary = json.loads(summary_path.read_bytes())
+        checkpoint = summary_path.parent/'episode/private_branchpoint.pkl'
+        saved = pickle.loads(checkpoint.read_bytes())
+        physics = saved['physics']
+        assert {'integration','native_data','observation_state'} <= physics['actuator_state'].keys()
+        digest = snapshot_digest(physics)
+        assert all(t['initial_physics_sha256']==digest for t in summary['trials'])
+        target = out/f'N2_complete_initials/{index:03d}.pkl'
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open('xb') as stream:
+            pickle.dump(physics, stream, protocol=5)
+        case['diagnostic']['original_subtask_start']['physics'] = reference(target)
+        case['diagnostic']['vla_variants'].append({'name':'measured_anchor',
+            'parameters':{'preparation':'measured_anchor'}})
+        cases.append(case)
+        registration.append({'case':case['name'],'parent_summary':reference(summary_path),
+            'complete_initial_physics_sha256':digest,'new_physics':reference(target)})
+        del saved,physics
+    manifest = {**common,'cases':cases,'parent_panel':reference(parent)}
+    write(out/'preparation/N2_manifest.json',manifest)
+    new_panel = {**common,'sam_entry':panel['sam_entry'],
+        'jobs':[{'kind':'original_fork','case':c,'manifest':reference(out/'preparation/N2_manifest.json')}
+            for c in cases]}
+    write(out/'preparation/N2.json',new_panel)
+    write(out/'N2_registration.json',{'states':12,'trials':168,'rows':registration,
+        'legacy_trials':132,'measured_anchor_trials':36,'training':False})
+    print(json.dumps({'N2_states':12,'trials':168,'output':str(out)}))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True)
+    parser.add_argument('--n2', action='store_true')
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     revision = json.loads((source/'SOURCE_REVISION.json').read_bytes())
@@ -34,6 +82,8 @@ def main():
         'source_commit':revision['commit'], 'source_revision':reference(source/'SOURCE_REVISION.json'),
         'schema':reference(source/'rpent/skill_package/schema.json'),
         'libero_config':config, 'training':False, 'confirmation':False, 'vla_options_v2':True}
+    if args.n2:
+        return prepare_n2(source,out,common)
     parents = BASE/'regression155_f6987f0d/preparation'
     sam = json.loads((parents/'all155.json').read_bytes())['sam_entry']
     jobs = []
