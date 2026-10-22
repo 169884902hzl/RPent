@@ -33,6 +33,8 @@ def inputs(tmp_path):
 
 def test_measured_branches_use_actual_middle_capture_not_parent_state(tmp_path):
     point, default = inputs(tmp_path)
+    point['annotation'].update(version='bounded-annotation/1', model_visible=False)
+    point['checkpoint']['physics_sha256'] = point['physics']['sha256']
     case = prepare.measured_case(point, default, 0)
     assert case['state_sha256'] == 'official_parent_hash'
     assert case['source_training_parent_ids'] == ['train_parent']

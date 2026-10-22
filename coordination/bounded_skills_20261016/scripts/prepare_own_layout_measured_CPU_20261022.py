@@ -13,7 +13,7 @@ def reference(path):
 
 
 def checked(ref):
-    if reference(ref['path']) != ref:
+    if reference(ref['path'])['sha256'] != ref['sha256']:
         raise ValueError('captured input changed: ' + ref['path'])
     return Path(ref['path'])
 
