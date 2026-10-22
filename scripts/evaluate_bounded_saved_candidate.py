@@ -97,7 +97,8 @@ def evaluate_candidate_at_saved_state(query, probe, facade, adapter, policy, out
                 details = len(adapter.details)
                 receipts = adapter.execute(request, decision)
                 ledger.write(json.dumps({'index': index, 'request': request, 'decision': decision,
-                    'receipts': receipts, 'execution_details': adapter.details[details:]}, default=str)+'\n')
+                    'receipts': receipts, 'execution_details': adapter.details[details:]},
+                    default=lambda x: x.tolist() if hasattr(x, 'tolist') else str(x))+'\n')
                 ledger.flush()
                 if candidate['skill'] == 'call_vla':
                     reason = receipts[-1]['stop_reason'] if receipts else 'empty_receipt'
