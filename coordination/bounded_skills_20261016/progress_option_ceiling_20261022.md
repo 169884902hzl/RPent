@@ -119,3 +119,22 @@
 - 资源守护本地在跑：watch_registered_gpu_slots_20261023.py --jobs 11559 11560 11561 11562 11563，ledger /tmp/rd_v7_registered_slots_11559_11563.jsonl；C2排队且无空卡时只取消本次显式登记的等待作业及一个运行借用分片、保留closed状态，之后依原manifest续；旧held/其他项目不动。
 - D2 v7恢复1四变体40已CPU注册、未提交（必须先评估原版90/自扰动65和N1/N2）。measured_anchor_efa57340/preparation/D2_recovery1{,_shard0,_shard1}.json；继续用原D2配置，schema7，variants=in_place/initial_pose/full_task/measured_anchor，原种子和恢复1不变，所有40须独立完整回放。旧23/40、28/38＋2unknown不覆盖；旧模型10/40已闭合，服务已停；本轮不训练。
 - 剩余：当前物理全闭合→逐初态/逐调用比较和C7→评估/修有证据的程序问题→新4变体D2恢复1全40采样＋独立回放→炉灶165CPU缩减（最后）→C1/C2证据交付与逐文件提交推送。不得队列未清空即交回。
+
+## 2026-10-23 07:05 SG 接续（仍不得结束回合）
+- v7 N2已全闭合：11560/11564均成功；12状态168次=旧132+新36，旧方法62/132→62/132，0翻转/0完整初态差异。新measured_anchor5/36，Wilson[.060818,.286595]；31失败中22预定位、4无进展、5动作块预算。原件measured_anchor_efa57340/CPU_N2；本地measured_v7_N2.md及summary/pairs/states已镜像，尚待本次证据提交。
+- N1 11563完成24原版23成功后，在D2 index26因全局原版config找不到PRO init文件而FAILED；不是D2物理失败，原24不重跑。8b8ebf1a增加按domain配置路由，3 CPU通过；外部launcher ROOT/run_fixed_latency_domain_20261023.py SHA667514eb4fef2635a35c652b5e390bf8eb053ca1b4376d2197c40910fc09a0ce。11568只续26–31，同输出目录/同efa物理代码；新manifest N1_domain_r2.json，cfg_by_domain明确原版与PRO。已实际核对index26完整初态SHA匹配。最近26闭合/24成功；余4继续。CPU闭合11566依赖已改11568。
+- 155回归11561/11562继续同efa源；最近32+25=57/155闭合，源/种子/方法池未改。不能把未闭合说成无回退。
+- CPU11567只看原版失败多目标端点，12条完整native_data逐字节恢复后不步进；发现original LIBERO10 t2/init10种子42083000、42090000都已turnon stove但尚未放moka，[True,False]，整句失败仍False。旧选择器把这些有用端点丢掉。原件efa/CPU_original_partial_progress_r1；fixture original_partial_goal_20261023.json保留2见证，报告PARTIAL_PROGRESS_ORIGINAL_CPU.md。
+- dd5b8960/f86f1855修私有诊断续接：success和native_task_success各自原判据不改，另存private_goal_satisfied_at_endpoint/private_progress_success，选择器和完整回放可从已实现目标继续，局部失败与进展计数分开标记。private-registered-goal-or-subtask/1；无PRO特例/阈值调参，私有字段不进模型。89相关CPU通过。
+- 新诊断精确树2db200134ea6689e36a66e8aee6f45daa8270b4e，ROOT/source_measured_progress_2db20013_20261023，archive rd_measured_vla_progress_r2_20261023.tar.gz SHA7a08e6f42ad4b452d68f3b463cde883c2e0aeb20fe8ba9340ce2791d511ebcb2；主CPU809通过291.69s、单独RGBD4通过。与efa比较，仅私有诊断/文档/测试变；技能、规划、控制、schema、contract所有运行blob逐一相同，证据ROOT/rd_measured_vla_progress_r2_runtime_equivalence.json。schema7 SHA仍546299a6...，contract SHAa0fef7407efb67b4f9cde557cfa09ffcf3964eaaf9eaabad9f671d4e5b900f0b。旧8a2945ba中间源未上GPU，不用。
+- 11569新诊断面板已闭合：固定10全物理非零；D2 VLA startup74controls/12推理，实际private_progress_contract=1；源码2db。正式D240尚未提交，仍等155、N1闭合并评估。新D2注册在measured_anchor_2db20013/preparation/D2_recovery1{,_shard0,_shard1}.json，4变体、恢复1；不是旧efa已准备但未提交的D2。prepare_measured_vla_v7_20261023.py --d2现在必须传--archive，防错用旧archive。
+- 新11570用空闲第四卡做2个原版保存π端点的真实后续有界技能检查；不重跑π，只从CPU见证的两个端点恢复完整物理状态、重建v7公开请求、选择下一个未满足goal并执行first_self_chunk。源码2db；外部producer physical_original_partial_handoff_20261023.py已编译+CPU两端点refs预检，实际GPU结果还未读；若程序失败修producer后继续，不改标准。输出measured_anchor_2db20013/original_endpoint_handoff/{manifest.json,formal/case000,formal/case001}，不是新成功率分母/不训练。producer本地尚待提交。
+- 资源监控已换本地watch_registered_gpu_slots_20261023.py --jobs 11559 11560 11561 11562 11563 11568 11569 11570，ledger /tmp/rd_v7_registered_slots_11561_11570.jsonl。旧两个同名watcher仅停止本机自己进程，未动Slurm作业；新监控会在C2需要时取消明确登记等待作业及最新一个借用分片并保留closed。当前C2无需求，node02最多4个C3（155两片+N1续+原版handoff），不碰任何其他项目/旧held。
+- Codex1/2 owner alert C3_V7_PARTIAL_GOAL_ORIGINAL_WITNESS_AND_N2_20261023.json已发送，共享COORD只flock append。新私有协议与旧采样上限口径不同，不能把后续D2差额全归于新动作；整局必须独立物理回放。旧23/40、28/38+2unknown及模型10/40保留。
+- 接下来：读11570并修任何程序错误；完成N1/155及自动CPU11566/11565、出逐状态和C7；再跑2db下D2恢复1四变体40全部采样和独立完整回放、与A1逐局表；炉灶165缩减仍最后；交C1/C2全部manifest/SHA/raw/分类Wilson，逐文件add提交并push user-fork harness-v5，不merge/force。当前已推8b8ebf1a，dirty bounded_skills16/4行未动。
+
+## 2026-10-23 07:36 SG 接续（运行继续）
+- N1 11568及CPU11566全部完成：同完整初态三十对24/30→24/30，0结果翻转/0技能序列变化/0候选ID变化。总体Wilson95[.626943,.904949]；循环中位32.2246→31.4085s，整局158.4896→153.4463s；四段及后继legal已在measured_v7_N1.md/manifest/pairs镜像。碗8/8，整局中位199.18s，速度目标仍未达。C1/C2已收到N1/N2闭合原件。
+- 11570在0物理步因原版worker先import robosuite再import env_server触发GL-bootstrap assertion失败。producer改为复用shared bootstrap_source(original,evaluation=hybrid_repair)，CPU相同导入序列和两端点refs预检通过；旧producer/manifest/formal完整保留，新producer_r2/manifest_r2/formal_r2及11571分开登记。
+- 11571两端点功能检查闭合：都恢复exact endpoint，正确由[True,False]跳到g1:pick moka并生成schema7公共请求；两条首move_to均measured_sweep_collision、0新控制。只证明私有阶段续接和请求生成，未证明物理继续，不计成功。local original_partial_handoff_functional_r2.json。未重跑π/未训练/不改原失败。
+- 155两片11561/11562继续，最近81/155；正式2db D2尚未提交，等原版回归全闭合评估。资源守护已替换为11561_11571 ledger，登记新11571；C2目前无GPU需求。
