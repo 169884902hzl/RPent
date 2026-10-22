@@ -101,13 +101,18 @@ def main():
     p.add_argument("--after", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--count", type=int, default=32)
+    p.add_argument("--indices", type=int, nargs='+',
+        help="Explicit registered indices; omitted means range(count)")
     p.add_argument("--allow-partial", action="store_true")
     a = p.parse_args()
     sys.path.insert(0, str(a.source))
     from robots.libero.bounded_hybrid_diagnostic import snapshot_digest
     a.output.mkdir(parents=True, exist_ok=False)
     rows, missing, pilots = [], [], []
-    for index in range(a.count):
+    indices = list(range(a.count)) if a.indices is None else a.indices
+    if len(set(indices)) != len(indices) or any(not 0 <= i < a.count for i in indices):
+        raise ValueError('indices must be distinct registered state indices')
+    for index in indices:
         before, after = arm(a.before, index, snapshot_digest), arm(a.after, index, snapshot_digest)
         if before is None or after is None:
             missing.append(index)
@@ -137,7 +142,7 @@ def main():
     for row in rows:
         groups[row["category"]].append(row)
     result = {"scope": "N1, complete physics/controller/RNG matched; development, not training",
-        "registered": a.count, "closed": len(rows)+len(pilots),
+        "registered": len(indices), "registered_indices": indices, "closed": len(rows)+len(pilots),
         "paired": len(rows), "missing": missing, "continuation_pilots": ref(pilot_path),
         "before": metrics(rows, "before"), "after": metrics(rows, "after"),
         "improvements": [r["case"] for r in rows if r["improved"]],
