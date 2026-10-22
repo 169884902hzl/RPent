@@ -3,6 +3,7 @@ import hashlib
 import json
 import time
 from collections import Counter
+from contextlib import ExitStack
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
@@ -23,6 +24,7 @@ def verified_health(service):
 def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domain='original', split='init_holdout'):
     """Make every semantic choice through HTTP; oracle labels are never read."""
     from robots.libero.bounded_async import http_choice, public_model_request
+    from scripts.probe_bounded_hybrid_d2 import SeededPolicy
     service = plan['model_service']
     health = verified_health(service)
     output.mkdir()
@@ -31,7 +33,13 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domai
             stream.write(json.dumps(result)+'\n')
     choose = http_choice(service['endpoint'], on_response=save_response)
     (output/'service_health_before.json').write_text(json.dumps(health, indent=2)+'\n')
-    with probe.runtime(case, endpoints, output, domain=domain) as (facade, adapter, policy, timings):
+    with probe.runtime(case, endpoints, output, domain=domain) as (facade, adapter, policy, timings), ExitStack() as owned:
+        policy_seed = plan.get('policy_seed_base', 50000000) + int(
+            hashlib.sha256(case['name'].encode()).hexdigest()[:8], 16)
+        original_vla = adapter.p.model
+        seeded_vla = SeededPolicy(original_vla, policy_seed, input_ledger=output/'vla_inputs.jsonl')
+        adapter.p.model = seeded_vla
+        owned.callback(setattr, adapter.p, 'model', original_vla)
         adapter.allow_vla = True
         adapter.vla_options_v2 = True
         _, initial = probe.save_checkpoint(facade, adapter, policy, output/'private_initial.pkl')
@@ -113,6 +121,8 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domai
             'source_commit': plan['source_commit'], 'split': split, 'domain': domain,
             'recovery_budget': recovery_budget, 'recovery_used': recovery_used,
             'recovery_events': recovery_events, 'stop_reason': stop_reason,
+            'vla_policy_seed': policy_seed, 'vla_inference_calls': seeded_vla.calls,
+            'vla_inputs': seeded_vla.inputs, 'vla_predictions': seeded_vla.predictions,
             'recovery_scope': 'public hold transitions or successful call_vla; no private-subtask reset',
             'training': False, 'confirmation': False, 'oracle_choices_used': 0,
             'wall_s': time.perf_counter()-started,

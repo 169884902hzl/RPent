@@ -24,7 +24,7 @@ def test_health_rejects_a_different_checkpoint_even_when_ready(monkeypatch):
 def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkeypatch, startup, decisions, steps, reject, first_skill, domain, split):
     env = SimpleNamespace(terminated=False, truncated=False)
     requests = []
-    adapter = SimpleNamespace(p=SimpleNamespace(env=env), details=[])
+    adapter = SimpleNamespace(p=SimpleNamespace(env=env, model=object()), details=[])
     def request(*, k):
         assert k == 4 and adapter.allow_vla and adapter.vla_options_v2
         return {'id': len(requests), 'public_only': True, 'candidates': []}
@@ -75,3 +75,47 @@ def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkey
     assert all(row['wall_time_breakdown']['oracle_successor_legal_s'] == 0 for row in rows)
     assert len(rows) == decisions
     assert len((output/'requests.jsonl').read_text().splitlines()) == decisions
+
+
+def test_shared_vla_service_gets_independent_reproducible_episode_seeds(tmp_path, monkeypatch):
+    import numpy as np
+
+    seeds = []
+    client = SimpleNamespace(encode_obs=lambda _: {'states': np.zeros(1, np.float32)})
+    def predict(_obs, *, options):
+        seeds.append(options['sampling_seed'])
+        return np.full((5, 7), options['sampling_seed'] % 31, np.float32)
+    client.predict = predict
+    monkeypatch.setattr(module, 'verified_health', lambda _: {'status': 'ok'})
+    def http_choice(endpoint, *, on_response):
+        def choose(_request):
+            decision = {'candidate_ids': ['http-selected']}
+            on_response({'decision': decision, 'actual_service_result': True})
+            return decision
+        return choose
+    monkeypatch.setattr('robots.libero.bounded_async.http_choice', http_choice)
+
+    @contextmanager
+    def runtime(*_args, **_kwargs):
+        adapter = SimpleNamespace(details=[], held=None,
+            p=SimpleNamespace(model=client, env=SimpleNamespace(terminated=False, truncated=False)),
+            request=lambda **_: {'max_actions': 4, 'candidates': []})
+        def execute(_request, _decision):
+            adapter.p.model.predict({'states': np.zeros(1)})
+            return [{'skill': 'finish', 'steps_used': 1, 'outcome': 'success'}]
+        adapter.execute = execute
+        yield SimpleNamespace(goal_status=lambda: {'done': True}), adapter, object(), EpisodeTimings()
+        assert adapter.p.model is client
+
+    probe = SimpleNamespace(runtime=runtime, save_checkpoint=lambda *_: (None, {}))
+    plan = {'model_service': {'endpoint': 'offline'}, 'source_commit': 'tested',
+        'runtime_budget': {'decisions': 2}, 'policy_seed_base': 50000000}
+    results = [module.run_episode(probe, {'name': name}, {}, tmp_path/str(i), plan, 4)
+        for i, name in enumerate(('episode-a', 'episode-b', 'episode-a'))]
+    assert seeds[0] == seeds[2] and seeds[0] != seeds[1]
+    assert seeds == [r['vla_policy_seed'] for r in results]
+    assert all(r['oracle_choices_used'] == 0 and r['vla_inference_calls'] == 1 for r in results)
+    assert results[0]['vla_predictions'] == results[2]['vla_predictions']
+    for i in range(3):
+        assert json.loads((tmp_path/str(i)/'model_responses.jsonl').read_text())['actual_service_result']
+        assert json.loads((tmp_path/str(i)/'vla_inputs.jsonl').read_text())['sampling_seed'] == seeds[i]
