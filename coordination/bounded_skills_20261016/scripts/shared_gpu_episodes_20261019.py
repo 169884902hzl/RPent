@@ -60,10 +60,10 @@ def owned_services(args, original, *, vla):
 
 
 class StartupPhysicalReached(Exception):
-    """The startup-only probe has completed a real VLA control step."""
+    """The startup-only probe has completed its required real control step."""
     def __init__(self, proof):
         self.proof=proof
-        super().__init__('first VLA physical request completed')
+        super().__init__('first required physical request completed')
 
 
 def percentile(values, quantile):
@@ -140,7 +140,7 @@ def install_d2_spawn_bootstrap():
     LiberoEnv.get_env_fns=get_env_fns
 
 
-def install_d2_request_compatibility(diagnostic, *, startup=False):
+def install_d2_request_compatibility(diagnostic, *, startup=False, stop_after_preparation=False):
     """Give the diagnostic's copied first request its restored cache identity.
 
     Only a byte-equivalent canonical request may reuse the cache object. The
@@ -175,11 +175,12 @@ def install_d2_request_compatibility(diagnostic, *, startup=False):
                 before=env.execution_budget()['used_sim_steps']
                 value=original_step(*args,**options)
                 after=env.execution_budget()['used_sim_steps']
-                if inference_calls and after>before:
+                if (inference_calls or stop_after_preparation) and after>before:
                     raise StartupPhysicalReached({'method':'call_vla','trial_seed':seed,
                         'vla_inference_calls':inference_calls,'sim_steps':after-before,
                         'sim_steps_before':before,'sim_steps_after':after,
-                        'reason':'first_vla_physical_request','success':None,
+                        'reason':('first_vla_physical_request' if inference_calls
+                            else 'first_preparation_physical_request'),'success':None,
                         'scope':'startup interface only; not a completed subtask or outcome label'})
                 return value
             model.predict,env.step=predict,step
@@ -229,7 +230,8 @@ def worker(args):
                 install_d2_restore_compatibility()
                 install_d2_spawn_bootstrap()
                 from scripts import probe_bounded_hybrid_d2
-                install_d2_request_compatibility(probe_bounded_hybrid_d2,startup=assignment['startup'])
+                install_d2_request_compatibility(probe_bounded_hybrid_d2,startup=assignment['startup'],
+                    stop_after_preparation=assignment['domain']=='original')
                 evaluator = probe_bounded_hybrid_d2
                 if plan.get('evaluation') == 'hybrid_repair':
                     from scripts import probe_bounded_hybrid_repair
@@ -240,7 +242,9 @@ def worker(args):
                 except StartupPhysicalReached as reached:
                     result={'case':case,'status':'startup_physical','trials':[reached.proof],
                         'training':False,'source_commit':plan['source_commit']}
-                    dump(output/case['name']/'first_physical_vla_request.json',reached.proof)
+                    name = ('first_physical_vla_request.json' if reached.proof['vla_inference_calls']
+                        else 'first_physical_preparation_request.json')
+                    dump(output/case['name']/name,reached.proof)
                     dump(output/case['name']/'summary.json',result)
         status = result['status']
         if assignment['startup'] and status != 'startup_physical':

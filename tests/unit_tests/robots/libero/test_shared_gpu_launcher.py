@@ -380,6 +380,36 @@ def test_d2_startup_requires_inference_and_completed_physics_then_restores_hooks
     assert env.step is physics and model.predict is predict and diagnostic.copy is copy
 
 
+@pytest.mark.parametrize('used_controls', [0, 1])
+def test_original_startup_counts_completed_preparation_without_claiming_vla_inference(used_controls):
+    import copy
+    used = 0
+    def physics(action):
+        nonlocal used
+        used += used_controls
+        return 'actual preparation'
+    model = SimpleNamespace(predict=Mock(side_effect=AssertionError('no policy call was made')))
+    env = SimpleNamespace(step=physics, execution_budget=lambda: {'used_sim_steps': used})
+    request = {'observation_id': 'registered_original'}
+    adapter = SimpleNamespace(latest_request=copy.deepcopy(request),
+        p=SimpleNamespace(model=model, env=env))
+    def trial(*args, **kwargs):
+        return env.step('bounded preparation')
+    diagnostic = SimpleNamespace(copy=copy, trial=trial)
+    launcher.install_d2_request_compatibility(diagnostic, startup=True, stop_after_preparation=True)
+    if used_controls:
+        with pytest.raises(launcher.StartupPhysicalReached) as caught:
+            diagnostic.trial(None, adapter, None, None, None, 'call_vla', 123, None, request)
+        assert caught.value.proof['sim_steps'] == 1
+        assert caught.value.proof['vla_inference_calls'] == 0
+        assert caught.value.proof['reason'] == 'first_preparation_physical_request'
+        assert caught.value.proof['success'] is None
+    else:
+        assert diagnostic.trial(None, adapter, None, None, None, 'call_vla', 123, None, request) == 'actual preparation'
+    assert env.step is physics and diagnostic.copy is copy
+    model.predict.assert_not_called()
+
+
 def test_registered_original_join_excludes_startup_and_rejects_duplicates(tmp_path):
     spec=importlib.util.spec_from_file_location('shared_original_summary',
         _PATH.with_name('summarize_shared_original_20261019.py'))

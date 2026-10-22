@@ -1,5 +1,45 @@
 # USER 10/21 09:00 execution repairs
 
+## 2026-10-22 10:24 +08 continuation
+
+- Strict refresh-removal N1 job11229 is now fully closed: **24/30 versus
+  baseline25/30**, improvement1/regression2; all30 complete initial SHA values
+  match. Qualified execution tree9d00ee63ab2196b95f8374e8245d9dea2ed8782b.
+  Loop median104.276→30.152s; episode333.929→123.833s. Full paired evidence is
+  `reports/refresh_ablation_20261022/`, committed/pushed in2c590e38. Shared
+  coordination received the qualified result; old N1 failures remain intact.
+- Repaired original90 uses the **same execution/planning/oracle/chunk blobs**,
+  with registered repeat sampling/native endpoint transport in tree
+  9716b68c434c19519a8247b2ef69ce516fe9849c, archiveSHA
+  42b935d3225fe33f361411dbd548dbeaf501611f892003e1ba983c836ba8458f.
+  Exact CPU720pass; fixed10 job11235 completes0:0, all10 have actual controls.
+  A packaging-only earlier archive omitted5 diagnostic fields;719pass/1failure
+  is retained, fixed archive720pass. Dirty SAM caches and post-N1 selected-grasp
+  experimental execution changes are excluded.
+- Original startup11236 was incorrectly rejected despite108 physical preparation
+  controls, because the old launcher demanded a policy-generated control.
+  The original-domain startup hook now stops at its first completed preparation
+  control and explicitly reports0VLA inference; the D2 policy-control startup
+  requirement and zero-step rejection remain. Focused CPU70pass. Exact launcher
+  SHA559419e8af2f99ff0eb3b843f54268e1bbffaca5cc9abbda7cde0752862de97f;
+  job11237 verifies1real preparation control and completes0:0.
+- Original90 formal job **11258**, three shards, eachN8, is RUNNING. Registration:
+  `ROOT/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/preparation/`;
+  results under its sibling `forks/job11258_*/N8/`. Exactly90states, self2 each
+  (180trials), initial_pose3 each(270trials). 60CPU/360GB/3GPU, node02/nice500.
+  No new labels are delivered yet. D2 three tiers follow this cohort.
+- CPU perturbation20 preregistered seeds11020100–11020119, all original train,
+  job11238 uses0GPU.2states constructed;18construction failures retained:
+  8workspace-size attribute errors,6terminal log rows without snapshots,
+  2failed native predicate witnesses,2exhausted200-proposal searches. These are
+  not policy rollout failures. Generator repairs/rechecks are next; no PRO,
+  D2, confirmation states or outcomes enter these constructions.
+- The later selected-grasp diagnostic source remains separate: indices1/6/15/23
+  succeed,27/29fail. Saved case29 has only7attached points after jaw occlusion.
+  CPU recent-depth counterfactuals recover251/273payload points but both still
+  reject the lift; **neither is a production fix**. Public evidence is in
+  `ROOT/results/bounded_skills/execution_repairs_20261022/occluded_contact_CPU/`.
+
 ## 2026-10-22 latest continuation
 
 - Strict N1 job11212 is closed: 30/30 paired states, complete initial SHA matched
