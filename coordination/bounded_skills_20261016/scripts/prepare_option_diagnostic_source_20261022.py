@@ -23,6 +23,7 @@ def main():
         blobs={}
         files = FILES + (['scripts/probe_bounded_option_ceiling.py',
             'coordination/bounded_skills_20261016/scripts/run_schema6_physical_20261020.py',
+            'coordination/bounded_skills_20261016/scripts/run_schema6_stage_20261020.sbatch',
             'tests/unit_tests/robots/libero/test_bounded_option_ceiling.py'] if a.factors else [])
         if a.fulltask:
             if not a.factors:raise ValueError('fulltask preparation needs the factor launcher')
