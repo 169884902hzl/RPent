@@ -299,11 +299,14 @@ def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, mo
 
 
 @pytest.mark.parametrize('preferred_available', [False, True])
-def test_registered_variant_with_missing_binding_executes_public_task_fallback(tmp_path, monkeypatch, preferred_available):
+@pytest.mark.parametrize('binding_case', ['missing', 'bound_source', 'bound_wrong_target_kind'])
+def test_registered_variant_with_missing_binding_executes_public_task_fallback(tmp_path, monkeypatch, preferred_available, binding_case):
     from contextlib import nullcontext
     from scripts import probe_bounded_hybrid_d2 as probe
 
-    monkeypatch.setattr(probe, 'bind_subtask', lambda *_: (None, None))
+    source = None if binding_case == 'missing' else SimpleNamespace(id='e1')
+    target = SimpleNamespace(id='measured_surface') if binding_case == 'bound_wrong_target_kind' else None
+    monkeypatch.setattr(probe, 'bind_subtask', lambda *_: (source, target))
     executed = []
     physics = lambda: {'sim_state': [1.], 'counters': {'_elapsed_steps': len(executed)}}
     facade = SimpleNamespace(snapshot=physics, grasp_reference=lambda *_: {},
@@ -330,6 +333,8 @@ def test_registered_variant_with_missing_binding_executes_public_task_fallback(t
         p=SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False,
             execution_budget=lambda: {'used_sim_steps': len(executed)}), model=object()))
     spec = {'mode': 'pick', 'source_symbol': 'bowl_1', 'target_symbol': None, 'goal_index': 0}
+    if binding_case == 'bound_wrong_target_kind':
+        spec.update(mode='in', target_symbol='cabinet_top_region')
     requested = {'preparation': 'initial_pose'}
     row, _ = probe.trial(facade, adapter, SimpleNamespace(rpc=object()),
         SimpleNamespace(measure=lambda *_: nullcontext()), spec, 'call_vla', 123,
@@ -337,8 +342,9 @@ def test_registered_variant_with_missing_binding_executes_public_task_fallback(t
     assert executed == [[selected_id]]
     assert row['reason'] == 'native_success' and row['success'] is True
     assert row['truth_source'] == 'unchanged_native_task_completion'
-    assert row['source_public_id'] is None
-    assert row['vla_variant_fallbacks'] == [{'decision': 0, 'reason': 'public_binding_missing',
+    assert row['source_public_id'] == (source.id if source is not None else None)
+    assert row['vla_variant_fallbacks'] == [{'decision': 0, 'reason': ('public_binding_missing'
+        if binding_case == 'missing' else 'requested_public_option_unavailable'),
         'requested_parameters': requested, 'actual_parameters': parameters,
         'candidate_id': selected_id}]
     assert row['executed_vla_variants'][0]['parameters'] == parameters

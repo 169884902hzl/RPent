@@ -363,12 +363,13 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                         and c['skill'] == 'call_vla'
                         and (whole_task or not recovering_binding)
                         and all(c['parameters'].get(k) == v for k, v in required.items())), None)
-                    if forced is None and recovering_binding:
+                    if forced is None:
                         unbound = unbound_vla_candidate(request, adapter.ex.instruction, spec['mode'],
                             preparation=required.get('preparation', 'in_place'))
                         if unbound is not None:
                             result.setdefault('vla_variant_fallbacks', []).append({
-                                'decision': index, 'reason': 'public_binding_missing',
+                                'decision': index, 'reason': ('public_binding_missing'
+                                    if recovering_binding else 'requested_public_option_unavailable'),
                                 'requested_parameters': dict(vla_parameters),
                                 'actual_parameters': dict(unbound['parameters']),
                                 'candidate_id': unbound['id']})
