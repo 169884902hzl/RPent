@@ -11,7 +11,8 @@ BASE='c7520ae1219e4b67549b418b9438b271109dd49a'
 FILES=['scripts/probe_bounded_hybrid_d2.py','scripts/probe_bounded_hybrid_repair.py',
     'tests/unit_tests/robots/libero/test_bounded_hybrid_diagnostic.py',
     'tests/unit_tests/robots/libero/test_bounded_hybrid_repair.py',
-    'tests/unit_tests/robots/libero/fixtures/observe_recovery_receipts_20261022.json']
+    'tests/unit_tests/robots/libero/fixtures/observe_recovery_receipts_20261022.json',
+    'tests/unit_tests/robots/libero/fixtures/vla_retry_before_loop_20261023.json']
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--archive',type=Path,required=True);p.add_argument('--factors',action='store_true');p.add_argument('--fulltask',action='store_true');a=p.parse_args()

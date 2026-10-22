@@ -1,0 +1,6636 @@
+[
+  {
+    "request": {
+      "schema_version": "bounded-skills/6",
+      "kind": "request",
+      "observation_id": "public-0",
+      "revision": 0,
+      "instruction": "Open the top layer of the drawer and put the cream cheese inside",
+      "remaining_sim_steps": 10000,
+      "anchors": [
+        {
+          "id": "e118",
+          "label": "cabinet",
+          "frame": "world",
+          "xyz_m": [
+            0.12935541570186615,
+            -0.22783663868904114,
+            1.1099025011062622
+          ],
+          "size_m": [
+            0.2362539991736412,
+            0.17125928997993473,
+            0.2079036951065063
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.68359375,
+          "cached": false,
+          "capture_step": 0,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:0:e118",
+              "capture_step": 0,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e75",
+          "label": "cream cheese",
+          "frame": "world",
+          "xyz_m": [
+            -0.05479509806768461,
+            0.14491342504819235,
+            0.9178623519837856
+          ],
+          "size_m": [
+            0.0814960676431656,
+            0.039883054665156764,
+            0.015639740375050337
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.8984375,
+          "cached": false,
+          "capture_step": 0,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:0:e75",
+              "capture_step": 0,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e113",
+          "label": "table",
+          "frame": "world",
+          "xyz_m": [
+            0.09309006482362747,
+            0.09573853760957718,
+            0.9002788066864014
+          ],
+          "size_m": [
+            0.7347649335861206,
+            0.7481346392631532,
+            0.00017774105072021484
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.78125,
+          "cached": false,
+          "capture_step": 0,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:0:e113",
+              "capture_step": 0,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e68",
+          "label": "cabinet bottom drawer",
+          "frame": "world",
+          "xyz_m": [
+            0.08795896545052528,
+            -0.15843499451875687,
+            0.9542701542377472
+          ],
+          "size_m": [
+            0.1696164657175541,
+            0.05238420665264132,
+            0.06557666540145879
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "capture_step": 0,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:0:e68",
+              "capture_step": 0,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e5",
+          "label": "cabinet middle drawer",
+          "frame": "world",
+          "xyz_m": [
+            0.08301489427685738,
+            -0.15838894248008728,
+            1.0231456756591797
+          ],
+          "size_m": [
+            0.212876585572958,
+            0.04615920275449753,
+            0.06545934677124021
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "capture_step": 0,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:0:e5",
+              "capture_step": 0,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e32",
+          "label": "cabinet top drawer",
+          "frame": "world",
+          "xyz_m": [
+            0.05296877399086952,
+            -0.15824979543685913,
+            1.0942153930664062
+          ],
+          "size_m": [
+            0.23038505464792253,
+            0.03178992271423339,
+            0.055885052680969105
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "capture_step": 0,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:0:e32",
+              "capture_step": 0,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e37",
+          "label": "cabinet top surface",
+          "frame": "world",
+          "xyz_m": [
+            0.045422982424497604,
+            -0.237465500831604,
+            1.12653648853302
+          ],
+          "size_m": [
+            0.24740176141262055,
+            0.17558245122432706,
+            0.0023164749145507812
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "capture_step": 0,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:0:e37",
+              "capture_step": 0,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        }
+      ],
+      "robot": {
+        "eef_xyz_m": [
+          -0.2084646605658239,
+          2.2280279470092475e-12,
+          1.17327947572964
+        ],
+        "eef_quat_xyzw": [
+          0.9995966048795351,
+          0.0002462128336614966,
+          -0.028400120485873,
+          -6.9952962218605e-06
+        ],
+        "gripper_opening_m": 0.07807918432307784,
+        "held_anchor_id": null,
+        "velocity_m_s": null
+      },
+      "candidates": [
+        {
+          "id": "e147fbfbb277bb9b",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e118"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 107,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:0:e118"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e118",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e118",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "e36f0d142490c484",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e118"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e118"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "1786f6b86bc8b67c",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e118"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e118"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "57b79f91814ceeb5",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e118"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "e197f3b2f3ebc103",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e118"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "6d663e646cc770e1",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e118"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "34f685059a6156a9",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e118"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "24f04da85796c38b",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.023703131305976594,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 76,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:0:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "20f5dfed86670875",
+          "skill": "align",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.023703131305976594,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 46,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "70031c1eb825ffa1",
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": 0.023703131305976594,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 46,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "6f2c82ebac5a9907",
+          "skill": "lift",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.023703131305976594,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 29,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            {
+              "metric": "object_rise_m",
+              "anchor_id": "e75",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            {
+              "metric": "held",
+              "anchor_id": "e75",
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "b7fd380a9fe27212",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.023703131305976594,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "6c320dcd20f44b74",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.023703131305976594,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "19891bad32f030bd",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.023703131305976594,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e75"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "c2d97f89a44088e2",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.023703131305976594,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e75"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "b0380510604f8a66",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 124,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:0:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "6114d18dbc0623d4",
+          "skill": "align",
+          "parameters": {
+            "anchor_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 56,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "a4803cc1a8269245",
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 56,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "de06001ad97b3710",
+          "skill": "lift",
+          "parameters": {
+            "anchor_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 29,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            {
+              "metric": "object_rise_m",
+              "anchor_id": "e113",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            {
+              "metric": "held",
+              "anchor_id": "e113",
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "a06d7246e281fcc0",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "5cc51b517ab85079",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "a01a0c81fe4bd7d2",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e113",
+            "mode": "pick",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e113"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "2e4eb01848cf8078",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e113",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e113"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "7d73af05615befe9",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 141,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "af8ded643a68d78d",
+          "skill": "align",
+          "parameters": {
+            "anchor_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "dac039f51ac750f6",
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "73496074fda7ecef",
+          "skill": "lift",
+          "parameters": {
+            "anchor_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 29,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            {
+              "metric": "object_rise_m",
+              "anchor_id": "e68",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            {
+              "metric": "held",
+              "anchor_id": "e68",
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "7ce1a97cd456a9a9",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "30bd017865c6f5cb",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "2783c0f3c605386f",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "69ac871e94e106fd",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "1c303a14b88a42a5",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "f36f09308acad94b",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.011482538680755994,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e68"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "0e2b1da16539851e",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 136,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f19cfe79bba6d0c3",
+          "skill": "align",
+          "parameters": {
+            "anchor_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "c1cf45e304e5580f",
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "e5b90b7a288aef96",
+          "skill": "lift",
+          "parameters": {
+            "anchor_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 29,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            {
+              "metric": "object_rise_m",
+              "anchor_id": "e5",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            {
+              "metric": "held",
+              "anchor_id": "e5",
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "7dec1eb76c7701bb",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "08e135fbc8ab4cbd",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "61ffcb02eeefcb49",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "2159a4d95dcef951",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "d8cd3132897ddc92",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "c510ad55b280cccc",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012548253650469743,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e5"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "3ab5430ca0304a62",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 137,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "3d78bb85b7238488",
+          "skill": "align",
+          "parameters": {
+            "anchor_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "dfb93f5a84b4335c",
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "24aa978c9d91a20a",
+          "skill": "lift",
+          "parameters": {
+            "anchor_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 29,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            {
+              "metric": "object_rise_m",
+              "anchor_id": "e32",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            {
+              "metric": "held",
+              "anchor_id": "e32",
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "5803035c995e82bf",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "e0b30d9be953692f",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "e84d7af04ff121dd",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "26cf92da244b97c8",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "3386f96e90084d57",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "8bdc066aaec76c28",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.012891705061613301,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e32"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "178d32fdb2f36f47",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e37"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 107,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:0:e37"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e37",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e37",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "406846e8f55efe22",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e37"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e37"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "ecc4f64b555de20f",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e37"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:0:e37"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "e6d85597201c8e99",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e37",
+            "mode": "pick",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e37"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "341ecda861acb92f",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e37",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:0:e37"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "5468512e7bdb163f",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "instruction",
+            "clause_id": 0,
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "24b40254b53fbfe1",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "instruction",
+            "clause_id": 0,
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "ac352b7f7124384d",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "instruction",
+            "clause_id": 1,
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "02d6d6cc6525c43f",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "instruction",
+            "clause_id": 1,
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "9cb9f09d6d190d7b",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "ef1b19e6a009e736",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "af866c584b96de88",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "open"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.08,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.075,
+              "maximum": 0.085
+            },
+            {
+              "metric": "released",
+              "anchor_id": null,
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "7f56ae3f4c8b42af",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "close"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.0,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.005
+            }
+          ]
+        },
+        {
+          "id": "058d2cacfdbbe9ee",
+          "skill": "rotate_wrist",
+          "parameters": {
+            "angle_deg": -90
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "c839f7047168985f",
+          "skill": "rotate_wrist",
+          "parameters": {
+            "angle_deg": -45
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 46,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "b72a74bd885f119f",
+          "skill": "rotate_wrist",
+          "parameters": {
+            "angle_deg": 45
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 46,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "c6879ac9fab32978",
+          "skill": "rotate_wrist",
+          "parameters": {
+            "angle_deg": 90
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f72537752ef750d0",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "x",
+            "distance_m": -0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "edd9ac4d0212063f",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "x",
+            "distance_m": -0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "47151ff6c459c6e1",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "x",
+            "distance_m": 0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f2ebf3511c61912b",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "x",
+            "distance_m": 0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "25c428d919219ac9",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": -0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "e6e9f48f9eae056f",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": -0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "78fc3aade1371307",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f395c81b7408c9d5",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "ddc57af16afe47d4",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "z",
+            "distance_m": -0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f3cd747ecda3e7bd",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "z",
+            "distance_m": -0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "3f2b6fae234e9b1a",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "z",
+            "distance_m": 0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "ba5417f0b7c390e9",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "z",
+            "distance_m": 0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "027cea6b4534fa9c",
+          "skill": "observe",
+          "parameters": {
+            "mode": "refresh"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "parameters": {
+            "mode": "wrist_scan"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "1491d75e66b081aa",
+          "skill": "finish",
+          "parameters": {},
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "825cb73a9c032a28",
+          "skill": "ask_help",
+          "parameters": {},
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        }
+      ],
+      "receipts": [],
+      "relations": [
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e118",
+          "relation": "on",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e68"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e68"
+        },
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e5"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e5"
+        },
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e37"
+        },
+        {
+          "source_id": "e75",
+          "relation": "on",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e113",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e113",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e113",
+          "relation": "on",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e113",
+          "relation": "in_front_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e113",
+          "relation": "in_front_of",
+          "target_id": "e37"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e68",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e68",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e37"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e5",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e5",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e5",
+          "relation": "on",
+          "target_id": "e68"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e37"
+        },
+        {
+          "source_id": "e32",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e32",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e32",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e32",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e32",
+          "relation": "on",
+          "target_id": "e5"
+        },
+        {
+          "source_id": "e37",
+          "relation": "on",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e37",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e37",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e68"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e5"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e32"
+        }
+      ],
+      "max_actions": 4,
+      "execution_prefix": null,
+      "instruction_clauses": [
+        "Open the top layer of the drawer",
+        "put the cream cheese inside"
+      ],
+      "progress": {
+        "version": "public-measured-progress/2-goal-directed",
+        "stagnant_decisions": 0,
+        "limit": 11,
+        "loop_detected": false
+      }
+    },
+    "selected": {
+      "schema_version": "bounded-skills/6",
+      "observation_id": "public-0",
+      "revision": 0,
+      "kind": "decision",
+      "candidate_ids": [
+        "9cb9f09d6d190d7b"
+      ]
+    }
+  },
+  {
+    "request": {
+      "schema_version": "bounded-skills/6",
+      "kind": "request",
+      "observation_id": "public-1",
+      "revision": 1,
+      "instruction": "Open the top layer of the drawer and put the cream cheese inside",
+      "remaining_sim_steps": 9880,
+      "anchors": [
+        {
+          "id": "e118",
+          "label": "cabinet",
+          "frame": "world",
+          "xyz_m": [
+            0.10384073853492737,
+            -0.1865067481994629,
+            1.088194489479065
+          ],
+          "size_m": [
+            0.22817198187112808,
+            0.31585776098072527,
+            0.2033940553665161
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.5625,
+          "cached": false,
+          "capture_step": 1,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e118",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e75",
+          "label": "cream cheese",
+          "frame": "world",
+          "xyz_m": [
+            -0.044648709551741675,
+            0.14495821992556254,
+            0.9180954456329345
+          ],
+          "size_m": [
+            0.07759943450801074,
+            0.04079064155618348,
+            0.016065281331539172
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.6953125,
+          "cached": false,
+          "capture_step": 1,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e75",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e113",
+          "label": "table",
+          "frame": "world",
+          "xyz_m": [
+            0.1319652944803238,
+            0.12596702575683594,
+            0.9002696871757507
+          ],
+          "size_m": [
+            0.731421023607254,
+            0.7599055290222168,
+            0.00017690658569335938
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.72265625,
+          "cached": false,
+          "capture_step": 1,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e113",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e68",
+          "label": "cabinet bottom drawer",
+          "frame": "world",
+          "xyz_m": [
+            0.15244686603546143,
+            -0.1673841029405594,
+            0.9575619697570801
+          ],
+          "size_m": [
+            0.1054663958400488,
+            0.04320340067148207,
+            0.06528041958808894
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "capture_step": 1,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e68",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e5",
+          "label": "cabinet middle drawer",
+          "frame": "world",
+          "xyz_m": [
+            0.15261304378509521,
+            -0.16468504071235657,
+            1.033559799194336
+          ],
+          "size_m": [
+            0.046000444740056975,
+            0.17355248920619487,
+            0.06613241314887996
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "capture_step": 1,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e5",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e32",
+          "label": "cabinet top drawer",
+          "frame": "world",
+          "xyz_m": [
+            0.029621930792927742,
+            -0.04024035483598709,
+            1.0651323795318604
+          ],
+          "size_m": [
+            0.21518077731132507,
+            0.0662362364679575,
+            0.051775336265563965
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "capture_step": 1,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e32",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e37",
+          "label": "cabinet top surface",
+          "frame": "world",
+          "xyz_m": [
+            0.04947243630886078,
+            -0.21665073931217194,
+            1.1264549493789673
+          ],
+          "size_m": [
+            0.2446330338716507,
+            0.32901680436916647,
+            0.00857841968536377
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.0,
+          "cached": false,
+          "capture_step": 1,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e37",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        },
+        {
+          "id": "e86",
+          "label": "drawer",
+          "frame": "world",
+          "xyz_m": [
+            0.027570389211177826,
+            -0.08219797164201736,
+            1.0701088905334473
+          ],
+          "size_m": [
+            0.21281588971614837,
+            0.15948565332219003,
+            0.06194899559020994
+          ],
+          "quat_xyzw": null,
+          "confidence": 0.84375,
+          "cached": false,
+          "capture_step": 1,
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e86",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ]
+        }
+      ],
+      "robot": {
+        "eef_xyz_m": [
+          0.011493203153036716,
+          0.10514490340440374,
+          1.062466258380816
+        ],
+        "eef_quat_xyzw": [
+          0.9934562296908755,
+          0.009594516572030143,
+          0.10523705956898949,
+          0.04333389243318571
+        ],
+        "gripper_opening_m": 0.07993258778032811,
+        "held_anchor_id": null,
+        "velocity_m_s": [
+          -0.0012689785542567,
+          -0.00028097891247086393,
+          -1.3132060986187355e-05
+        ]
+      },
+      "candidates": [
+        {
+          "id": "e147fbfbb277bb9b",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e118"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 107,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:1:e118"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e118",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e118",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "e36f0d142490c484",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e118"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e118"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "1786f6b86bc8b67c",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e118"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e118"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "57b79f91814ceeb5",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e118"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "e197f3b2f3ebc103",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e118"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "6d663e646cc770e1",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e118"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "34f685059a6156a9",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e118"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "24f04da85796c38b",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.06530813637948255,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 71,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:1:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "20f5dfed86670875",
+          "skill": "align",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.06530813637948255,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 46,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:1:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "70031c1eb825ffa1",
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": 0.06530813637948255,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 46,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:1:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "6f2c82ebac5a9907",
+          "skill": "lift",
+          "parameters": {
+            "anchor_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": 0.06530813637948255,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 29,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:1:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e75",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            {
+              "metric": "object_rise_m",
+              "anchor_id": "e75",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            {
+              "metric": "held",
+              "anchor_id": "e75",
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "b7fd380a9fe27212",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.06530813637948255,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "6c320dcd20f44b74",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e75"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.06530813637948255,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e75"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "19891bad32f030bd",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.06530813637948255,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e75"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "c2d97f89a44088e2",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": 0.06530813637948255,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e75"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "b0380510604f8a66",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 143,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:1:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "6114d18dbc0623d4",
+          "skill": "align",
+          "parameters": {
+            "anchor_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 48,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:1:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "a4803cc1a8269245",
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 71,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:1:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "de06001ad97b3710",
+          "skill": "lift",
+          "parameters": {
+            "anchor_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 29,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": [
+              "rgbd:1:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e113",
+              "minimum": 0.0,
+              "maximum": 0.05
+            },
+            {
+              "metric": "object_rise_m",
+              "anchor_id": "e113",
+              "minimum": 0.03,
+              "maximum": null
+            },
+            {
+              "metric": "held",
+              "anchor_id": "e113",
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "a06d7246e281fcc0",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "5cc51b517ab85079",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e113"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e113"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "a01a0c81fe4bd7d2",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e113",
+            "mode": "pick",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e113"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "2e4eb01848cf8078",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e113",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e113"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "7d73af05615befe9",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 100,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:1:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e68",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "7ce1a97cd456a9a9",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "30bd017865c6f5cb",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e68"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e68"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "2783c0f3c605386f",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e68"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "69ac871e94e106fd",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e68"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "1c303a14b88a42a5",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e68"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "f36f09308acad94b",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e68"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "0e2b1da16539851e",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 102,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:1:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e5",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "7dec1eb76c7701bb",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "08e135fbc8ab4cbd",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e5"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e5"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "61ffcb02eeefcb49",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e5"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "2159a4d95dcef951",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e5"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "d8cd3132897ddc92",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e5"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "c510ad55b280cccc",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e5"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "3ab5430ca0304a62",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 99,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:1:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e32",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "5803035c995e82bf",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "e0b30d9be953692f",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e32"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e32"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "e84d7af04ff121dd",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e32"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "26cf92da244b97c8",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e32"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "3386f96e90084d57",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e32"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "8bdc066aaec76c28",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e32"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "178d32fdb2f36f47",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e37"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 107,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:1:e37"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e37",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e37",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "406846e8f55efe22",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e37"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e37"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "ecc4f64b555de20f",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e37"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e37"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "e6d85597201c8e99",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e37",
+            "mode": "pick",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e37"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "341ecda861acb92f",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e37",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e37"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "657fe10a7fd9d734",
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e86"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 103,
+            "screen_scope": "planner_selected_variant_pending",
+            "evidence_ids": [
+              "rgbd:1:e86"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": "e86",
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": "e86",
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "6be232960583ef6f",
+          "skill": "carry_to",
+          "parameters": {
+            "target_id": "e86"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e86"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "4e973837092d461c",
+          "skill": "lower",
+          "parameters": {
+            "target_id": "e86"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "conditional_on_prefix",
+            "evidence_ids": [
+              "rgbd:1:e86"
+            ]
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "0c1988ef5dc78b58",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e86",
+            "mode": "open",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e86"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "4634f821a2eb2259",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e86",
+            "mode": "open",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e86"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "385d5596b8b105d2",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e86",
+            "mode": "close",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e86"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "90ad6bcab11f955c",
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e86",
+            "mode": "close",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": [
+              "rgbd:1:e86"
+            ]
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "5468512e7bdb163f",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "instruction",
+            "clause_id": 0,
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "24b40254b53fbfe1",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "instruction",
+            "clause_id": 0,
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "ac352b7f7124384d",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "instruction",
+            "clause_id": 1,
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "02d6d6cc6525c43f",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "instruction",
+            "clause_id": 1,
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "9cb9f09d6d190d7b",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 1,
+          "last_failure": "no_progress_blocks",
+          "expected_receipt": []
+        },
+        {
+          "id": "aa0192a89b2c28ba",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place",
+            "seed_variant": 1
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "ef1b19e6a009e736",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "initial_pose"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "a0fd625636e8edba",
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "initial_pose",
+            "seed_variant": 1
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 240,
+            "screen_scope": "unmeasured",
+            "evidence_ids": []
+          },
+          "history": {
+            "success_rate": null,
+            "n": 0,
+            "expected_steps": null,
+            "source_manifest_sha256": null
+          },
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "af866c584b96de88",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "open"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.08,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.075,
+              "maximum": 0.085
+            },
+            {
+              "metric": "released",
+              "anchor_id": null,
+              "minimum": 1.0,
+              "maximum": 1.0
+            }
+          ]
+        },
+        {
+          "id": "7f56ae3f4c8b42af",
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "close"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": 0.0,
+            "expected_steps": 15,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "gripper_opening_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.005
+            }
+          ]
+        },
+        {
+          "id": "058d2cacfdbbe9ee",
+          "skill": "rotate_wrist",
+          "parameters": {
+            "angle_deg": -90
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "c839f7047168985f",
+          "skill": "rotate_wrist",
+          "parameters": {
+            "angle_deg": -45
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 46,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "b72a74bd885f119f",
+          "skill": "rotate_wrist",
+          "parameters": {
+            "angle_deg": 45
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 46,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "c6879ac9fab32978",
+          "skill": "rotate_wrist",
+          "parameters": {
+            "angle_deg": 90
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 79,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f72537752ef750d0",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "x",
+            "distance_m": -0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "edd9ac4d0212063f",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "x",
+            "distance_m": -0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "47151ff6c459c6e1",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "x",
+            "distance_m": 0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f2ebf3511c61912b",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "x",
+            "distance_m": 0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "25c428d919219ac9",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": -0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "e6e9f48f9eae056f",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": -0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "78fc3aade1371307",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f395c81b7408c9d5",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "y",
+            "distance_m": 0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "ddc57af16afe47d4",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "z",
+            "distance_m": -0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "f3cd747ecda3e7bd",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "z",
+            "distance_m": -0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": true,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "3f2b6fae234e9b1a",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "z",
+            "distance_m": 0.01
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 14,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "ba5417f0b7c390e9",
+          "skill": "nudge",
+          "parameters": {
+            "axis": "z",
+            "distance_m": 0.02
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": true,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 17,
+            "screen_scope": "endpoint_ik_coarse_geometry",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": [
+            {
+              "metric": "endpoint_error_m",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.012
+            },
+            {
+              "metric": "angular_error_rad",
+              "anchor_id": null,
+              "minimum": 0.0,
+              "maximum": 0.05
+            }
+          ]
+        },
+        {
+          "id": "027cea6b4534fa9c",
+          "skill": "observe",
+          "parameters": {
+            "mode": "refresh"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "1f9311eb6c9f6bb8",
+          "skill": "observe",
+          "parameters": {
+            "mode": "wrist_scan"
+          },
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "1491d75e66b081aa",
+          "skill": "finish",
+          "parameters": {},
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        },
+        {
+          "id": "825cb73a9c032a28",
+          "skill": "ask_help",
+          "parameters": {},
+          "consequences": {
+            "path_min_clearance_m": null,
+            "collision": null,
+            "ik_reachable": null,
+            "expected_width_m": null,
+            "expected_gripper_opening_m": null,
+            "expected_steps": 0,
+            "screen_scope": "nonmotion",
+            "evidence_ids": []
+          },
+          "history": null,
+          "recent_failures": 0,
+          "last_failure": null,
+          "expected_receipt": []
+        }
+      ],
+      "receipts": [
+        {
+          "schema_version": "bounded-skills/6",
+          "kind": "receipt",
+          "observation_id": "public-0",
+          "candidate_id": "9cb9f09d6d190d7b",
+          "skill": "call_vla",
+          "outcome": "failure",
+          "phase": "contact_failure",
+          "stop_reason": "no_progress_blocks",
+          "steps_used": 120,
+          "before": {
+            "eef_xyz_m": [
+              -0.2084646605658239,
+              2.2280279470092475e-12,
+              1.17327947572964
+            ],
+            "eef_quat_xyzw": [
+              0.9995966048795351,
+              0.0002462128336614966,
+              -0.028400120485873,
+              -6.9952962218605e-06
+            ],
+            "gripper_opening_m": 0.07807918432307784,
+            "held_anchor_id": null,
+            "velocity_m_s": null
+          },
+          "after": {
+            "eef_xyz_m": [
+              0.011493203153036716,
+              0.10514490340440374,
+              1.062466258380816
+            ],
+            "eef_quat_xyzw": [
+              0.9934562296908755,
+              0.009594516572030143,
+              0.10523705956898949,
+              0.04333389243318571
+            ],
+            "gripper_opening_m": 0.07993258778032811,
+            "held_anchor_id": null,
+            "velocity_m_s": [
+              -0.0012689785542567,
+              -0.00028097891247086393,
+              -1.3132060986187355e-05
+            ]
+          },
+          "changes": [
+            {
+              "anchor_id": "e118",
+              "displacement_m": [
+                -0.025514677166938782,
+                0.04132989048957825,
+                -0.021708011627197266
+              ],
+              "held": null,
+              "relation": null,
+              "fixture_state": null
+            },
+            {
+              "anchor_id": "e75",
+              "displacement_m": [
+                0.010146388515942933,
+                4.4794877370191166e-05,
+                0.00023309364914891884
+              ],
+              "held": null,
+              "relation": null,
+              "fixture_state": null
+            },
+            {
+              "anchor_id": "e113",
+              "displacement_m": [
+                0.03887522965669632,
+                0.03022848814725876,
+                -9.119510650634766e-06
+              ],
+              "held": null,
+              "relation": null,
+              "fixture_state": null
+            },
+            {
+              "anchor_id": "e68",
+              "displacement_m": [
+                0.06448790058493614,
+                -0.00894910842180252,
+                0.0032918155193328857
+              ],
+              "held": null,
+              "relation": null,
+              "fixture_state": null
+            },
+            {
+              "anchor_id": "e5",
+              "displacement_m": [
+                0.06959814950823784,
+                -0.006296098232269287,
+                0.01041412353515625
+              ],
+              "held": null,
+              "relation": null,
+              "fixture_state": null
+            },
+            {
+              "anchor_id": "e32",
+              "displacement_m": [
+                -0.02334684319794178,
+                0.11800944060087204,
+                -0.0290830135345459
+              ],
+              "held": null,
+              "relation": null,
+              "fixture_state": null
+            },
+            {
+              "anchor_id": "e37",
+              "displacement_m": [
+                0.0040494538843631744,
+                0.020814761519432068,
+                -8.153915405273438e-05
+              ],
+              "held": null,
+              "relation": null,
+              "fixture_state": null
+            },
+            {
+              "anchor_id": "e86",
+              "displacement_m": null,
+              "held": null,
+              "relation": null,
+              "fixture_state": null
+            }
+          ],
+          "evidence": [
+            {
+              "measurement_id": "rgbd:1:e118",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            },
+            {
+              "measurement_id": "rgbd:1:e75",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            },
+            {
+              "measurement_id": "rgbd:1:e113",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            },
+            {
+              "measurement_id": "rgbd:1:e68",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            },
+            {
+              "measurement_id": "rgbd:1:e5",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            },
+            {
+              "measurement_id": "rgbd:1:e32",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            },
+            {
+              "measurement_id": "rgbd:1:e37",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            },
+            {
+              "measurement_id": "rgbd:1:e86",
+              "capture_step": 1,
+              "source": "rgbd",
+              "cameras": [
+                "main",
+                "wrist"
+              ],
+              "operation": "rgbd_segmentation_and_tracking/1-dev"
+            }
+          ],
+          "expectation_checks": []
+        }
+      ],
+      "relations": [
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e5"
+        },
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e37"
+        },
+        {
+          "source_id": "e118",
+          "relation": "left_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e118",
+          "relation": "in_front_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e75",
+          "relation": "on",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e113",
+          "relation": "in_front_of",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e113",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e113",
+          "relation": "on",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e113",
+          "relation": "in_front_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e113",
+          "relation": "in_front_of",
+          "target_id": "e37"
+        },
+        {
+          "source_id": "e113",
+          "relation": "in_front_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e68",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e68",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e68",
+          "relation": "left_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e37"
+        },
+        {
+          "source_id": "e68",
+          "relation": "left_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e68",
+          "relation": "in_front_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e5",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e5",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e5",
+          "relation": "on",
+          "target_id": "e68"
+        },
+        {
+          "source_id": "e5",
+          "relation": "left_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e37"
+        },
+        {
+          "source_id": "e5",
+          "relation": "left_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e5",
+          "relation": "in_front_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e32",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e32",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e32",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e32",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e32",
+          "relation": "on",
+          "target_id": "e5"
+        },
+        {
+          "source_id": "e32",
+          "relation": "in",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e37",
+          "relation": "on",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e37",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e37",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e68"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e5"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e37",
+          "relation": "on",
+          "target_id": "e32"
+        },
+        {
+          "source_id": "e37",
+          "relation": "left_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e37",
+          "relation": "in_front_of",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e37",
+          "relation": "on",
+          "target_id": "e86"
+        },
+        {
+          "source_id": "e86",
+          "relation": "in",
+          "target_id": "e118"
+        },
+        {
+          "source_id": "e86",
+          "relation": "left_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e86",
+          "relation": "in_front_of",
+          "target_id": "e75"
+        },
+        {
+          "source_id": "e86",
+          "relation": "left_of",
+          "target_id": "e113"
+        },
+        {
+          "source_id": "e86",
+          "relation": "on",
+          "target_id": "e5"
+        },
+        {
+          "source_id": "e86",
+          "relation": "left_of",
+          "target_id": "e32"
+        }
+      ],
+      "max_actions": 4,
+      "execution_prefix": null,
+      "instruction_clauses": [
+        "Open the top layer of the drawer",
+        "put the cream cheese inside"
+      ],
+      "progress": {
+        "version": "public-measured-progress/2-goal-directed",
+        "stagnant_decisions": 1,
+        "limit": 11,
+        "loop_detected": false
+      }
+    },
+    "selected": {
+      "schema_version": "bounded-skills/6",
+      "observation_id": "public-1",
+      "revision": 1,
+      "kind": "decision",
+      "candidate_ids": [
+        "9cb9f09d6d190d7b"
+      ]
+    }
+  }
+]

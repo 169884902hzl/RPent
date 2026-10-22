@@ -307,6 +307,40 @@ def test_stale_chunk_anchor_does_not_charge_an_unexecuted_action():
     assert consumes_recovery(dict(receipt, stop_reason='measured_sweep_collision'))
 
 
+def test_recorded_retry_uses_fresh_seed_before_repeating_a_failed_action(tmp_path, monkeypatch):
+    import json
+    from pathlib import Path
+    from contextlib import nullcontext
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    records = json.loads((Path(__file__).parent/'fixtures/vla_retry_before_loop_20261023.json').read_text())
+    first, second = [r['request'] for r in records]
+    executed = []
+    physics = lambda: {'sim_state': [0.], 'counters': {'_elapsed_steps': 5*len(executed)}}
+    facade = SimpleNamespace(snapshot=physics,
+        goal_status=lambda: {'done': len(executed) == 2, 'satisfied': [len(executed) == 2]})
+    monkeypatch.setattr(probe, 'bind_subtask', lambda *_: (None, None))
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({'physics': physics()}, {}))
+    adapter = SimpleNamespace(details=[], last_chunk={}, held=None, hybrid_recovery_budget=1,
+        request=lambda **_: second, ex=SimpleNamespace(instruction=first['instruction']),
+        p=SimpleNamespace(model=object(), env=SimpleNamespace(terminated=False, truncated=False,
+            execution_budget=lambda: {'used_sim_steps': 5*len(executed)})))
+    def execute(_request, decision):
+        executed.extend(decision['candidate_ids'])
+        return [{'skill': 'call_vla', 'steps_used': 5,
+            'outcome': 'failure' if len(executed) == 1 else 'success',
+            'stop_reason': 'no_progress_blocks' if len(executed) == 1 else 'native_success'}]
+    adapter.execute = execute
+    spec = {'mode': 'pick', 'goal_index': 0, 'source_symbol': 'registered_object', 'target_symbol': None}
+    result, _ = probe.trial(facade, adapter, SimpleNamespace(rpc=object()),
+        SimpleNamespace(measure=lambda *_: nullcontext()), spec, 'call_vla', 1,
+        tmp_path/'branch', first, vla_parameters={'mode': 'task',
+            'preparation': 'in_place', 'prompt_style': 'full_task'})
+    assert executed == ['9cb9f09d6d190d7b', 'aa0192a89b2c28ba']
+    assert result['success'] is True and result['native_task_success'] is True
+    assert result['decisions'] == 2 and result['recovery_used'] == 1
+
+
 def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, monkeypatch):
     from scripts import probe_bounded_hybrid_d2 as probe
 

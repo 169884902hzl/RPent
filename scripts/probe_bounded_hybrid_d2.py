@@ -226,24 +226,29 @@ def bind_subtask(policy, adapter, spec):
     return source, target
 
 
-def unbound_vla_candidate(request, instruction, mode, *, preparation='in_place'):
-    """Select an existing legal public clause/task call when identity is absent."""
-    from robots.libero.bounded_vla_options import clause_for_mode
+def least_failed_vla_candidate(request, required):
+    """Choose an eligible invocation with the least public failure history."""
     from rpent.skill_package.contract import legal_after
 
     legal = set(legal_after(request, []))
+    return min((c for c in request['candidates'] if c['id'] in legal
+        and c['skill'] == 'call_vla'
+        and all(c['parameters'].get(key) == value for key, value in required.items())),
+        key=lambda c: c.get('recent_failures', 0), default=None)
+
+
+def unbound_vla_candidate(request, instruction, mode, *, preparation='in_place'):
+    """Select an existing legal public clause/task call when identity is absent."""
+    from robots.libero.bounded_vla_options import clause_for_mode
     phrase = clause_for_mode(instruction, mode)
     clauses = request.get('instruction_clauses', [])
     clause_id = clauses.index(phrase) if phrase in clauses else None
     for selected_preparation in dict.fromkeys((preparation, 'in_place')):
-        options = [candidate for candidate in request['candidates']
-            if candidate['id'] in legal and candidate['skill'] == 'call_vla'
-            and candidate['parameters'].get('preparation') == selected_preparation]
-        clause = next((candidate for candidate in options
-            if clause_id is not None and candidate['parameters']['mode'] == 'instruction'
-            and candidate['parameters'].get('clause_id') == clause_id), None)
-        selected = clause or next((candidate for candidate in options
-            if candidate['parameters']['mode'] == 'task'), None)
+        clause = (least_failed_vla_candidate(request, {'mode': 'instruction',
+            'clause_id': clause_id, 'preparation': selected_preparation})
+            if clause_id is not None else None)
+        selected = clause or least_failed_vla_candidate(request,
+            {'mode': 'task', 'preparation': selected_preparation})
         if selected is not None:
             return selected
     return None
@@ -377,11 +382,8 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                             required['anchor_id'] = source.id
                         if target is not None:
                             required['target_id'] = target.id
-                    legal = set(legal_after(request, []))
-                    forced = next((c for c in request['candidates'] if c['id'] in legal
-                        and c['skill'] == 'call_vla'
-                        and (whole_task or not recovering_binding)
-                        and all(c['parameters'].get(k) == v for k, v in required.items())), None)
+                    forced = (least_failed_vla_candidate(request, required)
+                        if whole_task or not recovering_binding else None)
                     if forced is None:
                         unbound = unbound_vla_candidate(request, adapter.ex.instruction, spec['mode'],
                             preparation=required.get('preparation', 'in_place'))
@@ -532,8 +534,6 @@ def native_instruction_replay(facade, adapter, policy, timings, output, seed):
     This does not supply missing private subtask rules or impute a sampled
     bound. Its outcome uses only the benchmark's native completion signal.
     """
-    from rpent.skill_package.contract import legal_after
-
     output.mkdir()
     original_model = adapter.p.model
     seeded = SeededPolicy(original_model, seed, input_ledger=output/'vla_inputs.jsonl')
@@ -548,10 +548,8 @@ def native_instruction_replay(facade, adapter, policy, timings, output, seed):
                 break
             with timings.measure('planning.request'):
                 request = adapter.request(k=4)
-            legal = set(legal_after(request,[]))
-            option = next((c for c in request['candidates'] if c['id'] in legal
-                and c['skill']=='call_vla' and c['parameters'].get('mode')=='task'
-                and c['parameters'].get('preparation')=='in_place'),None)
+            option = least_failed_vla_candidate(request,
+                {'mode': 'task', 'preparation': 'in_place'})
             if option is None:
                 reason = 'full_instruction_option_unavailable'
                 break
