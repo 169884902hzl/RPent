@@ -84,6 +84,8 @@ def main():
                 key = trial_key(trial)
                 assert key in before, (name, key)
                 previous = before[key]
+                matched_invocation = (previous['request_sha256'] == trial['request_sha256']
+                    and previous.get('selected_candidate_id') == trial.get('selected_candidate_id'))
                 pairs.append({'case': name, 'domain': domain, 'category': job['case']['category'],
                     'method': key[0], 'variant': key[1], 'seed': key[2],
                     'before_success': previous['success'] is True, 'after_success': trial['success'] is True,
@@ -91,6 +93,11 @@ def main():
                     'regressed': previous['success'] is True and trial['success'] is not True,
                     'before_reason': previous['reason'], 'after_reason': trial['reason'],
                     'before_steps': previous['sim_steps'], 'after_steps': trial['sim_steps'],
+                    'same_initial_request': previous['request_sha256'] == trial['request_sha256'],
+                    'same_actual_candidate': previous.get('selected_candidate_id') == trial.get('selected_candidate_id'),
+                    'before_actual_candidate': previous.get('selected_candidate_id'),
+                    'after_actual_candidate': trial.get('selected_candidate_id'),
+                    'matched_invocation': matched_invocation,
                     'before': previous['choices'], 'after': trial['choices']})
             assert len(result['trials']) == len(old['trials']), name
             mappings.append({'case': name, 'domain': domain,
@@ -107,6 +114,8 @@ def main():
     for row in pairs:
         groups[(row['domain'], row['category'], row['method'], row['variant'])].append(row)
     report = {'states': len(closed), 'trials': len(pairs), 'summary': stats(pairs),
+        'same_actual_request_and_invocation': stats([r for r in pairs if r['matched_invocation']]),
+        'changed_invocation': stats([r for r in pairs if not r['matched_invocation']]),
         'registered_initials_restored_exactly': True,
         'public_context_scope': 'fresh public reconstruction after exact physics restore; all new arms share that new request; no old context labels transferred',
         'by_group': [{'domain': k[0], 'category': k[1], 'method': k[2], 'variant': k[3], **stats(v)}
