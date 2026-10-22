@@ -13,7 +13,8 @@ ROOT=/public/home/sunyihan/rpent_libero_eval
 : "${SCHEMA6_SOURCE:?absolute snapshot required}"
 : "${SCHEMA6_MANIFEST:?absolute manifest required}"
 : "${SCHEMA6_OUTPUT:?case-resumable output required}"
-export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl LIBERO_CONFIG_PATH="$ROOT/runtime_config"
+export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
+export LIBERO_CONFIG_PATH="${SCHEMA6_LIBERO_CONFIG_PATH:-$ROOT/runtime_config}"
 export PI05_CHECKPOINT_PATH="$ROOT/assets/pi05" SAM3_CHECKPOINT_PATH="$ROOT/assets/sam3/sam3.pt"
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
@@ -25,7 +26,7 @@ fi
 ARGS=(--source "$SCHEMA6_SOURCE" --manifest "$SCHEMA6_MANIFEST" --output "$SCHEMA6_OUTPUT")
 CUDA_VISIBLE_DEVICES='' "$ROOT/.venv/bin/python" - "$SCHEMA6_SOURCE" "$SCHEMA6_MANIFEST" <<'PY'
 from pathlib import Path
-import hashlib,json,sys
+import hashlib,json,os,sys
 source=Path(sys.argv[1]).resolve(strict=True)
 for name in ('harness_v5_eval.py','typed_choice_eval.py','scripts/probe_bounded_hybrid_d2.py'):
     if not (source/name).is_file():raise FileNotFoundError(source/name)
@@ -35,9 +36,14 @@ import harness_v5_eval
 if Path(harness_v5_eval.__file__).resolve().parent!=source:
     raise RuntimeError('calibration helper imported from a different snapshot')
 plan=json.loads(Path(sys.argv[2]).resolve(strict=True).read_bytes())
+config=Path(os.environ['LIBERO_CONFIG_PATH'])/'config.yaml'
+config_ref={'path':str(config),'sha256':hashlib.sha256(config.read_bytes()).hexdigest()}
+if plan.get('libero_config') is not None and plan['libero_config']!=config_ref:
+    raise ValueError('registered LIBERO configuration changed')
 rows=plan.get('jobs',plan.get('cases',[]))
 for row in rows:load_public_gripper_calibration(row['case']['grasp_measurement_calibration'])
 print(json.dumps({'CPU_source_import_preflight':'passed','cases':len(rows),'source':str(source),
+    'libero_config':config_ref,
     'root_helper_sha256':hashlib.sha256((source/'harness_v5_eval.py').read_bytes()).hexdigest()}),flush=True)
 PY
 if [[ "${SCHEMA6_N1:-0}" != 1 ]]; then
