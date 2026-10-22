@@ -69,7 +69,9 @@ def physical_steps(result):
 
 def worker(args, plan):
     row=plan['jobs'][args.worker]
-    os.environ['LIBERO_TYPE']='pro' if row['kind'] in {'d2', 'd2_replay', 'option_factor', 'a1_preparation'} else 'standard'
+    pro = (row['kind'] in {'d2', 'd2_replay', 'option_factor', 'a1_preparation'}
+        or row['kind'] == 'model' and row['split'] == 'd2_evaluation')
+    os.environ['LIBERO_TYPE'] = 'pro' if pro else 'standard'
     os.environ['LIBERO_GRASP_DIAGNOSTIC_MODELS']=str(args.output/'private_grasp_models')
     helper=hooks(args.source);helper.bootstrap_source('d2')
     helper.install_d2_restore_compatibility()

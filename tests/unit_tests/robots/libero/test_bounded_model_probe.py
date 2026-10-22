@@ -9,6 +9,30 @@ from coordination.bounded_skills_20261016.scripts import original_model_closedlo
 from robots.libero.bounded_timing import EpisodeTimings
 
 
+@pytest.mark.parametrize('row,expected', [
+    ({'kind': 'model', 'split': 'd2_evaluation'}, 'pro'),
+    ({'kind': 'model', 'split': 'init_holdout'}, 'standard'),
+    ({'kind': 'd2'}, 'pro'),
+    ({'kind': 'd2_replay'}, 'pro'),
+    ({'kind': 'original_fork'}, 'standard'),
+    ({'kind': 'smoke'}, 'standard'),
+])
+def test_worker_selects_registered_domain_before_simulator_import(tmp_path, monkeypatch, row, expected):
+    import os
+    from coordination.bounded_skills_20261016.scripts import run_schema6_physical_20261020 as launcher
+
+    class BootstrapObserved(Exception):
+        pass
+
+    def bootstrap(_domain):
+        assert os.environ['LIBERO_TYPE'] == expected
+        raise BootstrapObserved
+
+    monkeypatch.setattr(launcher, 'hooks', lambda _: SimpleNamespace(bootstrap_source=bootstrap))
+    with pytest.raises(BootstrapObserved):
+        launcher.worker(SimpleNamespace(worker=0, source=tmp_path, output=tmp_path), {'jobs': [row]})
+
+
 def test_health_rejects_a_different_checkpoint_even_when_ready(monkeypatch):
     from io import StringIO
     monkeypatch.setattr(module, 'urlopen', lambda *_args, **_kwargs: StringIO(json.dumps({
