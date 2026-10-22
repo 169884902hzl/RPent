@@ -35,6 +35,53 @@ def setup():
     return generated, facade, primitives, restored, observations, state
 
 
+def authored_setup(tmp_path):
+    import hashlib
+    from robots.libero.bounded_layout_distractors import add_distractors
+    parent = {'split': 'train', 'suite': 'libero_spatial', 'task': 0, 'seed': 10}
+    text = '''(define (problem LIBERO_Tabletop_Manipulation)
+    (:domain robosuite) (:language Put the bowl on the plate)
+    (:fixtures main_table - table) (:regions) (:objects bowl_1 - bowl plate_1 - plate)
+    (:obj_of_interest bowl_1 plate_1) (:init) (:goal (And (On bowl_1 plate_1))))'''
+    original = tmp_path/'original.bddl';original.write_text(text)
+    value, world = add_distractors(text, parent=parent,
+        distractors=[{'id':'rd_extra_1','asset':'alphabet_soup'}], support_symbol='main_table',
+        ranges=[-.3,-.3,.3,.3], available_assets={'alphabet_soup'})
+    added = tmp_path/'added.bddl';added.write_text(value)
+    world['bddl'] = {'path':str(added),'sha256':hashlib.sha256(added.read_bytes()).hexdigest()}
+    generated = {'layout': {'parent':parent,'layout_seed':11020400,
+        'predicate_witness': {'native_predicates_satisfied':True,
+            'nonintersecting':True,'instruction_identity_consistent':True}}, 'authored_world':world}
+    return generated, original, added, {key:parent[key] for key in ('suite','task','seed')}
+
+
+def test_authored_bootstrap_uses_the_validated_added_model(tmp_path):
+    from robots.libero.bounded_generated_start import authored_world_path
+    generated, original, added, episode = authored_setup(tmp_path)
+    assert authored_world_path(generated, original, episode) == added
+    added.write_text(added.read_text().replace('alphabet_soup', 'ketchup'))
+    with pytest.raises(ValueError, match='changed after CPU'):
+        authored_world_path(generated, original, episode)
+
+
+@pytest.mark.parametrize('change', ['parent', 'goal', 'witness'])
+def test_authored_bootstrap_rejects_other_parent_changed_goal_and_missing_witness(tmp_path, change):
+    import hashlib
+    from robots.libero.bounded_generated_start import authored_world_path
+    generated, original, added, episode = authored_setup(tmp_path)
+    if change == 'parent':
+        episode['seed'] += 1
+    elif change == 'witness':
+        generated['layout']['predicate_witness']['nonintersecting'] = False
+    else:
+        added.write_text(added.read_text().replace('(On bowl_1 plate_1)', '(On bowl_1 main_table)'))
+        value = hashlib.sha256(added.read_bytes()).hexdigest()
+        generated['authored_world']['bddl']['sha256'] = value
+        generated['authored_world']['authored_bddl_sha256'] = value
+    with pytest.raises(ValueError):
+        authored_world_path(generated, original, episode)
+
+
 def test_materialization_keeps_integration_and_refreshes_cameras_before_branching():
     generated, facade, primitives, restored, observations, _ = setup()
     original = copy.deepcopy(generated)

@@ -236,7 +236,8 @@ def executed_actions(motions):
                for move in motions)
 
 
-def make_probe_env(task_id, seed, suite_name, max_episode_steps, *, rgbd_no_msaa_v1=False):
+def make_probe_env(task_id, seed, suite_name, max_episode_steps, *, rgbd_no_msaa_v1=False,
+                   constructed_start=None):
     """Own the private metrology worker; leave the shared oracle implementation intact."""
     from rlinf.envs.libero.libero_env import LiberoEnv
     from rlinf.envs.libero.utils import benchmark
@@ -250,8 +251,30 @@ def make_probe_env(task_id, seed, suite_name, max_episode_steps, *, rgbd_no_msaa
     cfg = build_env_cfg(task_suite_name=suite_name, specific_reset_id=first_id + seed,
                         seed=seed, max_episode_steps=max_episode_steps)
     cfg.init_params.ignore_done = True
+    authored_path = None
+    if constructed_start is not None:
+        from libero.libero import get_libero_path
+        from robots.libero.bounded_generated_start import authored_world_path
+        original_task = suite.get_task(task_id)
+        original_path = Path(get_libero_path('bddl_files'))/original_task.problem_folder/original_task.bddl_file
+        authored_path = authored_world_path(constructed_start, original_path,
+            {'suite': suite_name, 'task': task_id, 'seed': seed})
 
     class SkillProbeEnv(LiberoEnv):
+        def get_env_fn_params(self, env_idx=None):
+            params = super().get_env_fn_params(env_idx)
+            if authored_path is not None:
+                for row in params:
+                    row['bddl_file_name'] = str(authored_path)
+            return params
+
+        def _get_reset_states(self, env_idx):
+            if authored_path is None:
+                return super()._get_reset_states(env_idx)
+            import numpy as np
+            count = self.num_envs if env_idx is None else len(env_idx)
+            return [np.asarray(constructed_start['sim_state']).copy() for _ in range(count)]
+
         def get_env_fns(self):
             from robots.libero.v5_branch_state import attach_branch_state
             from robots.libero.v5_reset_seed import attach_reset_seed

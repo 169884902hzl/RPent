@@ -118,8 +118,10 @@ def runtime(case, endpoints, output, *, domain='d2', artifact_compression_level=
     elif domain == 'original':
         from scripts.probe_bounded_motion import original_session
         ep = case['episode']
+        world = ({'constructed_start': constructed_start}
+            if constructed_start is not None and constructed_start.get('authored_world') else {})
         facade, primitives = original_session(ep['suite'], ep['task'], ep['seed'],
-            10000, rgbd_no_msaa_v1=True)
+            10000, rgbd_no_msaa_v1=True, **world)
     else:
         raise ValueError('unsupported diagnostic domain')
     toolkit = None
