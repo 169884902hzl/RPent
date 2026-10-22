@@ -1,6 +1,22 @@
-# Bounded skill package v6 — 2026-10-20
+# Bounded skill package v7 (development) — 2026-10-23
 
 Owner: Codex3. This contract implements the user's **10/16 05:45 PDT** direction; the 10/14 pause and old v5 freeze gates are retired. No model training is authorized in this round. This is a development specification, not evidence of physical qualification. Existing confirmation-state exclusions remain permanent.
+
+## Measured-anchor VLA revision (v7, development)
+
+The v7 review schema is [`rpent/skill_package/schema7.json`](rpent/skill_package/schema7.json). A qualified v7 source snapshot publishes these exact bytes at its canonical `rpent/skill_package/schema.json` and emits `bounded-skills/7`. The existing v6 snapshots, requests, outcomes, and training packets retain their identities. They are not relabeled by rewriting a version header. Model training and serving use the new option only after Codex2 synchronizes its schema, renderer and service. Oracle diagnostics and original-development forks can exercise the source directly.
+
+`call_vla(..., preparation="measured_anchor")` is an additional finite invocation variant. It requires a measured `anchor_id`; unbound `task`/`instruction` calls retain the existing variants. Availability depends on measured entities and the existing mode requirements, without task-goal filtering. Candidate order has no semantic meaning.
+
+* With an empty hand, preparation reuses the selected anchor's existing measured approach and wrist orientation, with the normal complete route, attached-payload and IK screens. An absent contact fit can use the existing measured-bounds noncontact approach. Fixed approach/path priority remains above/right/front/left and over/direct/around. No A1 coordinate, simulator object pose or goal region is an input.
+* When the selected `on`/`in` invocation starts with its source publicly held, preparation instead reuses `carry_to(target_id)` to stage above the measured destination, preserving the current grip. This is part of the selected compound option, not an extra semantic choice.
+* The policy prompt uses the existing measured local subtask template and original-public-language provenance. The model supplies neither a prompt nor a contact gain. Policy controls, block budgets, no-progress/region checks, native stop handling and public success thresholds are unchanged.
+* After the policy returns, an unfinished `on`/`in` invocation may execute the existing screened carry/lower/release sequence while the same source remains publicly held. A failed policy receipt does not itself prohibit this continuation. Missing grip evidence, a failed route, native termination or the original environment budget stops it. `pick` and fixture modes return after their existing public verification; they do not invent an unselected destination.
+* Preparation and transport use the current public RGB-D/proprioception and the existing smooth executor. No force or speed limit increases. Control resumes from the actual measured handoff pose. The local measured anchors are refreshed after a preparation that moved their source or approached the destination.
+* Receipts retain the existing public before/after/expectation checks. Execution evidence additionally separates preparation, raw policy outcome, scripted transport, final public verification, and their control-step/time costs. A zero-control preparation planning rejection reports untested contact rather than a false empty grip. A scripted placement succeeds only under the existing public placement check or native task completion.
+* Consequence geometry remains explicitly unmeasured until selected full screening. Expected steps include the policy estimate plus a public geometric preparation/transport estimate. Historical reliability for this new parameter value starts at zero samples; only new original-development measurements can populate it. PRO/D2/confirmation results never become its runtime history.
+
+The joint A1-coordinate diagnostic is evidence for testing this generic method, not validation of the public-anchor implementation. Qualification compares the existing variants and the new invocation on the registered original90/own-layout65 states, and retains N1/N2 execution regressions. New D2 recovery-one sampling/replay is a separate evaluation source/cohort after those checks; previous results stay closed.
 
 ## Schema6 behavior and evaluation registration
 

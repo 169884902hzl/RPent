@@ -1,0 +1,1830 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:robot-decider:bounded-skills:7",
+  "title": "Robot-independent bounded skill request, selection and receipt",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/decision"
+    },
+    {
+      "$ref": "#/$defs/receipt"
+    },
+    {
+      "$ref": "#/$defs/prefix_context"
+    },
+    {
+      "$ref": "#/$defs/oracle_labels"
+    }
+  ],
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "measurement_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capture_step": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "enum": [
+            "rgbd",
+            "robot_proprioception",
+            "static_robot_geometry",
+            "derived_public"
+          ]
+        },
+        "cameras": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "main",
+              "wrist"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 2
+        },
+        "operation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "measurement_id",
+        "capture_step",
+        "source",
+        "cameras",
+        "operation"
+      ],
+      "additionalProperties": false
+    },
+    "anchor": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "xyz_m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "size_m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "quat_xyzw": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 4,
+              "maxItems": 4
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 1
+        },
+        "cached": {
+          "type": "boolean"
+        },
+        "capture_step": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "frame",
+        "xyz_m",
+        "size_m",
+        "quat_xyzw",
+        "confidence",
+        "evidence",
+        "cached"
+      ],
+      "additionalProperties": false
+    },
+    "robot": {
+      "type": "object",
+      "properties": {
+        "eef_xyz_m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "eef_quat_xyzw": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "gripper_opening_m": {
+          "type": "number"
+        },
+        "held_anchor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "velocity_m_s": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "eef_xyz_m",
+        "eef_quat_xyzw",
+        "gripper_opening_m",
+        "held_anchor_id",
+        "velocity_m_s"
+      ],
+      "additionalProperties": false
+    },
+    "history": {
+      "type": "object",
+      "properties": {
+        "success_rate": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expected_steps": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "source_manifest_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "success_rate",
+        "n",
+        "expected_steps",
+        "source_manifest_sha256"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "n": {
+                "const": 0
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "success_rate": {
+                "type": "null"
+              },
+              "expected_steps": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "success_rate": {
+                "type": "number"
+              },
+              "expected_steps": {
+                "type": "number",
+                "minimum": 0
+              },
+              "source_manifest_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "consequences": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/full_consequences"
+        },
+        {
+          "$ref": "#/$defs/blocked_consequences"
+        }
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "anchor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approach": {
+          "enum": [
+            "above",
+            "front",
+            "left",
+            "right",
+            null
+          ]
+        },
+        "path": {
+          "enum": [
+            "direct",
+            "over",
+            "around",
+            null
+          ]
+        },
+        "axis": {
+          "enum": [
+            "x",
+            "y",
+            "z",
+            null
+          ]
+        },
+        "distance_m": {
+          "enum": [
+            -0.02,
+            -0.01,
+            0.01,
+            0.02,
+            null
+          ]
+        },
+        "angle_deg": {
+          "enum": [
+            -90,
+            -45,
+            45,
+            90,
+            null
+          ]
+        },
+        "mode": {
+          "enum": [
+            "open",
+            "close",
+            "refresh",
+            "wrist_scan",
+            "pick",
+            "on",
+            "in",
+            "turn_on",
+            "turn_off",
+            "push",
+            "task",
+            "instruction",
+            null
+          ]
+        },
+        "direction": {
+          "enum": [
+            -1,
+            1
+          ]
+        },
+        "preparation": {
+          "enum": [
+            "in_place",
+            "initial_pose",
+            "measured_anchor"
+          ]
+        },
+        "prompt_style": {
+          "enum": [
+            "template",
+            "original_clause",
+            "full_task",
+            "a1_description"
+          ]
+        },
+        "seed_variant": {
+          "enum": [
+            0,
+            1,
+            2
+          ]
+        },
+        "clause_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill": {
+          "enum": [
+            "move_to",
+            "align",
+            "descend",
+            "lift",
+            "carry_to",
+            "lower",
+            "set_gripper",
+            "release",
+            "rotate_wrist",
+            "guarded_move",
+            "nudge",
+            "observe",
+            "call_vla",
+            "finish",
+            "ask_help"
+          ]
+        },
+        "parameters": {
+          "$ref": "#/$defs/parameters"
+        },
+        "consequences": {
+          "$ref": "#/$defs/consequences"
+        },
+        "history": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/history"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recent_failures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_failure": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expected_receipt": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/receipt_condition"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "skill",
+        "parameters",
+        "consequences",
+        "recent_failures",
+        "last_failure"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "move_to"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "anchor_id"
+                ],
+                "properties": {
+                  "anchor_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "align"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "anchor_id"
+                ],
+                "properties": {
+                  "anchor_id": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "descend"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "anchor_id"
+                ],
+                "properties": {
+                  "anchor_id": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "lift"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "anchor_id"
+                ],
+                "properties": {
+                  "anchor_id": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "carry_to"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "target_id"
+                ],
+                "properties": {
+                  "target_id": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "lower"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "target_id"
+                ],
+                "properties": {
+                  "target_id": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "set_gripper"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "mode"
+                ],
+                "properties": {
+                  "mode": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "release"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [],
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "rotate_wrist"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "angle_deg"
+                ],
+                "properties": {
+                  "angle_deg": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "nudge"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "axis",
+                  "distance_m"
+                ],
+                "properties": {
+                  "axis": {
+                    "not": {
+                      "type": "null"
+                    }
+                  },
+                  "distance_m": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "observe"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "mode"
+                ],
+                "properties": {
+                  "mode": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "call_vla"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "mode"
+                ],
+                "properties": {
+                  "mode": {
+                    "not": {
+                      "type": "null"
+                    }
+                  }
+                },
+                "anyOf": [
+                  {
+                    "required": [
+                      "anchor_id"
+                    ],
+                    "properties": {
+                      "anchor_id": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "mode": {
+                        "const": "task"
+                      }
+                    }
+                  },
+                  {
+                    "required": [
+                      "clause_id"
+                    ],
+                    "properties": {
+                      "mode": {
+                        "const": "instruction"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "finish"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [],
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "ask_help"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [],
+                "properties": {}
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "set_gripper"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "open",
+                      "close"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "observe"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "refresh",
+                      "wrist_scan"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "call_vla"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "pick",
+                      "on",
+                      "in",
+                      "open",
+                      "close",
+                      "turn_on",
+                      "turn_off",
+                      "push",
+                      "task",
+                      "instruction"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "call_vla"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "history": {
+                "$ref": "#/$defs/history"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "history": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "call_vla"
+              },
+              "parameters": {
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "on",
+                      "in",
+                      "push"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "target_id"
+                ],
+                "properties": {
+                  "target_id": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "consequences": {
+                "properties": {
+                  "screen_scope": {
+                    "const": "blocked_at_current_prefix"
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "required": [
+              "history",
+              "expected_receipt"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "guarded_move"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "anchor_id",
+                  "axis",
+                  "direction"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "call_vla"
+              },
+              "parameters": {
+                "required": [
+                  "preparation"
+                ],
+                "properties": {
+                  "preparation": {
+                    "const": "measured_anchor"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "anchor_id"
+                ],
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "pick",
+                      "on",
+                      "in",
+                      "open",
+                      "close",
+                      "turn_on",
+                      "turn_off",
+                      "push"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "measurement_delta": {
+      "type": "object",
+      "properties": {
+        "anchor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "displacement_m": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "held": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "relation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fixture_state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "anchor_id",
+        "displacement_m",
+        "held",
+        "relation",
+        "fixture_state"
+      ],
+      "additionalProperties": false
+    },
+    "receipt": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "bounded-skills/7"
+        },
+        "kind": {
+          "const": "receipt"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill": {
+          "enum": [
+            "move_to",
+            "align",
+            "descend",
+            "lift",
+            "carry_to",
+            "lower",
+            "set_gripper",
+            "release",
+            "rotate_wrist",
+            "guarded_move",
+            "nudge",
+            "observe",
+            "call_vla",
+            "finish",
+            "ask_help"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "success",
+            "failure",
+            "no_effect",
+            "unmeasured",
+            "rejected",
+            "interrupted"
+          ]
+        },
+        "phase": {
+          "enum": [
+            "perception",
+            "planning_unreachable",
+            "collision",
+            "contact_failure",
+            "verification_error",
+            null
+          ]
+        },
+        "stop_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "steps_used": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "before": {
+          "$ref": "#/$defs/robot"
+        },
+        "after": {
+          "$ref": "#/$defs/robot"
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/measurement_delta"
+          },
+          "minItems": 0
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
+          "minItems": 0
+        },
+        "expectation_checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "condition": {
+                "$ref": "#/$defs/receipt_condition"
+              },
+              "measured": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "passed": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "condition",
+              "measured",
+              "passed"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "advance_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "observation_id",
+        "candidate_id",
+        "skill",
+        "outcome",
+        "phase",
+        "stop_reason",
+        "steps_used",
+        "before",
+        "after",
+        "changes",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "request": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "bounded-skills/7"
+        },
+        "kind": {
+          "const": "request"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "instruction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "remaining_sim_steps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/anchor"
+          },
+          "minItems": 0
+        },
+        "robot": {
+          "$ref": "#/$defs/robot"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidate"
+          },
+          "minItems": 1
+        },
+        "receipts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/receipt"
+          },
+          "minItems": 0,
+          "maxItems": 3
+        },
+        "max_actions": {
+          "enum": [
+            1,
+            4
+          ]
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relation": {
+                "enum": [
+                  "left_of",
+                  "in_front_of",
+                  "on",
+                  "in",
+                  "near"
+                ]
+              },
+              "target_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "source_id",
+              "relation",
+              "target_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "execution_prefix": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/execution_prefix"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "progress": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "enum": [
+                "public-measured-progress/1",
+                "public-measured-progress/2-goal-directed"
+              ]
+            },
+            "stagnant_decisions": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "loop_detected": {
+              "type": "boolean"
+            },
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            }
+          },
+          "required": [
+            "version",
+            "stagnant_decisions",
+            "limit"
+          ],
+          "additionalProperties": false
+        },
+        "instruction_clauses": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "observation_id",
+        "revision",
+        "instruction",
+        "remaining_sim_steps",
+        "anchors",
+        "robot",
+        "candidates",
+        "receipts",
+        "max_actions",
+        "execution_prefix"
+      ],
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "bounded-skills/7"
+        },
+        "kind": {
+          "const": "decision"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "observation_id",
+        "revision",
+        "candidate_ids"
+      ],
+      "additionalProperties": false
+    },
+    "receipt_condition": {
+      "type": "object",
+      "properties": {
+        "metric": {
+          "enum": [
+            "endpoint_error_m",
+            "angular_error_rad",
+            "gripper_opening_m",
+            "object_rise_m",
+            "held",
+            "released",
+            "contact_progress_m"
+          ]
+        },
+        "anchor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "minimum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maximum": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "metric",
+        "anchor_id",
+        "minimum",
+        "maximum"
+      ],
+      "additionalProperties": false
+    },
+    "prefix_context": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "bounded-skills/7"
+        },
+        "kind": {
+          "const": "prefix_context"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "prefix": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "predicted_robot": {
+          "$ref": "#/$defs/robot"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidate"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/receipt_condition"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "observation_id",
+        "revision",
+        "prefix",
+        "predicted_robot",
+        "candidates",
+        "assumptions"
+      ],
+      "additionalProperties": false
+    },
+    "oracle_position": {
+      "type": "object",
+      "properties": {
+        "prefix": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "legal": {
+          "description": "Exact ordered contract.legal_after(request, prefix), public-request-legal/2: frozen collision/IK blockers and public held prerequisites; no planner or private-goal filtering.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "selected": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_acceptable": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "measured_success": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "measured_failure": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "judge": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "prefix",
+        "legal",
+        "selected",
+        "rule_acceptable",
+        "measured_success",
+        "measured_failure",
+        "judge",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "oracle_labels": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "bounded-skills/7"
+        },
+        "kind": {
+          "const": "oracle_labels"
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "request_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "positions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/oracle_position"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "observation_id",
+        "revision",
+        "request_sha256",
+        "positions"
+      ],
+      "additionalProperties": false
+    },
+    "full_consequences": {
+      "type": "object",
+      "properties": {
+        "path_min_clearance_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "collision": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "ik_reachable": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "expected_width_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "expected_gripper_opening_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "expected_steps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "screen_scope": {
+          "enum": [
+            "hand_mesh_observed_space",
+            "nonmotion",
+            "contact_selected_surface",
+            "unmeasured",
+            "conditional_on_prefix",
+            "endpoint_ik_coarse_geometry",
+            "planner_selected_variant_pending",
+            "reused_endpoint_ik",
+            "guarded_contact_increment"
+          ]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "path_min_clearance_m",
+        "collision",
+        "ik_reachable",
+        "expected_width_m",
+        "expected_gripper_opening_m",
+        "expected_steps",
+        "screen_scope",
+        "evidence_ids"
+      ],
+      "additionalProperties": false
+    },
+    "blocked_consequences": {
+      "type": "object",
+      "properties": {
+        "collision": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "ik_reachable": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "screen_scope": {
+          "const": "blocked_at_current_prefix"
+        }
+      },
+      "required": [
+        "collision",
+        "ik_reachable",
+        "screen_scope"
+      ],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "properties": {
+            "collision": {
+              "const": true
+            }
+          }
+        },
+        {
+          "properties": {
+            "ik_reachable": {
+              "const": false
+            }
+          }
+        }
+      ]
+    },
+    "committed_step": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "skill": {
+          "enum": [
+            "move_to",
+            "align",
+            "descend",
+            "lift",
+            "carry_to",
+            "lower",
+            "set_gripper",
+            "release",
+            "rotate_wrist",
+            "guarded_move",
+            "nudge",
+            "observe",
+            "call_vla",
+            "finish",
+            "ask_help"
+          ]
+        },
+        "parameters": {
+          "$ref": "#/$defs/parameters"
+        }
+      },
+      "required": [
+        "id",
+        "skill",
+        "parameters"
+      ],
+      "additionalProperties": false
+    },
+    "execution_prefix": {
+      "type": "object",
+      "properties": {
+        "source_observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/committed_step"
+          },
+          "minItems": 1,
+          "maxItems": 4
+        },
+        "predicted_state": {
+          "type": "object",
+          "properties": {
+            "robot": {
+              "$ref": "#/$defs/robot"
+            },
+            "anchors": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/anchor"
+              }
+            },
+            "remaining_sim_steps": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "robot",
+            "anchors",
+            "remaining_sim_steps"
+          ],
+          "additionalProperties": false
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/receipt_condition"
+          }
+        }
+      },
+      "required": [
+        "source_observation_id",
+        "source_revision",
+        "steps",
+        "predicted_state",
+        "assumptions"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
