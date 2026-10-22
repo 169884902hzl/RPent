@@ -187,6 +187,30 @@ def construction_support(env):
     """Use the original arena's workspace metadata, including floor tasks."""
     domain = env.env
     name = domain.workspace_name
+    sim = getattr(env, 'sim', None)
+    surfaces = []
+    if sim is not None:
+        for i in range(sim.model.ngeom):
+            if int(sim.model.geom_type[i]) != 6:
+                continue
+            body = sim.model.body_id2name(int(sim.model.geom_bodyid[i])) or ''
+            if (not body.startswith(name)
+                    or not (sim.model.geom_contype[i] or sim.model.geom_conaffinity[i])):
+                continue
+            rotation = np.abs(sim.data.geom_xmat[i].reshape(3, 3))
+            # Original workspaces use cardinal box faces. Their actual top
+            # and translation can differ from the arena's placement offset.
+            if not np.allclose(rotation.max(axis=0), 1., atol=1e-6):
+                continue
+            half = rotation @ sim.model.geom_size[i]
+            centre = sim.data.geom_xpos[i]
+            surfaces.append((float(4*half[0]*half[1]), i, centre-half, centre+half))
+    if surfaces:
+        _, index, low, high = max(surfaces, key=lambda row: row[0])
+        return {'lower_m': low.tolist(), 'upper_m': high.tolist(),
+            'source': 'original_workspace_collision_box_top',
+            'geometry_id': index,
+            'geometry_body': sim.model.body_id2name(int(sim.model.geom_bodyid[index]))}
     size = getattr(domain, name+'_full_size', getattr(domain, 'table_full_size', None))
     offset = np.asarray(domain.workspace_offset, float)
     if size is not None:

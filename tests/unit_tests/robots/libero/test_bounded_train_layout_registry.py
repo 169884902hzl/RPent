@@ -38,6 +38,29 @@ def test_cpu_constructor_keeps_physics_and_proprioception_without_rendered_camer
         generator.restore(env, {'sim_state': [7.], 'actuator_state': state})
 
 
+def test_collision_surface_overrides_incorrect_arena_offset_and_xy_origin():
+    from types import SimpleNamespace
+    import numpy as np
+    from scripts.generate_bounded_train_layouts import construction_support
+
+    # Real rejected cup constructor: arena offset z=.41; collision top=.43676.
+    domain = SimpleNamespace(workspace_name='living_room_table',
+        workspace_offset=(0., 0., .41), living_room_table_full_size=(.7, 1.6, .024))
+    model = SimpleNamespace(ngeom=2, geom_type=np.array([6, 6]),
+        geom_bodyid=np.array([1, 2]), body_id2name=lambda i:
+            {1: 'living_room_table_col', 2: 'unrelated_obstacle'}[i],
+        geom_contype=np.ones(2), geom_conaffinity=np.ones(2),
+        geom_size=np.array([[.01184, .44432, .67171], [2., 2., 2.]]))
+    rotation = np.array([[0., -1., 0.], [0., 0., 1.], [-1., 0., 0.]])
+    data = SimpleNamespace(geom_xmat=np.array([rotation.ravel(), np.eye(3).ravel()]),
+        geom_xpos=np.array([[-.25, .05239, .42492], [0., 0., 1.]]))
+    support = construction_support(SimpleNamespace(env=domain,
+        sim=SimpleNamespace(model=model, data=data)))
+    assert support['source'] == 'original_workspace_collision_box_top'
+    assert np.allclose(support['lower_m'], [-.69432, -.61932, .41308])
+    assert np.allclose(support['upper_m'], [.19432, .72410, .43676])
+
+
 @pytest.mark.parametrize('workspace', ['main_table', 'kitchen_table', 'living_room_table'])
 def test_construction_uses_the_actual_workspace_dimension_attribute(workspace):
     from types import SimpleNamespace
