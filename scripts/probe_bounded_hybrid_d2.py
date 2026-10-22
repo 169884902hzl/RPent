@@ -22,6 +22,7 @@ from pathlib import Path
 import numpy as np
 
 from robots.libero.bounded_hybrid_diagnostic import (
+    PROGRESS_VERSION,
     SPLIT_VERSION,
     capture_runtime,
     choose_branch,
@@ -29,6 +30,7 @@ from robots.libero.bounded_hybrid_diagnostic import (
     restore_runtime,
     snapshot_digest,
     split_subtasks,
+    trial_progress_success,
     validate_d2_episode,
 )
 from scripts.probe_bounded_feasibility import (
@@ -477,8 +479,17 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                          and r.get('outcome') == 'rejected') for r in receipts):
                     reason = 'public_terminal_selection'
                     break
-                completed = (source is not None and adapter.held == source.id if spec["mode"] == "pick"
-                             else facade.goal_status()["satisfied"][spec["goal_index"]])
+                private_status = facade.goal_status()
+                goal_completed = private_status['satisfied'][spec['goal_index']]
+                if goal_completed:
+                    # A policy may finish placement while its temporary
+                    # sustained-grasp milestone is no longer true. Continue
+                    # from the registered task progress, preserving both labels.
+                    reason = (receipts[-1]['stop_reason'] if method == 'call_vla' and receipts
+                        else 'subtask_completed') if private_status['done'] else 'registered_goal_completed'
+                    break
+                completed = (source is not None and adapter.held == source.id
+                    if spec['mode'] == 'pick' else goal_completed)
                 failed = recovery_budget is not None and any(consumes_recovery(r) for r in receipts)
                 retry_exhausted = False
                 if failed and recovery_budget is not None:
@@ -495,6 +506,8 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
         endpoint, endpoint_ref = save_checkpoint(facade, adapter, policy, output / "private_endpoint.pkl")
         endpoint_goals = facade.goal_status()
         result['native_task_success'] = bool(endpoint_goals['done'])
+        result['private_goal_satisfied_at_endpoint'] = bool(endpoint_goals['satisfied'][spec['goal_index']])
+        result['private_progress_contract'] = PROGRESS_VERSION
         result['native_completion_scope'] = 'saved_endpoint_before_private_metrology'
         metrology_started = time.perf_counter()
         if whole_task:
@@ -516,6 +529,7 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
             private_metrology_s=time.perf_counter() - metrology_started,
             evidence=reference(output / "private_truth.json"),
             choices=reference(output / "choices.jsonl"))
+        result['private_progress_success'] = trial_progress_success(result)
     finally:
         policy.rpc, adapter.p.model = original_rpc, original_model
     # Metrology has stepped physics; costs come from the saved branch endpoint.
@@ -577,8 +591,8 @@ def choose_variant_branch(trials, variants):
     """Compare each three-seed invocation separately; never pool nine seeds."""
     if not variants or len(trials) != 1+3*len(variants):
         raise ValueError('one self trial and three trials per registered variant required')
-    groups = [choose_branch(trials[0]['success'],
-        [row['success'] for row in trials[1+3*i:4+3*i]]) for i in range(len(variants))]
+    groups = [choose_branch(trial_progress_success(trials[0]),
+        [trial_progress_success(row) for row in trials[1+3*i:4+3*i]]) for i in range(len(variants))]
     evidence = [{'variant': variant, **group} for variant, group in zip(variants, groups)]
     if any(group['method'] is None for group in groups):
         return {'method': None, 'status': 'incomplete_measurement', 'rate': None,
@@ -671,7 +685,8 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 write(output / "summary.json", result)
                 return result
             selection = (choose_variant_branch(trials, variants) if variants is not None else
-                choose_branch(trials[0]["success"], [row["success"] for row in trials[1:]]))
+                choose_branch(trial_progress_success(trials[0]),
+                    [trial_progress_success(row) for row in trials[1:]]))
             choice = {'subtask': spec, 'method': selection['method']}
             if 'vla_parameters' in selection:
                 choice.update(vla_parameters=selection['vla_parameters'], vla_variant=selection['vla_variant'])
@@ -687,7 +702,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 break
             envelope_rate *= selection["rate"]
             candidates = selection.get('trial_indices', [0] if selection['method'] == 'self' else [1, 2, 3])
-            continuation = next(i for i in candidates if trials[i]["success"])
+            continuation = next(i for i in candidates if trial_progress_success(trials[i]) is True)
             chosen.append(choice)
             decisions_used += trials[continuation]["decisions"]
             restore_checkpoint(facade, adapter, policy, endpoints_saved[continuation])
@@ -733,7 +748,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 replay.append(row)
                 replay_decisions += row["decisions"]
                 restore_checkpoint(facade, adapter, policy, endpoint)
-                if not row["success"]:
+                if trial_progress_success(row) is not True:
                     break
         result = {"case": case, "status": "physical_result", "subtasks": rows,
             "sampled_envelope_native_success": complete_selection['sampled_native_success'],
@@ -747,6 +762,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             "wall_time_breakdown": timings.summary(time.perf_counter() - timings.started),
             "training": False, "confirmation": False, "source_commit": plan["source_commit"],
             'registered_vla_variants': variants}
+        result['private_progress_contract'] = PROGRESS_VERSION
         write(output / "summary.json", result)
         return result
 

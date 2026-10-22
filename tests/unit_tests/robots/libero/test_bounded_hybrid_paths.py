@@ -102,3 +102,34 @@ def test_complete_replay_passes_selected_parameters_and_independent_seed(tmp_pat
     assert calls == [('call_vla', 1000000000, {'mode': 'task', 'preparation': 'in_place'})]
     assert result['actual_full_replay_success'] is True
     assert result['full_replay'][0]['selected_vla_variant'] == 'full_task'
+
+
+def test_replay_continues_after_registered_goal_completion_without_forging_native_success(tmp_path):
+    from contextlib import nullcontext
+    from types import SimpleNamespace
+    from robots.libero.bounded_hybrid_paths import replay_complete_path
+
+    calls=[]
+    def trial(*args,**kwargs):
+        calls.append(args[4]['id'])
+        return {'decisions':1,'sim_steps':10,'success':len(calls)==2,
+            'native_task_success':len(calls)==2,'private_goal_satisfied_at_endpoint':True},{}
+    probe=SimpleNamespace(trial=trial,restore_checkpoint=lambda *_:None)
+    selection={'kind':'selected_path','sampled_native_success':True,'conditional_rate':1.,
+        'choices':[{'subtask':{'id':f'g{i}:pick'},'method':'self'} for i in range(2)]}
+    result=replay_complete_path(probe,SimpleNamespace(goal_status=lambda:{'done':len(calls)==2}),
+        SimpleNamespace(request=lambda **_:{}),object(),SimpleNamespace(measure=lambda *_:nullcontext()),
+        selection,1000000000,tmp_path/'replay')
+    assert calls==['g0:pick','g1:pick'] and result['actual_full_replay_success'] is True
+    assert result['full_replay'][0]['success'] is False
+    assert result['full_replay'][0]['native_task_success'] is False
+
+
+def test_partial_goal_flag_alone_never_certifies_a_complete_task():
+    source=summary()
+    for row in source['subtasks']:
+        for t in row['trials']:
+            t.update(success=False,truth_source='unchanged_native_task_completion',
+                native_task_success=False,private_goal_satisfied_at_endpoint=True)
+    assert select_complete_path(source)['native_complete_alternatives']==[]
+    assert select_complete_path(source)['sampled_native_success'] is False

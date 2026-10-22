@@ -9,9 +9,11 @@ import tempfile
 
 BASE='c7520ae1219e4b67549b418b9438b271109dd49a'
 FILES=['scripts/probe_bounded_hybrid_d2.py','scripts/probe_bounded_hybrid_repair.py',
+    'robots/libero/bounded_hybrid_diagnostic.py',
     'tests/unit_tests/robots/libero/test_bounded_hybrid_diagnostic.py',
     'tests/unit_tests/robots/libero/test_bounded_hybrid_repair.py',
     'tests/unit_tests/robots/libero/fixtures/observe_recovery_receipts_20261022.json',
+    'tests/unit_tests/robots/libero/fixtures/original_partial_goal_20261023.json',
     'tests/unit_tests/robots/libero/fixtures/vla_retry_before_loop_20261023.json']
 
 

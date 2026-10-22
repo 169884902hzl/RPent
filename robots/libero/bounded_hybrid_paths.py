@@ -4,6 +4,8 @@ from __future__ import annotations
 import copy
 import time
 
+from robots.libero.bounded_hybrid_diagnostic import trial_progress_success
+
 
 def select_complete_path(summary):
     """Keep locally chosen prefixes and compare their native-complete calls.
@@ -88,7 +90,7 @@ def replay_complete_path(probe, facade, adapter, policy, timings, selection, see
             rows.append(row)
             decisions += row['decisions']
             probe.restore_checkpoint(facade, adapter, policy, endpoint)
-            if row['success'] is not True:
+            if trial_progress_success(row) is not True:
                 break
     return {'status': 'physical_result', 'actual_full_replay_success': bool(facade.goal_status()['done']),
         'full_replay': rows, 'independent_replay_wall_s': time.perf_counter()-started,

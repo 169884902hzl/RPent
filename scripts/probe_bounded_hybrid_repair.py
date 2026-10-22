@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 
 from rpent.skill_package.vla import VLABudget
+from robots.libero.bounded_hybrid_diagnostic import trial_progress_success
 from scripts import probe_bounded_hybrid_d2 as probe
 from scripts.probe_bounded_motion import write
 
@@ -266,7 +267,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             probe.restore_checkpoint(facade, adapter, policy, endpoint)
             subtask_plan, _ = probe.split_subtasks(facade.goal_status()['goals'], adapter.ex.instruction)
             next_spec = spec
-            if result['success'] is True:
+            if trial_progress_success(result) is True:
                 position = next(i for i, value in enumerate(subtask_plan) if value['id'] == spec['id'])
                 if position+1 < len(subtask_plan):
                     next_spec = subtask_plan[position+1]
@@ -302,7 +303,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 prefix.append(row)
                 prefix_decisions += row['decisions']
                 probe.restore_checkpoint(facade, adapter, policy, endpoint)
-                if row['success'] is not True:
+                if trial_progress_success(row) is not True:
                     report = {'case': case, 'status': 'prefix_not_reached', 'prefix': prefix,
                         'requested_subtask': spec, 'trials': [], 'training': False,
                         'confirmation': False, 'source_commit': plan['source_commit'],

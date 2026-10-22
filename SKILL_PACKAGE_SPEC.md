@@ -492,3 +492,18 @@ Execution recovery amendment, 2026-10-22 (development, USER10/21 09:00): the sam
 Each actual skill start and brake rebase occupied margins at the measured robot pose. The hand checks per-box minimum distance to occupied surfaces instead of locking individual depth-pixel pairs. Conditional lift planning may separate an attached measured instance from its connected support; minimum measured surface clearance must not decrease. Other payload moves retain the existing pair checks. New contact collisions and other obstacles remain screened; force, servo tolerances and public success criteria do not change. The current accelerator is bypassed when occupied-margin semantics need this exact check.
 
 Contact approach resolution conditionally screens ingress, closing jaw geometry, and a short attached lift or fixed-fixture wrist turn before choosing an approach. These predictions never execute unselected actions or establish task success. A no-human ask_help first attempts the last actually executed path in reverse (at most 12 cm), under current RGB-D screening and the same jaw command, then refreshes. Only a rejected attempt terminates. Original failed records remain preserved. Online no-progress calibration and the 19/30-state physical comparisons are still required; this amendment is not validation evidence.
+
+Private evaluation continuation accounting (2026-10-23):
+`private-registered-goal-or-subtask/1` records the existing registered goal
+predicate at each saved endpoint, before any private grasp metrology. A
+full-instruction invocation can fail its native whole-task contract while
+completing the currently requested goal. The private hybrid oracle may then
+continue from that progress instead of discarding the endpoint or repeating
+the completed goal. `success` retains its original grasp/invocation contract;
+`native_task_success` still requires the unchanged whole-task predicates.
+`private_goal_satisfied_at_endpoint` and `private_progress_success` are
+private diagnostic fields. They never enter a public request, candidate,
+receipt, learned history feature or model service input. Missing historical
+endpoint predicates remain missing. Existing closed results are retained.
+This changes no public schema, force, velocity, action budget or stopping
+threshold; it adds no task-specific predicate or PRO rule.

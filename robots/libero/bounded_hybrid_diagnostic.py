@@ -22,6 +22,7 @@ D2_SUITES = tuple(f"libero_{family}_{variant}"
                   for family in ("spatial", "object", "goal", "10")
                   for variant in ("swap", "task"))
 SPLIT_VERSION = "private-hybrid-call-vla-subtasks/3"
+PROGRESS_VERSION = "private-registered-goal-or-subtask/1"
 MODES = {"on": "on", "in": "in", "open": "open", "close": "close",
          "turnon": "turn_on", "turnoff": "turn_off"}
 
@@ -83,6 +84,18 @@ def choose_branch(self_success: bool | None, vla_success: list[bool | None]) -> 
             "status": "both_failed" if own == fallback == 0 else "measured",
             "rate": max(own, fallback), "self_rate": own,
             "vla_success": sum(vla_success), "vla_n": 3}
+
+
+def trial_progress_success(trial: dict) -> bool | None:
+    """A completed registered goal can supersede a temporary grasp milestone.
+
+    This is private oracle continuation accounting. The trial's original
+    grasp, invocation and native whole-task verdicts remain independent.
+    Missing historical endpoint predicates never impute new progress.
+    """
+    if trial.get('private_goal_satisfied_at_endpoint') is True:
+        return True
+    return trial['success']
 
 
 _BYTE_JSON_TOKENS = np.asarray([str(i).encode()+b',' for i in range(256)], dtype='S4')

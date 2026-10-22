@@ -720,3 +720,60 @@ def test_native_instruction_replay_executes_public_task_candidate_without_privat
     result = probe.native_instruction_replay(SimpleNamespace(goal_status=lambda: {'done': bool(count)}),
         adapter, object(), SimpleNamespace(measure=lambda *_: nullcontext()), tmp_path/'replay', 42)
     assert count == ['full'] and result['success'] is True and result['sim_steps'] == 5
+
+
+def test_recorded_original_partial_completion_preserves_failed_invocation_label():
+    import copy
+    import json
+    from pathlib import Path
+    from robots.libero.bounded_hybrid_diagnostic import trial_progress_success
+    from scripts.probe_bounded_hybrid_d2 import choose_variant_branch
+
+    source=json.loads((Path(__file__).parent/'fixtures/original_partial_goal_20261023.json').read_bytes())
+    rows=[{'success':r['recorded_local_success'],
+        'private_goal_satisfied_at_endpoint':r['requested_goal_satisfied'],
+        'native_task_success':r['native_complete']} for r in source['rows']]
+    before=copy.deepcopy(rows)
+    assert len(rows)==2
+    assert all(trial_progress_success(row) is True for row in rows)
+    variant={'name':'full_task','parameters':{'mode':'task','preparation':'in_place'}}
+    # Two recorded witnesses plus a controlled no-progress sample exercise
+    # selection; this is a unit scenario, not a new measured three-seed rate.
+    trials=[{'success':False},*rows,{'success':False}]
+    result=choose_variant_branch(trials,[variant])
+    assert result['method']=='call_vla' and result['rate']==2/3
+    assert rows==before and all(r['success'] is False and r['native_task_success'] is False for r in rows)
+    assert trial_progress_success({'success':False}) is False
+    assert trial_progress_success({'success':None}) is None
+    assert trial_progress_success({'success':None,'private_goal_satisfied_at_endpoint':False}) is None
+
+
+def test_completed_registered_goal_hands_back_without_repeating_a_failed_full_task(tmp_path,monkeypatch):
+    import json
+    from pathlib import Path
+    from contextlib import nullcontext
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    first=json.loads((Path(__file__).parent/'fixtures/vla_retry_before_loop_20261023.json').read_bytes())[0]['request']
+    executed=[]
+    physics=lambda:{'sim_state':[0.],'counters':{'_elapsed_steps':5*len(executed)}}
+    facade=SimpleNamespace(snapshot=physics,
+        goal_status=lambda:{'done':False,'satisfied':[bool(executed),False]})
+    monkeypatch.setattr(probe,'bind_subtask',lambda *_:(None,None))
+    monkeypatch.setattr(probe,'save_checkpoint',lambda *_:({'physics':physics()},{}))
+    def execute(_request,decision):
+        executed.extend(decision['candidate_ids'])
+        return [{'skill':'call_vla','steps_used':5,'outcome':'failure','stop_reason':'task_not_completed'}]
+    adapter=SimpleNamespace(details=[],last_chunk={},held=None,hybrid_recovery_budget=0,
+        execute=execute,ex=SimpleNamespace(instruction=first['instruction']),
+        p=SimpleNamespace(model=object(),env=SimpleNamespace(terminated=False,truncated=False,
+            execution_budget=lambda:{'used_sim_steps':5*len(executed)})))
+    spec={'mode':'pick','goal_index':0,'source_symbol':'registered_object','target_symbol':None}
+    result,_=probe.trial(facade,adapter,SimpleNamespace(rpc=object()),
+        SimpleNamespace(measure=lambda *_:nullcontext()),spec,'call_vla',1,tmp_path/'branch',first,
+        vla_parameters={'mode':'task','preparation':'in_place','prompt_style':'full_task'})
+    assert len(executed)==1 and result['recovery_used']==0
+    assert result['reason']=='registered_goal_completed'
+    assert result['success'] is False and result['native_task_success'] is False
+    assert result['private_goal_satisfied_at_endpoint'] is True
+    assert result['private_progress_success'] is True

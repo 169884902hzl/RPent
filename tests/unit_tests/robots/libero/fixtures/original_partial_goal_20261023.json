@@ -1,0 +1,106 @@
+{
+  "scope": "recorded original train endpoints; exact native-byte CPU restore; no post-restore controls",
+  "source_rows": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/CPU_original_partial_progress_r1/rows.jsonl",
+  "rows": [
+    {
+      "case": "original_selfcheck_libero_10_t2_s10",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 10
+      },
+      "method": "call_vla",
+      "variant": {
+        "name": "full_task",
+        "parameters": {
+          "mode": "task",
+          "preparation": "in_place",
+          "prompt_style": "full_task"
+        }
+      },
+      "seed": 42083000,
+      "registered_goal_index": 0,
+      "goals": [
+        [
+          "turnon",
+          "flat_stove_1"
+        ],
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "satisfied": [
+        true,
+        false
+      ],
+      "requested_goal_satisfied": true,
+      "native_complete": false,
+      "recorded_local_success": false,
+      "recorded_reason": "no_progress_blocks",
+      "truth_source": "unchanged_native_task_completion",
+      "endpoint": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/original_selfcheck/shard0/case004/episode/call_vla_full_task_3/private_endpoint.pkl",
+        "sha256": "814818abcbdbd40ca176000b9767d7653e4ec10b66feb4d47d9f9be6275944a9",
+        "physics_sha256": "ba04305de112eebc6c980966e558d0c7dee834399019b4032287e1b337912c6d"
+      },
+      "parent_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/original_selfcheck/shard0/case004/summary.json",
+        "sha256": "9c28bd82de3cb3687d0149eba9d79a6f7205ce96d95460ecc6d2ccec675f0e25"
+      },
+      "native_data_byte_identical": true,
+      "physics_controls_after_restore": 0
+    },
+    {
+      "case": "original_selfcheck_libero_10_t2_s10",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 10
+      },
+      "method": "call_vla",
+      "variant": {
+        "name": "full_task",
+        "parameters": {
+          "mode": "task",
+          "preparation": "in_place",
+          "prompt_style": "full_task"
+        }
+      },
+      "seed": 42090000,
+      "registered_goal_index": 0,
+      "goals": [
+        [
+          "turnon",
+          "flat_stove_1"
+        ],
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "satisfied": [
+        true,
+        false
+      ],
+      "requested_goal_satisfied": true,
+      "native_complete": false,
+      "recorded_local_success": false,
+      "recorded_reason": "no_progress_blocks",
+      "truth_source": "unchanged_native_task_completion",
+      "endpoint": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/original_selfcheck/shard0/case004/episode/call_vla_full_task_10/private_endpoint.pkl",
+        "sha256": "86eab5a81708e09b4dbc3e99a5926564312780d49ab635259036b3609104175e",
+        "physics_sha256": "6644e0dc06f605b1d94bf482076544b6e8b4de5cae1fad302b4afdad578475dd"
+      },
+      "parent_summary": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/original_selfcheck/shard0/case004/summary.json",
+        "sha256": "9c28bd82de3cb3687d0149eba9d79a6f7205ce96d95460ecc6d2ccec675f0e25"
+      },
+      "native_data_byte_identical": true,
+      "physics_controls_after_restore": 0
+    }
+  ]
+}
