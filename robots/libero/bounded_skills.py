@@ -474,7 +474,7 @@ class MeasuredSkillAdapter:
         """
         entity = self.scene.entities.get(key)
         if (not isinstance(screen, PublicRouteScreen) or len(screen.payload) or self.held is not None
-                or key != self.active or self.grasp_reference is None
+                or key != self.active
                 or entity is None or entity.part_of or fixture_actions(entity.name)
                 or self.plans.get(key, {}).get('contact_kind') == 'surface'):
             return screen
