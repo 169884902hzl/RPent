@@ -29,6 +29,8 @@ def main():
     old = root/'results/bounded_skills/schema6_20261020/model_view_2df3a44e/preparation'
     model = json.loads((old/'manifest.json').read_bytes())
     model.update(source=str(args.source), source_commit=revision)
+    model['policy_seed_base'] = 50000000
+    model['policy_seed_rule'] = 'base + unsigned integer of first eight SHA256 hex digits of case.name; per-inference call offset; identical seed for K1/K4 of one state'
     model['model_service'] = {'endpoint': ready['endpoint'],
         'health_url': ready['endpoint'].replace('/v1/bounded-choice', '/health'),
         'adapter_sha256': ready['adapter_sha256'],
