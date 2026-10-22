@@ -1,0 +1,126 @@
+{
+  "at": "2026-10-22T02:14:45.509661+00:00",
+  "job": "11258",
+  "source_tree": "9716b68c434c19519a8247b2ef69ce516fe9849c",
+  "qualified_execution_tree": "9d00ee63ab2196b95f8374e8245d9dea2ed8782b",
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/launcher_qualified90_startup_fix_20261022.py",
+    "sha256": "559419e8af2f99ff0eb3b843f54268e1bbffaca5cc9abbda7cde0752862de97f"
+  },
+  "startup_worker": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/same_launcher_startup_r2/N1/000_bowl_transfer_libero_spatial_t0_s10_B2_d002/worker_summary.json",
+    "sha256": "0916071a145ca15a751f81ab5e6521abbf9cffdf3155ecc2ebb403e01951188e"
+  },
+  "startup_physical_controls": 1,
+  "startup_vla_inference_calls": 0,
+  "smoke10": [
+    {
+      "index": 0,
+      "steps": 222,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case000/summary.json",
+        "sha256": "d66447a7dcd30a47d586361c05e0ccf97033ba1f18336ce129957e5c8b82cb72"
+      }
+    },
+    {
+      "index": 1,
+      "steps": 162,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case001/summary.json",
+        "sha256": "4b27a797f1258a428bc832f97c414397bc338a255bc3da35e9b08b7cba26e73b"
+      }
+    },
+    {
+      "index": 2,
+      "steps": 348,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case002/summary.json",
+        "sha256": "35391f37679cc8f3080dbe394ef335a5265d942f8fef487c3b08b0acdf9fd11e"
+      }
+    },
+    {
+      "index": 3,
+      "steps": 320,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case003/summary.json",
+        "sha256": "7a200a5c45a4b19b0bd0073dd6743f49c6dd82963cae4632daa4c99217e29c68"
+      }
+    },
+    {
+      "index": 4,
+      "steps": 23,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case004/summary.json",
+        "sha256": "afba66c4bba62a63f80dcb077351a67e36a9d71fdada5b246740715e4260af4d"
+      }
+    },
+    {
+      "index": 5,
+      "steps": 397,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case005/summary.json",
+        "sha256": "d9785a739a32b67162772d24746f02264159f2847f29ee460de3bd8e19745b99"
+      }
+    },
+    {
+      "index": 6,
+      "steps": 676,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case006/summary.json",
+        "sha256": "574d1be02469667b8309935022316c763e4915040682a38a150e6fd1c0b9ce13"
+      }
+    },
+    {
+      "index": 7,
+      "steps": 412,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case007/summary.json",
+        "sha256": "cf8dec13fd10c4b31615e89488114d8ab35f95be2e33e50af1e7d4f39eda39f9"
+      }
+    },
+    {
+      "index": 8,
+      "steps": 23,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case008/summary.json",
+        "sha256": "b760eb9be2b083a6bfb3803aa92b2500a57f65a3ccd3a107d1d85e2b9a90f13a"
+      }
+    },
+    {
+      "index": 9,
+      "steps": 23,
+      "status": "startup_physical",
+      "summary": {
+        "summary": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/smoke10/case009/summary.json",
+        "sha256": "67b4b27dcd167b75b42e35ebd5f8a3d7b600dc5aca35cbf44286860437da0903"
+      }
+    }
+  ],
+  "CPU_passed": 720,
+  "states": 90,
+  "self_trials": 180,
+  "initial_pose_trials": 270,
+  "episode_concurrency_per_gpu": 8,
+  "cpus": 60,
+  "memory_gb": 360,
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--array=0-2%3",
+    "--nodelist=node02",
+    "--nice=500",
+    "--cpus-per-task=20",
+    "--mem=120G",
+    "--job-name=rd-c3-q90-retest",
+    "/public/home/sunyihan/rpent_libero_eval/source_qualified90_9716b68c_20261022/coordination/bounded_skills_20261016/scripts/run_shared_batch_20261019.sbatch"
+  ]
+}

@@ -1,3 +1,10 @@
+# 最新接续：90 状态闭合，D2 准备
+
+- 原版90 job11258三片全部COMPLETED0:0；450次分叉，自有48/180、initial_pose146/270。原件复核记录 `reports/qualified90_9716b68c_20261022/`。导出以新快照/请求绑定，不能复用旧in_place/full_task标签。
+- 同一真实native大快照canonical SHA优化31.896→5.4218s，SHA不变。CPU标签导出使用已登记工具加速，不更改运行分母。
+- D2新树2a9c4ee4c0ae9974d3b073edc615e395072ed934仅在已验证9716树上叠加canonical hash等价优化；执行/碰撞/oracle/chunk字节未改。归档96cb2b5dea580fb82be45313e6b11bd7251655756272fc34aadd567f672e5a67。CPU面板正在以真实文件入口运行；首次collection导入顺序和stdin多进程启动失败均保留，非技能物理失败。
+- 扰动构造11281为18/20；两杯状态因5cm永久排除及原谓词见证碰撞没有找到布局，CPU诊断11301只捕获作者侧几何，0GPU。排除阈值不改。
+
 # USER 10/21 09:00 execution repairs
 
 ## 2026-10-22 10:24 +08 continuation
