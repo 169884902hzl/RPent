@@ -7,9 +7,90 @@ import time
 
 from rpent.skill_package.vla import VLABudget
 from scripts import probe_bounded_hybrid_d2 as probe
-from scripts.probe_bounded_option_ceiling import checked, private_score
+from scripts.probe_bounded_option_ceiling import checked, private_score, PromptOverride
 
 MOTION_TOOLS=frozenset({'move_to','move_pose','set_gripper','release','rotate_pitch'})
+
+
+def combination_commands(calls, ordinal):
+    """Scope scripts to the selected policy call, excluding other subtasks."""
+    selected = next(i for i, call in enumerate(calls) if call['ordinal'] == ordinal)
+    assert calls[selected]['tool'].startswith('pi0_')
+    previous = max((i for i in range(selected) if calls[i]['tool'].startswith('pi0_')), default=-1)
+    following = next((i for i in range(selected+1, len(calls))
+        if calls[i]['tool'].startswith('pi0_')), len(calls))
+    def commands(section):
+        return [{'tool': c['tool'], 'parameters': copy.deepcopy(c['parameters'])}
+            for c in section if c['tool'] in MOTION_TOOLS]
+    return commands(calls[previous+1:selected]), commands(calls[selected+1:following])
+
+
+def combination_trial(facade, adapter, policy, timings, row, output, arm, seed):
+    """Joint intervention; a failed policy receipt does not suppress transport."""
+    pre, tail = combination_commands(row['a1_physical_commands'], row['a1_pi_ordinal'])
+    spec = row['subtask']
+    reference = facade.grasp_reference(spec['source_symbol']) if spec['mode'] == 'pick' else None
+    before = adapter.p.env.execution_budget()['used_sim_steps']
+    started = time.perf_counter()
+    staged = execute_motion(adapter.p, pre) if arm == 'combination' else {'steps_used': 0}
+    probe.write(output/'preposition.json', staged)
+    adapter._incremental_touched.update(adapter.scene.entities)
+    adapter.refresh()
+    with timings.measure('planning.request'):
+        request = adapter.request(k=4)
+    original = adapter.p.model
+    if arm == 'combination':
+        adapter.p.model = PromptOverride(original, row['a1_pi']['parameters']['prompt'])
+    try:
+        result, endpoint = probe.trial(facade, adapter, policy, timings, spec, 'call_vla', seed,
+            output/'policy', request, vla_parameters={'preparation': 'in_place'}, decision_limit=1)
+    finally:
+        adapter.p.model = original
+    probe.restore_checkpoint(facade, adapter, policy, endpoint)
+    # Execute the recorded transport even if the policy tool returned failure.
+    # Native termination and the unchanged environment budget still stop it.
+    transported = execute_motion(adapter.p, tail) if arm == 'combination' else {'steps_used': 0}
+    probe.write(output/'transport.json', transported)
+    _, endpoint_ref = probe.save_checkpoint(facade, adapter, policy, output/'private_final_endpoint.pkl')
+    used = adapter.p.env.execution_budget()['used_sim_steps']-before
+    score = private_score(facade, spec, reference)
+    return {'arm': arm, 'trial_seed': seed, 'policy_result': result,
+        'policy_reported_success': result['success'], **score,
+        'total_sim_steps': used, 'preposition_steps': staged['steps_used'],
+        'transport_steps': transported['steps_used'], 'endpoint': endpoint_ref,
+        'wall_s': time.perf_counter()-started,
+        'native_task_scope': 'saved endpoint before private post-trial metrology'}
+
+
+def run_combination(row, plan, endpoints, output, *, startup=False):
+    saved = pickle.loads(checked(row['branchpoint']).read_bytes())
+    expected = probe.snapshot_digest(saved['physics'])
+    rows = []
+    with probe.runtime(row['case'], endpoints, output, domain='d2') as (facade, adapter, policy, timings):
+        for arm in (['baseline'] if startup else ['baseline', 'combination']):
+            for repeat in ([0] if startup else range(3)):
+                probe.restore_checkpoint(facade, adapter, policy, saved)
+                actual = probe.snapshot_digest(facade.snapshot())
+                if actual != expected:
+                    raise ValueError('combination arm did not restore complete initial state')
+                adapter.vla_budget = VLABudget(**row['budget'])
+                adapter.hybrid_recovery_budget = 0
+                directory = output/f'{arm}_{repeat}'
+                directory.mkdir()
+                result = combination_trial(facade, adapter, policy, timings, row, directory,
+                    arm, row['trial_seed_base']+repeat*1000)
+                result.update(repeat=repeat, complete_initial_sha256=actual)
+                probe.write(directory/'result.json', result)
+                rows.append(result)
+    report = {'case': row['case'], 'status': 'startup_physical' if startup else 'physical_result',
+        'source_commit': plan['source_commit'], 'evaluation': 'A1_joint_preposition_prompt_transport',
+        'subtask': row['subtask'], 'trials': rows, 'initial_physics_sha256': expected,
+        'all_complete_initial_hashes_match': True, 'training': False, 'confirmation': False,
+        'interpretation': 'A1 Cartesian commands and rewritten prompts are evaluation interventions only; not runtime options or training data'}
+    if startup and not any(r['total_sim_steps'] and r['policy_result']['vla_inference_calls'] for r in rows):
+        raise RuntimeError('combination startup did not execute a policy control')
+    probe.write(output/'summary.json', report)
+    return report
 
 
 def motion_commands(calls, *, tail=False):
@@ -49,6 +130,8 @@ def run_case(row, plan, endpoints, output, *, startup=False):
     if not plan['evaluation_only'] or plan['training'] or plan['confirmation']:
         raise ValueError('A1 staging is evaluation only, not a task-specific runtime rule')
     output.mkdir()
+    if plan.get('combination_arm'):
+        return run_combination(row, plan, endpoints, output, startup=startup)
     saved=pickle.loads(checked(row['branchpoint']).read_bytes());expected=probe.snapshot_digest(saved['physics'])
     spec=row['subtask'];tail=spec['mode'] in {'on','in'}
     commands=motion_commands(row['a1_physical_commands'],tail=tail)
