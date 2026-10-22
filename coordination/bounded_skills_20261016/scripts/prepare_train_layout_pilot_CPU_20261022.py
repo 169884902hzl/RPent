@@ -26,6 +26,8 @@ def main():
     p.add_argument('--registry', type=Path)
     p.add_argument('--original-geometry', type=Path)
     p.add_argument('--witness-positions', type=Path)
+    p.add_argument('--native-witness-parents', action='store_true')
+    p.add_argument('--seed-start', type=int, default=11020100)
     p.add_argument('--worker', type=int)
     a = p.parse_args()
     if a.worker is None:
@@ -55,14 +57,28 @@ def main():
                         witnesses[(source['episode']['suite'], source['episode']['task'])].append({
                             'worker': position['source'], 'trial_seed': trial['trial_seed'],
                             'parent_case': source['name']})
+        if a.native_witness_parents:
+            if a.witness_positions is None:
+                raise ValueError('native-witness parent selection requires pinned original train records')
+            eligible = {v['parent_case'] for options in witnesses.values() for v in options}
+            groups = {category: [i for i in values if plan['cases'][i]['name'] in eligible]
+                for category,values in groups.items()}
+            if (any(len(values)<2 for values in groups.values())
+                    or len(groups['bowl_transfer'])<3 or len(groups['box_transfer'])<3):
+                raise ValueError('not enough original train parents with recorded native witnesses')
+            indices = [i for values in groups.values() for i in values[:2]]
+            indices += [groups['bowl_transfer'][2], groups['box_transfer'][2]]
+        if not 11020000 <= a.seed_start <= 11029980:
+            raise ValueError('pilot seeds must stay in the registered own-layout segment')
         record = {'parent': ref(a.parent), 'source': str(a.source),
             'registry': ref(a.registry), 'original_geometry': ref(a.original_geometry),
             'generator_files': [ref(a.source/'scripts/generate_bounded_train_layouts.py'),
                 ref(a.source/'robots/libero/bounded_train_layouts.py')],
             'output': str(a.output), 'training': False, 'confirmation': False,
-            'seed_segment': [11020100, 11020119], 'policy_calls': 0,
-            'selection': 'registered original train identity order; no new outcome selection',
-            'jobs': [{'case_index': index, 'seed': 11020100+j,
+            'seed_segment': [a.seed_start, a.seed_start+19], 'policy_calls': 0,
+            'selection': ('registered original train identity order with an existing native witness; no perturbed-policy outcomes used'
+                if a.native_witness_parents else 'registered original train identity order; no new outcome selection'),
+            'jobs': [{'case_index': index, 'seed': a.seed_start+j,
                 'category': plan['cases'][index]['category'],
                 'parent_case': plan['cases'][index]['name']} for j, index in enumerate(indices)]}
         if a.witness_positions is not None:
