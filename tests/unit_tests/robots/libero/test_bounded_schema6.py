@@ -3,6 +3,7 @@ import copy
 from dataclasses import replace
 
 import numpy as np
+import pytest
 
 from robots.libero.bounded_incremental import roi_change
 from rpent.skill_package.progress import PublicProgress
@@ -114,18 +115,22 @@ def test_selected_move_resolves_first_passing_variant_in_fixed_order(adapter, mo
     monkeypatch.setattr(SmoothMotion, 'prepare', prepare)
     resolved = adapter._candidate('move_to', move['parameters'], complete=True)
     assert seen == [('above','over'),('above','direct'),('above','around'),
-        ('right','over'), ('right','over')]  # Selected entry's contact-ingress check.
+        ('right','over')]
     assert resolved['id'] == move['id']
     assert resolved['parameters'] == {'anchor_id':'e1','approach':'right','path':'over'}
 
 
-def test_merged_move_skips_clear_entry_with_blocked_contact_ingress(adapter, monkeypatch):
+@pytest.mark.parametrize('label,parent,fixture', [
+    ('box', None, False), ('stove', None, True), ('cabinet top drawer', 'cabinet', True)])
+def test_merged_move_prechecks_contact_ingress_only_for_fixtures(adapter, monkeypatch, label, parent, fixture):
+    from dataclasses import replace
     from types import SimpleNamespace
     from robots.libero.bounded_motion import SmoothMotion
 
     enable(adapter)
     request = adapter.request(k=1)
     candidate = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name=label, part_of=parent)
     monkeypatch.setattr(SmoothMotion, 'prepare', lambda *_: (SimpleNamespace(duration=1.), None, None,
         dict(passed=True, collision=False, ik_reachable=True, path_min_clearance_m=.01)))
     seen = []
@@ -137,6 +142,10 @@ def test_merged_move_skips_clear_entry_with_blocked_contact_ingress(adapter, mon
             reason='measured_sweep_collision' if above else 'public_route_screen_passed')
     monkeypatch.setattr(adapter, '_cloud_and_ik', lambda *_args, **_kwargs: screen)
     resolved = adapter._candidate('move_to', candidate['parameters'], complete=True)
+    if not fixture:
+        assert resolved['parameters'] == {'anchor_id': 'e1', 'approach': 'above', 'path': 'over'}
+        assert seen == []
+        return
     assert resolved['parameters'] == {'anchor_id': 'e1', 'approach': 'right', 'path': 'over'}
     assert len(seen) == 4
     assert all(row[-1]['xyz_m'] == adapter.plans['e1']['xyz_m'] for row in seen)
