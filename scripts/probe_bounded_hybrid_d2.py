@@ -593,7 +593,13 @@ def choose_variant_branch(trials, variants):
         raise ValueError('one self trial and three trials per registered variant required')
     groups = [choose_branch(trial_progress_success(trials[0]),
         [trial_progress_success(row) for row in trials[1+3*i:4+3*i]]) for i in range(len(variants))]
-    evidence = [{'variant': variant, **group} for variant, group in zip(variants, groups)]
+    evidence = [{'variant': variant, **group,
+        'selection_success_contract': PROGRESS_VERSION,
+        'local_vla_success': sum(t['success'] is True for t in trials[1+3*i:4+3*i]),
+        'local_vla_unknown': sum(t['success'] is None for t in trials[1+3*i:4+3*i]),
+        'registered_goal_success': sum(t.get('private_goal_satisfied_at_endpoint') is True
+            for t in trials[1+3*i:4+3*i])}
+        for i, (variant, group) in enumerate(zip(variants, groups))]
     if any(group['method'] is None for group in groups):
         return {'method': None, 'status': 'incomplete_measurement', 'rate': None,
                 'variant_groups': evidence}
@@ -687,6 +693,7 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             selection = (choose_variant_branch(trials, variants) if variants is not None else
                 choose_branch(trial_progress_success(trials[0]),
                     [trial_progress_success(row) for row in trials[1:]]))
+            selection['selection_success_contract'] = PROGRESS_VERSION
             choice = {'subtask': spec, 'method': selection['method']}
             if 'vla_parameters' in selection:
                 choice.update(vla_parameters=selection['vla_parameters'], vla_variant=selection['vla_variant'])

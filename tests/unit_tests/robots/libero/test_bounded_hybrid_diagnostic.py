@@ -742,6 +742,8 @@ def test_recorded_original_partial_completion_preserves_failed_invocation_label(
     trials=[{'success':False},*rows,{'success':False}]
     result=choose_variant_branch(trials,[variant])
     assert result['method']=='call_vla' and result['rate']==2/3
+    assert result['variant_groups'][0]['local_vla_success']==0
+    assert result['variant_groups'][0]['registered_goal_success']==2
     assert rows==before and all(r['success'] is False and r['native_task_success'] is False for r in rows)
     assert trial_progress_success({'success':False}) is False
     assert trial_progress_success({'success':None}) is None
