@@ -1260,7 +1260,7 @@ class MeasuredSkillAdapter:
                 self._grasp_geometry_cache.pop(next(iter(self._grasp_geometry_cache)))
         return copy.deepcopy(self._grasp_geometry_cache[key])
 
-    def _compute_grasp_geometry(self, entity):
+    def _compute_grasp_geometry(self, entity, *, complete=False):
         """Reuse r9 proposals, screening the entire actual smooth approach."""
         from robots.libero.v5_grasp_route import sample_unified_grasps
 
@@ -1268,6 +1268,7 @@ class MeasuredSkillAdapter:
         if points is None or len(points) < 40:
             return None
         robot = measured_robot(self.p)
+        deferred = self.lazy_planning_v1 and not complete
         # Fit normals/contact patches on the fused geometry estimate. Raw
         # per-camera pixels are retained by screen for instance membership
         # and obstacle checks, not substituted for the fused fit surface.
@@ -1296,7 +1297,7 @@ class MeasuredSkillAdapter:
                 return self._surface_contact_plan(entity, points)
             # Do not build/subtract full-resolution clouds for surfaces whose
             # measured flanks already rule out every grasp (e.g. the table).
-            screen = None if self.lazy_planning_v1 else self._cloud_and_ik(entity.id, contact=True)
+            screen = None if deferred else self._cloud_and_ik(entity.id, contact=True)
             from scipy.spatial import cKDTree
             obstacle_tree = cKDTree(screen.points) if screen is not None and len(screen.points) else None
             for row in proposals:
@@ -1324,7 +1325,7 @@ class MeasuredSkillAdapter:
                 if chosen is not None:
                     row['route_status'] = 'not_screened_lower_rank'
                     continue
-                if self.lazy_planning_v1:
+                if deferred:
                     # Publish the measured opposing-contact proposal. Full
                     # approach/closure screening belongs to selected actions.
                     chosen = row
@@ -1369,7 +1370,27 @@ class MeasuredSkillAdapter:
             'approach_xyz_m': chosen['approach_xyz'], 'preferred_approach': approach,
             'approach_route': [{'xyz_m': w['xyz'], 'quat_xyzw': w['body_quat_xyzw']}
                                for w in chosen['route'][:-1]],
-            'grasp_candidate_id': chosen['id']}
+            'grasp_candidate_id': chosen['id'], 'grasp_route_deferred': deferred}
+
+    def _resolve_selected_grasp(self, candidate):
+        """Search the selected object's public proposals before issuing controls."""
+        if not self.lazy_planning_v1 or candidate['skill'] not in {'move_to', 'descend'}:
+            return
+        key = candidate['parameters']['anchor_id']
+        plan = self.plans.get(key)
+        if not plan or not plan.get('grasp_route_deferred'):
+            return
+        entity = self.scene.entities.get(key)
+        if entity is None or not entity.visible or self.active == key:
+            return
+        resolved = self._compute_grasp_geometry(entity, complete=True)
+        self.candidate_diagnostics.append({'stage': 'selected_grasp_resolution',
+            'anchor_id': key, 'initial_candidate': plan.get('grasp_candidate_id'),
+            'selected_candidate': resolved.get('grasp_candidate_id') if resolved else None})
+        if resolved is not None:
+            self.plans[key] = resolved
+            self.committed_grasps.pop(key, None)
+            self._screen_cache.clear()
 
     def _surface_contact_plan(self, entity, points):
         """Offer bounded contact on a measured thin surface, without claiming a grasp."""
@@ -2040,6 +2061,12 @@ class MeasuredSkillAdapter:
                     elif skill == 'rotate_wrist':
                         screen = self._contact_rotation_screen(key, screen)
                     evidence = screen.endpoint_screen(route, robot)
+                    if (skill in {'align', 'descend'} and not complete
+                            and self.plans.get(key, {}).get('grasp_route_deferred')):
+                        # The deferred catalog must not expose one proposal's
+                        # collision as a verdict for the whole measured object.
+                        evidence = {**evidence, 'collision': None, 'ik_reachable': None,
+                            'path_min_clearance_m': None, 'passed': True}
                 position = np.asarray(robot['eef_xyz_m'])
                 rotation = Rotation.from_quat(robot['eef_quat_xyzw'])
                 duration = 0.
@@ -2069,7 +2096,10 @@ class MeasuredSkillAdapter:
                         'path_min_clearance_m', 'public_nearby_points', 'payload_point', 'obstacle_point',
                         'public_scene_collision_points', 'public_target_collision_points') if field in evidence}})
             consequence.update({field: evidence[field] for field in ("path_min_clearance_m", "collision", "ik_reachable")})
-            consequence["screen_scope"] = ("endpoint_ik_coarse_geometry" if self.lazy_planning_v1 and not complete
+            consequence["screen_scope"] = ('planner_selected_variant_pending'
+                if self.lazy_planning_v1 and not complete and skill in {'align', 'descend'}
+                and self.plans.get(key, {}).get('grasp_route_deferred') else
+                "endpoint_ik_coarse_geometry" if self.lazy_planning_v1 and not complete
                 else "contact_selected_surface" if contact else "hand_mesh_observed_space")
             consequence["expected_steps"] = math.ceil(duration*self.config.hz)
         elif skill == 'guarded_move':
@@ -2651,6 +2681,8 @@ class MeasuredSkillAdapter:
         free_chunk = all(self._free_motion(c) for c in choices)
         parent_receipts = copy.deepcopy(self.receipts[-3:])
         remaining_at_start = self.p.env.execution_budget()['remaining_sim_steps']
+        if choices:
+            self._resolve_selected_grasp(choices[0])
         plan = self.plan_chunk(request, decision)
         # Freeze actual current surfaces before controls. A selected contact
         # prefix can move an anchor; its later guard must compare fresh depth
