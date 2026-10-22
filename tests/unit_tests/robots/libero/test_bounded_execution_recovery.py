@@ -122,6 +122,18 @@ def test_pending_lift_preserves_existing_complete_attached_surface(adapter, monk
     assert adapter._lift_payload_screen('e1', screen) is screen
 
 
+def test_payload_reference_reuses_complete_precontact_instance(adapter, monkeypatch):
+    points = np.repeat([[.1, .1, .9]], 40, axis=0)
+    adapter.committed_grasps['e1'] = {'instance_reference': {
+        'xyz_world': points, 'stationary_scene': points + [.4, .4, .4],
+        'artifact': {'path': 'retained'}}}
+    monkeypatch.setattr(adapter, '_contact_pixels',
+        lambda *_args, **_kwargs: pytest.fail('narrow contact pixels replaced complete instance'))
+    result = adapter._capture_payload_reference('e1')
+    np.testing.assert_array_equal(result['target'], points)
+    assert result['source'] == 'precontact_public_instance_reference'
+
+
 def test_real_container_support_pair_can_separate_without_pair_identity_lock():
     rows=[r for r in FIXTURE['cases'] if r['case'] in (1,7) and r['reason']=='measured_payload_collision']
     assert len(rows)==2

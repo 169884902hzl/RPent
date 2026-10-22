@@ -3360,6 +3360,17 @@ class MeasuredSkillAdapter:
         from scipy.spatial import cKDTree
 
         from robots.libero.v5_geometric_grasp import _voxel
+        committed = self.committed_grasps.get(anchor_id)
+        instance = committed.get('instance_reference') if committed is not None else None
+        if instance is not None and len(instance.get('xyz_world', [])) >= 40:
+            return {
+                'target': np.array(instance['xyz_world'], copy=True),
+                'scene': np.array(instance['stationary_scene'], copy=True),
+                'robot': measured_robot(self.p),
+                'capture_step': self.ex.toolkit._state.latest_step,
+                'source': 'precontact_public_instance_reference',
+                'artifacts': {'target': instance.get('artifact')},
+            }
         target = self._contact_pixels(anchor_id)
         self._cloud_and_ik(anchor_id, contact=True)
         scene = self._base_geometry[0]
