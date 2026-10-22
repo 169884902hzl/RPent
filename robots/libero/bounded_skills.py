@@ -3274,6 +3274,13 @@ class MeasuredSkillAdapter:
                     and reason.startswith('contact_')):
                 self._contact_retry_references[key] = (key, parameters['axis'], parameters['distance_m'],
                     contact_reference, contact_capture_step)
+        if skill == "lift" and detail.get('executed') and payload_reference is not None:
+            current = self.scene.entities.get(key)
+            if current is None or not current.visible:
+                # The object can be occluded immediately after closure. Take
+                # one explicit public RGB-D refresh before declaring the hold
+                # unmeasured; no simulator identity or pose is consulted.
+                self.refresh(names=[key])
         if skill == "lift" and self.grasp_reference is not None and detail.get('executed'):
             source, robot_at_contact = self.grasp_reference
             current = self.scene.entities.get(key)
