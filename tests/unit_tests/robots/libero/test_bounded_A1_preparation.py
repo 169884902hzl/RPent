@@ -51,6 +51,10 @@ def test_combination_transports_after_policy_failure_and_restores_endpoint(tmp_p
     assert prompt == ['recorded local phrase'] and adapter.p.model is client
     assert result['policy_reported_success'] is False and result['native_task_success'] is True
     assert result['registered_goal_success'] is True
+    # The launcher reads the same standard control count as other probes.
+    from coordination.bounded_skills_20261016.scripts.run_schema6_physical_20261020 import physical_steps
+    assert result['sim_steps'] == result['total_sim_steps'] == 5
+    assert physical_steps({'trials': [result]}) == 5
 
 
 def test_staging_and_tail_never_execute_a_later_policy_call_or_a_file_tool():

@@ -58,7 +58,7 @@ def combination_trial(facade, adapter, policy, timings, row, output, arm, seed):
     return {'arm': arm, 'trial_seed': seed, 'policy_result': result,
         'policy_reported_success': result['success'], **score,
         'registered_goal_success': goal_success,
-        'total_sim_steps': used, 'preposition_steps': staged['steps_used'],
+        'sim_steps': used, 'total_sim_steps': used, 'preposition_steps': staged['steps_used'],
         'transport_steps': transported['steps_used'], 'endpoint': endpoint_ref,
         'wall_s': time.perf_counter()-started,
         'native_task_scope': 'saved endpoint before private post-trial metrology'}
