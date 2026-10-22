@@ -96,8 +96,10 @@ def build_plan(output, calibration_ref):
 
 @contextmanager
 def runtime(case, endpoints, output, *, domain='d2', artifact_compression_level=1,
-            record_public_geometry=False):
+            record_public_geometry=False, constructed_start=None):
     """Use the same public adapter/perception as the original feasibility arm."""
+    if constructed_start is not None and domain != 'original':
+        raise ValueError('own training-layout construction cannot materialize in PRO/D2')
     import robosuite
 
     from robots.libero import tools
@@ -123,6 +125,11 @@ def runtime(case, endpoints, output, *, domain='d2', artifact_compression_level=
     toolkit = None
     timings = EpisodeTimings()
     try:
+        if constructed_start is not None:
+            from robots.libero.bounded_generated_start import materialize_original_layout
+            audit = materialize_original_layout(facade, primitives, constructed_start,
+                bddl_sha256=case['bddl']['sha256'])
+            write(output/'private_layout_materialization.json', audit)
         model = Pi05VLAClient(endpoints["vla"], embodiment="libero")
         toolkit = LiberoToolkit(runtime_kwargs={"env": primitives.env, "model": model,
             "sam3_client": Sam3Client(endpoints["sam3"])}, dashboard_events=NullDashboardEventSink(),
