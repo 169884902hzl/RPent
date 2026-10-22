@@ -299,7 +299,7 @@ def test_missing_vla_candidate_never_falls_back_to_an_oracle_action(tmp_path, mo
     from scripts import probe_bounded_hybrid_d2 as probe
 
     physics = {"sim_state": [1.], "counters": {"_elapsed_steps": 0}}
-    facade = SimpleNamespace(snapshot=lambda: physics, goal_status=lambda: {"satisfied": [False]})
+    facade = SimpleNamespace(snapshot=lambda: physics, goal_status=lambda: {"satisfied": [False], "done": False})
     source = SimpleNamespace(id="e1")
     monkeypatch.setattr(probe, "bind_subtask", lambda *args: (source, None))
     monkeypatch.setattr(probe, "save_checkpoint", lambda *args: ({"physics": physics}, {}))
@@ -392,7 +392,7 @@ def test_ambiguous_binding_observes_then_rebinds_without_private_instance_select
     def physics():
         return {'sim_state': [1.], 'counters': {'_elapsed_steps': len(executed)}}
     facade = SimpleNamespace(snapshot=physics,
-        goal_status=lambda: {'satisfied': [len(executed) == 2]})
+        goal_status=lambda: {'satisfied': [len(executed) == 2], 'done': len(executed) == 2})
     monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({'physics': physics()}, {}))
     base = {'schema_version': 'test', 'observation_id': 'o1', 'revision': 1,
         'max_actions': 4, 'robot': {'held_anchor_id': None}, 'anchors': []}
@@ -556,6 +556,31 @@ def test_registered_vla_variant_executes_exact_option_with_its_own_outcome_scope
     assert executed == ['full_task' if whole_task else preparation]
     assert row['success'] is True
     assert row['truth_source'] == ('unchanged_native_task_completion' if whole_task else 'unchanged_registered_task_predicate')
+
+
+def test_native_endpoint_completion_survives_failed_hold_and_metrology_steps(tmp_path, monkeypatch):
+    from scripts import probe_bounded_hybrid_d2 as probe
+
+    state = {'done': True}
+    physics = {'counters': {'_elapsed_steps': 9}}
+    def measure(*_):
+        state['done'] = False
+        return {'truth_v3': {'success': False}}
+    facade = SimpleNamespace(snapshot=lambda: physics, grasp_reference=lambda *_: {},
+        goal_status=lambda: {'done': state['done'], 'satisfied': [state['done']]},
+        measure_grasp_hold=measure)
+    monkeypatch.setattr(probe, 'bind_subtask', lambda *_: (SimpleNamespace(id='source'), None))
+    monkeypatch.setattr(probe, 'save_checkpoint', lambda *_: ({'physics': physics}, {}))
+    adapter = SimpleNamespace(p=SimpleNamespace(model=object(), env=SimpleNamespace(
+        execution_budget=lambda: {'used_sim_steps': 9})))
+    spec = {'mode': 'pick', 'source_symbol': 'object', 'target_symbol': None, 'goal_index': 0}
+    row, _ = probe.trial(facade, adapter, SimpleNamespace(rpc=object()), None,
+        spec, 'call_vla', 1, tmp_path/'branch', {'candidates': [], 'max_actions': 4,
+            'robot': {'held_anchor_id': None}, 'anchors': []}, decision_limit=0)
+    assert row['success'] is False
+    assert row['native_task_success'] is True and state['done'] is False
+    assert row['sim_steps'] == 0
+    assert row['native_completion_scope'] == 'saved_endpoint_before_private_metrology'
 
 
 @pytest.mark.parametrize('unknown', [False, True])

@@ -134,10 +134,14 @@ def worker(args, plan):
                 recovery_budget=row['recovery_budget'])
     elif row['kind']=='model':
         from coordination.bounded_skills_20261016.scripts.original_model_closedloop_20261021 import run_episode
-        if row['split'] != 'init_holdout' or not plan['evaluation_only']:
-            raise ValueError('model probe requires original init-heldout evaluation')
+        if row['split'] not in {'init_holdout', 'd2_evaluation'} or not plan['evaluation_only']:
+            raise ValueError('model probe requires registered evaluation-only identities')
+        if row['split'] == 'd2_evaluation':
+            from robots.libero.bounded_hybrid_diagnostic import validate_d2_episode
+            validate_d2_episode(row['case']['episode'])
         result = run_episode(probe, row['case'], endpoints, args.output/'episode', plan,
-            row['k'], startup=args.startup)
+            row['k'], startup=args.startup,
+            domain='d2' if row['split'] == 'd2_evaluation' else 'original', split=row['split'])
     elif row['kind']=='smoke':
         # This fixed panel checks source startup and a real skill chunk in
         # each category. It is not a task-success or feasibility denominator.

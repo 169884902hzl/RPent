@@ -70,7 +70,7 @@ def public_model_request(request: dict) -> dict:
     return dict(request, candidates=candidates)
 
 
-def http_choice(endpoint: str, *, timeout_s: float = 120.):
+def http_choice(endpoint: str, *, timeout_s: float = 120., on_response=None):
     """Codex2's bounded-choice endpoint; no model or oracle is hidden here."""
     def choose(request):
         body = json.dumps({"skill_request": public_model_request(request),
@@ -78,6 +78,8 @@ def http_choice(endpoint: str, *, timeout_s: float = 120.):
         call = Request(endpoint, data=body, headers={"Content-Type": "application/json"}, method="POST")
         with urlopen(call, timeout=timeout_s) as response:
             result = json.load(response)
+        if on_response is not None:
+            on_response(result)
         # Accept only the service's explicitly returned source decision.
         decision = result["decision"] if "decision" in result else result
         selected(request, decision)

@@ -8,23 +8,33 @@ import time
 def select_complete_path(summary):
     """Keep locally chosen prefixes and compare their native-complete calls.
 
-    A full-instruction trial certifies whole-task completion, whereas a pick
-    trial certifies only its subtask. Do not discard a completed task because
-    those two local success rates tie. Conditional products remain sampled
+    Endpoint native completion is independent of the local subtask verdict.
+    A pick may finish by placing the object, with no sustained hold remaining.
+    Keep its local verdict and its native-complete path. Conditional products remain sampled
     estimates; the chosen path still needs an independent physical replay.
     """
     prefix, alternatives, prefix_rate = [], [], 1.
     native_fallback = not summary.get('subtasks')
     for row in summary.get('subtasks', []):
+        self_trials = [t for t in row['trials'] if t.get('method') == 'self']
+        if len(self_trials) == 1 and self_trials[0].get('native_task_success') is True:
+            alternatives.append({'choices': copy.deepcopy([*prefix,
+                {'subtask': row['subtask'], 'method': 'self'}]),
+                'conditional_rate': prefix_rate, 'sampled_native_success': True,
+                'terminal_trial_successes': 1, 'terminal_trial_n': 1,
+                'terminal_subtask_id': row['subtask']['id']})
         for group in row['selection'].get('variant_groups', []):
             variant = group['variant']
-            if variant['parameters'].get('mode') != 'task':
-                continue
             trials = [trial for trial in row['trials'] if trial.get('vla_variant') == variant]
-            if len(trials) != 3 or any(type(t['success']) is not bool
-                    or t.get('truth_source') != 'unchanged_native_task_completion' for t in trials):
+            # Historical records certify native completion only when that was
+            # their explicit outcome contract. Missing endpoint fields stay unknown.
+            native = [t.get('native_task_success',
+                t['success'] if variant['parameters'].get('mode') == 'task'
+                and t.get('truth_source') == 'unchanged_native_task_completion' else None)
+                for t in trials]
+            if len(trials) != 3 or any(type(value) is not bool for value in native):
                 continue
-            successes = sum(t['success'] for t in trials)
+            successes = sum(native)
             if successes:
                 terminal = {'subtask': row['subtask'], 'method': 'call_vla',
                     'vla_parameters': variant['parameters'], 'vla_variant': variant['name']}

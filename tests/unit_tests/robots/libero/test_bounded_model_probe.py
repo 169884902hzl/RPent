@@ -40,7 +40,7 @@ def test_http_choices_execute_and_stop_without_oracle_selection(tmp_path, monkey
             raise HTTPError('offline', 422, 'Unprocessable Entity', None,
                 BytesIO(b'{"detail":"source request rejected"}'))
         return {'candidate_ids': ['http-'+str(actual['id'])]}
-    monkeypatch.setattr('robots.libero.bounded_async.http_choice', lambda endpoint: choose)
+    monkeypatch.setattr('robots.libero.bounded_async.http_choice', lambda endpoint, **_: choose)
     monkeypatch.setattr(module, 'verified_health', lambda _: {'status': 'ok'})
     @contextmanager
     def runtime(*_args, **kwargs):

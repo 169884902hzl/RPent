@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 import pickle
+import sys
 import time
 from contextlib import contextmanager
 from pathlib import Path
@@ -485,9 +486,12 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
                     reason = receipts[-1]["stop_reason"] if method == "call_vla" and receipts else "subtask_completed"
                     break
         endpoint, endpoint_ref = save_checkpoint(facade, adapter, policy, output / "private_endpoint.pkl")
+        endpoint_goals = facade.goal_status()
+        result['native_task_success'] = bool(endpoint_goals['done'])
+        result['native_completion_scope'] = 'saved_endpoint_before_private_metrology'
         metrology_started = time.perf_counter()
         if whole_task:
-            truth = facade.goal_status()
+            truth = endpoint_goals
             success = bool(truth['done'])
             result['truth_source'] = 'unchanged_native_task_completion'
         elif reference_grasp is not None:
@@ -684,12 +688,24 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             decisions_used += trials[continuation]["decisions"]
             restore_checkpoint(facade, adapter, policy, endpoints_saved[continuation])
         envelope_done = facade.goal_status()["done"]
+        from robots.libero.bounded_hybrid_paths import select_complete_path, replay_complete_path
+
+        sampled = {"status": "physical_result", "subtasks": rows,
+            "sampled_envelope_native_success": envelope_done,
+            "conditional_rate_product": envelope_rate}
+        complete_selection = select_complete_path(sampled)
         # Independently execute the selected method sequence from the original
         # full state, never splice saved successful endpoints into this replay.
         restore_checkpoint(facade, adapter, policy, initial)
         replay_started = time.perf_counter()
         replay, replay_decisions = [], 0
-        if any(row['selection']['method'] is None for row in rows):
+        if complete_selection['reason'] == 'measured_native_complete_path':
+            complete = replay_complete_path(sys.modules[__name__], facade, adapter, policy,
+                timings, complete_selection,
+                plan['trial_seed_base'] + 1000000000 + 1000000 * plan['cases'].index(case),
+                output / 'full_replay_complete')
+            replay = complete['full_replay']
+        elif any(row['selection']['method'] is None for row in rows):
             # No method can be inferred from unknown labels. Exercise the
             # explicit public whole-instruction candidate and keep the
             # sampled bound unknown, separate from the native replay result.
@@ -712,8 +728,11 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
                 if not row["success"]:
                     break
         result = {"case": case, "status": "physical_result", "subtasks": rows,
-            "sampled_envelope_native_success": envelope_done,
-            "conditional_rate_product": envelope_rate,
+            "sampled_envelope_native_success": complete_selection['sampled_native_success'],
+            "conditional_rate_product": complete_selection['conditional_rate'],
+            "path_selection": complete_selection,
+            "local_path_native_success": envelope_done,
+            "local_path_conditional_rate_product": envelope_rate,
             "actual_full_replay_success": facade.goal_status()["done"], "full_replay": replay,
             "independent_replay_wall_s": time.perf_counter() - replay_started if replay else None,
             "independent_replay_wall_scope": "after restoring initial physics/public cache; includes replay planning, execution and private measurement; excludes forks, method selection and simulator construction",

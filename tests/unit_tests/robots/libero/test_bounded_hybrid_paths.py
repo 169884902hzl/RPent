@@ -51,6 +51,40 @@ def test_uncovered_rules_stay_unknown_and_use_native_instruction_replay():
     assert selected['sampled_native_success'] is None
 
 
+def test_instruction_completing_task_is_kept_without_changing_failed_grasp_truth():
+    source = summary()
+    stage = source['subtasks'][0]
+    variant = {'name': 'in_place', 'parameters': {'preparation': 'in_place'}}
+    stage['selection']['variant_groups'] = [{'variant': variant}]
+    stage['trials'] = [{'method': 'call_vla', 'vla_variant': variant,
+        'success': held, 'native_task_success': True,
+        'truth_source': 'private_sustained_grasp_v3_post_branch_window'}
+        for held in (False, True, False)]
+    original = copy.deepcopy(source)
+    selected = select_complete_path(source)
+    assert selected['sampled_native_success'] is True
+    assert selected['conditional_rate'] == 1.
+    assert selected['choices'][0]['vla_parameters'] == {'preparation': 'in_place'}
+    assert source == original
+
+
+def test_native_self_completion_is_also_a_complete_path():
+    source = summary()
+    source['subtasks'][0]['trials'] = [{'method': 'self', 'success': False,
+        'native_task_success': True}]
+    selected = select_complete_path(source)
+    assert selected['sampled_native_success'] is True
+    assert selected['choices'] == [{'subtask': source['subtasks'][0]['subtask'], 'method': 'self'}]
+
+
+def test_missing_endpoint_native_measurement_is_not_inferred_from_subtask_success():
+    source = summary()
+    stage = source['subtasks'][0]
+    for trial in stage['trials']:
+        trial['truth_source'] = 'private_sustained_grasp_v3_post_branch_window'
+    assert select_complete_path(source)['native_complete_alternatives'] == []
+
+
 def test_complete_replay_passes_selected_parameters_and_independent_seed(tmp_path):
     from contextlib import nullcontext
     from types import SimpleNamespace

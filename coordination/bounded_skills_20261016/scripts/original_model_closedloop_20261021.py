@@ -1,4 +1,4 @@
-"""Run the published HTTP model on frozen original init-heldout identities."""
+"""Run the published HTTP model on registered evaluation-only identities."""
 import hashlib
 import json
 import time
@@ -20,20 +20,25 @@ def verified_health(service):
     return health
 
 
-def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
+def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domain='original', split='init_holdout'):
     """Make every semantic choice through HTTP; oracle labels are never read."""
     from robots.libero.bounded_async import http_choice, public_model_request
     service = plan['model_service']
     health = verified_health(service)
-    choose = http_choice(service['endpoint'])
     output.mkdir()
+    def save_response(result):
+        with (output/'model_responses.jsonl').open('a') as stream:
+            stream.write(json.dumps(result)+'\n')
+    choose = http_choice(service['endpoint'], on_response=save_response)
     (output/'service_health_before.json').write_text(json.dumps(health, indent=2)+'\n')
-    with probe.runtime(case, endpoints, output, domain='original') as (facade, adapter, policy, timings):
+    with probe.runtime(case, endpoints, output, domain=domain) as (facade, adapter, policy, timings):
         adapter.allow_vla = True
         adapter.vla_options_v2 = True
         _, initial = probe.save_checkpoint(facade, adapter, policy, output/'private_initial.pkl')
         started = time.perf_counter()
         records, skill_steps = [], Counter()
+        recovery_used, recovery_events, stop_reason = 0, [], 'decision_limit'
+        recovery_budget = plan['runtime_budget'].get('recovery_budget')
         with (output/'choices.jsonl').open('x') as ledger, (output/'requests.jsonl').open('x') as requests:
             for index in range(plan['runtime_budget']['decisions']):
                 if adapter.p.env.terminated or adapter.p.env.truncated:
@@ -63,6 +68,7 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
                         'status': exc.code, 'body': body, 'endpoint': service['endpoint']}, indent=2)+'\n')
                     raise RuntimeError(f'model HTTP {exc.code}: {body}') from exc
                 before = len(adapter.details)
+                held_before = getattr(adapter, 'held', None)
                 with timings.measure('execution.chunk'):
                     receipts = adapter.execute(request, decision)
                 record = {'index': index, 'request': request, 'decision': decision,
@@ -76,6 +82,20 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
                 records.append(record)
                 for receipt in receipts:
                     skill_steps[receipt['skill']] += receipt['steps_used']
+                if recovery_budget is not None:
+                    failed = any(probe.consumes_recovery(r) for r in receipts)
+                    if failed:
+                        recovery_events.append({'decision': index, 'used_before': recovery_used,
+                            'public_phase_held_anchor_id': held_before})
+                        if recovery_used >= recovery_budget:
+                            stop_reason = 'failed_chunk_recovery_budget'
+                            break
+                        recovery_used += 1
+                    elif getattr(adapter, 'held', None) != held_before or any(
+                            r.get('skill') == 'call_vla' and r.get('outcome') == 'success'
+                            for r in receipts):
+                        # Public contact/hold transition, never an oracle goal or label.
+                        recovery_used = 0
                 if startup and sum(skill_steps.values()) > 0:
                     break
                 if any(r['skill'] in {'finish', 'ask_help'} for r in receipts):
@@ -86,7 +106,10 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False):
             'success': bool(facade.goal_status()['done']), 'decisions': len(records),
             'sim_steps': sum(skill_steps.values()), 'skill_sim_steps': dict(skill_steps),
             'k': k, 'model_service': service, 'initial_snapshot': initial,
-            'source_commit': plan['source_commit'], 'split': 'init_holdout',
+            'source_commit': plan['source_commit'], 'split': split, 'domain': domain,
+            'recovery_budget': recovery_budget, 'recovery_used': recovery_used,
+            'recovery_events': recovery_events, 'stop_reason': stop_reason,
+            'recovery_scope': 'public hold transitions or successful call_vla; no private-subtask reset',
             'training': False, 'confirmation': False, 'oracle_choices_used': 0,
             'wall_s': time.perf_counter()-started,
             'wall_time_breakdown': timings.summary(time.perf_counter()-timings.started),
