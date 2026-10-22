@@ -1,11 +1,12 @@
 """Return only new measurements for the frozen A queries, never B contexts."""
 import argparse
 from collections import Counter
+import importlib.util
 import json
 from pathlib import Path
 
 from rpent.skill_package.contract import action_binding_required, method_family
-from coordination.bounded_skills_20261016.scripts.export_original_schema6_measured_CPU_20261021 import digest, invocation_prompt, reference
+from coordination.bounded_skills_20261016.scripts.export_original_schema6_measured_CPU_20261021 import digest, reference
 
 
 def checked(ref):
@@ -15,7 +16,7 @@ def checked(ref):
     return path
 
 
-def measured_row(query, report, policy_revision):
+def measured_row(query, report, policy_revision, invocation_prompt):
     """Keep one queried candidate's three repeats under its exact old binding."""
     if report['binding'] != query['binding'] or report['query_id'] != query['query_id']:
         raise ValueError('query context changed')
@@ -95,9 +96,15 @@ def main():
     parser.add_argument('--manifest', type=Path, required=True)
     parser.add_argument('--results', type=Path, required=True)
     parser.add_argument('--policy-hashes', type=Path, required=True)
+    parser.add_argument('--prompt-exporter', type=Path, required=True)
+    parser.add_argument('--prompt-exporter-sha256', required=True)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     plan = json.loads(args.manifest.read_bytes())
+    prompt_source={'path':str(args.prompt_exporter),'sha256':args.prompt_exporter_sha256}
+    checked(prompt_source)
+    spec=importlib.util.spec_from_file_location('registered_prompt_provenance',args.prompt_exporter)
+    prompt_module=importlib.util.module_from_spec(spec);spec.loader.exec_module(prompt_module)
     checked(plan['queries'])
     hashes = {Path(name).name: sha for sha, name in
         (line.split(maxsplit=1) for line in args.policy_hashes.read_text().splitlines())}
@@ -108,7 +115,7 @@ def main():
         pointer = json.loads((args.results/f'closed_{index:03d}.json').read_bytes())
         summary = {'path': pointer['summary'], 'sha256': pointer['sha256']}
         report = json.loads(checked(summary).read_bytes())
-        row = measured_row(job['query'], report, policy_revision)
+        row = measured_row(job['query'], report, policy_revision, prompt_module.invocation_prompt)
         row['source'] = summary
         rows.append(row)
     args.output.mkdir(parents=True, exist_ok=False)
@@ -121,6 +128,8 @@ def main():
         'by_category': dict(Counter(row['case']['category'] for row in rows)),
         'queries': plan['queries'], 'measurement_manifest': reference(args.manifest),
         'policy_hashes': hashes, 'policy_revision': policy_revision,
+        'prompt_provenance_code':prompt_source,
+        'return_producer':reference(Path(__file__)),
         'PRO': False, 'D2': False, 'confirmation': False, 'training_admission': False,
         'evaluation_only': True, 'scope': 'new queried-candidate outcomes only; comparison labels require exact-binding merge with original A packet'}
     (args.output/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n')

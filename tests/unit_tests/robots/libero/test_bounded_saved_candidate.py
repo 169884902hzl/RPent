@@ -48,7 +48,7 @@ def test_changed_frozen_binding_never_acquires_a_measurement(changed):
 def test_return_packet_keeps_exact_binding_and_three_raw_failures(tmp_path):
     import json
     from coordination.bounded_skills_20261016.scripts.export_onpolicy_measurements_CPU_20261023 import measured_row
-    from coordination.bounded_skills_20261016.scripts.export_original_schema6_measured_CPU_20261021 import reference
+    from coordination.bounded_skills_20261016.scripts.export_original_schema6_measured_CPU_20261021 import reference, invocation_prompt
     query, saved = frozen_case()
     saved['request']['anchors'] = [{'id': 'bowl'}]
     query['public_request'] = saved['request']
@@ -70,14 +70,14 @@ def test_return_packet_keeps_exact_binding_and_three_raw_failures(tmp_path):
         trials.append({'result': result, 'summary': reference(path)})
     report = {'binding': query['binding'], 'query_id': 'query', 'candidate': query['candidate'],
         'case': {'category': 'bowl'}, 'trials': trials}
-    row = measured_row(query, report, 'policy-hash')
+    row = measured_row(query, report, 'policy-hash', invocation_prompt)
     assert row['binding'] == query['binding'] and row['record_id'] == 'old-record'
     assert len(row['branches'][0]['trials']) == 3 and row['unknown_trials'] == []
     assert all(t['success'] is False and t['sim_steps'] == 0 for t in row['branches'][0]['trials'])
     assert row['training_admission'] is False
     report['binding'] = dict(query['binding'], snapshot_sha256='new-context')
     with pytest.raises(ValueError, match='context changed'):
-        measured_row(query, report, 'policy-hash')
+        measured_row(query, report, 'policy-hash', invocation_prompt)
 
 
 def test_original_runtime_does_not_import_the_own_layout_constructor(monkeypatch):
