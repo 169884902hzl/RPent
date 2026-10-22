@@ -18,7 +18,7 @@ def setup(monkeypatch, *, choose_vla=False):
     state = {'steps': 0}
     env = SimpleNamespace(terminated=False, truncated=False,
         execution_budget=lambda: {'used_sim_steps':state['steps']})
-    adapter = SimpleNamespace(p=SimpleNamespace(env=env), held=None,
+    adapter = SimpleNamespace(p=SimpleNamespace(env=env), held=None, details=[],
         ex=SimpleNamespace(instruction='put the bowl on the plate'))
     requests, executes = [], []
     def request(**kwargs):
@@ -29,10 +29,12 @@ def setup(monkeypatch, *, choose_vla=False):
         assert 'private_authoring_coordinates' not in actual
         executes.append(decision);state['steps'] += 5
         adapter.held = 'e1'
+        adapter.details.append({'execution':{'trace':[{'action':[0.],'after_steps':state['steps']}]}})
         return [{'skill':'move_to','steps_used':5}]
     adapter.request, adapter.execute = request, execute
     policy = SimpleNamespace(choose=lambda request: {'candidate_ids':['vla' if choose_vla else 'move']})
-    facade = SimpleNamespace(goal_status=lambda: {'goals':[['on','bowl','plate']],
+    facade = SimpleNamespace(snapshot=lambda:{'public_steps':state['steps']},
+        goal_status=lambda: {'goals':[['on','bowl','plate']],
         'satisfied':[False], 'done':False})
     timings = SimpleNamespace(started=time.perf_counter(), measure=lambda *_:nullcontext(), summary=lambda wall: {'wall_s':wall})
     @contextmanager

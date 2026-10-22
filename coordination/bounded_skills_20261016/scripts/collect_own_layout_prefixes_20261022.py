@@ -81,9 +81,14 @@ def run_case(row, plan, endpoints, output, *, startup=False):
             if len(decision['candidate_ids']) != 1 or any(
                     by_id[cid]['skill'] == 'call_vla' for cid in decision['candidate_ids']):
                 raise ValueError('prefix collection requires one bounded oracle action, with VLA disabled')
+            before_path = output/f'step{index:03d}_private_before.pkl'
+            before_path.write_bytes(pickle.dumps(facade.snapshot(), protocol=5))
+            details_before = len(adapter.details)
             with timings.measure('execution.adapter'):
                 receipts = adapter.execute(request, decision)
-            event = {'request': request, 'decision': decision, 'receipts': receipts}
+            event = {'request': request, 'decision': decision, 'receipts': receipts,
+                'execution_details': adapter.details[details_before:],
+                'private_pre_execution_snapshot': reference(before_path)}
             trace.append(event)
             with (output/'prefix_choices.jsonl').open('a') as stream:
                 stream.write(json.dumps(event, default=lambda x: x.tolist() if hasattr(x, 'tolist') else str(x))+'\n')
