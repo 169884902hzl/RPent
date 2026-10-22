@@ -1,0 +1,10 @@
+95c358df修复已绑定但指定子任务候选不存在时提前退出的问题。
+只从原公开请求已有legal候选中回退到原文或整句调用，并记录实际参数。
+47项聚焦CPU及精确快照全技能729项通过；物理面板及真实VLA启动作业11334运行中。
+真实保存请求9个位置的CPU回放，2个选到合法原文候选、7个无合法回退；0物理步、0策略RPC。
+此回放不计物理成功，PRO/D2不进训练。
+
+精确源树a3c7cf4338f79cb3e11af5eced1d195f8b3f34a1；以c6b62442为基础只叠加95c358df两文件diff，执行/碰撞/oracle/chunk文件未改。
+归档SHA256：23c4d59a705daa3669788ad282ee8b724b6dc67b481a3c36944f1f662ff3f076。
+原件根：/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43。
+旧C6三档单列保留，不与新源混合分母。

@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-22T03:37:40.877423+00:00",
+  "source_tree": "9716b68c434c19519a8247b2ef69ce516fe9849c",
+  "closed_states": 90,
+  "physical_trials": 450,
+  "request_bound_measured_trials": 407,
+  "unknown_trials": 43,
+  "consumer_statuses": {
+    "ok": 47,
+    "unknown": 23,
+    "ceiling_outside": 20
+  },
+  "coverage_issue_states": 6,
+  "artifacts": {
+    "positions.jsonl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/CPU_closed90_r1/positions.jsonl",
+      "sha256": "08ac5176dcfac46f5cb9b9a7b7689d675329d992ba625e5d9610e6e413b915d3"
+    },
+    "manifest.json": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/CPU_closed90_r1/manifest.json",
+      "sha256": "f0702b17cefa48074cc95026458441ff7a76ed75af6ab95dfb6b1928d5c529a8"
+    },
+    "C2_intake_validation.json": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/CPU_closed90_r1/C2_intake_validation.json",
+      "sha256": "cce88da4b86ec1f585f4eccc2ca290f593f17f3f69cc09d1964478a87e98be68"
+    },
+    "metrics.json": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/CPU_closed90_r1/metrics.json",
+      "sha256": "26c86624470526f0e364fd1a5c7a6b19d5a995e3a4ea58e81fc11791151d69c6"
+    }
+  },
+  "replacement_scope": "replace matching repaired self and actual initial_pose contexts; never transfer old in_place/full_task labels to a different snapshot/request",
+  "preparation_correction": "requested initial_pose branches include actual in_place binding fallbacks; metrics and labels use actual candidate parameters; requested/actual are separate; correction and affected-branch development follow-up pending",
+  "PRO": false,
+  "D2": false,
+  "confirmation": false,
+  "training_executed": false
+}

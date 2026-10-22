@@ -1,3 +1,21 @@
+# 最新接续：回退遗漏修复已提交，D2 新快照验证中
+
+- 当前达标执行树仍为 `9d00ee63ab2196b95f8374e8245d9dea2ed8782b`：N1 完整30对为旧25/30、新24/30，改善1、退步2；全部完整初态SHA一致。四段时延及必要性清单见下方已登记报告。
+- 90状态450尝试已交付；8状态准备姿态纠正也已交付，24/24与旧分支初态和公开请求相同。实际原地19/24、实际initial_pose9/24，12次准备位未到；纠正身份不是策略改进。新8条消费者标签全unknown，未复制旧self补标签。
+- `95c358df`补上“绑定存在但指定子任务候选缺失”的合法不绑定回退；仅选请求中已有legal项，实际参数写入回执。47项聚焦CPU通过。精确树 `a3c7cf4338f79cb3e11af5eced1d195f8b3f34a1`，只在C6树叠加该两文件diff，执行/碰撞/oracle/chunk未变；归档SHA `23c4d59a705daa3669788ad282ee8b724b6dc67b481a3c36944f1f662ff3f076`。全技能CPU面板进行中。
+- 真实保存请求离线回放：9个bound-but-unavailable位置中，2个现在选到legal的instruction候选，其余7个没有legal回退；0物理步、0策略RPC，不计物理成功。证据 `ROOT/results/bounded_skills/execution_repairs_20261022/D2_option_fallback_a3c7cf43/preparation/real_public_selection_replay.json`。
+- C6 D2 jobs11328/11329/11330仍在运行，作为修前分母独立保存；待新源物理面板及真实VLA启动通过后切换，未将两版结果混合。借卡监控PID1921716持续运行；已提交af3a7652支持Codex2的两种job前缀，4项检查通过，未修改他人或held作业。
+- 扰动20状态CPU构造20/20通过，种子11020300–11020319；不是策略成功率。渲染小试树757762e4的全技能CPU752通过、fixed10 job11333完成，10局均有真实控制（222/162/348/320/23/397/676/412/23/23）；20状态π小试还未提交，仍排在D2之后。额外LIBERO干扰物插入未实现。
+- object_task CPU诊断：完整旧实例附着反事实仍被拒；新剩余点距静态参考4.27mm、距旧物体12.03mm，起点到拒绝点的手壳余量3.692→3.666mm。尚无生产修复或物理成功证据，没有猜改4mm间隙。
+
+# 最新：标签已交付，准备姿态回退修复
+
+- 正式90状态包已交Codex2共享登记：`ROOT/results/bounded_skills/execution_repairs_20261022/qualified90_9716b68c/CPU_closed90_r1`。450物理尝试，407绑定原请求、43unknown；消费者47ok/23unknown/20ceiling_outside，6状态有绑定覆盖问题。数据SHA08ac5176dcfac46f5cb9b9a7b7689d675329d992ba625e5d9610e6e413b915d3。
+- 必须更正：146/270是“请求initial_pose的π分支”，不能称全部实际回开局姿态；407已绑定试次里24个π分支实际in_place，分布8个状态。导出一直按实际候选记账，旧结果保留。65663a1a修复：有合法preferred preparation时先保留它；无该候选仍记录实际回退。34项聚焦测试通过。
+- 新精确树c6b624425dfcfbb3019265a69a3761be41b1f7a3，归档29a95adb5b1c9cf4f9ae43325ca97c4445eebd16ef8314ecc1bcd04fb5d46c46；CPU725pass。执行/碰撞/oracle/chunk与达标N1未改。物理面板和VLA启动已提交，完成后D2三档各40正式分片及8状态准备姿态补测。
+- 上一树2a9c4ee4的fixed10已闭合10，VLA startup11304完成0:0、74个物理控制、12次推理，交还后公开判成功；仅接口诊断，不进D2整局分母。
+- 杯子扰动构造原始对照证明arena上表面.410错误，实际碰撞顶面.43676且XY偏移。0b424b62按实际工作台碰撞面构造，27CPU测试通过；CPU专用新树9ed3904b3ef3190882476075a86fc1f5b3901421，待新20状态构造，0GPU。5cm世界XY/body-origin排除保持。
+
 # 最新接续：90 状态闭合，D2 准备
 
 - 原版90 job11258三片全部COMPLETED0:0；450次分叉，自有48/180、initial_pose146/270。原件复核记录 `reports/qualified90_9716b68c_20261022/`。导出以新快照/请求绑定，不能复用旧in_place/full_task标签。

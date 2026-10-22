@@ -1,0 +1,1902 @@
+{
+  "source_tree": "9ed3904b3ef3190882476075a86fc1f5b3901421",
+  "constructed": 20,
+  "registered": 20,
+  "by_category": {
+    "bowl_transfer": 3,
+    "box_transfer": 3,
+    "cup_transfer": 2,
+    "container": 2,
+    "drawer_open": 2,
+    "drawer_close": 2,
+    "microwave_open": 2,
+    "microwave_close": 2,
+    "plate_push": 2
+  },
+  "GPU_rollouts": 0,
+  "policy_calls": 0,
+  "training_executed": false,
+  "training_admission": false,
+  "seed_segment": [
+    11020300,
+    11020319
+  ],
+  "rows": [
+    {
+      "index": 0,
+      "seed": 11020300,
+      "category": "bowl_transfer",
+      "parent": "bowl_transfer_libero_spatial_t0_s10_B2_d002",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case000/manifest.json",
+        "sha256": "686c49b6c8e33530b31d47993ac1c9586849a4813b4794c5dc83f22562c7f9c4"
+      },
+      "state_sha256": "95594b6a95ab3e56439b4d3806adc686b2aa7441167bd19fab7fd4a851156df1",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 7,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "akita_black_bowl_1",
+            "resolved": "akita_black_bowl_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 27
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 1,
+      "seed": 11020301,
+      "category": "bowl_transfer",
+      "parent": "bowl_transfer_libero_spatial_t0_s13_B2_d002",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case001/manifest.json",
+        "sha256": "274979ca876f514fe571b4f2d695e3b839e94ddb6e46feef70947e9ad6c3eb70"
+      },
+      "state_sha256": "126f6130c544660444f83d4fb02feabe9ac82c81e7ed94c4bc85174ffe45b086",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 0,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "akita_black_bowl_1",
+            "resolved": "akita_black_bowl_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 4
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 2,
+      "seed": 11020302,
+      "category": "box_transfer",
+      "parent": "box_transfer_libero_object_t0_s1_B2_d001",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case002/manifest.json",
+        "sha256": "3e8d8b8d61cfa0de87b45f653b787ddcc4bf80a0d39a25fc0b1c52713a6d09e0"
+      },
+      "state_sha256": "319148f18430ea235606c7cba5c80cc992dbbbb299b6d7434cb2bd972a7e3cec",
+      "support": {
+        "lower_m": [
+          -0.345,
+          -0.385,
+          -0.125
+        ],
+        "upper_m": [
+          0.295,
+          0.39,
+          0.0
+        ],
+        "source": "original_initial_regions_and_native_floor_plane",
+        "initial_region_margin_m": 0.12
+      },
+      "attempt": 0,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "alphabet_soup_1",
+            "resolved": "alphabet_soup_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 249
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 3,
+      "seed": 11020303,
+      "category": "box_transfer",
+      "parent": "box_transfer_libero_object_t0_s10_B2_d001",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case003/manifest.json",
+        "sha256": "186da2cd9a4a03a7d9dbd45c717d51b2e26d4dd96369e18bfb9efefd6ba592a2"
+      },
+      "state_sha256": "138893d33f9e32bbdf7a564ba4a1685459f9303c00b821d41e27a511e3918788",
+      "support": {
+        "lower_m": [
+          -0.345,
+          -0.385,
+          -0.125
+        ],
+        "upper_m": [
+          0.295,
+          0.39,
+          0.0
+        ],
+        "source": "original_initial_regions_and_native_floor_plane",
+        "initial_region_margin_m": 0.12
+      },
+      "attempt": 0,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "alphabet_soup_1",
+            "resolved": "alphabet_soup_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 248
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 4,
+      "seed": 11020304,
+      "category": "cup_transfer",
+      "parent": "cup_transfer_libero_10_t4_s10_B2_d005",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case004/manifest.json",
+        "sha256": "4b998fcf43d008c676d672245dd0c6b5f7c509b91d92f4549aded4d036eeb970"
+      },
+      "state_sha256": "d26bbde0d7b98feebc42de1f29d052695df2e023c485cb7779e5ff813e95f674",
+      "support": {
+        "lower_m": [
+          -0.6943200000000003,
+          -0.6193200000000004,
+          0.4130800000000001
+        ],
+        "upper_m": [
+          0.19432000000000021,
+          0.7241000000000003,
+          0.43676000000000015
+        ],
+        "source": "original_workspace_collision_box_top",
+        "geometry_id": 10,
+        "geometry_body": "living_room_table_col"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "porcelain_mug_1",
+            "resolved": "porcelain_mug_1",
+            "consistent": true
+          },
+          {
+            "source": "white_yellow_mug_1",
+            "resolved": "white_yellow_mug_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 44
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 5,
+      "seed": 11020305,
+      "category": "cup_transfer",
+      "parent": "cup_transfer_libero_10_t4_s12_B2_d005",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case005/manifest.json",
+        "sha256": "efee4e0a950bb211a6963e9e2689bc1ee41ac0fb8ae32843f844e44844a18d1c"
+      },
+      "state_sha256": "82f2b7e4f7000cdbd2102ebd8c3e8dda99eb2f75f0274515c00286cfda57e9d8",
+      "support": {
+        "lower_m": [
+          -0.6943200000000003,
+          -0.6193200000000004,
+          0.4130800000000001
+        ],
+        "upper_m": [
+          0.19432000000000021,
+          0.7241000000000003,
+          0.43676000000000015
+        ],
+        "source": "original_workspace_collision_box_top",
+        "geometry_id": 10,
+        "geometry_body": "living_room_table_col"
+      },
+      "attempt": 2,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "porcelain_mug_1",
+            "resolved": "porcelain_mug_1",
+            "consistent": true
+          },
+          {
+            "source": "white_yellow_mug_1",
+            "resolved": "white_yellow_mug_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 115
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 6,
+      "seed": 11020306,
+      "category": "container",
+      "parent": "container_libero_object_t2_s0_B2_d001",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case006/manifest.json",
+        "sha256": "10c1ece60637c5741e86250b009958d9618790d014088115fe5d43b78e1d87b9"
+      },
+      "state_sha256": "aa31690d256abe40e01e54c2e7c35c86c561732ecc5d143a2e55be9735e98b36",
+      "support": {
+        "lower_m": [
+          -0.345,
+          -0.385,
+          -0.125
+        ],
+        "upper_m": [
+          0.295,
+          0.39,
+          0.0
+        ],
+        "source": "original_initial_regions_and_native_floor_plane",
+        "initial_region_margin_m": 0.12
+      },
+      "attempt": 0,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "salad_dressing_1",
+            "resolved": "salad_dressing_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 272
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 7,
+      "seed": 11020307,
+      "category": "container",
+      "parent": "container_libero_object_t2_s1_B2_d001",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case007/manifest.json",
+        "sha256": "1eec4e1dabe84ad40ef2e6343f538db7b52c519a09ccb5518027ecbbb6e860da"
+      },
+      "state_sha256": "62f6b7bc6421200612c737c77f35e03530e9c3d64435b20734c7c63309f4d398",
+      "support": {
+        "lower_m": [
+          -0.345,
+          -0.385,
+          -0.125
+        ],
+        "upper_m": [
+          0.295,
+          0.39,
+          0.0
+        ],
+        "source": "original_initial_regions_and_native_floor_plane",
+        "initial_region_margin_m": 0.12
+      },
+      "attempt": 0,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "salad_dressing_1",
+            "resolved": "salad_dressing_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 261
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 8,
+      "seed": 11020308,
+      "category": "drawer_open",
+      "parent": "drawer_open_libero_goal_t0_s0_B2_d006",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case008/manifest.json",
+        "sha256": "2fcf2c6e2ad187122c1802d04baca39c44e95fc701228b90015d1064ead33167"
+      },
+      "state_sha256": "27372e19257c631595c7a43fce3fb7317e1b8236be526601a634df136530442d",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 29
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 9,
+      "seed": 11020309,
+      "category": "drawer_open",
+      "parent": "drawer_open_libero_goal_t0_s10_B2_d006",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case009/manifest.json",
+        "sha256": "f3e33be8f628aa288f4ab7989170d70ce4d5c34695dd54cc19b540694d84fabc"
+      },
+      "state_sha256": "f01455edd27a08904e013a4f420a1e2ffe413d62499aeb6b411684c32831df07",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 10
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 10,
+      "seed": 11020310,
+      "category": "drawer_close",
+      "parent": "drawer_close_libero_90_t0_s1_B2_d018",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case010/manifest.json",
+        "sha256": "af86649bba808f9507393162d5b993700fce60241e79266ffcd691c9398d5736"
+      },
+      "state_sha256": "f18a733e7f9034fd344f8e0cbf34758cb041edab25685691c1de11b56d9f8151",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 9
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 11,
+      "seed": 11020311,
+      "category": "drawer_close",
+      "parent": "drawer_close_libero_90_t0_s10_B2_d018",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case011/manifest.json",
+        "sha256": "d863b3e6223eec9d1107f313566330243f873941b4bb3337b6b52a586787323d"
+      },
+      "state_sha256": "862b1f76e20da7ef989ed03e62b6a0f6fede2ba81458ba80a83d7d40a5580742",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 9
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 12,
+      "seed": 11020312,
+      "category": "microwave_open",
+      "parent": "microwave_open_libero_90_t35_s0_B2_d009",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case012/manifest.json",
+        "sha256": "71b51d167688022204d572655e05994534d9b5c2f8d026a8c9405a5dcd35081b"
+      },
+      "state_sha256": "a744210792cbfaee430a70c37835adbf5799fb1ed00d386592402b83cc173078",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 3,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 274
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 13,
+      "seed": 11020313,
+      "category": "microwave_open",
+      "parent": "microwave_open_libero_90_t35_s1_B2_d009",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case013/manifest.json",
+        "sha256": "920a35b7ce39703621a76054ad86ca48c66c05e4f4dfa9b74a921d4cfe372d70"
+      },
+      "state_sha256": "35684689f37bdf886a55536a217d44bc6df0ef83d175ad6253bf11d2b1fdf5b2",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 180
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 14,
+      "seed": 11020314,
+      "category": "microwave_close",
+      "parent": "microwave_close_libero_90_t33_s10_B2_d003",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case014/manifest.json",
+        "sha256": "ac744d0f7ec08628760d66f2ac96d368a11dc3a9c707a210e42c51ad7b2250c9"
+      },
+      "state_sha256": "3c5536ef7f3c798e7b9559cae0705a5e163210e11e333df08cadd6193fc5874a",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 0,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 145
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 15,
+      "seed": 11020315,
+      "category": "microwave_close",
+      "parent": "microwave_close_libero_90_t33_s11_B2_d004",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case015/manifest.json",
+        "sha256": "628e5a0aeabaf3bc62c957d6cb92fa4f8caf76e780684f3fb7f25e05e252d6d4"
+      },
+      "state_sha256": "bb358aa69d0468dc48cfb4de18ca8598c3d38315ee38baa1483ab017b96137ba",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 217
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 16,
+      "seed": 11020316,
+      "category": "plate_push",
+      "parent": "plate_push_libero_goal_t5_s10_B2_d002",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case016/manifest.json",
+        "sha256": "e059461c4a83d9b0b740e938d8054f13d69e4e4bc7936b6c85b7c0d2f5fd3f76"
+      },
+      "state_sha256": "e5601520e15a4be6288cee4b133f20827a5f83415db59ad0a19d632a5265f02b",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "plate_1",
+            "resolved": "plate_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 94
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 17,
+      "seed": 11020317,
+      "category": "plate_push",
+      "parent": "plate_push_libero_goal_t5_s14_B2_d000",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case017/manifest.json",
+        "sha256": "90270cbbaf00260772792a69ff4cb10cd010e74a85c29acbe192ae9acf057fb7"
+      },
+      "state_sha256": "0949f7859e587cb3b4e5f6afce1ee995624460dcdfe3ecab9e1a2c58024ba295",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "plate_1",
+            "resolved": "plate_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 171
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 18,
+      "seed": 11020318,
+      "category": "bowl_transfer",
+      "parent": "bowl_transfer_libero_spatial_t0_s15_B2_d002",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case018/manifest.json",
+        "sha256": "1441af45c807bc4f4aa2b133110913a0370a16bbbec7cdc9b68ccdffdfe6c1ba"
+      },
+      "state_sha256": "b99dd2668c4f577f7d82fc8356d52329c7b2ce0d6fd218525738eeb2fd0ef791",
+      "support": {
+        "lower_m": [
+          -0.5,
+          -0.6,
+          0.85
+        ],
+        "upper_m": [
+          0.5,
+          0.6,
+          0.9
+        ],
+        "source": "original_arena_workspace_dimensions"
+      },
+      "attempt": 5,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "akita_black_bowl_1",
+            "resolved": "akita_black_bowl_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 4
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    },
+    {
+      "index": 19,
+      "seed": 11020319,
+      "category": "box_transfer",
+      "parent": "box_transfer_libero_object_t0_s11_B2_d001",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/layout20_surface_9ed3904b/states/case019/manifest.json",
+        "sha256": "e0448df47c3b72df209e479019c6af54bf40518d7887748b67995a27c078252f"
+      },
+      "state_sha256": "919d658a50be7a7f9dd9c8439a7c6668f83ffc3fd1a5789b385c53215be0b277",
+      "support": {
+        "lower_m": [
+          -0.345,
+          -0.385,
+          -0.125
+        ],
+        "upper_m": [
+          0.295,
+          0.39,
+          0.0
+        ],
+        "source": "original_initial_regions_and_native_floor_plane",
+        "initial_region_margin_m": 0.12
+      },
+      "attempt": 1,
+      "witness": {
+        "native_predicates_satisfied": true,
+        "nonintersecting": true,
+        "instruction_identity_consistent": true,
+        "movable_sources": [
+          {
+            "source": "alphabet_soup_1",
+            "resolved": "alphabet_soup_1",
+            "consistent": true
+          }
+        ],
+        "source": "independent_CPU_native_original_task_predicates",
+        "scope": "source-identity rule check; not RGB-D binding accuracy or complete natural-language verification",
+        "initial_penetrations": [],
+        "witness_penetrations": [],
+        "original_controls_replayed": 241
+      },
+      "exclusion_coverage": {
+        "registry": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_RECONCILIATION.json",
+          "sha256": "fa5001d9941dcac96cd5db95edf7426ed827c5c717677957a39651e677f4225a"
+        },
+        "sources": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bottle_combined.json",
+            "sha256": "67d63a486582562571ea04802592422ee9493c558561b97c1346915c622585de",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_bowl_combined.json",
+            "sha256": "40fa635bac2a31c96ffee5862f38ebbead2b8f4968028192539333c46051863c",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_box_combined.json",
+            "sha256": "e55025dd705e984350abcc710bde8a92c6b88bbce0b49d321164596b4f65fbe4",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_cup_combined.json",
+            "sha256": "705cac3bfd678483fc2db111d51d36f34842f44a860ed83093b0ccdfc9540d3f",
+            "geometry_records": 400
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/perturb_skill_confirmation_geometry_20261009_r1/grasp_frypan_combined.json",
+            "sha256": "a4cedad7fd93ee45df5e571f73b5ce59a21cd1acf8c9c219e3abdf1ef0fb3ddc",
+            "geometry_records": 200
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/confirmation_exclusions100.json",
+            "sha256": "885c74af801b30dd7b244e3fb04bdda9f1e0bcb3d9835a2b7ba722cbdb3b65d7",
+            "record_count": 100,
+            "role": "moka_registered_layout_confirmation",
+            "geometry_records": 100
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/perturbation_guard_CPU/original665_geometry/original_confirmation_geometry.jsonl",
+            "sha256": "e60607099eae85e52768a06c48328a2e09232919c609a3601fe9a1a4068ac0fe",
+            "geometry_records": 665
+          }
+        ],
+        "geometry_records_checked": 2165,
+        "original_confirmation_geometry_records_missing": 0,
+        "known_original_geometry_records_checked": 665,
+        "coverage_complete": false,
+        "training_admission": false,
+        "distance_metric": "world_xy_euclidean",
+        "minimum_distance_m": 0.05,
+        "source_policy": "private geometry exclusion only; no outcomes, instructions or labels consumed"
+      }
+    }
+  ],
+  "pending": [
+    "additional asset distractor insertion",
+    "public rendered canonical branchpoint and pi05 pilot",
+    "historical confirmation registry completeness"
+  ]
+}
