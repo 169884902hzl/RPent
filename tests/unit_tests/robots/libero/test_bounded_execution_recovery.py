@@ -80,6 +80,26 @@ def test_real_zero_step_lifts_do_not_claim_grasp_failure():
         assert all(c['measured'] is None and c['passed'] is None for c in receipt['expectation_checks'])
 
 
+def test_rejected_fixture_move_refreshes_without_claiming_execution(adapter, monkeypatch):
+    """Stove s7 needs fresh contact depth after its first zero-control rejection."""
+    from dataclasses import replace
+    from robots.libero.bounded_motion import SmoothMotion
+
+    request = adapter.request(k=1)
+    move = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='stove')
+    monkeypatch.setattr(SmoothMotion, 'prepare', lambda *_args, **_kwargs: (
+        SimpleNamespace(duration=1.), None, None, {
+            'passed': False, 'collision': True, 'ik_reachable': None,
+            'path_min_clearance_m': 0., 'reason': 'measured_sweep_collision'}))
+    capture_before = adapter.ex.toolkit._state.latest_step
+    receipt, = adapter.execute(request, decision(request, [move['id']]))
+    assert receipt['steps_used'] == 0 and not adapter.p.actions
+    assert adapter.ex.toolkit._state.latest_step > capture_before
+    assert all(check['measured'] is None and check['passed'] is None
+        for check in receipt['expectation_checks'])
+
+
 def test_pending_lift_preserves_existing_complete_attached_surface(adapter, monkeypatch):
     """Container s6's narrower contact reference retained its own bottle face."""
     adapter.active = 'e1'

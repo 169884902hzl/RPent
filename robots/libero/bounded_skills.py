@@ -3136,8 +3136,6 @@ class MeasuredSkillAdapter:
             # same measurement and needlessly rebuilds its instance clouds.
             detail['reused_post_handoff_observation'] = True
             contact_registration = None
-        elif skill in MOTION_SKILLS and self.p.env.execution_budget()['used_sim_steps'] == start_steps:
-            contact_registration = None
         else:
             self.refresh()
             contact_registration = None
