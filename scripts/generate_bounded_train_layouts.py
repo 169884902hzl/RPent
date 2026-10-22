@@ -18,7 +18,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_train_layouts import generate_layout, instruction_identity_check
-from robots.libero.v5_branch_state import restore_actuators
+from robots.libero.v5_branch_state import actuator_state, restore_actuators
 from scripts.bounded_state_exclusions import check_exclusions
 
 
@@ -30,10 +30,49 @@ def pinned(ref):
     return raw
 
 
+def confirmation_geometry(reference):
+    """Read only pinned private exclusion geometry, including reserve rows."""
+    registry = json.loads(pinned(reference))
+    layouts, sources = [], []
+    for pool in registry['fiveclass_pool_reconciliation']['pool_metadata']:
+        ref = pool['pool']
+        data = json.loads(pinned(ref))
+        if data.get('permanent_training_exclusion') is not True:
+            raise ValueError('confirmation pool lost its permanent exclusion')
+        for row in data['rows']:
+            if row.get('permanent_training_exclusion') is not True:
+                raise ValueError('confirmation row lost its permanent exclusion')
+            positions = row['preparation_provenance']['settled_geometry']
+            if not positions or any(len(xyz) != 3 or not np.isfinite(xyz).all()
+                    for xyz in positions.values()):
+                raise ValueError('confirmation pool has incomplete settled geometry')
+            layouts.append(positions)
+        sources.append({**ref, 'geometry_records': len(data['rows'])})
+    moka_ref = registry['source_index']['moka100']
+    data = json.loads(pinned(moka_ref))
+    for row in data['records']:
+        if row.get('permanent_training_exclusion') is not True:
+            raise ValueError('Moka row lost its permanent exclusion')
+        symbol = row['layout_parameters']['rule']['moved_object_symbol']
+        xy = row['settled_moka_xy_m']
+        if len(xy) != 2 or not np.isfinite(xy).all():
+            raise ValueError('Moka exclusion requires settled world XY')
+        layouts.append({symbol: [*xy, 0.]})
+    sources.append({**moka_ref, 'geometry_records': len(data['records'])})
+    # Original665 and the named reservations contain identities, not a
+    # complete settled-geometry table. Never promote this partial check to
+    # permission to train or silently release a missing confirmation row.
+    return layouts, {'registry': reference, 'sources': sources,
+        'geometry_records_checked': len(layouts),
+        'original_confirmation_geometry_records_missing': registry['counts']['official_original_confirmation_states'],
+        'coverage_complete': False, 'training_admission': False,
+        'distance_metric': 'world_xy_euclidean', 'minimum_distance_m': .05,
+        'source_policy': 'private geometry exclusion only; no outcomes, instructions or labels consumed'}
+
+
 def restore(env,snapshot):
     env.sim.set_state_from_flattened(snapshot['sim_state'])
     restore_actuators(env,snapshot['actuator_state'])
-    env.sim.forward()
 
 
 def object_box(env,name,obj):
@@ -94,7 +133,7 @@ def penetrations(env,moving):
         and owner(c.geom1)!=owner(c.geom2)]
 
 
-def generate_case(manifest,index,seed,output):
+def generate_case(manifest,index,seed,output,confirmation_reference=None):
     from libero.libero.envs.env_wrapper import ControlEnv
     case=manifest['cases'][index]
     episode=case['episode'];name=case['name'].split('_B2_')[0]
@@ -155,17 +194,23 @@ def generate_case(manifest,index,seed,output):
                 'initial_penetrations':initial_bad,'witness_penetrations':bad,
                 'source':'independent_CPU_native_original_task_predicates',
                 'original_controls_replayed':len(actions)}
+        exclusions, geometry_evidence = (confirmation_geometry(confirmation_reference)
+            if confirmation_reference is not None else ((), None))
         layout=generate_layout(parent={**episode,'split':'train',
             'initial_state_sha256':parent['initial_state_sha256']},objects=objects,
-            support=support,seed=seed,witness_check=validate)
+            support=support,seed=seed,witness_check=validate,confirmation_layouts=exclusions)
         restore(base,initial);apply_layout(base,layout['objects'])
-        raw=pickle.dumps({'sim_state':base.sim.get_state().flatten(),
+        physics={'sim_state':base.sim.get_state().flatten(), 'actuator_state':actuator_state(base)}
+        raw=pickle.dumps({**physics,
             'layout':layout,'parent_id':parent_id},protocol=5)
         output.mkdir(parents=True,exist_ok=False)
         (output/'private_generated_state.pkl').write_bytes(raw)
         report={'layout':layout,'state_sha256':hashlib.sha256(raw).hexdigest(),
             'parent_id':parent_id,'original_bddl':bddl,'CPU_only':True,
             'GPU_rollouts':0,'training_admission':False,
+            'integration_sha256':physics['actuator_state']['integration']['sha256'],
+            'native_data_sha256':physics['actuator_state']['native_data']['sha256'],
+            'confirmation_geometry_exclusions':geometry_evidence,
             'pending':['complete geometric confirmation-distance exclusion',
                 'additional asset distractor insertion','N1-qualified physical pilot']}
         (output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
@@ -180,8 +225,14 @@ def main():
     parser.add_argument('--case',type=int,required=True)
     parser.add_argument('--seed',type=int,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--confirmation-reconciliation',type=Path)
+    parser.add_argument('--confirmation-reconciliation-sha256')
     args=parser.parse_args()
-    result=generate_case(json.loads(args.manifest.read_bytes()),args.case,args.seed,args.output)
+    if bool(args.confirmation_reconciliation) != bool(args.confirmation_reconciliation_sha256):
+        parser.error('confirmation reconciliation requires both path and SHA256')
+    reference = ({'path':str(args.confirmation_reconciliation),
+        'sha256':args.confirmation_reconciliation_sha256} if args.confirmation_reconciliation else None)
+    result=generate_case(json.loads(args.manifest.read_bytes()),args.case,args.seed,args.output,reference)
     print(json.dumps({'state_sha256':result['state_sha256'],
         'native_witness':result['layout']['predicate_witness'],'training_admission':False}))
 

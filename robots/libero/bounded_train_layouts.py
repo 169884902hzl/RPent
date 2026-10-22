@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-VERSION = 'original-train-layout/3'
+VERSION = 'original-train-layout/4'
 ORIGINAL_SUITES = {'libero_spatial','libero_object','libero_goal','libero_10','libero_90'}
 SEED_RANGE = (11020000,11029999)
 
@@ -102,8 +102,9 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
     if not np.all(high>low) or len({x['id'] for x in objects})!=len(objects):
         raise ValueError('invalid support bounds or duplicate object identity')
     for item in objects:
-        values=np.r_[item['xyz_m'],item['size_m'],item['yaw_rad']]
-        if not np.isfinite(values).all() or not np.all(np.asarray(item['size_m'])>0):
+        centre=np.asarray(item.get('local_centre_m',[0.,0.,0.]))
+        values=np.r_[item['xyz_m'],item['size_m'],item['yaw_rad'],centre]
+        if centre.shape!=(3,) or not np.isfinite(values).all() or not np.all(np.asarray(item['size_m'])>0):
             raise ValueError('finite positive measured/static object geometry required')
     fixed=[dict(x) for x in objects if not x['movable']]
     moving=[x for x in objects if x['movable']]
@@ -114,9 +115,16 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
         # Permute existing positions as well as offset/yaw them. This is our
         # generic sampler, independent of PRO swap/task names or definitions.
         order=rng.permutation(len(moving))
+        strategy = 'offset_and_permute' if attempt % 2 == 0 else 'uniform_free_support'
         for i,item in enumerate(moving):
             pos=bases[order[i]].copy()
-            pos[:2]+=rng.uniform(-limits.translation_m,limits.translation_m,2)
+            if strategy == 'offset_and_permute':
+                pos[:2]+=rng.uniform(-limits.translation_m,limits.translation_m,2)
+            else:
+                # Reserved layouts can cover the entire offset neighbourhood.
+                # Propose elsewhere on the same support, then apply the same
+                # footprint, exclusion, collision and original-task checks.
+                pos[:2]=rng.uniform(low[:2],high[:2])
             pos[2]=high[2]+item['size_m'][2]/2
             proposed.append({**item,'xyz_m':pos.tolist(),
                 'yaw_rad':float(item['yaw_rad']+rng.uniform(-limits.yaw_rad,limits.yaw_rad))})
@@ -128,10 +136,16 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
             if not ((footprint>=low[:2]+limits.separation_m).all()
                     and (footprint<=high[:2]-limits.separation_m).all()):
                 reason='outside_free_support';break
+            c,s=math.cos(item['yaw_rad']),math.sin(item['yaw_rad'])
+            # Registered settled_geometry uses object-body positions.
+            # Off-centre assets (e.g. pan handles) must use that same
+            # point, rather than gaining clearance from a shifted box.
+            position=np.asarray(item['xyz_m'])[:2]-np.array([[c,-s],[s,c]]) @ np.asarray(
+                item.get('local_centre_m',[0.,0.,0.]))[:2]
             for old in confirmation_layouts:
                 q=old.get(item['id'])
                 if q is not None and np.linalg.norm(
-                        np.asarray(item['xyz_m'])[:2]-np.asarray(q)[:2])<limits.confirmation_distance_m:
+                        position-np.asarray(q)[:2])<limits.confirmation_distance_m:
                     reason='near_permanent_confirmation_layout';break
             if reason:break
         if reason is None and any(overlap(a,b,limits.separation_m)
@@ -150,9 +164,10 @@ def generate_layout(*, parent, objects, support, seed, witness_check,
             reasons[reason]=reasons.get(reason,0)+1
             continue
         return {'version':VERSION,'layout_seed':seed,'parent':parent,'objects':proposed,
-            'limits':vars(limits),'attempt':attempt,'rejected_attempts':reasons,
+            'limits':vars(limits),'attempt':attempt,'proposal_strategy':strategy,'rejected_attempts':reasons,
             'predicate_witness':witness,'PRO':False,'D2':False,'confirmation':False,
             'identity_domain':'own_original_train_layout',
             'confirmation_distance_metric':'world_xy_euclidean',
+            'confirmation_distance_anchor':'object_body_origin',
             'source_policy':'own original train sampler; no PRO/MAX files or definitions'}
     raise ValueError('no admissible layout: '+str(reasons))

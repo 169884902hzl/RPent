@@ -53,6 +53,39 @@ def test_confirmation_distance_cannot_be_bypassed_by_object_height():
         for x in other['objects'])
 
 
+def test_confirmation_clusters_do_not_confine_proposals_to_parent_neighbourhood():
+    # The actual registered pools exclude almost every +/-12 cm offset.
+    # There is still free tabletop above/below this covered horizontal band.
+    excluded = [{item['id']:[float(x),float(y),0.] for item in OBJECTS}
+        for x in np.arange(-.26,.261,.04) for y in np.arange(-.16,.161,.04)]
+    layout = generate(confirmation_layouts=excluded)
+    assert layout['proposal_strategy'] == 'uniform_free_support'
+    assert all(abs(item['xyz_m'][0]) > .26 or abs(item['xyz_m'][1]) > .16
+        for item in layout['objects'])
+    assert all(min(np.linalg.norm(np.asarray(item['xyz_m'])[:2]-old[item['id']][:2])
+        for old in excluded) >= .05 for item in layout['objects'])
+
+
+def test_confirmation_distance_uses_registered_body_origin_not_bounds_centre():
+    objects = [{**item, 'local_centre_m':[.1,0.,0.]} for item in OBJECTS]
+
+    def body_xy(item):
+        angle = item['yaw_rad']
+        c,s = np.cos(angle),np.sin(angle)
+        return np.asarray(item['xyz_m'])[:2]-np.array([[c,-s],[s,c]]) @ [.1,0.]
+
+    def sample(excluded=()):
+        return generate_layout(parent=PARENT,objects=objects,support=SUPPORT,seed=11020000,
+            confirmation_layouts=excluded,
+            witness_check=lambda _: {'native_predicates_satisfied':True})
+
+    first = sample()
+    excluded = {item['id']:[*body_xy(item),0.] for item in first['objects']}
+    following = sample([excluded])
+    assert all(np.linalg.norm(body_xy(item)-excluded[item['id']][:2]) >= .05
+        for item in following['objects'])
+
+
 def test_layout_cannot_change_which_bowl_the_original_instruction_references():
     objects=[{'id':name,'xyz_m':[x,0.,.05],'size_m':[.03,.03,.03],
         'yaw_rad':0.,'movable':True} for name,x in
