@@ -122,16 +122,22 @@ def test_pending_lift_preserves_existing_complete_attached_surface(adapter, monk
     assert adapter._lift_payload_screen('e1', screen) is screen
 
 
-def test_payload_reference_reuses_complete_precontact_instance(adapter, monkeypatch):
-    points = np.repeat([[.1, .1, .9]], 40, axis=0)
-    adapter.committed_grasps['e1'] = {'instance_reference': {
-        'xyz_world': points, 'stationary_scene': points + [.4, .4, .4],
-        'artifact': {'path': 'retained'}}}
-    monkeypatch.setattr(adapter, '_contact_pixels',
-        lambda *_args, **_kwargs: pytest.fail('narrow contact pixels replaced complete instance'))
-    result = adapter._capture_payload_reference('e1')
-    np.testing.assert_array_equal(result['target'], points)
-    assert result['source'] == 'precontact_public_instance_reference'
+def test_close_occlusion_retains_actual_preclose_measurement(adapter, monkeypatch):
+    from dataclasses import replace
+
+    request = adapter.request(k=1)
+    adapter.active = 'e1'
+    source = adapter.scene.entities['e1']
+    close = next(c for c in request['candidates']
+        if c['skill'] == 'set_gripper' and c['parameters']['mode'] == 'close')
+    before = adapter.robot()
+    monkeypatch.setattr(adapter, 'refresh', lambda **_kwargs:
+        adapter.scene.entities.update(e1=replace(source, visible=False)))
+    adapter.execute(request, decision(request, [close['id']]))
+    retained, sensor = adapter.grasp_reference
+    assert retained == source and retained.source_step == source.source_step
+    assert sensor == before
+    assert adapter.held is None
 
 
 def test_real_container_support_pair_can_separate_without_pair_identity_lock():

@@ -474,7 +474,7 @@ class MeasuredSkillAdapter:
         """
         entity = self.scene.entities.get(key)
         if (not isinstance(screen, PublicRouteScreen) or len(screen.payload) or self.held is not None
-                or key != self.active
+                or key != self.active or self.grasp_reference is None
                 or entity is None or entity.part_of or fixture_actions(entity.name)
                 or self.plans.get(key, {}).get('contact_kind') == 'surface'):
             return screen
@@ -3220,10 +3220,16 @@ class MeasuredSkillAdapter:
             if self.active in self.committed_grasps:
                 self.committed_grasps[self.active]['contact_robot'] = measured_robot(self.p)
             contact_entity = self.scene.entities.get(self.active)
-            # Closing can move an object and change its visible surface.
-            # Test subsequent lift coupling against the post-close sample,
-            # never against an image captured before descent/contact.
-            self.grasp_reference = (copy.deepcopy(contact_entity), self.robot()) if contact_entity and contact_entity.visible else None
+            # Prefer the post-close sample. If jaw occlusion hides it, retain
+            # the immediately preceding measured sample and its hand pose.
+            if contact_entity is not None and contact_entity.visible:
+                self.grasp_reference = (copy.deepcopy(contact_entity), self.robot())
+            else:
+                # Closing can occlude the instance without invalidating the
+                # immediately preceding public sample. Retain its real capture
+                # time and pre-close hand pose; never relabel it as fresh.
+                source = entities_before.get(self.active)
+                self.grasp_reference = (copy.deepcopy(source), before) if source and source.visible else None
         if skill == "observe" and outcome == "success":
             # Moving the camera alone cannot reset recovery failures. A scan
             # must reveal an entity or a measured scene change; otherwise
@@ -3274,13 +3280,6 @@ class MeasuredSkillAdapter:
                     and reason.startswith('contact_')):
                 self._contact_retry_references[key] = (key, parameters['axis'], parameters['distance_m'],
                     contact_reference, contact_capture_step)
-        if skill == "lift" and detail.get('executed') and payload_reference is not None:
-            current = self.scene.entities.get(key)
-            if current is None or not current.visible:
-                # The object can be occluded immediately after closure. Take
-                # one explicit public RGB-D refresh before declaring the hold
-                # unmeasured; no simulator identity or pose is consulted.
-                self.refresh(names=[key])
         if skill == "lift" and self.grasp_reference is not None and detail.get('executed'):
             source, robot_at_contact = self.grasp_reference
             current = self.scene.entities.get(key)
@@ -3307,25 +3306,6 @@ class MeasuredSkillAdapter:
                     outcome, phase, reason = "failure", "contact_failure", "public_hold_not_verified"
             else:
                 outcome, phase, reason = "unmeasured", "verification_error", "lifted_object_not_visible"
-        elif skill == "lift" and detail.get('executed') and payload_reference is not None:
-            source = entities_before.get(key)
-            current = self.scene.entities.get(key)
-            if source is not None and current is not None and current.visible:
-                robot_at_contact = payload_reference['robot']
-                holding = self._held_motion_evidence(source, current, robot_at_contact, self.robot())
-                opening = self.robot()["gripper_opening_m"]
-                aperture, aperture_evidence = self.holding_aperture(opening)
-                rise = current.lower[2] - source.lower[2]
-                detail["public_hold"] = {"rise_m": rise,
-                    "relative_displacement_m": None, "opening_m": opening,
-                    "aperture": aperture_evidence, "bounds_co_motion": holding}
-                if holding is not None and rise >= .03 and not holding['lost'] and aperture:
-                    self.held = key
-                    self.payload_reference = payload_reference
-                else:
-                    outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_not_verified'
-            else:
-                outcome, phase, reason = 'unmeasured', 'verification_error', 'lifted_object_not_visible'
         if self.p.env.terminated:
             # Native completion is a public stop condition. Reaching it can
             # interrupt a wrist turn before its nominal waypoint; that is not
@@ -3386,17 +3366,6 @@ class MeasuredSkillAdapter:
         from scipy.spatial import cKDTree
 
         from robots.libero.v5_geometric_grasp import _voxel
-        committed = self.committed_grasps.get(anchor_id)
-        instance = committed.get('instance_reference') if committed is not None else None
-        if instance is not None and len(instance.get('xyz_world', [])) >= 40:
-            return {
-                'target': np.array(instance['xyz_world'], copy=True),
-                'scene': np.array(instance['stationary_scene'], copy=True),
-                'robot': measured_robot(self.p),
-                'capture_step': self.ex.toolkit._state.latest_step,
-                'source': 'precontact_public_instance_reference',
-                'artifacts': {'target': instance.get('artifact')},
-            }
         target = self._contact_pixels(anchor_id)
         self._cloud_and_ik(anchor_id, contact=True)
         scene = self._base_geometry[0]
