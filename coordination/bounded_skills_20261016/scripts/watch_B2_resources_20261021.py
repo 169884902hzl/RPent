@@ -3,6 +3,7 @@ import argparse
 import datetime
 import json
 from pathlib import Path
+import re
 import subprocess
 import time
 
@@ -27,7 +28,7 @@ def main():
     a = p.parse_args()
     registered = json.loads(a.jobs.read_bytes())
     priority = registered['prefer_release']
-    assert priority and all(str(job).isdigit() for job in priority)
+    assert priority and all(re.fullmatch(r'[0-9]+(?:_[0-9]+)?', str(job)) for job in priority)
     def remote(command):
         return subprocess.check_output(['ssh', '-o', 'ConnectTimeout=15', 'gpu5880-ts', command], text=True, timeout=45)
     cancelling = None
@@ -35,7 +36,7 @@ def main():
         while True:
             event = {'at': datetime.datetime.now(datetime.timezone.utc).isoformat()}
             try:
-                rows = [line.split('|', 5) for line in remote('squeue -u sunyihan -h -o "%i|%j|%T|%N|%b|%r"').splitlines()]
+                rows = [line.split('|', 5) for line in remote('squeue -r -u sunyihan -h -o "%i|%j|%T|%N|%b|%r"').splitlines()]
                 candidate, running, c2 = release_candidate(rows, priority)
                 event.update(c3_running=running, c2_demand=c2)
                 if candidate is not None and cancelling not in running:
