@@ -1,0 +1,1343 @@
+{
+  "positions_source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/CPU_original_completion_all_r1/all_classifications.json",
+  "endpoints": 285,
+  "variants": {
+    "unchanged": {
+      "counts": {
+        "TP": 77,
+        "TN": 168,
+        "FP": 26,
+        "FN": 14
+      },
+      "n": 285,
+      "correct": 245,
+      "agreement": 0.8596491228070176,
+      "wilson95": [
+        0.8145236482251088,
+        0.8952082608886003
+      ],
+      "by_category": {
+        "bowl_transfer": {
+          "counts": {
+            "TP": 23,
+            "TN": 56,
+            "FP": 10,
+            "FN": 7
+          },
+          "n": 96,
+          "correct": 79,
+          "agreement": 0.8229166666666666,
+          "wilson95": [
+            0.7345895948319192,
+            0.8863949213433322
+          ]
+        },
+        "box_transfer": {
+          "counts": {
+            "TN": 45,
+            "TP": 11,
+            "FP": 3,
+            "FN": 1
+          },
+          "n": 60,
+          "correct": 56,
+          "agreement": 0.9333333333333333,
+          "wilson95": [
+            0.8407464268680283,
+            0.9737713012754938
+          ]
+        },
+        "cup_transfer": {
+          "counts": {
+            "TP": 15,
+            "TN": 34,
+            "FP": 11,
+            "FN": 3
+          },
+          "n": 63,
+          "correct": 49,
+          "agreement": 0.7777777777777778,
+          "wilson95": [
+            0.6608771888656633,
+            0.8627499224738635
+          ]
+        },
+        "container": {
+          "counts": {
+            "TN": 33,
+            "TP": 28,
+            "FP": 2,
+            "FN": 3
+          },
+          "n": 66,
+          "correct": 61,
+          "agreement": 0.9242424242424242,
+          "wilson95": [
+            0.8346080497938949,
+            0.9672079624370397
+          ]
+        }
+      },
+      "precision": 0.7475728155339806,
+      "recall": 0.8461538461538461,
+      "suppressed": []
+    },
+    "relative_10mm": {
+      "counts": {
+        "TP": 75,
+        "TN": 169,
+        "FP": 25,
+        "FN": 16
+      },
+      "n": 285,
+      "correct": 244,
+      "agreement": 0.856140350877193,
+      "wilson95": [
+        0.8106551078239989,
+        0.8921525875422595
+      ],
+      "by_category": {
+        "bowl_transfer": {
+          "counts": {
+            "TP": 21,
+            "TN": 57,
+            "FP": 9,
+            "FN": 9
+          },
+          "n": 96,
+          "correct": 78,
+          "agreement": 0.8125,
+          "wilson95": [
+            0.7229774574820691,
+            0.8779753001068837
+          ]
+        },
+        "box_transfer": {
+          "counts": {
+            "TN": 45,
+            "TP": 11,
+            "FP": 3,
+            "FN": 1
+          },
+          "n": 60,
+          "correct": 56,
+          "agreement": 0.9333333333333333,
+          "wilson95": [
+            0.8407464268680283,
+            0.9737713012754938
+          ]
+        },
+        "cup_transfer": {
+          "counts": {
+            "TP": 15,
+            "TN": 34,
+            "FP": 11,
+            "FN": 3
+          },
+          "n": 63,
+          "correct": 49,
+          "agreement": 0.7777777777777778,
+          "wilson95": [
+            0.6608771888656633,
+            0.8627499224738635
+          ]
+        },
+        "container": {
+          "counts": {
+            "TN": 33,
+            "TP": 28,
+            "FP": 2,
+            "FN": 3
+          },
+          "n": 66,
+          "correct": 61,
+          "agreement": 0.9242424242424242,
+          "wilson95": [
+            0.8346080497938949,
+            0.9672079624370397
+          ]
+        }
+      },
+      "precision": 0.75,
+      "recall": 0.8241758241758241,
+      "suppressed": [
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s1_B2_d000",
+          "seed": 30261000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.010070151922011673,
+            0.041491345628896635,
+            0.004562265320574247,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34003000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.012823836181928918,
+            0.047129053167492135,
+            0.0043354841278308714,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34011000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.011546338889570944,
+            0.04347379699873633,
+            0.003575320405918141,
+            0.0027024445589631796
+          ]
+        }
+      ]
+    },
+    "relative_at_most_half_hand_motion": {
+      "counts": {
+        "TP": 77,
+        "TN": 169,
+        "FP": 25,
+        "FN": 14
+      },
+      "n": 285,
+      "correct": 246,
+      "agreement": 0.8631578947368421,
+      "wilson95": [
+        0.8184003712720098,
+        0.89825575158915
+      ],
+      "by_category": {
+        "bowl_transfer": {
+          "counts": {
+            "TP": 23,
+            "TN": 57,
+            "FP": 9,
+            "FN": 7
+          },
+          "n": 96,
+          "correct": 80,
+          "agreement": 0.8333333333333334,
+          "wilson95": [
+            0.7462900984810511,
+            0.8947261762804989
+          ]
+        },
+        "box_transfer": {
+          "counts": {
+            "TN": 45,
+            "TP": 11,
+            "FP": 3,
+            "FN": 1
+          },
+          "n": 60,
+          "correct": 56,
+          "agreement": 0.9333333333333333,
+          "wilson95": [
+            0.8407464268680283,
+            0.9737713012754938
+          ]
+        },
+        "cup_transfer": {
+          "counts": {
+            "TP": 15,
+            "TN": 34,
+            "FP": 11,
+            "FN": 3
+          },
+          "n": 63,
+          "correct": 49,
+          "agreement": 0.7777777777777778,
+          "wilson95": [
+            0.6608771888656633,
+            0.8627499224738635
+          ]
+        },
+        "container": {
+          "counts": {
+            "TN": 33,
+            "TP": 28,
+            "FP": 2,
+            "FN": 3
+          },
+          "n": 66,
+          "correct": 61,
+          "agreement": 0.9242424242424242,
+          "wilson95": [
+            0.8346080497938949,
+            0.9672079624370397
+          ]
+        }
+      },
+      "precision": 0.7549019607843137,
+      "recall": 0.8461538461538461,
+      "suppressed": [
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s15_B2_d002_layout11020618_prefix001",
+          "seed": 34591000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.0044476550824040124,
+            0.008670283167604119,
+            0.007268874564088854,
+            0.0027024445589631796
+          ]
+        }
+      ]
+    },
+    "hand_motion_10mm": {
+      "counts": {
+        "FN": 25,
+        "TN": 171,
+        "FP": 23,
+        "TP": 66
+      },
+      "n": 285,
+      "correct": 237,
+      "agreement": 0.8315789473684211,
+      "wilson95": [
+        0.7837857005224553,
+        0.8705524986116473
+      ],
+      "by_category": {
+        "bowl_transfer": {
+          "counts": {
+            "FN": 16,
+            "TN": 57,
+            "FP": 9,
+            "TP": 14
+          },
+          "n": 96,
+          "correct": 71,
+          "agreement": 0.7395833333333334,
+          "wilson95": [
+            0.6437894471878516,
+            0.8169410002970126
+          ]
+        },
+        "box_transfer": {
+          "counts": {
+            "TN": 45,
+            "TP": 11,
+            "FP": 3,
+            "FN": 1
+          },
+          "n": 60,
+          "correct": 56,
+          "agreement": 0.9333333333333333,
+          "wilson95": [
+            0.8407464268680283,
+            0.9737713012754938
+          ]
+        },
+        "cup_transfer": {
+          "counts": {
+            "TP": 13,
+            "TN": 36,
+            "FP": 9,
+            "FN": 5
+          },
+          "n": 63,
+          "correct": 49,
+          "agreement": 0.7777777777777778,
+          "wilson95": [
+            0.6608771888656633,
+            0.8627499224738635
+          ]
+        },
+        "container": {
+          "counts": {
+            "TN": 33,
+            "TP": 28,
+            "FP": 2,
+            "FN": 3
+          },
+          "n": 66,
+          "correct": 61,
+          "agreement": 0.9242424242424242,
+          "wilson95": [
+            0.8346080497938949,
+            0.9672079624370397
+          ]
+        }
+      },
+      "precision": 0.7415730337078652,
+      "recall": 0.7252747252747253,
+      "suppressed": [
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s0_B2_d000",
+          "seed": 30251000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0003134153656277879,
+            0.009308149325787156,
+            0.004843199099715544,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s0_B2_d000",
+          "seed": 30253000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.002042372638497406,
+            0.00929464721599177,
+            0.004848018244050052,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34012000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0009149401321392776,
+            0.008533096397802456,
+            0.004670302340667277,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix002",
+          "seed": 34021000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0004669845991340077,
+            0.009678112227799329,
+            0.004784676415179276,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34031000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.001620499826035522,
+            0.008665706255497039,
+            0.003444466015660749,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34032000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.00033309160995365723,
+            0.008948087180039234,
+            0.0034420421037265813,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34033000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0005290851317904721,
+            0.009018089699866401,
+            0.0034401676458498624,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s13_B2_d002_layout11020601_prefix002",
+          "seed": 34061000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0019051951552373604,
+            0.00924435909133957,
+            0.0038528857479115802,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s13_B2_d002_layout11020601_prefix002",
+          "seed": 34063000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0032146582625142226,
+            0.00926195421130376,
+            0.0041091080813234655,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "cup_transfer_libero_10_t4_s10_B2_d005_layout11020604_prefix001",
+          "seed": 34131000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.0010802735238465999,
+            0.007920707250682115,
+            0.010419436894056075,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "cup_transfer_libero_10_t4_s12_B2_d005_layout11020605_prefix002",
+          "seed": 34163000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0006548826674571475,
+            0.007558692303957288,
+            0.011081844104369864,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "cup_transfer_libero_10_t4_s12_B2_d005_layout11020605_prefix002",
+          "seed": 34161000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.0007449546992405103,
+            0.008828780023826116,
+            0.011150634276319408,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "cup_transfer_libero_10_t4_s12_B2_d005_layout11020605_prefix004",
+          "seed": 34341000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0005502435915627966,
+            0.00977116191873314,
+            0.005701146581670953,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s15_B2_d002_layout11020618_prefix001",
+          "seed": 34591000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.0044476550824040124,
+            0.008670283167604119,
+            0.007268874564088854,
+            0.0027024445589631796
+          ]
+        }
+      ]
+    },
+    "empty_upper_plus_1mm": {
+      "counts": {
+        "TP": 73,
+        "TN": 168,
+        "FP": 26,
+        "FN": 18
+      },
+      "n": 285,
+      "correct": 241,
+      "agreement": 0.8456140350877193,
+      "wilson95": [
+        0.7990962264261512,
+        0.8829388276977546
+      ],
+      "by_category": {
+        "bowl_transfer": {
+          "counts": {
+            "TP": 19,
+            "TN": 56,
+            "FP": 10,
+            "FN": 11
+          },
+          "n": 96,
+          "correct": 75,
+          "agreement": 0.78125,
+          "wilson95": [
+            0.688620932638833,
+            0.8522365491912246
+          ]
+        },
+        "box_transfer": {
+          "counts": {
+            "TN": 45,
+            "TP": 11,
+            "FP": 3,
+            "FN": 1
+          },
+          "n": 60,
+          "correct": 56,
+          "agreement": 0.9333333333333333,
+          "wilson95": [
+            0.8407464268680283,
+            0.9737713012754938
+          ]
+        },
+        "cup_transfer": {
+          "counts": {
+            "TP": 15,
+            "TN": 34,
+            "FP": 11,
+            "FN": 3
+          },
+          "n": 63,
+          "correct": 49,
+          "agreement": 0.7777777777777778,
+          "wilson95": [
+            0.6608771888656633,
+            0.8627499224738635
+          ]
+        },
+        "container": {
+          "counts": {
+            "TN": 33,
+            "TP": 28,
+            "FP": 2,
+            "FN": 3
+          },
+          "n": 66,
+          "correct": 61,
+          "agreement": 0.9242424242424242,
+          "wilson95": [
+            0.8346080497938949,
+            0.9672079624370397
+          ]
+        }
+      },
+      "precision": 0.7373737373737373,
+      "recall": 0.8021978021978022,
+      "suppressed": [
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34011000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.011546338889570944,
+            0.04347379699873633,
+            0.003575320405918141,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34031000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.001620499826035522,
+            0.008665706255497039,
+            0.003444466015660749,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34032000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.00033309160995365723,
+            0.008948087180039234,
+            0.0034420421037265813,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34033000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0005290851317904721,
+            0.009018089699866401,
+            0.0034401676458498624,
+            0.0027024445589631796
+          ]
+        }
+      ]
+    },
+    "empty_upper_plus_2mm": {
+      "counts": {
+        "TP": 63,
+        "TN": 172,
+        "FN": 28,
+        "FP": 22
+      },
+      "n": 285,
+      "correct": 235,
+      "agreement": 0.8245614035087719,
+      "wilson95": [
+        0.7761706015649749,
+        0.864319170074226
+      ],
+      "by_category": {
+        "bowl_transfer": {
+          "counts": {
+            "TP": 9,
+            "TN": 60,
+            "FN": 21,
+            "FP": 6
+          },
+          "n": 96,
+          "correct": 69,
+          "agreement": 0.71875,
+          "wilson95": [
+            0.6217410386959606,
+            0.7989258916163063
+          ]
+        },
+        "box_transfer": {
+          "counts": {
+            "TN": 45,
+            "TP": 11,
+            "FP": 3,
+            "FN": 1
+          },
+          "n": 60,
+          "correct": 56,
+          "agreement": 0.9333333333333333,
+          "wilson95": [
+            0.8407464268680283,
+            0.9737713012754938
+          ]
+        },
+        "cup_transfer": {
+          "counts": {
+            "TP": 15,
+            "TN": 34,
+            "FP": 11,
+            "FN": 3
+          },
+          "n": 63,
+          "correct": 49,
+          "agreement": 0.7777777777777778,
+          "wilson95": [
+            0.6608771888656633,
+            0.8627499224738635
+          ]
+        },
+        "container": {
+          "counts": {
+            "TN": 33,
+            "TP": 28,
+            "FP": 2,
+            "FN": 3
+          },
+          "n": 66,
+          "correct": 61,
+          "agreement": 0.9242424242424242,
+          "wilson95": [
+            0.8346080497938949,
+            0.9672079624370397
+          ]
+        }
+      },
+      "precision": 0.7411764705882353,
+      "recall": 0.6923076923076923,
+      "suppressed": [
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s1_B2_d000",
+          "seed": 30261000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.010070151922011673,
+            0.041491345628896635,
+            0.004562265320574247,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s11_B2_d000",
+          "seed": 30271000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.006615372790235334,
+            0.04014915179956135,
+            0.004183880189870549,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s11_B2_d000",
+          "seed": 30273000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0022868684270523102,
+            0.05295860241119519,
+            0.004162564837421123,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34001000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.008999777477915869,
+            0.033159466934422385,
+            0.004504758863784491,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34003000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.001492722570399221,
+            0.054552478001124505,
+            0.004235374322649078,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34002000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.001875982447810315,
+            0.06238526631713611,
+            0.0038625349165662902,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34003000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.012823836181928918,
+            0.047129053167492135,
+            0.0043354841278308714,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34011000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.011546338889570944,
+            0.04347379699873633,
+            0.003575320405918141,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34012000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0009149401321392776,
+            0.008533096397802456,
+            0.004670302340667277,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34013000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.00845669989981631,
+            0.04843663206871484,
+            0.004362003052445605,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34011000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.009903678902345444,
+            0.03937175564923045,
+            0.004246336790099004,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix002",
+          "seed": 34023000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0023587407966945183,
+            0.06044145147329001,
+            0.004085490981543621,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34031000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.001620499826035522,
+            0.008665706255497039,
+            0.003444466015660749,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34032000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.00033309160995365723,
+            0.008948087180039234,
+            0.0034420421037265813,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34033000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0005290851317904721,
+            0.009018089699866401,
+            0.0034401676458498624,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s13_B2_d002_layout11020601_prefix002",
+          "seed": 34061000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0019051951552373604,
+            0.00924435909133957,
+            0.0038528857479115802,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s13_B2_d002_layout11020601_prefix002",
+          "seed": 34063000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0032146582625142226,
+            0.00926195421130376,
+            0.0041091080813234655,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s15_B2_d002_layout11020618_prefix001",
+          "seed": 34592000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.0017023169170274244,
+            0.057015444444687195,
+            0.0038149611624146073,
+            0.0027024445589631796
+          ]
+        }
+      ]
+    },
+    "relative_10mm_and_half_hand_motion": {
+      "counts": {
+        "TP": 75,
+        "TN": 170,
+        "FP": 24,
+        "FN": 16
+      },
+      "n": 285,
+      "correct": 245,
+      "agreement": 0.8596491228070176,
+      "wilson95": [
+        0.8145236482251088,
+        0.8952082608886003
+      ],
+      "by_category": {
+        "bowl_transfer": {
+          "counts": {
+            "TP": 21,
+            "TN": 58,
+            "FP": 8,
+            "FN": 9
+          },
+          "n": 96,
+          "correct": 79,
+          "agreement": 0.8229166666666666,
+          "wilson95": [
+            0.7345895948319192,
+            0.8863949213433322
+          ]
+        },
+        "box_transfer": {
+          "counts": {
+            "TN": 45,
+            "TP": 11,
+            "FP": 3,
+            "FN": 1
+          },
+          "n": 60,
+          "correct": 56,
+          "agreement": 0.9333333333333333,
+          "wilson95": [
+            0.8407464268680283,
+            0.9737713012754938
+          ]
+        },
+        "cup_transfer": {
+          "counts": {
+            "TP": 15,
+            "TN": 34,
+            "FP": 11,
+            "FN": 3
+          },
+          "n": 63,
+          "correct": 49,
+          "agreement": 0.7777777777777778,
+          "wilson95": [
+            0.6608771888656633,
+            0.8627499224738635
+          ]
+        },
+        "container": {
+          "counts": {
+            "TN": 33,
+            "TP": 28,
+            "FP": 2,
+            "FN": 3
+          },
+          "n": 66,
+          "correct": 61,
+          "agreement": 0.9242424242424242,
+          "wilson95": [
+            0.8346080497938949,
+            0.9672079624370397
+          ]
+        }
+      },
+      "precision": 0.7575757575757576,
+      "recall": 0.8241758241758241,
+      "suppressed": [
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s1_B2_d000",
+          "seed": 30261000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.010070151922011673,
+            0.041491345628896635,
+            0.004562265320574247,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34003000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.012823836181928918,
+            0.047129053167492135,
+            0.0043354841278308714,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34011000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.011546338889570944,
+            0.04347379699873633,
+            0.003575320405918141,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s15_B2_d002_layout11020618_prefix001",
+          "seed": 34591000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.0044476550824040124,
+            0.008670283167604119,
+            0.007268874564088854,
+            0.0027024445589631796
+          ]
+        }
+      ]
+    },
+    "relative_10mm_and_empty_plus_2mm": {
+      "counts": {
+        "TP": 63,
+        "TN": 172,
+        "FN": 28,
+        "FP": 22
+      },
+      "n": 285,
+      "correct": 235,
+      "agreement": 0.8245614035087719,
+      "wilson95": [
+        0.7761706015649749,
+        0.864319170074226
+      ],
+      "by_category": {
+        "bowl_transfer": {
+          "counts": {
+            "TP": 9,
+            "TN": 60,
+            "FN": 21,
+            "FP": 6
+          },
+          "n": 96,
+          "correct": 69,
+          "agreement": 0.71875,
+          "wilson95": [
+            0.6217410386959606,
+            0.7989258916163063
+          ]
+        },
+        "box_transfer": {
+          "counts": {
+            "TN": 45,
+            "TP": 11,
+            "FP": 3,
+            "FN": 1
+          },
+          "n": 60,
+          "correct": 56,
+          "agreement": 0.9333333333333333,
+          "wilson95": [
+            0.8407464268680283,
+            0.9737713012754938
+          ]
+        },
+        "cup_transfer": {
+          "counts": {
+            "TP": 15,
+            "TN": 34,
+            "FP": 11,
+            "FN": 3
+          },
+          "n": 63,
+          "correct": 49,
+          "agreement": 0.7777777777777778,
+          "wilson95": [
+            0.6608771888656633,
+            0.8627499224738635
+          ]
+        },
+        "container": {
+          "counts": {
+            "TN": 33,
+            "TP": 28,
+            "FP": 2,
+            "FN": 3
+          },
+          "n": 66,
+          "correct": 61,
+          "agreement": 0.9242424242424242,
+          "wilson95": [
+            0.8346080497938949,
+            0.9672079624370397
+          ]
+        }
+      },
+      "precision": 0.7411764705882353,
+      "recall": 0.6923076923076923,
+      "suppressed": [
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s1_B2_d000",
+          "seed": 30261000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.010070151922011673,
+            0.041491345628896635,
+            0.004562265320574247,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s11_B2_d000",
+          "seed": 30271000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.006615372790235334,
+            0.04014915179956135,
+            0.004183880189870549,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s11_B2_d000",
+          "seed": 30273000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0022868684270523102,
+            0.05295860241119519,
+            0.004162564837421123,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34001000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.008999777477915869,
+            0.033159466934422385,
+            0.004504758863784491,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34003000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.001492722570399221,
+            0.054552478001124505,
+            0.004235374322649078,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34002000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.001875982447810315,
+            0.06238526631713611,
+            0.0038625349165662902,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix000",
+          "seed": 34003000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.012823836181928918,
+            0.047129053167492135,
+            0.0043354841278308714,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34011000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.011546338889570944,
+            0.04347379699873633,
+            0.003575320405918141,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34012000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0009149401321392776,
+            0.008533096397802456,
+            0.004670302340667277,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34013000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.00845669989981631,
+            0.04843663206871484,
+            0.004362003052445605,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix001",
+          "seed": 34011000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.009903678902345444,
+            0.03937175564923045,
+            0.004246336790099004,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix002",
+          "seed": 34023000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0023587407966945183,
+            0.06044145147329001,
+            0.004085490981543621,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34031000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.001620499826035522,
+            0.008665706255497039,
+            0.003444466015660749,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34032000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.00033309160995365723,
+            0.008948087180039234,
+            0.0034420421037265813,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s10_B2_d002_layout11020600_prefix003",
+          "seed": 34033000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0005290851317904721,
+            0.009018089699866401,
+            0.0034401676458498624,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s13_B2_d002_layout11020601_prefix002",
+          "seed": 34061000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0019051951552373604,
+            0.00924435909133957,
+            0.0038528857479115802,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s13_B2_d002_layout11020601_prefix002",
+          "seed": 34063000,
+          "original_class": "TP",
+          "public_evidence": [
+            0.0032146582625142226,
+            0.00926195421130376,
+            0.0041091080813234655,
+            0.0027024445589631796
+          ]
+        },
+        {
+          "case": "bowl_transfer_libero_spatial_t0_s15_B2_d002_layout11020618_prefix001",
+          "seed": 34592000,
+          "original_class": "FP",
+          "public_evidence": [
+            0.0017023169170274244,
+            0.057015444444687195,
+            0.0038149611624146073,
+            0.0027024445589631796
+          ]
+        }
+      ]
+    }
+  },
+  "missing_public_measurement_retained_separately": 3,
+  "scope": "offline final-public-measurement guards only; not counterfactual policy stopping or physical outcomes",
+  "thresholds_changed": false,
+  "production_code_changed": false,
+  "PRO": false,
+  "D2": false,
+  "confirmation": false,
+  "training_executed": false
+}

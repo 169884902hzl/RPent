@@ -24,3 +24,5 @@
 - 精确交还前后复核：`/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/CPU_handoff_private_r3/compact_conclusion.json`。
 - 真实重试请求：`CPU_variant_unavailable15_before_loop_requests.json`；提交内复现fixture为 `vla_retry_before_loop_20261023.json`。
 - 至少六条native整局漏计：[原端点审计](native_endpoint_audit_summary.json)。原生整局完成与私有持续夹持分别记账，不互相覆盖。
+
+补充原版 train 及自扰动训练域日志的公开判据离线核查（CPU11549，285个有计量端点，另3缺计量保留）：原判据 TP77/TN168/FP26/FN14，一致率85.96%。15mm相对位移收紧到10mm变为TP75/FP25，只去掉1个误报却新增2个漏判；空夹爪上界加2mm变为TP63/FP22，去掉4个误报但新增14个漏判。要求相对误差不超过手部位移一半，只去掉1个误报，仍有25个误报。连同先前去机器人像素实验，这些对照未找到能可靠区分持续双指夹持与非双指跟随/错误跟踪的公开判据；未部署阈值修改。此处只是已保存端点的分类敏感性，不能冒充改变停止时机后的物理结果。逐端点及分类Wilson区间见[公开抓取判据核查](public_hold_guard_sensitivity.json)。重复状态的端点区间不代表类别泛化。
