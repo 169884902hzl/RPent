@@ -61,6 +61,22 @@ SCHEMA6_REPLAY_FIELDS = (
 )
 
 
+def constructed_original_start(case, plan):
+    """Use the existing train-layout provenance checks for measured forks."""
+    diagnostic = case['diagnostic']
+    if 'own_layout' not in diagnostic:
+        return None
+    if diagnostic['domain'] != 'original' or diagnostic['kind'] != 'original_fork':
+        raise ValueError('own layouts require an original train fork')
+    from coordination.bounded_skills_20261016.scripts.run_own_layout_pi_pilot_20261022 import validate_job
+
+    row = {'kind': 'layout_pilot', 'case': case,
+        **{key: diagnostic['own_layout'][key] for key in
+            ('generated_state', 'construction_report', 'frozen_parent_index')}}
+    generated, _ = validate_job(row, plan)
+    return generated
+
+
 def validate_plan(plan):
     from robots.libero.bounded_hybrid_diagnostic import validate_d2_episode
     if (plan.get('evaluation') != 'hybrid_repair' or plan['training'] or plan['confirmation']
@@ -82,6 +98,8 @@ def validate_plan(plan):
                 raise ValueError('original fork requires an original40/90 task')
         else:
             raise ValueError('unregistered diagnostic domain')
+        if 'own_layout' in diagnostic:
+            constructed_original_start(case, plan)
         VLABudget(**diagnostic['budget'])
         for key in ('old_summary', 'branchpoint'):
             if key in diagnostic and probe.reference(diagnostic[key]['path']) != diagnostic[key]:
@@ -203,7 +221,9 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
     output.mkdir()
     diagnostic = case['diagnostic']
     budget = VLABudget(**diagnostic['budget'])
-    with probe.runtime(case, endpoints, output, domain=diagnostic['domain']) as (facade, adapter, policy, timings):
+    constructed = constructed_original_start(case, plan)
+    world = {'constructed_start': constructed} if constructed is not None else {}
+    with probe.runtime(case, endpoints, output, domain=diagnostic['domain'], **world) as (facade, adapter, policy, timings):
         probe.configure_development_catalog(adapter, plan)
         if diagnostic['kind'] == 'replay':
             old = json.loads(Path(diagnostic['old_summary']['path']).read_bytes())

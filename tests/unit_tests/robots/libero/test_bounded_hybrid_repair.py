@@ -6,6 +6,30 @@ import pytest
 from scripts.probe_bounded_hybrid_repair import first_self_chunk, validate_plan
 
 
+def test_own_layout_fork_uses_the_same_original_train_input_validator(monkeypatch):
+    from coordination.bounded_skills_20261016.scripts import run_own_layout_pi_pilot_20261022 as pilot
+    from scripts.probe_bounded_hybrid_repair import constructed_original_start
+
+    references = {'generated_state': {'path':'state','sha256':'state-hash'},
+        'construction_report': {'path':'report','sha256':'report-hash'},
+        'frozen_parent_index': {'path':'train-index','sha256':'index-hash'}}
+    case = {'diagnostic': {'domain':'original','kind':'original_fork','own_layout':references}}
+    plan = {'training':False,'confirmation':False}
+    generated, seen = {'private_layout':'validated'}, []
+    def validate(row, registered):
+        seen.append((row, registered));return generated, {}
+    monkeypatch.setattr(pilot, 'validate_job', validate)
+    assert constructed_original_start(case, plan) is generated
+    assert seen == [({'kind':'layout_pilot','case':case,**references},plan)]
+
+
+@pytest.mark.parametrize('domain,kind', [('d2','original_fork'),('original','replay')])
+def test_own_layout_fork_cannot_change_evaluation_domains(domain, kind):
+    from scripts.probe_bounded_hybrid_repair import constructed_original_start
+    with pytest.raises(ValueError, match='original train fork'):
+        constructed_original_start({'diagnostic':{'domain':domain,'kind':kind,'own_layout':{}}}, {})
+
+
 @pytest.mark.parametrize('old_version', ['bounded-skills/3', 'bounded-skills/4'])
 def test_scope_diagnostic_migrates_only_the_public_version_header(old_version, monkeypatch):
     from copy import deepcopy
