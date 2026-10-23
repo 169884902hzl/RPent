@@ -355,7 +355,7 @@ def trial(facade, adapter, policy, timings, spec, method, seed, output, first_re
     if method == "call_vla":
         adapter.p.model = seeded
     whole_task = vla_parameters is not None and vla_parameters.get('mode') == 'task'
-    reference_grasp = (facade.grasp_reference(spec["source_symbol"])
+    reference_grasp = (grasp_trial_reference(facade, spec["source_symbol"])
         if spec["mode"] == "pick" and not whole_task else None)
     reason, decisions, endpoint = "decision_limit", 0, None
     recovery_budget = getattr(adapter, 'hybrid_recovery_budget', None)
@@ -612,6 +612,17 @@ def choose_variant_branch(trials, variants):
     return result
 
 
+def grasp_trial_reference(facade, symbol):
+    """Keep current grasp pose while using the registered episode's support."""
+    current = facade.grasp_reference(symbol)
+    origin = getattr(facade, '_episode_initial_grasp_supports', {}).get(symbol)
+    if origin is not None:
+        for key in ('original_support_plane_z_m', 'original_support_plane_evidence', 'support_proxy_source'):
+            current[key] = copy.deepcopy(origin[key])
+        current['support_reference_scope'] = 'registered_original_episode_initial; current grip pose unchanged'
+    return current
+
+
 def evaluate_case(case, endpoints, output, plan, *, startup=False):
     output.mkdir()
     variants = plan.get('vla_variants')
@@ -624,6 +635,26 @@ def evaluate_case(case, endpoints, output, plan, *, startup=False):
             if type(plan['recovery_budget']) is not int or plan['recovery_budget'] not in (0,1,2):
                 raise ValueError('registered hybrid recovery budget must be 0, 1 or 2')
             adapter.hybrid_recovery_budget = plan['recovery_budget']
+        registered_initial = plan.get('initial_state_by_case', {}).get(case['name'])
+        episode_origin = plan.get('episode_origin_by_case', {}).get(case['name'])
+        if episode_origin is not None:
+            if registered_initial is None:
+                raise ValueError('episode-origin support requires an explicitly registered continuation state')
+            if reference(episode_origin['path']) != episode_origin:
+                raise ValueError('registered episode origin changed')
+            original = pickle.loads(Path(episode_origin['path']).read_bytes())
+            facade.restore(original['physics'])
+            facade._native_success_events = copy.deepcopy(original.get('private_native_success_events', []))
+            if snapshot_digest(facade.snapshot()) != snapshot_digest(original['physics']):
+                raise ValueError('episode origin did not restore exactly for private support metrology')
+            goals = facade.goal_status()['goals']
+            origin_subtasks, _ = split_subtasks(goals, adapter.ex.instruction)
+            symbols = {spec['source_symbol'] for spec in origin_subtasks if spec['mode'] == 'pick'}
+            facade._episode_initial_grasp_supports = {symbol: facade.grasp_reference(symbol) for symbol in symbols}
+        if registered_initial is not None:
+            from coordination.bounded_skills_20261016.scripts.original_model_closedloop_20261021 import restore_registered_physics
+            restore_registered_physics(sys.modules[__name__], facade, adapter, registered_initial)
+        adapter.human_available = False
         initial, initial_ref = save_checkpoint(facade, adapter, policy, output / "private_initial.pkl")
         status = facade.goal_status()
         subtasks, unsupported = split_subtasks(status["goals"], adapter.ex.instruction)

@@ -36,6 +36,8 @@ class PublicRouteScreen:
     # sub-micrometre nearest-depth-sample changes seen in the container probe;
     # it applies only to already occupied support, never new obstacles.
     support_clearance_tolerance_m = .001
+    occupied_start_depth_v2 = False
+    target_finger_ingress_segment = None
 
     def __init__(self, points, geometry, pose_screen, *, opening: float = .08,
                  contact_points=None, contact_allowed: bool = False, payload_local=None,
@@ -91,6 +93,37 @@ class PublicRouteScreen:
                     (int(i), int(j)): float(d)
                     for i, j, d in zip(distances.row, distances.col, distances.data)}
 
+    def with_approach_contact_rules(self, ingress_start, ingress_end):
+        """Permit existing start contact and selected-target fingers on ingress.
+
+        The 4 mm clearance for unoccupied obstacles stays unchanged. A start
+        already inside that band may not increase its physical penetration;
+        nonpenetrating start clearance is not mistaken for penetration depth.
+        Only the declared final route segment admits target/finger contact.
+        """
+        current = copy.copy(self)
+        current.occupied_start_depth_v2 = True
+        current.use_kernel = False  # Derived accelerators do not own this contact policy.
+        current.target_finger_ingress_segment = (np.asarray(ingress_start, float),
+            np.asarray(ingress_end, float))
+        current._pose_geometry_cache = {}
+        current._endpoint_ik_cache = {}
+        current.__dict__.pop('_geometry_kernel', None)
+        return current
+
+    def _target_fingers_allowed(self, xyz):
+        segment = self.target_finger_ingress_segment
+        if segment is None:
+            return False
+        start, end = segment
+        delta = end-start
+        scale = float(delta@delta)
+        if scale <= 1e-16:
+            return False
+        fraction = float((xyz-start)@delta/scale)
+        return (-1e-12 <= fraction <= 1.+1e-12 and
+            np.linalg.norm(xyz-(start+fraction*delta)) <= 1e-6)
+
     def rebase_start(self, robot):
         """Create this skill's start-clearance baseline from measured pose."""
         return self.with_measured_robot(robot)
@@ -122,6 +155,8 @@ class PublicRouteScreen:
             'quat_xyzw': list(robot['eef_quat_xyzw'])}
             if self.contact_reference_pose is not None else None)
         current.support_separation = getattr(self, 'support_separation', False)
+        current.occupied_start_depth_v2 = self.occupied_start_depth_v2
+        current.target_finger_ingress_segment = self.target_finger_ingress_segment
         return current
 
     def continuing_route(self):
@@ -212,14 +247,16 @@ class PublicRouteScreen:
             result[ids] = (local[ids]@equations[:, :3].T+equations[:, 3]).max(axis=1)
         return result
 
-    def _collisions(self, points, ids, xyz, site, initial_margin, *, pad_contact=False):
-        if not initial_margin and not pad_contact:
+    def _collisions(self, points, ids, xyz, site, initial_margin, *, pad_contact=False,
+                    finger_contact=False, obstacle_groups=None):
+        if not initial_margin and not pad_contact and not finger_contact:
             return (*collision_counts(points[ids], xyz, site, self.geometry, self.opening,
                 clearance_m=.004, return_points=True), 0)
         local = (points[ids]-xyz)@site
         counts, hits, retained_margin = {}, {}, 0
         for box in self.geometry['boxes']:
-            if pad_contact and box['name'].endswith('_pad'):
+            if (pad_contact and box['name'].endswith('_pad')
+                    or finger_contact and 'finger' in box['name']):
                 continue
             shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2
             lower = np.asarray(box['lower'])+shift-.004
@@ -233,10 +270,20 @@ class PublicRouteScreen:
             # A box can slide across the same measured surface. Pixel-pair
             # identity changes during translation/rotation and cannot define
             # penetration. Preserve the box's minimum occupied clearance.
-            bound = min(baseline.values()) if baseline else .004
-            blocked = (distance <= .004) & (distance < bound-1e-9)
-            if not baseline:
-                blocked |= distance <= .004
+            if self.occupied_start_depth_v2 and obstacle_groups is not None:
+                initial_groups = {}
+                for point_id, value in baseline.items():
+                    group = int(obstacle_groups[point_id])
+                    initial_groups[group] = min(initial_groups.get(group, .004), value)
+                groups = obstacle_groups[ids[near]]
+                occupied = np.array([int(group) in initial_groups for group in groups], dtype=bool)
+                bounds = np.array([min(0., initial_groups.get(int(group), .004)) for group in groups])
+                blocked = np.where(occupied, distance < bounds-1e-9, distance <= .004)
+            else:
+                bound = min(baseline.values()) if baseline else .004
+                blocked = (distance <= .004) & (distance < bound-1e-9)
+                if not baseline:
+                    blocked |= distance <= .004
             retained_margin += int(((distance <= .004) & ~blocked).sum())
             if pad_contact:
                 pad = next((candidate for candidate in self.geometry['boxes']
@@ -303,7 +350,7 @@ class PublicRouteScreen:
             rotation = Rotation.from_quat(pose["quat_xyzw"])
             motion_bound = (float(np.linalg.norm(xyz-certificate[0]))
                 + self.radius*float((rotation*certificate[1].inv()).magnitude())) if certificate else float('inf')
-            if self.contact_axis is None and self.contact_reference_pose is None and certificate and certificate[2]-motion_bound > math.sqrt(3)*.004:
+            if self.contact_axis is None and self.contact_reference_pose is None and self.target_finger_ingress_segment is None and certificate and certificate[2]-motion_bound > math.sqrt(3)*.004:
                 # Distance to any observed point is 1-Lipschitz in the
                 # maximum displacement of the hand/payload surface. This
                 # certificate includes allowed-contact exclusions and target
@@ -340,6 +387,26 @@ class PublicRouteScreen:
         return {**base, "passed": True, "reason": "public_route_screen_passed", "collision": False,
                 "ik_reachable": True, "path_min_clearance_m": max(0., clearance)}
 
+
+    def _hand_obstacle_groups(self, target=False):
+        """Keep occupied-start allowances local to a connected measured surface."""
+        key = '_target_hand_groups' if target else '_scene_hand_groups'
+        if not hasattr(self, key):
+            from scipy.sparse import coo_matrix
+            from scipy.sparse.csgraph import connected_components
+            points = self.target if target else self.points
+            if not len(points):
+                groups = np.empty(0, dtype=int)
+            else:
+                cells, inverse = np.unique(np.floor(points/.008).astype(np.int64),
+                    axis=0, return_inverse=True)
+                pairs = cKDTree(cells).query_pairs(1.75, output_type='ndarray')
+                graph = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])),
+                    shape=(len(cells), len(cells)))
+                _, labels = connected_components(graph, directed=False)
+                groups = labels[inverse]
+            setattr(self, key, groups)
+        return getattr(self, key)
 
     def _payload_groups(self):
         """Connected obstacle surfaces from this immutable measured capture."""
@@ -431,7 +498,8 @@ class PublicRouteScreen:
         nearby_ids = np.asarray(self.tree.query_ball_point(xyz, self.radius+.02), dtype=int)
         nearby = self.points[nearby_ids]
         counts, scene_hits, retained_margin = self._collisions(
-            self.points, nearby_ids, xyz, site, self.initial_margin)
+            self.points, nearby_ids, xyz, site, self.initial_margin,
+            obstacle_groups=self._hand_obstacle_groups() if self.occupied_start_depth_v2 else None)
         shift = np.zeros(3)
         if self.contact_axis is not None:
             shift[self.contact_axis] = xyz[self.contact_axis]-self.contact_origin[self.contact_axis]
@@ -446,7 +514,8 @@ class PublicRouteScreen:
         own_points = target[target_ids]
         own, target_hits, retained_target_margin = self._collisions(
             target, target_ids, xyz, site, self.initial_target_margin,
-            pad_contact=self.contact_allowed)
+            pad_contact=self.contact_allowed, finger_contact=self._target_fingers_allowed(xyz),
+            obstacle_groups=self._hand_obstacle_groups(target=True) if self.occupied_start_depth_v2 else None)
         if any(counts.values()) or any(own.values()):
             result = {"passed": False, "reason": "measured_sweep_collision", "collision": True,
                 "counts": counts, "target_counts": own, "path_min_clearance_m": 0.,
@@ -455,7 +524,8 @@ class PublicRouteScreen:
         else:
             clearance = .2
             target_boxes = [b for b in self.geometry['boxes']
-                if not self.contact_allowed or not b['name'].endswith('_pad')]
+                if not (self.contact_allowed and b['name'].endswith('_pad')
+                    or self._target_fingers_allowed(xyz) and 'finger' in b['name'])]
             for cloud, boxes in ((nearby, self.geometry['boxes']), (own_points, target_boxes)):
                 local = (cloud-xyz)@site
                 for box in boxes:
@@ -534,5 +604,9 @@ class PublicRouteScreen:
         if self.initial_target_margin:
             result['initial_margin_policy'] = 'measured_current_overlap_no_further_incursion'
             result['initial_target_margin_pairs_retained'] = retained_target_margin
+        if self.occupied_start_depth_v2:
+            result['initial_margin_policy'] = 'connected_surface_physical_penetration_not_increased'
+            result['target_finger_contact_allowed_here'] = self._target_fingers_allowed(xyz)
+            result['clearance_threshold_m'] = .004
         self._pose_geometry_cache[key] = result
         return result

@@ -14,11 +14,49 @@ def verified_health(service):
         health = json.load(response)
     if health['status'] != 'ok' or health['adapter_sha256'] != service['adapter_sha256']:
         raise ValueError('model service adapter differs from registration')
-    package = health['skill_package']
+    version = service.get('schema_version')
+    package = (health.get('bounded_supported_schemas', {}).get(version)
+        if version is not None else health['skill_package'])
+    if package is None:
+        raise ValueError('model service does not support registered schema: '+str(version))
     for key in ('schema_sha256', 'contract_sha256'):
         if package[key] != service[key]:
             raise ValueError('model service contract differs from registration: '+key)
     return health
+
+
+def restore_registered_physics(probe, facade, adapter, reference):
+    """Restore a pinned full physical state, then rebuild public measurements."""
+    import pickle
+    from pathlib import Path
+    from robots.libero.bounded_motion import measured_robot
+
+    path = Path(reference['path'])
+    if hashlib.sha256(path.read_bytes()).hexdigest() != reference['sha256']:
+        raise ValueError('registered initial snapshot changed')
+    saved = pickle.loads(path.read_bytes())
+    physics = saved['physics']
+    observed = facade.restore(physics)
+    facade._native_success_events = saved.get('private_native_success_events', [])
+    adapter.p.env.last_obs = observed
+    flags = saved.get('client_stop_flags', {})
+    adapter.p.env.terminated = bool(flags.get('terminated', False))
+    adapter.p.env.truncated = bool(flags.get('truncated', False))
+    adapter.p.set_obs(observed)
+    actual = probe.snapshot_digest(facade.snapshot())
+    if actual != probe.snapshot_digest(physics):
+        raise ValueError('registered complete physical state failed exact restoration')
+    for name in ('_bounded_motion_samples', '_bounded_rest_reference'):
+        if hasattr(adapter.p, name):
+            delattr(adapter.p, name)
+    adapter._proprio_sample = None
+    adapter._incremental_previous_robot = None
+    adapter.gripper_command = saved.get('gripper_command',
+        -1. if measured_robot(adapter.p)['gripper_opening_m'] >= .075 else 1.)
+    adapter.refresh()
+    return {'reference': reference, 'initial_physics_sha256': actual,
+        'complete_physics_matches': True, 'public_reconstruction': 'fresh_rgbd_and_proprioception',
+        'private_object_coordinates_imported': False}
 
 
 def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domain='original', split='init_holdout'):
@@ -42,6 +80,10 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domai
         owned.callback(setattr, adapter.p, 'model', original_vla)
         adapter.allow_vla = True
         adapter.vla_options_v2 = True
+        adapter.human_available = False
+        registered_initial = plan.get('initial_snapshot_by_arm', {}).get(case['name']+'|'+str(k))
+        restoration = (restore_registered_physics(probe, facade, adapter, registered_initial)
+            if registered_initial is not None else None)
         _, initial = probe.save_checkpoint(facade, adapter, policy, output/'private_initial.pkl')
         started = time.perf_counter()
         records, skill_steps = [], Counter()
@@ -56,6 +98,8 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domai
                 start_event = len(timings.events)
                 with timings.measure('planning.request'):
                     request = adapter.request(k=k)
+                if plan.get('require_human_capability') and request.get('human_available') is not False:
+                    raise ValueError('new evaluation request must explicitly disable unavailable human assistance')
                 request_sha = hashlib.sha256(json.dumps(request, sort_keys=True,
                     separators=(',', ':')).encode()).hexdigest()
                 model_request = public_model_request(request)
@@ -125,6 +169,7 @@ def run_episode(probe, case, endpoints, output, plan, k, *, startup=False, domai
             'vla_inputs': seeded_vla.inputs, 'vla_predictions': seeded_vla.predictions,
             'recovery_scope': 'public hold transitions or successful call_vla; no private-subtask reset',
             'training': False, 'confirmation': False, 'oracle_choices_used': 0,
+            'registered_initial_restoration': restoration, 'human_available': False,
             'wall_s': time.perf_counter()-started,
             'wall_time_breakdown': timings.summary(time.perf_counter()-timings.started),
             'selected_option_ids': [r['decision']['candidate_ids'] for r in records],

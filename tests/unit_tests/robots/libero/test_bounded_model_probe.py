@@ -143,3 +143,18 @@ def test_shared_vla_service_gets_independent_reproducible_episode_seeds(tmp_path
     for i in range(3):
         assert json.loads((tmp_path/str(i)/'model_responses.jsonl').read_text())['actual_service_result']
         assert json.loads((tmp_path/str(i)/'vla_inputs.jsonl').read_text())['sampling_seed'] == seeds[i]
+
+
+def test_health_selects_the_registered_supported_schema_not_the_default(monkeypatch):
+    from io import StringIO
+    health = {'status': 'ok', 'adapter_sha256': 'registered',
+        'skill_package': {'schema_sha256': 'wrong6', 'contract_sha256': 'wrong6'},
+        'bounded_supported_schemas': {'bounded-skills/7': {
+            'schema_sha256': 'seven', 'contract_sha256': 'legal5'}}}
+    monkeypatch.setattr(module, 'urlopen', lambda *_args, **_kwargs: StringIO(json.dumps(health)))
+    service = {'health_url': 'offline', 'adapter_sha256': 'registered',
+        'schema_version': 'bounded-skills/7', 'schema_sha256': 'seven', 'contract_sha256': 'legal5'}
+    assert module.verified_health(service) == health
+    service['schema_version'] = 'bounded-skills/8'
+    with pytest.raises(ValueError, match='does not support'):
+        module.verified_health(service)
