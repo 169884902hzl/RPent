@@ -1,0 +1,99 @@
+{
+  "D2": {
+    "pi_only_success": {
+      "success": 18,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.3070530781090492,
+        0.6017090820106794
+      ]
+    },
+    "v_next_a_success": {
+      "success": 10,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.14187118639096302,
+        0.40193961420768026
+      ]
+    },
+    "v_next_b_success": {
+      "success": 10,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.14187118639096302,
+        0.40193961420768026
+      ]
+    },
+    "oracle_from_start_success": {
+      "success": 24,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.44595893660346186,
+        0.7365167431570808
+      ]
+    },
+    "A1_M_success": {
+      "success": 28,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.5456998118185507,
+        0.8192515477025347
+      ]
+    }
+  },
+  "original6": {
+    "pi_only_success": {
+      "success": 6,
+      "n": 6,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.6096657120978346,
+        1
+      ]
+    },
+    "v_next_b_success": {
+      "success": 1,
+      "n": 6,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.030053369748306635,
+        0.5635028221864702
+      ]
+    }
+  },
+  "paired_comparison": {
+    "pi_only_success": {
+      "improved": 0,
+      "regressed": 8,
+      "both_success": 10,
+      "both_failure": 22
+    },
+    "v_next_a_success": {
+      "improved": 5,
+      "regressed": 5,
+      "both_success": 5,
+      "both_failure": 25
+    },
+    "oracle_from_start_success": {
+      "improved": 0,
+      "regressed": 14,
+      "both_success": 10,
+      "both_failure": 16
+    }
+  },
+  "same_complete_initial_as_pi_only": 46,
+  "human_available": false,
+  "model_source_tree": "4718f24e61851aacd10ee25a0f9818d550b61a53",
+  "adapter_sha256": "253e09f0de4b833e602dcb2abd4e40a2652782485641fbf3b2bb8477830a8af7",
+  "comparison_caveat": "not a weights-only comparison: legal4->5, schema6->7 human capability, additional codec capacity and 32k request allowance; failures before interface repair retained but not physical outcomes",
+  "original6_scope": "three distinct initial states, each run at inherited K1/K4 labels",
+  "interface_error_attempts_preserved": true,
+  "oracle_choices_used": 0,
+  "training": false,
+  "evaluation_only": true
+}

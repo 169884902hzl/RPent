@@ -41,7 +41,7 @@ with (r/'approach_point_pairs.csv').open('w') as f:
 (r/'approach_contact_metrics.json').write_text(json.dumps({k:dict(v) for k,v in contacts.items()},indent=2)+'\n')
 text='''已完成同一完整初态的30对。修复高位路线仅3/30通过完整筛查，3例执行均跟踪误差停止，0例到位，因此不接入生产 measured_anchor，也不启动条件性的N2/155新路径回归。
 
-| 路线 | 实际执行 | 到位 | 新增或加深接触 ≥1 µm | ≥1 mm |
+| 路线 | 实际执行 | 到位 | 新增或加深接触 >1 µm | >1 mm |
 |---|---:|---:|---:|---:|
 '''
 for name,label in [('straight_no_veto','直线，仿真诊断关闭否决'),('elevated_screened','修复高位，保留否决')]:

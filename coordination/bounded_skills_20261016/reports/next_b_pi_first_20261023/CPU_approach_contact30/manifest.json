@@ -1,0 +1,63 @@
+{
+  "groups": {
+    "straight_no_veto": {
+      "n": 30,
+      "arrived": 6,
+      "native_contact": 11,
+      "arrived_without_contact": 5,
+      "not_arrived_without_contact": 14,
+      "zero_step": 0,
+      "stops": {
+        "endpoint": 6,
+        "endpoint_not_reached": 1,
+        "tracking_error": 18,
+        "native_stop": 5
+      }
+    },
+    "elevated_screened": {
+      "n": 30,
+      "arrived": 0,
+      "native_contact": 0,
+      "arrived_without_contact": 0,
+      "not_arrived_without_contact": 30,
+      "zero_step": 27,
+      "stops": {
+        "measured_sweep_collision": 26,
+        "numerical_ik_not_found": 1,
+        "tracking_error": 3
+      }
+    }
+  },
+  "complete_initial_and_endpoint_matches": 30,
+  "records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/CPU_approach_contact30/paired.jsonl",
+    "sha256": "80277f9d4be1650918e64db4795e18d3d77c3e9294b5dd18ad945453809f4cf4"
+  },
+  "selection": {
+    "rule": "round-robin sorted categories, lexical distinct case, lowest retained trial seed",
+    "eligible_trials": 105,
+    "eligible_states": 35,
+    "selected_states": 30,
+    "counts": {
+      "bowl_transfer": 3,
+      "box_transfer": 5,
+      "container": 5,
+      "cup_transfer": 1,
+      "drawer_close": 5,
+      "drawer_open": 4,
+      "microwave_open": 6,
+      "plate_push": 1
+    },
+    "sampling_limitation": "stratified rejected diagnostic states; not a random estimate of all candidates"
+  },
+  "production_deployed": false,
+  "scope": "diagnostic hand-scene contacts; private contacts output only; incomplete unchecked paths cannot certify an old false positive",
+  "source_tree": "67df3985d499846f6efc3312f1215173579fa840",
+  "entry_sha256": "c31e7e5e8f8546965565f51801840658a4e7f2149d601b66c0d33e63010432ff",
+  "approach_helper": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/bounded_approach.py",
+    "sha256": "0ca04fe23262af47abedc0f0b0f8f0576d329813cf571a5a2facec4048681ffe"
+  },
+  "training": false,
+  "evaluation_only": true
+}

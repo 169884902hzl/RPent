@@ -1,0 +1,30 @@
+{
+  "CPU": {
+    "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_bounded_approach_contacts.py tests/unit_tests/robots/libero/test_bounded_episode_support.py tests/unit_tests/robots/libero/test_bounded_model_probe.py tests/unit_tests/robots/libero/test_bounded_train_candidate.py tests/unit_tests/robots/libero/test_bounded_saved_candidate.py",
+    "passed": 42,
+    "failed": 0,
+    "scope": "focused tests; not the full repository suite"
+  },
+  "physical": {
+    "model_D2": 40,
+    "model_original_arms": 6,
+    "same_complete_initial_as_pi_baseline": 46,
+    "approach_same_state_pairs": 30,
+    "train_pilot_queries_closed": 32,
+    "train_pilot_known_bound_trials": 13,
+    "train_pilot_truth_unknown": 3,
+    "train_pilot_prefix_unreached": 16
+  },
+  "sources": {
+    "model_tree": "4718f24e61851aacd10ee25a0f9818d550b61a53",
+    "pi_first_oracle_tree": "f6ce1d46edd6396b9907ef529684a7dd099a7c30",
+    "approach_tree": "67df3985d499846f6efc3312f1215173579fa840",
+    "runtime_fix_commit": "51e44be5",
+    "eval_entry_commit": "b7f4a594",
+    "train_entry_commit": "3829e5d2",
+    "train_frozen_entry_sha256": "df827a58936949c2a4044fa6f45fe16523442bb8709dc1061cd876720a2abfb8"
+  },
+  "training_executed": false,
+  "production_approach_changed": false,
+  "pending": "24 continuation cases and remaining prioritized train queries still running; pi-default HTTP mode not registered at this checkpoint"
+}
