@@ -94,7 +94,10 @@ class MeasuredSkillAdapter:
                  targeted_vla_measurement_v1: bool = False,
                  lazy_planning_v1: bool = False, registration_query_workers: int = 1,
                  schema6_v1: bool = True, no_progress_limit: int | None = 11,
-                 vla_options_v2: bool = False):
+                 vla_options_v2: bool = False, human_available: bool = False):
+        if type(human_available) is not bool:
+            raise ValueError('human_available must be a boolean session capability')
+        self.human_available = human_available
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
         if type(request_consequence_workers) is not int or request_consequence_workers < 1:
@@ -2402,7 +2405,8 @@ class MeasuredSkillAdapter:
             if mode not in getattr(self, '_stationary_observe_modes', set()):
                 add("observe", mode=mode)
         add("finish")
-        add("ask_help")
+        if getattr(self, 'human_available', False):
+            add("ask_help")
         if self.request_consequence_workers > 1:
             from robots.libero.bounded_cpu_planning import request_candidates
 
@@ -2430,7 +2434,7 @@ class MeasuredSkillAdapter:
             "remaining_sim_steps": self.p.env.execution_budget()["remaining_sim_steps"],
             "anchors": self.anchors(), "robot": self.robot(), "candidates": compact,
             "receipts": self.receipts[-3:], "relations": public_relations, "max_actions": k,
-            "execution_prefix": None}
+            "execution_prefix": None, "human_available": getattr(self, 'human_available', False)}
         if self.schema6_v1 and self.allow_vla and self.vla_options_v2:
             from robots.libero.bounded_vla_options import instruction_clauses
             request['instruction_clauses'] = instruction_clauses(self.ex.instruction)

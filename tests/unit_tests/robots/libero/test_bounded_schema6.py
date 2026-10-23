@@ -263,7 +263,9 @@ def test_merged_move_failures_block_selected_public_option_after_two_attempts(ad
         for c in adapter.request(k=1)['candidates'])
 
 
-def test_no_progress_terminal_legality_matches_source_catalog(adapter):
+@pytest.mark.parametrize('human_available', [False, True])
+def test_no_progress_terminal_legality_matches_source_catalog(adapter, human_available):
+    adapter.human_available = human_available
     request = adapter.request()
     adapter.schema6_v1 = True
     adapter.public_progress = PublicProgress(2)
@@ -272,7 +274,8 @@ def test_no_progress_terminal_legality_matches_source_catalog(adapter):
         row = copy.deepcopy(request); row['revision'] = revision
         adapter.public_progress.update(row)
     request['progress'] = {'version':'public-measured-progress/1','stagnant_decisions':2,'limit':2}
-    assert {c['skill'] for c in request['candidates'] if c['id'] in legal_after(request, [])} == {'finish','ask_help'}
+    assert {c['skill'] for c in request['candidates'] if c['id'] in legal_after(request, [])} == (
+        {'finish', 'ask_help'} if human_available else {'finish'})
     validate(request)
 
 

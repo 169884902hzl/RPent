@@ -48,6 +48,7 @@ def test_committed_identity_is_excluded_even_after_id_regeneration(public_reques
 
 @pytest.mark.parametrize('skill', ['observe', 'call_vla', 'finish', 'ask_help'])
 def test_only_handoff_steps_end_a_sequence(public_request, skill):
+    public_request['human_available'] = True
     public_request['candidates'][3]['skill'] = skill
     assert legal_after(public_request, ['c0', 'c3']) == ()
     with pytest.raises(ValueError, match='boundary'):

@@ -119,7 +119,7 @@ def capture_annotation_state(oracle, request, *, status=None):
         'compact_infeasible_candidates_v1', 'lazy_planning_v1', 'schema6_v1', 'public_progress',
         'memory', '_failed_move_anchors', '_move_approach_by_anchor', 'guarded_move_v1',
         '_stationary_observe_modes', '_progress_normals', 'rendered_self_filter_v1', '_vla_failed_options',
-        'verify_instance_crops_v1','vla_options_v2')
+        'verify_instance_crops_v1','vla_options_v2','human_available')
     adapter = object.__new__(MeasuredSkillAdapter)
     adapter.__dict__.update({key: getattr(original, key) for key in names if hasattr(original, key)})
     scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')

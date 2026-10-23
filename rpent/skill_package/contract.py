@@ -14,7 +14,7 @@ SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
-LEGALITY_VERSION = "public-request-legal/4"
+LEGALITY_VERSION = "public-request-legal/5"
 
 
 def method_family(candidate: dict) -> str:
@@ -84,6 +84,8 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
     anchors = {a['id'] for a in request['anchors']}
 
     def available(candidate):
+        if candidate['skill'] == 'ask_help' and request.get('human_available') is not True:
+            return False
         progress = request.get('progress', {})
         if (progress.get('loop_detected') or (progress.get('limit') is not None
                 and progress['stagnant_decisions'] >= progress['limit'])):

@@ -1314,6 +1314,10 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "human_available": {
+          "type": "boolean",
+          "description": "Public session capability supplied by the operator/backend. False or absent excludes ask_help from contract.legal_after; never inferred from task or simulator truth."
         }
       },
       "required": [
