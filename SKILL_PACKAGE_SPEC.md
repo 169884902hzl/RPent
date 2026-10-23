@@ -2,6 +2,32 @@
 
 Owner: Codex3. This contract implements the user's **10/16 05:45 PDT** direction; the 10/14 pause and old v5 freeze gates are retired. No model training is authorized in this round. This is a development specification, not evidence of physical qualification. Existing confirmation-state exclusions remain permanent.
 
+## Explicit benchmark feedback and persistent attempts (v8, development)
+
+The review schema is `rpent/skill_package/schema8.json`. Runs that enable this
+revision emit `bounded-skills/8`; historical v6/v7 records keep their bytes.
+`feedback.task_success` and `feedback.subgoal_status` are independent booleans,
+both false unless explicitly configured. A true switch requires its request
+field; a false switch omits that field. Each episode records its switches.
+
+Level A `task_success` is the benchmark's read-only native success flag, sampled
+once before every decision. A true value ends the episode before perception,
+planning or further control. A false value makes `finish` illegal. This does
+not change scoring, native termination or the environment state. Level B
+`subgoal_status` is an array of registered predicate IDs, names, argument
+names and satisfied booleans (null if unavailable); it contains no coordinates.
+It is explicit private-truth feedback authorized by the user, defaulting to
+development arms only. It must not be described as RGB-D measurement.
+
+`episode_policy.aggressive=true` continues after failed/no-progress skills
+without a recovery-count stop, until native success, 40 decisions or 10000
+environment controls. These are episode budgets, including retries. Receipt
+failure history remains visible; repeated failures do not permanently remove
+all retryable actions. Public stagnation is diagnostic and does not restrict
+the menu to terminal actions. With `human_available=false`, `ask_help` stays
+illegal. A failed or unchanged `observe` returns control rather than ending
+the episode. Geometry and execution checks retain their existing semantics.
+
 ## Measured-anchor VLA revision (v7, development)
 
 The v7 review schema is [`rpent/skill_package/schema7.json`](rpent/skill_package/schema7.json). A qualified v7 source snapshot publishes these exact bytes at its canonical `rpent/skill_package/schema.json` and emits `bounded-skills/7`. The existing v6 snapshots, requests, outcomes, and training packets retain their identities. They are not relabeled by rewriting a version header. Model training and serving use the new option only after Codex2 synchronizes its schema, renderer and service. Oracle diagnostics and original-development forks can exercise the source directly.

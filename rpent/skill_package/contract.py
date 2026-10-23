@@ -14,7 +14,8 @@ SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
-LEGALITY_VERSION = "public-request-legal/5"
+LEGALITY_VERSION = "public-request-legal/6"
+SCHEMA8 = json.loads(SCHEMA_PATH.with_name('schema8.json').read_text())
 
 
 def method_family(candidate: dict) -> str:
@@ -86,9 +87,14 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
     def available(candidate):
         if candidate['skill'] == 'ask_help' and request.get('human_available') is not True:
             return False
+        if candidate['skill'] == 'finish' and request.get('task_success') is False:
+            return False
+        if request.get('task_success') is True:
+            return candidate['skill'] == 'finish'
         progress = request.get('progress', {})
-        if (progress.get('loop_detected') or (progress.get('limit') is not None
-                and progress['stagnant_decisions'] >= progress['limit'])):
+        if (not request.get('episode_policy', {}).get('aggressive', False)
+                and (progress.get('loop_detected') or (progress.get('limit') is not None
+                and progress['stagnant_decisions'] >= progress['limit']))):
             return candidate['skill'] in {'finish', 'ask_help'}
         effect = candidate['consequences']
         if effect['collision'] is True or effect['ik_reachable'] is False:
@@ -122,10 +128,15 @@ def validate(value: dict) -> None:
     kind = value.get("kind")
     if kind not in {"request", "decision", "receipt", "prefix_context", "oracle_labels"}:
         raise ValueError("unknown bounded-skills message kind")
-    schema = {key: val for key, val in SCHEMA.items() if key != "oneOf"}
+    source = SCHEMA8 if value.get('schema_version') == 'bounded-skills/8' else SCHEMA
+    schema = {key: val for key, val in source.items() if key != "oneOf"}
     schema["$ref"] = f"#/$defs/{kind}"
     Draft202012Validator(schema).validate(value)
     if kind == "request":
+        for field in ('task_success', 'subgoal_status'):
+            enabled = value.get('feedback', {}).get(field, False)
+            if enabled != (field in value):
+                raise ValueError(f'{field} presence differs from its feedback switch')
         anchors = {anchor["id"] for anchor in value["anchors"]}
         if len(anchors) != len(value["anchors"]):
             raise ValueError("duplicate measured anchor ID")
@@ -246,10 +257,10 @@ class FailureMemory:
         if reason == "execution_error":
             self.cooldown[key] = 3
 
-    def apply(self, candidates: list[dict]) -> list[dict]:
+    def apply(self, candidates: list[dict], *, keep_retryable: bool = False) -> list[dict]:
         return [{**c, "recent_failures": self.counts.get(identity(c), 0),
                  "last_failure": self.last.get(identity(c))} for c in candidates
-                if self.counts.get(identity(c), 0) < 2 and not self.cooldown.get(identity(c), 0)]
+                if (keep_retryable or self.counts.get(identity(c), 0) < 2) and not self.cooldown.get(identity(c), 0)]
 
 
 class DecisionLookahead:

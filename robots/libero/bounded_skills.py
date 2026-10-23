@@ -2201,6 +2201,8 @@ class MeasuredSkillAdapter:
     def request(self, *, k: int = 4, screen_options: bool = True):
         if k not in {1, 4}:
             raise ValueError("supported diagnostic K values are 1 and 4")
+        from rpent.skill_package.feedback import public_fields
+        self._request_feedback_fields = public_fields(self)
         self._refresh_held_measurement()
         self.plans.clear()
         self.candidate_diagnostics = []
@@ -2328,6 +2330,7 @@ class MeasuredSkillAdapter:
         Frozen CPU annotation states use this same builder without calling
         perception, task truth, or a simulator to reconstruct observations.
         """
+        feedback_fields = getattr(self, '_request_feedback_fields', {})
         if self.schema6_v1 and self.verify_instance_crops_v1:
             from robots.libero.bounded_instance_crops import score_instance_crops
             self._binding_crop_evidence = score_instance_crops(self.scene,self.ex.toolkit._state,self.ex.instruction)
@@ -2427,18 +2430,20 @@ class MeasuredSkillAdapter:
             if source not in anchor_ids or target not in anchor_ids:
                 continue
             public_relations.append({"source_id": source, "relation": relation, "target_id": target})
-        published = self.memory.apply(candidates)
+        aggressive = feedback_fields.get('episode_policy', {}).get('aggressive', False)
+        published = self.memory.apply(candidates, keep_retryable=aggressive)
         compact = [compact_candidate(c) for c in published] if self.compact_infeasible_candidates_v1 else published
         self.candidate_compaction = {'before_count': len(published), 'after_count': len(compact),
             'blocked_markers': sum(c['consequences']['screen_scope'] == 'blocked_at_current_prefix' for c in compact),
             'before_json_bytes': len(json.dumps(published, separators=(',', ':')).encode()),
             'after_json_bytes': len(json.dumps(compact, separators=(',', ':')).encode())}
-        request = {"schema_version": VERSION, "kind": "request", "observation_id": f"public-{self.revision}",
+        request = {"schema_version": getattr(self, 'schema_version', VERSION), "kind": "request", "observation_id": f"public-{self.revision}",
             "revision": self.revision, "instruction": self.ex.instruction,
             "remaining_sim_steps": self.p.env.execution_budget()["remaining_sim_steps"],
             "anchors": self.anchors(), "robot": self.robot(), "candidates": compact,
             "receipts": self.receipts[-3:], "relations": public_relations, "max_actions": k,
             "execution_prefix": None, "human_available": getattr(self, 'human_available', False)}
+        request.update(feedback_fields)
         if self.schema6_v1 and self.allow_vla and self.vla_options_v2:
             from robots.libero.bounded_vla_options import instruction_clauses
             request['instruction_clauses'] = instruction_clauses(self.ex.instruction)
@@ -2458,7 +2463,7 @@ class MeasuredSkillAdapter:
             request['progress'] = {'version': PROGRESS_VERSION,
                 'stagnant_decisions': self.public_progress.stagnant, 'limit': self.public_progress.limit,
                 'loop_detected': self.public_progress.loop_detected}
-            if self.public_progress.exhausted:
+            if self.public_progress.exhausted and not aggressive:
                 request['candidates'] = [c for c in request['candidates'] if c['skill'] in {'finish', 'ask_help'}]
         validate(request)
         self.latest_request = request
@@ -2757,7 +2762,7 @@ class MeasuredSkillAdapter:
                     break
             if stale is not None:
                 robot = self.robot()
-                receipt = dict(schema_version=VERSION, kind='receipt', observation_id=request['observation_id'],
+                receipt = dict(schema_version=request["schema_version"], kind='receipt', observation_id=request['observation_id'],
                     candidate_id=candidate['id'], skill=candidate['skill'], outcome='failure', phase='perception',
                     stop_reason='predicted_anchor_changed', steps_used=0, before=robot, after=robot,
                     changes=[], evidence=[self._evidence(self.scene.entities[stale])], expectation_checks=[])
@@ -2791,7 +2796,7 @@ class MeasuredSkillAdapter:
             if self.p.env.terminated or self.p.env.truncated:
                 break
         executed = [r['candidate_id'] for r in outcomes]
-        self.last_chunk = {'schema_version': VERSION, 'selected_ids': decision['candidate_ids'],
+        self.last_chunk = {'schema_version': request['schema_version'], 'selected_ids': decision['candidate_ids'],
             'executed_ids': executed, 'actual_actions': sum(r['steps_used'] > 0 for r in outcomes),
             'discarded_ids': decision['candidate_ids'][len(executed):],
             'stop_reason': outcomes[-1]['stop_reason'] if outcomes else 'no_predicted_route',
@@ -2893,7 +2898,7 @@ class MeasuredSkillAdapter:
             if endpoint_loss:
                 outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_lost'
                 after = {**after, 'held_anchor_id': None}
-            receipt = {"schema_version": VERSION, "kind": "receipt", "observation_id": request["observation_id"],
+            receipt = {"schema_version": request["schema_version"], "kind": "receipt", "observation_id": request["observation_id"],
                 "candidate_id": candidate["id"], "skill": candidate["skill"], "outcome": outcome,
                 "phase": phase, "stop_reason": reason,
                 "steps_used": len(segment), "before": before, "after": after,
@@ -3324,7 +3329,7 @@ class MeasuredSkillAdapter:
             "held": False if eid == lost_held else eid == self.held if self.held else None,
             "relation": None, "fixture_state": None}
             for eid, entity in self.scene.entities.items()]
-        receipt = {"schema_version": VERSION, "kind": "receipt", "observation_id": request["observation_id"],
+        receipt = {"schema_version": request["schema_version"], "kind": "receipt", "observation_id": request["observation_id"],
             "candidate_id": candidate["id"], "skill": skill, "outcome": outcome, "phase": phase,
             "stop_reason": reason, "steps_used": self.p.env.execution_budget()["used_sim_steps"]-start_steps,
             "before": before, "after": self.robot(), "changes": changes,
