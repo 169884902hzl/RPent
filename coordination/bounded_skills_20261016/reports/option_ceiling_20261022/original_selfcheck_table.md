@@ -11,3 +11,5 @@
 | original_selfcheck_libero_goal_t2_s10 | 10/10 | 0.722–1.000 | 0 |
 | original_selfcheck_libero_10_t0_s10 | 10/10 | 0.722–1.000 | 0 |
 | original_selfcheck_libero_goal_t5_s10 | 10/10 | 0.722–1.000 | 0 |
+
+总体106/110的描述性Wilson95%为91.0–98.6%。11个原版任务各取登记init10，一个任务的10次是不同策略噪声种子，不是10个布局；逐任务区间见原summary。
