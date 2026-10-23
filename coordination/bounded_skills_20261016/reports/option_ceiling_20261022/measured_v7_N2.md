@@ -36,3 +36,5 @@ N2十二状态已全部闭合，132条旧方法逐次配对零翻转，完整初
 新增调用的31条失败：预定位未完成22、无进展停止4、动作块预算耗尽5。22条预定位失败细分为手部扫掠碰撞12、数值IK未找到解7、手臂扫掠碰撞3；数值搜索失败不等于已证明不可达。逐条来源见[预定位失败明细](measured_v7_N2_preparation_failures.json)。这些分类没有私有接触反事实，不能把所有碰撞拒绝都称作误杀。全部保留，没有重跑换分数。区间按重复试次计算，不能当作36个独立布局的泛化区间。
 
 原件：`/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/CPU_N2/`。逐次、逐状态数据和分类汇总分别为paired_trials.jsonl、states.jsonl、summary.json。
+
+12状态、各方法和完整初态引用见[实际执行manifest](measured_v7_N2_manifest.json)。

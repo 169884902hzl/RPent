@@ -1,0 +1,652 @@
+{
+  "source_commit": "efa57340221c82cb359d72514c7062edb34de599",
+  "source_registration": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/registration.json",
+    "sha256": "70942a5379cb38e51b317e87dff4c3d77a9cce296f1512c9e95e241b80d6ed7d"
+  },
+  "parent": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/CPU_155/summary.json",
+    "sha256": "b46212ff02a376a98f5d1d492fbe6c90e5ab6e278fc8bead5c84c72b620d1018"
+  },
+  "data": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/CPU_155_audit_r1/trials.jsonl",
+    "sha256": "b7963229791807c5fd3a3646b30043c37fec42b5d59adb335b8fbb6bb274be16"
+  },
+  "states": 155,
+  "domain_states": {
+    "original90": 90,
+    "measured_packet1": 30,
+    "measured_packet2": 35
+  },
+  "legacy_selected_id_changes": 0,
+  "legacy_improvements": [
+    {
+      "case": "box_transfer_libero_object_t0_s10_B2_d001_layout11020603_prefix000",
+      "category": "box_transfer",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "seed": 34103000,
+      "after_success": true,
+      "after_native_success": false,
+      "after_reason": "preparation_not_reached",
+      "after_steps": 1895,
+      "after": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/formal155_shard0/case050/summary.json",
+        "sha256": "750e2e528a97bf90b8c5d995cef23e302ea5d4d217bb16a6ecb78fbed24d9381"
+      },
+      "before_success": false,
+      "before_native_success": false,
+      "before_reason": "preparation_not_reached",
+      "before_steps": 2157,
+      "before": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/regression155_f6987f0d/shard0/case050/summary.json",
+        "sha256": "778b59bd2ba35947e5184e36bff037e80d98aee6d2c4918677ec7f8b454200a7"
+      },
+      "same_complete_initial": true,
+      "before_complete_initial_sha256": "b880f699dc0f66eb9c93ea4d8be7ed4abd21c1b5201302e24e6b0a935eab3c86",
+      "after_complete_initial_sha256": "b880f699dc0f66eb9c93ea4d8be7ed4abd21c1b5201302e24e6b0a935eab3c86",
+      "same_candidate_id": true,
+      "improved": true,
+      "regressed": false
+    }
+  ],
+  "legacy_regressions": [],
+  "new_local": {
+    "trials": 465,
+    "known": 465,
+    "success": 160,
+    "unknown": 0,
+    "wilson95_over_repeats": [
+      0.30234219802498685,
+      0.3883848115600286
+    ]
+  },
+  "new_native": {
+    "trials": 465,
+    "known": 465,
+    "success": 100,
+    "unknown": 0,
+    "wilson95_over_repeats": [
+      0.18012505812874563,
+      0.2546518904231789
+    ]
+  },
+  "new_failed_stop_reasons": {
+    "completion_lost_during_handoff": 39,
+    "preparation_not_reached": 150,
+    "no_progress_blocks": 66,
+    "block_budget": 24,
+    "handoff_hold_not_settled": 7,
+    "measured_success_after_handoff": 7,
+    "left_target_region": 5,
+    "requested_vla_variant_unavailable": 4,
+    "native_stop": 3
+  },
+  "new_failed_preparation_inner_reasons": {
+    "measured_sweep_collision": 111,
+    "measured_arm_sweep_collision": 3,
+    "tracking_error": 7,
+    "numerical_ik_not_found": 26,
+    "endpoint_not_reached": 3
+  },
+  "selected_without_policy_inference": 144,
+  "by_domain_category": [
+    {
+      "domain": "measured_packet1",
+      "category": "bowl_transfer",
+      "local": {
+        "trials": 24,
+        "known": 24,
+        "success": 5,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.09244825352851857,
+          0.40470453253188665
+        ]
+      },
+      "native": {
+        "trials": 24,
+        "known": 24,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          1.3877787807814457e-17,
+          0.13797620467498017
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet1",
+      "category": "box_transfer",
+      "local": {
+        "trials": 12,
+        "known": 12,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ]
+      },
+      "native": {
+        "trials": 12,
+        "known": 12,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet1",
+      "category": "container",
+      "local": {
+        "trials": 18,
+        "known": 18,
+        "success": 10,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.33716415642042774,
+          0.7544048187299437
+        ]
+      },
+      "native": {
+        "trials": 18,
+        "known": 18,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.0,
+          0.17587922364665765
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet1",
+      "category": "cup_transfer",
+      "local": {
+        "trials": 18,
+        "known": 18,
+        "success": 6,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.1627877475083369,
+          0.5625053270405489
+        ]
+      },
+      "native": {
+        "trials": 18,
+        "known": 18,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.0,
+          0.17587922364665765
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet1",
+      "category": "drawer_close",
+      "local": {
+        "trials": 6,
+        "known": 6,
+        "success": 6,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.6096657120978346,
+          1.0
+        ]
+      },
+      "native": {
+        "trials": 6,
+        "known": 6,
+        "success": 6,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.6096657120978346,
+          1.0
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet1",
+      "category": "drawer_open",
+      "local": {
+        "trials": 12,
+        "known": 12,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ]
+      },
+      "native": {
+        "trials": 12,
+        "known": 12,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet2",
+      "category": "bowl_transfer",
+      "local": {
+        "trials": 21,
+        "known": 21,
+        "success": 3,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.04981012499725268,
+          0.34636060280620945
+        ]
+      },
+      "native": {
+        "trials": 21,
+        "known": 21,
+        "success": 3,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.04981012499725268,
+          0.34636060280620945
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet2",
+      "category": "box_transfer",
+      "local": {
+        "trials": 6,
+        "known": 6,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.3903342879021653
+        ]
+      },
+      "native": {
+        "trials": 6,
+        "known": 6,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.3903342879021653
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet2",
+      "category": "cup_transfer",
+      "local": {
+        "trials": 9,
+        "known": 9,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.0,
+          0.2991450484195441
+        ]
+      },
+      "native": {
+        "trials": 9,
+        "known": 9,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.0,
+          0.2991450484195441
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet2",
+      "category": "drawer_close",
+      "local": {
+        "trials": 24,
+        "known": 24,
+        "success": 9,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.21159367559548778,
+          0.5729003755732572
+        ]
+      },
+      "native": {
+        "trials": 24,
+        "known": 24,
+        "success": 9,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.21159367559548778,
+          0.5729003755732572
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet2",
+      "category": "drawer_open",
+      "local": {
+        "trials": 9,
+        "known": 9,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.0,
+          0.2991450484195441
+        ]
+      },
+      "native": {
+        "trials": 9,
+        "known": 9,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.0,
+          0.2991450484195441
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet2",
+      "category": "microwave_close",
+      "local": {
+        "trials": 12,
+        "known": 12,
+        "success": 3,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.08894166839405471,
+          0.5323053349335657
+        ]
+      },
+      "native": {
+        "trials": 12,
+        "known": 12,
+        "success": 3,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.08894166839405471,
+          0.5323053349335657
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet2",
+      "category": "microwave_open",
+      "local": {
+        "trials": 12,
+        "known": 12,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ]
+      },
+      "native": {
+        "trials": 12,
+        "known": 12,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ]
+      }
+    },
+    {
+      "domain": "measured_packet2",
+      "category": "plate_push",
+      "local": {
+        "trials": 12,
+        "known": 12,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ]
+      },
+      "native": {
+        "trials": 12,
+        "known": 12,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          2.7755575615628914e-17,
+          0.24249400665524085
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "bowl_transfer",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 24,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.6269430358685175,
+          0.9049489282271013
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 18,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.42320360253322475,
+          0.7540937188319815
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "box_transfer",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 15,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.33154125640533766,
+          0.6684587435946623
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.0,
+          0.11351339317396876
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "container",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 9,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.16664748268243793,
+          0.47875787458714947
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 0,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.0,
+          0.11351339317396876
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "cup_transfer",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 24,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.6269430358685175,
+          0.9049489282271013
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 15,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.33154125640533766,
+          0.6684587435946623
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "drawer_close",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 13,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.2737748557646652,
+          0.6080269299918639
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 13,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.2737748557646652,
+          0.6080269299918639
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "drawer_open",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 6,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.09505107177289873,
+          0.3730569641314825
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 6,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.09505107177289873,
+          0.3730569641314825
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "microwave_close",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 6,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.09505107177289873,
+          0.3730569641314825
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 6,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.09505107177289873,
+          0.3730569641314825
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "microwave_open",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 8,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.14182663319596317,
+          0.4444796169518888
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 8,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.14182663319596317,
+          0.4444796169518888
+        ]
+      }
+    },
+    {
+      "domain": "original90",
+      "category": "plate_push",
+      "local": {
+        "trials": 30,
+        "known": 30,
+        "success": 13,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.2737748557646652,
+          0.6080269299918639
+        ]
+      },
+      "native": {
+        "trials": 30,
+        "known": 30,
+        "success": 13,
+        "unknown": 0,
+        "wilson95_over_repeats": [
+          0.2737748557646652,
+          0.6080269299918639
+        ]
+      }
+    }
+  ],
+  "training": false,
+  "PRO": false,
+  "D2": false,
+  "confirmation": false,
+  "scope": "read-only original/own-layout audit. Inner collision/IK records are screening results, not private physical collision truth. Local subtask, native whole task, stop reason and inference invocation remain separate; repeated trials are not independent layouts."
+}

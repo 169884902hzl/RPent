@@ -66,3 +66,5 @@
 | libero_goal_task_t0_s40 | 0→0 | 8→8 | 23→23 | 247.31→239.38 |
 
 原件：`/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/CPU_N1/`。manifest.json、paired_states.jsonl 保存每状态来源 SHA、完整物理初态 SHA、真实选择和各轮时延。GPU 11563 的配置启动错误保留；已闭合 24 原版未重跑，11568 只续 6 D2 探针。
+
+实际6局续跑的[按domain配置登记](measured_v7_N1_domain_resume_manifest.json)保留外部启动器及父manifest引用。外部启动器 SHA256 `667514eb4fef2635a35c652b5e390bf8eb053ca1b4376d2197c40910fc09a0ce`；执行技能代码仍为 efa 快照。

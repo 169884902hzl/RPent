@@ -149,3 +149,20 @@
 - 新4片11573/74已闭合13/43（7+6），11575已实际启动，11576还等卡。旧11561最后2个drawer_open自有技能self_1分支在继续；不是程序错误、不是无进展等待，choices仍更新（case057索引8、case058索引0的上次抽查）。不改登记160决策上限，不截断换分数。
 - drain改成按旧job分别退休：只替换自有monitor，旧r1脚本保留；新ROOT/drain_registered_episode_parents_r2_20261023.py，py_compile通过，实际已验证保存11562的53状态并scancel11562，未中断回合，释放卡由11575接上。单job证明preparation/redistribution4_drain_11562_complete.json；新producer_r2 SHA sidecar已写。远端监控tool session55545；旧5185 monitor已仅自身SIGTERM，Slurm其余不动。11561父dispatcher仍T（只停止派新），最后2子worker/服务继续；r2会在它们summary齐全后保存并取消旧分配。不得遗留。
 - 当前新43的结果未链接canonical，须等11577（依赖old afterany＋新4 afterok）逐raw验证并链接；11565再聚合。新源D2四分片尚未提交。资源监控session83530，ledger /tmp/rd_v7_registered_slots_reg155_r4.jsonl，覆盖11561/62/71/73/74/75/76，C2暂无GPU需求。
+
+## 2026-10-23T08:16+08:00 第一波安全收尾与最后4状态分发（继续，勿结束）
+- 第一波r2 drain已完整完成：11561保存59、11562保存53，总112，零中断回合，两旧调度作业按意图CANCELLED；完整证明preparation/redistribution4_drain_complete.json。55545已退出。新11573/11574已分别11/11 COMPLETED。
+- 最后两片11575/11576合计21状态：原计划还有5未启动，但操作时调度器已再派1个，r1计数assert失败（无新物理提交/无中断），改按停派后的实际计数17已开始/完成+4未启动注册。第一条失败后父dispatcher已T，已立即写正确登记并继续子worker；不存在遗留无人管理父进程。
+- 最后4新GPU作业实际ID11588/11589，每片2，源efa/N8/原种子预算；目录保留legacy tail5名，manifest states=4。计划preparation/tail5/{redistribution4_drain_registration,submissions}.json。只停11575/11576父调度派新，当前16子worker/服务继续；r2 drain监控tool session99494在node02，会在各job完成后保存并取消分配。不得遗留。
+- link_measured_tail_CPU_20261023.py已py_compile并上传。CPU11590依赖afterany11575:11576+afterok11588:11589，将4真实raw指针填原run4位置；11577改依赖afterok11590（11573/74已从sacct验证COMPLETED0:0；将已清理的完成ID再加入依赖会被Slurm拒，已修，不重提GPU）；11565仍afterok11577。source/seed/budget/score未变。
+- 资源watcher已换session92537，ledger /tmp/rd_v7_registered_slots_reg155_tail4.jsonl，包含11561/62/71/73/74/75/76/88/89；C2当前无GPU需求，4卡满。C1/C2已获LAST4_LAUNCH alert和共享登记。
+- 新D2恢复1仍未提交，等155汇总评估。4片×10准备在2db/preparation/D2_recovery1_run4_shard*.json及run_D2_recovery1_run4_shard*.sbatch，执行source2db、schema7、private-registered-goal-or-subtask/1。新CPU收尾器close_measured_v7_D2_CPU_20261023.py已编译/远端ROOT同名：实际新40后与前版23/40、28/38+2unknown、模型10/40、A1-M28/40逐局同表；unknown分支不算失败，完整初态匹配单列。尚未运行此CPU收尾器，尚未提交本地新脚本。
+- 已推user-fork/harness-v5到4e16eb25；新link_tail、close_D2、当前progress尚待后续提交，未改无关dirty bounded_skills16/4行。下步：等99494和新4GPU闭合，检查11590→11577→11565，修任何CPU程序错不重跑物理换分数；全155逐试次/逐状态/分类Wilson+N1/N2评估；再上2db四变体D2恢复1四片40全部采样+独立回放；最后完整证据/报告/交C1/C2/逐文件提交push。队列未清空不得交回。
+
+## 2026-10-23T09:06+08:00 155全闭合、新D2已上机（继续）
+- 最后11589全部完成，CPU11590/11577/11565均COMPLETED0:0；四tail真实raw转发→43原canonical链接→155汇总全通过，无重复物理回合、无已闭合重跑。155状态1630尝试：旧1165为460→461，1好0坏，0完整初态差异，0首selected_candidate_id差异。唯一正翻为box_transfer_libero_object_t0_s10_B2_d001_layout11020603_prefix000，initial_pose seed34103000；两边nativeFalse、reason同preparation_not_reached、2157→1895控制；不把它归给新增方法。
+- 新measured_anchor按登记局部/原生合同160/465 Wilson[.302342,.388385]；端点native100/465[.180125,.254652]，不是465个完整episode成功率。CPU11609分类已25秒完成：失败prep150细分hand sweep111/arm3/数值IK26/tracking7/endpoint3；144次未进π推理。公开停止原因与私有计量分窗，不能仅凭标签叫真实滑落/验证误判。原件efa/CPU_155及CPU_155_audit_r1；本地measured_v7_155.md及summary/pairs/added/states/audit文件已镜像。
+- 已评估N1同完整30对24→24、N2旧132次62→62、155无退步；2db与efa公开执行逐blob相同，私有续接另口径。新D2恢复1四变体40已提交GPU11604/11605/11606/11607，每片10/N8/source2db，node02/nice500/cpus16/mem120G；CPU11608 afterok四片，运行ROOT/close_measured_v7_D2_CPU_20261023.py。来源7a08 archive、schema7、PRO config33144均现场SHA通过。submission及assessment在2db/preparation并镜像本地。
+- D2 CPU收尾器已py_compile、在旧40局做只读格式验证：68子任务、12双失败、2未覆盖规则，旧分数不改；包括每套件/子任务/变体分支与Wilson、实际选中调用参数和推理是否发生、所有private/local/native字段、双方失败明细/unsupported和40逐局与前版23/40、28/38+2unknown、模型10/40、A1M28/40同表。actual新40尚未闭合，不声称新分数。当前producer SHA b5eb470dd08d48b77be4534650ae9d692d4d646ce45f95a2e106e6e37196cfdf。
+- 资源watcher新session44047，ledger /tmp/rd_v7_registered_slots_D2_11604_11607.jsonl，只管11604–7借卡；旧92537在GPU结束后自然退出。C2无GPU需求，当前四卡满，C3 CPU64+CPU分类2≤80、内存480+24≤600。p3其它项目不动。r2两个drain（55545、99494）均完成并退出，所有停止派新的父dispatcher已随各Slurm分配取消，不遗留T进程；旧held未release。
+- C1/C2已收到REG155_CLOSED_AND_D2_STARTED alert及共享登记。代码当前push4e16；新close_D2、classify155、link_tail及这些产物/进度待逐文件提交。接下来趁D2跑做本地证据报告/逐文件提交push，修任何新开发程序错误后继续；新40全采样+独立回放闭合和CPU11608通过后最终逐局/分套件/子任务报告、交C1核验再结束。不可因为已上机就交回。

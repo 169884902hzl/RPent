@@ -1,0 +1,668 @@
+{
+  "states": 155,
+  "paired_legacy_trials": 1165,
+  "added_trials": 465,
+  "source_commit": "efa57340221c82cb359d72514c7062edb34de599",
+  "before": {
+    "n": 1165,
+    "known": 1165,
+    "success": 460,
+    "unknown": 0,
+    "wilson95_over_trials": [
+      0.3671700292486845,
+      0.42322070496843195
+    ]
+  },
+  "after_legacy": {
+    "n": 1165,
+    "known": 1165,
+    "success": 461,
+    "unknown": 0,
+    "wilson95_over_trials": [
+      0.368015072500325,
+      0.4240867577639987
+    ]
+  },
+  "improved": 1,
+  "regressed": 0,
+  "complete_initial_mismatches": 0,
+  "regressions": [],
+  "new_method": {
+    "n": 465,
+    "known": 465,
+    "success": 160,
+    "unknown": 0,
+    "wilson95_over_trials": [
+      0.30234219802498685,
+      0.3883848115600286
+    ]
+  },
+  "new_method_native": {
+    "n": 465,
+    "known": 465,
+    "success": 100,
+    "unknown": 0,
+    "wilson95_over_trials": [
+      0.18012505812874563,
+      0.2546518904231789
+    ]
+  },
+  "by_group": [
+    {
+      "category": "bowl_transfer",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 45,
+      "known": 45,
+      "success": 15,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.21358874934330038,
+        0.4792951169009958
+      ]
+    },
+    {
+      "category": "bowl_transfer",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 45,
+      "known": 45,
+      "success": 21,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.32935132065011297,
+        0.6092254525987463
+      ]
+    },
+    {
+      "category": "bowl_transfer",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 75,
+      "known": 75,
+      "success": 25,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.23708220863575521,
+        0.4458257388585134
+      ]
+    },
+    {
+      "category": "bowl_transfer",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 75,
+      "known": 75,
+      "success": 32,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.3210074201902476,
+        0.5394720767072307
+      ]
+    },
+    {
+      "category": "bowl_transfer",
+      "method": "self",
+      "variant": null,
+      "n": 50,
+      "known": 50,
+      "success": 32,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.501410168761127,
+        0.7586125034815325
+      ]
+    },
+    {
+      "category": "box_transfer",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 18,
+      "known": 18,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.0,
+        0.17587922364665765
+      ]
+    },
+    {
+      "category": "box_transfer",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 18,
+      "known": 18,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.0,
+        0.17587922364665765
+      ]
+    },
+    {
+      "category": "box_transfer",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 48,
+      "known": 48,
+      "success": 13,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.1656595762745644,
+        0.40996964982240613
+      ]
+    },
+    {
+      "category": "box_transfer",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 48,
+      "known": 48,
+      "success": 15,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.19945683446587817,
+        0.4533307141589159
+      ]
+    },
+    {
+      "category": "box_transfer",
+      "method": "self",
+      "variant": null,
+      "n": 32,
+      "known": 32,
+      "success": 4,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.04970134387480073,
+        0.2806830548165022
+      ]
+    },
+    {
+      "category": "container",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 18,
+      "known": 18,
+      "success": 14,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.5478541568378739,
+        0.9099907189139831
+      ]
+    },
+    {
+      "category": "container",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 18,
+      "known": 18,
+      "success": 12,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.43749467295945105,
+        0.837212252491663
+      ]
+    },
+    {
+      "category": "container",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 48,
+      "known": 48,
+      "success": 19,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.2702082786059137,
+        0.5368959150745274
+      ]
+    },
+    {
+      "category": "container",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 48,
+      "known": 48,
+      "success": 19,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.2702082786059137,
+        0.5368959150745274
+      ]
+    },
+    {
+      "category": "container",
+      "method": "self",
+      "variant": null,
+      "n": 32,
+      "known": 32,
+      "success": 10,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.17952541633609734,
+        0.4856667830095541
+      ]
+    },
+    {
+      "category": "cup_transfer",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 27,
+      "known": 27,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.0,
+        0.12455502974186705
+      ]
+    },
+    {
+      "category": "cup_transfer",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 27,
+      "known": 27,
+      "success": 11,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.24514757074395552,
+        0.592732990319353
+      ]
+    },
+    {
+      "category": "cup_transfer",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 57,
+      "known": 57,
+      "success": 19,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.2249380607515073,
+        0.4627748841994856
+      ]
+    },
+    {
+      "category": "cup_transfer",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 57,
+      "known": 57,
+      "success": 30,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.3991801621874118,
+        0.6501283201887471
+      ]
+    },
+    {
+      "category": "cup_transfer",
+      "method": "self",
+      "variant": null,
+      "n": 38,
+      "known": 38,
+      "success": 28,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.5799115381253364,
+        0.8502837874520186
+      ]
+    },
+    {
+      "category": "drawer_close",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 30,
+      "known": 30,
+      "success": 10,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.19230498083676134,
+        0.5121994835545616
+      ]
+    },
+    {
+      "category": "drawer_close",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 30,
+      "known": 30,
+      "success": 18,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.42320360253322475,
+        0.7540937188319815
+      ]
+    },
+    {
+      "category": "drawer_close",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 60,
+      "known": 60,
+      "success": 30,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.3773502424155577,
+        0.6226497575844423
+      ]
+    },
+    {
+      "category": "drawer_close",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 60,
+      "known": 60,
+      "success": 28,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.34627906041438494,
+        0.5910657297284211
+      ]
+    },
+    {
+      "category": "drawer_close",
+      "method": "self",
+      "variant": null,
+      "n": 40,
+      "known": 40,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.0,
+        0.08762160119728664
+      ]
+    },
+    {
+      "category": "drawer_open",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 21,
+      "known": 21,
+      "success": 7,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.17194752605083477,
+        0.5462654802574476
+      ]
+    },
+    {
+      "category": "drawer_open",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 21,
+      "known": 21,
+      "success": 7,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.17194752605083477,
+        0.5462654802574476
+      ]
+    },
+    {
+      "category": "drawer_open",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 51,
+      "known": 51,
+      "success": 34,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.529683778569708,
+        0.7803006814641148
+      ]
+    },
+    {
+      "category": "drawer_open",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 51,
+      "known": 51,
+      "success": 6,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.05505073677918172,
+        0.2338084431432247
+      ]
+    },
+    {
+      "category": "drawer_open",
+      "method": "self",
+      "variant": null,
+      "n": 34,
+      "known": 34,
+      "success": 10,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.1683463067042242,
+        0.4616890979471443
+      ]
+    },
+    {
+      "category": "microwave_close",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 12,
+      "known": 12,
+      "success": 12,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.7575059933447592,
+        1.0
+      ]
+    },
+    {
+      "category": "microwave_close",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 12,
+      "known": 12,
+      "success": 12,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.7575059933447592,
+        1.0
+      ]
+    },
+    {
+      "category": "microwave_close",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 42,
+      "known": 42,
+      "success": 32,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.6147245613168169,
+        0.8651903577535287
+      ]
+    },
+    {
+      "category": "microwave_close",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 42,
+      "known": 42,
+      "success": 9,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.11705799876003031,
+        0.35939845316322905
+      ]
+    },
+    {
+      "category": "microwave_close",
+      "method": "self",
+      "variant": null,
+      "n": 28,
+      "known": 28,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        1.3877787807814457e-17,
+        0.12064330476584563
+      ]
+    },
+    {
+      "category": "microwave_open",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 12,
+      "known": 12,
+      "success": 9,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.46769466506643426,
+        0.9110583316059453
+      ]
+    },
+    {
+      "category": "microwave_open",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 12,
+      "known": 12,
+      "success": 9,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.46769466506643426,
+        0.9110583316059453
+      ]
+    },
+    {
+      "category": "microwave_open",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 42,
+      "known": 42,
+      "success": 29,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.5397400606391092,
+        0.8092889714120513
+      ]
+    },
+    {
+      "category": "microwave_open",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 42,
+      "known": 42,
+      "success": 8,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.09982008281647739,
+        0.3330077401003869
+      ]
+    },
+    {
+      "category": "microwave_open",
+      "method": "self",
+      "variant": null,
+      "n": 28,
+      "known": 28,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        1.3877787807814457e-17,
+        0.12064330476584563
+      ]
+    },
+    {
+      "category": "plate_push",
+      "method": "call_vla",
+      "variant": "full_task",
+      "n": 12,
+      "known": 12,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        2.7755575615628914e-17,
+        0.24249400665524085
+      ]
+    },
+    {
+      "category": "plate_push",
+      "method": "call_vla",
+      "variant": "in_place",
+      "n": 12,
+      "known": 12,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        2.7755575615628914e-17,
+        0.24249400665524085
+      ]
+    },
+    {
+      "category": "plate_push",
+      "method": "call_vla",
+      "variant": "initial_pose",
+      "n": 42,
+      "known": 42,
+      "success": 19,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.31223393233454466,
+        0.6005088096526652
+      ]
+    },
+    {
+      "category": "plate_push",
+      "method": "call_vla",
+      "variant": "measured_anchor",
+      "n": 42,
+      "known": 42,
+      "success": 13,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        0.19071102858794878,
+        0.4602599393608908
+      ]
+    },
+    {
+      "category": "plate_push",
+      "method": "self",
+      "variant": null,
+      "n": 28,
+      "known": 28,
+      "success": 0,
+      "unknown": 0,
+      "wilson95_over_trials": [
+        1.3877787807814457e-17,
+        0.12064330476584563
+      ]
+    }
+  ],
+  "new_method_reasons": {
+    "native_success": 97,
+    "measured_success_after_handoff": 61,
+    "completion_lost_during_handoff": 48,
+    "preparation_not_reached": 150,
+    "no_progress_blocks": 66,
+    "block_budget": 24,
+    "handoff_hold_not_settled": 7,
+    "left_target_region": 5,
+    "requested_vla_variant_unavailable": 4,
+    "native_stop": 3
+  },
+  "rows": {
+    "paired_trials.jsonl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/CPU_155/paired_trials.jsonl",
+      "sha256": "66a883cc15191cbebdc3346f1940c19d6f121b92e7d9ebc7c03674021f201360"
+    },
+    "added_trials.jsonl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/CPU_155/added_trials.jsonl",
+      "sha256": "a9f273629be772a6d8bc12b19948046e96fb07bbe9a4742174d2e04e8384a710"
+    },
+    "states.jsonl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_efa57340/CPU_155/states.jsonl",
+      "sha256": "5380270e10b672102dec1d2557c2ce3bb519f45184654a6726fa1c3fa578737c"
+    }
+  },
+  "training": false,
+  "D2": false,
+  "PRO": false,
+  "confirmation": false,
+  "scope": "subtask/registered native contracts reported separately; trial Wilson includes repeats, not independent layouts"
+}
