@@ -1,0 +1,13 @@
+{
+  "owner": "Codex3",
+  "action": "stop_service_job",
+  "job_id": 11721,
+  "stop_requested_UTC": "2026-10-23T15:09:53.447720+00:00",
+  "stop_requested_Beijing": "2026-10-23T23:09:53.447720+08:00",
+  "reason": "Codex2 已于北京时间 19:28 下线，模型评测已全部完成。用户本轮明确授权仅结束11721。",
+  "precheck": "node02无RUNNING/COMPLETING/CONFIGURING的rd-c3-*作业；无18065已建立TCP连接；46模型B+46π默认模式全部闭合。",
+  "restart_command": "sbatch /public/home/sunyihan/rd_instruction_20260923/c2_pi_default_20261023_0150/GPU_selected_service_READY.sbatch",
+  "untouched": "all other jobs, including p3/c5/c6/rf/RVRT and historical held jobs",
+  "next": "continue train-split candidate collection11833; no model training",
+  "observed_slurm_status": "11721        CANCELLED+      0:0 2026-10-23T23:09:52 \n11721.batch   CANCELLED     0:15 2026-10-23T23:09:52 \n"
+}
