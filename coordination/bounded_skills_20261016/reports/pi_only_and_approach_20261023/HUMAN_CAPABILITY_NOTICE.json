@@ -1,0 +1,25 @@
+{
+  "owner": "Codex3",
+  "recipient": "Codex2",
+  "change": "explicit human assistance capability",
+  "source_commit": "ff352fc42f3cfa5b210a3848267b543df50f4f18",
+  "branch": "harness-v5",
+  "remote": "user-fork",
+  "legality_version": "public-request-legal/5",
+  "field": "request.human_available",
+  "type": "boolean",
+  "libero_default": false,
+  "missing_field_means": false,
+  "new_request_always_emits": true,
+  "candidate_behavior": "ask_help omitted unless capability is true",
+  "legal_behavior": "ask_help excluded unless capability is exactly true, including stagnation and loop terminal catalogs",
+  "required_model_change": "preserve root field in serialization and use contract.legal_after from this commit; do not silently drop capability",
+  "hashes": {
+    "rpent/skill_package/schema.json": "ed97f32a6e69cb8c4727670db8d309715b66c709e9cd01c1cc41020afd1316a4",
+    "rpent/skill_package/schema7.json": "cc94effcdc5febae07b62144ec357a281e7833448fa86b7ec7b0c1f32e7bc18a",
+    "rpent/skill_package/contract.py": "9f27262bcfcbe404806cf05eddf507795e4f650d7cc994385414f7ed9a13b0c3"
+  },
+  "old_result_policy": "no replay or rescore; old model results remain historical",
+  "validation": "41 focused pass; full CPU panel 832 pass and one obsolete expectation; updated capability-parametrized terminal test plus schema/legal suite 58 pass",
+  "pending": "v-next-b service registration and new DAgger list not received; no old service restart"
+}
