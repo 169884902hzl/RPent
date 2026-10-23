@@ -68,6 +68,9 @@ def main():
             model[key].update(raw=raw, model_service=data['model_service'], requests_with_human_false=len(requests))
     endpoints, endpoints_ref = read_ref(ref(run/'preparation/pi_first_endpoints.json'))
     endpoints = {r['case']: r for r in endpoints['reproductions']}
+    physics_proof, physics_proof_ref = read_ref(ref(run/'CPU_first_end_to_oracle_initial_physics_r2.json'))
+    assert physics_proof['n'] == physics_proof['matches'] == 24
+    initial_proof = {r['case']: r for r in physics_proof['rows']}
     recovered = {}
     for stage in [f'pi_first_oracle_origin_{i}' for i in range(4)]:
         plan = json.loads((run/f'preparation/{stage}.json').read_text())
@@ -88,6 +91,10 @@ def main():
             assert endpoint_evidence['retained_endpoint_matches']
             replay = data['full_replay']
             assert replay, 'closed continuation must include an actual native replay'
+            assert initial_proof[key]['equal']
+            replay_hash = replay[0].get('initial_physics_sha256')
+            if replay_hash is not None:
+                assert replay_hash == initial_proof[key]['first_end_physics_sha256'], key
             recovered[key] = {
                 'success': data['actual_full_replay_success'],
                 'sampled_success': data.get('sampled_envelope_native_success'),
@@ -148,7 +155,10 @@ def main():
         'sampling_caveat': 'development finite-sample envelope with look-ahead branch selection, not an executable model result; unknown excluded and counted explicitly',
         'recovery_caveat': 'continuation recovery1 starts after one pi failure and may call pi more than one additional time; original total10000 simulation-step budget is retained, not reset; branch search costs excluded from replay latency',
         'pi_endpoint_reconstructions': dict(Counter(v['reconstruction'] for v in endpoints.values())),
-        'sources': {'pi_only': ref(pi_path), 'pi_endpoints': endpoints_ref},
+        'replay_initial_sha_serialized_and_matching': sum(v['replay_initial_physics_sha256'] is not None for v in recovered.values()),
+        'replay_initial_sha_not_serialized': [k for k,v in recovered.items() if v['replay_initial_physics_sha256'] is None],
+        'sources': {'pi_only': ref(pi_path), 'pi_endpoints': endpoints_ref,
+            'first_end_to_episode_initial_physics': physics_proof_ref},
         'training': False, 'evaluation_only': True}
     for group in ('D2', 'first_failure24'):
         summary[group + '_scope'] = 'full registered cohort; missing/unknown shown separately'

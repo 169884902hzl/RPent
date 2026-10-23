@@ -1,0 +1,145 @@
+{
+  "D2": {
+    "pi_only_success": {
+      "success": 18,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.3070530781090492,
+        0.6017090820106794
+      ]
+    },
+    "v_next_a_success": {
+      "success": 10,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.14187118639096302,
+        0.40193961420768026
+      ]
+    },
+    "v_next_b_success": {
+      "success": 10,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.14187118639096302,
+        0.40193961420768026
+      ]
+    },
+    "oracle_from_start_success": {
+      "success": 24,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.44595893660346186,
+        0.7365167431570808
+      ]
+    },
+    "A1_M_success": {
+      "success": 28,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.5456998118185507,
+        0.8192515477025347
+      ]
+    },
+    "pi_then_oracle_replay_success": {
+      "success": 23,
+      "n": 40,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.42195068541991065,
+        0.7149060744004962
+      ]
+    },
+    "pi_then_oracle_sampled_success": {
+      "success": 24,
+      "n": 38,
+      "unknown_or_pending": 2,
+      "wilson95": [
+        0.47283959557009003,
+        0.7661578075284404
+      ]
+    }
+  },
+  "first_failure24": {
+    "pi_then_oracle_replay_success": {
+      "success": 7,
+      "n": 24,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.14914648196960875,
+        0.49167693664496637
+      ]
+    },
+    "pi_then_oracle_sampled_success": {
+      "success": 8,
+      "n": 22,
+      "unknown_or_pending": 2,
+      "wilson95": [
+        0.19733204670366125,
+        0.5704829190986899
+      ]
+    }
+  },
+  "original6": {
+    "pi_only_success": {
+      "success": 6,
+      "n": 6,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.6096657120978346,
+        1
+      ]
+    },
+    "v_next_b_success": {
+      "success": 1,
+      "n": 6,
+      "unknown_or_pending": 0,
+      "wilson95": [
+        0.030053369748306635,
+        0.5635028221864702
+      ]
+    }
+  },
+  "model_closed": 46,
+  "continuation_closed": 24,
+  "pending": [],
+  "complete_model_initial_matches": 46,
+  "human_available": false,
+  "model_legal_version": 5,
+  "old_model_legal_version": 4,
+  "comparison_caveat": "not a weights-only comparison: legal4->5, schema6->7 human capability, additional codec capacity and 32k request allowance; failures before interface repair retained but not physical outcomes",
+  "original6_scope": "three distinct initial states, each run at inherited K1/K4 labels",
+  "sampling_caveat": "development finite-sample envelope with look-ahead branch selection, not an executable model result; unknown excluded and counted explicitly",
+  "recovery_caveat": "continuation recovery1 starts after one pi failure and may call pi more than one additional time; original total10000 simulation-step budget is retained, not reset; branch search costs excluded from replay latency",
+  "pi_endpoint_reconstructions": {
+    "same-seed pi inference": 20,
+    "retained actual policy and handoff controls": 4
+  },
+  "replay_initial_sha_serialized_and_matching": 22,
+  "replay_initial_sha_not_serialized": [
+    "libero_10_swap_t3_s40",
+    "libero_10_task_t3_s40"
+  ],
+  "sources": {
+    "pi_only": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/pi_only_and_approach_20261023/CPU_pi_only46/episodes.jsonl",
+      "sha256": "f602bef7c2a4736aae582d1d8486c326989ca0e09bc51fdfc35defa3394830b7"
+    },
+    "pi_endpoints": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/preparation/pi_first_endpoints.json",
+      "sha256": "18981acceb9dd077774fc62ece2a6e3209535132d135c1f38105483bf6feb5ef"
+    },
+    "first_end_to_episode_initial_physics": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/CPU_first_end_to_oracle_initial_physics_r2.json",
+      "sha256": "97636e046416121e9408f0cbb49a72d8ecc678d6a78af13c93f9153e82ed15d1"
+    }
+  },
+  "training": false,
+  "evaluation_only": true,
+  "D2_scope": "full registered cohort; missing/unknown shown separately",
+  "first_failure24_scope": "full registered cohort; missing/unknown shown separately"
+}

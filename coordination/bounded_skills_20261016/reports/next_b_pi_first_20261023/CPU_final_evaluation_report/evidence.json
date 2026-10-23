@@ -1,0 +1,54 @@
+{
+  "sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/CPU_closed40_final/manifest.json",
+      "sha256": "89ef4c9ed588cbaf32c7afd4ba61de4ecca1dd0bd05f39d6b3018237841d91cc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/CPU_pi_default_closed46/manifest.json",
+      "sha256": "068427499516214850ff50ceddfc751c860a2b77e7f3a7ab4d1df8c1e984ea51"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/CPU_first_end_to_oracle_initial_physics_r2.json",
+      "sha256": "97636e046416121e9408f0cbb49a72d8ecc678d6a78af13c93f9153e82ed15d1"
+    }
+  ],
+  "pi_then_oracle_vs_baselines": {
+    "pi_only_success": {
+      "improved": 5,
+      "regressed": 0
+    },
+    "oracle_from_start_success": {
+      "improved": 4,
+      "regressed": 5
+    }
+  },
+  "continuation_costs": {
+    "replay_sim_steps": {
+      "median": 403.5,
+      "sum": 11124,
+      "n": 24
+    },
+    "replay_decisions": {
+      "median": 4.0,
+      "sum": 110,
+      "n": 24
+    },
+    "replay_vla_inference_calls": {
+      "median": 0.0,
+      "sum": 489,
+      "n": 24
+    },
+    "independent_replay_wall_s": {
+      "median": 91.00899518374354,
+      "sum": 3889.849551138468,
+      "n": 24
+    }
+  },
+  "continuation_statuses": {
+    "physical_result": 22,
+    "oracle_rule_uncovered": 2
+  },
+  "training": false,
+  "evaluation_only": true
+}
