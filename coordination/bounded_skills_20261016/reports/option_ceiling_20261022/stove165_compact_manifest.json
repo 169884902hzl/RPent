@@ -1,0 +1,69 @@
+{
+  "requests": 165,
+  "input": {
+    "path": "/public/home/sunyihan/rd_instruction_20260923/c2_curve_20261021_1330/error_analysis/C3_task_vla_eval_physical_bound_v2.jsonl",
+    "sha256": "6dafa38c0d650364ddf71680849896e4ade9847da7b06820a562a2d628652c7f"
+  },
+  "data": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/CPU_stove165_compact_r1/requests.jsonl",
+    "sha256": "4ea9af22e7534d46b61a32c666cd1edf8bc06607755c305582ccbc18e201dc3e"
+  },
+  "physics_roots": 106,
+  "schema_contract": {
+    "schema_path": "/public/home/sunyihan/rpent_libero_eval/source_A1_joint_8a07e44a_20261023/rpent/skill_package/schema.json",
+    "schema_version": "bounded-skills/6",
+    "schema_sha256": "b64b6fb60c603dc1db297abcd53a5c5921092779ff5cab62b91cc3506883901d",
+    "contract_sha256": "a0fef7407efb67b4f9cde557cfa09ffcf3964eaaf9eaabad9f671d4e5b900f0b",
+    "package_init_sha256": "43960c6ec7196b5a0caf30ad9d65f45701d7946c84fd6efa1558583c6ebf3ad5",
+    "boundaries": [
+      "ask_help",
+      "call_vla",
+      "finish",
+      "observe"
+    ],
+    "legality_version": "public-request-legal/4",
+    "model_view_version": "omit_frozen_public_blockers/1"
+  },
+  "consumer": "/public/home/sunyihan/rd_instruction_20260923/c2_next_a_20261022_0540/gpu_source_codes120_r1/consumer",
+  "tokenizer": "/public/home/sunyihan/rd_instruction_20260923/v5_models/qwen3_5_4b_851bf6e8",
+  "token_scope": "rendered body only; excludes chat wrapper and future output",
+  "metrics": {
+    "candidates_before": {
+      "median": 38,
+      "max": 45,
+      "sum": 6447
+    },
+    "candidates_after": {
+      "median": 37,
+      "max": 38,
+      "sum": 5840
+    },
+    "rendered_tokens_before": {
+      "median": 8605,
+      "max": 13574,
+      "sum": 1592470
+    },
+    "rendered_tokens_after": {
+      "median": 3269,
+      "max": 4094,
+      "sum": 550428
+    },
+    "rendered_bytes_before": {
+      "median": 24066,
+      "max": 35137,
+      "sum": 4435183
+    },
+    "rendered_bytes_after": {
+      "median": 7334,
+      "max": 8648,
+      "sum": 1219443
+    }
+  },
+  "omissions": {
+    "collision": 607
+  },
+  "selected_vla_omitted_groups": 0,
+  "training_admission": false,
+  "physical_measurements_added": 0,
+  "scope": "public model-view rendering only; original physics roots and ordered prefixes retained; no outcomes transferred or generated"
+}

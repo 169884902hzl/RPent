@@ -133,8 +133,19 @@
 - Codex1/2 owner alert C3_V7_PARTIAL_GOAL_ORIGINAL_WITNESS_AND_N2_20261023.json已发送，共享COORD只flock append。新私有协议与旧采样上限口径不同，不能把后续D2差额全归于新动作；整局必须独立物理回放。旧23/40、28/38+2unknown及模型10/40保留。
 - 接下来：读11570并修任何程序错误；完成N1/155及自动CPU11566/11565、出逐状态和C7；再跑2db下D2恢复1四变体40全部采样和独立完整回放、与A1逐局表；炉灶165缩减仍最后；交C1/C2全部manifest/SHA/raw/分类Wilson，逐文件add提交并push user-fork harness-v5，不merge/force。当前已推8b8ebf1a，dirty bounded_skills16/4行未动。
 
-## 2026-10-23 07:36 SG 接续（运行继续）
+## 2026-10-23 接续：N1闭合及原版端点功能检查（运行继续）
 - N1 11568及CPU11566全部完成：同完整初态三十对24/30→24/30，0结果翻转/0技能序列变化/0候选ID变化。总体Wilson95[.626943,.904949]；循环中位32.2246→31.4085s，整局158.4896→153.4463s；四段及后继legal已在measured_v7_N1.md/manifest/pairs镜像。碗8/8，整局中位199.18s，速度目标仍未达。C1/C2已收到N1/N2闭合原件。
 - 11570在0物理步因原版worker先import robosuite再import env_server触发GL-bootstrap assertion失败。producer改为复用shared bootstrap_source(original,evaluation=hybrid_repair)，CPU相同导入序列和两端点refs预检通过；旧producer/manifest/formal完整保留，新producer_r2/manifest_r2/formal_r2及11571分开登记。
 - 11571两端点功能检查闭合：都恢复exact endpoint，正确由[True,False]跳到g1:pick moka并生成schema7公共请求；两条首move_to均measured_sweep_collision、0新控制。只证明私有阶段续接和请求生成，未证明物理继续，不计成功。local original_partial_handoff_functional_r2.json。未重跑π/未训练/不改原失败。
 - 155两片11561/11562继续，最近81/155；正式2db D2尚未提交，等原版回归全闭合评估。资源守护已替换为11561_11571 ledger，登记新11571；C2目前无GPU需求。
+
+## 2026-10-23T07:39+08:00 155启动分片重分配（继续运行）
+- 不改执行源码efa/技能/规划/种子/预算；96已闭合保留，16当前worker自然跑完；仅停止两个调度父进程派新回合，43未启动状态重分4片11573–11576，N8，每卡1SAM/π。原件preparation/redistribution4_drain_registration.json、redistribution4_submissions.json。当前已用4卡，C2无需求。
+- drain_registered_episode_parents_20261023.py在node02监测16worker，完整summary验证后写canonical闭合指针，再退休旧11561/11562，零中断回合。旧作业随后CANCELLED是调度重分而非物理失败。link_measured_redistribution_CPU_20261023.py的11577在新4片完成后把43真实summary链接原canonical位置，11565依赖改afterok11577。两脚本py_compile通过，实际运行中。资源watcher换ledger reg155_r4，包含所有新GPU ID。
+- 炉灶165最低优先CPU项已在其他CPU工作完成后用空余CPU收尾（11572，21秒）：165原prefix组/106物理根，schema6冻结；候选中位38→37/max45→38，正文tokens中位8605→3269/max13574→4094，未含chat wrapper；607测得碰撞候选省略，选中VLA0漏删，无新物理标签。原件CPU_stove165_compact_r1；已交C1/C2。
+- 新D2恢复1仍未提交；已准备4片×10局、N8分发，固定40所有case/source/config/seed/budget逐项一致。待155闭合评估后上机。
+
+## 2026-10-23T08:01+08:00 重分片继续
+- 新4片11573/74已闭合13/43（7+6），11575已实际启动，11576还等卡。旧11561最后2个drawer_open自有技能self_1分支在继续；不是程序错误、不是无进展等待，choices仍更新（case057索引8、case058索引0的上次抽查）。不改登记160决策上限，不截断换分数。
+- drain改成按旧job分别退休：只替换自有monitor，旧r1脚本保留；新ROOT/drain_registered_episode_parents_r2_20261023.py，py_compile通过，实际已验证保存11562的53状态并scancel11562，未中断回合，释放卡由11575接上。单job证明preparation/redistribution4_drain_11562_complete.json；新producer_r2 SHA sidecar已写。远端监控tool session55545；旧5185 monitor已仅自身SIGTERM，Slurm其余不动。11561父dispatcher仍T（只停止派新），最后2子worker/服务继续；r2会在它们summary齐全后保存并取消旧分配。不得遗留。
+- 当前新43的结果未链接canonical，须等11577（依赖old afterany＋新4 afterok）逐raw验证并链接；11565再聚合。新源D2四分片尚未提交。资源监控session83530，ledger /tmp/rd_v7_registered_slots_reg155_r4.jsonl，覆盖11561/62/71/73/74/75/76，C2暂无GPU需求。
