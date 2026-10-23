@@ -7,7 +7,7 @@ from rpent.skill_package.feedback import FeedbackConfig, SuccessFeedback, config
 
 def native_success(facade):
     """The unchanged LIBERO native predicate check, without advancing physics."""
-    return bool(facade._env.env.workers[0].env_call('check_success'))
+    return bool(facade._env.env.workers[0].env_call('_check_success'))
 
 
 def predicate_feedback(facade):

@@ -163,6 +163,11 @@ def run_contact_panel(args, plan, row, probe, facade, adapter, policy, timings):
             assert probe.snapshot_digest(facade.snapshot()) == expected
             enable(adapter, facade, permissive=arm == 'permissive')
             source, target = probe.bind_subtask(policy, adapter, spec)
+            if source is None and spec['mode'] in {'open', 'close'}:
+                from robots.libero.bounded_adaptive_contact import unique_handle_parent
+                source = unique_handle_parent(adapter.scene.entities, spec['mode'])
+                if source is not None:
+                    policy.binding._bindings[spec['source_symbol']] = source.id
             if source is None or spec['target_symbol'] and target is None:
                 trials.append({'arm':arm,'repeat':repeat,'status':'unknown','reason':'public_binding_missing'})
                 continue

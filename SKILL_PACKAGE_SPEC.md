@@ -28,6 +28,24 @@ the menu to terminal actions. With `human_available=false`, `ask_help` stays
 illegal. A failed or unchanged `observe` returns control rather than ending
 the episode. Geometry and execution checks retain their existing semantics.
 
+The development-only permissive `measured_anchor` preparation uses at most
+200 existing OSC controls, a 2 cm Euclidean translation increment, 0.10 rad
+rotation increment and the existing 1.2 cm endpoint tolerance. It does not
+reject a sweep or abort on tracking error, and hands control to the VLA from
+the achieved pose when its preparation budget ends. This authorization is
+limited to that preparation mode; it does not change other motion screens,
+gripper force, native scoring or environment budgets. Contact and non-target
+object displacement are private diagnostic measurements, never controller inputs.
+
+Adaptive handle and push controllers are implemented for development tests.
+They remain outside the published menu until the registered train-state
+three-repeat measurements complete. The handle controller uses public surface
+registration after each 2 cm increment, continuing on the axis with the largest
+observed displacement; two checks below 3 mm stop it. `push_to` uses the measured
+target footprint as its public stopping region. Each uses at most 400 controls
+and 40 cm of requested advancement. Both retain route screening and ordinary
+OSC/gripper limits. No private joint angle or object pose supplies an action.
+
 ## Measured-anchor VLA revision (v7, development)
 
 The v7 review schema is [`rpent/skill_package/schema7.json`](rpent/skill_package/schema7.json). A qualified v7 source snapshot publishes these exact bytes at its canonical `rpent/skill_package/schema.json` and emits `bounded-skills/7`. The existing v6 snapshots, requests, outcomes, and training packets retain their identities. They are not relabeled by rewriting a version header. Model training and serving use the new option only after Codex2 synchronizes its schema, renderer and service. Oracle diagnostics and original-development forks can exercise the source directly.

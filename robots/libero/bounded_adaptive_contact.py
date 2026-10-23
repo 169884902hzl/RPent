@@ -11,6 +11,16 @@ STAGNANT_CHECKS = 2
 PROGRESS_M = .003
 
 
+def unique_handle_parent(entities, mode):
+    """Resolve a duplicated fixture detection only with a unique observed part."""
+    from robots.libero.v5_state import fixture_actions
+    parents = {entity.part_of for entity in entities.values()
+               if entity.visible and entity.part_of is not None}
+    candidates = [entity for entity in entities.values()
+                  if entity.visible and entity.id in parents and mode in fixture_actions(entity.name)]
+    return candidates[0] if len(candidates) == 1 else None
+
+
 def dominant_direction(displacement, prior):
     """Continue on the observed axis with the largest displacement."""
     displacement = np.asarray(displacement, float)

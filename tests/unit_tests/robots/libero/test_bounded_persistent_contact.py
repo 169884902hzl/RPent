@@ -32,3 +32,13 @@ def test_push_arrival_uses_public_target_footprint():
     target=SimpleNamespace(lower=[.1,.2,.8],upper=[.2,.3,.9])
     assert in_target(SimpleNamespace(xyz=[.15,.25,.85]),target)
     assert not in_target(SimpleNamespace(xyz=[.21,.25,.85]),target)
+
+
+def test_duplicated_fixture_resolves_only_with_unique_observed_child():
+    from robots.libero.bounded_adaptive_contact import unique_handle_parent
+    entities={key:SimpleNamespace(id=key,name='microwave',visible=True,part_of=None)
+              for key in ('a','b')}
+    entities['part']=SimpleNamespace(id='part',name='microwave door',visible=True,part_of='a')
+    assert unique_handle_parent(entities,'open').id=='a'
+    entities['part2']=SimpleNamespace(id='part2',name='microwave door',visible=True,part_of='b')
+    assert unique_handle_parent(entities,'open') is None
