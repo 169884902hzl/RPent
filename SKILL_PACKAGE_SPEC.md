@@ -1,4 +1,4 @@
-# Bounded skill package v7 (development) — 2026-10-23
+# Bounded skill package v8 (development) — 2026-10-24
 
 Owner: Codex3. This contract implements the user's **10/16 05:45 PDT** direction; the 10/14 pause and old v5 freeze gates are retired. No model training is authorized in this round. This is a development specification, not evidence of physical qualification. Existing confirmation-state exclusions remain permanent.
 
@@ -45,6 +45,40 @@ observed displacement; two checks below 3 mm stop it. `push_to` uses the measure
 target footprint as its public stopping region. Each uses at most 400 controls
 and 40 cm of requested advancement. Both retain route screening and ordinary
 OSC/gripper limits. No private joint angle or object pose supplies an action.
+
+### Measured contact menu extension (v9, pending physical rerun)
+
+`rpent/skill_package/schema9.json` adds two opt-in skills; v8 evaluation
+snapshots remain unchanged. The adapter flag `adaptive_contact_skills` defaults
+to false. Model training/serving must synchronize this revision before enabling
+it. New options have no borrowed outcome label from an old nudge or VLA call.
+
+* `open_close_articulated(anchor_id, axis, direction)` references the active
+  measured handle/fixture contact; axis is x/y/z and direction is -1/+1. All six
+  directions are generated from that same public anchor, independently of task
+  predicates. The existing public approach, descend and close establish the
+  contact first. Each increment refreshes RGB-D, measures axial progress and
+  selects the next axis from the largest displacement between measured contact
+  surface centres. No private joint angle, fixture limit or task goal controls
+  the motion.
+* `push_to(anchor_id, target_id)` references the active measured object and any
+  measured target-region anchor. The initial planar direction comes from their
+  measured centres. It stops when the measured object centre enters that
+  target's XY footprint, motion stalls, or an existing motion/budget stop fires.
+  Every measured region is eligible; task predicates do not filter targets.
+* The selected controller first screens a 2 cm increment. If it is rejected
+  before any control for a geometric collision, it can screen a 1 cm prefix.
+  The 4 mm clearance, mesh, other obstacles, IK and force rules stay unchanged.
+  All attempts and rejection points are retained. Actual movement never causes
+  an unchecked retry of that increment. Two progress checks below 3 mm, an
+  unmeasured contact, 400 controls or 40 cm of requested motion return control.
+* Consequences publish `expected_steps=400` and
+  `screen_scope=guarded_contact_increment`; the final contact position is not
+  predicted. `legal_after` requires the actual receipt before a successor,
+  using `public-request-legal/7`. Receipts include `advance_m`, measured net
+  `contact_displacement_m` and the stop reason; an untested displacement is null.
+  The three-repeat train-state measurements precede menu activation. A rejected
+  setup is counted separately from an executed contact controller.
 
 ## Measured-anchor VLA revision (v7, development)
 

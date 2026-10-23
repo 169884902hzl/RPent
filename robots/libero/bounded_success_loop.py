@@ -27,7 +27,7 @@ def enable(adapter, facade, *, level_b=False, permissive=False):
     adapter.permissive_measured_anchor = permissive
     # Adapt historical request/receipt headers only in the new live session.
     from robots.libero.bounded_vla_staged import receipt_format
-    receipt_format(adapter, 'bounded-skills/8')
+    receipt_format(adapter, adapter.schema_version)
 
 
 def decision(request, ids):

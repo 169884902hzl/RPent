@@ -76,6 +76,7 @@ class MeasuredSkillAdapter:
     # Trusted historical annotation snapshots omit development-only flags.
     lazy_planning_v1 = False
     vla_options_v2 = False  # USER M7: activate after C2 train/inference/service schema sync.
+    adaptive_contact_skills = False
     registration_query_workers = 1
     schema6_v1 = False  # Absent on trusted historical annotation snapshots.
     guarded_move_v1 = True
@@ -94,9 +95,12 @@ class MeasuredSkillAdapter:
                  targeted_vla_measurement_v1: bool = False,
                  lazy_planning_v1: bool = False, registration_query_workers: int = 1,
                  schema6_v1: bool = True, no_progress_limit: int | None = 11,
-                 vla_options_v2: bool = False, human_available: bool = False):
+                 vla_options_v2: bool = False, human_available: bool = False,
+                 adaptive_contact_skills: bool = False):
         if type(human_available) is not bool:
             raise ValueError('human_available must be a boolean session capability')
+        if type(adaptive_contact_skills) is not bool:
+            raise ValueError('adaptive_contact_skills must be a boolean')
         self.human_available = human_available
         if type(prefix_consequence_workers) is not int or prefix_consequence_workers < 1:
             raise ValueError('prefix_consequence_workers must be a positive integer')
@@ -118,6 +122,9 @@ class MeasuredSkillAdapter:
         self.registration_query_workers = registration_query_workers
         self.schema6_v1 = schema6_v1
         self.vla_options_v2 = vla_options_v2
+        self.adaptive_contact_skills = adaptive_contact_skills
+        if adaptive_contact_skills:
+            self.schema_version = 'bounded-skills/9'
         self.runtime_revision = self.RUNTIME_REVISION
         self.rendered_self_filter_v1 = schema6_v1
         self.verify_instance_crops_v1 = schema6_v1
@@ -2115,7 +2122,7 @@ class MeasuredSkillAdapter:
                 "endpoint_ik_coarse_geometry" if self.lazy_planning_v1 and not complete
                 else "contact_selected_surface" if contact else "hand_mesh_observed_space")
             consequence["expected_steps"] = math.ceil(duration*self.config.hz)
-        elif skill == 'guarded_move':
+        elif skill in {'guarded_move', 'open_close_articulated', 'push_to'}:
             consequence.update(expected_steps=400, screen_scope='guarded_contact_increment')
         elif skill in {"release", "set_gripper"}:
             consequence.update(expected_steps=15, expected_gripper_opening_m=(.08 if skill == "release" or parameters.get("mode") == "open" else 0.))
@@ -2389,6 +2396,11 @@ class MeasuredSkillAdapter:
                     for target in entities:
                         if target.visible and target.name.startswith('area '):
                             add_vla(anchor_id=entity.id, target_id=target.id, mode='push')
+            if (getattr(self, 'adaptive_contact_skills', False) and entity.id == self.active
+                    and entity.visible and not entity.part_of and not fixture_actions(entity.name)):
+                for target in entities:
+                    if target.visible and target.name.startswith('area '):
+                        add('push_to', anchor_id=entity.id, target_id=target.id)
         if self.allow_vla and self.schema6_v1 and self.vla_options_v2:
             from robots.libero.bounded_vla_options import instruction_clauses
             for index,_ in enumerate(instruction_clauses(self.ex.instruction)):
@@ -2408,6 +2420,9 @@ class MeasuredSkillAdapter:
                     and (active_entity.part_of or fixture_actions(active_entity.name))):
                 for direction in (-1, 1):
                     add('guarded_move', anchor_id=self.active, axis=axis, direction=direction)
+                    if (getattr(self, 'adaptive_contact_skills', False)
+                            and any(mode in {'open', 'close'} for mode in fixture_actions(active_entity.name))):
+                        add('open_close_articulated', anchor_id=self.active, axis=axis, direction=direction)
         for mode in ("refresh", "wrist_scan"):
             if mode not in getattr(self, '_stationary_observe_modes', set()):
                 add("observe", mode=mode)
@@ -2641,7 +2656,7 @@ class MeasuredSkillAdapter:
                 'predicted_anchors': {key: list(entity.xyz)
                     for key, entity in prediction.adapter.scene.entities.items()},
                 'conditional_on': copy.deepcopy(prediction.assumptions)})
-            if is_boundary(candidate) or candidate['skill'] == 'guarded_move' or candidate['consequences']['screen_scope'] == 'conditional_on_prefix':
+            if is_boundary(candidate) or candidate['skill'] in {'guarded_move', 'open_close_articulated', 'push_to'} or candidate['consequences']['screen_scope'] == 'conditional_on_prefix':
                 break
             prediction.advance(candidate)
         return plan
@@ -2791,7 +2806,7 @@ class MeasuredSkillAdapter:
                 # belongs to the public option selected in this request.
                 self.memory.record(row['candidate'], receipt['outcome'], receipt['stop_reason'])
                 cursor += 1
-                if receipt['outcome'] != 'success' or is_boundary(candidate) or candidate['skill'] == 'guarded_move':
+                if receipt['outcome'] != 'success' or is_boundary(candidate) or candidate['skill'] in {'guarded_move', 'open_close_articulated', 'push_to'}:
                     break
             if self.p.env.terminated or self.p.env.truncated:
                 break
@@ -3089,6 +3104,16 @@ class MeasuredSkillAdapter:
                     # at the unchanged fingers after a zero-step rejection.
                     if detail.get('executed'):
                         self.committed_grasps.pop(key, None)
+        elif skill in {'open_close_articulated', 'push_to'}:
+            from robots.libero.bounded_adaptive_contact import run
+            detail = run(self, parameters, push=skill == 'push_to')
+            reason = detail['stop_reason']
+            outcome = ('success' if detail.get('success') else
+                'no_effect' if reason == 'measured_motion_stalled' and detail['advance_m'] < .003 else 'interrupted')
+            phase = None if outcome == 'success' else 'contact_failure'
+            if (detail['steps_used'] == 0 and detail.get('motion_attempts')
+                    and detail['motion_attempts'][-1].get('screen', {}).get('passed') is False):
+                outcome, phase = 'failure', 'planning_unreachable'
         elif skill == 'guarded_move':
             from robots.libero.bounded_guarded import run_guarded
             detail = run_guarded(self, parameters)
@@ -3171,7 +3196,7 @@ class MeasuredSkillAdapter:
                 else 'no_human_available_use_observe_restage_or_other_approach')
         vla_observation = detail.get('post_handoff_observation') if skill == 'call_vla' else None
         if self.schema6_v1 and self.p.env.execution_budget()['used_sim_steps'] > start_steps:
-            if skill in {'descend', 'lower', 'lift', 'nudge', 'guarded_move', 'set_gripper', 'release'}:
+            if skill in {'descend', 'lower', 'lift', 'nudge', 'guarded_move', 'open_close_articulated', 'push_to', 'set_gripper', 'release'}:
                 self._incremental_touched.update(k for k in (key, before['held_anchor_id'], self.active) if k)
             if (skill == 'release' or skill == 'set_gripper' and parameters.get('mode') == 'open') and before['held_anchor_id']:
                 self._incremental_released_payload = True
@@ -3349,8 +3374,11 @@ class MeasuredSkillAdapter:
             self._planning_zero_step_count = getattr(self, '_planning_zero_step_count', 0)+1
             detail['internal_planning_rejection_index'] = self._planning_zero_step_count
         check_receipt(candidate, receipt, detail)
-        if skill == 'guarded_move':
+        if skill in {'guarded_move', 'open_close_articulated', 'push_to'}:
             receipt['advance_m'] = detail['advance_m']
+        if skill in {'open_close_articulated', 'push_to'}:
+            receipt['contact_displacement_m'] = (detail['contact_surface_displacement_m']
+                if detail.get('checks') else None)
         if (receipt['outcome'] == 'success' and (skill == 'nudge'
                 or (skill == 'set_gripper' and parameters.get('mode') == 'close'))):
             self._update_contact_surface_reference(self.active)

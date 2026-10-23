@@ -14,8 +14,10 @@ SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
-LEGALITY_VERSION = "public-request-legal/6"
+LEGALITY_VERSION = "public-request-legal/7"
 SCHEMA8 = json.loads(SCHEMA_PATH.with_name('schema8.json').read_text())
+SCHEMA9 = json.loads(SCHEMA_PATH.with_name('schema9.json').read_text())
+CONTACT_BOUNDARIES = {'guarded_move', 'open_close_articulated', 'push_to'}
 
 
 def method_family(candidate: dict) -> str:
@@ -76,7 +78,7 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
         raise ValueError('prefix reselects an already committed action')
     if any(is_boundary(candidates[cid]) for cid in prefix[:-1]):
         raise ValueError('prefix crosses a control-handoff boundary')
-    if any(candidates[cid]['skill'] == 'guarded_move' for cid in prefix[:-1]):
+    if any(candidates[cid]['skill'] in CONTACT_BOUNDARIES for cid in prefix[:-1]):
         raise ValueError('guarded endpoint needs its actual receipt before a successor')
     if len(prefix) > request['max_actions']:
         raise ValueError('prefix exceeds requested K')
@@ -118,7 +120,7 @@ def legal_after(request: dict, prefix) -> tuple[str, ...]:
             elif check['metric'] == 'released' and check['minimum'] == 1:
                 held = None
     if len(prefix) == request['max_actions'] or (prefix and (
-            is_boundary(candidates[prefix[-1]]) or candidates[prefix[-1]]['skill'] == 'guarded_move')):
+            is_boundary(candidates[prefix[-1]]) or candidates[prefix[-1]]['skill'] in CONTACT_BOUNDARIES)):
         return ()
     used = set(prefix) | committed
     return tuple(cid for cid, candidate in candidates.items() if cid not in used and available(candidate))
@@ -128,7 +130,9 @@ def validate(value: dict) -> None:
     kind = value.get("kind")
     if kind not in {"request", "decision", "receipt", "prefix_context", "oracle_labels"}:
         raise ValueError("unknown bounded-skills message kind")
-    source = SCHEMA8 if value.get('schema_version') == 'bounded-skills/8' else SCHEMA
+    version = value.get('schema_version')
+    source = (SCHEMA9 if version == 'bounded-skills/9'
+              else SCHEMA8 if version == 'bounded-skills/8' else SCHEMA)
     schema = {key: val for key, val in source.items() if key != "oneOf"}
     schema["$ref"] = f"#/$defs/{kind}"
     Draft202012Validator(schema).validate(value)

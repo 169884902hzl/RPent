@@ -1,79 +1,93 @@
-# Success feedback and aggressive retries — active round
+# 成功反馈与持续尝试：当前回合
 
-User 10/23 14:00 PDT replaces13:50. Implement/measure only, no training.
-Do not end while owned GPU work is queued/running. node02 only,nice500,max3GPU;
-C2+C3<=80CPU/600GB. Do not modify p3,c5,c6,rf,RVRT or historicalheld jobs.
-Resource poll every15min whenwaiting; running logs may be checked to fix errors.
+执行用户 10/23 14:00 PDT 指令，13:50 版作废。本轮不训练模型。
+node02、nice=500，Codex3 最多 3 GPU；与 Codex2 合计不超过 80 CPU / 600 GB。
+不修改用户 p3/c5/c6/rf/RVRT 或旧 held 作业。自己的队列未清空时继续工作。
 
-## Implemented and pushed
+## 已推送与通知
 
-- db8be033: independent A task_success / B subgoal_status switches, schema8,
-  public-request-legal/6; false task_success forbidsfinish, nohuman forbidsask_help.
-  A true exits BEFORE perception/planning. B omitted bydefault. Explicit private
-  truth may now be model-visible; no coordinates and no scoring change.
-- Aggressive policy records40decisions/10000environmentsteps,recovery_budget=null;
-  public stagnation no longer removes retryable actions, failurehistoryretained.
-- 2b5653c2: bounded permissive measured_anchor preparation (max200steps,2cm vector
-  clip,.1rad rotationclip,existing endpointtol,no sweep/trackingerrorveto);
-  public RGB-D adaptive contact implementation and same-state experiment runner.
-- Nativequery fix pendingcommit: RLinf env_call defaults to inner LIBERO env,
-  so call `_check_success`,not wrapper `check_success`. CPUreproductionpassed.
-- Contactdiagnostic binding improvement: only resolve duplicated fixtureparent
-  when exactlyone has an observed childpart. Real N2 microwave had2 parent
-  detections but just1 observed door. No privatecoordinates or taskcase rule.
-- Localtests36feedback/schema/staged passed;12feedback/control/40failureloop
-  passed,then7focused nativequery/contacttests passed. Frozenexecutionimports and
-  all138episode/12N2/40skillmanifest shapes passed CPU.
+- db8be033：A task_success / B subgoal_status 独立开关、schema8、legal/6。
+  A true 在感知前结束；A false 时 finish 非法；无人时 ask_help 非法。
+- 2b5653c2：40 决策 / 10000 环境步的持续尝试、宽容 measured_anchor 准备段、公开 RGB-D 接触控制原型与配对 runner。
+- d357fe3a：原生成功查询修正为 inner LIBERO `_check_success`；只在唯一公开子部件支持时解决重复 fixture 父实体；测试与报告脚本。
+- 三项提交已推送 user-fork/harness-v5。C1/C2 已通过共享登记及 owner_alerts 收到字段、SHA 和当前执行树。
 
-## Exact execution source and jobs
+合格执行基底为 df589b7d，不把本地 HEAD 其他抓取改动或 dirty SAM cache 混入。
+实际冻结执行树：3605901c7425d27df9fa04d1ca7345aeeb388663。
+远端：/public/home/sunyihan/rpent_libero_eval/source_feedback8_3605901c_20261024。
+schema SHA：5ab07c9ce77fef3f339cbb29fc6d45fd5f7060f1bcf193f044e229448a8928b4。
+contract SHA：b6917b52a9cbe317adebec3d3140e2db509a838a898bb0db330952a8d2eba99b。
 
-Executionbase df589b7d (previous qualifiedf6 + emptytrackedcontactfix), not local
-HEAD executor (which contains unrelated selectedgrasp changes). Qualifiedtree
-`3605901c7425d27df9fa04d1ca7345aeeb388663`:
-`/public/home/sunyihan/rpent_libero_eval/source_feedback8_3605901c_20261024`.
-Basearchive58b98480 sourcehadwrongnativeAPI;retained,neveruseitsfailedphysical
-attempts as task failures. Newtree differs in nativequery/unique publichandle
-binding and runner only. Registration `/tmp/rd_feedback8_r1_registration.json`
-local;remoteROOT samebasename.
+CPU：36 项 feedback/schema/staged、12 项循环/控制、7 项 native/contact 复现已通过。
+旧 58b98480 的 native API 程序失败保留，不算任务失败；当前三臂均为新目录。
 
-SchemaSHA 5ab07c9ce77fef3f339cbb29fc6d45fd5f7060f1bcf193f044e229448a8928b4.
-ContractSHA b6917b52a9cbe317adebec3d3140e2db509a838a898bb0db330952a8d2eba99b.
-Both notified toC2/C1 via sharedCOORDINATION+owneralerts:
-C3_FEEDBACK8_AGGRESSIVE_20261024.json and C3_FEEDBACK8_SOURCE_QUEUE_20261024.json.
-Need followup nativeAPI/currenttree notice; fields/hashes unchanged.
+## N2 已闭合
 
-RemoteRUN `/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/success_feedback_20261024`.
-Preparation `*_r1.json`, `*_r1.sbatch`;output `N2_r1`, `pi_A_r1`, `skills_r1`,
-`oracle_A_r1`,`oracle_AB_r1`.
+12 状态 × screened/permissive × 3，共 72 次，unknown=0，36 对完整初态 SHA 一致。
+原检查准备后 π：0/36 成功，6/36 调 π。
+宽容准备后 π：7/36 成功，36/36 调 π，但仅 9/36 到点。
+新增/加深接触 >1µm 为 15/36，>1mm 为 3/36；非目标最大位移 0.00589978 m。
+不把准备放行当作到点，也不把同一状态重复当独立布局。
 
--11955 N2:12registeredstates x screened/permissive x3repeats.
--11956 pi_A:40D2+original6, samefullstates/seeds/configasold18/40.
--11957 skills:40originaltrainstates (drawerclose,microwaveopen/close,platepush),3each.
--11958 oracle_A afterok11955; prior measuredpath preference+privaterule selection,
-  live legal candidates and permissivepreparation enabled.
--11959 oracle_AB afterok11958. A/B oracle itself hasprivatepredicate truth in both;
-  exposingB is not extraoracleknowledge. This is executablediagnosticoracle, NOT
-  exhaustive mathematicalbound. Disclose whenreporting.
+远端报告：results/bounded_skills/success_feedback_20261024/CPU_N2_r3_closed。
+本地镜像：coordination/bounded_skills_20261016/reports/success_feedback_20261024/CPU_N2_r3_closed。
+逐状态 paired_table.md、逐次 trials.jsonl 和 raw SHA 均已登记 C1/C2。
 
-At mostN2/pi/skills3active;afterN2 replacedbyoracleA;AB replacesA. node02p3 had3
-activejobs at21:25UTC leaving1GPU;protectedjob11923_2 naturallyended. Nochanges
-made toprotectedjobs. Original11950failed dueAPI;11951andpending11952/3/4onlyour
-jobs canceled. Rawoutputs retained. r1 startsfreshdirs,doesnotmixfailedattempts.
+## 运行和排队
 
-## Remaining
+远端 RUN：/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/success_feedback_20261024。
 
-1. Monitor r1 startup/errors,fixsupportedbugs andresumewithnewimmutabletree.
-2. Close N2 metrics >1um/>1mm,new/deepercontacts,nontargetdisplacement,endpointerror.
-   Privatecontacts sampled only forreport;notcontrollerinput. Bindingmissing is
-   unknown,notfalsecollisionorphysicalfailure.
-3. Complete3arms40D2+6original,percase results/decisions/wall andWilson,pairedwith
-   oldpure18/oracle24/A1M28 usingold rawtableSHA.
-4. Newcontactskillspubliccontroller writtenbutNOTYET menu-enabled:measurefirst,
-   then integrate finite menu/schema andnotifyC2,doCPUtests. At leastone must
-   physicallyexecute ontrainstates;setup failuresmustbesplitout.
-5. Optional63defaultcandidatequeries x3 ifremainingresource;listnotyetlocated.
-6. NewCPUreport script report_success_feedback_CPU_20261024.py needs suffixr1
-   handling andN2/skillsaggregation. Noformalmetricsyet.
-7. Commitperfile,pushuser-fork harness-v5,noadd-A. Preserveguided-SAMcachehunk in
-   bounded_skills andall unrelateddirty. Localnativefix/runnerhelper/tests/
-   report/progresschanges notyetcommitted asofthisnote.
+- 11955 N2 已完成。
+- 11956 pi_A：40 D2 + 原版 6 臂，运行中。
+- 11957 新技能：四类 40 原版训练状态 × 3，运行中。
+- 11958 oracle_A：同 46 臂，运行中，宽容准备开启。
+- 11959 oracle_AB：依赖 11968，优先接替新技能重测的卡。
+- 11968 新技能 r2：同 40 状态 × 3，运行中，完成后接默认项。
+- 11963 默认 63 train 候选 × 3：依赖 11958，沿用 oracle_A 的卡，不超过三卡。
+
+A/B 两臂 oracle 本身均读私有谓词，B 的公开与否并不增加 oracle 知识。
+选择器为规则 + 历史有限采样偏好，结果不是穷尽动作和随机种子的数学上界。
+报告将保留每局选择、决策数、两种墙钟口径、Wilson 及相同初态核对；N8 不称 N1。
+
+## 新技能开发证据
+
+首轮 40 状态 × 3 已闭合，成功 0，3 次公开绑定缺失为 unknown，6 次实际运行了推进。
+原件和报告分别为 RUN/skills_r1、RUN/CPU_skills_r1_closed。
+
+同状态 case005 捕获并重放了真实拒绝：左指壳–场景点起点间距 13.76 mm，
+2 cm 路线在约 18.6 mm 处降到 3.81 mm。4 mm 余量不变时，1 cm 前缀通过。
+修为只有未执行的碰撞拒绝可再筛 1 cm；每次筛查完整保留。
+修后独立树 75e333fad1542733ab14aab9f86888c1777730a7，仅改变新接触模块。
+运行 11968 / skills_r2，不改已运行的三臂源码或旧结果。
+
+r2 的 case005 首试已实际推进 173 控制步并触发 native 成功；每步兼容区间支持推进方向。
+另一个旧零步状态已运行 14 步。尚不把这些未全闭合状态当作 3/3 成功。
+发现成功后 refresh 没有配准值，被写成 contact_motion_unmeasured；已修成先处理 native stop，
+环境预算截断另报 environment_budget，不能当成功。此修复尚未进入 75 树。
+
+v9 菜单原型默认关闭；公开候选为六个把手方向与所有测得的目标区域，不按任务谓词筛选。
+回执增加 contact_displacement_m；未执行时 null。legal/7 在实测接触回执前不预测后继。
+修复了 prefix_context 沿用旧 schema 的问题；现在继承输入请求版本。
+本地相关 77 项 CPU 测试曾通过，后续 native-stop/null 补测 10 项通过。
+精确 v9 树现为 018f13c6728abae8279902b70dac847f365340d0：
+source_feedback9_018f13c6_20261024。a439 树 CPU 341 通过、1 条过时测试失败；
+它还期望无人时提供 ask_help。018 树仅同步这个已有测试，执行文件 SHA 不变。
+11971 的完整 CPU 面板已通过 343 项（1 CPU / 8 GB，无 GPU）；
+日志 CPU_qualified9_018f13c6_tests.log。
+未混入当前三臂，也未通知模型侧启用。准备了一个训练状态 × 3 的 v9 精确菜单冒烟，
+CPU 通过后已提交 11973，依赖 11956 + 11968 + 11971，沿用 pi_A 的卡，不增加第四卡。
+
+## 默认 63 项
+
+MISSING_DEFAULT_MEASUREMENTS 中 63 train / 54 holdout，只测 63 train。
+CPU 精确旧 request、snapshot、contract、candidate 绑定核验 63/63 通过。
+执行树 f6987f0d，未换 source 或上下文，不把新源结果回填旧标签。
+清单和 CPU 核验在 RUN/preparation/default63；输出 RUN/default63，完成后导出给 Codex2。
+
+## 待交付
+
+1. 修复有真实输入支持的新技能拒绝；四类每状态 3 次，准备与推进分开统计。
+2. 三个 46 臂全部闭合，逐局同表、Wilson、决策数及墙钟。
+3. 新技能菜单/规格及 schema 通知，仅在相应实测之后启用。
+4. 有余力完成默认 63 × 3 并按已接收格式交付。
+5. 按文件暂存提交；保留无关 dirty，不改运行快照，原件和失败全部保留。

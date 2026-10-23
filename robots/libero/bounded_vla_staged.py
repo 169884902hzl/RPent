@@ -7,10 +7,10 @@ import numpy as np
 
 def receipt_format(adapter, version):
     """Render older public measurements in v7 without mutating saved requests."""
-    if version not in {'bounded-skills/7', 'bounded-skills/8'}:
+    if version not in {'bounded-skills/7', 'bounded-skills/8', 'bounded-skills/9'}:
         return
     adapter.receipts=[{**r,'schema_version':version}
-        if r.get('schema_version') in {'bounded-skills/3','bounded-skills/4','bounded-skills/5','bounded-skills/6','bounded-skills/7'}
+        if r.get('schema_version') in {'bounded-skills/3','bounded-skills/4','bounded-skills/5','bounded-skills/6','bounded-skills/7','bounded-skills/8'}
         else r for r in adapter.receipts]
 
 

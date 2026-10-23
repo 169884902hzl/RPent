@@ -83,6 +83,10 @@ class BoundedOracle:
         def nudge(axis, direction):
             active = ex.scene.entities.get(ex.active)
             if active is not None and (active.part_of or fixture_actions(active.name)):
+                adaptive = find('open_close_articulated', anchor_id=active.id, axis=axis,
+                    direction=int(np.sign(direction)))
+                if adaptive is not None:
+                    return adaptive
                 guarded = find('guarded_move', anchor_id=active.id, axis=axis,
                     direction=int(np.sign(direction)))
                 if guarded is not None:
@@ -246,7 +250,7 @@ class BoundedOracle:
                 elif ex.ex.instruction.lower().startswith('push ') and target is not None:
                     delta = np.asarray(target.xyz)-source.xyz
                     axis = int(np.argmax(np.abs(delta[:2])))
-                    chosen = nudge('xy'[axis], delta[axis])
+                    chosen = find('push_to', anchor_id=source.id, target_id=target.id) or nudge('xy'[axis], delta[axis])
                     if chosen is None and predicted_prefix:
                         chosen = measure_contact()
                 elif predicate in {"on", "in"}:
@@ -291,7 +295,7 @@ class BoundedOracle:
                         # the same 5mm progress resolution; tiny PCA noise
                         # must not turn an unrelated axis into progress.
                         if option is not None:
-                            if option['skill'] == 'guarded_move':
+                            if option['skill'] in {'guarded_move', 'open_close_articulated'}:
                                 from robots.libero.bounded_guarded import CHECK_DISTANCE_M
                                 advance = CHECK_DISTANCE_M*option['parameters']['direction']
                             else:
@@ -426,7 +430,7 @@ class BoundedOracle:
             legacy_end = (self.adapter.legacy_chunk_boundaries_v1 and (
                 chosen['skill'] in {'descend', 'lower', 'lift', 'set_gripper', 'release'}
                 or chosen['skill'] in {'nudge', 'rotate_wrist'} and chosen['parameters'].get('anchor_id')))
-            if is_boundary(chosen) or chosen['skill'] == 'guarded_move' or legacy_end:
+            if is_boundary(chosen) or chosen['skill'] in {'guarded_move', 'open_close_articulated', 'push_to'} or legacy_end:
                 break
             prediction.advance(chosen)
         self.private_trace.extend(virtual.private_trace)

@@ -29,14 +29,16 @@ def main():
     parser.add_argument('--run',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--suffix',default='_r1')
-    args=parser.parse_args(); rows={};old=None;counts={}
+    args=parser.parse_args(); rows={};old=None;counts={};plans={};raw_sources=[]
     for arm in ('pi_A','oracle_A','oracle_AB'):
-        plan=json.loads((args.run/'preparation'/(arm+args.suffix+'.json')).read_bytes())
+        plan_path=args.run/'preparation'/(arm+args.suffix+'.json')
+        plan=json.loads(plan_path.read_bytes());plans[arm]=reference(plan_path)
         old=[json.loads(s) for s in checked(plan['old_pair_table']).read_text().splitlines()]
         rows[arm]={}
         for i,job in enumerate(plan['jobs']):
             raw=checked(json.loads((args.run/(arm+args.suffix)/f'closed_{i:03d}.json').read_bytes()))
             value=json.loads(raw.read_bytes())
+            raw_sources.append(reference(raw))
             value['worker_wall_s']=raw.stat().st_mtime-(raw.parent/'assignment.json').stat().st_mtime
             assert value['arm_id']==job['arm_id'] and value['feedback']=={'task_success':True,'subgoal_status':arm=='oracle_AB'}
             assert value['decisions']<=40 and value['human_available'] is False
@@ -57,6 +59,8 @@ def main():
         b=rows['oracle_A'][key];c=rows['oracle_AB'][key]
         assert a['initial_physics_sha256']==b['initial_physics_sha256']==c['initial_physics_sha256'],key
         historical=old_by_name.get(a['case']['name']) if a['domain']=='d2' else None
+        if historical:
+            assert a['initial_physics_sha256']==historical['initial_physics_sha256'],key
         paired.append({'case':a['case']['name'],'arm_id':a['arm_id'],'domain':a['domain'],
             'initial_physics_sha256':a['initial_physics_sha256'],
             'old_pi18':historical['pi_only_success'] if historical else None,
@@ -74,11 +78,11 @@ def main():
             x=r[arm];line.append(f"{int(x['success'])}/{x['decisions']}/{x['worker_wall_s']:.1f}")
         table.append('| '+' | '.join(line)+' |')
     (args.output/'paired_table.md').write_text('\n'.join(table)+'\n')
-    lines=['# 成功反馈与持续尝试', '', '| 方法 | 域 | 成功 | Wilson 95% | 决策中位 | 墙钟中位秒 |',
-        '|---|---|---:|---|---:|---:|']
+    lines=['# 成功反馈与持续尝试', '', '| 方法 | 域 | 成功 | Wilson 95% | 决策中位 | worker 墙钟中位秒 | 循环中位秒 | 仿真步中位 |',
+        '|---|---|---:|---|---:|---:|---:|---:|']
     for key,row in counts.items():
         arm,domain=key.split('|');lo,hi=row['wilson95'];lines.append(
-            f"| {arm} | {domain} | {row['successes']}/{row['n']} | {lo:.1%}–{hi:.1%} | {row['median_decisions']} | {row['median_wall_s']:.1f} |")
+            f"| {arm} | {domain} | {row['successes']}/{row['n']} | {lo:.1%}–{hi:.1%} | {row['median_decisions']} | {row['median_worker_wall_s']:.1f} | {row['median_wall_s']:.1f} | {row['median_sim_steps']} |")
     lines+=['','每回合最多40次决策、10000环境步；失败或无进展回执交还决策，不重新初始化世界。',
         'A是只读原生成功标志；B是显式授权的登记谓词真值。两臂oracle自身均可读私有进度，B的公开与否不构成新增oracle知识。',
         'oracle使用规则与历史有限采样的方法偏好；本表是可执行诊断回放，不是穷尽全部动作与种子的数学上界。',
@@ -86,7 +90,8 @@ def main():
         '原版6臂是3个独立初态各K1/K4，不视为6个独立布局。',
         '逐回合决策、墙钟、停止原因见paired_table.md和paired_cases.jsonl；D2、PRO与确认集不进入训练。']
     (args.output/'RESULTS.md').write_text('\n'.join(lines)+'\n')
-    summary={'counts':counts,'pairs':reference(data),'complete_initial_SHA_matched_pairs':46,'training':False}
+    summary={'counts':counts,'pairs':reference(data),'complete_initial_SHA_matched_pairs':46,
+        'D2_initial_SHA_matched_old_pi':40,'plans':plans,'raw_summaries':raw_sources,'training':False}
     (args.output/'manifest.json').write_text(json.dumps(summary,indent=2)+'\n');print(json.dumps(summary))
 
 

@@ -18,7 +18,6 @@ from robots.libero.bounded_screen import PublicRouteScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_geometric_grasp import _voxel
 from robots.libero.bounded_self_filter import gripper_at_measured_fingers
-from rpent.skill_package import VERSION
 from rpent.skill_package.contract import compact_candidate, committed_candidate_ids, is_boundary, validate
 
 
@@ -356,7 +355,7 @@ class PublicPrefixPrediction:
         predicted = self._candidates(originals) if self.prefix else originals
         candidates = [c for c in predicted if c is not None
             and c['consequences']['screen_scope'] != 'conditional_on_prefix']
-        result = dict(schema_version=VERSION, kind='prefix_context', observation_id=self.request['observation_id'],
+        result = dict(schema_version=self.request['schema_version'], kind='prefix_context', observation_id=self.request['observation_id'],
             revision=self.request['revision'], prefix=list(self.prefix), predicted_robot=self.adapter.robot(),
             candidates=([compact_candidate(c) for c in candidates]
                 if self.adapter.compact_infeasible_candidates_v1 else candidates), assumptions=list(self.assumptions))

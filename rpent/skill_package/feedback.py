@@ -54,7 +54,9 @@ def configure(adapter, feedback, *, aggressive=False):
     """Activate v8 explicitly; historical runs retain their original policy."""
     adapter.success_feedback = feedback
     adapter.episode_policy = EpisodePolicy(aggressive=aggressive)
-    adapter.schema_version = 'bounded-skills/8'
+    adapter.schema_version = 'bounded-skills/9' if getattr(adapter, 'adaptive_contact_skills', False) else 'bounded-skills/8'
+    adapter.receipts = [{**receipt, 'schema_version': adapter.schema_version}
+                        for receipt in adapter.receipts]
 
 
 def public_fields(adapter):
