@@ -1,0 +1,54 @@
+{
+  "case": "libero_10_task_t2_s40",
+  "case_directory": "case036",
+  "oracle_private_predicates_available_in_both_arms": true,
+  "sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/success_feedback_20261024/oracle_A_r1/case036/vla_inputs.jsonl",
+      "sha256": "36cd1cfe9c0afc14574e64bec8a7cdd9fb0ed046e02dfa6116eaebd1ca2861a3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/success_feedback_20261024/oracle_AB_r1/case036/vla_inputs.jsonl",
+      "sha256": "3c8143f47d1262e64dc3a652df8c8f2f995442ba48ac9f05933b4ad58dc87bfd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/success_feedback_20261024/oracle_A_r1/case036/vla_predictions.jsonl",
+      "sha256": "ae56f5e09d30a5bd3b30e2e0a82f22ed0913ac4dcffaf5cfff87b55dee1ea098"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/success_feedback_20261024/oracle_AB_r1/case036/vla_predictions.jsonl",
+      "sha256": "7883de67bc8a3b8f884f7b9b61675f5b843c3b67fc616a1c219459c98c024c19"
+    }
+  ],
+  "vla_inputs.jsonl": {
+    "blocks_A": 722,
+    "blocks_AB": 122,
+    "first_difference": {
+      "block_index_zero_based": 11,
+      "sampling_seed_A": 3029483193,
+      "sampling_seed_AB": 3029483193,
+      "different_keys": [
+        "fields",
+        "wire_observation_sha256"
+      ],
+      "different_observation_fields": [
+        "wrist_images"
+      ]
+    }
+  },
+  "vla_predictions.jsonl": {
+    "blocks_A": 722,
+    "blocks_AB": 122,
+    "first_difference": {
+      "block_index_zero_based": 40,
+      "sampling_seed_A": 3029483222,
+      "sampling_seed_AB": 3029483222,
+      "different_keys": [
+        "actions_sha256",
+        "first_action"
+      ],
+      "first_action_max_abs_delta": 0.004508316516876221
+    }
+  },
+  "interpretation": "The logged policy observations/predictions diverge despite matching initial state and seeds. Both rule oracles already had private predicate access; the one-episode difference is not evidence of B information gain. Hashes locate the first recorded difference but do not establish its rendering/numerical cause."
+}

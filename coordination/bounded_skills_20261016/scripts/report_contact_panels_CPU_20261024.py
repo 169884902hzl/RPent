@@ -33,6 +33,8 @@ def main():
         raw=json.loads(checked(ref).read_bytes());sources.append(ref)
         for trial in raw['trials']:
             result=dict(trial,case=raw['case']['name'],category=raw['case']['category'])
+            mode=raw['case']['diagnostic']['subtask_mode']
+            result.update(subtask_mode=mode,success_scope='registered_task_predicate_at_branch_end')
             if trial['status']=='physical_result':
                 full=json.loads(checked(trial['record']).read_bytes());detail=full['preparation_or_skill'];metrics=trial['metrics']
                 result.update(endpoint_error_m=endpoint_error(detail),
@@ -45,6 +47,8 @@ def main():
                     adaptive_motion_executed=bool(detail.get('steps_used',0)) if args.panel=='skills' else False,
                     adaptive_motion_steps=detail.get('steps_used',0) if args.panel=='skills' else 0,
                     measured_advance_m=detail.get('advance_m'),
+                    subtask_private_success=None if mode=='pick' else full['success'],
+                    policy_public_outcome=(full['policy_result'] or {}).get('outcome'),
                     motion_stop_reason=detail.get('stop_reason',detail.get('reason',detail.get('component',{}).get('reason'))))
             rows.append(result)
     expected=len(plan['jobs'])*3*(2 if args.panel=='N2' else 1)
@@ -75,6 +79,9 @@ def main():
             'max_endpoint_error_m':max(errors) if errors else None,
             'endpoint_errors_measured':len(errors),'policy_invoked':sum(r['policy_invoked'] for r in measured),
             'adaptive_motion_executed':sum(r['adaptive_motion_executed'] for r in measured),
+            'subtask_private_successes':sum(r.get('subtask_private_success') is True for r in all_rows),
+            'subtask_private_measured':sum(type(r.get('subtask_private_success')) is bool for r in all_rows),
+            'subtask_private_unknown':sum(r.get('subtask_private_success') is None for r in all_rows),
             'stop_reasons':dict(Counter(r.get('motion_stop_reason',r.get('reason')) for r in all_rows))}
     manifest={'panel':args.panel,'states':len(plan['jobs']),'trials':len(rows),'groups':groups,
         'data':reference(data),'raw_summaries':sources,'private_metrology_not_controller_input':True,
@@ -82,24 +89,30 @@ def main():
         'training_executed':False,'PRO':False,'D2':False,'confirmation':False}
     (args.output/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     lines=['# '+args.panel+' 接触与结果', '',
-        '| 类别/方法 | 成功/实测 | unknown | 实际运动 | 新/更深接触 >1µm | >1mm | 非目标最大位移 m | 终点误差中位 m | 自适应推进已执行 |',
+        '| 类别/方法 | 登记任务谓词成功/实测 | 物理试验unknown | 实际运动 | 新/更深接触 >1µm | >1mm | 非目标最大位移 m | 终点误差中位 m | 自适应推进已执行 |',
         '|---|---:|---:|---:|---:|---:|---:|---:|---:|']
     for key,r in groups.items():
-        lines.append(f"| {key} | {r['successes']}/{r['measured']} | {r['unknown']} | {r['prep_or_setup_controls_nonzero']} | {r['new_contact_gt_1um']}/{r['contact_rate_denominator_executed_only']} | {r['new_contact_gt_1mm']}/{r['contact_rate_denominator_executed_only']} | {r['max_non_target_displacement_m']} | {r['median_endpoint_error_m']} | {r['adaptive_motion_executed']} |")
+        label=key.replace('|',' / ')
+        lines.append(f"| {label} | {r['successes']}/{r['measured']} | {r['unknown']} | {r['prep_or_setup_controls_nonzero']} | {r['new_contact_gt_1um']}/{r['contact_rate_denominator_executed_only']} | {r['new_contact_gt_1mm']}/{r['contact_rate_denominator_executed_only']} | {r['max_non_target_displacement_m']} | {r['median_endpoint_error_m']} | {r['adaptive_motion_executed']} |")
     lines+=['','每状态重复3次；不把重复次数视为独立布局数。unknown与零步拒绝单列，不把未执行动作当作安全成功。',
         '接触是相对本分支起点新增或加深的手部–场景穿入；1µm与1mm分别统计。非目标物体位移用私有body origin度量，仅用于结果分析。',
-        'N2成功是准备后π调用结束时原登记子目标谓词；到点误差单列，准备段放行不等于到点。',
+        '成功列是分支结束时的登记任务谓词。盒子执行的是pick，该列仍为最终放置谓词，不能解释成局部抓取成败；其私有抓取v3未单独计量，局部真值为unknown。',
+        'N2到点误差单列，准备段放行不等于到点。policy_public_outcome仅为公开验证器回执，不代替私有局部真值。',
         '技能结果含公开接近/闭合的准备阶段；自适应推进真正运行次数单列，准备失败不冒充推进试验。',
         '诊断的规则 oracle 用私有任务谓词选择公开准备选项；执行控制器的动作与进展测量只用公开 RGB-D、本体状态及静态机器人几何。原始 private_truth_used_for_control 字段仅描述这个控制器。']
     (args.output/'RESULTS.md').write_text('\n'.join(lines)+'\n')
     if args.panel=='N2':
-        table=['| 状态 | screened 成功/3 | permissive 成功/3 | 调π screened/permissive | 宽容到点/3 | >1µm / >1mm | 终点误差中位 m |',
+        scope=['| 类别/方法 | 局部私有成功/已计量 | 局部私有unknown |','|---|---:|---:|']
+        scope += [f"| {key.replace('|',' / ')} | {r['subtask_private_successes']}/{r['subtask_private_measured']} | {r['subtask_private_unknown']} |" for key,r in groups.items()]
+        (args.output/'subtask_scope.md').write_text('\n'.join(scope)+'\n')
+        table=['| 状态 | screened 登记任务谓词 | permissive 登记任务谓词 | 调π次数 检/宽 | 宽容到点/3 | >1µm / >1mm | 终点误差中位 m |',
             '|---|---:|---:|---:|---:|---:|---:|']
         for case in dict.fromkeys(r['case'] for r in rows):
             a=[r for r in rows if r['case']==case and r['arm']=='screened' and r['status']=='physical_result']
             b=[r for r in rows if r['case']==case and r['arm']=='permissive' and r['status']=='physical_result']
             errors=[r['endpoint_error_m'] for r in b if r['endpoint_error_m'] is not None]
             table.append(f"| {case} | {sum(r['success'] for r in a)}/{len(a)} | {sum(r['success'] for r in b)}/{len(b)} | {sum(r['policy_invoked'] for r in a)}/{sum(r['policy_invoked'] for r in b)} | {sum(r['arrived'] for r in b)}/{len(b)} | {sum(r['new_contact_gt_1um'] for r in b)} / {sum(r['new_contact_gt_1mm'] for r in b)} | {statistics.median(errors) if errors else None} |")
+        table+=['','盒子分支执行pick，局部私有抓取真值未单独计量；其放置任务谓词不能代替抓取判定。局部真值见 subtask_scope.md。']
         (args.output/'paired_table.md').write_text('\n'.join(table)+'\n')
     if args.compare:
         prior={(r['case'],r['arm'],r['repeat']):r

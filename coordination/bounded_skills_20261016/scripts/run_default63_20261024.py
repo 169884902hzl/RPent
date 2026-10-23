@@ -48,6 +48,13 @@ def worker(args,plan):
     with probe.runtime(case,endpoints,episode,domain='original',constructed_start=constructed) as (facade,adapter,policy,timings):
         trials=[]
         for repeat in range(3):
+            resumed=job.get('resume_trials',{}).get(str(repeat))
+            if resumed is not None:
+                result=json.loads(checked(resumed).read_bytes())
+                assert result['binding']==query['binding'] and result['query_id']==query['query_id']
+                assert result['candidate_id']==query['candidate_id'] and result['seed']==job['seed']+repeat*1000
+                trials.append({'result':result,'summary':resumed})
+                continue
             result=producer.evaluate_candidate_at_saved_state(query,probe,facade,adapter,policy,
                 args.output/f'trial{repeat}',job['seed']+repeat*1000)
             trials.append({'result':result,'summary':reference(args.output/f'trial{repeat}/summary.json')})

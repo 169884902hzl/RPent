@@ -3378,7 +3378,9 @@ class MeasuredSkillAdapter:
             receipt['advance_m'] = detail['advance_m']
         if skill in {'open_close_articulated', 'push_to'}:
             receipt['contact_displacement_m'] = (detail['contact_surface_displacement_m']
-                if detail.get('checks') else None)
+                if any((check.get('registration') or {}).get('accepted')
+                    and check.get('direction_displacement_m') is not None
+                    for check in detail.get('checks', [])) else None)
         if (receipt['outcome'] == 'success' and (skill == 'nudge'
                 or (skill == 'set_gripper' and parameters.get('mode') == 'close'))):
             self._update_contact_surface_reference(self.active)

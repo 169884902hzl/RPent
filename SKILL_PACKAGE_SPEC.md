@@ -37,16 +37,17 @@ limited to that preparation mode; it does not change other motion screens,
 gripper force, native scoring or environment budgets. Contact and non-target
 object displacement are private diagnostic measurements, never controller inputs.
 
-Adaptive handle and push controllers are implemented for development tests.
-They remain outside the published menu until the registered train-state
-three-repeat measurements complete. The handle controller uses public surface
+Adaptive handle and push controllers have completed development simulation
+measurements on 40 registered train states, with three repeats per state.
+They are available only through the opt-in v9 menu below. The handle controller uses public surface
 registration after each 2 cm increment, continuing on the axis with the largest
 observed displacement; two checks below 3 mm stop it. `push_to` uses the measured
-target footprint as its public stopping region. Each uses at most 400 controls
-and 40 cm of requested advancement. Both retain route screening and ordinary
+target footprint as its public stopping region. Each initiates a stop at 400
+advancement controls or 40 cm of requested advancement; any smooth braking
+controls also count against the unchanged episode budget. Both retain route screening and ordinary
 OSC/gripper limits. No private joint angle or object pose supplies an action.
 
-### Measured contact menu extension (v9, pending physical rerun)
+### Measured contact menu extension (v9, opt-in development)
 
 `rpent/skill_package/schema9.json` adds two opt-in skills; v8 evaluation
 snapshots remain unchanged. The adapter flag `adaptive_contact_skills` defaults
@@ -71,7 +72,9 @@ it. New options have no borrowed outcome label from an old nudge or VLA call.
   The 4 mm clearance, mesh, other obstacles, IK and force rules stay unchanged.
   All attempts and rejection points are retained. Actual movement never causes
   an unchecked retry of that increment. Two progress checks below 3 mm, an
-  unmeasured contact, 400 controls or 40 cm of requested motion return control.
+  unmeasured contact, 400 advancement controls or 40 cm of requested motion
+  initiate the return of control. Screened braking steps remain in the episode
+  control count; `expected_steps` is an estimate, not a separate hard step cap.
 * Consequences publish `expected_steps=400` and
   `screen_scope=guarded_contact_increment`; the final contact position is not
   predicted. `legal_after` requires the actual receipt before a successor,
@@ -79,6 +82,20 @@ it. New options have no borrowed outcome label from an old nudge or VLA call.
   `contact_displacement_m` and the stop reason; an untested displacement is null.
   The three-repeat train-state measurements precede menu activation. A rejected
   setup is counted separately from an executed contact controller.
+
+The closed train-state panel measured drawer closing at 6/30 (two independent
+states, each successful three times), microwave opening at 0/30, microwave
+closing at 0/27 with three binding-unknown trials, and plate pushing at 0/30.
+Preparation failures remain in those denominators. These results do not
+qualify the controller across all four categories. An exact v9-menu check on
+one previously successful train state reproduced the 173-control trajectory
+three times and emitted the correct native-success receipt; this selected
+state is an interface check, not a new success-rate estimate. Reports and
+frozen source identities are in
+[`reports/success_feedback_20261024`](coordination/bounded_skills_20261016/reports/success_feedback_20261024/FINAL_REPORT.md).
+Measured contact displacement includes accepted small displacements even
+when they are below the stagnation threshold. If no reliable displacement
+was measured, its receipt value is null, including after executed controls.
 
 ## Measured-anchor VLA revision (v7, development)
 

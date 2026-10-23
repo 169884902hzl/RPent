@@ -114,6 +114,8 @@ def run(adapter, parameters, *, push=False):
         # public depth surfaces, rather than from that constrained fit.
         observed_delta = (np.median(observed, axis=0)-np.median(reference, axis=0)
             if len(observed) >= 40 and len(reference) >= 40 else None)
+        if accepted and observed_delta is not None:
+            contact_displacement += observed_delta
         progress = float(np.linalg.norm(delta)) if accepted else None
         if progress is None:
             reason = 'contact_motion_unmeasured'
@@ -124,7 +126,6 @@ def run(adapter, parameters, *, push=False):
             stagnant = 0
             if observed_delta is not None:
                 direction = dominant_direction(observed_delta, direction)
-                contact_displacement += observed_delta
         checks.append({'capture_step': adapter.ex.toolkit._state.latest_step,
             'axis': 'xyz'[axis], 'direction': sign, 'registration': fit,
             'advance_m': advance, 'measured_displacement_m': delta.tolist() if accepted else None,

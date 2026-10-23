@@ -1,6 +1,8 @@
 """New measured contact options preserve finite public legality and old menus."""
 from dataclasses import replace
 from types import SimpleNamespace
+import numpy as np
+import pytest
 
 from rpent.skill_package.contract import legal_after, selected, validate
 from rpent.skill_package.feedback import FeedbackConfig, SuccessFeedback, configure
@@ -71,3 +73,24 @@ def test_unexecuted_contact_receipt_does_not_report_a_measured_displacement(adap
     assert receipt['steps_used']==0 and receipt['phase']=='planning_unreachable'
     assert receipt['contact_displacement_m'] is None
     assert not adapter.p.actions
+
+
+@pytest.mark.parametrize('registration', [None, {'accepted':False}])
+def test_executed_but_unmeasured_contact_displacement_is_unknown(adapter, monkeypatch, registration):
+    activate(adapter)
+    adapter.active='e1'
+    adapter.scene.entities['e1']=replace(adapter.scene.entities['e1'],
+        name='cabinet drawer',part_of='cabinet')
+    adapter.scene.measure_fixture_handle_pose=lambda *_:{}
+    request=adapter.request(k=1)
+    option=next(c for c in request['candidates'] if c['skill']=='open_close_articulated')
+    def run(*args,**kwargs):
+        adapter.p._step_env(np.array([0.,0.,0.,0.,0.,0.,1.]))
+        return {'steps_used':1,'advance_m':0.,'stop_reason':'contact_motion_unmeasured',
+            'contact_surface_displacement_m':[0.,0.,0.],
+            'checks':[{'registration':registration,'direction_displacement_m':None}]}
+    monkeypatch.setattr('robots.libero.bounded_adaptive_contact.run',run)
+    monkeypatch.setattr(adapter,'refresh',lambda **kwargs:None)
+    receipt,=adapter.execute(request,decision(request,[option['id']]))
+    assert receipt['steps_used']==1 and receipt['contact_displacement_m'] is None
+    validate(receipt)
