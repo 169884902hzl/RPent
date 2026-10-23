@@ -618,6 +618,10 @@ class MeasuredSkillAdapter:
                     'capture_step': self.ex.toolkit._state.latest_step})
         plan = self.plans.get(anchor_id, committed.get('plan', {}))
         surface = plan.get('surface_measurement')
+        if surface is not None and not len(surface['xyz_world']):
+            # An empty tracked surface supplies no extent to recover. Keep
+            # current instance pixels and leave other scene points as obstacles.
+            surface = None
         entity = self.scene.entities.get(anchor_id)
         reference = committed.get('instance_reference')
         if (reference is not None and self.active == anchor_id and self.held is None
