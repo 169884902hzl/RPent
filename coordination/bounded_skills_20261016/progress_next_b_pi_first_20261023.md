@@ -152,3 +152,13 @@ BASE=ROOT/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261
 
 -User explicitly authorized stopping11721 ONLY, after checking no rd-c3-* uses18065. Verified node02 noactiveC3jobs and noestablished18065TCP, then scancel11721 only. SlurmEnd Beijing2026-10-23 23:09:52, CANCELLED. Nootherjobchanged. SharedCOORDINATION appendedstop time/reason(Codex2 offlineBeijing19:28, allmodelevaluationscompleted)/restartcommand exactly `sbatch /public/home/sunyihan/rd_instruction_20260923/c2_pi_default_20261023_0150/GPU_selected_service_READY.sbatch`. Evidence service11721_stopped_user_authorized.json mirroredlocally.
 -11833_7 immediatelyRUNNINGonfreedGPU;3p3jobsunchanged. Diagnosticarchiveenvconfirmedintheactualsbatch. Continue1963querycollection; currently224closed beforethisshard,131knownbound,93contextunknown,notfinal.
+
+## Train collection continuation — empty tracked surface fix
+
+- Bulk11833 shards7–19 and22 closed normally;20 is still running. Shard21 retained31/32 completed queries, query006 alone crashed because an existing tracked surface had zero xyz_world points and _contact_pixels reduced min/max over it. This is a program error, not a physical failure label.
+- Minimal fix skips extent recovery from an empty saved surface, preserving current public pixels and scene obstacle screening. Four CPU reproduction cases passed. Commit d5966582 pushed; unrelated guided-SAM cache hunk remains unstaged.
+- Independent execution tree df589b7d31947e6b42203acc0a3656b97d193f9c differs from f6ce1d46 only in this4-line fix; archive SHA be43e3af871ced20fb6f075af0daaebc8c341527ef0a2e6920fbf3a729c11ed7. Per-query source remains authoritative for the31 older retained records.
+- Only our pending11833 shards23–61 canceled. New11857 indices21,23–61 resume missing records, same frozen runner/producer/export helpers/seeds/one repeat. Initially%1 dependent on11833_22; after19/22 completed and only20 remained, increased11857 to%2, total3GPU/48CPU/360GB. Raise to%3 only after20 actually exits. Protected jobs and historical held jobs untouched.
+- Continue until1963 query outcomes/62 published packets strictly aggregate. Each packet automatically registers fresh reached bindings and explicit old→new replacement to Codex2; no training performed.
+
+- Empty-surface physical retry11857_21 completed0:0 in3m31s: only query006 rerun, new bound source df589b7d; all32closed/exported,12known,20contextunknown,0truthunknown. Evidence CPU_empty_contact_retry_closed.json. Old11833_20 then completed naturally; increased11857 to%3, exactly3GPU/48CPU/360GB.
