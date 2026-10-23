@@ -21,6 +21,15 @@ def main():
         manifest=prep/('pilot32_catalog_r3.json' if shard==0 else f'bulk_shard{shard:03d}.json')
         plan=json.loads(manifest.read_bytes());all_jobs.extend(plan['jobs'])
         results=base/('pilot32' if shard==0 else f'shard{shard:03d}')
+        completion=base/'CPU_support_completed_r4'/f'shard{shard:03d}'
+        completion_manifest=completion/'manifest.json'
+        if completion_manifest.exists():
+            correction=json.loads(completion_manifest.read_bytes())
+            assert not correction['partial_probe'] and correction['additional_policy_actions']==0
+            assert correction['truth_thresholds_unchanged']
+            if correction['corrected_trials']:
+                assert len(list(completion.glob('closed_*.json')))==len(plan['jobs'])
+                results=completion
         closed_refs=[]
         for i,job in enumerate(plan['jobs']):
             pointer=results/f'closed_{i:03d}.json'
@@ -34,7 +43,10 @@ def main():
                 'category':job['case']['category'],'skill':query['candidate']['skill'],
                 'original_prefix_length':len(query['prefix']),'status':status,
                 'reason':report.get('reason'),'raw':raw})
-        candidates=([base/'CPU_pilot32_closed/manifest.json'] if shard==0 else sorted((base/'exports').glob(f'shard{shard:03d}_job*/manifest.json')))
+        if results==completion:
+            candidates=[base/'exports'/f'shard{shard:03d}_support_completed_r4/manifest.json']
+        else:
+            candidates=([base/'CPU_pilot32_closed/manifest.json'] if shard==0 else sorted((base/'exports').glob(f'shard{shard:03d}_job*/manifest.json')))
         found=[]
         if len(closed_refs)==len(plan['jobs']):
             for path in candidates:
@@ -74,7 +86,7 @@ def main():
         'training_executed':False,'training_admission':True,'source_split':'train',
         'PRO':False,'D2':False,'confirmation':False,'repeats_each':1,
         'one_trial_is_not_three_trial_acceptability_evidence':True,
-        'scope':'new actually reached contexts; merge published packets once, not additional trials; no old-binding backfill',
+        'scope':'new actually reached contexts; merge published packets once, prefer explicit private-support completion packet over its original, never count as extra trials; no old-binding backfill',
         'incomplete':bool(pending) or len(packets)!=62}
     (a.output/'manifest.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps({k:v for k,v in summary.items() if k!='packets'}))
