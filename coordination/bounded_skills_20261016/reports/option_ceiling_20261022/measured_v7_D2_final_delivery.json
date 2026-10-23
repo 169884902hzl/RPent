@@ -1,0 +1,262 @@
+{
+  "at": "2026-10-23T11:01:06.788561+08:00",
+  "execution_git_tree": "2db200134ea6689e36a66e8aee6f45daa8270b4e",
+  "archive_sha256": "7a08e6f42ad4b452d68f3b463cde883c2e0aeb20fe8ba9340ce2791d511ebcb2",
+  "schema_sha256": "546299a6f4d956ddc6a249edc5e64bb532a135e1199e345b222c687611b72182",
+  "contract_sha256": "a0fef7407efb67b4f9cde557cfa09ffcf3964eaaf9eaabad9f671d4e5b900f0b",
+  "training": false,
+  "evaluation_only": true,
+  "physical_jobs_complete": true,
+  "D2_recovery1": {
+    "closed": 40,
+    "success": 24,
+    "wilson95": [
+      0.44595893660346186,
+      0.7365167431570808
+    ],
+    "missing": [],
+    "paired_counts_A1_then_B2": {
+      "FT": 6,
+      "TT": 18,
+      "FF": 6,
+      "TF": 10
+    },
+    "improvements": [
+      "libero_spatial_swap_t0_s40",
+      "libero_object_task_t2_s40",
+      "libero_object_swap_t1_s40",
+      "libero_object_task_t4_s40",
+      "libero_10_swap_t1_s40",
+      "libero_10_task_t4_s40"
+    ],
+    "regressions": [
+      "libero_goal_swap_t4_s40",
+      "libero_10_swap_t2_s40",
+      "libero_spatial_swap_t4_s40",
+      "libero_object_swap_t4_s40",
+      "libero_goal_task_t0_s40",
+      "libero_10_task_t2_s40",
+      "libero_spatial_task_t0_s40",
+      "libero_spatial_task_t4_s40",
+      "libero_object_task_t3_s40",
+      "libero_goal_task_t2_s40"
+    ],
+    "sampled_bound_known": 38,
+    "sampled_bound_success": 30,
+    "sampled_bound_wilson95": [
+      0.636542205246726,
+      0.8892520815700411
+    ],
+    "unknown_private_rule_cases": [
+      "libero_10_swap_t3_s40",
+      "libero_10_task_t3_s40"
+    ],
+    "zero_replay_step_cases": [],
+    "sources": [
+      "2db200134ea6689e36a66e8aee6f45daa8270b4e"
+    ],
+    "by_suite": {
+      "libero_10_swap": {
+        "n": 5,
+        "success": 3,
+        "wilson95": [
+          0.2307242812760128,
+          0.882379225767352
+        ],
+        "A1_M_success_on_same_closed_cases": 3
+      },
+      "libero_10_task": {
+        "n": 5,
+        "success": 3,
+        "wilson95": [
+          0.2307242812760128,
+          0.882379225767352
+        ],
+        "A1_M_success_on_same_closed_cases": 3
+      },
+      "libero_goal_swap": {
+        "n": 5,
+        "success": 2,
+        "wilson95": [
+          0.11762077423264783,
+          0.769275718723987
+        ],
+        "A1_M_success_on_same_closed_cases": 3
+      },
+      "libero_goal_task": {
+        "n": 5,
+        "success": 2,
+        "wilson95": [
+          0.11762077423264783,
+          0.769275718723987
+        ],
+        "A1_M_success_on_same_closed_cases": 4
+      },
+      "libero_object_swap": {
+        "n": 5,
+        "success": 4,
+        "wilson95": [
+          0.37553462976252533,
+          0.9637758913675698
+        ],
+        "A1_M_success_on_same_closed_cases": 4
+      },
+      "libero_object_task": {
+        "n": 5,
+        "success": 4,
+        "wilson95": [
+          0.37553462976252533,
+          0.9637758913675698
+        ],
+        "A1_M_success_on_same_closed_cases": 3
+      },
+      "libero_spatial_swap": {
+        "n": 5,
+        "success": 4,
+        "wilson95": [
+          0.37553462976252533,
+          0.9637758913675698
+        ],
+        "A1_M_success_on_same_closed_cases": 4
+      },
+      "libero_spatial_task": {
+        "n": 5,
+        "success": 2,
+        "wilson95": [
+          0.11762077423264783,
+          0.769275718723987
+        ],
+        "A1_M_success_on_same_closed_cases": 4
+      }
+    }
+  },
+  "N1_same_complete_initial_30_before_after": [
+    24,
+    24
+  ],
+  "N2_legacy132_before_after": [
+    62,
+    62
+  ],
+  "original90_own_layout65_legacy1165_before_after": [
+    460,
+    461
+  ],
+  "model_D2_legacy_schema6": [
+    10,
+    40
+  ],
+  "checks": [
+    "runtime CPU809 and separate RGBD4 previously passed on execution snapshot",
+    "fixed10 physical and policy startup previously passed",
+    "frozen CPU close completed without rescoring",
+    "all mirrored byte hashes matched",
+    "report renderer executed successfully",
+    "72 subtasks/936 branches and 40 unique cases reconciled",
+    "all local links in entry and D2 report exist",
+    "CPU receipt extraction verified referenced input hashes; 130 branches and 7 replay gaps"
+  ],
+  "files": [
+    {
+      "name": "measured_v7_D2_paired_cases.jsonl",
+      "sha256": "756af0e6cff10d5dcdb9b6ae99646f4c0e53e11def2483bb257df8b6f3ca1d4d",
+      "bytes": 369330
+    },
+    {
+      "name": "measured_v7_D2_manifest.json",
+      "sha256": "4bec38c03950828f821c1adeaa7aa168be79cb9594109e57244db73739abd5d0",
+      "bytes": 4044
+    },
+    {
+      "name": "measured_v7_D2_comparison.jsonl",
+      "sha256": "8c433c0b28b7ddc5f67bb97f414a0f8ed03c33be2327513172148e62cece471c",
+      "bytes": 374745
+    },
+    {
+      "name": "measured_v7_D2_comparison.md",
+      "sha256": "6222d6795fbc13540730212ea6e7138a16795aa76da722e671ed8deae00ab7b5",
+      "bytes": 2680
+    },
+    {
+      "name": "measured_v7_D2_both_failed_subtasks.jsonl",
+      "sha256": "b767cc0dfa71eaa6f59d8e4f26243624e5733ceda93548c489e6a9d4ab342c39",
+      "bytes": 157608
+    },
+    {
+      "name": "measured_v7_D2_unknown_subtasks.jsonl",
+      "sha256": "92140a03ed3fe64ae1a845bd27ff9c1f8a8d43561b5d0fe982757a418f755b3e",
+      "bytes": 14181
+    },
+    {
+      "name": "measured_v7_D2_unsupported_cases.jsonl",
+      "sha256": "3a1212e493d13f533b9d4da7e1d5ccff6c488d8af43b803e8394fb29dc2c0cce",
+      "bytes": 1060
+    },
+    {
+      "name": "measured_v7_D2_subtasks.jsonl",
+      "sha256": "5da9b79ad5d6aa5c33e0f9e1f3c0f38f044e49c4a01031b5bdfade61bf56b788",
+      "bytes": 1069645
+    },
+    {
+      "name": "measured_v7_D2_delivery_summary.json",
+      "sha256": "35a05d3688d36d5a9cd41e14ecffab7f33ddf26997e1b1c00b52b50632ccea33",
+      "bytes": 66881
+    },
+    {
+      "name": "measured_v7_D2_registration.json",
+      "sha256": "41cb4b196551f8ed586331497d0670f38188b650b9b1fdbc8467c69e158ca0f3",
+      "bytes": 52955
+    },
+    {
+      "name": "measured_v7_D2_mirror_manifest.json",
+      "sha256": "7b8d0a132479938ef6a04ef075c475eb62de8e12c98ca958669ae8d6cc0c2df3",
+      "bytes": 4132
+    },
+    {
+      "name": "measured_v7_D2_jobs_closed.json",
+      "sha256": "9c3f8a3cc2defe43cac9fe3072cde54c5d5f2af3dfdc0f9a4c93f384c8a4e3f2",
+      "bytes": 947
+    },
+    {
+      "name": "measured_v7_D2_rates_expanded.json",
+      "sha256": "303fab8906fa4d9411401d9640b2af1385441e39e193d58c49bfe3b19313fede",
+      "bytes": 92235
+    },
+    {
+      "name": "measured_v7_D2_receipt_audit_manifest.json",
+      "sha256": "fce5339b862fb4c3568591ab772b76e76287ae8c7d163874e8873504a45e78a5",
+      "bytes": 432
+    },
+    {
+      "name": "measured_v7_D2_receipt_audit_both_failed_receipts.jsonl",
+      "sha256": "664630bdedff02e0a26f8ef9b3fc397ec349d149312bbf525904214c84576d18",
+      "bytes": 266098
+    },
+    {
+      "name": "measured_v7_D2_receipt_audit_replay_gap_receipts.jsonl",
+      "sha256": "802c512594694730c21f9e455d9923c24f4d205b06a796b169f91b7c57ab979f",
+      "bytes": 18561
+    },
+    {
+      "name": "MEASURED_V7_D2_40.md",
+      "sha256": "5357079fb291748c1ca51a8ea95d3aa29dfb1ffafd82389b5e88684b1cd4723d",
+      "bytes": 16465
+    },
+    {
+      "name": "OPTION_CEILING_STATUS.md",
+      "sha256": "980fd4d03c86b6bc11028b346cb6fc30ecacc869fa17411edc9fdddd9b65a0cc",
+      "bytes": 5958
+    }
+  ],
+  "notes": [
+    "all historical failures retained",
+    "D2/PRO/confirmation permanently excluded from training",
+    "new and old complete initial physics not matched; not a causal option-effect estimate",
+    "sampled envelope is conditional diagnostic; not a mathematical global upper bound",
+    "runtime Git tree and delivery Git commit are separate identities"
+  ],
+  "derived_producers": {
+    "render_measured_v7_D2_report_20261023.py": "9aeaa0b4f95ac419456c1b80982430c6d332ce5092aa1b57f445c234c8d45a43",
+    "audit_measured_v7_D2_receipts_CPU_20261023.py": "956198e68c96ac2334ca76d2b737cf32ce14f625cdff0db3392957078c82a5f1"
+  }
+}

@@ -166,3 +166,15 @@
 - D2 CPU收尾器已py_compile、在旧40局做只读格式验证：68子任务、12双失败、2未覆盖规则，旧分数不改；包括每套件/子任务/变体分支与Wilson、实际选中调用参数和推理是否发生、所有private/local/native字段、双方失败明细/unsupported和40逐局与前版23/40、28/38+2unknown、模型10/40、A1M28/40同表。actual新40尚未闭合，不声称新分数。当前producer SHA b5eb470dd08d48b77be4534650ae9d692d4d646ce45f95a2e106e6e37196cfdf。
 - 资源watcher新session44047，ledger /tmp/rd_v7_registered_slots_D2_11604_11607.jsonl，只管11604–7借卡；旧92537在GPU结束后自然退出。C2无GPU需求，当前四卡满，C3 CPU64+CPU分类2≤80、内存480+24≤600。p3其它项目不动。r2两个drain（55545、99494）均完成并退出，所有停止派新的父dispatcher已随各Slurm分配取消，不遗留T进程；旧held未release。
 - C1/C2已收到REG155_CLOSED_AND_D2_STARTED alert及共享登记。代码当前push4e16；新close_D2、classify155、link_tail及这些产物/进度待逐文件提交。接下来趁D2跑做本地证据报告/逐文件提交push，修任何新开发程序错误后继续；新40全采样+独立回放闭合和CPU11608通过后最终逐局/分套件/子任务报告、交C1核验再结束。不可因为已上机就交回。
+
+## 2026-10-23T10:25+08:00 D2最终收尾继续
+- GPU11604/11605均COMPLETED0:0；11606/11607继续，最新38/40闭合。剩余libero_10_swap_t4_s40已进入最后一段独立回放，libero_10_task_t4_s40在最后子任务self分支持续更新；没有新程序异常，未改预算或重跑闭合物理回合。CPU11608仍依赖四GPU成功，冻结producer SHA b5eb470dd08d48b77be4534650ae9d692d4d646ce45f95a2e106e6e37196cfdf不变。
+- 报告渲染器render_measured_v7_D2_report_20261023.py已编译；仅读取最终CPU原件，不执行/重判。与A1三重复Wilson说明、原版106/110描述性Wilson一起逐文件提交并push到b3b0510f。没有暂存无关dirty。
+- 继续等40全部采样+独立回放和11608闭合，镜像CPU_closed40十份原件为measured_v7_D2_*；运行renderer生成MEASURED_V7_D2_40.md、更新OPTION_CEILING_STATUS.md，交C1/C2核验，再逐文件commit/push。不能提前交回。本轮模型服务已停，不训练；新D2仍2db执行树/schema7，旧模型仍schema6。
+
+## 2026-10-23T10:59+08:00 本轮全部闭合，最终交付
+- 11604–11607四GPU及11608CPU全COMPLETED0:0，当前登记队列为空，资源监控44047已exit0。本次D2恢复1：40/40均非零独立回放，native24/40 Wilson[.445959,.736517]，实测采样30/38 Wilson[.636542,.889252]，另libero_10_task_t3_s40/libero_10_swap_t3_s40规则未覆盖；未重跑0/2档或闭合物理回合。旧23/40、28/38+2unknown及模型10/40/A1M28/40全部保留。
+- 新旧回放同任务编号2好1坏；完整初态38不同2缺失，不能作纯选项收益归因；新增measured_anchor/额外采样/私有目标续接同时变化。72覆盖子任务936分支（不含unsupported fallback），双方全失败10子任务，部分私有判据未知1；7局采样成功回放失败，1局采样False回放成功，采样包络不是数学全局上界。
+- frozen CPU_closed40九份原件及master登记已逐字节镜像measured_v7_D2_*并验SHA。node02单CPU只读补提取130个双方失败分支、7局回放内部回执，全部输入choices/summary的SHA核对，输出CPU_receipt_audit_r1及本地receipt_audit三文件，不执行仿真/不重判；renderer实际运行通过，三判据分类Wilson、每子任务x/3、内部停止原因、实际π调用统计齐全。
+- 最终入口reports/option_ceiling_20261022/OPTION_CEILING_STATUS.md及MEASURED_V7_D2_40.md。N1 24→24、N2旧132次62→62、155旧1165次460→461(1好0坏)；N1循环31.41s/碗199.18s，速度目标未达；公开抓取判据尚有不一致，不用D2调阈值补分。源tree2db/archive7a08/schema7/contract与登记不变；旧schema6模型服务已停，本轮无训练。
+- 收尾：生成最终交付校验manifest、交C1/C2及共享登记，按文件逐个add提交push harness-v5（不merge/force），保留无关dirty/旧held/其他项目作业。
