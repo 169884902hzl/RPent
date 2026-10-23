@@ -87,10 +87,12 @@ def main():
             endpoint_evidence, _ = read_ref(endpoints[key]['source_result'])
             assert endpoint_evidence['retained_endpoint_matches']
             replay = data['full_replay']
+            assert replay, 'closed continuation must include an actual native replay'
             recovered[key] = {
                 'success': data['actual_full_replay_success'],
-                'sampled_success': data['sampled_envelope_native_success'],
+                'sampled_success': data.get('sampled_envelope_native_success'),
                 'status': data['status'], 'raw': raw,
+                'unsupported': data.get('unsupported', []),
                 'first_attempt': {k: v for k, v in first.items()
                     if k in ('stop_reason', 'final_physics_sha256', 'initial_physics_sha256',
                         'actual_sim_steps', 'vla_inference_calls', 'native_success', 'sampling_seed', 'budget')},
@@ -100,7 +102,8 @@ def main():
                 'replay_vla_inference_calls': sum(t['vla_inference_calls'] for t in replay),
                 'independent_replay_wall_s': data['independent_replay_wall_s'],
                 'replay_stop_reasons': [t['reason'] for t in replay],
-                'replay_initial_physics_sha256': replay[0]['initial_physics_sha256'] if replay else None,
+                'replay_initial_physics_sha256': replay[0].get('initial_physics_sha256'),
+                'episode_initial_checkpoint': ref(Path(raw['path']).parent/'episode/private_initial.pkl'),
                 'path_selection': data.get('path_selection'),
                 'source_commit': data['source_commit'],
                 'endpoint_reconstruction_evidence': endpoints[key]['source_result'],

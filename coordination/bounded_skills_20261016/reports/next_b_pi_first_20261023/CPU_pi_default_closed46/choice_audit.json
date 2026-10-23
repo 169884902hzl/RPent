@@ -1,0 +1,807 @@
+{
+  "selected_skills": {
+    "move_to": 38,
+    "descend": 12,
+    "set_gripper": 9,
+    "call_vla": 106,
+    "release": 1,
+    "observe": 27,
+    "finish": 2,
+    "lift": 5
+  },
+  "first_decision_selected_skills": {
+    "move_to": 3,
+    "descend": 3,
+    "set_gripper": 3,
+    "call_vla": 39,
+    "lift": 1
+  },
+  "vla_parameters": {
+    "{\"anchor_id\": \"e32\", \"mode\": \"pick\", \"preparation\": \"initial_pose\"}": 1,
+    "{\"mode\": \"task\", \"preparation\": \"in_place\", \"prompt_style\": \"full_task\"}": 20,
+    "{\"anchor_id\": \"e113\", \"mode\": \"pick\", \"preparation\": \"measured_anchor\"}": 2,
+    "{\"anchor_id\": \"e113\", \"mode\": \"pick\", \"preparation\": \"in_place\"}": 3,
+    "{\"anchor_id\": \"e113\", \"mode\": \"pick\", \"preparation\": \"initial_pose\", \"prompt_style\": \"original_clause\", \"seed_variant\": 1}": 1,
+    "{\"anchor_id\": \"e75\", \"mode\": \"pick\", \"preparation\": \"in_place\"}": 16,
+    "{\"anchor_id\": \"e75\", \"mode\": \"in\", \"preparation\": \"in_place\", \"target_id\": \"e118\"}": 2,
+    "{\"anchor_id\": \"e5\", \"mode\": \"pick\", \"preparation\": \"in_place\"}": 2,
+    "{\"anchor_id\": \"e118\", \"mode\": \"pick\", \"preparation\": \"initial_pose\"}": 3,
+    "{\"anchor_id\": \"e118\", \"mode\": \"pick\", \"preparation\": \"in_place\", \"prompt_style\": \"original_clause\", \"seed_variant\": 1}": 1,
+    "{\"anchor_id\": \"e32\", \"mode\": \"open\", \"preparation\": \"measured_anchor\"}": 2,
+    "{\"anchor_id\": \"e5\", \"mode\": \"open\", \"preparation\": \"initial_pose\"}": 2,
+    "{\"anchor_id\": \"e75\", \"mode\": \"pick\", \"preparation\": \"initial_pose\"}": 8,
+    "{\"anchor_id\": \"e98\", \"mode\": \"open\", \"preparation\": \"initial_pose\"}": 1,
+    "{\"anchor_id\": \"e98\", \"mode\": \"open\", \"preparation\": \"in_place\"}": 1,
+    "{\"anchor_id\": \"e98\", \"mode\": \"open\", \"preparation\": \"initial_pose\", \"prompt_style\": \"original_clause\", \"seed_variant\": 1}": 1,
+    "{\"anchor_id\": \"e113\", \"mode\": \"open\", \"preparation\": \"in_place\"}": 1,
+    "{\"anchor_id\": \"e75\", \"mode\": \"pick\", \"preparation\": \"in_place\", \"prompt_style\": \"original_clause\", \"seed_variant\": 1}": 1,
+    "{\"anchor_id\": \"e5\", \"mode\": \"pick\", \"preparation\": \"initial_pose\"}": 1,
+    "{\"anchor_id\": \"e68\", \"mode\": \"pick\", \"preparation\": \"initial_pose\"}": 1,
+    "{\"anchor_id\": \"e68\", \"mode\": \"pick\", \"preparation\": \"in_place\"}": 1,
+    "{\"anchor_id\": \"e68\", \"mode\": \"pick\", \"preparation\": \"in_place\", \"prompt_style\": \"full_task\", \"seed_variant\": 1}": 4,
+    "{\"anchor_id\": \"e68\", \"mode\": \"pick\", \"preparation\": \"in_place\", \"prompt_style\": \"a1_description\", \"seed_variant\": 1}": 1,
+    "{\"anchor_id\": \"e5\", \"mode\": \"open\", \"preparation\": \"measured_anchor\"}": 1,
+    "{\"anchor_id\": \"e5\", \"mode\": \"open\", \"preparation\": \"in_place\", \"prompt_style\": \"full_task\", \"seed_variant\": 1}": 1,
+    "{\"anchor_id\": \"e75\", \"mode\": \"on\", \"preparation\": \"initial_pose\", \"target_id\": \"e118\"}": 3,
+    "{\"anchor_id\": \"e118\", \"mode\": \"open\", \"preparation\": \"in_place\"}": 1,
+    "{\"anchor_id\": \"e68\", \"mode\": \"close\", \"preparation\": \"in_place\"}": 1,
+    "{\"anchor_id\": \"e68\", \"mode\": \"close\", \"preparation\": \"initial_pose\"}": 1,
+    "{\"anchor_id\": \"e75\", \"mode\": \"pick\", \"preparation\": \"in_place\", \"prompt_style\": \"full_task\", \"seed_variant\": 1}": 1,
+    "{\"anchor_id\": \"e118\", \"mode\": \"turn_on\", \"preparation\": \"initial_pose\"}": 6,
+    "{\"anchor_id\": \"e118\", \"mode\": \"turn_on\", \"preparation\": \"measured_anchor\"}": 1,
+    "{\"anchor_id\": \"e118\", \"mode\": \"turn_on\", \"preparation\": \"in_place\"}": 1,
+    "{\"anchor_id\": \"e75\", \"mode\": \"pick\", \"preparation\": \"initial_pose\", \"prompt_style\": \"a1_description\", \"seed_variant\": 1}": 1,
+    "{\"mode\": \"task\", \"preparation\": \"in_place\", \"prompt_style\": \"full_task\", \"seed_variant\": 1}": 1,
+    "{\"anchor_id\": \"e118\", \"mode\": \"pick\", \"preparation\": \"in_place\"}": 5,
+    "{\"anchor_id\": \"e75\", \"mode\": \"on\", \"preparation\": \"measured_anchor\", \"target_id\": \"e118\"}": 1,
+    "{\"anchor_id\": \"e75\", \"mode\": \"on\", \"preparation\": \"initial_pose\", \"prompt_style\": \"full_task\", \"seed_variant\": 1, \"target_id\": \"e118\"}": 1,
+    "{\"anchor_id\": \"e113\", \"mode\": \"pick\", \"preparation\": \"initial_pose\", \"prompt_style\": \"a1_description\", \"seed_variant\": 1}": 1,
+    "{\"mode\": \"task\", \"preparation\": \"initial_pose\", \"prompt_style\": \"full_task\"}": 1,
+    "{\"anchor_id\": \"e75\", \"mode\": \"turn_on\", \"preparation\": \"initial_pose\"}": 1,
+    "{\"anchor_id\": \"e75\", \"mode\": \"turn_off\", \"preparation\": \"in_place\"}": 1
+  },
+  "requests_human_false": 140,
+  "requests_other_human": 0,
+  "cases": [
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case000",
+      "first_selected": [
+        {
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e32"
+          }
+        },
+        {
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e113"
+          }
+        },
+        {
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "close"
+          }
+        },
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case001",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e113",
+            "mode": "pick",
+            "preparation": "measured_anchor"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case002",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e113",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case003",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case004",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e5",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case005",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case006",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case007",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case008",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "open",
+            "preparation": "measured_anchor"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case009",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case010",
+      "first_selected": [
+        {
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e98"
+          }
+        },
+        {
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e118"
+          }
+        },
+        {
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "close"
+          }
+        },
+        {
+          "skill": "lift",
+          "parameters": {
+            "anchor_id": "e98"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case011",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e113",
+            "mode": "open",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case012",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case013",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case000",
+      "first_selected": [
+        {
+          "skill": "move_to",
+          "parameters": {
+            "anchor_id": "e5"
+          }
+        },
+        {
+          "skill": "descend",
+          "parameters": {
+            "anchor_id": "e5"
+          }
+        },
+        {
+          "skill": "set_gripper",
+          "parameters": {
+            "mode": "close"
+          }
+        },
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case001",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case002",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case003",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e68",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case004",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e32",
+            "mode": "open",
+            "preparation": "measured_anchor"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case005",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case006",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case007",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "open",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case008",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case009",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case010",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "turn_on",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case011",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case012",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case000",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case001",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case002",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case003",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case004",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e113",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case005",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case006",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "turn_on",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case007",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "mode": "task",
+            "prompt_style": "full_task",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case008",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case009",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "initial_pose"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case010",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case011",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e118",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    },
+    {
+      "case_dir": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case012",
+      "first_selected": [
+        {
+          "skill": "call_vla",
+          "parameters": {
+            "anchor_id": "e75",
+            "mode": "pick",
+            "preparation": "in_place"
+          }
+        }
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case000/episode/choices.jsonl",
+      "sha256": "ad71a4fae8d06c93867fad33768e9fecb5e99a223763618fdbe6444a12b57f44"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case001/episode/choices.jsonl",
+      "sha256": "fb42dd4573bb88bd6cd78820de18ec820f8e7d101d6f688d75674947c5a91aa1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case002/episode/choices.jsonl",
+      "sha256": "66e5059121e81e9dfedda81c9c2daf8e30653c67561139cb8d8418f1448527cd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case003/episode/choices.jsonl",
+      "sha256": "24981d6c5731bb0d30afde912f84c7ce8923d1f7756b1a036fa84912d1518ab2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case004/episode/choices.jsonl",
+      "sha256": "74b41d809ca9d82372bfef870364285c134a96da5f8c69b578ce57cbf245266c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case005/episode/choices.jsonl",
+      "sha256": "0667e7cb37b6dbfb415afbce06e1dde97a62ac4763ad74738bf63ba92bfb0cab"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case006/episode/choices.jsonl",
+      "sha256": "f5c1e3d6301948f309247d52061d0f702263543ed41ff9532e18b065fb86cc18"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case007/episode/choices.jsonl",
+      "sha256": "f6fdcb757b0274e4fdc0dc967bca1b75e3d91a7b1a1fb0ea82a27f212137622c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case008/episode/choices.jsonl",
+      "sha256": "36d736086abaf8e497294bafba6d662c9dcfbb22e3dfebaae61ba6d9374271e6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case009/episode/choices.jsonl",
+      "sha256": "d1e2bfcf264389c0ee79afd0d2655baf72e7e362e993ea4f5718736c9aa46d33"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case010/episode/choices.jsonl",
+      "sha256": "4cd179eb7e05b48e35fea5c2816c58bdc9042947bd629d157295651333c7a19b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case011/episode/choices.jsonl",
+      "sha256": "b079c9f425ea0dbc31a784ebd1656c5e078b9e738c43bcb39699d957010d5d63"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case012/episode/choices.jsonl",
+      "sha256": "1a4bd510eca11883e6d012d3f8843c7d26ad57dba959aba311014acfca057a24"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_0/case013/episode/choices.jsonl",
+      "sha256": "247719940b71e7a1f2fd4eee761ad0db5ab0a1b247f92266f3cdfd107b415a64"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case000/episode/choices.jsonl",
+      "sha256": "13768f628841f7829cc5b4382ca6ef2aa3d6f1e025fb75892fd4ba900f045a35"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case001/episode/choices.jsonl",
+      "sha256": "5f30acd2af48a4cad2db4bfec2107da11f1d7e17a3d441c63ea3f94ac7a27c55"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case002/episode/choices.jsonl",
+      "sha256": "acd09eb7d239dd5247eb3778dd352874f867cc5cef9a85afcd3600359bce8705"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case003/episode/choices.jsonl",
+      "sha256": "14d674a4586aada8b78ecd4fc4898e8678a7c453623fab1fa2b2ef96a2374785"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case004/episode/choices.jsonl",
+      "sha256": "596f1e8d64821ffb5f0aef7cb9f2a887ce313bd95c252e2edf5eaf88ad59c1f6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case005/episode/choices.jsonl",
+      "sha256": "dddde9ac99df34dbb2c86b09ddf866008c54facbc9fe4eb9fd22764ffbb5043c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case006/episode/choices.jsonl",
+      "sha256": "7be3b7114a376b8d89e10a5410e4b16cf89e2bff61e541b96df364ec03bbcbe3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case007/episode/choices.jsonl",
+      "sha256": "ac142018cb5a3808c5ae52c0abd887e6093977f27d0f39240cee8d1f8a72cdf4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case008/episode/choices.jsonl",
+      "sha256": "26f103bfa17ebbf8a4a67201abada8a2c395816f65a57658d2d25e684819db59"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case009/episode/choices.jsonl",
+      "sha256": "44cbc8e89fa60d63c0e0d1af766512da0b27d12c2c0073e80ffb5a091417b99c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case010/episode/choices.jsonl",
+      "sha256": "088fc5fcdd88994221230fe67c58743d9a7cea065ed1d104352e38ffe086b604"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case011/episode/choices.jsonl",
+      "sha256": "fce4a37d304d4fe220c0fc24e63bdf0e7454c4199a8de320655984314e91d7d5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_1/case012/episode/choices.jsonl",
+      "sha256": "e39d0b5611e42431fb4bc9330ff1cd018e2b2eb7cbf82daefdbe22728560616a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case000/episode/choices.jsonl",
+      "sha256": "8789a90ca78a3e30f29e81c7bceef4ebb136ba2bc82f22fbceeadf051fa3c349"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case001/episode/choices.jsonl",
+      "sha256": "c1335564ed11dc1bc443709039db73be444ded7d50d70f038f40d11c944a8685"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case002/episode/choices.jsonl",
+      "sha256": "102ac35d353edd347f307381d2f342ff69e48be10a0259bf0de1b997e6b05037"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case003/episode/choices.jsonl",
+      "sha256": "a502a72b148fb8a375f16cd7a6f349ea81464dc591d2c7b9d51b404bdf4d388f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case004/episode/choices.jsonl",
+      "sha256": "1f8ae49b7787612b7ed1de1711efd9a6c1f85e943c6dd56d05d4f80006b009e3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case005/episode/choices.jsonl",
+      "sha256": "48df831d5e71e69f7d6cc2ec9af5b3144467eb3bcfce0248a687e891c6ae6a63"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case006/episode/choices.jsonl",
+      "sha256": "6da7f39deaeb94f72b3d7fe1534c8f905639fa901cf9166294e0678464de58b0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case007/episode/choices.jsonl",
+      "sha256": "5ca55207ba20768363a594d19e217a996569c20cfde9bb38c7ad06162ba237f1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case008/episode/choices.jsonl",
+      "sha256": "e147e92dc258a633c5e845b9b28631506612d475dd1b350661e832ec7e72d8ab"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case009/episode/choices.jsonl",
+      "sha256": "4c162bb6ee4cb13cddb02a63393ae1fab266165165f10164f2a4c155abdb256b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case010/episode/choices.jsonl",
+      "sha256": "6d586768990d1d64372f8b2f81b6371ec3a717a5d57179a3d4591cb718da5d44"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case011/episode/choices.jsonl",
+      "sha256": "6d1e43cba11c2b4bc3c856ccce46c023668cae600955c5502258f19cf1389dfa"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/next_b_pi_first_20261023/pi_default_d2_2/case012/episode/choices.jsonl",
+      "sha256": "8ac1ee075a99bc69aa18c8e00502b247792830dff2a80a21b7e1862e3a54d1aa"
+    }
+  ],
+  "scope": "selected requested actions; later chunk members may be truncated before execution",
+  "first_action_types": {
+    "move_to": 3,
+    "subtask_vla": 32,
+    "whole_task": 5
+  }
+}
