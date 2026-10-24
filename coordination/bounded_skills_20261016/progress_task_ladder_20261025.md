@@ -1,16 +1,16 @@
-## 当前接续点：检查点序列化修正，准备第三次同初态试点
+## 当前接续点：403CPU通过，第三次同初态共享试点已启动
 
-本轮未完成，队列未清，不交回。
+本轮未完成，队列未清，不交回。主树提交188f7eed已推user-fork/harness-v5；物理快照是ceac8e1e，不把整个主树当物理源。共享step12318.45于22:23:40UTC开跑，原A边车ready；另卡12385_1已开，当前仍用18065。
 - 第二次共享step12318.36已于21:56:47UTC自行退出1；没有取消12318或其他项目作业。原件保留RUN/shared12318_pilot_r2和panels5_blacklist_r2，不混修后分母。
 - 根因：真实模型失败后采集完整状态，pickle把success_feedback的enable局部lambda一起保存，触发AttributeError。现runtime仅存FeedbackConfig/read计数，恢复时绑定当前facade；离线annotation保留已经公开的feedback/episode_policy，不带live callback。
 - 保存→pickle→新宿主恢复的完整CPU链已通过；能验证native/subgoal读新环境且原宿主变化不影响新分叉。此前两项复现先失败后通过。扩展面板发现旧储物split测试仍断言已退役unsupported，在修前44fa也失败；仅更新测试以核对当前已登记拆分，未改运行规则。
 - 新隔离快照ceac8e1e76dc32b66f51dfe2989829f1e18e15ad，从44fa增量；remote ROOT/source_feedback_checkpoint_ceac8e1e_20261025。control/contract/schema不变，主树额外抓取修改未混入。
-- node02 CPU12400与本地扩展面板均398通过/4历史迁移fixture失败；现仅修测试显式绑定原schema7并增加现代来源必须拒绝的断言，定向5通过，完整403项CPU12402运行。通过后再启动同5训练盒布局共享试点r3，4CPU/2独立进程；旧初态字节保留。
-- 已临时hold自己当前12385_1..8/40，修后CPU通过才release；旧held作业不动。DAgger2 indices9..37原历史源不受影响，继续排队；38/39/41不换源。
-- C2于21:55登记cleanE1/E2作业12399，等共享试点退出和最后停服ACK后接回原C2卡；该任务当前JobHeldUser，C3不release。
+- node02 CPU12400与本地扩展面板均398通过/4历史迁移fixture失败；现仅修测试显式绑定原schema7并增加现代来源必须拒绝的断言，定向5通过，完整403项CPU12402已通过192.47秒。现启动同5训练盒布局共享试点r3_final，4CPU/2独立进程；旧初态字节保留。
+- 自己当前12385_1..8/40的临时hold已在403CPU通过后由启动器释放；旧held作业不动。DAgger2 indices9..37原历史源不受影响，继续排队；38/39/41不换源。
+- C2现登记cleanE1/E2作业12401（替代12399），等共享试点退出和最后停服ACK后接回原C2卡；C3不改C2作业。
 - sidecar_pilot_verified.json和sidecar_switch_ACK.json都尚不存在。pilot物理+全部legal+存档参考一致后才能写第一个；step完全退出、资源日志落盘且旧18065客户已退出后才另写ACK，通知C2停12318，C3不取消它。
 - 活动数组12385总0–41%3（共享试点运行时降%2）；0已取消改共享试点，1–8开发、9–27首选577、28–37确定性对照300、38接触、39旧N1、40修后N1、41纯几何N1。对照不是模型首选；原source/state/request/prefix/outcome不改头。
-- 新开发/N1/D2目录和dispatcher待切到新源；PRO只40–44，D2仅40；最终种子0–4只有既存CPU构建，无策略运行。
+- 新开发panels5_feedback_checkpoint_r3、N1/D2对应_r3目录和dispatcher已切到新源。PRO5_sidecar_preparation已核200唯一世界/40–44种子/三线/统一预算和bash语法，未提交；pilot退出后若提交，原数组%2 + PRO%1共同<=3卡。D2仅40；最终种子0–4只有既存CPU构建，无策略运行。
 
 ## 停服标记已拆开，避免试点收尾时12318被提前结束
 
