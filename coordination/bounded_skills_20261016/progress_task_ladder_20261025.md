@@ -1,3 +1,30 @@
+## 23:12 UTC 接续：同卡切换完成，C2已接卡，新D2/PRO批已排
+
+本轮未完成。队列尚有开发/DAgger/N1/接触和D2/PRO分片，不交回。
+- 共享5个盒布局全部闭合：oracle5/5、原A5/5，每局两线完整初态SHA相同。边车72次真实选择的probability键集合全部等于源legal；冻结bowl/cup两个请求代码、选项和概率完全一致（max_abs_diff=0）。RUN/sidecar_pilot_verified.json。
+- 物理step12318.45在五世界子进程返回0后，通知脚本NFS共享锁用只写fd而报errno9。真实node02复现a失败/r通过，已改只读打开；只重跑通知+两请求GPU验证，无仿真世界重跑。原exit1保留，posthoc_recovery.json登记恢复。403CPU和三真实位置CPU回读均通过。
+- 23:03只读进程核查无任何C3评测/边车客户端，GPU上只剩C2原A和受保护进程。23:06最终switch_ACK写共享登记；C2于23:07:54自己停了12318，12401已RUNNING。C3没取消C2/保护作业。
+- 自己暂hold的12385_2..8已释放；为归还C2配额，曾给所有pending任务设置after:12401(start only)，C2开跑后已自动清除。旧held完全没动。
+- 活动旧数组12385改%2：2–8余7类开发、9–27首选577、28–37确定性对照300、38接触、39旧N1、40ceac新N1、41独立geometry N1。新12436=0–47%1：0–7固定完整初态D2模型复测40局，8–47 PRO40任务×40–44共200世界三线。合计<=3GPU/36CPU/360GB，node02 nice500；不和C2抢其一卡。active_queue.json及paired_D2_and_PRO_active_queue.json已登记。
+- 新PRO/D2 source=ceac8e1e，原A权重5825fe0f；原6holdout已闭合不重复。12436用12h任务上限，统一每线40决策/10000控制/7200秒，π104/520，D2只40、PRO只40–44。所有评测不进训练。
+- 当前两类看板：盒oracle5/5/model5/5，已升级到下一10次指标；碗oracle3/5/model1/5，技能/感知/执行修复队列。碗两失败oracle29/31决策、6481/4501步：5次IK不可达/5次扫掠拒绝，πblock_budget8/4等；不是只报盒子好成绩。C1三类/其余7类仍待GPU。
+- 完整同卡试点实际GPU峰45861MiB/49140，含旧原A参考+新本地A+π/SAM+2渲染；不是单模型生产峰。CPU峰3.787核、进程RSS求和峰30444793856字节（共享页可能重复）。C2已独立存档r4手册。
+- 主树已推86f5efe8：回调checkpoint修正188f、未提交PRO准备ccdf、C7分离采集63a5、NFS通知锁86f5。现PRO准备脚本新增配对D2+PRO合并限流，以及本文变更待提交；物理源仍ceac，不混主树额外改动。guided-mask cache dirty保持不动。
+- 本地活跃tail26342只监控COORD和已结束step日志；78233/36517驱动均已结束。最新只有报告/队列作业，无未收functions.exec cell。下一步收各面板/标签/每日N1；排队做有证据的CPU诊断，15分钟刷新资源。下一次23:27UTC。
+
+## 22:58 UTC 接续：共享试点4/5、准备收敛旧端口客户端
+
+- 本轮仍未完成，不因队列未清结束。最新主树提交63a55e00已推harness-v5；物理源保持ceac8e1e，不含报告脚本变化。
+- CPU12402完整403通过192.47秒；CPU12403回读3个真实失败位置成功：legal20/51/48、acceptable1/4/4、公开A与aggressive上下文完整、0GPU/0控制，证据RUN/CPU_live_feedback_history/summary.json。本地镜像reports/task_ladder_20261025/checkpoint_feedback_fix/live_roundtrip.json。
+- 共享step12318.45，驱动本地exec78233，tail会话26342。实际22:23:40启动，源ceac，4CPU/2进程。4/5盒布局已闭合且两线都成功，第5个模型仍跑；没有程序错误。要等全部5个及source legal+两冻结参考请求验证完成才有pilot marker。
+- 另卡12385_1（bowl，原18065）4/5世界已闭合，其余模型接近40决策；这些真实失败保留，不能当程序错误补跑。
+- 为避免源源不断新18065客户阻塞C2，22:56:35仅暂时hold自己新的pending12385_2..8；不取消运行世界，不碰任何旧held。RUN/sidecar_cutover_temporary_holds.json记录。pilot marker真+共享step退出后，只release这7项；新分片自动本地边车。DAgger577+300不受影响，可抢空卡。
+- C2原A12318保留到所有旧18065客户实际退出；然后另写sidecar_switch_ACK.json并在COORDINATION通知C2自己停12318。C3不取消C2作业。C2新12401（cleanE1/E2）after12318，保留其一卡配额，不release其held/不启动训练。
+- 资源22:52：node02两p3+原A共享卡+12385_1，C3实际2卡；自己的12385总throttle2，shared计入3上限，parent脚本结束会恢复3。下次资源复查约23:07UTC，保护作业未改，node01未提交。
+- PRO5_sidecar_preparation已核200世界、40–44、三线和统一40/10000/7200、π104/520，未提交。pilot结束后若提交，先把12385降%2，再PRO%1，合计<=3；C2一卡保留。脚本源ceac固定，不能无声换模型/源。
+- 报告脚本summarize_ladder_cycles新增collection inclusive和execution扣除采集独占；已在10个闭合线回合上运行核对。原四段execution包含采集，不能当纯执行/N1；部分盒模型4局采集inclusive中位11.096秒，execution14.989→扣后4.335秒，只是并行训练采集臂，不是N1。原件RUN/CPU_ladder_partial_cycles_with_collection。
+- 最后所有工具exec cell已收；活跃PTY仅78233、26342。PRO尚未启动；N1/接触/877仍pending，不能报新成绩。
+
 ## 当前接续点：403CPU通过，第三次同初态共享试点已启动
 
 本轮未完成，队列未清，不交回。主树提交188f7eed已推user-fork/harness-v5；物理快照是ceac8e1e，不把整个主树当物理源。共享step12318.45于22:23:40UTC开跑，原A边车ready；另卡12385_1已开，当前仍用18065。
