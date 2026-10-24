@@ -24,9 +24,9 @@
 
 代码发布：`12f61976`（黑名单）、`f449bc4b`（独立队列和边车接线）。物理源快照：`9612e31636706aef8e7eaab49528c35994002e89`。发布主树另有先前已提交的抓取改动，物理结果只归于上述快照；guided-mask cache 的无关 dirty 未暂存。
 
-远端原件根：`/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/task_ladder_20261025/`。开发活动目录为 `panels5_blacklist_v1`，CPU 重放为 `CPU_blacklist_replay46`，新 N1 为 `C0_N1_blacklist_v1`。`12380` 的数组任务 0–8 是开发五次面板，9–27 是训练切分 DAgger577，28–31 是接触和 N1；`%3` 合计最多 36 CPU、360 GB。全部只用 node02，nice=500。
+远端原件根：`/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/task_ladder_20261025/`。开发活动目录为 `panels5_blacklist_v1`，CPU 重放为 `CPU_blacklist_replay46`，新 N1 为 `C0_N1_blacklist_v1`。最新 `12385` 的数组任务 0–8 是开发五次面板，9–27 是训练切分模型首选577，28–37 是确定性对照300，38–41 是接触和 N1；`%3` 合计最多 36 CPU、360 GB。全部只用 node02，nice=500。
 
-边车采用 Codex2 已 ACK 的 legal8 包（`c2_next_e_20261024_1300/sidecar_legal8`；交接 SHA `69ae14f22488532f458b0aba3d536f5c3615698bd6d210bdbf439dae5e59867a`）。试点为 `12380_0`。完成五个模型臂后核对全部请求的源合法集，并对 Codex2 存档的两条请求核对选择和概率，写 `sidecar_switch_ACK.json`。此前其余模型分片继续用 12318，之后继承评测作业 GPU 启动本地选择器；确认已无仍用 18065 的分片后，再单独通知 Codex2 停服务。完整 GPU 显存峰值由首分片采样，当前未测。
+边车采用 Codex2 已 ACK 的 legal8 包（`c2_next_e_20261024_1300/sidecar_legal8`；交接 SHA `69ae14f22488532f458b0aba3d536f5c3615698bd6d210bdbf439dae5e59867a`）。试点为 `12385_0`。完成五个模型臂后核对全部请求的源合法集，并对 Codex2 存档的两条请求核对选择和概率，写 `sidecar_switch_ACK.json`。此前其余模型分片继续用 12318，之后继承评测作业 GPU 启动本地选择器；确认已无仍用 18065 的分片后，再单独通知 Codex2 停服务。完整 GPU 显存峰值由首分片采样，当前未测。
 
 schema9 SHA：`49633b98a14ce6283c2f4b76914ddece49d74072636573b67a4eea6e717179c8`。
 schema10 SHA：`9a33e50f8b92b4c91d343f609d725261e44e6e6851ab3e856e7fdfcd9cdb6ee5`。

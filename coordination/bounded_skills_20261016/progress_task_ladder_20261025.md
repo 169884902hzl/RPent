@@ -1,3 +1,12 @@
+## 最新队列补齐 DAgger2 的 300 对照（2026-10-24T20:55Z）
+
+活动数组为12385，0–41%3；不是12380（从未启动，已保留记录后替换）。
+- 0–8开发五次面板，9–27模型首选577，28–37确定性对照300，38–41接触/N1/E。各任务独立，无因果依赖；总计最多3GPU/36CPU/360GB，node02、nice500。
+- 首边车物理试点是12385_0，使用C2 legal8包。源码仍9612e316，未改变物理执行栈；没有新的物理结果。
+- 对照不是模型首选；两份查询SHA与C2登记完全相同，原source/state/request/prefix/outcome不重绑定；旧569不作为新数据重复采。
+- 对照CPU12383：2个真实历史源保存输入全部通过，300条登记、0控制步。原worker及producer与577首选的逐字节相同，导出额外保留deterministic_contrast/provenance/model_selected_id。
+- 活动登记：RUN/active_queue.json；新队列目录RUN/unlock_queue_dagger877；对照产物RUN/dagger2_contrasts_exact。物理采集未开始，C2服务12318保留。
+
 ## 10/24 13:00补充接续点（2026-10-24T20:25:03.367666+00:00）
 
 本轮未完成，GPU排队时继续独立CPU工作，不因等待交回。
