@@ -1,0 +1,1020 @@
+[
+  {
+    "case": "libero_object_task_t3_s40",
+    "instruction": "Pick the ketchup and place it in the basket",
+    "source_before": null,
+    "source_after": "e75",
+    "selected_description": "ketchup",
+    "reclassified": {
+      "e75": {
+        "old_class": "ketchup",
+        "class": "ketchup",
+        "scores": {
+          "bowl": 6.914138793945312e-05,
+          "plate": 0.000576019287109375,
+          "alphabet soup": 0.0299072265625,
+          "tomato sauce": 0.109375,
+          "salad dressing": 0.48828125,
+          "ketchup": 0.875,
+          "cream cheese": 0.01080322265625,
+          "barbecue sauce": 0.2294921875,
+          "butter": 0.0086669921875,
+          "milk": 0.03076171875,
+          "chocolate pudding": 0.0068359375,
+          "porcelain mug": 0.072265625,
+          "cabinet": 0.00139617919921875,
+          "drawer": 0.00014591217041015625,
+          "microwave": 2.0623207092285156e-05,
+          "ramekin": 0.015380859375,
+          "cookie box": 0.0007171630859375,
+          "moka pot": 0.015869140625,
+          "red coffee mug": 0.053955078125,
+          "white yellow mug": 0.01513671875,
+          "black book": 2.288818359375e-05,
+          "basket": 0.0002899169921875,
+          "rack": 0.0003070831298828125,
+          "caddy": 0.0029296875,
+          "frypan": 0.0002079010009765625,
+          "stove": 0.000270843505859375,
+          "wine bottle": 0.0081787109375,
+          "table": 0.0546875
+        },
+        "crop_sha256": "ca173d32f19670ce920813872d2e335bbee7ee351dad8d95e997a009fb33b269",
+        "capture_step": 0,
+        "crop_box_xyxy": [
+          532,
+          363,
+          614,
+          528
+        ],
+        "source": "public_instance_crop_fixed_vocabulary",
+        "private_truth_used": false
+      },
+      "e113": {
+        "old_class": "ketchup",
+        "class": "barbecue sauce",
+        "scores": {
+          "bowl": 0.00125885009765625,
+          "plate": 0.00140380859375,
+          "alphabet soup": 0.05322265625,
+          "tomato sauce": 0.037353515625,
+          "salad dressing": 0.251953125,
+          "ketchup": 0.6328125,
+          "cream cheese": 0.01251220703125,
+          "barbecue sauce": 0.953125,
+          "butter": 0.010986328125,
+          "milk": 0.01153564453125,
+          "chocolate pudding": 0.01300048828125,
+          "porcelain mug": 0.0306396484375,
+          "cabinet": 0.02001953125,
+          "drawer": 0.0035552978515625,
+          "microwave": 0.0003032684326171875,
+          "ramekin": 0.0167236328125,
+          "cookie box": 0.0054931640625,
+          "moka pot": 0.0037689208984375,
+          "red coffee mug": 0.03271484375,
+          "white yellow mug": 0.00531005859375,
+          "black book": 0.00112152099609375,
+          "basket": 0.00848388671875,
+          "rack": 0.0010986328125,
+          "caddy": 0.01300048828125,
+          "frypan": 0.00124359130859375,
+          "stove": 0.0031280517578125,
+          "wine bottle": 0.00933837890625,
+          "table": 0.091796875
+        },
+        "crop_sha256": "091e4f86d7ae811816a8182cefcb23cee993e967c13fcd2f96c0b442fa34f818",
+        "capture_step": 0,
+        "crop_box_xyxy": [
+          352,
+          502,
+          427,
+          645
+        ],
+        "source": "public_instance_crop_fixed_vocabulary",
+        "private_truth_used": false
+      }
+    },
+    "public_entities": [
+      {
+        "id": "e118",
+        "name": "basket",
+        "xyz": [
+          0.06047909893095493,
+          0.2709421366453171,
+          0.09384382143616676
+        ],
+        "lower": [
+          -0.07814267680048942,
+          0.18999129056930542,
+          0.008428235277533532
+        ],
+        "upper": [
+          0.06961636245250702,
+          0.35116107285022735,
+          0.1407194420695305
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e75",
+        "name": "ketchup",
+        "xyz": [
+          -0.13516219390126374,
+          0.052843643877750784,
+          0.07742089405655861
+        ],
+        "lower": [
+          -0.16347301460802555,
+          0.02861463184778889,
+          0.005195367988198996
+        ],
+        "upper": [
+          -0.12881445214152337,
+          0.08826797291636466,
+          0.14644791048392652
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e113",
+        "name": "barbecue sauce",
+        "xyz": [
+          0.0539079625159502,
+          -0.10356824472546577,
+          0.054425109177827835
+        ],
+        "lower": [
+          0.03734080038964748,
+          -0.12644866615533829,
+          0.003767799702472985
+        ],
+        "upper": [
+          0.05694301448762417,
+          -0.08226830884814262,
+          0.11196434497833252
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      }
+    ],
+    "public_relations": [
+      "rel e118 in_front_of e75",
+      "rel e118 above e113",
+      "rel e75 left_of e118",
+      "rel e75 above e113",
+      "rel e113 left_of e118",
+      "rel e113 below e118",
+      "rel e113 left_of e75",
+      "rel e113 in_front_of e75",
+      "rel e113 below e75"
+    ],
+    "initial_snapshot": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_2db20013/D2_recovery1_shard2/case004/episode/private_initial.pkl",
+      "sha256": "490bd5d8444d9adf1053374093c9ce34afc23f011fcdc686d7972016c7caf57c"
+    },
+    "classifier_scores_source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/crop_class_diagnostic/results.json",
+    "reason": "cross_class_false_positive_BBQ_as_ketchup; instances_not_merged",
+    "CPU_only": true,
+    "private_geometry_used_for_binding": false
+  },
+  {
+    "case": "libero_spatial_task_t0_s40",
+    "instruction": "Pick the akita black bowl not between the plate and the ramekin and place it on the plate",
+    "source_before": "e118",
+    "source_after": "e75",
+    "selected_description": "rightmost bowl",
+    "reclassified": {},
+    "public_entities": [
+      {
+        "id": "e118",
+        "name": "bowl",
+        "xyz": [
+          -0.05501864716366288,
+          0.20900656143203378,
+          0.9296930134296417
+        ],
+        "lower": [
+          -0.11142875346270474,
+          0.15884543710947038,
+          0.9066624183140017
+        ],
+        "upper": [
+          -0.010733037068344213,
+          0.256444171667099,
+          0.9502928357464927
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e75",
+        "name": "bowl",
+        "xyz": [
+          -0.20673979818820953,
+          0.3326515108346939,
+          0.9319553673267365
+        ],
+        "lower": [
+          -0.23606380671262742,
+          0.2777517646551132,
+          0.9070182383060456
+        ],
+        "upper": [
+          -0.13332805186510086,
+          0.37624110579490666,
+          0.9503894567489624
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e113",
+        "name": "plate",
+        "xyz": [
+          0.07096147706562822,
+          0.19095827851976668,
+          0.9099038924489703
+        ],
+        "lower": [
+          0.011192406760178563,
+          0.1257559122145176,
+          0.9066355407238007
+        ],
+        "upper": [
+          0.13460437655448915,
+          0.2493429510896666,
+          0.9183901023864746
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e68",
+        "name": "ramekin",
+        "xyz": [
+          -0.21624940633773804,
+          0.20671431720256805,
+          0.9249835014343262
+        ],
+        "lower": [
+          -0.24363169074058533,
+          0.16571328222751616,
+          0.9064083313941955
+        ],
+        "upper": [
+          -0.16158852577209473,
+          0.2446695727109909,
+          0.9425848913192749
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e5",
+        "name": "table",
+        "xyz": [
+          -0.12507937476038933,
+          0.07099344555495514,
+          0.9002892673015594
+        ],
+        "lower": [
+          -0.48546916246414185,
+          -0.3211292271812757,
+          0.8999837636947632
+        ],
+        "upper": [
+          0.253006378809611,
+          0.4709018713235856,
+          0.9004174470901489
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      }
+    ],
+    "public_relations": [
+      "rel e118 left_of e75",
+      "rel e118 in_front_of e75",
+      "rel e118 in_front_of e68",
+      "rel e118 in_front_of e5",
+      "rel e118 above e5",
+      "rel e118 on e5",
+      "rel e75 above e113",
+      "rel e75 above e5",
+      "rel e75 on e5",
+      "rel e113 in_front_of e118",
+      "rel e113 left_of e75",
+      "rel e113 in_front_of e75",
+      "rel e113 below e75",
+      "rel e113 in_front_of e68",
+      "rel e113 in_front_of e5",
+      "rel e113 on e5",
+      "rel e68 left_of e75",
+      "rel e68 above e5",
+      "rel e68 on e5",
+      "rel e5 left_of e118",
+      "rel e5 below e118",
+      "rel e5 left_of e75",
+      "rel e5 in_front_of e75",
+      "rel e5 below e75",
+      "rel e5 left_of e113",
+      "rel e5 on e113",
+      "rel e5 left_of e68",
+      "rel e5 in_front_of e68",
+      "rel e5 below e68"
+    ],
+    "initial_snapshot": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_2db20013/D2_recovery1_shard2/case002/episode/private_initial.pkl",
+      "sha256": "97c3ce26d332abfce5ae78a87fc2c53703f805b7cc3f0af36429affef3dd81d0"
+    },
+    "classifier_scores_source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/crop_class_diagnostic/results.json",
+    "reason": "negative_between_was_parsed_as_positive; two_bowl_masks_already_separate",
+    "CPU_only": true,
+    "private_geometry_used_for_binding": false
+  },
+  {
+    "case": "libero_spatial_task_t4_s40",
+    "instruction": "Pick the akita black bowl on the top of the wooden cabinet and place it on the plate",
+    "source_before": "e75",
+    "source_after": "e75",
+    "selected_description": "bowl on the cabinet top surface",
+    "reclassified": {
+      "e118": {
+        "old_class": "bowl",
+        "class": "bowl",
+        "scores": {
+          "bowl": 0.98046875,
+          "plate": 0.004547119140625,
+          "alphabet soup": 0.006072998046875,
+          "tomato sauce": 8.58306884765625e-05,
+          "salad dressing": 0.00014495849609375,
+          "ketchup": 0.0003108978271484375,
+          "cream cheese": 0.004119873046875,
+          "barbecue sauce": 0.00015354156494140625,
+          "butter": 0.007110595703125,
+          "milk": 0.000335693359375,
+          "chocolate pudding": 0.0009002685546875,
+          "porcelain mug": 0.2177734375,
+          "cabinet": 0.040771484375,
+          "drawer": 0.0025634765625,
+          "microwave": 7.420778274536133e-06,
+          "ramekin": 0.671875,
+          "cookie box": 0.000400543212890625,
+          "moka pot": 0.0004596710205078125,
+          "red coffee mug": 0.0281982421875,
+          "white yellow mug": 0.0208740234375,
+          "black book": 0.0235595703125,
+          "basket": 0.0004634857177734375,
+          "rack": 0.00469970703125,
+          "caddy": 0.042724609375,
+          "frypan": 0.001007080078125,
+          "stove": 0.00286865234375,
+          "wine bottle": 0.00095367431640625,
+          "table": 0.458984375
+        },
+        "crop_sha256": "48dbdc1f64e0f648f4cd5083d16208348a24ca0583c77d3ba397fbe257afebe4",
+        "capture_step": 0,
+        "crop_box_xyxy": [
+          174,
+          507,
+          376,
+          669
+        ],
+        "source": "public_instance_crop_fixed_vocabulary",
+        "private_truth_used": false
+      },
+      "e75": {
+        "old_class": "bowl",
+        "class": "bowl",
+        "scores": {
+          "bowl": 0.98046875,
+          "plate": 0.00439453125,
+          "alphabet soup": 0.005523681640625,
+          "tomato sauce": 2.6345252990722656e-05,
+          "salad dressing": 0.00098419189453125,
+          "ketchup": 0.000499725341796875,
+          "cream cheese": 0.00040435791015625,
+          "barbecue sauce": 0.0001468658447265625,
+          "butter": 0.0019683837890625,
+          "milk": 0.0004634857177734375,
+          "chocolate pudding": 0.0011138916015625,
+          "porcelain mug": 0.1376953125,
+          "cabinet": 0.00061798095703125,
+          "drawer": 3.981590270996094e-05,
+          "microwave": 1.049041748046875e-05,
+          "ramekin": 0.71484375,
+          "cookie box": 0.00069427490234375,
+          "moka pot": 0.00086212158203125,
+          "red coffee mug": 0.027587890625,
+          "white yellow mug": 0.0137939453125,
+          "black book": 0.0036468505859375,
+          "basket": 7.2479248046875e-05,
+          "rack": 0.000278472900390625,
+          "caddy": 0.0029296875,
+          "frypan": 0.0013275146484375,
+          "stove": 3.4332275390625e-05,
+          "wine bottle": 0.00128173828125,
+          "table": 0.1552734375
+        },
+        "crop_sha256": "94a42b7c2bfcb3af03385f66d71d353d4b81eceba3dde8b656badab2ce13bc7d",
+        "capture_step": 0,
+        "crop_box_xyxy": [
+          0,
+          375,
+          127,
+          531
+        ],
+        "source": "public_instance_crop_fixed_vocabulary",
+        "private_truth_used": false
+      },
+      "e5": {
+        "old_class": "plate",
+        "class": "plate",
+        "scores": {
+          "bowl": 0.0263671875,
+          "plate": 0.9375,
+          "alphabet soup": 7.200241088867188e-05,
+          "tomato sauce": 4.124641418457031e-05,
+          "salad dressing": 4.8160552978515625e-05,
+          "ketchup": 5.626678466796875e-05,
+          "cream cheese": 6.961822509765625e-05,
+          "barbecue sauce": 7.724761962890625e-05,
+          "butter": 0.0032196044921875,
+          "milk": 3.981590270996094e-05,
+          "chocolate pudding": 0.00110626220703125,
+          "porcelain mug": 0.0458984375,
+          "cabinet": 0.001068115234375,
+          "drawer": 2.5033950805664062e-06,
+          "microwave": 3.3676624298095703e-06,
+          "ramekin": 0.0576171875,
+          "cookie box": 0.0010528564453125,
+          "moka pot": 1.9788742065429688e-05,
+          "red coffee mug": 0.0791015625,
+          "white yellow mug": 0.0098876953125,
+          "black book": 0.0003833770751953125,
+          "basket": 0.00014209747314453125,
+          "rack": 0.0004634857177734375,
+          "caddy": 0.0028228759765625,
+          "frypan": 0.000682830810546875,
+          "stove": 7.772445678710938e-05,
+          "wine bottle": 0.00011491775512695312,
+          "table": 0.625
+        },
+        "crop_sha256": "87c4c7287ce9ef283a1280fa9e4897c40ac8dfdefa8e4c2b2d5b4c946cf9b322",
+        "capture_step": 0,
+        "crop_box_xyxy": [
+          673,
+          651,
+          877,
+          808
+        ],
+        "source": "public_instance_crop_fixed_vocabulary",
+        "private_truth_used": false
+      },
+      "e32": {
+        "old_class": "plate",
+        "class": "unclassified object",
+        "scores": {
+          "bowl": 0.010498046875,
+          "plate": 0.00762939453125,
+          "alphabet soup": 0.002197265625,
+          "tomato sauce": 0.00665283203125,
+          "salad dressing": 0.00238037109375,
+          "ketchup": 0.01507568359375,
+          "cream cheese": 0.000751495361328125,
+          "barbecue sauce": 0.0078125,
+          "butter": 0.004241943359375,
+          "milk": 0.0022735595703125,
+          "chocolate pudding": 0.009033203125,
+          "porcelain mug": 0.04833984375,
+          "cabinet": 0.068359375,
+          "drawer": 0.0012359619140625,
+          "microwave": 0.0001964569091796875,
+          "ramekin": 0.041748046875,
+          "cookie box": 0.0037841796875,
+          "moka pot": 0.00165557861328125,
+          "red coffee mug": 0.0625,
+          "white yellow mug": 0.00726318359375,
+          "black book": 0.23046875,
+          "basket": 0.007171630859375,
+          "rack": 0.003936767578125,
+          "caddy": 0.015869140625,
+          "frypan": 0.007659912109375,
+          "stove": 0.0118408203125,
+          "wine bottle": 0.0244140625,
+          "table": 0.0439453125
+        },
+        "crop_sha256": "d0ba7e02d5d3aa05499cb6fc1d80d70f01091045a972a3c71df7ef950d746a7d",
+        "capture_step": 0,
+        "crop_box_xyxy": [
+          304,
+          418,
+          437,
+          485
+        ],
+        "source": "public_instance_crop_fixed_vocabulary",
+        "private_truth_used": false
+      }
+    },
+    "public_entities": [
+      {
+        "id": "e118",
+        "name": "bowl",
+        "xyz": [
+          0.08194704353809357,
+          -0.14713744819164276,
+          1.094631552696228
+        ],
+        "lower": [
+          0.05139134004712105,
+          -0.19287701249122619,
+          1.070775532722473
+        ],
+        "upper": [
+          0.15407656133174896,
+          -0.09398990869522096,
+          1.114681887626648
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e75",
+        "name": "bowl",
+        "xyz": [
+          0.018914295360445976,
+          -0.28735077381134033,
+          1.158490777015686
+        ],
+        "lower": [
+          -0.00416783457621932,
+          -0.3231666970252991,
+          1.1348310041427612
+        ],
+        "upper": [
+          0.0988558104634285,
+          -0.24459721863269807,
+          1.178611731529236
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e113",
+        "name": "cabinet",
+        "xyz": [
+          0.12630146741867065,
+          -0.20726090669631958,
+          1.0981395244598389
+        ],
+        "lower": [
+          -0.08174999803304672,
+          -0.31466367840766907,
+          0.9264794290065765
+        ],
+        "upper": [
+          0.22989976406097412,
+          -0.023879709653556347,
+          1.1268638372421265
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e68",
+        "name": "drawer",
+        "xyz": [
+          0.1316690891981125,
+          -0.11825817078351974,
+          1.0897444486618042
+        ],
+        "lower": [
+          -0.02186774745583534,
+          -0.24047277688980104,
+          1.0595491552352905
+        ],
+        "upper": [
+          0.23471103608608246,
+          -0.015774752050638198,
+          1.1235066747665405
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e5",
+        "name": "plate",
+        "xyz": [
+          0.048990499526262284,
+          0.19690682515501975,
+          0.9098585173487663
+        ],
+        "lower": [
+          -0.012521375484764575,
+          0.1310646684232511,
+          0.9066313275287026
+        ],
+        "upper": [
+          0.1106940123438835,
+          0.2545350837554687,
+          0.9183460760116576
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e32",
+        "name": "unclassified object",
+        "xyz": [
+          -0.2845352292060852,
+          -0.12289565056562424,
+          0.9307848215103149
+        ],
+        "lower": [
+          -0.31229791045188904,
+          -0.18033545911312104,
+          0.9272323369979858
+        ],
+        "upper": [
+          -0.24095146358013153,
+          -0.08022716492414475,
+          0.9308002591133118
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e37",
+        "name": "table",
+        "xyz": [
+          0.09843304753303528,
+          0.10478908196091652,
+          0.9002777934074402
+        ],
+        "lower": [
+          -0.4773806929588318,
+          -0.3142196089029312,
+          0.9002360105514526
+        ],
+        "upper": [
+          0.2654052972793579,
+          0.4542088210582733,
+          0.9004154801368713
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null
+      },
+      {
+        "id": "e86",
+        "name": "cabinet bottom drawer",
+        "xyz": [
+          0.13854030519723892,
+          -0.2318056896328926,
+          0.9551577866077423
+        ],
+        "lower": [
+          0.10698404222726822,
+          -0.24246246635913848,
+          0.9275762617588044
+        ],
+        "upper": [
+          0.15900183230638504,
+          -0.21511423230171203,
+          0.9913322877883911
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e113",
+        "geometry": "measured_front_band"
+      },
+      {
+        "id": "e82",
+        "name": "cabinet middle drawer",
+        "xyz": [
+          0.19050627946853638,
+          -0.14838019013404846,
+          1.0570415258407593
+        ],
+        "lower": [
+          0.05252610146999359,
+          -0.24039025008678436,
+          0.995608525276184
+        ],
+        "upper": [
+          0.2375541079044342,
+          -0.010589084587991238,
+          1.0599298477172852
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e113",
+        "geometry": "measured_front_band"
+      },
+      {
+        "id": "e121",
+        "name": "cabinet top drawer",
+        "xyz": [
+          0.07826781272888184,
+          -0.07133578509092331,
+          1.0859723091125488
+        ],
+        "lower": [
+          0.0027882768772542477,
+          -0.10022543877363205,
+          1.0631633853912354
+        ],
+        "upper": [
+          0.22245055437088013,
+          -0.010157069191336632,
+          1.1157395839691162
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e113",
+        "geometry": "measured_front_band"
+      },
+      {
+        "id": "e27",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.08167975023388863,
+          -0.20966140925884247,
+          1.126373291015625
+        ],
+        "lower": [
+          -0.09874044358730316,
+          -0.3006818175315857,
+          1.117720980644226
+        ],
+        "upper": [
+          0.22795518577098847,
+          -0.022082660794258132,
+          1.1268826723098755
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e113",
+        "geometry": "measured_top_surface"
+      }
+    ],
+    "public_relations": [
+      "rel e118 in_front_of e75",
+      "rel e118 below e75",
+      "rel e118 in e113",
+      "rel e118 left_of e68",
+      "rel e118 in e68",
+      "rel e118 left_of e5",
+      "rel e118 in_front_of e5",
+      "rel e118 above e5",
+      "rel e118 left_of e32",
+      "rel e118 in_front_of e32",
+      "rel e118 above e32",
+      "rel e118 left_of e37",
+      "rel e118 above e37",
+      "rel e118 above e86",
+      "rel e118 above e82",
+      "rel e118 on e82",
+      "rel e118 left_of e121",
+      "rel e118 below e27",
+      "rel e75 left_of e118",
+      "rel e75 above e118",
+      "rel e75 left_of e113",
+      "rel e75 above e113",
+      "rel e75 on e113",
+      "rel e75 left_of e68",
+      "rel e75 above e68",
+      "rel e75 left_of e5",
+      "rel e75 above e5",
+      "rel e75 left_of e32",
+      "rel e75 in_front_of e32",
+      "rel e75 above e32",
+      "rel e75 left_of e37",
+      "rel e75 above e37",
+      "rel e75 left_of e86",
+      "rel e75 above e86",
+      "rel e75 left_of e82",
+      "rel e75 above e82",
+      "rel e75 left_of e121",
+      "rel e75 above e121",
+      "rel e75 left_of e27",
+      "rel e75 above e27",
+      "rel e75 on e27",
+      "rel e113 left_of e118",
+      "rel e113 in_front_of e118",
+      "rel e113 in_front_of e75",
+      "rel e113 below e75",
+      "rel e113 left_of e68",
+      "rel e113 in e68",
+      "rel e113 left_of e5",
+      "rel e113 in_front_of e5",
+      "rel e113 above e5",
+      "rel e113 left_of e32",
+      "rel e113 in_front_of e32",
+      "rel e113 above e32",
+      "rel e113 left_of e37",
+      "rel e113 in_front_of e37",
+      "rel e113 above e37",
+      "rel e113 above e86",
+      "rel e113 left_of e82",
+      "rel e113 above e82",
+      "rel e113 left_of e121",
+      "rel e113 in_front_of e121",
+      "rel e113 in_front_of e27",
+      "rel e113 below e27",
+      "rel e68 in_front_of e118",
+      "rel e68 in e118",
+      "rel e68 in_front_of e75",
+      "rel e68 below e75",
+      "rel e68 in e113",
+      "rel e68 left_of e5",
+      "rel e68 in_front_of e5",
+      "rel e68 above e5",
+      "rel e68 in_front_of e32",
+      "rel e68 above e32",
+      "rel e68 left_of e37",
+      "rel e68 in_front_of e37",
+      "rel e68 above e37",
+      "rel e68 above e86",
+      "rel e68 above e82",
+      "rel e68 on e82",
+      "rel e68 left_of e121",
+      "rel e68 in_front_of e121",
+      "rel e68 in_front_of e27",
+      "rel e68 below e27",
+      "rel e5 below e118",
+      "rel e5 in_front_of e75",
+      "rel e5 below e75",
+      "rel e5 below e113",
+      "rel e5 below e68",
+      "rel e5 in_front_of e32",
+      "rel e5 below e32",
+      "rel e5 on e37",
+      "rel e5 below e86",
+      "rel e5 below e82",
+      "rel e5 below e121",
+      "rel e5 below e27",
+      "rel e32 below e118",
+      "rel e32 below e75",
+      "rel e32 below e113",
+      "rel e32 below e68",
+      "rel e32 left_of e5",
+      "rel e32 above e5",
+      "rel e32 left_of e37",
+      "rel e32 above e37",
+      "rel e32 below e86",
+      "rel e32 below e82",
+      "rel e32 left_of e121",
+      "rel e32 below e121",
+      "rel e32 below e27",
+      "rel e37 below e118",
+      "rel e37 in_front_of e75",
+      "rel e37 below e75",
+      "rel e37 below e113",
+      "rel e37 below e68",
+      "rel e37 left_of e5",
+      "rel e37 in_front_of e5",
+      "rel e37 on e5",
+      "rel e37 in_front_of e32",
+      "rel e37 below e32",
+      "rel e37 below e86",
+      "rel e37 below e82",
+      "rel e37 in_front_of e121",
+      "rel e37 below e121",
+      "rel e37 below e27",
+      "rel e86 left_of e118",
+      "rel e86 in_front_of e118",
+      "rel e86 below e118",
+      "rel e86 in_front_of e75",
+      "rel e86 below e75",
+      "rel e86 left_of e113",
+      "rel e86 below e113",
+      "rel e86 in e113",
+      "rel e86 left_of e68",
+      "rel e86 below e68",
+      "rel e86 left_of e5",
+      "rel e86 in_front_of e5",
+      "rel e86 above e5",
+      "rel e86 left_of e32",
+      "rel e86 in_front_of e32",
+      "rel e86 above e32",
+      "rel e86 left_of e37",
+      "rel e86 in_front_of e37",
+      "rel e86 above e37",
+      "rel e86 left_of e82",
+      "rel e86 below e82",
+      "rel e86 left_of e121",
+      "rel e86 in_front_of e121",
+      "rel e86 below e121",
+      "rel e86 left_of e27",
+      "rel e86 in_front_of e27",
+      "rel e86 below e27",
+      "rel e82 in_front_of e118",
+      "rel e82 below e118",
+      "rel e82 in_front_of e75",
+      "rel e82 below e75",
+      "rel e82 in_front_of e113",
+      "rel e82 below e113",
+      "rel e82 in e113",
+      "rel e82 left_of e68",
+      "rel e82 in_front_of e68",
+      "rel e82 below e68",
+      "rel e82 left_of e5",
+      "rel e82 in_front_of e5",
+      "rel e82 above e5",
+      "rel e82 left_of e32",
+      "rel e82 in_front_of e32",
+      "rel e82 above e32",
+      "rel e82 left_of e37",
+      "rel e82 in_front_of e37",
+      "rel e82 above e37",
+      "rel e82 in_front_of e86",
+      "rel e82 above e86",
+      "rel e82 on e86",
+      "rel e82 left_of e121",
+      "rel e82 in_front_of e121",
+      "rel e82 below e121",
+      "rel e82 in_front_of e27",
+      "rel e82 below e27",
+      "rel e121 in_front_of e75",
+      "rel e121 below e75",
+      "rel e121 in e113",
+      "rel e121 in e68",
+      "rel e121 left_of e5",
+      "rel e121 in_front_of e5",
+      "rel e121 above e5",
+      "rel e121 in_front_of e32",
+      "rel e121 above e32",
+      "rel e121 left_of e37",
+      "rel e121 above e37",
+      "rel e121 above e86",
+      "rel e121 above e82",
+      "rel e121 on e82",
+      "rel e121 below e27",
+      "rel e27 left_of e118",
+      "rel e27 above e118",
+      "rel e27 on e118",
+      "rel e27 in_front_of e75",
+      "rel e27 below e75",
+      "rel e27 above e113",
+      "rel e27 on e113",
+      "rel e27 in e113",
+      "rel e27 left_of e68",
+      "rel e27 above e68",
+      "rel e27 on e68",
+      "rel e27 left_of e5",
+      "rel e27 in_front_of e5",
+      "rel e27 above e5",
+      "rel e27 left_of e32",
+      "rel e27 in_front_of e32",
+      "rel e27 above e32",
+      "rel e27 left_of e37",
+      "rel e27 above e37",
+      "rel e27 above e86",
+      "rel e27 left_of e82",
+      "rel e27 above e82",
+      "rel e27 left_of e121",
+      "rel e27 above e121",
+      "rel e27 on e121"
+    ],
+    "initial_snapshot": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/execution_repairs_20261022/option_ceiling_20261022/measured_anchor_2db20013/D2_recovery1_shard2/case003/episode/private_initial.pkl",
+      "sha256": "e38ddbb91b68e3b86cb333a4b2cfcf80578d4769c937b1c08eee4e89053c9400"
+    },
+    "classifier_scores_source": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/crop_class_diagnostic/results.json",
+    "reason": "initial_source_binding_correct; duplicate_plate_is_stove_patch; source_support_description_was_omitted",
+    "CPU_only": true,
+    "private_geometry_used_for_binding": false
+  }
+]

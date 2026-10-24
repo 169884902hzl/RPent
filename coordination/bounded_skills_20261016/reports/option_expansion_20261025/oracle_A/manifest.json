@@ -1,0 +1,249 @@
+{
+  "arm": "oracle_A_option10_r2",
+  "source_commit": "b96cf55ffb6a446a08cae5809f0f42ba88e67221",
+  "plan": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/preparation/oracle_A_option10_r2.json",
+    "sha256": "c8ca9971d0542f89369b6dae0854716f745137c162fef33fc5976d1340b1ebdd"
+  },
+  "data": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/CPU_oracle_A_option10_r2_closed/paired_cases.jsonl",
+    "sha256": "e2b06856fd3115dc12468c45f8fa073c781eadcd3af68f50130573e491215cda"
+  },
+  "matched_complete_initial_seed_config": 40,
+  "counts": {
+    "d2": {
+      "successes": 28,
+      "n": 40,
+      "wilson95": [
+        0.5456998118185507,
+        0.8192515477025347
+      ],
+      "median_decisions": 3.0,
+      "median_worker_wall_s": 225.79919350147247,
+      "mean_worker_wall_s": 690.696600830555,
+      "median_loop_wall_s": 184.9846137657296
+    }
+  },
+  "changes": {
+    "old_pi_A": {
+      "improved": 10,
+      "regressed": 3,
+      "n": 40
+    },
+    "old_oracle_A": {
+      "improved": 3,
+      "regressed": 3,
+      "n": 40
+    }
+  },
+  "old_own_method_union": 33,
+  "own_union_with_this_arm": 34,
+  "skill_receipts": {
+    "observe": 121,
+    "call_vla": 300,
+    "align": 3,
+    "nudge": 16,
+    "open_close_articulated": 112,
+    "move_to": 36,
+    "set_gripper": 9,
+    "carry_to": 4,
+    "release": 3,
+    "descend": 1,
+    "lift": 1,
+    "lower": 2,
+    "guarded_move": 1
+  },
+  "failure_phase_receipts": {
+    "contact_failure": 351,
+    "planning_unreachable": 54,
+    "collision": 9,
+    "verification_error": 1,
+    "perception": 2
+  },
+  "failure_reasons": {
+    "no_progress_blocks": 92,
+    "block_budget": 65,
+    "endpoint_not_reached": 2,
+    "preparation_not_reached": 48,
+    "left_target_region": 15,
+    "braking_screen_rejected": 1,
+    "measured_sweep_collision": 82,
+    "tracking_error": 7,
+    "handoff_hold_not_settled": 5,
+    "public_anchor_unmeasured": 1,
+    "public_contact_plan_missing": 56,
+    "completion_lost_during_handoff": 23,
+    "public_hold_lost": 2,
+    "contact_motion_unmeasured": 12,
+    "predicted_anchor_changed": 2,
+    "guarded_route_blocked": 1,
+    "public_preparation_complete": 1,
+    "numerical_ik_not_found": 2
+  },
+  "sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case000/summary.json",
+      "sha256": "64a0956dc90de70cb14cdfff44a0ec3a231889e193affd06b5787e291c56c6e2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case001/summary.json",
+      "sha256": "c2c18b5e9dfeba93afb143cbec081e972430fa52b755336db0171de0634b67ad"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case002/summary.json",
+      "sha256": "9693ba5815a219f4a96d674d2676760b128a4a02e9bd653d96f088b32e6c6640"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case003/summary.json",
+      "sha256": "63c0369c5409317f347bfcfd5385251d27b8ae34cad0728826380a8e3d246c6e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case004/summary.json",
+      "sha256": "a97ef7e61a7f876a0dfbee4783a870967ab210fcf986e772f9bdf729d253771a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case005/summary.json",
+      "sha256": "715ffbba7dc7e1ea8ea134bfaad13aa917d998850fdc1e0f9a942648004d973a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case006/summary.json",
+      "sha256": "b72b3e91b19eef1649c1ca2de2043097cf761080e918d00830c27ae8a3ab23d2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case007/summary.json",
+      "sha256": "aff9ac95dd8330ee080d12f1097130c26544e6a258df11e5ad36f7ac14653aca"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case008/summary.json",
+      "sha256": "9b313f75eafce584df24bb9938a48bc5d92a40eff0ac15d7c6878a7e25f3cfea"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case009/summary.json",
+      "sha256": "b63a31cb8d5c5b27687cfcf7968c5d8dd920ab5ad0db5aa75664b9176d96daca"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case010/summary.json",
+      "sha256": "8cf780de7b8ef56ba1d6fc41e703640b3e9511b05cc9025f7e990e0144172bf7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case011/summary.json",
+      "sha256": "daf5ed630b384ddda30f9d1f747cf8287062c9e1e2279a7b5d20db6b59e7fc1e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case012/summary.json",
+      "sha256": "09ed97beada8c65e7fdee7792a350a4b2cea4bf52a8c445108b7c81ab6ad4973"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case013/summary.json",
+      "sha256": "5458a7b73e69f6b1821330514c56e2c9effb368022294b7ea3a6e10990479780"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case014/summary.json",
+      "sha256": "dfe0f164c90b443c0a1d448bb17be8ac1245d521d7bf363656968a4c394addfa"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case015/summary.json",
+      "sha256": "6bc2ae577ac001a225ec474714b207a3a89df21e5d0a2f410913ad8d169bdd55"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case016/summary.json",
+      "sha256": "2b80f72562a9818859ba11952dddf45a106f0ca7de68faa366ff158264e0b92c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case017/summary.json",
+      "sha256": "fa4a512b388806d5747f86b102e4d6464f40abde3d29528ee96e747b697a580d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case018/summary.json",
+      "sha256": "f8db0ba36706c3553106852f5bcb69615004a61765b5c9b48a0a68537efe77bf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case019/summary.json",
+      "sha256": "618660fa24e0c0db692259b5a923e5474b7eaeaeae8830480acbb33c962a83f0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case020/summary.json",
+      "sha256": "ea75f62110fe07ee0f1574978493deff11d3dec673f0b899365c2c54a9fb8fbf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case021/summary.json",
+      "sha256": "a7dcfea3b79c78ef746e0d2d97a5acc802bc568370ae23a538d940c2ca45ed9d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case022/summary.json",
+      "sha256": "a2a722726c213dcc6a8bc92ac91a7c05ec48d455c9cb0d8254d78d8b4667816c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case023/summary.json",
+      "sha256": "283cf0b94f6a70dabdb8d309acc1fa287018658f0ea5e887cde41374fb88aca7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case024/summary.json",
+      "sha256": "72edfe0363d7d8007dcf4ef3d93e1dfcdbff25c122afba154d4570fec1339dae"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case025/summary.json",
+      "sha256": "8254b0a289cdd34ec39d436cef307ef185c732c170bf9aa5d131a43879287206"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case026/summary.json",
+      "sha256": "af7d96edeaf972c5ca35a4d97bc98357591f740f4bffeba989f0600f327cf312"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case027/summary.json",
+      "sha256": "42a992ee8e91b7dc737516fa42b6f95ceb861639d11f0cf72ebeecd346060611"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case028/summary.json",
+      "sha256": "7a0bddff5f06837ba6d7f9de2ed2c1f713f7e836af6e5d64385554dd0ffc0cc0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case029/summary.json",
+      "sha256": "7d1226e14aac15b6ec60e5192cf96036cc1af7d255546b7c99756bb2167f5e9c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case030/summary.json",
+      "sha256": "04ee92fabbb7648bb127c73a8bea7592200e8d30acf61144025eeed8cd0d74d8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case031/summary.json",
+      "sha256": "9bc481580041ef6ceb8fc5935f2263a5577287bc22f021a53e601bda1788987b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case032/summary.json",
+      "sha256": "1a95a4ad32abb8434bc1576c888c52336930221aa92cd4ebfe74e0d9c422f4ef"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case033/summary.json",
+      "sha256": "36f3bcac226002af862973e40679039075081b6add0f3093d5a1b8e40102ccb2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case034/summary.json",
+      "sha256": "7f40bf2e022aafe4a4a104f11278e428cfc373a46f88c5b281cd338532ca0ada"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case035/summary.json",
+      "sha256": "1629848261985600a81afce6ec9c21787a9b8216c5ff43d13c215da95194e8f8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case036/summary.json",
+      "sha256": "095817c7dc5f995d836adcbd02606819857daeec15d3dffec7a2c6b0cacb17f5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case037/summary.json",
+      "sha256": "4eb386e30934ab6f90a2023d96863fd2b9803cef95923cfdc71ed42549eddebd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case038/summary.json",
+      "sha256": "3d7be8be71e449aebacbbed9f3fa52ff46a13e308f83a1cf9eba5bfae7564a29"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/oracle_A_option10_r2/case039/summary.json",
+      "sha256": "76b860934c00961a92d8810f3250ff50cb0a393f0906255d6b66845c23d1d4a7"
+    }
+  ],
+  "training": false,
+  "D2_training": false,
+  "wall_scope": "N8 worker start to summary, includes initialization/restoration; loop separately retained",
+  "original_six_scope": "3 distinct initial states, each two registered runs; all model effective K1; not six independent layouts"
+}

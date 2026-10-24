@@ -1,0 +1,270 @@
+{
+  "arm": "model_A",
+  "source_commit": "3605901c7425d27df9fa04d1ca7345aeeb388663",
+  "plan": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/preparation/model_A.json",
+    "sha256": "6cb07bcb9b78dfbab0d0ef20c7f64723057fc02a7edcf4d9b64652faccde3ab6"
+  },
+  "data": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/CPU_model_A_closed/paired_cases.jsonl",
+    "sha256": "9dd71e0dbc2c1abb6888742cd4b064449a4ac02c80775a06e2e6bdb79f79446c"
+  },
+  "matched_complete_initial_seed_config": 46,
+  "counts": {
+    "d2": {
+      "successes": 11,
+      "n": 40,
+      "wilson95": [
+        0.16108016247667337,
+        0.42834955806210573
+      ],
+      "median_decisions": 40.0,
+      "median_worker_wall_s": 492.32150423526764,
+      "mean_worker_wall_s": 625.7239398658276,
+      "median_loop_wall_s": 461.3562706874218
+    },
+    "original": {
+      "successes": 6,
+      "n": 6,
+      "wilson95": [
+        0.6096657120978346,
+        1.0
+      ],
+      "median_decisions": 2.0,
+      "median_worker_wall_s": 117.21585810184479,
+      "mean_worker_wall_s": 335.9355278809865,
+      "median_loop_wall_s": 84.2001185696572
+    }
+  },
+  "changes": {
+    "old_pi_A": {
+      "improved": 1,
+      "regressed": 11,
+      "n": 40
+    },
+    "old_oracle_A": {
+      "improved": 1,
+      "regressed": 18,
+      "n": 40
+    }
+  },
+  "old_own_method_union": 33,
+  "own_union_with_this_arm": 33,
+  "skill_receipts": {
+    "move_to": 713,
+    "call_vla": 440,
+    "set_gripper": 37,
+    "descend": 1,
+    "lift": 1
+  },
+  "failure_phase_receipts": {
+    "contact_failure": 382,
+    "planning_unreachable": 675,
+    "verification_error": 1
+  },
+  "failure_reasons": {
+    "block_budget": 81,
+    "no_progress_blocks": 69,
+    "left_target_region": 58,
+    "native_stop": 1,
+    "measured_sweep_collision": 522,
+    "preparation_not_reached": 135,
+    "completion_lost_during_handoff": 37,
+    "environment_budget": 2,
+    "endpoint_not_reached": 1,
+    "tracking_error": 25,
+    "braking_screen_rejected": 5,
+    "numerical_ik_not_found": 121,
+    "expected_receipt_object_rise_m": 1
+  },
+  "sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case000/summary.json",
+      "sha256": "fe3edd272f10e28492ea7ae41d32ecdbcf77c998a41207758520668b0070d526"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case001/summary.json",
+      "sha256": "c6e6ca4be447f8c2767b3fc1de5eecb9567b0b00fe903cfd6c3e9a0adc76e1ca"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case002/summary.json",
+      "sha256": "6aa8c898989f67b69c3009e46721c23115fded35672a6cf1a3da6dfa7a7cdafc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case003/summary.json",
+      "sha256": "661fcf1328c3b4487186f8b9e4fefee9d884f2932faff37d2e8b879bd54ea132"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case004/summary.json",
+      "sha256": "7a0976db4b91b5593b9a9a463da5f14cdf72596d6b5ccd4a8ad9ad93e0327f9b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case005/summary.json",
+      "sha256": "77246ea1ce06421c7dcd0e744cc2d8c33b5f235b9144cb7466d3ead8622f05f1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case006/summary.json",
+      "sha256": "05d65ec8415b455556dd3e2ec1ccb9ccca509b8ee0b755b1759140f3bdcca4d1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case007/summary.json",
+      "sha256": "c7557b0907bce962135aa4cd62df7198a93a0b017ebd03e97e80c17d9ce8552b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case008/summary.json",
+      "sha256": "50f1b5d95b62fffe44008af9217f42b194dbfade0de4125d967be317ca6ac5cb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case009/summary.json",
+      "sha256": "67ef40f0ee906dbd9b1896c9938f110495cd560fd204c160565580df8ab72e83"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case010/summary.json",
+      "sha256": "b96686180ef80c29534fde4fa4e2c0fd1e2ac6e1edb56841f88a45e5652e9cec"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case011/summary.json",
+      "sha256": "02b03df50a32794b1b682446819acd862ecc8eea1b1299a66ef0752f61eced1c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case012/summary.json",
+      "sha256": "89b363446fd74eca763ae3ae0c88af42cc99626c849beefcc4b5f2c9c21de790"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case013/summary.json",
+      "sha256": "2f893ad7e81c1a4d21d4a16503f4938ea6d7f35ee98ddf670b6ba8a2be6d2213"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case014/summary.json",
+      "sha256": "6a41906e4e31a230237e4233a368ffb1926ac0c3c9d09affb83c7b0d136894ef"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case015/summary.json",
+      "sha256": "8f107e961eaa603792b48bf2e9d39ca8c9c646533ba9e4f0b9d9bef7e770faf8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case016/summary.json",
+      "sha256": "5d64f4afa556b59dd4d36dbe279378a0b2c7845ff1db84a329d05f3e4569536a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case017/summary.json",
+      "sha256": "7c142b58a4bfe06a9619c21f8cbab51aeeaa8c6abcfd2f64b0f03528dbf6c1de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case018/summary.json",
+      "sha256": "29597f56c7214400620a035200c096071a432f98a8d0a1631a6d79538f77a9ca"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case019/summary.json",
+      "sha256": "4bd1316546fde8f66ba2711cfe0115f11946776d39af339587ba49ebd30413fa"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case020/summary.json",
+      "sha256": "ad15beca7786fad2cb3a52970f16222839bb5f5f3d08da006253a9802cb32aef"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case021/summary.json",
+      "sha256": "2bad82ecfb364daa090c523f3c80a159a5dd434aea61890ee80c667b032847cd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case022/summary.json",
+      "sha256": "e77b6cd882fffebcff9362ea2ce77784bc34bb15ee4a29a83dea89f37c97cdcc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case023/summary.json",
+      "sha256": "671abbf746c14b10080d7a43c4ce8dfc0e49483f7ec58ea623bae6c002111630"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case024/summary.json",
+      "sha256": "c2eb7071ceaab0ce71a95f30e084dab7aca88b5a663d70129cdeb83c4d2adc0b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case025/summary.json",
+      "sha256": "4dd16834f4eca6096f6d20ec22b4d161c5ee8c2cee27cbb25fd90f042cb9f3df"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case026/summary.json",
+      "sha256": "f0bf94c9787a7e44bae06aee5ac63b35d136d5598794b5ca7b5243a76704701b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case027/summary.json",
+      "sha256": "e7495ee6d19a18b4aa9eb78a559eeb03e2764b0011961e577e3453c8d1aab168"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case028/summary.json",
+      "sha256": "76e2e35fbbcda2a377ee8b0e10021035730c463d4cbe25dd00e69bfb8184972b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case029/summary.json",
+      "sha256": "027858ab75b9352c5b2a7114c322c133899b597cd79ffe5e23d4124f3058ffe7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case030/summary.json",
+      "sha256": "781bbc6d7a0e562f7e3abae74d46d1940aab1d4718429326a9899eb801dfde13"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case031/summary.json",
+      "sha256": "5204e1a4dca79a15844b491484d9eea0b227c8f275e5cb301c26fb51d6caccd9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case032/summary.json",
+      "sha256": "ee63c7a25503995ec924b8c283ab246d43a0e5ef3f2836a28ae96816a6a41b0b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case033/summary.json",
+      "sha256": "31eec635caee20843e1c7b59e03fe8f441f5be4edcd82ab61880d2893139b2bb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case034/summary.json",
+      "sha256": "a0826725d937a2af12fc59bcb4c1a309a901e1d33851426a69ff4a7208e64860"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case035/summary.json",
+      "sha256": "a335e78a5969800714df240f7c455be9b8808e87875adc938c2c4a0f8953cd56"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case036/summary.json",
+      "sha256": "da89cd551e551a851fb2da3cad7b3e7b76974accd7bc9bab4af74d224d15c7f9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case037/summary.json",
+      "sha256": "21c4f5abd9ebc2db9c1e01033abe92a3b30b38b8d486b7da465d17b59013efa6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case038/summary.json",
+      "sha256": "5c79e796e4f81a9fe61149dc12d02023fc91b211f9415f3f1101b013957ba808"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case039/summary.json",
+      "sha256": "812c85ef356b6af78de42862ab69c9ef5560bce4fdb9757ad46d1f4de17cf084"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case040/summary.json",
+      "sha256": "3a7c5da6a469f167d7921362cd058ec129e5db54283d582e7c87f8da9177d17f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case041/summary.json",
+      "sha256": "7fc0df6743836fab06e3675ce9559c4dee78042d30b7da62253400470e359188"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case042/summary.json",
+      "sha256": "a327a898a97a0ae52e9f8ab2f77258d6de0ccfb51bbb4a41bf51efe4a427818d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case043/summary.json",
+      "sha256": "1d44153a70adfe11a54e8cdc2769ebd584a27cf2373fabd0256d6d43b15389ea"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case044/summary.json",
+      "sha256": "6a13a06cd805a8a9451d2bc1d8bc42998eb74358a7ba68d9a351e7fc4d992efa"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/option_expansion_20261025/model_A/case045/summary.json",
+      "sha256": "f70b238619ed6c5f8b6168e674f7319950288d2091696fafa64c96dff2e24131"
+    }
+  ],
+  "training": false,
+  "D2_training": false,
+  "wall_scope": "N8 worker start to summary, includes initialization/restoration; loop separately retained",
+  "original_six_scope": "3 distinct initial states, each two registered runs; all model effective K1; not six independent layouts"
+}

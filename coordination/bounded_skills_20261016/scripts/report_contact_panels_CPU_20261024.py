@@ -44,8 +44,10 @@ def main():
                     new_contact_gt_1mm=bool(metrics['new_or_deeper_contacts_gt_1mm']),
                     max_non_target_displacement_m=metrics['max_non_target_displacement_m'],
                     policy_invoked=full['policy_result'] is not None,
-                    adaptive_motion_executed=bool(detail.get('steps_used',0)) if args.panel=='skills' else False,
-                    adaptive_motion_steps=detail.get('steps_used',0) if args.panel=='skills' else 0,
+                    adaptive_motion_executed=(detail.get('steps_used',0)-(detail.get('setup',{}).get('steps_used',0)
+                        if isinstance(detail.get('setup'),dict) else 0))>0 if args.panel=='skills' else False,
+                    adaptive_motion_steps=max(0,detail.get('steps_used',0)-(detail.get('setup',{}).get('steps_used',0)
+                        if isinstance(detail.get('setup'),dict) else 0)) if args.panel=='skills' else 0,
                     measured_advance_m=detail.get('advance_m'),
                     subtask_private_success=None if mode=='pick' else full['success'],
                     policy_public_outcome=(full['policy_result'] or {}).get('outcome'),
