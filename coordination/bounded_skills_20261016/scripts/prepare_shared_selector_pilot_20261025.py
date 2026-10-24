@@ -21,6 +21,7 @@ compile(script,str(out/'run.py'),'exec');(out/'run.py').write_text(script)
 shell=f'''#!/bin/bash
 set -euo pipefail
 export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
+export PYTHONPATH={src}
 export PI05_CHECKPOINT_PATH={r}/assets/pi05 SAM3_CHECKPOINT_PATH={r}/assets/sam3/sam3.pt
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 {r}/.venv/bin/python -u {out}/run.py

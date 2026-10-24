@@ -25,7 +25,7 @@ for file in files:
   records.append({'case':file.parent.parent.name,'decision':row['index'],'legal_count':len(legal),
    'source_legal_identical':True,'selected_is_legal':True})
 assert records
-handoff=json.loads((a.package_root/'SIDECAR_HANDOFF.json').read_bytes())
+handoff=json.loads((a.package_root/'SIDECAR_HANDOFF_r2.json').read_bytes())
 assert handoff['contract_sha256']==hashlib.sha256((a.source/'rpent/skill_package/contract.py').read_bytes()).hexdigest()
 ref=handoff['GPU'];assert hashlib.sha256(Path(ref['path']).read_bytes()).hexdigest()==ref['sha256']
 reference_summary=json.loads(Path(ref['path']).read_bytes());parity=[]

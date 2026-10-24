@@ -1,3 +1,9 @@
+## 边车r2环境修复已同步（等E1进程退出）
+
+- C2交接SIDECAR_HANDOFF_r2.json，SHA620397e3cb76e57492204ab0dea1cf5956694c0b9e7e3a0a011f0f7a2fe3f0b1；with_selector SHA39af2fc2190482697f4d16522ca23860a427707526b8d8e08981709ebd57e66a。旧包装器会把C2Python3.12的PYTHONPATH传给C3Python3.10，C2已修并完成真实子进程CPUfixture；权重、模型输入和GPU2请求parity不变。
+- 12385调度器和共享试点都显式给评测PYTHONPATH=9612源；选择器单独用C2环境。验证器读r2交接。尚无GPU物理结果，12318保留。
+- 安装器现在读RUN/active_queue.json的queue_directory/array_job，不能再按旧12380或unlock_queue_1300重装。当前新调度器SHA写回active_queue.json。
+
 ## 共享试点窗口已获C2提供（准备就绪，未启动）
 
 C2于20:54UTC提供12318内 `srun --overlap --exact` 四核窗口，等E1实际训练进程结束后启动，不能只按20–30min估计开跑；其E2会延后。

@@ -3,15 +3,15 @@
 """Install only C3 queue dispatch wiring; preserve C2's delivered package."""
 from pathlib import Path
 import hashlib,json,subprocess
-r=Path('/public/home/sunyihan/rpent_libero_eval');run=r/'results/bounded_skills/task_ladder_20261025';queue=run/'unlock_queue_1300';board=run/'panels5_blacklist_v1'
+r=Path('/public/home/sunyihan/rpent_libero_eval');run=r/'results/bounded_skills/task_ladder_20261025';active=json.loads((run/'active_queue.json').read_bytes());queue=Path(active['queue_directory']);job=str(active['array_job']);board=run/'panels5_blacklist_v1'
 pkg=Path('/public/home/sunyihan/rd_instruction_20260923/c2_next_e_20261024_1300/sidecar_legal8')
-for name,digest in {'with_selector_sidecar.py':'c970665e5370ad495dd5d69d0e756af92f10664b80119f80154ad9ac49235eee','serve_selector_sidecar.py':'cb2207be5ddb8be7f58424abf341b19b60fa5c0c652e3ecf74e6dc53f543fff7'}.items():
+for name,digest in {'with_selector_sidecar.py':'39af2fc2190482697f4d16522ca23860a427707526b8d8e08981709ebd57e66a','serve_selector_sidecar.py':'cb2207be5ddb8be7f58424abf341b19b60fa5c0c652e3ecf74e6dc53f543fff7'}.items():
  assert hashlib.sha256((pkg/'source'/name).read_bytes()).hexdigest()==digest
-handoff=pkg/'SIDECAR_HANDOFF.json';assert hashlib.sha256(handoff.read_bytes()).hexdigest()=='69ae14f22488532f458b0aba3d536f5c3615698bd6d210bdbf439dae5e59867a'
+handoff=pkg/'SIDECAR_HANDOFF_r2.json';assert hashlib.sha256(handoff.read_bytes()).hexdigest()=='620397e3cb76e57492204ab0dea1cf5956694c0b9e7e3a0a011f0f7a2fe3f0b1'
 assert hashlib.sha256((pkg/'SIDECAR_CONFIG.json').read_bytes()).hexdigest()=='dbcbaa1634c57b17ae7118f218391e48d7e19410aea8b95727bec2c54f4b7508'
 config=json.loads((pkg/'SIDECAR_CONFIG.json').read_bytes());assert config['adapter_sha256']=='5825fe0f4a29a268483413e6af07fb67be542df6b9477b5e79156749eb4efa26'
 # Save old dispatcher and replace atomically before any GPU task starts.
-assert set(subprocess.check_output(['squeue','-h','-j','12380','-o','%T'],text=True).splitlines())=={'PENDING'}
+assert set(subprocess.check_output(['squeue','-h','-j',job,'-o','%T'],text=True).splitlines())=={'PENDING'}
 (queue/'dispatch_before_legal8.py').write_bytes((queue/'dispatch.py').read_bytes())
 worker='''from pathlib import Path
 import hashlib,importlib.util,json,os,subprocess,sys
@@ -27,6 +27,7 @@ if use_sidecar:
     board=run/'panels5_blacklist_v1';pkg=Path('/public/home/sunyihan/rd_instruction_20260923/c2_next_e_20261024_1300/sidecar_legal8')
     conf=json.loads((pkg/'SIDECAR_CONFIG.json').read_bytes())
     src=Path(json.loads((run/'failure_blacklist_source.json').read_bytes())['remote_source'])
+    env['PYTHONPATH']=str(src)
     shards=board/'preparation'/('development_shards.json' if i==0 else 'development_remaining_shards.json')
     index=1 if i==0 else task['original_array_index']
     log=run/'sidecar_jobs'/f'{os.environ["SLURM_ARRAY_JOB_ID"]}_{i}'
@@ -52,4 +53,7 @@ if result.returncode:raise SystemExit(result.returncode)
 '''
 compile(worker,str(queue/'dispatch.py'),'exec')
 p=queue/'dispatch.next.py';p.write_text(worker);p.replace(queue/'dispatch.py')
-print(json.dumps({'pilot':'12380_0','after_ACK':'remaining development uses local sidecar; before ACK retains12318','package_untouched':True,'GPU_jobs_cancelled':False,'first_shard_peak_scope':'selector+pi05+SAM3+render, sampled whole allocated GPU','dispatcher_sha256':hashlib.sha256((queue/'dispatch.py').read_bytes()).hexdigest()}))
+active.update(dispatcher_sha256=hashlib.sha256((queue/'dispatch.py').read_bytes()).hexdigest(),sidecar_handoff_r2_sha256='620397e3cb76e57492204ab0dea1cf5956694c0b9e7e3a0a011f0f7a2fe3f0b1',sidecar_wrapper_r2_sha256='39af2fc2190482697f4d16522ca23860a427707526b8d8e08981709ebd57e66a')
+(run/'active_queue.json').write_text(json.dumps(active,ensure_ascii=False,indent=2)+'\n')
+(queue/'dispatcher_r2_registration.json').write_text(json.dumps(active,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'pilot':job+'_0','after_ACK':'remaining development uses local sidecar; before ACK retains12318','package_untouched':True,'GPU_jobs_cancelled':False,'first_shard_peak_scope':'selector+pi05+SAM3+render, sampled whole allocated GPU','dispatcher_sha256':hashlib.sha256((queue/'dispatch.py').read_bytes()).hexdigest()}))
