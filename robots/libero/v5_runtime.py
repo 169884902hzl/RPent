@@ -322,7 +322,9 @@ class MeasuredScene:
         image = state.load_bytes(f"{camera}_high.png")
         world = state.load(f"{camera}_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
-        prior_labels = {e.id: e.name for e in self.entities.values()}
+        tracking_labels=getattr(self,'_tracking_query_labels',{})
+        self._tracking_query_labels=tracking_labels
+        prior_labels = {e.id: tracking_labels.get(e.id,e.name) for e in self.entities.values()}
         category_masks = {}
         current_pan_mask = None
         instance_masks = {}
@@ -447,7 +449,8 @@ class MeasuredScene:
                 else:
                     second_reply = self.rpc.call("sam3.segment_all", kwargs={
                         "image_base64": secondary_image, "text_prompt": prompt, "min_score": .35}, timeout_s=120)
-                self.calls += 1
+                if not moka_ladder:
+                    self.calls += 1
                 if name == "bowl" and not second_reply.get("instances"):
                     second_reply = self.rpc.call("sam3.segment_all", kwargs={
                         "image_base64": secondary_image, "text_prompt": segmentation_retry_prompt(name),
@@ -695,7 +698,7 @@ class MeasuredScene:
                 measured = sorted(measured, key=lambda item: item[3], reverse=True)[:limit]
             if measured:
                 category_masks[name] = np.logical_or.reduce([item[4] for item in measured])
-            old = [e for e in self.entities.values() if e.name == name
+            old = [e for e in self.entities.values() if (e.name == name or prior_labels.get(e.id) == name)
                    and (placement is None or name != placed.name or e.id == placed.id)]
             if self.fixture_identity_cache_v1:
                 old += [e for e in self._rejected_fixture_entities.values() if e.name == name]
@@ -717,6 +720,7 @@ class MeasuredScene:
                     eid, name, xyz, lower, upper, source_step=state.latest_step,
                     geometry="shape_prior_height" if measured_evidence[xyz].get("shape_completion", {}).get("accepted") else None,
                 )
+                tracking_labels[eid]=name
                 self._scores[eid] = score
                 self.perception_evidence[eid] = measured_evidence[xyz]
                 if association_positions and eid in association_positions:
@@ -740,7 +744,7 @@ class MeasuredScene:
                     # not become cached action targets after leaving view.
                     cache = (
                         self.occluded_measurement_cache_v2
-                        and not fixture_actions(e.name)
+                        and not fixture_actions(prior_labels.get(e.id,e.name))
                         and not e.part_of
                         and not e.name.startswith("area ")
                     )

@@ -117,6 +117,11 @@ def reclassify_duplicate_instances(scene, state):
         winners = [name for name,score in scores.items() if score == best and score >= .35]
         label = winners[0] if len(winners) == 1 else 'unclassified object'
         if entity.name != label:
+            # The crop label is public semantics. Retain the segmentation
+            # query class separately so the next frame reuses this instance ID.
+            tracking=getattr(scene,'_tracking_query_labels',{})
+            tracking[entity.id]=entity.name
+            scene._tracking_query_labels=tracking
             scene.entities[entity.id] = replace(entity,name=label)
         evidence[entity.id] = {'old_class':entity.name,'class':label,'scores':scores,
             'crop_sha256':digest,'capture_step':state.latest_step,'crop_box_xyxy':list(box),
