@@ -649,3 +649,10 @@ receipt, learned history feature or model service input. Missing historical
 endpoint predicates remain missing. Existing closed results are retained.
 This changes no public schema, force, velocity, action budget or stopping
 threshold; it adds no task-specific predicate or PRO rule.
+
+
+## Identical-input route rejection feedback (development option)
+
+`route_failure_feedback` records an exhausted full-route `move_to` screen only when no control step ran and the hand has no active or held contact. The next request exposes the measured collision or numerical IK failure in the same candidate's existing consequences and `last_failure`; `legal_after` excludes that blocked option. Numerical IK failure remains a search result, not proof of global impossibility. Reuse requires identical RGB-D, measured robot state, motion history, robot geometry, configuration, selected-anchor route and exact obstacle/target/payload arrays. Unrelated instance association labels do not invalidate the selected route's unchanged inputs. A changed input releases the record.
+
+A zero-control planning rejection reuses its actual capture in synchronous LIBERO; explicit `observe` and executed controls still refresh measurements. A missing public contact plan, route or anchor is a failed perception attempt, so retry history records it. Unexecuted receipt checks remain `null`. These changes use existing schema fields and preserve candidate order. The option is disabled by default; development manifests record its value, source and configuration.

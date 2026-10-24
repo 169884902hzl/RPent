@@ -94,3 +94,20 @@ def test_executed_but_unmeasured_contact_displacement_is_unknown(adapter, monkey
     receipt,=adapter.execute(request,decision(request,[option['id']]))
     assert receipt['steps_used']==1 and receipt['contact_displacement_m'] is None
     validate(receipt)
+
+
+def test_missing_contact_plan_is_remembered_so_oracle_can_try_another_method(adapter,monkeypatch):
+    activate(adapter);adapter.active='e1'
+    adapter.scene.entities['e1']=replace(adapter.scene.entities['e1'],name='cabinet drawer',part_of='cabinet')
+    adapter.scene.measure_fixture_handle_pose=lambda *_:{}
+    request=adapter.request(k=1)
+    option=next(c for c in request['candidates'] if c['skill']=='open_close_articulated')
+    monkeypatch.setattr('robots.libero.bounded_adaptive_contact.run',lambda *a,**k:{
+        'steps_used':0,'advance_m':0.,'stop_reason':'public_contact_plan_missing','checks':[]})
+    monkeypatch.setattr(adapter,'refresh',lambda **kwargs:None)
+    receipt,=adapter.execute(request,decision(request,[option['id']]))
+    assert receipt['outcome']=='failure' and receipt['phase']=='perception'
+    assert receipt['contact_displacement_m'] is None and not adapter.p.actions
+    follow=adapter.request(k=1)
+    current=next(c for c in follow['candidates'] if c['id']==option['id'])
+    assert current['recent_failures']==1 and current['last_failure']=='public_contact_plan_missing'

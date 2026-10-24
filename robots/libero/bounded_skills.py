@@ -2479,6 +2479,9 @@ class MeasuredSkillAdapter:
             public_relations.append({"source_id": source, "relation": relation, "target_id": target})
         aggressive = feedback_fields.get('episode_policy', {}).get('aggressive', False)
         published = self.memory.apply(candidates, keep_retryable=aggressive)
+        if getattr(self, 'route_failure_feedback', False):
+            from robots.libero.bounded_route_feedback import apply
+            published = apply(self, published)
         compact = [compact_candidate(c) for c in published] if self.compact_infeasible_candidates_v1 else published
         self.candidate_compaction = {'before_count': len(published), 'after_count': len(compact),
             'blocked_markers': sum(c['consequences']['screen_scope'] == 'blocked_at_current_prefix' for c in compact),
@@ -2832,6 +2835,11 @@ class MeasuredSkillAdapter:
                 if self.schema6_v1:
                     candidate = self._candidate(candidate['skill'], candidate['parameters'], complete=True) or candidate
                 receipt = self._execute_one(request, candidate, lookahead=lookahead)
+                if getattr(self, 'route_failure_feedback', False):
+                    from robots.libero.bounded_route_feedback import remember
+                    execution = self.details[-1].get('execution', {})
+                    remember(self, row['candidate'], receipt, execution,
+                        execution.get('route_feedback_context'))
                 outcomes.append(receipt)
                 self.receipts.append(receipt)
                 # The resolved direction/path is executor-owned. Retry history
@@ -3028,6 +3036,11 @@ class MeasuredSkillAdapter:
             if skill == 'lift' and self.grasp_reference is not None and self.held is None:
                 payload_reference = self._capture_payload_reference(key)
             self._commit_grasp(candidate)
+            route_feedback_context = None
+            if getattr(self, 'route_failure_feedback', False) and skill == 'move_to':
+                from robots.libero.bounded_route_feedback import public_context,candidate_geometry
+                route_feedback_context = public_context(self)
+                route_feedback_geometry = candidate_geometry(self,candidate) if route_feedback_context is not None else None
             route = self._route(skill, parameters)
             if route is None:
                 phase, outcome, reason = "perception", "failure", "current_anchor_unmeasured"
@@ -3090,6 +3103,9 @@ class MeasuredSkillAdapter:
                         parameters = variant
                         break
                 detail['internal_planning_attempts'] = attempts
+                if route_feedback_context is not None:
+                    detail['route_feedback_context'] = route_feedback_context
+                    detail['route_feedback_geometry'] = route_feedback_geometry
                 trace = detail.get('trace', [])
                 if trace:
                     self._escape_trace = [copy.deepcopy(row['before']) for row in trace]
@@ -3143,6 +3159,10 @@ class MeasuredSkillAdapter:
             outcome = ('success' if detail.get('success') else
                 'no_effect' if reason == 'measured_motion_stalled' and detail['advance_m'] < .003 else 'interrupted')
             phase = None if outcome == 'success' else 'contact_failure'
+            if reason in {'public_contact_plan_missing','public_contact_route_missing','public_anchor_unmeasured'}:
+                # An unavailable preparation is a failed attempt. Calling it
+                # interrupted hides it from retry history and repeats it.
+                outcome,phase='failure','perception'
             if (detail['steps_used'] == 0 and detail.get('motion_attempts')
                     and detail['motion_attempts'][-1].get('screen', {}).get('passed') is False):
                 outcome, phase = 'failure', 'planning_unreachable'
@@ -3235,7 +3255,18 @@ class MeasuredSkillAdapter:
         reuse_vla_observation = (self.schema6_v1 and vla_observation is not None
             and vla_observation['used_sim_steps'] == self.p.env.execution_budget()['used_sim_steps']
             and vla_observation['capture_step'] == self.ex.toolkit._state.latest_step)
-        if skill == 'nudge' and key is not None and outcome == 'success':
+        reuse_rejected_capture = (getattr(self,'route_failure_feedback',False)
+            and self.p.env.execution_budget()['used_sim_steps']==start_steps
+            and ((skill in MOTION_SKILLS and (detail.get('screen') or {}).get('passed') is False)
+                or (skill in {'open_close_articulated','push_to'} and reason in {
+                    'public_contact_plan_missing','public_contact_route_missing','public_anchor_unmeasured'})))
+        if reuse_rejected_capture:
+            # No control advances this synchronous LIBERO world. Preserve
+            # the capture that actually rejected the plan; explicit observe
+            # and every executed motion still acquire a new measurement.
+            detail['reused_zero_control_planning_capture']=True
+            contact_registration=None
+        elif skill == 'nudge' and key is not None and outcome == 'success':
             contact_registration = self.refresh(contact_motion=(key, parameters['axis'],
                 parameters['distance_m'], contact_reference, contact_capture_step))
         elif reuse_vla_observation:

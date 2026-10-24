@@ -256,6 +256,19 @@ def restore_runtime(adapter, policy, state: dict) -> None:
 def d2_session(episode: dict, budget: int = 10000):
     """Open an owned private D2 facade without changing normal PRO services."""
     validate_d2_episode(episode)
+    return _pro_session(episode, budget)
+
+
+def pro_development_session(episode: dict, budget: int = 10000):
+    """Run the registered forty PRO tasks only on development seeds 40--44."""
+    if (set(episode) != {'suite', 'task', 'seed'} or episode['suite'] not in D2_SUITES
+            or type(episode['task']) is not int or not 0 <= episode['task'] < 5
+            or type(episode['seed']) is not int or not 40 <= episode['seed'] <= 44):
+        raise ValueError('PRO measurement panel admits task0--4 and dev seeds40--44 only')
+    return _pro_session(episode, budget)
+
+
+def _pro_session(episode, budget):
     if os.environ.get("LIBERO_TYPE") != "pro":
         raise ValueError("D2 diagnostic requires LIBERO_TYPE=pro")
     from libero.libero import get_libero_path
