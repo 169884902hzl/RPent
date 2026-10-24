@@ -34,6 +34,8 @@ def main():
     p.add_argument('--index',type=int,required=True)
     p.add_argument('--selector-url',default=os.environ.get('BOUNDED_SELECTOR_ENDPOINT'))
     p.add_argument('--prepare-only',action='store_true')
+    p.add_argument('--pilot-ack',type=Path)
+    p.add_argument('--sidecar-package',type=Path)
     a=p.parse_args();shard=json.loads(a.shards.read_bytes())[a.index]
     manifest=Path(shard['manifest']);plan=json.loads(manifest.read_bytes())
     if not a.selector_url:raise ValueError('sidecar endpoint is required')
@@ -56,6 +58,12 @@ def main():
     root=Path('/public/home/sunyihan/rpent_libero_eval')
     subprocess.run([sys.executable,str(root/'notify_task_board_level_20261025.py'),
         '--shards',str(a.shards),'--index',str(a.index)],check=True)
+    if a.pilot_ack:
+        if a.sidecar_package is None:raise ValueError('pilot requires its delivered parity package')
+        subprocess.run([sys.executable,str(root/'check_ladder_sidecar_shard_20261025.py'),
+            '--source',str(a.source),'--shards',str(a.shards),'--index',str(a.index),
+            '--ack',str(a.pilot_ack),'--package-root',str(a.sidecar_package),
+            '--selector-url',a.selector_url],check=True)
 
 
 if __name__=='__main__':main()

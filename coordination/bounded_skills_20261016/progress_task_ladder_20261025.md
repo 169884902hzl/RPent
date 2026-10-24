@@ -6,7 +6,7 @@
 - CPU旧46局/1192请求重放：move/VLA失败后同参数紧接438，规划不可达后231，最长39；源实际计数>=2却选择764，准确无物理步段可阻止636。不是新策略回放成功率。原件RUN/CPU_blacklist_replay46。
 - 新物理快照9612e31636706aef8e7eaab49528c35994002e89；CPU本地329通过181.67s，node02 CPU12381 329通过149.37s；另端点迁移CPU2通过。没有GPU新结果。
 - 开发活动目录改为RUN/panels5_blacklist_v1；新N1 RUN/C0_N1_blacklist_v1。旧panels5_v4保留未跑。DAgger冻结历史绑定及接触配对原源码不变；不把主树整提交当物理SHA。
-- C2原A边车已交：/public/home/sunyihan/rd_instruction_20260923/c2_next_e_20261024_1300。12380_0先用边车验证5个模型臂；其余模型臂在ACK前仍用12318。同卡pilot完成后核对source legal/选择/概率并登记ACK，请C2自己停12318，C3不取消该服务。完整同卡GPU峰值尚未实测。
+- C2原A legal8边车已交：/public/home/sunyihan/rd_instruction_20260923/c2_next_e_20261024_1300/sidecar_legal8；handoff SHA69ae14f22488532f458b0aba3d536f5c3615698bd6d210bdbf439dae5e59867a。12380_0先用边车验证5个模型臂；其余模型臂在ACK前仍用12318。同卡pilot完成后核对全部source legal及C2存档请求的选择/概率，登记ACK；待核查旧18065使用者退出，再请C2停12318，C3不取消该服务。完整同卡GPU峰值尚未实测。
 - 本轮开发只PRO40–44与train布局；其他PRO种子不跑。已经做完的最终种子0–4只CPU构建/hash，不重复、不跑策略。
 
 ## 当前接续点（2026-10-24T20:04:10.905705+00:00）
