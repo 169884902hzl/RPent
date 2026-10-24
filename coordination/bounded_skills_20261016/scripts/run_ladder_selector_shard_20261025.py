@@ -34,6 +34,7 @@ def main():
     p.add_argument('--index',type=int,required=True)
     p.add_argument('--selector-url',default=os.environ.get('BOUNDED_SELECTOR_ENDPOINT'))
     p.add_argument('--prepare-only',action='store_true')
+    p.add_argument('--parallel',type=int)
     p.add_argument('--pilot-ack',type=Path)
     p.add_argument('--sidecar-package',type=Path)
     a=p.parse_args();shard=json.loads(a.shards.read_bytes())[a.index]
@@ -43,6 +44,9 @@ def main():
     with opener.open(a.selector_url.removesuffix('/v1/bounded-choice')+'/health',timeout=20) as response:
         health=json.load(response)
     plan=with_endpoint(plan,a.selector_url,health)
+    if a.parallel is not None:
+        if a.parallel<1:raise ValueError('parallel must be positive')
+        plan['parallel']=a.parallel
     output=Path(shard['output']);output.mkdir(parents=True,exist_ok=True)
     active=output/'sidecar_manifest.json'
     with active.open('x') as f:json.dump(plan,f,indent=2)
@@ -51,6 +55,8 @@ def main():
         'endpoint':a.selector_url,'adapter_sha256':health['adapter_sha256'],
         'changed_fields':['model_service.endpoint','model_service.health_url','model_service.service_job',
             'model_service.deployment','model_service.reference_service_job','model_line']}
+    if a.parallel is not None:record['changed_fields'].append('parallel')
+    record['parallel_workers']=plan.get('parallel',8)
     (output/'sidecar_binding.json').write_text(json.dumps(record,indent=2)+'\n')
     if a.prepare_only:return
     subprocess.run([sys.executable,str(a.source/'coordination/bounded_skills_20261016/scripts/run_task_ladder_20261025.py'),
