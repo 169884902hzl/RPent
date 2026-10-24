@@ -162,13 +162,16 @@ def capture_runtime(adapter, policy) -> dict:
     """Detach public measurement/recovery state, without clients or renderers."""
     captured = {
         "adapter": {key: value for key, value in vars(adapter).items()
-                    if key not in {"ex", "p", "scene"}},
+                    if key not in {"ex", "p", "scene", "success_feedback"}},
         "scene": {key: value for key, value in vars(adapter.scene).items()
                   if key not in {"toolkit", "rpc"}},
         "binding": {key: value for key, value in vars(policy.binding).items() if key != "rpc"},
         "private_trace": policy.private_trace,
         "primitive": {key: value for key, value in vars(adapter.p).items() if key.startswith("_bounded_")},
     }
+    feedback = getattr(adapter, 'success_feedback', None)
+    if feedback is not None:
+        captured['feedback_state'] = {'config': feedback.config, 'reads': feedback.reads}
     from rpent.session import EnvState
 
     store = getattr(adapter.scene.toolkit, '_state', None)
@@ -189,6 +192,7 @@ def restore_runtime(adapter, policy, state: dict) -> None:
     again; atomic artifact writes cannot overwrite a sibling's files.
     """
     saved = copy.deepcopy(state)
+    live_feedback = getattr(adapter, 'success_feedback', None)
     current_revision = getattr(adapter,'runtime_revision',None)
     changed_source = current_revision is not None and saved['adapter'].get('runtime_revision') != current_revision
     defaults = {name:copy.deepcopy(getattr(adapter,name)) for name in (
@@ -201,6 +205,10 @@ def restore_runtime(adapter, policy, state: dict) -> None:
         resources = {key: value for key, value in vars(owner).items() if key in keep}
         vars(owner).clear()
         vars(owner).update(resources | saved[name])
+    if 'feedback_state' in saved and live_feedback is not None:
+        live_feedback.config = saved['feedback_state']['config']
+        live_feedback.reads = saved['feedback_state']['reads']
+        adapter.success_feedback = live_feedback
     if changed_source:
         vars(adapter).update(defaults)
         adapter._base_geometry = adapter._capture_obstacles = None

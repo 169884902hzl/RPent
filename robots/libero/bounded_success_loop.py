@@ -17,6 +17,16 @@ def predicate_feedback(facade):
             for i, (goal, done) in enumerate(zip(status['goals'], status['satisfied']))]
 
 
+def restore_feedback(adapter, facade, captured):
+    """Rebind checkpoint feedback to this live facade after physics restore."""
+    state = captured.get('feedback_state')
+    if state is not None:
+        adapter.success_feedback = SuccessFeedback(state['config'],
+            native_success=lambda: native_success(facade),
+            subgoals=lambda: predicate_feedback(facade))
+        adapter.success_feedback.reads = state['reads']
+
+
 def enable(adapter, facade, *, level_b=False, permissive=False):
     configure(adapter, SuccessFeedback(FeedbackConfig(True, level_b),
         native_success=lambda: native_success(facade), subgoals=lambda: predicate_feedback(facade)),

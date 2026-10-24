@@ -189,6 +189,8 @@ def restore_checkpoint(facade, adapter, policy, saved):
     adapter.p.env.truncated = saved["client_stop_flags"]["truncated"]
     adapter.p.set_obs(observed)
     restore_runtime(adapter, policy, saved["public_runtime"])
+    from robots.libero.bounded_success_loop import restore_feedback
+    restore_feedback(adapter, facade, saved['public_runtime'])
     actual = facade.snapshot()
     legacy_observation = ('actuator_state' in saved['physics']
         and 'observation_state' not in saved['physics']['actuator_state'])

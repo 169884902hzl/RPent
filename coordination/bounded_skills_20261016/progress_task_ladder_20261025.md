@@ -1,16 +1,16 @@
-## 当前正在跑修正后的共享物理试点（2026-10-24T21:45Z）
+## 当前接续点：检查点序列化修正，准备第三次同初态试点
 
-本轮未完成，不在队列/试点未结束时交回。
-- 最新物理源44faeea5c7e026d816490d7104e7a33440b777a5，路径ROOT/source_blacklist_progress_44faeea5_20261025。contract还是e9c14e..，schema不变。
-- 首试9612发现我删掉aggressive局部变量，却在后续progress.exhausted分支引用。实际case001等报NameError；新增aggressive=False/True耗尽CPU复现先2失败、最小恢复一行后2通过；完整node02 CPU12396共331通过153.53s。旧public_progress/restore均deepcopy，未发现共享别名问题，不追加补丁。
-- 只取消自己的共享step12318.34，没取消12318作业；旧完整/部分数据、程序错误原件全保留在shared12318_pilot和panels5_blacklist_v1。旧试点实际同卡GPU局部峰43328MiB，含原A参考+新A边车+pi/SAM/机器人，不能叫完成分片或正常单A生产峰。
-- 新活动开发面板RUN/panels5_blacklist_r2；N1新臂RUN/C0_N1_progressfix；RUN/active_queue.json已指44fa。临时只hold自己的12385_1..8/40，CPU通过后已全部释放；旧held作业完全没动。
-- 21:45:33UTC修后同5布局完整初态重跑已启动，shared12318_pilot_r2/run.sh，C2原A12318内4CPU/2独立回合进程。自己的12385暂%2，含共享卡合计<=3；step退出驱动自动恢复%3。
-- C2于21:28明确E1训练及posthoc已退出、E2未开始并延后；此前我独立NVML亦只见原A PID4025620/12534MiB。21:30首试在收到真实条件后启动，21:45修后重跑不训练。
-- shared重跑的本地exec session和日志尾随session在交接摘要记录。关注RUN/shared12318_pilot_r2/step.log及panels5_blacklist_r2/results/development_01/case*/worker.log。如果失败，先修程序并保留原件，不问用户重复许可。
-- sidecar_pilot_verified.json =物理+legal+冻结参考一致通过；新分片据此侧车。最终sidecar_switch_ACK.json须主代理等step完全退出并核查无旧18065使用者后单独写，再通知C2停12318；不直接取消12318。
-- DAgger2仍12385 indices9..27首选577、28..37对照300，按原冻结f698/f6ce/df589精确绑定，不随44fa重绑。38接触、39旧N1、40新N1、41E。
-- C0模型D2准备仍旧9612，尚未提交；后续需升级到44fa，只40个seed40，原6holdout不重复。PRO测量200世界只40–44，未提交；最终0–4只做过CPU构建，不跑策略。
+本轮未完成，队列未清，不交回。
+- 第二次共享step12318.36已于21:56:47UTC自行退出1；没有取消12318或其他项目作业。原件保留RUN/shared12318_pilot_r2和panels5_blacklist_r2，不混修后分母。
+- 根因：真实模型失败后采集完整状态，pickle把success_feedback的enable局部lambda一起保存，触发AttributeError。现runtime仅存FeedbackConfig/read计数，恢复时绑定当前facade；离线annotation保留已经公开的feedback/episode_policy，不带live callback。
+- 保存→pickle→新宿主恢复的完整CPU链已通过；能验证native/subgoal读新环境且原宿主变化不影响新分叉。此前两项复现先失败后通过。扩展面板发现旧储物split测试仍断言已退役unsupported，在修前44fa也失败；仅更新测试以核对当前已登记拆分，未改运行规则。
+- 新隔离快照ceac8e1e76dc32b66f51dfe2989829f1e18e15ad，从44fa增量；remote ROOT/source_feedback_checkpoint_ceac8e1e_20261025。control/contract/schema不变，主树额外抓取修改未混入。
+- node02 CPU12400与本地扩展面板均398通过/4历史迁移fixture失败；现仅修测试显式绑定原schema7并增加现代来源必须拒绝的断言，定向5通过，完整403项CPU12402运行。通过后再启动同5训练盒布局共享试点r3，4CPU/2独立进程；旧初态字节保留。
+- 已临时hold自己当前12385_1..8/40，修后CPU通过才release；旧held作业不动。DAgger2 indices9..37原历史源不受影响，继续排队；38/39/41不换源。
+- C2于21:55登记cleanE1/E2作业12399，等共享试点退出和最后停服ACK后接回原C2卡；该任务当前JobHeldUser，C3不release。
+- sidecar_pilot_verified.json和sidecar_switch_ACK.json都尚不存在。pilot物理+全部legal+存档参考一致后才能写第一个；step完全退出、资源日志落盘且旧18065客户已退出后才另写ACK，通知C2停12318，C3不取消它。
+- 活动数组12385总0–41%3（共享试点运行时降%2）；0已取消改共享试点，1–8开发、9–27首选577、28–37确定性对照300、38接触、39旧N1、40修后N1、41纯几何N1。对照不是模型首选；原source/state/request/prefix/outcome不改头。
+- 新开发/N1/D2目录和dispatcher待切到新源；PRO只40–44，D2仅40；最终种子0–4只有既存CPU构建，无策略运行。
 
 ## 停服标记已拆开，避免试点收尾时12318被提前结束
 

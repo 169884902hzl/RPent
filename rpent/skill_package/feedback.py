@@ -1,4 +1,5 @@
 """Explicit, separately enabled benchmark feedback and episode limits."""
+import copy
 from dataclasses import dataclass
 
 
@@ -21,6 +22,16 @@ class EpisodePolicy:
     aggressive: bool = False
     max_decisions: int = 40
     max_sim_steps: int = 10000
+
+
+@dataclass
+class CapturedFeedback:
+    """Public request feedback for CPU prefix prediction, without live IO."""
+
+    values: dict
+
+    def read(self):
+        return copy.deepcopy(self.values)
 
 
 class SuccessFeedback:

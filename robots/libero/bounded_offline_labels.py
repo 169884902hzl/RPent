@@ -119,7 +119,9 @@ def capture_annotation_state(oracle, request, *, status=None):
         'compact_infeasible_candidates_v1', 'lazy_planning_v1', 'schema6_v1', 'public_progress',
         'memory', '_failed_move_anchors', '_move_approach_by_anchor', 'guarded_move_v1',
         '_stationary_observe_modes', '_progress_normals', 'rendered_self_filter_v1', '_vla_failed_options',
-        'verify_instance_crops_v1','vla_options_v2','human_available')
+        'verify_instance_crops_v1','vla_options_v2','human_available',
+        'schema_version','episode_policy','adaptive_contact_skills','permissive_preparation_options',
+        'verify_instance_class_v10')
     adapter = object.__new__(MeasuredSkillAdapter)
     adapter.__dict__.update({key: getattr(original, key) for key in names if hasattr(original, key)})
     scene_fields = ('entities', 'measurement_clouds', 'dual_view_fusion_v1', 'view_axes', '_scores')
@@ -134,6 +136,10 @@ def capture_annotation_state(oracle, request, *, status=None):
             setattr(adapter.p, name, getattr(original.p, name))
     adapter.ex = SimpleNamespace(instruction=original.ex.instruction,
         toolkit=SimpleNamespace(_state=FrozenDepth(original.ex.toolkit._state)))
+    if 'feedback' in request:
+        from rpent.skill_package.feedback import CapturedFeedback
+        adapter.success_feedback = CapturedFeedback({key: request[key]
+            for key in ('feedback', 'task_success', 'subgoal_status') if key in request})
     adapter.candidate_diagnostics = []
     adapter.record_public_geometry = False
     screens = {None: original._cloud_and_ik()}

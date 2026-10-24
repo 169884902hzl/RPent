@@ -135,13 +135,16 @@ def test_seeded_policy_fingerprints_the_actual_wire_inputs_without_changing_them
     assert [json.loads(line) for line in ledger.read_text().splitlines()] == policy.inputs
 
 
-def test_recognized_storage_predicates_do_not_claim_prerequisite_rule_coverage():
+def test_storage_split_preserves_registered_goals_without_inventing_prerequisites():
     tasks, unsupported = split_subtasks([
         ['close', 'cabinet_bottom_region'], ['in', 'bowl', 'cabinet_bottom_region']])
     assert [task['mode'] for task in tasks] == ['close', 'pick', 'in']
-    assert unsupported == [{'index': 0, 'goal': ['close', 'cabinet_bottom_region'],
-        'reason': 'existing_oracle_storage_insert_close_progress_not_covered'}]
-    # Independent close/in goals on different fixtures do not imply this gap.
+    assert unsupported == []
+    assert [task['goal_index'] for task in tasks] == [0, 1, 1]
+    assert [task['goal'] for task in tasks] == [
+        ['close', 'cabinet_bottom_region'], ['in', 'bowl', 'cabinet_bottom_region'],
+        ['in', 'bowl', 'cabinet_bottom_region']]
+    # The splitter records the clauses; ordered_status owns prerequisite order.
     _, unsupported = split_subtasks([
         ['close', 'microwave'], ['in', 'bowl', 'basket']])
     assert unsupported == []

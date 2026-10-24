@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Saved CPU prefix labels follow model prefixes without live environment IO."""
 import copy
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -50,6 +51,20 @@ def captured(monkeypatch):
     oracle = BoundedOracle(SimpleNamespace(call=call), adapter)
     state = capture_annotation_state(oracle, request)
     return adapter, oracle, request, state, calls
+
+
+@pytest.fixture
+def legacy_catalog_capture(monkeypatch):
+    """Run the schema6/7 migration tests with their actual historical contract."""
+    import rpent.skill_package as package
+    import rpent.skill_package.contract as contract
+    import robots.libero.bounded_skills as skills
+
+    monkeypatch.setattr(package, 'VERSION', 'bounded-skills/7')
+    monkeypatch.setattr(skills, 'VERSION', 'bounded-skills/7')
+    monkeypatch.setattr(contract, 'SCHEMA', json.loads(
+        contract.SCHEMA_PATH.with_name('schema7.json').read_text()))
+    return captured.__wrapped__(monkeypatch)
 
 
 def test_saved_state_matches_oracle_path_and_does_not_touch_live_services(captured, tmp_path):
@@ -110,8 +125,8 @@ def test_rejected_deterministic_approach_uses_new_option_until_scene_changes(cap
     assert default['id'] in label['rule_acceptable']
 
 
-def test_schema6_captured_catalog_uses_same_builder_and_keeps_exact_request(captured):
-    adapter, oracle, _, _, calls = captured
+def test_schema6_captured_catalog_uses_same_builder_and_keeps_exact_request(legacy_catalog_capture):
+    adapter, oracle, _, _, calls = legacy_catalog_capture
     adapter.schema6_v1 = adapter.lazy_planning_v1 = True
     request = adapter.request(k=4)
     state = capture_annotation_state(oracle, request)
@@ -124,8 +139,8 @@ def test_schema6_captured_catalog_uses_same_builder_and_keeps_exact_request(capt
     assert calls == calls_before and not adapter.p.actions
 
 
-def test_legacy_captured_catalog_rebuilds_merged_moves_and_relabels_arbitrary_prefix(captured):
-    adapter, _, request, state, calls = captured
+def test_legacy_captured_catalog_rebuilds_merged_moves_and_relabels_arbitrary_prefix(legacy_catalog_capture):
+    adapter, _, request, state, calls = legacy_catalog_capture
     request = copy.deepcopy(request)
     request['schema_version'] = 'bounded-skills/3'
     state = copy.deepcopy(state)
@@ -157,8 +172,8 @@ def test_legacy_captured_catalog_rebuilds_merged_moves_and_relabels_arbitrary_pr
     assert rebuild_schema6_captured_request(unrelated_goals, request)[1] == current
 
 
-def test_captured_catalog_rebuild_rejects_inflight_prefix(captured):
-    _, _, request, state, _ = captured
+def test_captured_catalog_rebuild_rejects_inflight_prefix(legacy_catalog_capture):
+    _, _, request, state, _ = legacy_catalog_capture
     request = copy.deepcopy(request)
     request['execution_prefix'] = {'steps': []}
     state = copy.deepcopy(state)
@@ -167,8 +182,8 @@ def test_captured_catalog_rebuild_rejects_inflight_prefix(captured):
         rebuild_schema6_captured_request(state, request)
 
 
-def test_captured_legacy_failure_memory_is_projected_without_restoring_blocked_move(captured):
-    adapter, oracle, request, _, _ = captured
+def test_captured_legacy_failure_memory_is_projected_without_restoring_blocked_move(legacy_catalog_capture):
+    adapter, oracle, request, _, _ = legacy_catalog_capture
     move = next(c for c in request['candidates'] if c['skill'] == 'move_to'
         and c['parameters'] == {'anchor_id': 'e1', 'approach': 'above', 'path': 'over'})
     for _ in range(2):
@@ -181,6 +196,15 @@ def test_captured_legacy_failure_memory_is_projected_without_restoring_blocked_m
     assert len(moves) == 3 and all('approach' in c['parameters'] for c in moves)
     assert flags['failure_history_projected_to_merged_catalog']
     assert not flags['failure_history_incomplete']
+
+
+def test_legacy_catalog_migration_does_not_relabel_as_modern_schema(captured, monkeypatch):
+    import rpent.skill_package as package
+
+    _, _, request, state, _ = captured
+    monkeypatch.setattr(package, 'VERSION', 'bounded-skills/9')
+    with pytest.raises(ValueError, match='requires schema6 or schema7 source'):
+        rebuild_schema6_captured_request(state, request)
 
 
 def test_model_chosen_nonoracle_prefix_is_labeled_without_mutating_saved_state(captured):
@@ -262,3 +286,16 @@ def test_parallel_rejects_live_adapter_and_initialized_cuda(captured, monkeypatc
     monkeypatch.setitem(sys.modules, 'torch', SimpleNamespace(cuda=SimpleNamespace(is_initialized=lambda: True)))
     with pytest.raises(ValueError, match='initialized CUDA'):
         annotate_prefix(state, request, [], workers=4)
+
+
+def test_offline_capture_keeps_feedback_and_aggressive_context_without_live_callback(captured):
+    from rpent.skill_package.feedback import FeedbackConfig, SuccessFeedback, configure, public_fields
+    adapter,oracle,_,_,_=captured
+    configure(adapter,SuccessFeedback(FeedbackConfig(True),native_success=lambda:False),aggressive=True)
+    request=adapter.request(k=1)
+    state=capture_annotation_state(oracle,request)
+    restored=state['adapter']
+    assert public_fields(restored)=={k:request[k] for k in ('feedback','task_success','episode_policy')}
+    import pickle
+    clone=pickle.loads(pickle.dumps(state,protocol=5))
+    assert public_fields(clone['adapter'])==public_fields(restored)
