@@ -67,3 +67,18 @@ def test_aggressive_request_blocks_same_option_after_two_zero_step_failures(adap
     request = adapter.request(k=1)
     assert all(identity(c) != identity(candidate) for c in request['candidates'])
     assert any(c['skill'] == 'observe' for c in request['candidates'])
+
+
+@pytest.mark.parametrize('aggressive', [False, True])
+def test_exhausted_actual_progress_keeps_aggressive_menu_without_nameerror(adapter, aggressive):
+    # The shared box pilot reached this real request branch at N=11.
+    adapter.schema6_v1 = True
+    adapter.public_progress.limit = 11
+    adapter.public_progress.stagnant = 11
+    adapter.public_progress.last_revision = -1
+    configure(adapter, SuccessFeedback(FeedbackConfig(False), native_success=lambda: False), aggressive=aggressive)
+    request = adapter.request(k=1)
+    assert request['progress']['stagnant_decisions'] >= 11
+    legal = set(legal_after(request, []))
+    assert any(c['id'] in legal and c['skill'] not in {'finish','ask_help'}
+        for c in request['candidates']) == aggressive

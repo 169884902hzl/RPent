@@ -2484,6 +2484,7 @@ class MeasuredSkillAdapter:
             if source not in anchor_ids or target not in anchor_ids:
                 continue
             public_relations.append({"source_id": source, "relation": relation, "target_id": target})
+        aggressive = feedback_fields.get('episode_policy', {}).get('aggressive', False)
         published = self.memory.apply(candidates)
         if getattr(self, 'route_failure_feedback', False):
             from robots.libero.bounded_route_feedback import apply
