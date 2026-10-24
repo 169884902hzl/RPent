@@ -112,6 +112,26 @@ class BoundedOracle:
                     symbol, goal[2], entities, phrase, ex.scene.view_axes)
                 if paired_source is not None:
                     source, target = paired_source, paired_target
+            if (source is not None and getattr(ex, 'permissive_preparation_options', False)
+                    and predicate in {'open', 'close'}):
+                plan = ex.plans.get(source.id, {})
+                normal = plan.get('surface_measurement', {}).get('normal_xyz')
+                if normal is None:
+                    normal = plan.get('handle_measurement', {}).get('pose', {}).get('approach_normal_xyz', [0., -1., 0.])
+                axis = int(np.argmax(np.abs(normal)))
+                direction = int((1 if predicate == 'open' else -1)*np.sign(normal[axis]))
+                compound = find('open_close_articulated', anchor_id=source.id, axis='xyz'[axis],
+                    direction=direction, preparation='measured_anchor_permissive')
+                if compound is not None:
+                    chosen = compound
+                    continue
+            if (source is not None and target is not None and ex.ex.instruction.lower().startswith('push ')
+                    and getattr(ex, 'permissive_preparation_options', False)):
+                compound = find('push_to', anchor_id=source.id, target_id=target.id,
+                    preparation='measured_anchor_permissive')
+                if compound is not None:
+                    chosen = compound
+                    continue
             if source is not None and predicate in {'open', 'close'} and source.id not in ex.plans:
                 # A public segmented panel can expose push contact when its
                 # parent's handle is not visible. Select its existing public
@@ -385,7 +405,8 @@ class BoundedOracle:
         return acceptable
 
     def choose(self, request):
-        status = self.rpc.call('oracle.status')
+        from robots.libero.bounded_storage_progress import ordered_status
+        status = ordered_status(self.rpc.call('oracle.status'))
         prediction = PublicPrefixPrediction(self.adapter, request)
         virtual = copy.copy(self)
         virtual.binding = copy.deepcopy(self.binding, {id(self.binding.rpc): self.binding.rpc})

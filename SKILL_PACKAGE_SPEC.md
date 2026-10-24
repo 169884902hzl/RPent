@@ -1,6 +1,50 @@
-# Bounded skill package v8 (development) — 2026-10-24
+# Bounded skill package v10 (opt-in development) — 2026-10-24
 
 Owner: Codex3. This contract implements the user's **10/16 05:45 PDT** direction; the 10/14 pause and old v5 freeze gates are retired. No model training is authorized in this round. This is a development specification, not evidence of physical qualification. Existing confirmation-state exclusions remain permanent.
+
+## Explicit permissive preparation and instance identity (v10, opt-in)
+
+The review schema is [`rpent/skill_package/schema10.json`](rpent/skill_package/schema10.json).
+`permissive_preparation_options=true` selects `bounded-skills/10` when success
+feedback is configured. The canonical historical schema and frozen model-A
+schema8 evaluation remain unchanged. Legality stays `public-request-legal/7`.
+Candidate order carries no meaning. Old labels do not acquire outcomes for
+these new compound options; model training/serving requires a synchronized
+schema and renderer.
+
+* `call_vla(..., preparation="measured_anchor_permissive")` is a separate
+  candidate from the screened `measured_anchor` variant. Its endpoint and wrist
+  orientation come from the selected measured instance. Preparation uses the
+  existing permissive controller: at most 200 controls per move, 2 cm translation
+  and 0.10 rad rotation increments, with the existing endpoint tolerance. It
+  does not veto sweeps or abort for tracking error. Policy and post-policy
+  transport retain their existing budgets, checks and success criteria.
+* `open_close_articulated` and `push_to` may carry that same preparation value.
+  Their selected compound option approaches and descends to its measured source;
+  articulated contact also closes the jaws. The subsequent adaptive contact
+  increments retain collision/IK checks and the existing force and speed rules.
+  Setup and actual advancement have separate receipt details and step counts.
+  Any missing public contact fit returns a measured failure rather than a pose
+  from task truth. The new option has no historical success estimate.
+* Optional public class verification scores each duplicate-class instance crop
+  independently using the existing SAM vocabulary and 0.35 acceptance threshold.
+  It retains each instance ID, mask, cloud and obstacle geometry. An uncertain
+  class becomes `unclassified object`; instances are never merged to resolve a
+  language ambiguity. Public descriptions name a uniquely measured support
+  surface before falling back to left/right ordering. Relations can also carry
+  measured `above`/`below`. The existing public image-axis convention is retained.
+* Private oracle binding distinguishes `between` from `not between`. For a task
+  requiring both insertion and closing the same storage region, its diagnostic
+  subtask order is open, insert, close. Opening uses the existing native
+  `storage_open` predicate; not-closed does not imply fully open. After two
+  observations without a new goal stage or recovered binding, the private
+  selector tries another legal method. These rules do not modify the model's
+  public legal set or inject private coordinates.
+
+The v10 preparation measurements, exact source trees, paired successes and
+regressions are reported separately from schema8 model evaluation and the
+previous contact panel. All training-layout collection uses only original train
+splits; D2, PRO and confirmation states remain excluded from training.
 
 ## Explicit benchmark feedback and persistent attempts (v8, development)
 
@@ -28,12 +72,13 @@ the menu to terminal actions. With `human_available=false`, `ask_help` stays
 illegal. A failed or unchanged `observe` returns control rather than ending
 the episode. Geometry and execution checks retain their existing semantics.
 
-The development-only permissive `measured_anchor` preparation uses at most
+The earlier development-only permissive override of `measured_anchor` uses at most
 200 existing OSC controls, a 2 cm Euclidean translation increment, 0.10 rad
 rotation increment and the existing 1.2 cm endpoint tolerance. It does not
 reject a sweep or abort on tracking error, and hands control to the VLA from
 the achieved pose when its preparation budget ends. This authorization is
-limited to that preparation mode; it does not change other motion screens,
+limited to that preparation mode; v10 exposes it separately as
+`measured_anchor_permissive`. It does not change other motion screens,
 gripper force, native scoring or environment budgets. Contact and non-target
 object displacement are private diagnostic measurements, never controller inputs.
 

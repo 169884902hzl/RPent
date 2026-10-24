@@ -51,7 +51,8 @@ def choose(probe, facade, adapter, policy, request, *, only_pi=False, measured_p
     if only_pi:
         chosen = min(whole, key=lambda c: (c['recent_failures'], bool(c['parameters'].get('seed_variant'))))
         return decision(request, [chosen['id']]), {'selector': 'whole_task_only'}
-    status = facade.goal_status()
+    from robots.libero.bounded_storage_progress import ordered_status
+    status = ordered_status(facade.goal_status())
     specs, unsupported = probe.split_subtasks(status['goals'], adapter.ex.instruction)
     current = None
     source = target = None
@@ -63,6 +64,11 @@ def choose(probe, facade, adapter, policy, request, *, only_pi=False, measured_p
             continue
         current, source, target = spec, one_source, one_target
         break
+    stage = (tuple(bool(done) for done in status['satisfied']),
+        current['id'] if current else None, source.id if source else None, target.id if target else None)
+    if stage != getattr(policy, '_ceiling_observation_stage', None):
+        policy._ceiling_observation_stage = stage
+        policy._ceiling_observation_repeats = 0
     options = []
     own = None
     from robots.libero.bounded_oracle import NoPublicOption
@@ -74,7 +80,11 @@ def choose(probe, facade, adapter, policy, request, *, only_pi=False, measured_p
         by_id = {c['id']: c for c in request['candidates']}
         first = by_id[own['candidate_ids'][0]]
         failures = first.get('recent_failures', 0)
-        options.append((failures, 1, 0, first['id'], own, 'self_rule'))
+        # Two repeated observations without a new private goal stage or a
+        # recovered public binding must yield to a different legal method.
+        # This is the user's repeat>=2 rule, not a D2-tuned score threshold.
+        if first['skill'] != 'observe' or policy._ceiling_observation_repeats < 2:
+            options.append((failures, 1, 0, first['id'], own, 'self_rule'))
     preferred = next((choice for choice in measured_path if current is not None
                       and choice['subtask']['id'] == current['id']), None)
     for candidate in candidates:
@@ -92,12 +102,16 @@ def choose(probe, facade, adapter, policy, request, *, only_pi=False, measured_p
         if preferred and preferred['method'] == 'call_vla' and all(
                 parameters.get(k) == value for k, value in preferred.get('vla_parameters', {}).items()):
             preference = 0
-        preparation = {'measured_anchor': 0, 'in_place': 1, 'initial_pose': 2}.get(parameters.get('preparation'), 1)
+        preparation = {'measured_anchor_permissive': 0, 'measured_anchor': 1, 'in_place': 2, 'initial_pose': 3}.get(parameters.get('preparation'), 1)
         options.append((candidate.get('recent_failures', 0), preference, preparation,
                         candidate['id'], decision(request, [candidate['id']]), 'call_vla'))
     if not options:
         return None, {'selector': 'no_public_option', 'unsupported': unsupported}
     selected = min(options, key=lambda row: row[:4])
+    by_id = {candidate['id']: candidate for candidate in request['candidates']}
+    first_selected = by_id[selected[4]['candidate_ids'][0]]
+    policy._ceiling_observation_repeats = (policy._ceiling_observation_repeats+1
+        if first_selected['skill'] == 'observe' else 0)
     return selected[4], {'selector': selected[5], 'subtask': current,
                          'rule_unsupported': unsupported, 'ranking': list(selected[:4]),
                          'uses_evaluation_sampled_method_preference': preferred is not None}

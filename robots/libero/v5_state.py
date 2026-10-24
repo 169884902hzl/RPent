@@ -98,6 +98,7 @@ def relations(
     threshold: float = 0.02,
     right_axis: tuple = (1, 0, 0),
     front_axis: tuple = (0, -1, 0),
+    vertical: bool = False,
 ) -> list[str]:
     """Derive relations only from measured centres and surface bounds."""
     result = []
@@ -110,6 +111,10 @@ def relations(
                 result.append(f"rel {a.id} left_of {b.id}")
             if sum(delta[i] * front_axis[i] for i in range(3)) > threshold:
                 result.append(f"rel {a.id} in_front_of {b.id}")
+            if vertical and delta[2] > threshold:
+                result.append(f"rel {a.id} above {b.id}")
+            if vertical and delta[2] < -threshold:
+                result.append(f"rel {a.id} below {b.id}")
             inside_xy = all(b.lower[i] <= a.xyz[i] <= b.upper[i] for i in (0, 1))
             # Visible-surface quantiles can straddle a contact surface.
             overlapping_xy = all(min(a.upper[i], b.upper[i]) > max(a.lower[i], b.lower[i]) for i in (0, 1))

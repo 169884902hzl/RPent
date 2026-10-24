@@ -21,7 +21,7 @@ import numpy as np
 D2_SUITES = tuple(f"libero_{family}_{variant}"
                   for family in ("spatial", "object", "goal", "10")
                   for variant in ("swap", "task"))
-SPLIT_VERSION = "private-hybrid-call-vla-subtasks/3"
+SPLIT_VERSION = "private-hybrid-call-vla-subtasks/4"
 PROGRESS_VERSION = "private-registered-goal-or-subtask/1"
 MODES = {"on": "on", "in": "in", "open": "open", "close": "close",
          "turnon": "turn_on", "turnoff": "turn_off"}
@@ -61,14 +61,6 @@ def split_subtasks(goals: list, instruction: str = '') -> tuple[list[dict], list
             mode = 'push'
         subtasks.append({**common, "id": f"g{index}:{mode}", "mode": mode,
                          "target_symbol": goal[2] if len(goal) == 3 else None})
-    # The current bounded selector has no storage-opening prerequisite or
-    # deferred-close rule. Recognizing both predicates does not establish a
-    # correct task-progress policy; do not invent one for PRO diagnostics.
-    insertions = {task['target_symbol'] for task in subtasks if task['mode'] == 'in'}
-    for task in subtasks:
-        if task['mode'] == 'close' and task['source_symbol'] in insertions:
-            unsupported.append({'index': task['goal_index'], 'goal': task['goal'],
-                'reason': 'existing_oracle_storage_insert_close_progress_not_covered'})
     return subtasks, unsupported
 
 

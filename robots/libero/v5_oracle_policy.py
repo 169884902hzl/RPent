@@ -319,27 +319,34 @@ class OriginalOraclePolicy:
             if len(ranked) == 1 or ranked[1][0] - ranked[0][0] > 0.02:
                 return ranked[0][1]
             return None
-        between = re.search(r"between the (.+?) and the (.+?)(?:,|$)", reference_phrase)
+        between = re.search(r"(?:(not)\s+)?between the (.+?) and the (.+?)(?:,|$)", reference_phrase)
         if between:
-            first = self.bind(between[1], visible, "", axes)
-            second = self.bind(between[2], visible, "", axes)
+            first = self.bind(between[2], visible, "", axes)
+            second = self.bind(between[3], visible, "", axes)
             if first is None or second is None:
                 return None
-            delta = [second.xyz[i] - first.xyz[i] for i in (0, 1)]
-            norm2 = sum(x * x for x in delta)
+            delta = [second.xyz[i]-first.xyz[i] for i in (0, 1)]
+            norm2 = sum(x*x for x in delta)
             if norm2 < 1e-6:
                 return None
             ranked = []
+            outside = []
             for e in options:
-                fraction = (
-                    sum((e.xyz[i] - first.xyz[i]) * delta[i] for i in (0, 1)) / norm2
-                )
-                if not 0 < fraction < 1:
-                    continue
-                projected = [first.xyz[i] + fraction * delta[i] for i in (0, 1)]
-                ranked.append((math.dist(e.xyz[:2], projected), e))
+                fraction = sum((e.xyz[i]-first.xyz[i])*delta[i] for i in (0, 1))/norm2
+                projected = [first.xyz[i]+fraction*delta[i] for i in (0, 1)]
+                distance = math.dist(e.xyz[:2], projected)
+                if 0 < fraction < 1:
+                    ranked.append((distance, e))
+                # A source well away from the measured reference segment is
+                # the negative relation; don't invert an uncertain near-tie.
+                if fraction < 0 or fraction > 1 or distance > .04:
+                    outside.append(e)
+            if between[1]:
+                nearest = min((d for d, _ in ranked), default=float('inf'))
+                selected = [e for e in outside if all(e.id != peer.id or d > nearest+.02 for d, peer in ranked)]
+                return selected[0] if len(selected) == 1 else None
             ranked.sort(key=lambda pair: pair[0])
-            if ranked and (len(ranked) == 1 or ranked[1][0] - ranked[0][0] > 0.02):
+            if ranked and (len(ranked) == 1 or ranked[1][0]-ranked[0][0] > .02):
                 return ranked[0][1]
             return None
         right, front = axes

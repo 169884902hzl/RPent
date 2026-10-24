@@ -49,9 +49,7 @@ def category(name: str) -> str:
     return text
 
 
-def segmentation_prompt(name: str) -> str:
-    """Translate LIBERO category names to visible package descriptions."""
-    return {
+PUBLIC_SEGMENTATION_PROMPTS = {
         "bowl": "black patterned bowl",
         "plate": "white plate with a red rim",
         "alphabet soup": "blue can",
@@ -80,7 +78,12 @@ def segmentation_prompt(name: str) -> str:
         "stove": "single electric stove",
         "wine bottle": "green wine bottle",
         "table": "wooden tabletop",
-    }.get(name, name)
+    }
+
+
+def segmentation_prompt(name: str) -> str:
+    """Translate existing public category names to visible package descriptions."""
+    return PUBLIC_SEGMENTATION_PROMPTS.get(name, name)
 
 
 def scene_vocabulary(names: list[str], instruction: str) -> list[str]:

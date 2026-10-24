@@ -66,6 +66,22 @@ def measured_instance_description(
         raise SubtaskBindingError(f"cannot uniquely bind selected {selected.id}: {name} measurement unavailable")
     if len(peers) == 1:
         return name
+    # Prefer a unique measured support when peers occupy different levels.
+    # The destination language and simulator instance names are not inputs.
+    observed = {tuple(row.split()[1:]) for row in relations(scene)}
+    supports = []
+    for anchor in scene:
+        if anchor.id == selected.id or _name(anchor) == name or not _measured(anchor):
+            continue
+        if (selected.id, 'on', anchor.id) not in observed:
+            continue
+        members = [peer.id for peer in peers if (peer.id, 'on', anchor.id) in observed]
+        if members == [selected.id]:
+            supports.append(anchor)
+    if supports:
+        supports.sort(key=lambda e: (e.geometry != 'measured_top_surface',
+            (e.upper[0]-e.lower[0])*(e.upper[1]-e.lower[1]), e.name))
+        return f"{name} on the {_name(supports[0])}"
     right, front = view_axes if view_axes is not None else ((1, 0, 0), (0, -1, 0))
     for axis in (right, front):
         if len(axis) != 3 or not all(math.isfinite(value) for value in axis) or math.hypot(*axis[:2]) == 0 or axis[2] != 0:

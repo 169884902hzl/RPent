@@ -39,6 +39,14 @@ def in_target(entity, target):
 
 
 def run(adapter, parameters, *, push=False):
+    setup = None
+    if parameters.get('preparation') == 'measured_anchor_permissive':
+        from robots.libero.bounded_contact_setup import prepare_contact
+        setup = prepare_contact(adapter, parameters, push=push)
+        if not setup['success'] or adapter.p.env.terminated or adapter.p.env.truncated:
+            return {'steps_used': setup['steps_used'], 'advance_m': 0., 'checks': [],
+                'trace': setup['trace'], 'contact_surface_displacement_m': [0., 0., 0.],
+                'stop_reason': setup['stop_reason'], 'success': bool(adapter.p.env.terminated), 'setup': setup}
     key = parameters['anchor_id']
     source = adapter.scene.entities.get(key)
     target = adapter.scene.entities.get(parameters.get('target_id'))
@@ -137,9 +145,9 @@ def run(adapter, parameters, *, push=False):
             break
     final = adapter.scene.entities.get(key)
     displacement = (np.asarray(final.xyz) - initial).tolist() if final is not None else None
-    return {'steps_used': adapter.p.env.execution_budget()['used_sim_steps'] - started,
+    return {'steps_used': adapter.p.env.execution_budget()['used_sim_steps'] - started + (setup['steps_used'] if setup else 0),
         'advance_m': advance, 'object_displacement_m': displacement,
         'contact_surface_displacement_m': contact_displacement.tolist(),
-        'stop_reason': reason, 'checks': checks, 'trace': traces, 'motion_attempts': motions,
+        'stop_reason': reason, 'checks': checks, 'trace': (setup['trace'] if setup else []) + traces, 'setup': setup, 'motion_attempts': motions,
         'source': 'public_rgbd_surface_registration', 'private_joint_angles_used': False,
         'success': reason in {'native_stop', 'measured_target_region'}}

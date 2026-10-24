@@ -7,7 +7,7 @@ import numpy as np
 
 def receipt_format(adapter, version):
     """Render older public measurements in v7 without mutating saved requests."""
-    if version not in {'bounded-skills/7', 'bounded-skills/8', 'bounded-skills/9'}:
+    if version not in {'bounded-skills/7', 'bounded-skills/8', 'bounded-skills/9', 'bounded-skills/10'}:
         return
     adapter.receipts=[{**r,'schema_version':version}
         if r.get('schema_version') in {'bounded-skills/3','bounded-skills/4','bounded-skills/5','bounded-skills/6','bounded-skills/7','bounded-skills/8'}
@@ -61,7 +61,8 @@ def refresh_selected(adapter, parameters):
 
 def prepare(adapter, parameters):
     """Stage at the measured source, or carry an existing grip above its target."""
-    if getattr(adapter, 'permissive_measured_anchor', False):
+    if (parameters.get('preparation') == 'measured_anchor_permissive'
+            or getattr(adapter, 'permissive_measured_anchor', False)):
         from robots.libero.bounded_permissive import prepare as permissive_prepare
         return permissive_prepare(adapter, parameters)
     started=perf_counter();before=adapter.p.env.execution_budget()['used_sim_steps']

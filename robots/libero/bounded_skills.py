@@ -2133,6 +2133,10 @@ class MeasuredSkillAdapter:
             history["source_manifest_sha256"] = self.history.manifest_sha256
             consequence["expected_steps"] = estimate["expected_steps"] or 240
             consequence["screen_scope"] = "unmeasured"
+            if parameters.get('preparation') in {'measured_anchor', 'measured_anchor_permissive'}:
+                from robots.libero.bounded_vla_staged import estimate_steps
+                consequence['expected_steps'] += estimate_steps(self, parameters)
+                history = {'success_rate': None, 'n': 0, 'expected_steps': None, 'source_manifest_sha256': None}
         return {"id": cid, "skill": skill, "parameters": parameters, "consequences": consequence,
                 "history": history, "recent_failures": 0, "last_failure": None,
                 "expected_receipt": expected_receipt(self, skill, parameters,
@@ -2211,6 +2215,9 @@ class MeasuredSkillAdapter:
         from rpent.skill_package.feedback import public_fields
         self._request_feedback_fields = public_fields(self)
         self._refresh_held_measurement()
+        if getattr(self, 'verify_instance_class_v10', False):
+            from robots.libero.bounded_instance_crops import reclassify_duplicate_instances
+            self._class_verification_evidence = reclassify_duplicate_instances(self.scene, self.ex.toolkit._state)
         self.plans.clear()
         self.candidate_diagnostics = []
         entities = [e for e in self.scene.entities.values() if self._has_anchor(e)]
@@ -2341,6 +2348,8 @@ class MeasuredSkillAdapter:
         if self.schema6_v1 and self.verify_instance_crops_v1:
             from robots.libero.bounded_instance_crops import score_instance_crops
             self._binding_crop_evidence = score_instance_crops(self.scene,self.ex.toolkit._state,self.ex.instruction)
+        from robots.libero.bounded_vla_staged import receipt_format
+        receipt_format(self, getattr(self, "schema_version", VERSION))
         candidates = []
         options = []
         def add(skill, **parameters):
@@ -2356,9 +2365,16 @@ class MeasuredSkillAdapter:
                 return
             from robots.libero.bounded_vla_options import STYLES
             key = tuple(parameters.get(k) for k in ('anchor_id','target_id','mode','clause_id'))
-            for preparation in ('in_place','initial_pose'):
+            preparations = ('in_place','initial_pose') + (('measured_anchor',)
+                if getattr(self, 'schema_version', VERSION) not in {
+                    'bounded-skills/3', 'bounded-skills/4', 'bounded-skills/5', 'bounded-skills/6'}
+                and parameters.get('anchor_id') and parameters['mode'] not in {'task','instruction'} else ())
+            if (getattr(self, 'permissive_preparation_options', False)
+                    and 'measured_anchor' in preparations):
+                preparations += ('measured_anchor_permissive',)
+            for preparation in preparations:
                 add('call_vla',**parameters,preparation=preparation)
-                if key in getattr(self,'_vla_failed_options',set()):
+                if preparation not in {'measured_anchor', 'measured_anchor_permissive'} and key in getattr(self,'_vla_failed_options',set()):
                     for style in (('full_task',) if parameters['mode']=='task' else STYLES[1:]):
                         add('call_vla',**{**parameters,'preparation':preparation,
                             'prompt_style':style,'seed_variant':1})
@@ -2401,6 +2417,21 @@ class MeasuredSkillAdapter:
                 for target in entities:
                     if target.visible and target.name.startswith('area '):
                         add('push_to', anchor_id=entity.id, target_id=target.id)
+        if getattr(self, 'permissive_preparation_options', False) and getattr(self, 'adaptive_contact_skills', False):
+            for entity in entities:
+                if not entity.visible:
+                    continue
+                modes = fixture_actions(entity.name)
+                if any(mode in {'open', 'close'} for mode in modes):
+                    for axis in 'xyz':
+                        for direction in (-1, 1):
+                            add('open_close_articulated', anchor_id=entity.id, axis=axis,
+                                direction=direction, preparation='measured_anchor_permissive')
+                elif not modes and not entity.part_of and not entity.name.startswith('area '):
+                    for target in entities:
+                        if target.visible and target.name.startswith('area '):
+                            add('push_to', anchor_id=entity.id, target_id=target.id,
+                                preparation='measured_anchor_permissive')
         if self.allow_vla and self.schema6_v1 and self.vla_options_v2:
             from robots.libero.bounded_vla_options import instruction_clauses
             for index,_ in enumerate(instruction_clauses(self.ex.instruction)):
@@ -2440,7 +2471,8 @@ class MeasuredSkillAdapter:
         relation_entities = [self.target_cache.get(e.id, e)
             if (self.held is not None and e.id != self.held)
                 or (not e.visible and self._has_anchor(e)) else e for e in self.scene.entities.values()]
-        for row in relations(relation_entities, right_axis=right, front_axis=front):
+        for row in relations(relation_entities, right_axis=right, front_axis=front,
+                vertical=getattr(self, "permissive_preparation_options", False)):
             _, source, relation, target = row.split()
             if source not in anchor_ids or target not in anchor_ids:
                 continue
@@ -3703,6 +3735,13 @@ class MeasuredSkillAdapter:
             checks.append(result)
             return result
         def prepare():
+            nonlocal source, target
+            if parameters.get('preparation') in {'measured_anchor', 'measured_anchor_permissive'}:
+                from robots.libero.bounded_vla_staged import prepare as prepare_measured
+                prepared = prepare_measured(self, parameters)
+                source = self.scene.entities.get(parameters['anchor_id'], source)
+                target = self.scene.entities.get(parameters.get('target_id'), target)
+                return prepared
             if parameters.get('preparation','in_place' if self.vla_options_v2 else 'initial_pose')=='in_place':
                 return {'success':True,'steps_used':0,'mode':'in_place'}
             route = [{"xyz_m": self.preparation["eef_xyz_m"], "quat_xyzw": self.preparation["eef_quat_xyzw"]}]
@@ -3790,6 +3829,17 @@ class MeasuredSkillAdapter:
         if not (self.p.env.terminated or self.p.env.truncated):
             result["post_handoff_measurement"] = observe(full=True)
             first_measurement = result['post_handoff_measurement']
+            native_staged_completion = False
+            if parameters.get('preparation') in {'measured_anchor', 'measured_anchor_permissive'}:
+                result['raw_policy_outcome'] = {k: result[k] for k in ('outcome', 'stop_reason', 'blocks_used')}
+                if mode in {'on','in'} and result['preparation']['success'] and not first_measurement['completed']:
+                    from robots.libero.bounded_vla_staged import transport
+                    result['scripted_transport'] = transport(self, parameters)
+                    result['timing_s']['scripted_transport'] = result['scripted_transport']['wall_s']
+                    native_staged_completion = bool(self.p.env.terminated)
+                    result['post_handoff_measurement'] = observe(full=True)
+                    first_measurement = result['post_handoff_measurement']
+                result['native_completion_after_scripted_transport'] = native_staged_completion
             if (self.schema6_v1 and mode=='pick' and not first_measurement['completed']
                     and first_measurement.get('public_hold') is not None
                     and first_measurement['public_hold']['rise_m']>=.03
@@ -3811,11 +3861,12 @@ class MeasuredSkillAdapter:
             elif self.schema6_v1 and mode in {'close','push'} and first_measurement['completed']:
                 result['verification_settle'] = settle_osc_hold(self.p,self.gripper_command,self.config)
                 result['post_handoff_measurement'] = observe(full=False)
-            final_completed = result["post_handoff_measurement"]["completed"]
+            final_completed = result["post_handoff_measurement"]["completed"] or native_staged_completion
             if result['outcome'] == 'success' and not final_completed:
                 result.update(outcome='failure', stop_reason='completion_lost_during_handoff')
             if final_completed:
-                result.update(outcome='success',stop_reason='measured_success_after_handoff')
+                result.update(outcome='success',stop_reason=('native_success_after_scripted_transport'
+                    if native_staged_completion else 'measured_success_after_handoff'))
                 if mode == "pick":
                     self.held = self.active = source.id
                 elif mode in {"on", "in"}:
@@ -3827,6 +3878,9 @@ class MeasuredSkillAdapter:
                 result['post_handoff_observation'] = {
                     'capture_step': self.ex.toolkit._state.latest_step,
                     'used_sim_steps': self.p.env.execution_budget()['used_sim_steps']}
+        if (parameters.get('preparation') in {'measured_anchor', 'measured_anchor_permissive'} and not result['preparation']['success']
+                and result['steps_used'] == 0):
+            result['phase'] = 'planning_unreachable'
         result["template"] = {"version": PI05_PROMPT_VERSION, "mode": mode, "prompt": prompt}
         result['payload_reference_capture_step'] = (vla_payload_reference['capture_step']
             if vla_payload_reference is not None else None)

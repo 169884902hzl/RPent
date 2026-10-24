@@ -17,6 +17,7 @@ BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
 LEGALITY_VERSION = "public-request-legal/7"
 SCHEMA8 = json.loads(SCHEMA_PATH.with_name('schema8.json').read_text())
 SCHEMA9 = json.loads(SCHEMA_PATH.with_name('schema9.json').read_text())
+SCHEMA10 = json.loads(SCHEMA_PATH.with_name('schema10.json').read_text())
 CONTACT_BOUNDARIES = {'guarded_move', 'open_close_articulated', 'push_to'}
 
 
@@ -131,7 +132,7 @@ def validate(value: dict) -> None:
     if kind not in {"request", "decision", "receipt", "prefix_context", "oracle_labels"}:
         raise ValueError("unknown bounded-skills message kind")
     version = value.get('schema_version')
-    source = (SCHEMA9 if version == 'bounded-skills/9'
+    source = (SCHEMA10 if version == 'bounded-skills/10' else SCHEMA9 if version == 'bounded-skills/9'
               else SCHEMA8 if version == 'bounded-skills/8' else SCHEMA)
     schema = {key: val for key, val in source.items() if key != "oneOf"}
     schema["$ref"] = f"#/$defs/{kind}"

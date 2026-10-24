@@ -72,6 +72,9 @@ def run_episode(args, plan, row, probe, facade, adapter, policy, timings):
     assert initial == probe.snapshot_digest(saved['physics'])
     arm = row['arm']
     level_b = arm == 'oracle_AB'
+    adapter.permissive_preparation_options = row.get('permissive_options', False)
+    adapter.adaptive_contact_skills = row.get('adaptive_contact_skills', False)
+    adapter.verify_instance_class_v10 = row.get('verify_instance_class', False)
     enable(adapter, facade, level_b=level_b, permissive=row.get('permissive', False))
     adapter.vla_budget = VLABudget(**plan['vla_budget'])
     original_model = adapter.p.model
@@ -147,7 +150,12 @@ def run_contact_panel(args, plan, row, probe, facade, adapter, policy, timings):
     adapter.vla_budget = VLABudget(**diagnostic['budget'])
     adapter._incremental_touched.update(adapter.scene.entities)
     adapter.refresh()
-    common, common_ref = probe.save_checkpoint(facade, adapter, policy, args.output/'private_common.pkl')
+    if row.get('common_checkpoint'):
+        common_ref = row['common_checkpoint']
+        common = pickle.loads(checked(common_ref).read_bytes())
+        probe.restore_checkpoint(facade, adapter, policy, common)
+    else:
+        common, common_ref = probe.save_checkpoint(facade, adapter, policy, args.output/'private_common.pkl')
     expected = probe.snapshot_digest(common['physics'])
     specs, unsupported = probe.split_subtasks(facade.goal_status()['goals'], adapter.ex.instruction)
     spec = next((s for s in specs if s['goal_index'] == diagnostic['goal_index']
@@ -161,6 +169,8 @@ def run_contact_panel(args, plan, row, probe, facade, adapter, policy, timings):
         for arm in (('screened', 'permissive') if row['kind'] == 'n2' else ('adaptive_contact',)):
             probe.restore_checkpoint(facade, adapter, policy, common)
             assert probe.snapshot_digest(facade.snapshot()) == expected
+            adapter.permissive_preparation_options = row.get('permissive_options', False)
+            adapter.adaptive_contact_skills = row.get('permissive_options', False)
             enable(adapter, facade, permissive=arm == 'permissive')
             source, target = probe.bind_subtask(policy, adapter, spec)
             if source is None and spec['mode'] in {'open', 'close'}:
@@ -224,6 +234,30 @@ def execute_new_contact(probe, facade, adapter, policy, spec, source, target):
     from rpent.skill_package.feedback import TaskAlreadySucceeded
     adapter.allow_vla = False
     setup = []
+    if getattr(adapter, 'permissive_preparation_options', False):
+        request = adapter.request(k=1)
+        options = [c for c in request['candidates'] if c['parameters'].get('preparation') == 'measured_anchor_permissive'
+            and c['skill'] == ('push_to' if spec['mode'] == 'push' else 'open_close_articulated')
+            and c['parameters'].get('anchor_id') == source.id]
+        if spec['mode'] == 'push':
+            options = [c for c in options if c['parameters'].get('target_id') == target.id]
+        else:
+            contact = adapter.plans.get(source.id, {})
+            normal = contact.get('surface_measurement', {}).get('normal_xyz')
+            if normal is None:
+                normal = contact.get('handle_measurement', {}).get('pose', {}).get('approach_normal_xyz', [0., -1., 0.])
+            axis = int(np.argmax(np.abs(normal)))
+            sign = int((1 if spec['mode'] == 'open' else -1)*np.sign(normal[axis]))
+            options = [c for c in options if c['parameters'].get('axis') == 'xyz'[axis] and c['parameters'].get('direction') == sign]
+        if not options:
+            return {'success': False, 'steps_used': 0, 'stop_reason': 'public_composite_contact_unavailable', 'setup': []}
+        choice = {'schema_version': request['schema_version'], 'kind': 'decision', 'revision': request['revision'],
+            'observation_id': request['observation_id'], 'candidate_ids': [options[0]['id']]}
+        index = len(adapter.details)
+        receipts = adapter.execute(request, choice)
+        physical = adapter.details[index:]
+        detail = next((d['execution'] for d in physical if d.get('candidate_id') == options[0]['id']), {})
+        return {**detail, 'selected_request': request, 'selected_decision': choice, 'selected_receipts': receipts}
     for _ in range(8):
         try:request = adapter.request(k=1)
         except TaskAlreadySucceeded:return {'success':True,'stop_reason':'native_success','setup':setup}
