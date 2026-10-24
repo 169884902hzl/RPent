@@ -21,7 +21,7 @@ script=Path(task['script']);assert hashlib.sha256(script.read_bytes()).hexdigest
 env=dict(os.environ)
 if task['original_array_index'] is not None:env['SLURM_ARRAY_TASK_ID']=str(task['original_array_index'])
 print(json.dumps({'dispatch_array_index':i,'task':task}),flush=True)
-use_sidecar=task['name'].startswith('development') and (i==0 or (run/'sidecar_switch_ACK.json').exists())
+use_sidecar=task['name'].startswith('development') and (i==0 or (run/'sidecar_pilot_verified.json').exists())
 sampler=None
 if use_sidecar:
     board=run/'panels5_blacklist_v1';pkg=Path('/public/home/sunyihan/rd_instruction_20260923/c2_next_e_20261024_1300/sidecar_legal8')
@@ -41,7 +41,7 @@ if use_sidecar:
         f.write(chr(10)+'## Codex3 即将启动同卡边车与评测分片'+chr(10)+json.dumps({'owner':'Codex3','UTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'job':os.environ['SLURM_JOB_ID'],'array_index':i,'CUDA_VISIBLE_DEVICES':os.environ.get('CUDA_VISIBLE_DEVICES'),'sidecar_package':str(pkg),'C2_note':'Starting selector+pi+SAM+render on this allocated GPU; avoid overlapping extra profiling on it. This is not stop12318 ACK.'},ensure_ascii=False)+chr(10))
     command=[conf['interpreter'],str(pkg/'source/with_selector_sidecar.py'),'--package-root',str(pkg),'--output',str(log),'--',
         str(r/'.venv/bin/python'),str(r/'run_ladder_selector_shard_20261025.py'),'--source',str(src),'--shards',str(shards),'--index',str(index),'--selector-url','{SELECTOR_ENDPOINT}']
-    if i==0:command+=['--pilot-ack',str(run/'sidecar_switch_ACK.json'),'--sidecar-package',str(pkg)]
+    if i==0:command+=['--pilot-ack',str(run/'sidecar_pilot_verified.json'),'--sidecar-package',str(pkg)]
 else:command=['bash',str(script)]
 print(json.dumps({'array_index':i,'model_runtime':'local_sidecar' if use_sidecar else 'original12318_or_no_model'}),flush=True)
 try:
@@ -56,4 +56,4 @@ p=queue/'dispatch.next.py';p.write_text(worker);p.replace(queue/'dispatch.py')
 active.update(dispatcher_sha256=hashlib.sha256((queue/'dispatch.py').read_bytes()).hexdigest(),sidecar_handoff_r2_sha256='620397e3cb76e57492204ab0dea1cf5956694c0b9e7e3a0a011f0f7a2fe3f0b1',sidecar_wrapper_r2_sha256='39af2fc2190482697f4d16522ca23860a427707526b8d8e08981709ebd57e66a')
 (run/'active_queue.json').write_text(json.dumps(active,ensure_ascii=False,indent=2)+'\n')
 (queue/'dispatcher_r2_registration.json').write_text(json.dumps(active,ensure_ascii=False,indent=2)+'\n')
-print(json.dumps({'pilot':job+'_0','after_ACK':'remaining development uses local sidecar; before ACK retains12318','package_untouched':True,'GPU_jobs_cancelled':False,'first_shard_peak_scope':'selector+pi05+SAM3+render, sampled whole allocated GPU','dispatcher_sha256':hashlib.sha256((queue/'dispatch.py').read_bytes()).hexdigest()}))
+print(json.dumps({'pilot':job+'_0','after_ACK':'new development uses sidecar after pilot_verified; stop12318 requires separate final switch ACK','package_untouched':True,'GPU_jobs_cancelled':False,'first_shard_peak_scope':'selector+pi05+SAM3+render, sampled whole allocated GPU','dispatcher_sha256':hashlib.sha256((queue/'dispatch.py').read_bytes()).hexdigest()}))

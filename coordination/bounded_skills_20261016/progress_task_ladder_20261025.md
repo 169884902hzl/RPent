@@ -1,3 +1,8 @@
+## 停服标记已拆开，避免试点收尾时12318被提前结束
+
+RUN/sidecar_pilot_verified.json 只代表物理5世界/源legal/存档参考选择验证通过；新模型分片据此切边车，C2尚不能停12318。
+RUN/sidecar_switch_ACK.json 由主代理在共享step完全退出、显存和日志已落盘、旧18065使用者已全部退出后再写，随后明确通知C2停服务。试点验证器不会自动发最终停服ACK。
+
 ## 边车r2环境修复已同步（等E1进程退出）
 
 - C2交接SIDECAR_HANDOFF_r2.json，SHA620397e3cb76e57492204ab0dea1cf5956694c0b9e7e3a0a011f0f7a2fe3f0b1；with_selector SHA39af2fc2190482697f4d16522ca23860a427707526b8d8e08981709ebd57e66a。旧包装器会把C2Python3.12的PYTHONPATH传给C3Python3.10，C2已修并完成真实子进程CPUfixture；权重、模型输入和GPU2请求parity不变。

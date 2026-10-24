@@ -11,7 +11,7 @@ helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
 metrics=out/'resources';metrics.mkdir()
 sampler=helper.ResourceSampler(metrics);sampler.stage='shared12318_Areference_sidecar_pi_SAM_render';sampler.start()
 conf=json.loads((pkg/'SIDECAR_CONFIG.json').read_bytes())
-command=[conf['interpreter'],str(pkg/'source/with_selector_sidecar.py'),'--package-root',str(pkg),'--output',str(out/'selector'),'--',str(r/'.venv/bin/python'),str(r/'run_ladder_selector_shard_20261025.py'),'--source',str(src),'--shards',{str(shards)!r},'--index','1','--parallel','2','--selector-url','{{SELECTOR_ENDPOINT}}','--pilot-ack',{str(run/'sidecar_switch_ACK.json')!r},'--sidecar-package',str(pkg)]
+command=[conf['interpreter'],str(pkg/'source/with_selector_sidecar.py'),'--package-root',str(pkg),'--output',str(out/'selector'),'--',str(r/'.venv/bin/python'),str(r/'run_ladder_selector_shard_20261025.py'),'--source',str(src),'--shards',{str(shards)!r},'--index','1','--parallel','2','--selector-url','{{SELECTOR_ENDPOINT}}','--pilot-ack',{str(run/'sidecar_pilot_verified.json')!r},'--sidecar-package',str(pkg)]
 try:result=subprocess.run(command)
 finally:
  sampler.close();(metrics/'summary.json').write_text(json.dumps(sampler.summary(sampler.stage),indent=2)+chr(10))

@@ -43,7 +43,7 @@ for item in reference_summary['checks']:
  parity.append({'request':name,'selected_identical':True,'code_identical':True,
   'probability_max_abs_difference':max(abs(probs[k]-expected[k]) for k in probs)})
 result={'owner':'Codex3','UTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),
- 'sidecar_switch_ACK':True,'pilot_shard':str(out),'closed_model_episodes':len(files),'source_legal_checks':records,
+ 'sidecar_pilot_passed':True,'sidecar_switch_ACK':False,'pilot_shard':str(out),'closed_model_episodes':len(files),'source_legal_checks':records,
  'actual_GPU_parity_to_frozen12318':parity,'reference_package':str(a.package_root),
  'adapter_sha256':plan['model_service']['adapter_sha256'],'source_tree':plan['source_commit'],
  'C2_action':'同卡分片已通过；新的模型分片切到边车。请暂保留12318，C3核查此前仍用18065的分片已退出后会另发停服通知。',
