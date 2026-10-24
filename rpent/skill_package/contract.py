@@ -14,7 +14,7 @@ SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "finish", "ask_help"}
-LEGALITY_VERSION = "public-request-legal/7"
+LEGALITY_VERSION = "public-request-legal/8"
 SCHEMA8 = json.loads(SCHEMA_PATH.with_name('schema8.json').read_text())
 SCHEMA9 = json.loads(SCHEMA_PATH.with_name('schema9.json').read_text())
 SCHEMA10 = json.loads(SCHEMA_PATH.with_name('schema10.json').read_text())
@@ -262,10 +262,10 @@ class FailureMemory:
         if reason == "execution_error":
             self.cooldown[key] = 3
 
-    def apply(self, candidates: list[dict], *, keep_retryable: bool = False) -> list[dict]:
+    def apply(self, candidates: list[dict]) -> list[dict]:
         return [{**c, "recent_failures": self.counts.get(identity(c), 0),
                  "last_failure": self.last.get(identity(c))} for c in candidates
-                if (keep_retryable or self.counts.get(identity(c), 0) < 2) and not self.cooldown.get(identity(c), 0)]
+                if self.counts.get(identity(c), 0) < 2 and not self.cooldown.get(identity(c), 0)]
 
 
 class DecisionLookahead:

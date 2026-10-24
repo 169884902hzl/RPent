@@ -66,8 +66,15 @@ development arms only. It must not be described as RGB-D measurement.
 `episode_policy.aggressive=true` continues after failed/no-progress skills
 without a recovery-count stop, until native success, 40 decisions or 10000
 environment controls. These are episode budgets, including retries. Receipt
-failure history remains visible; repeated failures do not permanently remove
-all retryable actions. Public stagnation is diagnostic and does not restrict
+failure history remains visible. Two failed/no-effect attempts with the same
+skill and parameters remove that option even in aggressive mode, until public
+depth supports actual scene motion. Candidate IDs and new capture IDs do not
+reset counts; zero-control planning failures count. A changed mask centre alone
+cannot unlock retries. With no physics steps, scene motion is impossible.
+After physics steps, the existing axis surface fit along measured displacement
+must place its complete compatible interval beyond the existing 1 cm gate.
+Missing or ambiguous surfaces preserve the blacklist. Other parameter choices
+remain available. Public legality contract: `public-request-legal/8`. Public stagnation is diagnostic and does not restrict
 the menu to terminal actions. With `human_available=false`, `ask_help` stays
 illegal. A failed or unchanged `observe` returns control rather than ending
 the episode. Geometry and execution checks retain their existing semantics.

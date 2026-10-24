@@ -1,4 +1,4 @@
-"""Native success stops before sensing; failure does not remove all retries."""
+"""Native success stops before sensing; aggressive retries still respect failures."""
 import copy
 import pytest
 
@@ -45,11 +45,25 @@ def test_aggressive_stagnation_keeps_measured_actions(adapter):
     assert any(c['id'] in legal and c['skill'] not in {'finish', 'ask_help'} for c in request['candidates'])
 
 
-def test_failure_history_remains_visible_without_permanent_retry_block():
+def test_failure_history_uses_parameters_not_transient_candidate_ids():
     memory = FailureMemory()
     candidate = {'id': 'one', 'skill': 'call_vla', 'parameters': {'mode': 'task'}}
-    for _ in range(3):
-        memory.record(candidate, 'failure', 'block_budget')
-    assert memory.apply([candidate]) == []
-    retry = memory.apply([candidate], keep_retryable=True)
-    assert retry[0]['recent_failures'] == 3 and memory.counts[identity(candidate)] == 3
+    memory.record(candidate, 'failure', 'block_budget')
+    assert memory.apply([{**candidate, 'id': 'two'}])[0]['recent_failures'] == 1
+    memory.record({**candidate, 'id': 'three'}, 'failure', 'block_budget')
+    assert memory.apply([{**candidate, 'id': 'four'}]) == []
+    alternative = {**candidate, 'parameters': {'mode': 'pick'}}
+    assert memory.apply([alternative])
+    memory.tick(scene_changed=False)
+    assert memory.counts[identity(candidate)] == 2
+
+
+def test_aggressive_request_blocks_same_option_after_two_zero_step_failures(adapter):
+    configure(adapter, SuccessFeedback(FeedbackConfig(True), native_success=lambda: False), aggressive=True)
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    for _ in range(2):
+        adapter.memory.record(candidate, 'failure', 'measured_sweep_collision')
+    request = adapter.request(k=1)
+    assert all(identity(c) != identity(candidate) for c in request['candidates'])
+    assert any(c['skill'] == 'observe' for c in request['candidates'])

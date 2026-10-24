@@ -149,6 +149,7 @@ class MeasuredSkillAdapter:
         self._move_approach_by_anchor = {}
         self._grasp_geometry_cache = {}
         self.memory = FailureMemory()
+        self._failure_scene_sim_steps = self.p.env.execution_budget()['used_sim_steps']
         self._contact_retry_references = {}
         self.revision = 0
         self.receipts: list[dict] = []
@@ -235,6 +236,7 @@ class MeasuredSkillAdapter:
             'calibration_source': calibration.get('source_report')}
 
     def refresh(self, *, contact_motion=None, names=None):
+        retry_surfaces = dict(self.scene.measurement_clouds) if self.memory.counts else {}
         self.ex.capture()
         requested_names = sorted(self.scene.vocabulary if names is None else set(names))
         if self.schema6_v1:
@@ -268,6 +270,7 @@ class MeasuredSkillAdapter:
         changed = {key for key, value in current.items()
             if key not in self.previous_scene or np.linalg.norm(value-self.previous_scene[key]) > .01}
         registration = None
+        confirmed_contacts = set()
         contacts = {key: value for key, value in self._contact_retry_references.items() if key in changed}
         if contact_motion is not None:
             contacts[contact_motion[0]] = contact_motion
@@ -290,12 +293,16 @@ class MeasuredSkillAdapter:
                     low, high = fit['compatible_axis_interval_m']
                     if low > .01 or high < -.01:
                         changed.add(key)
+                        confirmed_contacts.add(key)
                         self._contact_retry_references.pop(key, None)
         self._last_scene_changes = changed
         self._incremental_support_changes = changed & set(self.previous_scene)
         if changed:
             self._stationary_observe_modes = set()
-        self.memory.tick(scene_changed=bool(changed), changed_anchors=changed)
+        from robots.libero.bounded_failure_history import confirmed_changes
+        retry_changes, retry_evidence = confirmed_changes(self, changed, retry_surfaces, confirmed_contacts)
+        self.details.append({'failure_history_scene_check': retry_evidence})
+        self.memory.tick(scene_changed=bool(retry_changes), changed_anchors=retry_changes)
         # Temporary occlusion does not erase the last measured pose. Merely
         # detecting the same stationary entity again is not scene progress.
         self.previous_scene.update(current)
@@ -2477,8 +2484,7 @@ class MeasuredSkillAdapter:
             if source not in anchor_ids or target not in anchor_ids:
                 continue
             public_relations.append({"source_id": source, "relation": relation, "target_id": target})
-        aggressive = feedback_fields.get('episode_policy', {}).get('aggressive', False)
-        published = self.memory.apply(candidates, keep_retryable=aggressive)
+        published = self.memory.apply(candidates)
         if getattr(self, 'route_failure_feedback', False):
             from robots.libero.bounded_route_feedback import apply
             published = apply(self, published)

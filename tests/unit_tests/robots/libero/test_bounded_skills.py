@@ -3237,11 +3237,18 @@ def test_unrelated_mask_centre_drift_does_not_reenable_no_effect_contact(adapter
         adapter.scene.entities['background'] = replace(entity, xyz=(x, 0., .8))
         adapter.refresh()
         assert not adapter.memory.apply([action])
-    assert adapter.memory.apply([route])  # A changed obstacle can reopen a route.
+    assert not adapter.memory.apply([route])  # Mask drift is not physical obstacle motion.
     source = adapter.scene.entities['e1']
-    adapter.scene.entities['e1'] = replace(source, xyz=(.12, .1, .9))
+    surface = np.random.default_rng(994).uniform([.08, .08, .88], [.12, .12, .92], (900, 3))
+    adapter.scene.measurement_clouds['e1'] = surface
+    def move(_):
+        adapter.scene.entities['e1'] = replace(source, xyz=(.12, .1, .9))
+        adapter.scene.measurement_clouds['e1'] = surface+[.02, 0., 0.]
+    adapter.scene.refresh = move
+    adapter.p.actions.append({})  # Physics advanced; current depth independently supports motion.
     adapter.refresh()
     assert adapter.memory.apply([action])
+    assert adapter.memory.apply([route])
 
 
 def test_contact_mask_jitter_cannot_unlock_failed_nudge_but_measured_motion_can(adapter):
@@ -3275,6 +3282,7 @@ def test_contact_mask_jitter_cannot_unlock_failed_nudge_but_measured_motion_can(
         assert not adapter.memory.apply([action])
     # Public depth now independently supports movement of the source.
     shift[:] = [0., .02, 0.]
+    adapter.p.actions.append({})
     adapter.refresh()
     assert adapter.memory.apply([action])
 
@@ -3299,8 +3307,13 @@ def test_stationary_entity_reappearing_does_not_reset_failures_or_observe_progre
         assert not adapter.memory.apply([move])
     assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh'
                    for c in adapter.request(k=1)['candidates'])
-    adapter.scene.refresh = lambda _: adapter.scene.entities.update(
-        e1=replace(entity, xyz=(.12, .1, .9)))
+    surface = np.random.default_rng(995).uniform([.08, .08, .88], [.12, .12, .92], (900, 3))
+    adapter.scene.measurement_clouds['e1'] = surface
+    def physical_move(_):
+        adapter.scene.entities['e1'] = replace(entity, xyz=(.12, .1, .9))
+        adapter.scene.measurement_clouds['e1'] = surface+[.02, 0., 0.]
+    adapter.scene.refresh = physical_move
+    adapter.p.actions.append({})
     adapter.refresh()
     assert adapter.memory.apply([move])
 

@@ -1,0 +1,41 @@
+{
+  "counts": {
+    "cases": 46,
+    "requests": 1192,
+    "source_count_candidates_blocked": 1281,
+    "longest_same_parameter_run": 39,
+    "consecutive_same_skill_parameters": 500,
+    "consecutive_after_failure": 473,
+    "selected_blocked_by_actual_failure_count": 764,
+    "selected_blocked_in_unchanged_physics_segment": 636,
+    "consecutive_after_zero_control": 309,
+    "consecutive_after_planning_unreachable": 231,
+    "centre_shift_over_1cm_after_zero_control": 3,
+    "new_detection_after_zero_control": 1
+  },
+  "blocked_receipt_reasons": {
+    "block_budget": 17,
+    "left_target_region": 37,
+    "measured_sweep_collision": 457,
+    "preparation_not_reached": 89,
+    "no_progress_blocks": 10,
+    "environment_budget": 2,
+    "tracking_error": 10,
+    "completion_lost_during_handoff": 1,
+    "numerical_ik_not_found": 106,
+    "no_measured_change": 34,
+    "braking_screen_rejected": 1
+  },
+  "counterfactual_scope": "public source counts and exact zero-control segments; no alternative actions executed; no task-success estimate",
+  "root_causes": {
+    "candidate_ID_based": false,
+    "aggressive_bypasses_failure_limit": true,
+    "zero_control_failure_recorded": true,
+    "centre_only_scene_reset_can_clear_failures": true
+  },
+  "source": "/public/home/sunyihan/rpent_libero_eval/source_failure_blacklist_9612e316_20261025",
+  "contract_sha256": "e9c14ecd66502e34334379de8dddae65e17c65f7354dfc3cdcad54cea8074efa",
+  "simulation_steps": 0,
+  "policy_calls": 0,
+  "private_truth_calls": 0
+}
