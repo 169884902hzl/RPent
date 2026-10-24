@@ -18,6 +18,8 @@ def test_uncertain_crop_classes_keep_two_separate_measured_ids_across_refreshes(
         def call(self,method,*,kwargs,timeout_s):
             assert method=='sam3.segment_all'
             if kwargs['min_score']==0.:return {'instances':[]}
+            from robots.libero.v5_runtime import segmentation_prompt
+            assert kwargs['text_prompt']==segmentation_prompt('bowl')
             return {'instances':[encoded_item(first),encoded_item(second)]}
     scene=MeasuredScene(SimpleNamespace(_state=state),RPC(),31)
     scene.refresh(['bowl']);ids=set(scene.entities)
@@ -27,7 +29,20 @@ def test_uncertain_crop_classes_keep_two_separate_measured_ids_across_refreshes(
         reclassify_duplicate_instances(scene,state)
         assert {e.name for e in scene.entities.values()}=={'unclassified object'}
         assert set(scene.entities)==ids
-        state.latest_step+=1;scene.refresh(['bowl'])
+        state.latest_step+=1;scene.refresh(['bowl'] if _ % 2 else ['unclassified object'])
         assert set(scene.entities)==ids
         assert {e.id:e.xyz for e in scene.entities.values()}==positions
     assert len(set(positions.values()))==2
+
+
+def test_incremental_refresh_uses_tracking_class_after_public_reclassification():
+    from dataclasses import replace
+    from robots.libero.bounded_incremental import refresh_names
+    from tests.unit_tests.robots.libero.test_bounded_incremental import adapter
+    a=adapter()
+    a.scene.entities['near']=replace(a.scene.entities['near'],name='unclassified object')
+    a.scene._tracking_query_labels={'near':'cup'}
+    a._incremental_touched={'near'}
+    assert refresh_names(a,['cup','box'])==['cup']
+    record=next(x for x in a.incremental_evidence if x['anchor_id']=='near')
+    assert record['reasons']==['contacted_in_previous_chunk']

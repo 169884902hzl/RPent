@@ -120,7 +120,7 @@ def reclassify_duplicate_instances(scene, state):
             # The crop label is public semantics. Retain the segmentation
             # query class separately so the next frame reuses this instance ID.
             tracking=getattr(scene,'_tracking_query_labels',{})
-            tracking[entity.id]=entity.name
+            tracking.setdefault(entity.id,entity.name)
             scene._tracking_query_labels=tracking
             scene.entities[entity.id] = replace(entity,name=label)
         evidence[entity.id] = {'old_class':entity.name,'class':label,'scores':scores,

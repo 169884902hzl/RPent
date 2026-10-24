@@ -76,6 +76,9 @@ def refresh_names(adapter, requested):
     from robots.libero.v5_state import relations
 
     reasons = defaultdict(set)
+    tracking = getattr(adapter.scene, '_tracking_query_labels', {})
+    def query_name(entity):
+        return tracking.get(entity.id, entity.name)
     for key in getattr(adapter, '_incremental_touched', set()):
         reasons[key].add('contacted_in_previous_chunk')
     if adapter.held:
@@ -92,7 +95,7 @@ def refresh_names(adapter, requested):
     if previous is None:
         adapter.incremental_evidence = [{'anchor_id':e.id,'changed':True,
             'reasons':['first_physical_capture'], 'capture_step':state.latest_step}
-            for e in adapter.scene.entities.values() if e.name in requested]
+            for e in adapter.scene.entities.values() if query_name(e) in requested]
         return requested
     pairs = ([{'before': previous, 'after': controls[0]['before']}]
         + [{'before': a['after'], 'after': b['before']} for a, b in zip(controls, controls[1:])]
@@ -124,7 +127,7 @@ def refresh_names(adapter, requested):
         'measurement_capture_step':e.source_step,'changed':bool(reasons[e.id]),
         'reasons':sorted(reasons[e.id]),'swept_margin_m':.04,
         'actual_control_samples':len(controls)}
-        for e in adapter.scene.entities.values() if e.name in requested]
+        for e in adapter.scene.entities.values() if query_name(e) in requested]
     adapter.incremental_evidence = records
-    known = {e.name for e in adapter.scene.entities.values()}
-    return sorted(set(requested)-known | {e.name for e in adapter.scene.entities.values() if reasons[e.id]})
+    known = {query_name(e) for e in adapter.scene.entities.values()}
+    return sorted(set(requested)-known | {query_name(e) for e in adapter.scene.entities.values() if reasons[e.id]})

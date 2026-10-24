@@ -307,6 +307,18 @@ class MeasuredScene:
                 association_positions: dict[str, tuple[float, float, float]] | None = None) -> None:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
+        tracking_labels = getattr(self, '_tracking_query_labels', {})
+        self._tracking_query_labels = tracking_labels
+        # Crop semantics and segmentation queries have different roles. A
+        # touched unclassified instance still refreshes with its known query.
+        queries = []
+        for name in names:
+            matched = {tracking_labels.get(e.id, e.name) for e in self.entities.values()
+                       if e.name == name}
+            if not matched or name in tracking_labels.values():
+                matched.add(name)
+            queries.extend(sorted(matched))
+        names = list(dict.fromkeys(queries))
         if self.fixture_fragment_alias_v1 and "cabinet" in names:
             # A cabinet-derived front band is not independent identity evidence.
             # Query the drawer on this same capture before resolving fragments.
@@ -322,8 +334,6 @@ class MeasuredScene:
         image = state.load_bytes(f"{camera}_high.png")
         world = state.load(f"{camera}_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
-        tracking_labels=getattr(self,'_tracking_query_labels',{})
-        self._tracking_query_labels=tracking_labels
         prior_labels = {e.id: tracking_labels.get(e.id,e.name) for e in self.entities.values()}
         category_masks = {}
         current_pan_mask = None
@@ -698,7 +708,7 @@ class MeasuredScene:
                 measured = sorted(measured, key=lambda item: item[3], reverse=True)[:limit]
             if measured:
                 category_masks[name] = np.logical_or.reduce([item[4] for item in measured])
-            old = [e for e in self.entities.values() if (e.name == name or prior_labels.get(e.id) == name)
+            old = [e for e in self.entities.values() if prior_labels.get(e.id, e.name) == name
                    and (placement is None or name != placed.name or e.id == placed.id)]
             if self.fixture_identity_cache_v1:
                 old += [e for e in self._rejected_fixture_entities.values() if e.name == name]
